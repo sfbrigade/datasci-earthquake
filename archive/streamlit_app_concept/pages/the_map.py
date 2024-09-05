@@ -6,11 +6,38 @@ import json
 from folium.plugins import MarkerCluster
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
+import geopandas as gpd
 from shapely.geometry import Point
+import os
+import certifi
+
+@st.cache_data
+def open_geojson(file):
+    with open(file, 'r') as f:
+        geojson_data = json.load(f)
+    return geojson_data
+
+# Cache the loading of the GeoJSON data
+@st.cache_data
+def load_geojsons():
+    neighborhoods = gpd.read_file('../../analytics/data/neighborhoods.geojson')
+    soft_story_properties = open_geojson('../../analytics/data/soft_story_properties.geojson')
+    tsunami_zone = gpd.read_file('../../analytics/data/tsunami.geojson')
+    seismic_hazard = gpd.read_file('../../analytics/data/seismic_hazard.geojson')
+    
+    return neighborhoods, soft_story_properties, tsunami_zone, seismic_hazard
+
 
 def show():
+
+    # Set the SSL certificate file path explicitly
+    os.environ['SSL_CERT_FILE'] = certifi.where()
+
     st.title("Map")
-    st.write("This is the Map Page.")
+
+    # Call the cached function to load the GeoJSON data
+    neighborhoods, soft_story_properties, tsunami_zone, seismic_hazard = load_geojsons()
+
 
     # Display legend inline (before the map)
     st.markdown("""
@@ -30,11 +57,7 @@ def show():
         tiles="OpenStreetMap"
     )
 
-    # Load GeoJSON data
-    neighborhoods = gpd.read_file('../../analytics/data/neighborhoods.geojson')
-    soft_story_properties = open_geojson('../../analytics/data/soft_story_properties.geojson')
-    tsunami_zone = gpd.read_file('../../analytics/data/tsunami.geojson')
-    seismic_hazard = gpd.read_file('../../analytics/data/seismic_hazard.geojson')
+
 
     # Clip the tsunami zone by the neighborhoods
     clipped_tsunami_zone = gpd.overlay(tsunami_zone, neighborhoods, how='intersection')
@@ -71,16 +94,42 @@ def show():
     # Initialize a MarkerCluster object
     marker_cluster = MarkerCluster().add_to(m)
 
+    # Initialize counters for tsunami and seismic hazard zones
+    total_properties = len(soft_story_properties['features'])
+    tsunami_count = 0
+    seismic_count = 0
+    tsunami_and_seismic_count = 0
+    noncompliant_count = 0
+
+
     # Add soft story properties as clustered circle markers with color based on compliance status
     soft_story_coords = []
     soft_story_data = []
     for feature in soft_story_properties['features']:
-        if feature and 'geometry' in feature and feature['geometry']:
+        # Check if the feature has a valid geometry object before processing
+        if feature and 'geometry' in feature and feature['geometry'] and feature['geometry'].get('coordinates'):
             coords = feature['geometry']['coordinates']
+            point = Point(coords[0], coords[1])
             status = feature['properties'].get('status', 'Compliant')  # Default to Compliant if status not found
             color = 'red' if status == 'Non-Compliant' else 'blue'  # Red for Non-Compliant, Blue otherwise
             soft_story_coords.append((coords[1], coords[0]))  # Collect coordinates for search
             soft_story_data.append({'coords': (coords[1], coords[0]), 'status': status})
+
+            # Check if the property is in the tsunami hazard zone
+            in_tsunami_zone = clipped_tsunami_zone.contains(point).any()
+
+            # Check if the property is in the seismic hazard zone
+            in_seismic_zone = seismic_hazard.contains(point).any()
+
+            # Increment counters for hazard zones
+            if in_tsunami_zone:
+                tsunami_count += 1
+            if in_seismic_zone:
+                seismic_count += 1
+            if in_tsunami_zone and in_seismic_zone:
+                tsunami_and_seismic_count +=1
+
+            # Add marker to the map
             folium.CircleMarker(
                 location=[coords[1], coords[0]],  # GeoJSON coordinates are [lon, lat]
                 radius=5,  # Radius of the circle
@@ -90,6 +139,17 @@ def show():
                 fill_opacity=0.6,
                 popup=f"Address: {feature['properties'].get('address', 'N/A')}<br>Status: {status}",  # Display address and status
             ).add_to(marker_cluster)
+        #else:
+            #st.write(f"Skipping a feature without valid geometry: {feature}")
+
+    # Display hazard zone counts
+    st.write(f"(NB: 7 Soft Story locations are missing from this map due to missing lat/long data in DataSF soft story csv. I need to fill in missing lat/long data based on address.)")
+    st.write(f"Total soft story properties: {total_properties}")
+    st.write(f"Soft story properties in the tsunami hazard zone: {tsunami_count} ({(tsunami_count / total_properties) * 100:.2f}% of total)")
+    st.write(f"Soft story properties in the seismic hazard zone: {seismic_count} ({(seismic_count / total_properties) * 100:.2f}% of total)")
+    st.write(f"Soft story properties in the tsunami and seismic hazard zone: {tsunami_and_seismic_count} ({(tsunami_and_seismic_count / total_properties) * 100:.2f}% of total)")
+
+
 
     # Address search functionality
     address = st.text_input("Enter an address to search:")
@@ -161,8 +221,4 @@ def show():
     st_folium(m, width=700, height=500)
 
 
-@st.cache_data
-def open_geojson(file):
-    with open(file, 'r') as f:
-        geojson_data = json.load(f)
-    return geojson_data
+
