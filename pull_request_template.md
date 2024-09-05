@@ -5,13 +5,13 @@ _add a short description_
 _reference to relevant issue_
 
 ## Type of changes
-- [] Bugfix
-- [] Chore
-- [] New Feature
+- [ ] Bugfix
+- [ ] Chore
+- [ ] New Feature
 
 ## Testing
-- [] I added automated tests
-- [] I think tests are unnecessary
+- [ ] I added automated tests
+- [ ] I think tests are unnecessary
 
 ## How to test
 
