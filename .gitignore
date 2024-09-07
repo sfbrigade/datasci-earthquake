@@ -4,6 +4,7 @@
 # Python
 *.pyc
 bin/
+build/
 lib/
 
 # Virtual Environment
