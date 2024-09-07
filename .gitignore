@@ -1,3 +1,9 @@
+# Next
+.next
+
+# Python
+*.pyc
+
 # Virtual Environment
 venv
 
@@ -6,3 +12,4 @@ node_modules
 
 # Mac
 .DS_Store
+/.next/
