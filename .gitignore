@@ -1,0 +1,19 @@
+# Next
+.next
+
+# Python
+__pycache__/
+*.py[cod]
+bin/
+build/
+lib/
+
+# Virtual Environment
+venv
+
+# Node
+node_modules
+
+# Mac
+.DS_Store
+/.next/
