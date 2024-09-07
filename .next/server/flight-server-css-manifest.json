@@ -1,0 +1,14 @@
+{
+  "cssImports": {
+    "/Users/vinyl/Documents/GitHub/Python/datasci-earthquake/app/layout.tsx": [
+      "/Users/vinyl/Documents/GitHub/Python/datasci-earthquake/node_modules/next/font/google/target.css?{\"path\":\"app/layout.tsx\",\"import\":\"Inter\",\"arguments\":[{\"subsets\":[\"latin\"]}],\"variableName\":\"inter\"}",
+      "/Users/vinyl/Documents/GitHub/Python/datasci-earthquake/app/globals.css"
+    ]
+  },
+  "cssModules": {
+    "/Users/vinyl/Documents/GitHub/Python/datasci-earthquake/app/page": [
+      "/Users/vinyl/Documents/GitHub/Python/datasci-earthquake/app/globals.css",
+      "/Users/vinyl/Documents/GitHub/Python/datasci-earthquake/node_modules/next/font/google/target.css?{\"path\":\"app/layout.tsx\",\"import\":\"Inter\",\"arguments\":[{\"subsets\":[\"latin\"]}],\"variableName\":\"inter\"}"
+    ]
+  }
+}

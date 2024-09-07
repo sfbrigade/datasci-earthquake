@@ -1,0 +1,8 @@
+# Virtual Environment
+venv
+
+# Node
+node_modules
+
+# Mac
+.DS_Store
