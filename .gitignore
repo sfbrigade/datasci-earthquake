@@ -2,7 +2,8 @@
 .next
 
 # Python
-*.pyc
+__pycache__/
+*.py[cod]
 bin/
 build/
 lib/
