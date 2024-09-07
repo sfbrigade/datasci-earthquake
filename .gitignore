@@ -3,6 +3,8 @@
 
 # Python
 *.pyc
+bin/
+lib/
 
 # Virtual Environment
 venv
