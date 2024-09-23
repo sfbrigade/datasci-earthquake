@@ -5,6 +5,7 @@ import pages.the_map as the_map
 
 
 
+
 # Page configuration
 st.set_page_config(
     page_title="Quake Safe Prototype",
@@ -12,6 +13,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
 
 # Define the pages
 
@@ -22,6 +24,7 @@ page = st.sidebar.radio("Go to", ["Map"])
 # Page selection logic
 if page == "Map":
     the_map.show()
+\
 # elif page == "About":
 #     about()
 # elif page == "Contact":
