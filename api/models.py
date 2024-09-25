@@ -64,7 +64,7 @@ class TsunamiZones(DeclarativeBase):
     kmz_link: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
     map_link: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
     label: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
-    shape_leng: Mapped[float] = mapped_column(Float)
+    shape_length: Mapped[float] = mapped_column(Float)
     shape_area: Mapped[float] = mapped_column(Float)
     # This data is ingested as PolygonZ but should be stored as MultiPolygon
     geometry: Mapped[Geometry] = mapped_column(Geometry('MULTIPOLYGON', srid=4326))
@@ -106,7 +106,7 @@ class LandslideZones(DeclarativeBase):
     the_geom: Mapped[Geometry] = mapped_column(Geometry('MULTIPOLYGON', srid=4326))
     gridcode: Mapped[int] = mapped_column(Integer)
     sum_shape: Mapped[float] = mapped_column(Float)
-    shape_leng: Mapped[float] = mapped_column(Float)
+    shape_length: Mapped[float] = mapped_column(Float)
     shape_Le_1: Mapped[float] = mapped_column(Float)
     shape_area: Mapped[float] = mapped_column(Float)
     update_timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=datetime.utcnow)
@@ -121,7 +121,7 @@ class Neighborhoods(DeclarativeBase):
     """
     __tablename__ = "neighborhoods"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    identifier: Mapped[int] = mapped_column(Integer, primary_key=True)
     neighborhood: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
     geometry: Mapped[Geometry] = mapped_column(Geometry('MULTIPOLYGON', srid=4326))
     update_timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=datetime.utc_now)
