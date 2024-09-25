@@ -2,3 +2,5 @@ node_modules
 build
 streamlit-app
 api
+.github
+pull_request_template.md
