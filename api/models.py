@@ -44,7 +44,7 @@ class SeismicHazardZones(DeclarativeBase):
     __tablename__ = "seismic_hazard_zones"
 
     identifier: Mapped[int] = mapped_column(Integer, primary_key=True)
-    the_geom: Mapped[Geometry] = mapped_column(Geometry('MULTIPOLYGON', srid=4326))
+    geometry: Mapped[Geometry] = mapped_column(Geometry('MULTIPOLYGON', srid=4326))
     update_timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=datetime.utcnow)
     
     def __repr__(self) -> str:
@@ -84,7 +84,7 @@ class LiquefactionZones(DeclarativeBase):
 
     identifier: Mapped[int] = mapped_column(primary_key=True)
     geometry: Mapped[Geometry] = mapped_column(Geometry('MULTIPOLYGON', srid=4326))
-    susceptibility: Mapped[String] = mapped_column(String)
+    susceptibility: Mapped[str] = mapped_column(String)
     shape_length: Mapped[float] = mapped_column(Float)
     shape_area: Mapped[float] = mapped_column(Float)
     update_timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=datetime.utcnow)
@@ -103,10 +103,14 @@ class LandslideZones(DeclarativeBase):
     __tablename__ = "landslide_zones"
 
     identifier: Mapped[int] = mapped_column(Integerprimary_key=True)
-    the_geom: Mapped[Geometry] = mapped_column(Geometry('MULTIPOLYGON', srid=4326))
+    geometry: Mapped[Geometry] = mapped_column(Geometry('MULTIPOLYGON', srid=4326))
     gridcode: Mapped[int] = mapped_column(Integer)
     sum_shape: Mapped[float] = mapped_column(Float)
     shape_length: Mapped[float] = mapped_column(Float)
+    created_us: Mapped[str] = mapped_column(String)
+    created_da: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=datetime.utcnow)
+    last_edited: Mapped[str] = mapped_column(String)
+    last_edi_1: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=datetime.utcnow)
     shape_Le_1: Mapped[float] = mapped_column(Float)
     shape_area: Mapped[float] = mapped_column(Float)
     update_timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=datetime.utcnow)
