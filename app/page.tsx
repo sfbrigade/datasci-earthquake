@@ -8,8 +8,8 @@ interface Building {
 
 export default function Home() {
   const buildings: Building[] = [
-    { id: '1', name: 'Building 1' },
-    { id: '2', name: 'Building 2' },
+    { id: "1", name: "Building 1" },
+    { id: "2", name: "Building 2" },
   ];
 
   return (
@@ -17,13 +17,15 @@ export default function Home() {
       <Heading>Welcome to SF Quake Safe</Heading>
       <Text>Learn about San Francisco earthquake safety.</Text>
       <ul>
-        <li><Link href="/about">About</Link></li>
-        <li><Link href="/methodology">Methodology</Link></li>
-        {buildings.map(building => (
+        <li>
+          <Link href="/about">About</Link>
+        </li>
+        <li>
+          <Link href="/methodology">Methodology</Link>
+        </li>
+        {buildings.map((building) => (
           <li key={building.id}>
-            <Link href={`/buildings/${building.id}`}>
-              {building.name}
-            </Link>
+            <Link href={`/buildings/${building.id}`}>{building.name}</Link>
           </li>
         ))}
       </ul>
