@@ -1,3 +1,4 @@
+import { Container } from "@chakra-ui/react";
 import { Providers } from "./providers";
 
 export const metadata = {
@@ -13,7 +14,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Container
+            as="main"
+            maxW="container.xl"
+            padding="25px"
+            bg="primary.900"
+            color="white"
+          >
+            {children}
+          </Container>
+        </Providers>
       </body>
     </html>
   );
