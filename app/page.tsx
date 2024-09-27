@@ -24,7 +24,7 @@ export default function Home() {
           <Link href="/methodology">Methodology</Link>
         </li>
         <li>
-          <Link href="/mapView">Map View</Link>
+          <Link href="/map-view">Map View</Link>
         </li>
         {buildings.map((building) => (
           <li key={building.id}>
