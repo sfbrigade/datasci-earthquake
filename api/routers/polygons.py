@@ -32,7 +32,7 @@ async def put(id: int, polygon: Polygon, table_name: str):
 
 
 @router.post("/post")
-async def post(id: int, polygon: Polygon, database_name: str):
+async def post(id: int, polygon: Polygon, table_name: str):
     """
     Post this polygon to that table.
     """
