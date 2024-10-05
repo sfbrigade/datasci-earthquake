@@ -1,4 +1,4 @@
-"""Data about buildings."""
+"""All data of the Soft Story table from SFData."""
 from sqlalchemy import String, Integer
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
