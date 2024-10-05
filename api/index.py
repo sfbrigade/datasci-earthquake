@@ -7,16 +7,13 @@ combined risk records.
 """
 # TODO:
 # Decide: 
-# - whether old polygons should be kept
-# - whether old soft story records should be kept
-# - whether old combined risk records should be kept
+# - whether old polygons should be kept #53
+# - whether old soft story records should be kept #53
+# - whether old combined risk records should be kept #53
 # - where current and old polygons, soft story records, and
-#   combined risk records should be kept
-# - whether polygons should be the exposed api to handle
-#   polygons with its every method receiving an argument
-#   indicating seismic or tsunami
+#   combined risk records should be kept #53
 # Create: 
-# - a database to back the exposed arguments
+# - a database to back the exposed arguments #54
 # - a new API key for OpenGate
 # - fuzzy logic to match addresses 
 # Make: each get method return that of their pydantic annotations
