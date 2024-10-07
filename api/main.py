@@ -29,3 +29,8 @@ app.include_router(soft_story.router)
 app.include_router(polygons.router)
 app.include_router(seismic.router)
 app.include_router(tsunami.router)
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
