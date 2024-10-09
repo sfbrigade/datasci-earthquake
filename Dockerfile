@@ -1,7 +1,18 @@
 # syntax=docker/dockerfile:1
 
-ARG PYTHON_VERSION=3.11.4
-FROM python:${PYTHON_VERSION}-slim as python_base
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Dockerfile reference guide at
+# https://docs.docker.com/engine/reference/builder/
+
+ARG PYTHON_VERSION=3.11.10
+FROM python:${PYTHON_VERSION}-slim as base
+
+# PostgreSQL setup
+ENV POSTGRES_USER=myuser
+ENV POSTGRES_PASSWORD=mypassword
+ENV POSTGRES_DB=mydatabase
+
+RUN apt-get update && apt-get install -y postgresql-client
 
 # Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -10,9 +21,10 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /api
+WORKDIR /app
 
 # Create a non-privileged user that the app will run under.
+# See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
 ARG UID=10001
 RUN adduser \
     --disabled-password \
@@ -22,9 +34,6 @@ RUN adduser \
     --no-create-home \
     --uid "${UID}" \
     appuser
-
-# Install npm
-RUN apt-get update && apt-get install -y nodejs npm
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
@@ -43,5 +52,5 @@ COPY . .
 # Expose the port that the application listens on.
 EXPOSE 8000
 
-# Run the FastAPI application
+# Run the application.
 CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
