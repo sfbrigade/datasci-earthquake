@@ -47,6 +47,7 @@ def test_insert_combined_risk(test_db):
     assert result.soft_story_risk is True
     assert result.seismic_hazard_risk is False
 
+
 def test_query_combined_risk(test_db):
     # Act
     results = test_db.query(CombinedRisk).all()
