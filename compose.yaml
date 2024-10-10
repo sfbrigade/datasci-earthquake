@@ -44,7 +44,7 @@ services:
     user: postgres
     volumes:
       - db-data:/var/lib/postgresql/data
-      - ./backend/db:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
+      - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
     environment:
       - POSTGRES_USER=user
       - POSTGRES_DB=qsdatabase
