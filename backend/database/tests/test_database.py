@@ -26,7 +26,7 @@ def test_db():
     session.close()  # Clean up after tests
     connection.close()
 
-
+python3 -m venv venv
 def test_insert_combined_risk(test_db):
     # Arrange
     new_risk = CombinedRisk(
