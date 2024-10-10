@@ -47,6 +47,10 @@ def soft_story():
     # TODO: Handle json data that lacks an associated geometry.
     # 7 rows lack geometry last we checked, but this number could change.
     # Should we impute locations for rows that lack geometry?
+    #
+    # InsecureRequestWarning: Unverified HTTPS request is being made to host 'data.sfgov.org'. 
+    # Adding certificate verification is strongly advised. 
+    # See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
     geojson = fetch_data('https://data.sfgov.org/resource/beah-shgi.geojson')
     geodataframe = gpd.GeoDataFrame.from_features(geojson["features"])
     #print(geodataframe.columns)
