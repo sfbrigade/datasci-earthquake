@@ -1,37 +1,23 @@
-import Link from "next/link";
-import { Heading, Text } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 
-interface Building {
-  id: string;
-  name: string;
-}
-
-export default function Home() {
-  const buildings: Building[] = [
-    { id: "1", name: "Building 1" },
-    { id: "2", name: "Building 2" },
-  ];
-
+const Home = () => {
   return (
-    <>
-      <Heading>Welcome to SF Quake Safe</Heading>
-      <Text>Learn about San Francisco earthquake safety.</Text>
-      <ul>
-        <li>
-          <Link href="/about">About</Link>
-        </li>
-        <li>
-          <Link href="/methodology">Methodology</Link>
-        </li>
-        <li>
-          <Link href="/map-view">Map View</Link>
-        </li>
-        {buildings.map((building) => (
-          <li key={building.id}>
-            <Link href={`/buildings/${building.id}`}>{building.name}</Link>
-          </li>
-        ))}
-      </ul>
-    </>
+    <Flex direction="column">
+      <Box bgColor="primary.blue">
+        <Box width={{ lg: "lg", md: "md", sm: "sm" }} margin="auto">
+          Promo and search box
+        </Box>
+      </Box>
+      <Box width={{ lg: "lg", md: "md", sm: "sm" }} margin="auto">
+        Cards and map
+      </Box>
+      <Box bgColor="primary.blue">
+        <Box width={{ lg: "lg", md: "md", sm: "sm" }} margin="auto">
+          Cards
+        </Box>
+      </Box>
+    </Flex>
   );
-}
+};
+
+export default Home;
