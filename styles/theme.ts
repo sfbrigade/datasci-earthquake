@@ -12,11 +12,13 @@ const customTheme = extendTheme({
     2: "12px",
   },
   sizes: {
+    base: "100%",
     sm: "375px",
     md: "744px",
     lg: "1280px",
   },
   breakpoints: {
+    base: "0px",
     sm: "375px",
     md: "744px",
     lg: "1280px",
