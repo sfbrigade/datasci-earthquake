@@ -1,5 +1,7 @@
-import { Container } from "@chakra-ui/react";
+import { Box, Container, Flex } from "@chakra-ui/react";
 import { Providers } from "./providers";
+import Header from "./components/header";
+import Footer from "./components/footer";
 
 export const metadata = {
   title: "SF Quake Safe",
@@ -15,15 +17,13 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <Container
-            as="main"
-            maxW="container.xl"
-            padding="25px"
-            bg="primary.900"
-            color="white"
-          >
-            {children}
-          </Container>
+          <Flex direction="column" align="center" minH="100vh">
+            <Header />
+            <Box flex="1" as="main" width="100%">
+              {children}
+            </Box>
+            <Footer />
+          </Flex>
         </Providers>
       </body>
     </html>
