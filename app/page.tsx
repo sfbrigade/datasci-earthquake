@@ -14,7 +14,9 @@ const Home = () => {
           }}
           m="auto"
         >
-          Promo and search box
+          <Box h="100%" border="1px solid grey">
+            Promo and search box
+          </Box>
         </Box>
       </Box>
       <Box
@@ -27,7 +29,9 @@ const Home = () => {
         }}
         m="auto"
       >
-        Cards and map
+        <Box h="100%" border="1px solid grey">
+          Cards and map box
+        </Box>
       </Box>
       <Box bgColor="primary.blue">
         <Box
@@ -40,7 +44,9 @@ const Home = () => {
           }}
           m="auto"
         >
-          Cards
+          <Box h="100%" border="1px solid grey">
+            Cards box
+          </Box>
         </Box>
       </Box>
     </Flex>

@@ -10,7 +10,7 @@ const Header = () => {
         lg: "29px 127px 13px 127px",
       }}
     >
-      <Box bgColor="#E2E8F0">This is Header</Box>
+      <Box border="1px solid grey">Header</Box>
     </Box>
   );
 };
