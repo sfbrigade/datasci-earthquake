@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 # Will the .. be stable?
-from ..index import app
+from ..main import app
 from ..schemas import Polygon
 
 
