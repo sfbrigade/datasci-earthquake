@@ -19,4 +19,4 @@ node_modules
 /.next/
 
 #Postgres password 
-backend/db/password.txt 
+backend/database/password.txt 

@@ -15,7 +15,7 @@ class Polygon(BaseModel):
     pass
 
 
-@router.delete("/delete")
+@router.delete("/{id}")
 async def delete(id: int, table_name: str):
     """
     Delete this polygon from that table.
@@ -23,7 +23,7 @@ async def delete(id: int, table_name: str):
     pass
 
 
-@router.put("/put")
+@router.put("/{id}")
 async def put(id: int, polygon: Polygon, table_name: str):
     """
     Put this polygon into that table.
@@ -31,7 +31,7 @@ async def put(id: int, polygon: Polygon, table_name: str):
     pass
 
 
-@router.post("/post")
+@router.post("/")
 async def post(id: int, polygon: Polygon, database_name: str):
     """
     Post this polygon to that table.
@@ -39,7 +39,7 @@ async def post(id: int, polygon: Polygon, database_name: str):
     pass
 
 
-@router.get("/get")
+@router.get("/{id}")
 async def get(id: int, table_name: str) -> Polygon:
     """
     Get this polygon from that table.
