@@ -3,7 +3,7 @@ import { Box, Flex } from "@chakra-ui/react";
 const Home = () => {
   return (
     <Flex direction="column">
-      <Box bgColor="primary.blue">
+      <Box bgColor="blue">
         <Box
           h={{ base: "166px", md: "213px", lg: "261px" }}
           w={{ base: "base", lg: "lg" }}
@@ -14,7 +14,7 @@ const Home = () => {
           }}
           m="auto"
         >
-          <Box h="100%" border="1px solid grey">
+          <Box h="100%" border="1px solid" borderColor="grey.400">
             Promo and search box
           </Box>
         </Box>
@@ -29,11 +29,11 @@ const Home = () => {
         }}
         m="auto"
       >
-        <Box h="100%" border="1px solid grey">
+        <Box h="100%" border="1px solid" borderColor="grey.400">
           Cards and map box
         </Box>
       </Box>
-      <Box bgColor="primary.blue">
+      <Box bgColor="blue">
         <Box
           w={{ base: "base", lg: "lg" }}
           h={{ base: "166px", md: "213px", lg: "261px" }}
@@ -44,7 +44,7 @@ const Home = () => {
           }}
           m="auto"
         >
-          <Box h="100%" border="1px solid grey">
+          <Box h="100%" border="1px solid" borderColor="grey.400">
             Cards box
           </Box>
         </Box>
