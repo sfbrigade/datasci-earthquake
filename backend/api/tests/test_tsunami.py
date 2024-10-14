@@ -4,13 +4,14 @@ Test the API of tsunami.py.
 import pytest
 from fastapi.testclient import TestClient
 # Will the .. be stable?
-from ..index import app
+from ..main import app
 from ..schemas import Polygon
 
 
 @pytest.fixture
 def client():
     return TestClient(app)
+
 
 
 def test_delete_tsunami_polygon(client):

@@ -12,9 +12,6 @@ combined risk records.
 # - whether old combined risk records should be kept #53
 # - where current and old polygons, soft story records, and
 #   combined risk records should be kept #53
-# - whether polygons should be the exposed api to handle
-#   polygons with its every method receiving an argument
-#   indicating seismic or tsunami
 # Create: 
 # - a database to back the exposed arguments #54
 # - a new API key for OpenGate
@@ -32,3 +29,8 @@ app.include_router(soft_story.router)
 app.include_router(polygons.router)
 app.include_router(seismic.router)
 app.include_router(tsunami.router)
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
