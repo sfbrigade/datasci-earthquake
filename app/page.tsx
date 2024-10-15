@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 const Home = () => {
   return (
@@ -15,7 +15,7 @@ const Home = () => {
           m="auto"
         >
           <Box h="100%" border="1px solid" borderColor="grey.400">
-            Promo and search box
+            <Text textStyle="promo">Promo and search box</Text>
           </Box>
         </Box>
       </Box>

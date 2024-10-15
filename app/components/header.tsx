@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 
 const Header = () => {
   return (
@@ -11,7 +11,7 @@ const Header = () => {
       }}
     >
       <Box border="1px solid" borderColor="grey.400">
-        Header
+        <Text textStyle="logo">Header</Text>
       </Box>
     </Box>
   );

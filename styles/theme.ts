@@ -5,6 +5,16 @@ const customTheme = extendTheme({
     body: "Inter, sans-serif",
     heading: "Inter, sans-serif",
   },
+  textStyles: {
+    logo: {
+      fontSize: ["xl", "xl", "2xl", "2xl", "2xl"],
+      fontWeight: "bold",
+    },
+    promo: {
+      fontSize: ["4xl", "4xl", "5xl", "6xl", "6xl"],
+      fontWeight: "bold",
+    },
+  },
   colors: {
     grey: {
       200: "#E2E8F0",
@@ -31,10 +41,15 @@ const customTheme = extendTheme({
     lg: "1280px",
   },
   breakpoints: {
+    // base: "0px",
+    // sm: "375px",
+    // md: "744px",
+    // lg: "1280px",
     base: "0px",
     sm: "375px",
     md: "744px",
-    lg: "1280px",
+    lg: "960px",
+    "2xl": "1536px",
   },
 });
 
