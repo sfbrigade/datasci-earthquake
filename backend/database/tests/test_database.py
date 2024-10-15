@@ -8,7 +8,7 @@ from ...api.config import settings
 @pytest.fixture(scope='module')
 def test_db():
     # Create a session using the existing database
-    engine = create_engine(settings.host_database_url)
+    engine = create_engine(settings.localhost_database_url)
     connection = engine.connect()
 
     # Begin a transaction
