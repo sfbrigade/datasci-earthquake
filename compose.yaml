@@ -12,45 +12,33 @@ services:
     build:
       context: .
     env_file:
-      - .env
+      - .env.local
     ports:
       - 3000:3000
     depends_on:
       - backend
-    environment:
-      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
     volumes:
       - ./app:/app
   backend:
     build:
       context: ./backend
     env_file:
-      - .env
+      - .env.local
     ports:
       - 8000:8000
     depends_on:
       db:
         condition: service_healthy
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - ENVIRONMENT=${ENVIRONMENT}
-      - DOMAIN=${DOMAIN}
-      - SECRET_KEY=${SECRET_KEY}
     volumes:
       - ./backend:/app
   db:
     image: postgres
     env_file:
-      - .env
+      - .env.local
     restart: always
-    user: postgres
     volumes:
       - db-data:/var/lib/postgresql/data
       - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - 5432:5432
     healthcheck:

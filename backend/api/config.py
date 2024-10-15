@@ -1,21 +1,20 @@
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 
-class Settings(BaseSettings):
-    domain: str 
+class Settings(BaseSettings): 
     postgres_user: str
     postgres_password: str
     postgres_db: str
     database_url: str
-    host_database_url: str
-    environment: str
+    frontend_host: str
+    localhost_database_url: str
     environment: str
     secret_key: str
     next_public_api_url: str
 
 
     class Config:
-        env_file = ".env"
+        env_file = ".env.local"
         env_file_encoding = "utf-8"
 
 
