@@ -18,8 +18,6 @@ node_modules
 .DS_Store
 /.next/
 
-#Postgres password 
-backend/database/password.txt 
-
 #Environments 
-*.env
+.env
+.env*.local

@@ -1,6 +1,10 @@
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 
+
+"""
+Provides the environment variables that are read by the application.
+"""
 class Settings(BaseSettings): 
     postgres_user: str
     postgres_password: str
@@ -11,6 +15,7 @@ class Settings(BaseSettings):
     environment: str
     secret_key: str
     next_public_api_url: str
+    node_env: str
 
 
     class Config:
