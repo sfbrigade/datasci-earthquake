@@ -112,8 +112,8 @@ To stop and shut down the application:
 
 ***
 # Configuration of environment variables 
-This file contains environment variables used in the application to configure settings for both the backend and frontend components. It's essential for local development and should not be checked into version control for security reasons.
-The ```.env.local``` file is organized into three main sections:
+The ```.env.local``` file contains environment variables used in the application to configure settings for both the backend and frontend components. It's essential for local development and should not be checked into version control for security reasons.
+The file is organized into three main sections:
   - **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.  
   - **Backend Environment Variables**. These variables are used by the backend (e.g., FastAPI) to configure its behavior and to connect to the database and the frontend application.
   - **Frontend Environment Variables**. This section contains the base URL for API calls to the backend and ```NODE_ENV``` variable that determines in which environment the Node.js application is running. 
