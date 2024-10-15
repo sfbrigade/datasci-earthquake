@@ -2,13 +2,13 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from ...api.models.comined_risk import Base, CombinedRisk
+from ...api.config import settings
 
-DATABASE_URL = "postgresql://user:password@localhost:5432/qsdatabase"
 
 @pytest.fixture(scope='module')
 def test_db():
     # Create a session using the existing database
-    engine = create_engine(DATABASE_URL)
+    engine = create_engine(settings.host_database_url)
     connection = engine.connect()
 
     # Begin a transaction
