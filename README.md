@@ -112,7 +112,7 @@ To stop and shut down the application:
 
 ***
 # Configuration of environment variables 
-The ```.env.local``` file contains environment variables used in the application to configure settings for both the backend and frontend components. It's essential for local development and should not be checked into version control for security reasons.
+The ```.env.local``` file contains environment variables used in the application to configure settings for both the backend and frontend components. If it contains sensitive information, ```.env.local``` should not be checked into version control for security reasons. Right now there is no sensitive information but later secret management tools will be introduced. 
 The file is organized into three main sections:
   - **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.  
   - **Backend Environment Variables**. These variables are used by the backend (e.g., FastAPI) to configure its behavior and to connect to the database and the frontend application.
