@@ -9,26 +9,32 @@ const customTheme = extendTheme({
     logo: {
       fontSize: ["xl", "xl", "2xl", "2xl", "2xl", "2xl"],
       fontWeight: "bold",
+      color: "blue",
     },
     headerBig: {
       fontSize: ["4xl", "4xl", "5xl", "5xl", "6xl", "6xl"],
       fontWeight: "normal",
+      color: "white",
     },
     headerMedium: {
       fontSize: ["2xl", "2xl", "3xl", "3xl", "3xl", "3xl"],
       fontWeight: "bold",
+      color: "blue",
     },
     headerSmall: {
       fontSize: ["lg", "lg", "lg", "lg", "xl", "xl"],
       fontWeight: "bold",
+      color: "white",
     },
     textMedium: {
       fontSize: "md",
       fontWeight: "normal",
+      color: "grey.900",
     },
     textSmall: {
       fontSize: "xs",
       fontWeight: "normal",
+      color: "grey.900",
     },
   },
   colors: {
@@ -57,10 +63,6 @@ const customTheme = extendTheme({
     xl: "1280px",
   },
   breakpoints: {
-    // base: "0px",
-    // sm: "375px",
-    // md: "744px",
-    // lg: "1280px",
     base: "0px",
     sm: "375px",
     md: "744px",
