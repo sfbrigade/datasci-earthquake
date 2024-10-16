@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 
 const Footer = () => {
   return (
@@ -11,7 +11,7 @@ const Footer = () => {
       }}
     >
       <Box border="1px solid" borderColor="grey.400">
-        Footer
+        <Text textStyle="textSmall">Footer</Text>
       </Box>
     </Box>
   );

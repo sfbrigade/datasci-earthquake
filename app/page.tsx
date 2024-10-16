@@ -15,7 +15,7 @@ const Home = () => {
           m="auto"
         >
           <Box h="100%" border="1px solid" borderColor="grey.400">
-            <Text textStyle="promo">Promo and search box</Text>
+            <Text textStyle="headerBig">Promo and search box</Text>
           </Box>
         </Box>
       </Box>
@@ -30,7 +30,7 @@ const Home = () => {
         m="auto"
       >
         <Box h="100%" border="1px solid" borderColor="grey.400">
-          Cards and map box
+          <Text textStyle="headerMedium">Cards and map box</Text>
         </Box>
       </Box>
       <Box bgColor="blue">
@@ -45,7 +45,7 @@ const Home = () => {
           m="auto"
         >
           <Box h="100%" border="1px solid" borderColor="grey.400">
-            Cards box
+            <Text textStyle="headerSmall">Cards box</Text>
           </Box>
         </Box>
       </Box>
