@@ -1,9 +1,30 @@
+from fastapi import FastAPI, Depends
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, text
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from geoalchemy2 import Geometry
+from datetime import DateTime, datetime 
 import pytest
-from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from ...api.models.comined_risk import Base, CombinedRisk
+from ...api.models.combined_risk import CombinedRisk
+from ...api.models.landslide_zones import LandslideZones
+from ...api.models.liquefaction_zones import LiquefactionZones
+from ...api.models.landslide_zones import MAPPED_COLUMN_STRING_LENGTH, Neighborhoods
+from ...api.models.seismic_hazard_zones import SeismicHazardZones
+from ...api.models.soft_story_properties import SoftStoryProperties
+from ...api.models.tsunami import TsunamiZones
+from ...api.main import app
+
 
 DATABASE_URL = "postgresql://user:password@localhost:5432/qsdatabase"
+
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+db = SessionLocal()
+
+# TODO: add tables to database using SQLAlchemy
+# TODO: need sample data to add and commit to this test database
+#where do we want this seed test database functionality to live? this feels like a weird spot for it 
+
 
 @pytest.fixture(scope='module')
 def test_db():
@@ -25,6 +46,7 @@ def test_db():
     session.rollback()
     session.close()  # Clean up after tests
     connection.close()
+
 
 def test_insert_combined_risk(test_db):
     # Arrange

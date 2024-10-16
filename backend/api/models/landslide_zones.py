@@ -12,7 +12,6 @@ class LandslideZones(DeclarativeBase):
     All data of the Landslide Zones table from SFData.
     Contains multipolygon geometries defining landslide zones.
     """
-
     __tablename__ = "landslide_zones"
 
     identifier: Mapped[int] = mapped_column(Integerprimary_key=True)

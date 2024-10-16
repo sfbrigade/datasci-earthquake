@@ -1,9 +1,8 @@
 from sqlalchemy import Column, Integer, String, Boolean
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import DeclarativeBase
 
-Base = declarative_base()
 
-class CombinedRisk(Base):
+class CombinedRisk(DeclarativeBase):
     __tablename__ = 'combined_risk'
     
     id = Column(Integer, primary_key=True, autoincrement=True)

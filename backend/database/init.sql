@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS combined_risk (
     seismic_hazard_risk BOOLEAN NOT NULL DEFAULT FALSE,
     landslide_risk BOOLEAN NOT NULL DEFAULT FALSE,
     liquefaction_risk BOOLEAN NOT NULL DEFAULT FALSE
-    
 );
 
 INSERT INTO combined_risk (address, soft_story_risk, seismic_hazard_risk, landslide_risk, liquefaction_risk) VALUES 
