@@ -8,7 +8,7 @@ const customTheme = extendTheme({
   textStyles: {
     logo: {
       fontSize: ["xl", "xl", "2xl", "2xl", "2xl", "2xl"],
-      fontWeight: "bold",
+      fontWeight: "normal",
       color: "blue",
     },
     headerBig: {
