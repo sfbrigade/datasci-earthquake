@@ -1,4 +1,6 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
+import NextLink from "next/link";
+import { Link } from "@chakra-ui/react";
 
 const Header = () => {
   return (
@@ -10,9 +12,16 @@ const Header = () => {
         xl: "29px 127px 13px 127px",
       }}
     >
-      <Box border="1px solid" borderColor="grey.400">
-        <Text textStyle="logo">Logo</Text>
-      </Box>
+      <HStack justifyContent="space-between">
+        <Link as={NextLink} color="blue" href="/">
+          <Text textStyle="logo">SF QuakeSafe</Text>
+        </Link>
+        <Link as={NextLink} color="blue" href="/about">
+          <Text textStyle="textMedium" color="blue">
+            About
+          </Text>
+        </Link>
+      </HStack>
     </Box>
   );
 };
