@@ -109,3 +109,6 @@ To stop and shut down the application:
     This will:
     -   Stop all services.
     -   Remove the containers, but it will **not** delete volumes (so the database data will persist).
+
+
+Some versions of this code contain a streamlit app that uses an imprecise measure which may introduce errors in the output. The streamlit app should not be relied upon to determine any property’s safety or compliance with the soft story program. Please consult SFData for most up to date information
