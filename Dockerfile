@@ -4,17 +4,18 @@
 
 FROM node:18-alpine
 
-WORKDIR /
+WORKDIR /app
 
 # Create a non-privileged user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 # Copy package.json and install dependencies
-COPY package.json ./
+COPY ./package*.json ./
 RUN npm install
 
 # Copy the rest of the application code
 COPY . .
+
 
 # Change ownership of the app files
 RUN chown -R appuser:appgroup /app
