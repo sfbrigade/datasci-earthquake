@@ -4,6 +4,7 @@ import NextLink from "next/link";
 const Header = () => {
   return (
     <Box
+      as="header"
       w={{ base: "base", xl: "xl" }}
       p={{
         base: "19px 23px 8px 23px",
