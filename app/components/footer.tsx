@@ -3,6 +3,7 @@ import { Box, HStack, Text } from "@chakra-ui/react";
 const Footer = () => {
   return (
     <Box
+      as="footer"
       w={{ base: "base", xl: "xl" }}
       p={{
         base: "19px 23px 8px 23px",
