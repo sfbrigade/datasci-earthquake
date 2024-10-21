@@ -1,8 +1,10 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, HStack, Text, Link } from "@chakra-ui/react";
+import NextLink from "next/link";
 
 const Header = () => {
   return (
     <Box
+      as="header"
       w={{ base: "base", xl: "xl" }}
       p={{
         base: "19px 23px 8px 23px",
@@ -10,9 +12,16 @@ const Header = () => {
         xl: "29px 127px 13px 127px",
       }}
     >
-      <Box border="1px solid" borderColor="grey.400">
-        <Text textStyle="logo">Logo</Text>
-      </Box>
+      <HStack justifyContent="space-between">
+        <Link as={NextLink} color="blue" href="/">
+          <Text textStyle="logo">SF QuakeSafe</Text>
+        </Link>
+        <Link as={NextLink} color="blue" href="/about">
+          <Text textStyle="textMedium" color="blue">
+            About
+          </Text>
+        </Link>
+      </HStack>
     </Box>
   );
 };

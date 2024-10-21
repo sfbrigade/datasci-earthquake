@@ -1,8 +1,9 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
 
 const Footer = () => {
   return (
     <Box
+      as="footer"
       w={{ base: "base", xl: "xl" }}
       p={{
         base: "19px 23px 8px 23px",
@@ -10,9 +11,11 @@ const Footer = () => {
         xl: "29px 127px 13px 127px",
       }}
     >
-      <Box border="1px solid" borderColor="grey.400">
-        <Text textStyle="textSmall">Logo</Text>
-      </Box>
+      <HStack justifyContent="space-between">
+        <Text textStyle="textSmall" color="grey.900">
+          © 2024 SF Civic Tech
+        </Text>
+      </HStack>
     </Box>
   );
 };
