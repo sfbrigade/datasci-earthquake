@@ -1,57 +1,39 @@
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Docker compose reference guide at
-# https://docs.docker.com/compose/compose-file/
-
-# Here the instructions define your application as a service called "server".
-# This service is built from the Dockerfile in the current directory.
-# You can add other services your application may depend on here, such as a
-# database or a cache. For examples, see the Awesome Compose repository:
-# https://github.com/docker/awesome-compose
 services:
   frontend:
     build:
       context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env.local
     ports:
       - 3000:3000
     depends_on:
       - backend
-    environment:
-      - NEXT_PUBLIC_API_URL=http://backend:8000
     volumes:
-      - ./app:/app
+      - .:/app:rw,delegated # Mount after dependencies are installed
+      - /app/node_modules # This excludes the node_modules from being overwritten
+      - /app/.next/cache # Ensure the Next.js cache is properly mounted
   backend:
     build:
-      context: ./backend
+      context: .
+      dockerfile: backend/Dockerfile 
+    env_file:
+      - .env.local
     ports:
       - 8000:8000
-
-    # The commented out section below is an example of how to define a PostgreSQL
-    # database that your application can use. `depends_on` tells Docker Compose to
-    # start the database before your application. The `db-data` volume persists the
-    # database data between container restarts. The `db-password` secret is used
-    # to set the database password. You must create `db/password.txt` and add
-    # a password of your choosing to it before running `docker compose up`.
     depends_on:
       db:
         condition: service_healthy
-    environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/qsdatabase
     volumes:
       - ./backend:/app
   db:
     image: postgres
     restart: always
-    user: postgres
+    env_file:
+      - .env.local
     volumes:
       - db-data:/var/lib/postgresql/data
-      - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_DB=qsdatabase
-      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
-      #- POSTGRES_PASSWORD=password
-    secrets:
-      - db-password
+      - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory      
     ports:
       - 5432:5432
     healthcheck:
@@ -62,8 +44,3 @@ services:
 
 volumes:
   db-data:
-
-
-secrets:
-  db-password:
-    file: ./backend/database/password.txt
