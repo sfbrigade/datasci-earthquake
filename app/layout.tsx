@@ -3,10 +3,6 @@ import { Providers } from "./providers";
 import Header from "./components/header";
 import Footer from "./components/footer";
 
-import "@fontsource/inter/400.css";
-import "@fontsource/inter/500.css";
-import "@fontsource/inter/700.css";
-
 export const metadata = {
   title: "SF Quake Safe",
   description: "Learn about your home's earthquake readiness",
