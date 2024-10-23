@@ -1,4 +1,5 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import SearchBar from "./components/search-bar";
 
 const Home = () => {
   return (
@@ -14,9 +15,13 @@ const Home = () => {
           }}
           m="auto"
         >
-          <Box h="100%" border="1px solid" borderColor="grey.400">
+          <Text textStyle="headerBig">
+            Learn about your home’s earthquake readiness.
+          </Text>
+          <SearchBar />
+          {/* <Box h="100%" border="1px solid" borderColor="grey.400">
             <Text textStyle="headerBig">Header and search box</Text>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
       <Box
