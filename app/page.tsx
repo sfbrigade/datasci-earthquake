@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Highlight, Text } from "@chakra-ui/react";
 import SearchBar from "./components/search-bar";
 
 const Home = () => {
@@ -6,22 +6,20 @@ const Home = () => {
     <Flex direction="column">
       <Box bgColor="blue">
         <Box
-          h={{ base: "166px", md: "213px", xl: "261px" }}
           w={{ base: "base", xl: "xl" }}
           p={{
             base: "45px 23px 50px 23px",
             md: "52px 27px 56px 26px",
-            xl: "53px 127px 46px 127px",
+            xl: "53px 470px 46px 127px",
           }}
           m="auto"
         >
-          <Text textStyle="headerBig">
-            Learn about your home’s earthquake readiness.
+          <Text textStyle="headerBig" mb="43px">
+            <Highlight query="Learn about" styles={{ color: "yellow" }}>
+              Learn about your home’s earthquake readiness.
+            </Highlight>
           </Text>
           <SearchBar />
-          {/* <Box h="100%" border="1px solid" borderColor="grey.400">
-            <Text textStyle="headerBig">Header and search box</Text>
-          </Box> */}
         </Box>
       </Box>
       <Box
