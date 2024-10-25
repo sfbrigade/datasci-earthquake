@@ -4,7 +4,7 @@ import { IoSearchSharp } from "react-icons/io5";
 const SearchBar = () => {
   return (
     <InputGroup
-      maxW={{ base: "303px", md: "371px", xl: "417px" }}
+      maxW={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
       size={{ base: "md", md: "lg", xl: "lg" }}
     >
       <InputLeftElement>
@@ -15,9 +15,7 @@ const SearchBar = () => {
         p="0 10px 0 48px"
         borderRadius="50"
         bgColor="white"
-        focusBorderColor="grey.400"
-        // maxW={{ base: "303px", md: "371px", xl: "417px" }}
-        // size={{ base: "md", md: "lg", xl: "lg" }}
+        focusBorderColor="yellow"
       />
     </InputGroup>
   );
