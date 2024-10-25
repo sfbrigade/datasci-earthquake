@@ -26,7 +26,7 @@ const ComponentsTestLib = () => {
         This section demonstrates different states of the Search Bar component
       </Text>
       <VStack spacing={4} align="start">
-        <HStack>
+        <HStack w="100%">
           <Heading as="h3" size="sm">
             Default
           </Heading>
