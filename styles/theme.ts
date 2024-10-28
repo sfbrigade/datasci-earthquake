@@ -14,6 +14,7 @@ const customTheme = extendTheme({
     headerBig: {
       fontSize: ["4xl", "4xl", "5xl", "5xl", "6xl", "6xl"],
       fontWeight: "normal",
+      lineHeight: ["40px", "40px", "48px", "48px", "60px", "60px"],
       color: "white",
     },
     headerMedium: {

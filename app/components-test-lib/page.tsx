@@ -1,59 +1,39 @@
 "use client";
 
-import { Box, Heading, VStack, useToast, Text, HStack } from "@chakra-ui/react";
-import MockButton from "../components/mock-button";
+import { Box, Heading, VStack, Text, HStack, Divider } from "@chakra-ui/react";
+import SearchBar from "../components/search-bar";
 
 const ComponentsTestLib = () => {
-  const toast = useToast();
-
-  const showToast = (message: string) => {
-    toast({
-      title: "Action Successful.",
-      description: message,
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
-  };
-
   return (
-    <Box as="section" p="8">
-      <Heading as="h1" size="xl" mb={6}>
+    <Box
+      as="section"
+      w={{ base: "base", xl: "xl" }}
+      p={{
+        base: "10px 23px 10px 23px",
+        md: "8px 27px 8px 26px",
+        xl: "5px 127px 5px 127px",
+      }}
+      m="auto"
+    >
+      <Heading as="h1" size="xl" mb={4} color="blue">
         Components Test Library
       </Heading>
-      <Heading as="h2" size="md" mb={4}>
-        Button Variants
+      <Divider mb={2} />
+      <Heading as="h2" size="md" mb={2}>
+        Search Bar
       </Heading>
       <Text mb={4}>
-        This section demonstrates different states of the Button component
+        This section demonstrates different states of the Search Bar component
       </Text>
-      <HStack spacing={4} align="center">
-        <VStack>
+      <VStack spacing={4} align="start">
+        <HStack w="100%">
           <Heading as="h3" size="sm">
             Default
           </Heading>
-          <MockButton
-            label="Default"
-            onClick={() => showToast("Default Button Clicked")}
-          />
-        </VStack>
-        <VStack>
-          <Heading as="h3" size="sm">
-            Disabled
-          </Heading>
-          <MockButton label="Disabled" onClick={() => {}} disabled={true} />
-        </VStack>
-        <VStack>
-          <Heading as="h3" size="sm">
-            Loading
-          </Heading>
-          <MockButton
-            label="Loading..."
-            onClick={() => showToast("Loading Button Clicked")}
-            isLoading={true}
-          />
-        </VStack>
-      </HStack>
+          <SearchBar />
+        </HStack>
+        <Divider mb={2} />
+      </VStack>
     </Box>
   );
 };
