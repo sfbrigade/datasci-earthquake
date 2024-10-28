@@ -9,16 +9,16 @@ and seismic risk and tsunami polygons and the resulting
 combined risk records.
 """
 # TODO:
-# Decide: 
+# Decide:
 # - whether old polygons should be kept #53
 # - whether old soft story records should be kept #53
 # - whether old combined risk records should be kept #53
 # - where current and old polygons, soft story records, and
 #   combined risk records should be kept #53
-# Create: 
+# Create:
 # - a database to back the exposed arguments #54
 # - a new API key for OpenGate
-# - fuzzy logic to match addresses 
+# - fuzzy logic to match addresses
 # Make: each get method return that of their pydantic annotations
 from .routers import combined_risk, polygons, soft_story, seismic, tsunami
 from fastapi import FastAPI

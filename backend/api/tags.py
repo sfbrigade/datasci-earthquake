@@ -1,4 +1,5 @@
 """Tags for the routers and API."""
+
 from enum import Enum
 
 

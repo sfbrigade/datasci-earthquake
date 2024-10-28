@@ -1,4 +1,5 @@
 """Router to CRUD combined risk."""
+
 from fastapi import APIRouter
 from ..tags import Tags
 

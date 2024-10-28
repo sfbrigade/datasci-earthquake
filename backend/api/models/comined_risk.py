@@ -3,9 +3,10 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class CombinedRisk(Base):
-    __tablename__ = 'combined_risk'
-    
+    __tablename__ = "combined_risk"
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     address = Column(String(50), nullable=False, unique=True)
     soft_story_risk = Column(Boolean, nullable=False, default=False)

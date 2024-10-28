@@ -10,4 +10,5 @@ class Polygon(BaseModel):
     Complex pydantic object bounding which addresses are at
     risk of area-based perils and which ones are not.
     """
+
     pass
