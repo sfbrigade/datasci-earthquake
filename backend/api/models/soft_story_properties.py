@@ -11,7 +11,7 @@ from datetime import datetime, DateTime
 MAPPED_COLUMN_STRING_LENGTH = 200
 
 
-class SoftStoryProperties(DeclarativeBase):
+class SoftStoryProperty(DeclarativeBase):
     """
     All data of the Soft Story table from SFData.
 
@@ -19,7 +19,7 @@ class SoftStoryProperties(DeclarativeBase):
     Used for spatial comparison to determine hazard zone overlaps.
     """
 
-    __tablename__ = "soft_story_properties"
+    __tablename__ = "soft_story_property"
 
     identifier: Mapped[int] = mapped_column(Integer, primary_key=True)
     block: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
@@ -42,4 +42,4 @@ class SoftStoryProperties(DeclarativeBase):
     )
 
     def __repr__(self) -> str:
-        return f"<SoftStoryProperties(id={self.identifier}, property_address={self.property_address})>"
+        return f"<SoftStoryProperty(id={self.identifier}, property_address={self.property_address})>"

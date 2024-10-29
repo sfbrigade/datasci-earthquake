@@ -11,12 +11,12 @@ from datetime import datetime, DateTime
 MAPPED_COLUMN_STRING_LENGTH = 200
 
 
-class Neighborhoods(DeclarativeBase):
+class Neighborhood(DeclarativeBase):
     """
     Stores neighborhood boundaries as multipolygon geometries.
     """
 
-    __tablename__ = "neighborhoods"
+    __tablename__ = "neighborhood"
 
     identifier: Mapped[int] = mapped_column(Integer, primary_key=True)
     neighborhood: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
@@ -26,4 +26,4 @@ class Neighborhoods(DeclarativeBase):
     )
 
     def __repr__(self) -> str:
-        return f"<Neighborhoods(id={self.identifier}>"
+        return f"<Neighborhood(id={self.identifier}>"
