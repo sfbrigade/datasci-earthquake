@@ -81,6 +81,30 @@ To learn more about Next.js, take a look at the following resources:
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
 ***
+# Black Linter with Pre-Commit Hook
+This repository uses Black, the Python code formatter, to enforce code style standards. The pre-commit hook ensures that Black formats Python code before each commit, helping maintain code consistency across the project.
+
+## Prerequisites
+
+- If you haven't already, install pre-commit:
+ ```pip install pre-commit```
+- Run the following command to install the pre-commit hooks defined in the configuration file ```.pre-commit-config.yaml```:
+  ```pre-commit install```
+  This command sets up pre-commit to automatically run Black before each commit.
+
+## Usage
+- **Running Black Automatically**: After setup, every time you attempt to commit code, Black will check the staged files and apply formatting if necessary. If files are reformatted, the commit will be stopped, and you’ll need to review the changes before committing again.  
+- **Bypassing the Hook**: If you want to skip the Black pre-commit hook for a specific commit, use the --no-verify flag with your commit command:
+```git commit -m "your commit message" --no-verify```
+
+  **Note**: The ```--no-verify``` flag is helpful in cases where you need to make a quick commit without running the pre-commit   
+  checks,   but it should be used sparingly to maintain code quality. CI pipeline will fail during ```push``` and ```pull request``` actions if the code is not formatted. 
+- **Running Black Manually**: If you want to check or format files without committing, you can run:
+```black <your-python-file-or-directory>```
+- **Running Pre-commit on All Files**: If you want to format all files in the repository, use:
+```pre-commit run --all-files```
+
+***
 # Docker
 This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.
 
