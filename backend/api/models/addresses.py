@@ -1,14 +1,14 @@
-from sqlalchemy import Integer, String, Boolean
+from sqlalchemy import Integer, String, Boolean, Float, DateTime
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
 from sqlalchemy.orm import DeclarativeBase
-
+from datetime import datetime
 
 """Data from https://data.sfgov.org/Geographic-Locations-and-Boundaries/Addresses-with-Units-Enterprise-Addressing-System/ramy-di5m/about_data"""
 
 
-MAPPED_COLUMN_STRING_LENGTH = 200
+MAPPED_COLUMN_STRING_LENGTH = 255
 
 
 class Base(DeclarativeBase):
@@ -30,8 +30,8 @@ class Address(Base):
     block: Mapped[str] = mapped_column(String)
     lot: Mapped[str] = mapped_column(String)
     cnn: Mapped[int] = mapped_column(Integer)
-    longitude: Mapped[int] = mapped_column(Integer, nullable=False)
-    latitude: Mapped[int] = mapped_column(Integer, nullable=False)
+    longitude: Mapped[float] = mapped_column(Float, nullable=False)
+    latitude: Mapped[float] = mapped_column(Float, nullable=False)
     zip_code: Mapped[int] = mapped_column(Integer, nullable=False)
     point: Mapped[Geometry] = mapped_column(
         Geometry("POINT", srid=4326), nullable=False
@@ -46,10 +46,10 @@ class Address(Base):
         String(MAPPED_COLUMN_STRING_LENGTH)
     )
     sfdata_as_of: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=datetime.utcnow, nullable=False
+        DateTime(timezone=True), nullable=False
     )
     sfdata_loaded_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=datetime.utcnow, nullable=False
+        DateTime(timezone=True), nullable=False
     )
 
     def __repr__(self):

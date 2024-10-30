@@ -20,7 +20,7 @@ combined risk records.
 # - a new API key for OpenGate
 # - fuzzy logic to match addresses
 # Make: each get method return that of their pydantic annotations
-from .routers import combined_risk, polygons, soft_story, seismic, tsunami
+from .routers import combined_risk, polygons, soft_story, seismic, tsunami, addresses
 from fastapi import FastAPI
 
 
@@ -32,7 +32,7 @@ app.include_router(soft_story.router)
 app.include_router(polygons.router)
 app.include_router(seismic.router)
 app.include_router(tsunami.router)
-
+app.include_router(addresses.router)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
