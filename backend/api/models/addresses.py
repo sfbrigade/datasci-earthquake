@@ -1,4 +1,5 @@
 from sqlalchemy import Integer, String, Boolean, Float, DateTime
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
@@ -33,9 +34,9 @@ class Address(Base):
     longitude: Mapped[float] = mapped_column(Float, nullable=False)
     latitude: Mapped[float] = mapped_column(Float, nullable=False)
     zip_code: Mapped[int] = mapped_column(Integer, nullable=False)
-    point: Mapped[Geometry] = mapped_column(
-        Geometry("POINT", srid=4326), nullable=False
-    )
+    """point: Mapped[Geometry] = mapped_column(
+        Geometry("POINT", srid=4326, spatial_index=True), nullable=False
+    )"""
     supdist: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
     supervisor: Mapped[int] = mapped_column(Integer)
     supdistpad: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))

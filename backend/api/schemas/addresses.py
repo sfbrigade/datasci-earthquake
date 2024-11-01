@@ -2,7 +2,7 @@
 from pydantic import BaseModel
 from datetime import datetime
 from geoalchemy2 import Geometry
-from geo import Point
+from .geo import Point
 
 
 class AddressBase(BaseModel):
@@ -22,9 +22,9 @@ class AddressBase(BaseModel):
     longitude: float
     latitude: float
     zip_code: int
-    point: Point
+    # point: Point
     supdist: str
-    supervisor: str
+    supervisor: int
     supdistpad: str
     numbertext: str
     supname: str

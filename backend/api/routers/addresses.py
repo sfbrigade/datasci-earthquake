@@ -1,9 +1,10 @@
-from fastapi import Depends, APIRouter
+from fastapi import Depends, HTTPException, APIRouter
 from ..tags import Tags
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
+from sqlalchemy.future import select
 from ..config import get_db
 from ..models.addresses import Address  # SQLAlchemy model
+from ..schemas.addresses import AddressResponse
 
 
 router = APIRouter(
@@ -12,10 +13,9 @@ router = APIRouter(
 )
 
 
-@router.get("/addresses/{eas_fullid}")
-async def get_address(eas_fullid, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(Address).where(Address.eas_fullid == eas_fullid))
-    address = result.scalars().first()
+@router.get("/{eas_fullid}", response_model=AddressResponse)
+def get_address(eas_fullid: str, db: Session = Depends(get_db)):
+    address = db.query(Address).filter(Address.eas_fullid == eas_fullid).first()
     if address is None:
         raise HTTPException(status_code=404, detail="Address not found")
     return address
