@@ -17,6 +17,3 @@ node_modules
 # Mac
 .DS_Store
 /.next/
-
-#Postgres password 
-backend/database/password.txt 
