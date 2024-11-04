@@ -1,5 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
+
 # Will the .. be stable?
 from ..main import app
 from ..schemas import Polygon
@@ -18,16 +19,18 @@ def test_delete_polygon(client):
 
 
 def test_put_polygon(client):
-    response = client.put("/api/polygons/1?table_name=seismic",
-                          json=Polygon().model_dump())
+    response = client.put(
+        "/api/polygons/1?table_name=seismic", json=Polygon().model_dump()
+    )
     assert response.status_code == 200
     # Temporary guaranteed failure until test is written
     assert False
 
 
 def test_post_polygon(client):
-    response = client.put("/api/polygons/1?table_name=seismic",
-                          json=Polygon().model_dump())
+    response = client.put(
+        "/api/polygons/1?table_name=seismic", json=Polygon().model_dump()
+    )
     assert response.status_code == 200
     # Temporary guaranteed failure until test is written
     assert False
