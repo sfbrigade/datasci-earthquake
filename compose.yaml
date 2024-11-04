@@ -5,11 +5,17 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env.local
+      dockerfile: Dockerfile
+    env_file:
+      - .env.local
     ports:
       - 3000:3000
     depends_on:
       - backend
     volumes:
+      - .:/app:rw,delegated # Mount after dependencies are installed
+      - /app/node_modules # This excludes the node_modules from being overwritten
+      - /app/.next/cache # Ensure the Next.js cache is properly mounted
       - .:/app:rw,delegated # Mount after dependencies are installed
       - /app/node_modules # This excludes the node_modules from being overwritten
       - /app/.next/cache # Ensure the Next.js cache is properly mounted
@@ -35,8 +41,11 @@ services:
     restart: always
     env_file:
       - .env.local
+    env_file:
+      - .env.local
     volumes:
       - db-data:/var/lib/postgresql/data
+      - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory      
       - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory      
     ports:
       - 5432:5432

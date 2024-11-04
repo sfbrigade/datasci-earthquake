@@ -1,48 +1,8 @@
 ### This is a project of SF Civic Tech [https://www.sfcivictech.org/](https://www.sfcivictech.org/)
 
-
-<p align="center">
-  <a href="https://nextjs-fastapi-starter.vercel.app/">
-    <img src="https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png" height="96">
-    <h3 align="center">Next.js FastAPI Starter</h3>
-  </a>
-</p>
-
-<p align="center">Simple Next.js boilerplate that uses <a href="https://fastapi.tiangolo.com/">FastAPI</a> as the API backend.</p>
-
-<br/>
-
 ## Introduction
 
-This is a hybrid Next.js + Python app that uses Next.js as the frontend and FastAPI as the API backend. One great use case of this is to write Next.js apps that use Python AI libraries on the backend.
-
-## How It Works
-
-The Python/FastAPI server is mapped into to Next.js app under `/api/`.
-
-This is implemented using [`next.config.js` rewrites](https://github.com/digitros/nextjs-fastapi/blob/main/next.config.js) to map any request to `/api/:path*` to the FastAPI API, which is hosted in the `/api` folder.
-
-On localhost, the rewrite will be made to the `127.0.0.1:8000` port, which is where the FastAPI server is running.
-
-In production, the FastAPI server is hosted as [Python serverless functions](https://vercel.com/docs/concepts/functions/serverless-functions/runtimes/python) on Vercel.
-
-## Demo
-
-https://nextjs-fastapi-starter.vercel.app/
-
-## Deploy Your Own
-
-You can clone & deploy it to Vercel with one click:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fdigitros%2Fnextjs-fastapi%2Ftree%2Fmain)
-
-## Developing Locally
-
-You can clone & create this repo with the following command
-
-```bash
-npx create-next-app nextjs-fastapi --example "https://github.com/digitros/nextjs-fastapi"
-```
+This is a hybrid Next.js + Python app that uses Next.js as the frontend and FastAPI as the API backend. 
 
 ## Getting Started
 
@@ -142,7 +102,7 @@ To stop and shut down the application:
 The ```.env.local``` file contains environment variables used in the application to configure settings for both the backend and frontend components. If it contains sensitive information, ```.env.local``` should not be checked into version control for security reasons. Right now there is no sensitive information but later secret management tools will be introduced. 
 The file is organized into three main sections:
   - **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.  
-  - **Backend Environment Variables**. These variables are used by the backend (e.g., FastAPI) to configure its behavior and to connect to the database and the frontend application.
+  - **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
   - **Frontend Environment Variables**. This section contains the base URL for API calls to the backend and ```NODE_ENV``` variable that determines in which environment the Node.js application is running. 
 
 ***
