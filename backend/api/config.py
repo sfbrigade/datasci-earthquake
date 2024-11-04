@@ -2,7 +2,6 @@ from pydantic_settings import BaseSettings
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from functools import lru_cache
-from contextlib import asynccontextmanager
 from typing import Generator
 
 """
@@ -29,21 +28,7 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
 
 
-# Create engine and session local
 settings = Settings()
-
-# Ensure the database URL is in the correct format
-engine = create_engine(settings.database_url, echo=True)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-
-# Database dependency
-def get_db() -> Generator:
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 # Cache the settings to avoid multiple calls to load the same settings

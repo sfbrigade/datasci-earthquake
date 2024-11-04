@@ -34,6 +34,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Copy the source code into the container.
 COPY ./backend /app
 
+# Set PYTHONPATH so 'backend' is recognized as a package
+ENV PYTHONPATH="${PYTHONPATH}:/app"
+
 # Switch to the non-privileged user to run the application.
 USER appuser
 
