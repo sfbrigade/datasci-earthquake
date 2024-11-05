@@ -1,5 +1,3 @@
-/* Disclaimer: this is mock data. It should not be relied upon to determine any property’s safety or compliance with the soft story program.*/
-
 -- Create PostGIS extension
 CREATE EXTENSION IF NOT EXISTS postgis;
 
