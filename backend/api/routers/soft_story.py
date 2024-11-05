@@ -19,9 +19,9 @@ async def delete_soft_story(address: str):
 
 
 @router.put("/{address}")
-async def put_soft_story(
-    address: str, soft_story: Annotated[bool, Query(alias="soft-story")]
-):
+async def put_soft_story(address: str,
+                         soft_story: Annotated[
+                         bool, Query(alias="soft-story")]):
     """
     Update whether the building at an address has a soft story
     to the database.
@@ -30,9 +30,9 @@ async def put_soft_story(
 
 
 @router.post("/{address}")
-async def post_soft_story(
-    address: str, soft_story: Annotated[bool, Query(alias="soft-story")]
-):
+async def post_soft_story(address: str,
+                          soft_story: Annotated[
+                          bool, Query(alias="soft-story")]):
     """
     Add that the building at an address has a soft story to the
     database.

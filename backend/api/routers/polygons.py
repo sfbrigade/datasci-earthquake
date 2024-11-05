@@ -1,16 +1,17 @@
 """Router to CRUD polygons."""
-
 from fastapi import APIRouter
 from pydantic import BaseModel
 from ..tags import Tags
 
 
-router = APIRouter(prefix="/api/polygons", tags=[Tags.POLYGONS])
+router = APIRouter(
+    prefix="/api/polygons",
+    tags=[Tags.POLYGONS]
+)
 
 
 class Polygon(BaseModel):
     """GIS data container of vertices defining a polygon."""
-
     pass
 
 

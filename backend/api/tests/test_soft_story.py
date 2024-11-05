@@ -1,10 +1,8 @@
 """
 Test the API of soft_story.py.
 """
-
 import pytest
 from fastapi.testclient import TestClient
-
 # Will the .. be stable?
 from ..main import app
 from ..schemas import Polygon

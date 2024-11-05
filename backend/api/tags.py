@@ -1,5 +1,4 @@
 """Tags for the routers and API."""
-
 from enum import Enum
 
 
@@ -10,4 +9,3 @@ class Tags(Enum):
     REINFORCED_SOFT_STORY = "reinforced soft story"
     COMBINED_RISK = "combined risk"
     POLYGONS = "polygons"
-    ADDRESSES = "addresses"

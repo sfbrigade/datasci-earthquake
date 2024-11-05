@@ -1,5 +1,4 @@
 """Router to get seismic risk and CRUD seismic polygons."""
-
 from fastapi import APIRouter
 from ..tags import Tags
 

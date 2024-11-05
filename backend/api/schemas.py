@@ -1,9 +1,6 @@
-from pydantic import BaseModel, Field
+"""PyDantic schemas for the database."""
 
-
-class Point(BaseModel):
-    lat: float = Field(..., description="Latitude")
-    lng: float = Field(..., description="Longitude")
+from pydantic import BaseModel
 
 
 class Polygon(BaseModel):
@@ -13,5 +10,4 @@ class Polygon(BaseModel):
     Complex pydantic object bounding which addresses are at
     risk of area-based perils and which ones are not.
     """
-
     pass

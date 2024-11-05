@@ -1,45 +1,6 @@
 /* Disclaimer: this is mock data. It should not be relied upon to determine any property’s safety or compliance with the soft story program.*/
 
--- Create PostGIS extension
-CREATE EXTENSION IF NOT EXISTS postgis;
-
 SET search_path TO public;
-
-CREATE TABLE IF NOT EXISTS address (
-    eas_baseid INTEGER NOT NULL,
-    eas_subid INTEGER NOT NULL,
-    eas_fullid VARCHAR(255) PRIMARY KEY,
-    address VARCHAR(255) NOT NULL,
-    unit_number VARCHAR(255),
-    address_number INTEGER,
-    address_number_suffix VARCHAR(255) NOT NULL,
-    street_name VARCHAR(255) NOT NULL,
-    street_type VARCHAR(255),
-    parcel_number VARCHAR(255),
-    block VARCHAR(255),
-    lot VARCHAR(255),
-    cnn INTEGER,
-    longitude FLOAT NOT NULL,
-    latitude FLOAT NOT NULL,
-    zip_code INTEGER NOT NULL,
-    point GEOGRAPHY(POINT, 4326) NOT NULL,
-    supdist VARCHAR(255),
-    supervisor INTEGER,
-    supdistpad VARCHAR(255),
-    numbertext VARCHAR(255),
-    supname VARCHAR(255),
-    nhood VARCHAR(255),
-    complete_landmark_name VARCHAR(255),
-    sfdata_as_of DATE NOT NULL,
-    sfdata_loaded_at TIMESTAMP NOT NULL
-);
-
--- Potential functions to creat a Point: ST_MakePoint(-122.41228, 37.77967); ST_GeomFromText('POINT(-122.41228, 37.77967)', 4326); ST_SetSRID(ST_MakePoint(-122.41228, 37.77967), 4326)
-
-INSERT INTO address (eas_baseid, eas_subid, eas_fullid, address, unit_number, address_number, address_number_suffix, street_name, street_type, parcel_number, block, lot, cnn, longitude, latitude, zip_code, point, supdist, supervisor, supdistpad, numbertext, supname, nhood, complete_landmark_name, sfdata_as_of, sfdata_loaded_at)
-VALUES 
-(495990, 764765, '495990-764765-0', '46 AUBURN ST', '', 46, '', 'AUBURN', 'ST', '', '', '', 830000, -122.41228, 37.77967, 94133, ST_SetSRID(ST_MakePoint(-122.41228, 37.77967), 4326), 'SUPERVISORIAL DISTRICT 3', 3, 3, 'THREE', 'Aaron Peskin', 'Nob Hill', '', '2024/10/28 03:40:00 AM', '2024/10/28 10:11:26 PM');
-
 
 CREATE TABLE IF NOT EXISTS combined_risk (
     id SERIAL PRIMARY KEY,

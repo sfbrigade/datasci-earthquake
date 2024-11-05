@@ -13,7 +13,6 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
-WORKDIR /app
 
 # Create a non-privileged user that the app will run under.
 ARG UID=10001
@@ -29,17 +28,11 @@ RUN adduser \
 COPY requirements.txt /app/requirements.txt
 
 # Install Python dependencies using a cache mount
-COPY requirements.txt /app/requirements.txt
-
-# Install Python dependencies using a cache mount
 RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install --no-cache-dir -r /app/requirements.txt
 
 # Copy the source code into the container.
 COPY ./backend /app
-
-# Set PYTHONPATH so 'backend' is recognized as a package
-ENV PYTHONPATH="${PYTHONPATH}:/app"
 
 # Switch to the non-privileged user to run the application.
 USER appuser

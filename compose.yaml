@@ -5,9 +5,6 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env.local
-      dockerfile: Dockerfile
-    env_file:
-      - .env.local
     ports:
       - 3000:3000
     depends_on:
@@ -16,13 +13,10 @@ services:
       - .:/app:rw,delegated # Mount after dependencies are installed
       - /app/node_modules # This excludes the node_modules from being overwritten
       - /app/.next/cache # Ensure the Next.js cache is properly mounted
-      - .:/app:rw,delegated # Mount after dependencies are installed
-      - /app/node_modules # This excludes the node_modules from being overwritten
-      - /app/.next/cache # Ensure the Next.js cache is properly mounted
   backend:
     build:
       context: .
-      dockerfile: backend/Dockerfile
+      dockerfile: backend/Dockerfile 
     env_file:
       - .env.local
     ports:
@@ -33,28 +27,20 @@ services:
     volumes:
       - ./backend:/app
   db:
-    image: postgis-custom
-    build:
-      context: ./backend/database
-      dockerfile: Dockerfile
-    container_name: my_postgis_db
+    image: postgres
     restart: always
-    env_file:
-      - .env.local
     env_file:
       - .env.local
     volumes:
       - db-data:/var/lib/postgresql/data
       - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory      
-      - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory      
     ports:
       - 5432:5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      test: [ "CMD", "pg_isready" ]
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 30s
 
 volumes:
   db-data:
