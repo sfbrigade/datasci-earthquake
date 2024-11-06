@@ -2,7 +2,6 @@ from pydantic_settings import BaseSettings
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from functools import lru_cache
-from typing import Generator
 
 """
 Provides the environment variables that are read by the application.
