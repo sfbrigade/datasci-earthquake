@@ -6,12 +6,12 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
 from datetime import datetime, DateTime
-
+from .base import Base
 
 MAPPED_COLUMN_STRING_LENGTH = 200
 
 
-class SoftStoryProperty(DeclarativeBase):
+class SoftStoryProperty(Base):
     """
     All data of the Soft Story table from SFData.
 

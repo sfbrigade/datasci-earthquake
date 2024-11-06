@@ -2,7 +2,7 @@ from fastapi import Depends, HTTPException, APIRouter
 from ..tags import Tags
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
-from database.session import get_db  # ..database.session import get_db
+from backend.database.session import get_db
 from ..models.addresses import Address  # SQLAlchemy model
 from ..schemas.addresses import AddressResponse
 

@@ -5,15 +5,12 @@ from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
 from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
+from .base import Base
 
 """Data from https://data.sfgov.org/Geographic-Locations-and-Boundaries/Addresses-with-Units-Enterprise-Addressing-System/ramy-di5m/about_data"""
 
 
 MAPPED_COLUMN_STRING_LENGTH = 255
-
-
-class Base(DeclarativeBase):
-    pass
 
 
 class Address(Base):

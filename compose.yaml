@@ -19,13 +19,15 @@ services:
       dockerfile: backend/Dockerfile
     env_file:
       - .env.local
+    environment:
+      - PYTHONPATH=/backend
     ports:
       - 8000:8000
     depends_on:
       db:
         condition: service_healthy
     volumes:
-      - ./backend:/app
+      - ./backend:/backend
   db:
     image: postgis-custom
     build:

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from .session import engine
-from ..api.models.address import Base  # Import Base from your model definition
+from ..api.models.base import Base
 
 
 # Function to create tables

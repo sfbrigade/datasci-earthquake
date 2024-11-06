@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     database_url: str
     localhost_database_url: str
     database_url_sqlalchemy: str
+    localhost_database_url_sqlalchemy: str
     environment: str
     secret_key: str
     next_public_api_url: str

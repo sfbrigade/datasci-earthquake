@@ -6,9 +6,10 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
 from datetime import datetime, DateTime
+from .base import Base
 
 
-class LandslideZone(DeclarativeBase):
+class LandslideZone(Base):
     """
     All data of the Landslide Zones table from SFData.
     Contains multipolygon geometries defining landslide zones.
