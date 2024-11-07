@@ -15,7 +15,7 @@ class SeismicHazardZone(Base):
     Contains multipolygon geometries defining seismic hazard areas.
     """
 
-    __tablename__ = "seismic_hazard_zone"
+    __tablename__ = "seismic_hazard_zones"
 
     identifier: Mapped[int] = mapped_column(Integer, primary_key=True)
     geometry: Mapped[Geometry] = mapped_column(Geometry("MULTIPOLYGON", srid=4326))

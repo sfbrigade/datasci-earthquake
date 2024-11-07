@@ -15,7 +15,7 @@ class LandslideZone(Base):
     Contains multipolygon geometries defining landslide zones.
     """
 
-    __tablename__ = "landslide_zone"
+    __tablename__ = "landslide_zones"
 
     identifier: Mapped[int] = mapped_column(Integerprimary_key=True)
     geometry: Mapped[Geometry] = mapped_column(Geometry("MULTIPOLYGON", srid=4326))

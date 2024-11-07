@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 
 SET search_path TO public;
 
-CREATE TABLE IF NOT EXISTS address (
+CREATE TABLE IF NOT EXISTS addresses (
     eas_baseid INTEGER NOT NULL,
     eas_subid INTEGER NOT NULL,
     eas_fullid VARCHAR(255) PRIMARY KEY,
@@ -32,9 +32,9 @@ CREATE TABLE IF NOT EXISTS address (
     sfdata_loaded_at TIMESTAMP NOT NULL
 );
 
--- Potential functions to creat a Point: ST_MakePoint(-122.41228, 37.77967); ST_GeomFromText('POINT(-122.41228, 37.77967)', 4326); ST_SetSRID(ST_MakePoint(-122.41228, 37.77967), 4326)
+-- Potential functions to create a Point: ST_MakePoint(-122.41228, 37.77967); ST_GeomFromText('POINT(-122.41228, 37.77967)', 4326); ST_SetSRID(ST_MakePoint(-122.41228, 37.77967), 4326)
 
-INSERT INTO address (eas_baseid, eas_subid, eas_fullid, address, unit_number, address_number, address_number_suffix, street_name, street_type, parcel_number, block, lot, cnn, longitude, latitude, zip_code, point, supdist, supervisor, supdistpad, numbertext, supname, nhood, complete_landmark_name, sfdata_as_of, sfdata_loaded_at)
+INSERT INTO addresses (eas_baseid, eas_subid, eas_fullid, address, unit_number, address_number, address_number_suffix, street_name, street_type, parcel_number, block, lot, cnn, longitude, latitude, zip_code, point, supdist, supervisor, supdistpad, numbertext, supname, nhood, complete_landmark_name, sfdata_as_of, sfdata_loaded_at)
 VALUES 
 (495990, 764765, '495990-764765-0', '46 AUBURN ST', '', 46, '', 'AUBURN', 'ST', '', '', '', 830000, -122.41228, 37.77967, 94133, ST_SetSRID(ST_MakePoint(-122.41228, 37.77967), 4326), 'SUPERVISORIAL DISTRICT 3', 3, 3, 'THREE', 'Aaron Peskin', 'Nob Hill', '', '2024/10/28 03:40:00 AM', '2024/10/28 10:11:26 PM');
 

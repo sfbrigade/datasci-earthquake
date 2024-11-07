@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from ...api.models.comined_risk import Base, CombinedRisk
+from ...api.models.combined_risk import Base, CombinedRisk
 from ...api.config import settings
 
 

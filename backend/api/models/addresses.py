@@ -14,7 +14,7 @@ MAPPED_COLUMN_STRING_LENGTH = 255
 
 
 class Address(Base):
-    __tablename__ = "address"
+    __tablename__ = "addresses"
     eas_baseid: Mapped[int] = mapped_column(Integer, nullable=False)
     eas_subid: Mapped[int] = mapped_column(Integer, nullable=False)
     eas_fullid: Mapped[str] = mapped_column(String, primary_key=True)

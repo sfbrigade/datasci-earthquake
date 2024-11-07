@@ -16,7 +16,7 @@ class LiquefactionZons(Base):
     Very High (VH) susceptibility.
     """
 
-    __tablename__ = "liquefaction_zone"
+    __tablename__ = "liquefaction_zones"
 
     identifier: Mapped[int] = mapped_column(primary_key=True)
     geometry: Mapped[Geometry] = mapped_column(Geometry("MULTIPOLYGON", srid=4326))

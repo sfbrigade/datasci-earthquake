@@ -19,7 +19,7 @@ class SoftStoryProperty(Base):
     Used for spatial comparison to determine hazard zone overlaps.
     """
 
-    __tablename__ = "soft_story_property"
+    __tablename__ = "soft_story_properties"
 
     identifier: Mapped[int] = mapped_column(Integer, primary_key=True)
     block: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
