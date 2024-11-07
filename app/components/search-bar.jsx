@@ -1,22 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import { Input, InputGroup, InputLeftElement, InputRightElement } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
+import { RxCross2 } from "react-icons/rx";
 import { AddressAutofill } from '@mapbox/search-js-react';
 
 
 const SearchBar = () => {
-  // const [isClient, setIsClient] = useState(false); 
+const [address, setAddress] = useState("");
 
-
-  // useEffect(() => {
-  //   setIsClient(true); // This will run on the client side after the initial render
-  // }, []);
-
-  // if (!isClient) {
-  //   return null; // Avoid rendering the AddressAutofill component on the server side
-  // }
+const handleClearClick = () => {
+  setAddress("");
+};
 
   return (
     <form>
@@ -30,7 +26,7 @@ const SearchBar = () => {
         >
           <InputLeftElement>
             <IoSearchSharp
-              color="#2C5282"
+              color="grey.900"
               fontSize="1.1em"
               data-testid="search-icon"
             />
@@ -43,10 +39,20 @@ const SearchBar = () => {
             focusBorderColor="yellow"
             type="text" 
             name="address-1"
+            value={address}
+            onChange={(event) => setAddress(event.target.value)}
             _hover={{ borderColor: "yellow", _placeholder: {color: "grey.900"} }}
             _invalid={{ borderColor: "red" }}
             autocomplete="address-line1"
           />
+          <InputRightElement>
+            <RxCross2 
+                color="grey.900"
+                fontSize="1.1em"
+                data-testid="clear-icon"
+                onClick={handleClearClick}
+            />
+          </InputRightElement>
         </InputGroup>
       </AddressAutofill>
     </form>
