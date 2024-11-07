@@ -43,6 +43,8 @@ const SearchBar = () => {
             focusBorderColor="yellow"
             type="text" 
             name="address-1"
+            _hover={{ borderColor: "yellow", _placeholder: {color: "grey.900"} }}
+            _invalid={{ borderColor: "red" }}
             autocomplete="address-line1"
           />
         </InputGroup>
