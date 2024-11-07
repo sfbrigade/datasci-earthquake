@@ -16,18 +16,24 @@ services:
   backend:
     build:
       context: .
-      dockerfile: backend/Dockerfile 
+      dockerfile: backend/Dockerfile
     env_file:
       - .env.local
+    environment:
+      - PYTHONPATH=/backend
     ports:
       - 8000:8000
     depends_on:
       db:
         condition: service_healthy
     volumes:
-      - ./backend:/app
+      - ./backend:/backend
   db:
-    image: postgres
+    image: postgis-custom
+    build:
+      context: ./backend/database
+      dockerfile: Dockerfile
+    container_name: my_postgis_db
     restart: always
     env_file:
       - .env.local
@@ -37,10 +43,11 @@ services:
     ports:
       - 5432:5432
     healthcheck:
-      test: [ "CMD", "pg_isready" ]
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 30s
 
 volumes:
   db-data:

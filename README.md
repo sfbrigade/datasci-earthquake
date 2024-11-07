@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a hybrid Next.js + Python app that uses Next.js as the frontend and FastAPI as the API backend. 
+This is a hybrid Next.js + Python app that uses Next.js as the frontend and FastAPI as the API backend.
 
 ## Getting Started
 
@@ -60,7 +60,7 @@ This will:
 2.  **Access the Application**:
     - The app is running at http://localhost:3000.
     - The API is accessible at http://localhost:8000.
-    - The Postgres instance is accessible at http://localhost:5432.
+    - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
 
 ## Shutting Down the Application
 To stop and shut down the application:
@@ -80,7 +80,7 @@ The file is organized into three main sections:
   - **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.  
   - **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
   - **Frontend Environment Variables**. This section contains the base URL for API calls to the backend and ```NODE_ENV``` variable that determines in which environment the Node.js application is running. 
-
 ***
+
 # Disclaimer
 #### Some versions of this code contain a streamlit app that uses an imprecise measure which may introduce errors in the output. The streamlit app should not be relied upon to determine any property’s safety or compliance with the soft story program. Please consult DataSF for most up to date information.
