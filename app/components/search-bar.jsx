@@ -65,7 +65,7 @@ const SearchBar = () => {
               _placeholder: { color: "grey.900" },
             }}
             _invalid={{ borderColor: "red" }}
-            autocomplete="address-line1"
+            autoComplete="address-line1"
           />
           <InputRightElement>
             <RxCross2
