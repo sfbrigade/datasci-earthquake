@@ -63,7 +63,7 @@ This project uses Docker and Docker Compose to run the application, which includ
 2.  **Access the Application**:
     - The app is running at http://localhost:3000.
     - The API is accessible at http://localhost:8000.
-    - The Postgres instance is accessible at http://localhost:5432.
+    - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
 
 ## Shutting Down the Application
 
@@ -83,12 +83,10 @@ To stop and shut down the application:
 
 The `.env.local` file contains environment variables used in the application to configure settings for both the backend and frontend components. If it contains sensitive information, `.env.local` should not be checked into version control for security reasons. Right now there is no sensitive information but later secret management tools will be introduced.
 The file is organized into three main sections:
-
-- **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.
-- **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
-- **Frontend Environment Variables**. This section contains the base URL for API calls to the backend and `NODE_ENV` variable that determines in which environment the Node.js application is running.
-
----
+  - **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.  
+  - **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
+  - **Frontend Environment Variables**. This section contains the base URL for API calls to the backend and ```NODE_ENV``` variable that determines in which environment the Node.js application is running. 
+***
 
 # Disclaimer
 

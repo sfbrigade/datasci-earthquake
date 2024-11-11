@@ -1,11 +1,11 @@
 from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
+from .base import Base
 
-Base = declarative_base()
 
 class CombinedRisk(Base):
-    __tablename__ = 'combined_risk'
-    
+    __tablename__ = "combined_risks"
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     address = Column(String(50), nullable=False, unique=True)
     soft_story_risk = Column(Boolean, nullable=False, default=False)

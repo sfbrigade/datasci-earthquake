@@ -1,4 +1,5 @@
 """Router to get tsunami risk and CRUD tsunami polygons."""
+
 from fastapi import APIRouter
 from ..tags import Tags
 
