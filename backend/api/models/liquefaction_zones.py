@@ -1,11 +1,11 @@
 """All data of the Liquefaction Zones table from SFData."""
 
-from sqlalchemy import String
+from sqlalchemy import String, Float, DateTime, func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
-from datetime import datetime, DateTime
+from datetime import datetime
 
 
 class LiquefactionZones(DeclarativeBase):
@@ -23,7 +23,7 @@ class LiquefactionZones(DeclarativeBase):
     shape_length: Mapped[float] = mapped_column(Float)
     shape_area: Mapped[float] = mapped_column(Float)
     update_timestamp: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=datetime.utcnow
+        DateTime(timezone=True), server_default=func.now()
     )
 
     def __repr__(self) -> str:

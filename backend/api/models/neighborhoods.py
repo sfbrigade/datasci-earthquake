@@ -1,11 +1,11 @@
 """Neighborhood boundaries in San Francisco"""
 
-from sqlalchemy import String, Integer
+from sqlalchemy import String, Integer, DateTime, func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
-from datetime import datetime, DateTime
+from datetime import datetime
 
 
 MAPPED_COLUMN_STRING_LENGTH = 200
@@ -22,7 +22,7 @@ class Neighborhoods(DeclarativeBase):
     neighborhood: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
     geometry: Mapped[Geometry] = mapped_column(Geometry("MULTIPOLYGON", srid=4326))
     update_timestamp: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=datetime.utc_now
+        DateTime(timezone=True), server_default=func.now()
     )
 
     def __repr__(self) -> str:

@@ -16,7 +16,7 @@ async def delete_combined_risks(address: str):
     Remove the combined seismic risks of an address from
     the database.
     """
-    pass
+    return {"message": "This endpoint is not yet implemented"}
 
 
 @router.put("/{address}")
@@ -24,15 +24,7 @@ async def put_combined_risks(address: str, risks: dict):
     """
     Add the combined seismic risks of an address to the database.
     """
-    pass
-
-
-@router.post("/{address}")
-async def put_combined_risks(address: str, risks: dict):
-    """
-    Add the combined seismic risks of an address to the database.
-    """
-    pass
+    return {"message": "This endpoint is not yet implemented"}
 
 
 @router.get("/{address}")
@@ -42,4 +34,4 @@ async def get_combined_risks(address: str) -> dict:
     three booleans.
     """
     # TODO: Return a dictionary to avoid validation error
-    pass
+    return {"message": "This endpoint is not yet implemented"}

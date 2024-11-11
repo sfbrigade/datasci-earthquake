@@ -27,7 +27,7 @@ jobs:
         run: black --check .
 
       - name: Type check with mypy
-        run: mypy .
+        run: mypy --config-file mypy.ini .
 
       - name: Set up Node.js
         uses: actions/setup-node@v3

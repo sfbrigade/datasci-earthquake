@@ -15,7 +15,7 @@ async def delete_soft_story(address: str):
     Delete the record that the building at an address has a soft
     story.
     """
-    pass
+    return {"message": "This endpoint is not yet implemented"}
 
 
 @router.put("/{address}")
@@ -26,7 +26,7 @@ async def put_soft_story(
     Update whether the building at an address has a soft story
     to the database.
     """
-    pass
+    return {"message": "This endpoint is not yet implemented"}
 
 
 @router.post("/{address}")
@@ -37,13 +37,13 @@ async def post_soft_story(
     Add that the building at an address has a soft story to the
     database.
     """
-    pass
+    return {"message": "This endpoint is not yet implemented"}
 
 
 @router.get("/{address}")
-async def get_soft_story(address: str) -> bool:
+async def get_soft_story(address: str):
     """
     Return whether the building at an address has a soft story.
     """
     # TODO: Change return type to boolean to avoid validation error
-    pass
+    return {"message": "This endpoint is not yet implemented"}
