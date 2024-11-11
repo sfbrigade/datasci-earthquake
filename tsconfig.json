@@ -23,6 +23,12 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/components/search-bar.jsx"
+, "app/components/__tests__/autofill.test.js", "app/components/__tests__/search-bar.test.jsx"  ],
   "exclude": ["node_modules"]
 }
