@@ -21,7 +21,9 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: pip install black mypy
+        run: | 
+          pip install black mypy
+          pip install fastapi pydantic pydantic-settings sqlalchemy GeoAlchemy2 pytest     
 
       - name: Check code formatting with black
         run: black --check .
