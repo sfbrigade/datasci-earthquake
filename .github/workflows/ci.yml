@@ -56,10 +56,7 @@ jobs:
 
       - name: Run Frontend Tests
         run: docker compose run frontend npm test 
-        
-      - name: Run DB
-        run: docker compose run db
-
+      
       - name: Clean Up
         run: docker compose down --volumes  
 
