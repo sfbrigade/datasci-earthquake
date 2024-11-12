@@ -51,17 +51,14 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Docker
-        run: docker compose up -d --build
-      
-      - name: Wait for Backend
-        run: sleep 10
-
       - name: Run Backend Tests
         run: docker compose run backend pytest database/tests     
 
       - name: Run Frontend Tests
-        run: docker compose exec frontend npm test   
+        run: docker compose run frontend npm test 
+        
+      - name: Run DB
+        run: docker compose run db
 
       - name: Clean Up
         run: docker compose down --volumes  
