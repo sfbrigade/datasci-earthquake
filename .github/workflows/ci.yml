@@ -45,24 +45,24 @@ jobs:
       - name: Type check with mypy
         run: mypy --config-file mypy.ini .
 
-  # python_test:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v4
-    
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v4
-  #       with:
-  #         python-version: 3.11
+  python_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
   
-  #     - name: Install Python Test Dependencies
-  #       run: |
-  #         python -m pip install --upgrade pip
-  #         pip install pytest
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
 
-  #     - name: Run Python Tests with Pytest
-  #       run: pytest .
+      - name: Install Python Test Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+
+      - name: Run Python Tests with Pytest
+        run: pytest backend/database/tests
       
   js_test:
     runs-on: ubuntu-latest
