@@ -1,0 +1,54 @@
+name: Generate .env File
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-env-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Generate .env File
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGIS_VERSION: ${{ secrets.POSTGIS_VERSION }}
+          
+          FRONTEND_HOST: ${{ secrets.FRONTEND_HOST }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          LOCALHOST_DATABASE_URL: ${{ secrets.LOCALHOST_DATABASE_URL }}
+          DATABASE_URL_SQLALCHEMY: ${{ secrets.DATABASE_URL_SQLALCHEMY }}
+          LOCALHOST_DATABASE_URL_SQLALCHEMY: ${{ secrets.LOCALHOST_DATABASE_URL_SQLALCHEMY }}
+          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_MAPBOX_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN }}
+          NODE_ENV: ${{ secrets.NODE_ENV }}
+        run: |
+          echo "Generating .env file..."
+          echo "POSTGRES_USER=${POSTGRES_USER}" >> .env
+          echo "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" >> .env
+          echo "POSTGRES_DB=${POSTGRES_DB}" >> .env
+          echo "POSTGIS_VERSION=${POSTGIS_VERSION}" >> .env
+
+          echo "FRONTEND_HOST=${FRONTEND_HOST}" >> .env
+          echo "DATABASE_URL=${DATABASE_URL}" >> .env
+          echo "LOCALHOST_DATABASE_URL=${LOCALHOST_DATABASE_URL}" >> .env
+          echo "DATABASE_URL_SQLALCHEMY=${DATABASE_URL_SQLALCHEMY}" >> .env
+          echo "LOCALHOST_DATABASE_URL_SQLALCHEMY=${LOCALHOST_DATABASE_URL_SQLALCHEMY}" >> .env
+          echo "ENVIRONMENT=${ENVIRONMENT}" >> .env
+          echo "SECRET_KEY=${SECRET_KEY}" >> .env
+
+          echo "NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}" >> .env
+          echo "NEXT_PUBLIC_MAPBOX_TOKEN=${NEXT_PUBLIC_MAPBOX_TOKEN}" >> .env
+          echo "NODE_ENV=${NODE_ENV}" >> .env
+
+      - name: Upload .env as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: env-file
+          path: .env          
