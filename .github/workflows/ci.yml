@@ -53,9 +53,12 @@ jobs:
 
       - name: Set up Docker
         run: docker compose up -d --build
+      
+      - name: Wait for Backend
+        run: sleep 10
 
       - name: Run Backend Tests
-        run: docker compose exec pytest database/tests        
+        run: docker compose run backend pytest database/tests     
 
       - name: Run Frontend Tests
         run: docker compose exec frontend npm test   
