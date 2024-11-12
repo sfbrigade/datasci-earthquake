@@ -45,52 +45,23 @@ jobs:
       - name: Type check with mypy
         run: mypy --config-file mypy.ini .
 
-  python_test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-  
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.11
-
-      - name: Install Python Dependencies
-        run: |
-          pip install -r requirements.txt
-
-      - name: Run Python Tests with Pytest
-        run: pytest backend/database/tests
-      
-  js_test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
-      - name: Install JS Test Dependencies
-        run: npm ci
-
-      - name: Run JS Tests with Jest
-        run: npm test
-
-  docker:
+  docker_run_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Set up Docker
-        run: docker-compose up -d --build
+        run: docker compose up -d --build
+
+      - name: Run Backend Tests
+        run: docker compose exec database/pytest        
+
+      - name: Run Frontend Tests
+        run: docker compose exec frontend npm test   
 
       - name: Clean Up
-        run: docker-compose down --volumes  
+        run: docker compose down --volumes  
 
 
 
