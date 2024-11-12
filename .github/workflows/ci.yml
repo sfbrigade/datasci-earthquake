@@ -55,7 +55,7 @@ jobs:
         run: docker compose up -d --build
 
       - name: Run Backend Tests
-        run: docker compose exec database/pytest        
+        run: docker compose exec pytest database/tests        
 
       - name: Run Frontend Tests
         run: docker compose exec frontend npm test   
