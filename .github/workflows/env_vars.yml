@@ -1,6 +1,9 @@
 name: Generate .env File
 
 on:
+  push:
+    branches:
+      - add_ci_and_linting    
   workflow_dispatch:
 
 jobs:
