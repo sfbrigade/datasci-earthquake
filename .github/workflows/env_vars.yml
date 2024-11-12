@@ -33,8 +33,21 @@ jobs:
         envkey_NODE_ENV: ${{ secrets.NODE_ENV }}
 
         file_name: .env
+        directory: './'
         fail_on_empty: false
         sort_keys: false
+
+    - name: Verify .env File Creation
+      run: |
+        echo "Listing files to verify .env creation"
+        ls -la
+        cat .env
+
+    - name: Upload .env as Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: env-file
+        path: .env        
 
   # generate-env-file:
   #   runs-on: ubuntu-latest
