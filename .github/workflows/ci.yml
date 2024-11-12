@@ -56,10 +56,9 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Install Python Test Dependencies
+      - name: Install Python Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install pytest
+          pip install -r requirements.txt
 
       - name: Run Python Tests with Pytest
         run: pytest backend/database/tests
@@ -87,11 +86,8 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
-
-      - name: Build and Run Tests
-        run: docker-compose up --abort-on-container-exit 
+      - name: Set up Docker
+        run: docker-compose up -d --build
 
       - name: Clean Up
         run: docker-compose down --volumes  
