@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     env_file:
-      - .env.local
+      - .env
     ports:
       - 3000:3000
     depends_on:
@@ -18,7 +18,7 @@ services:
       context: .
       dockerfile: backend/Dockerfile 
     env_file:
-      - .env.local
+      - .env
     ports:
       - 8000:8000
     depends_on:
@@ -30,7 +30,7 @@ services:
     image: postgres
     restart: always
     env_file:
-      - .env.local
+      - .env
     volumes:
       - db-data:/var/lib/postgresql/data
       - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory      

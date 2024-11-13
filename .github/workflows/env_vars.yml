@@ -3,7 +3,7 @@ name: Generate .env File
 on:
   push:
     branches:
-      - add_ci_and_linting    
+        - add_ci_and_linting  
   workflow_dispatch:
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
 
         envkey_FRONTEND_HOST: ${{ secrets.FRONTEND_HOST }}
         envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        envkey_LOCALHOST_DATABASE_URLN: ${{ secrets.LOCALHOST_DATABASE_URL }}
+        envkey_LOCALHOST_DATABASE_URL: ${{ secrets.LOCALHOST_DATABASE_URL }}
         envkey_DATABASE_URL_SQLALCHEMY: ${{ secrets.DATABASE_URL_SQLALCHEMY }}
         envkey_LOCALHOST_DATABASE_URL_SQLALCHEMY: ${{ secrets.LOCALHOST_DATABASE_URL_SQLALCHEMY }}
         envkey_ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
@@ -36,12 +36,6 @@ jobs:
         directory: './'
         fail_on_empty: false
         sort_keys: false
-
-    - name: Verify .env File Creation
-      run: |
-        echo "Listing files to verify .env creation"
-        ls -la
-        cat .env
 
     - name: Upload .env as Artifact
       uses: actions/upload-artifact@v3

@@ -11,16 +11,20 @@ class Settings(BaseSettings):
     postgres_user: str
     postgres_password: str
     postgres_db: str
+    postgis_version: str
     frontend_host: str
     database_url: str
     localhost_database_url: str
+    database_url_sqlalchemy: str
+    localhost_database_url_sqlalchemy: str
     environment: str
     secret_key: str
     next_public_api_url: str
+    next_public_mapbox_token: str
     node_env: str
 
     class Config:
-        env_file = ".env.local"
+        env_file = ".env"
         env_file_encoding = "utf-8"
 
 
