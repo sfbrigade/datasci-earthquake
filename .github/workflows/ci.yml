@@ -51,11 +51,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Download .env Artifact
-        uses: actions/download-artifact@v3
+      - name: Download .env Artifact 
+        uses: actions/download-artifact@v4
         with:
           name: env-file
-          path: ./      
+          github-token: ${{ secrets.GH_PAT }}
+          repository: sfbrigade/datasci-earthquake
+          run-id: 11826930043
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
