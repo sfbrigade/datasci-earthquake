@@ -6,9 +6,10 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
 from datetime import datetime
+from .base import Base
 
 
-class SeismicHazardZones(DeclarativeBase):
+class SeismicHazardZone(Base):
     """
     All data of the Seismic Hazard table from SFData.
     Contains multipolygon geometries defining seismic hazard areas.
@@ -23,4 +24,4 @@ class SeismicHazardZones(DeclarativeBase):
     )
 
     def __repr__(self) -> str:
-        return f"<SeismicHazardZones(id={self.identifier})>"
+        return f"<SeismicHazardZone(id={self.identifier})>"

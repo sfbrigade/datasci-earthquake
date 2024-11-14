@@ -4,7 +4,7 @@ Test the API of polygons.py.
 
 import pytest
 from fastapi.testclient import TestClient
-from ..schemas import Polygon
+from ..schemas.geo import Polygon
 from ..main import app
 
 

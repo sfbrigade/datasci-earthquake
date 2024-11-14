@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from functools import lru_cache
-
 
 """
 Provides the environment variables that are read by the application.
@@ -28,10 +29,10 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
 
 
+settings = Settings()
+
+
 # Cache the settings to avoid multiple calls to load the same settings
 @lru_cache()
 def get_settings() -> Settings:
     return Settings()
-
-
-settings = get_settings()

@@ -6,12 +6,13 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
 from datetime import datetime
+from .base import Base
 
 
 MAPPED_COLUMN_STRING_LENGTH = 200
 
 
-class SoftStoryProperties(DeclarativeBase):
+class SoftStoryProperty(Base):
     """
     All data of the Soft Story table from SFData.
 
@@ -38,4 +39,4 @@ class SoftStoryProperties(DeclarativeBase):
     )
 
     def __repr__(self) -> str:
-        return f"<SoftStoryProperties(id={self.identifier}, property_address={self.property_address})>"
+        return f"<SoftStoryProperty(id={self.identifier}, property_address={self.property_address})>"

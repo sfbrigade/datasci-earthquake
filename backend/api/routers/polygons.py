@@ -11,6 +11,8 @@ router = APIRouter(prefix="/api/polygons", tags=[Tags.POLYGONS])
 class Polygon(BaseModel):
     """GIS data container of vertices defining a polygon."""
 
+    pass
+
 
 @router.delete("/{id}")
 async def delete_polygon(id: int, table_name: str):

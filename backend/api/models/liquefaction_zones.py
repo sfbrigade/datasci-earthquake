@@ -6,9 +6,10 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
 from datetime import datetime
+from .base import Base
 
 
-class LiquefactionZones(DeclarativeBase):
+class LiquefactionZons(Base):
     """
     All data of the Liquefaction Zones table from SFData.
     Contains multipolygon geometries defining soil liquefaction zones as High (H) or

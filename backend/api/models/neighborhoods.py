@@ -1,17 +1,19 @@
 """Neighborhood boundaries in San Francisco"""
 
+
 from sqlalchemy import String, Integer, DateTime, func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
 from datetime import datetime
+from .base import Base
 
 
 MAPPED_COLUMN_STRING_LENGTH = 200
 
 
-class Neighborhoods(DeclarativeBase):
+class Neighborhood(Base):
     """
     Stores neighborhood boundaries as multipolygon geometries.
     """
@@ -26,4 +28,4 @@ class Neighborhoods(DeclarativeBase):
     )
 
     def __repr__(self) -> str:
-        return f"<Neighborhoods(id={self.identifier}>"
+        return f"<Neighborhood(id={self.identifier}>"

@@ -20,5 +20,7 @@ node_modules
 .DS_Store
 /.next/.env
 
-# Env file
+# Sensitive config
+.env.development.local
 .env
+
