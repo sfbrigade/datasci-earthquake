@@ -77,10 +77,10 @@ jobs:
         run: docker compose up -d  
   
       - name: Run Backend Tests
-        run: docker compose exec backend pytest database/tests
+        run: docker compose run backend pytest database/tests
   
       - name: Run Frontend Tests
-        run: docker compose exec frontend npm test
+        run: docker compose run frontend npm test
   
       - name: Clean Up
         run: docker compose down --volumes
