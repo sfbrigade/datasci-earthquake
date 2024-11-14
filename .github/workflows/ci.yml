@@ -51,13 +51,22 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Get Run ID of Most Recent Successful Run
+        id: get_run_id
+        run: |
+          response=$(curl -s -H "Authorization: token ${{ secrets.GH_PAT }}" \
+            "https://api.github.com/repos/sfbrigade/datasci-earthquake/actions/workflows/env_vars.yml/runs?status=completed&conclusion=success")
+          run_id=$(echo $response | jq '.workflow_runs[0].id')
+          echo "Run ID: $run_id"
+          echo "run_id=$run_id" >> $GITHUB_ENV        
+
       - name: Download .env Artifact 
         uses: actions/download-artifact@v4
         with:
           name: env-file
           github-token: ${{ secrets.GH_PAT }}
           repository: sfbrigade/datasci-earthquake
-          run-id: 11826930043
+          run-id: ${{ env.run_id }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
