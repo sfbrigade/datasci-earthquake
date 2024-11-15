@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 
 # Will the .. be stable?
 from ..main import app
-from ..schemas import Polygon
+from ..schemas.geo import Polygon
 
 
 @pytest.fixture

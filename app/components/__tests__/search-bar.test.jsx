@@ -4,7 +4,9 @@ import "@testing-library/jest-dom";
 
 jest.mock("@mapbox/search-js-react", () => ({
   AddressAutofill: ({ children, onRetrieve }) => (
-    <div onClick={() => onRetrieve({ features: [{ place_name: "Mock Address" }] })}>
+    <div
+      onClick={() => onRetrieve({ features: [{ place_name: "Mock Address" }] })}
+    >
       {children}
     </div>
   ),
@@ -13,7 +15,7 @@ jest.mock("@mapbox/search-js-react", () => ({
 describe("SearchBar Component", () => {
   it("renders search input and icons correctly", () => {
     render(<SearchBar />);
-    
+
     const input = screen.getByPlaceholderText("Search San Francisco address");
     const searchIcon = screen.getByTestId("search-icon");
     const clearIcon = screen.getByTestId("clear-icon");

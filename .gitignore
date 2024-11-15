@@ -18,7 +18,7 @@ node_modules
 
 # Mac
 .DS_Store
-/.next/.env
+/.next/
 
 # Sensitive config
 .env.development.local
