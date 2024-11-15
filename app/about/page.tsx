@@ -9,7 +9,7 @@ const About = () => {
         ipsum. Nullam eleifend consectetur mauris ac porta. Fusce venenatis,
         libero vitae fringilla volutpat, odio diam maximus nibh, eu vestibulum
         lacus tellus sed felis. Suspendisse potenti. Nulla iaculis sapien vitae
-        iaculis egestas.
+        iaculis egestas. Check
       </Text>
     </>
   );
