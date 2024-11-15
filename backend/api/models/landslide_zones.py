@@ -1,6 +1,5 @@
 """All data of the Landslide Zones table from SFData."""
 
-
 from sqlalchemy import String, Integer, Float, DateTime, func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped

@@ -1,6 +1,5 @@
 """Neighborhood boundaries in San Francisco"""
 
-
 from sqlalchemy import String, Integer, DateTime, func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
