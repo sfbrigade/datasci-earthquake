@@ -25,7 +25,6 @@ const SearchBar = () => {
     const addressData = event.features[0];
     setFullAddress(addressData);
   };
-  console.log('test');
 
   return (
     <form>

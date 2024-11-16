@@ -23,11 +23,11 @@ repos:
           - "--config=.eslintrc.js"
           - "--cache"
           - "--ignore-pattern=node_modules/*"
-        entry: npm run lint  
-        language: node      
-        files: \.[jt]sx?$     
+        entry: npm run lint
+        language: node
+        files: \.[jt]sx?$
         additional_dependencies:
           - "eslint"
           - "eslint-plugin-prettier"
-          - "eslint-config-prettier"   
+          - "eslint-config-prettier"
           - "prettier"
