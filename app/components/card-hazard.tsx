@@ -7,27 +7,34 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { Hazards } from "./__mocks__/hazards";
-import { GoDotFill } from "react-icons/go";
+import Pill from "./pill";
 
 const CardHazard = () => {
   const hazard = Hazards[0];
 
   return (
-    <Card>
-      <CardHeader>
-        <HStack>
-          <Text fontSize="lg" fontWeight="bold">
-            {hazard.title}
-          </Text>
+    <Card maxW={332}>
+      <CardHeader p="22px 22px 0px 22px">
+        <HStack justifyContent="space-between">
+          <Text textStyle="textBig">{hazard.title}</Text>
+          <Pill />
         </HStack>
       </CardHeader>
-      <CardBody>
-        <Text>{hazard.description}</Text>
+      <CardBody p="14px 22px 0px 22px">
+        <Text textStyle="textMedium">{hazard.description}</Text>
       </CardBody>
-      <CardFooter>
+      <CardFooter p="14px 22px 22px 22px">
         <HStack>
-          <GoDotFill color={hazard.color} />
-          <Text>{"Updated " + hazard.update}</Text>
+          <svg width="19" height="18" viewBox="0 0 19 18" fill="none">
+            <circle
+              cx="9.5"
+              cy="9"
+              r="8.5"
+              fill={hazard.color}
+              stroke="white"
+            />
+          </svg>
+          <Text textStyle="textSmall">{"Updated " + hazard.update}</Text>
         </HStack>
       </CardFooter>
     </Card>
