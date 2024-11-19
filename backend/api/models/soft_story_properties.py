@@ -1,12 +1,13 @@
 """All data of the Soft Story table from SFData."""
 
-from sqlalchemy import String, Integer
+from sqlalchemy import String, Integer, DateTime, func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
-from datetime import datetime, DateTime
+from datetime import datetime
 from .base import Base
+
 
 MAPPED_COLUMN_STRING_LENGTH = 200
 
@@ -31,14 +32,10 @@ class SoftStoryProperty(Base):
     status: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
     bos_district: Mapped[int] = mapped_column(Integer)
     point: Mapped[Geometry] = mapped_column(Geometry("POINT", srid=4326))
-    sfdata_as_of: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=datetime.utcnow
-    )
-    sfdata_loaded_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=datetime.utcnow
-    )
+    sfdata_as_of: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    sfdata_loaded_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     update_timestamp: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=datetime.utcnow
+        DateTime(timezone=True), server_default=func.now()
     )
 
     def __repr__(self) -> str:

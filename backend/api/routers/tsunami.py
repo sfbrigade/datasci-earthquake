@@ -11,10 +11,10 @@ router = APIRouter(
 
 
 @router.get("/risk/{address}")
-async def get_risk(address: str) -> bool:
+async def get_risk(address: str):
     """
     Return whether this address is in the current tsunami risk
     polygon.
     """
     # TODO: Change return type to boolean to avoid validation error
-    pass
+    return {"message": "This endpoint is not yet implemented"}

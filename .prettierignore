@@ -3,3 +3,5 @@ build
 api
 .github
 pull_request_template.md
+.mypy_cache/
+__pycache__/

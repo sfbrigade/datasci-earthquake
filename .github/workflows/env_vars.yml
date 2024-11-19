@@ -1,0 +1,42 @@
+name: Generate .env File
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-envfile:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Make envfile
+      uses: SpicyPizza/create-envfile@v2.0
+      with:
+        envkey_POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        envkey_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        envkey_POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        envkey_POSTGIS_VERSION: ${{ secrets.POSTGIS_VERSION }}
+
+        envkey_FRONTEND_HOST: ${{ secrets.FRONTEND_HOST }}
+        envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        envkey_LOCALHOST_DATABASE_URL: ${{ secrets.LOCALHOST_DATABASE_URL }}
+        envkey_DATABASE_URL_SQLALCHEMY: ${{ secrets.DATABASE_URL_SQLALCHEMY }}
+        envkey_LOCALHOST_DATABASE_URL_SQLALCHEMY: ${{ secrets.LOCALHOST_DATABASE_URL_SQLALCHEMY }}
+        envkey_ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+        envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
+        envkey_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+        envkey_NEXT_PUBLIC_MAPBOX_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN }}
+        envkey_NODE_ENV: ${{ secrets.NODE_ENV }}
+
+        file_name: .env
+        directory: './'
+        fail_on_empty: false
+        sort_keys: false
+
+    - name: Upload .env as Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: env-file
+        include-hidden-files: true
+        path: ./.env

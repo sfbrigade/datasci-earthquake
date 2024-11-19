@@ -1,0 +1,33 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+      - id: black
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: "v1.13.0"
+    hooks:
+      - id: mypy
+        args: ["--config-file", "mypy.ini"]
+        additional_dependencies:
+          - "pydantic>=2.9.0"
+          - "sqlalchemy>=2.0.35"
+          - "pydantic-settings>=2.5.2"
+          - "fastapi>=0.114.0"
+          - "GeoAlchemy2>=0.15.2"
+          - "pytest>=8.3.3"
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: "v9.14.0"
+    hooks:
+      - id: eslint
+        args:
+          - "--config=.eslintrc.js"
+          - "--cache"
+          - "--ignore-pattern=node_modules/*"
+        entry: npm run lint
+        language: node
+        files: \.[jt]sx?$
+        additional_dependencies:
+          - "eslint"
+          - "eslint-plugin-prettier"
+          - "eslint-config-prettier"
+          - "prettier"

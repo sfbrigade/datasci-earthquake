@@ -39,7 +39,7 @@ VALUES
 (495990, 764765, '495990-764765-0', '46 AUBURN ST', '', 46, '', 'AUBURN', 'ST', '', '', '', 830000, -122.41228, 37.77967, 94133, ST_SetSRID(ST_MakePoint(-122.41228, 37.77967), 4326), 'SUPERVISORIAL DISTRICT 3', 3, 3, 'THREE', 'Aaron Peskin', 'Nob Hill', '', '2024/10/28 03:40:00 AM', '2024/10/28 10:11:26 PM');
 
 
-CREATE TABLE IF NOT EXISTS combined_risk (
+CREATE TABLE IF NOT EXISTS combined_risks (
     id SERIAL PRIMARY KEY,
     address VARCHAR(50) NOT NULL UNIQUE,
     soft_story_risk BOOLEAN NOT NULL DEFAULT FALSE,
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS combined_risk (
     
 );
 
-INSERT INTO combined_risk (address, soft_story_risk, seismic_hazard_risk, landslide_risk, liquefaction_risk) VALUES 
+INSERT INTO combined_risks (address, soft_story_risk, seismic_hazard_risk, landslide_risk, liquefaction_risk) VALUES 
 ('3560 PIERCE ST, SAN FRANCISCO CA', TRUE, FALSE, FALSE, FALSE),
 ('3484 18TH ST, SAN FRANCISCO CA', TRUE, TRUE, FALSE, TRUE),
 ('175 ALHAMBRA ST, SAN FRANCISCO CA', FALSE, FALSE, FALSE, FALSE),
