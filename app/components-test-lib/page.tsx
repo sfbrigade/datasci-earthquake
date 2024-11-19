@@ -16,33 +16,27 @@ const ComponentsTestLib = () => {
       }}
       m="auto"
     >
-      <Heading as="h1" size="xl" mb={4} color="blue">
+      <Heading as="h1" size="xl" mb={4} bgColor="blue" color="white" p="10px">
         Components Test Library
       </Heading>
-      <Divider mb={2} />
       <Heading as="h2" size="md" mb={2}>
         Search Bar
       </Heading>
-      <Text mb={4}>
-        This section demonstrates different states of the Search Bar component
-      </Text>
+      <Text mb={4}>This section demonstrates the Search Bar component</Text>
       <VStack spacing={4} align="start">
         <HStack w="100%">
-          <Heading as="h3" size="sm">
-            Default
-          </Heading>
-          <SearchBar />
+          <Box w="400px">
+            <SearchBar />
+          </Box>
         </HStack>
         <Divider mb={2} />
       </VStack>
-      <Text mb={4}>
-        This section demonstrates Hazard Card component
-      </Text>
+      <Heading as="h2" size="md" mb={2}>
+        Hazards Card
+      </Heading>
+      <Text mb={4}>This section demonstrates Hazard Card component</Text>
       <VStack spacing={4} align="start">
         <HStack w="100%">
-          <Heading as="h3" size="sm">
-            With data
-          </Heading>
           <CardHazard />
         </HStack>
         <Divider mb={2} />
