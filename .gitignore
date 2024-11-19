@@ -3,6 +3,8 @@
 
 # Python
 __pycache__/
+pytest_cache/
+mypy_cache/
 *.py[cod]
 bin/
 build/
@@ -20,3 +22,4 @@ node_modules
 
 # Sensitive config
 .env.development.local
+.env

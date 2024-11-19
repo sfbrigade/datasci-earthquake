@@ -28,7 +28,7 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-The FastApi server will be running on [http://127.0.0.1:8000](http://127.0.0.1:8000) – feel free to change the port in `package.json` (you'll also need to update it in `next.config.js`).
+The FastApi server will be running on [http://127.0.0.1:8000](http://127.0.0.1:8000) – feel free to change the port in `package.json` (you'll also need to update it in `next.config.js`).
 
 ## Learn More
 
@@ -39,6 +39,31 @@ To learn more about Next.js, take a look at the following resources:
 - [FastAPI Documentation](https://fastapi.tiangolo.com/) - learn about FastAPI features and API.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+
+---
+
+# Formatting with a Pre-Commit Hook
+
+This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project.
+
+## Prerequisites
+
+- If you haven't already, install pre-commit:
+  `pip install pre-commit`
+- Run the following command to install the pre-commit hooks defined in the configuration file `.pre-commit-config.yaml`:
+  `pre-commit install`
+  This command sets up pre-commit to automatically run ESLint, Black, and MyPy before each commit.
+
+## Usage
+
+- **Running Black Automatically**: After setup, every time you attempt to commit code, Black will check the staged files and apply formatting if necessary. If files are reformatted, the commit will be stopped, and you’ll need to review the changes before committing again.
+- **Bypassing the Hook**: If you want to skip the pre-commit hook for a specific commit, use the --no-verify flag with your commit command:
+  `git commit -m "your commit message" --no-verify`.
+
+  **Note**: The `--no-verify` flag is helpful in cases where you need to make a quick commit without running the pre-commit checks, but it should be used sparingly to maintain code quality. CI pipeline will fail during the `pull request` action if the code is not formatted.
+
+- **Running Pre-commit on All Files**: If you want to format all files in the repository, use:
+  `pre-commit run --all-files`
 
 ---
 
@@ -81,12 +106,21 @@ To stop and shut down the application:
 
 # Configuration of environment variables
 
-The `.env.local` file contains environment variables used in the application to configure settings for both the backend and frontend components. If it contains sensitive information, `.env.local` should not be checked into version control for security reasons. Right now there is no sensitive information but later secret management tools will be introduced.
+We use GitHub Secrets to store sensitive environment variables. A template `.env.example` file is provided in the repository as a reference. Only users with **write** access to the repository can manually trigger the `Generate .env File` workflow, which creates and uploads the actual `.env` file as an artifact.
+
+**Note**: Before starting work on the project, make sure to:
+
+1. Get **write** access to the repository
+2. Trigger the `Generate .env File` workflow and download the artifact.
+3. Place the artifact in the root folder of the project. Make sure the file is named `.env`.
+
 The file is organized into three main sections:
-  - **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.  
-  - **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
-  - **Frontend Environment Variables**. This section contains the base URL for API calls to the backend and ```NODE_ENV``` variable that determines in which environment the Node.js application is running. 
-***
+
+- **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.
+- **Backend Environment Variables**. These variables are used by the backend (e.g., FastAPI) to configure its behavior and to connect to the database and the frontend application.
+- **Frontend Environment Variables**. This section contains the base URL for API calls to the backend and `NODE_ENV` variable that determines in which environment the Node.js application is running.
+
+---
 
 # Disclaimer
 

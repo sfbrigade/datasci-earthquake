@@ -18,7 +18,7 @@ async def delete_reinforced(address: str):
     Check a small group of reinforced soft stories and raise an
     exception if the building lacks an original soft story.
     """
-    pass
+    return {"message": "This endpoint is not yet implemented"}
 
 
 @router.put("/{address}")
@@ -32,7 +32,7 @@ async def put_reinforced(
     Check a small group of reinforced soft stories and raise an
     exception if the building lacks an original soft story.
     """
-    pass
+    return {"message": "This endpoint is not yet implemented"}
 
 
 @router.post("/{address}")
@@ -50,7 +50,7 @@ async def post_reinforced(
 
 
 @router.get("/{address}")
-async def get_reinforced(address: str) -> bool:
+async def get_reinforced(address: str):
     """
     Return whether the building at an address, having a soft story,
     has been reinforced.

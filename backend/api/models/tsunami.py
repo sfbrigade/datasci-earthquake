@@ -1,17 +1,17 @@
 """Tsunami Risk Zone data"""
 
-from sqlalchemy import String, Integer
+from sqlalchemy import String, Integer, Float, DateTime, func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
-from datetime import datetime, DateTime
+from datetime import datetime
 
 
 MAPPED_COLUMN_STRING_LENGTH = 200
 
 
-class TsunamiZones(DeclarativeBase):
+class TsunamiZone(DeclarativeBase):
     """
     All data of the Tsunami Hazard table from conservation.ca.gov.
     """
@@ -30,8 +30,8 @@ class TsunamiZones(DeclarativeBase):
     # This data is ingested as PolygonZ but should be stored as MultiPolygon
     geometry: Mapped[Geometry] = mapped_column(Geometry("MULTIPOLYGON", srid=4326))
     update_timestamp: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=datetime.utcnow
+        DateTime(timezone=True), server_default=func.now()
     )
 
     def __repr__(self) -> str:
-        return f"<TsunamiZones(id={self.identifier})>"
+        return f"<TsunamiZone(id={self.identifier})>"

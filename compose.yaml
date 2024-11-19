@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     env_file:
-      - .env.local
+      - .env
     ports:
       - 3000:3000
     depends_on:
@@ -18,7 +18,7 @@ services:
       context: .
       dockerfile: backend/Dockerfile
     env_file:
-      - .env.local
+      - .env
     environment:
       - PYTHONPATH=/backend
     ports:
@@ -36,14 +36,14 @@ services:
     container_name: my_postgis_db
     restart: always
     env_file:
-      - .env.local
+      - .env
     volumes:
       - db-data:/var/lib/postgresql/data
       - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
     ports:
       - 5432:5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       interval: 10s
       timeout: 5s
       retries: 5

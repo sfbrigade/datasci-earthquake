@@ -21,10 +21,11 @@ class Settings(BaseSettings):
     environment: str
     secret_key: str
     next_public_api_url: str
+    next_public_mapbox_token: str
     node_env: str
 
     class Config:
-        env_file = ".env.local"
+        env_file = ".env"
         env_file_encoding = "utf-8"
 
 
