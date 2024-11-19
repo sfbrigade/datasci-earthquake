@@ -36,7 +36,7 @@ const ComponentsTestLib = () => {
         <Divider mb={2} />
       </VStack>
       <Text mb={4}>
-        This section demonstrates different varients of Hazard Card component
+        This section demonstrates Hazard Card component
       </Text>
       <VStack spacing={4} align="start">
         <HStack w="100%">
