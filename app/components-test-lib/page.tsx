@@ -2,6 +2,7 @@
 
 import { Box, Heading, VStack, Text, HStack, Divider } from "@chakra-ui/react";
 import SearchBar from "../components/search-bar";
+import CardHazard from "../components/card-hazard";
 
 const ComponentsTestLib = () => {
   return (
@@ -31,6 +32,18 @@ const ComponentsTestLib = () => {
             Default
           </Heading>
           <SearchBar />
+        </HStack>
+        <Divider mb={2} />
+      </VStack>
+      <Text mb={4}>
+        This section demonstrates different varients of Hazard Card component
+      </Text>
+      <VStack spacing={4} align="start">
+        <HStack w="100%">
+          <Heading as="h3" size="sm">
+            With data
+          </Heading>
+          <CardHazard />
         </HStack>
         <Divider mb={2} />
       </VStack>
