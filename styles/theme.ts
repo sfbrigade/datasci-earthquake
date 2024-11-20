@@ -27,6 +27,11 @@ const customTheme = extendTheme({
       fontWeight: "bold",
       color: "white",
     },
+    textBig: {
+      fontSize: "xl",
+      fontWeight: "bold",
+      color: "blue",
+    },
     textMedium: {
       fontSize: "md",
       fontWeight: "normal",
