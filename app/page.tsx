@@ -24,6 +24,7 @@ const Home = () => {
       </Box>
       <Box
         w={{ base: "base", xl: "xl" }}
+        // w="base"
         p={{
           base: "23px 24px 16px 24px",
           md: "37px 27px 16px 26px",
@@ -33,22 +34,11 @@ const Home = () => {
       >
         <Report />
       </Box>
-      <Box
-        w={{ base: "base", md: "741px", xl: "xl" }}
-        h={{ base: "323px", md: "411px", xl: "462px" }}
-        p={{
-          base: "0px 24px 27px 24px",
-          md: "0px 27px 28px 26px",
-          xl: "0px 128px 40px 127px",
-        }}
-        m="auto"
-      >
+      <Box w="base" h={{ base: "323px", md: "411px", xl: "462px" }} m="auto">
         <Box
           h="100%"
           border="1px solid"
           borderColor="grey.400"
-          borderRadius="8px"
-          boxShadow="0px 2px 4px -1px #0000000F, 0px 4px 6px -1px #0000001A"
           overflow="hidden"
         >
           <Map />
@@ -56,19 +46,10 @@ const Home = () => {
       </Box>
       <Box bgColor="blue">
         <Box
-          w={{ base: "base", xl: "xl" }}
+          w="base"
           h={{ base: "166px", md: "213px", xl: "261px" }}
-          p={{
-            base: "26px 23px 28px 23px",
-            md: "37px 23px 28px 24px",
-            xl: "24px 127px 22px 127px",
-          }}
           m="auto"
-        >
-          <Box h="100%" border="1px solid" borderColor="grey.400">
-            <Text textStyle="headerSmall">Cards box</Text>
-          </Box>
-        </Box>
+        ></Box>
       </Box>
     </Flex>
   );
