@@ -28,13 +28,14 @@ const Home = () => {
         </Box>
       </Box>
       <Box
-        w={{ base: "base", md: "741px", xl: "xl" }}
+        // w={{ base: "base", md: "741px", xl: "xl" }}
+        w="base"
         h={{ base: "323px", md: "411px", xl: "462px" }}
-        p={{
-          base: "23px 24px 27px 24px",
-          md: "37px 27px 28px 26px",
-          xl: "50px 128px 40px 127px",
-        }}
+        // p={{
+        //   base: "23px 24px 27px 24px",
+        //   md: "37px 27px 28px 26px",
+        //   xl: "50px 128px 40px 127px",
+        // }}
         m="auto"
       >
         <Box h="100%" border="1px solid" borderColor="grey.400">
@@ -43,13 +44,14 @@ const Home = () => {
       </Box>
       <Box bgColor="blue">
         <Box
-          w={{ base: "base", xl: "xl" }}
+          // w={{ base: "base", xl: "xl" }}
+          w="base"
           h={{ base: "166px", md: "213px", xl: "261px" }}
-          p={{
-            base: "26px 23px 28px 23px",
-            md: "37px 23px 28px 24px",
-            xl: "24px 127px 22px 127px",
-          }}
+          // p={{
+          //   base: "26px 23px 28px 23px",
+          //   md: "37px 23px 28px 24px",
+          //   xl: "24px 127px 22px 127px",
+          // }}
           m="auto"
         >
           <Box h="100%" border="1px solid" borderColor="grey.400">
