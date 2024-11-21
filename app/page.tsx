@@ -3,6 +3,7 @@ import SearchBar from "./components/search-bar";
 import Heading from "./components/heading";
 import Map from "./components/map";
 import "./globals.css";
+import Report from "./components/report";
 
 const Home = () => {
   return (
@@ -22,8 +23,7 @@ const Home = () => {
         </Box>
       </Box>
       <Box
-        w={{ base: "base", md: "741px", xl: "xl" }}
-        h={{ base: "323px", md: "411px", xl: "462px" }}
+        w={{ base: "base", xl: "xl" }}
         p={{
           base: "23px 24px 27px 24px",
           md: "37px 27px 28px 26px",
@@ -40,6 +40,8 @@ const Home = () => {
           overflow="hidden"
         >
           <Map />
+        <Box>
+          <Report />
         </Box>
       </Box>
       <Box bgColor="blue">

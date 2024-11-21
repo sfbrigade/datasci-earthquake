@@ -9,9 +9,18 @@ import {
 import { Hazards } from "./__mocks__/hazards";
 import Pill from "./pill";
 
-const CardHazard = () => {
-  const hazard = Hazards[0];
+interface CardHazardProps {
+  hazard: {
+    id: number;
+    title: string;
+    description: string;
+    update: string;
+    color: string;
+  };
+}
 
+const CardHazard: React.FC<CardHazardProps> = ({ hazard }) => {
+  const { title, description, update, color } = hazard;
   return (
     <Card maxW={332}>
       <CardHeader
@@ -22,7 +31,7 @@ const CardHazard = () => {
         }}
       >
         <HStack justifyContent="space-between">
-          <Text textStyle="textBig">{hazard.title}</Text>
+          <Text textStyle="textBig">{title}</Text>
           <Pill />
         </HStack>
       </CardHeader>
@@ -33,7 +42,7 @@ const CardHazard = () => {
           xl: "14px 22px 0px 22px",
         }}
       >
-        <Text textStyle="textMedium">{hazard.description}</Text>
+        <Text textStyle="textMedium">{description}</Text>
       </CardBody>
       <CardFooter
         p={{
@@ -48,12 +57,12 @@ const CardHazard = () => {
               cx="9.5"
               cy="9"
               r="8.5"
-              fill={hazard.color}
+              fill={color}
               stroke="white"
               role="img"
             />
           </svg>
-          <Text textStyle="textSmall">{"Updated " + hazard.update}</Text>
+          <Text textStyle="textSmall">{"Updated " + update}</Text>
         </HStack>
       </CardFooter>
     </Card>
