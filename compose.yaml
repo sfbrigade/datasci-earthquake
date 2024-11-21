@@ -20,7 +20,7 @@ services:
     env_file:
       - .env
     environment:
-      - PYTHONPATH=/backend
+      - PYTHONPATH=/backend:/ 
     ports:
       - 8000:8000
     depends_on:
@@ -38,7 +38,7 @@ services:
     env_file:
       - .env
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgr esql/data
       - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
     ports:
       - 5432:5432

@@ -1,10 +1,14 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import inspect
 from backend.database.session import engine
 from backend.api.models.base import Base
+from backend.api.models.addresses import Address
 
 
 # Function to create tables
 def init_db():
+    if check_tables_exist():
+        drop_db()
     Base.metadata.create_all(bind=engine)
     print("Database tables created.")
 
@@ -13,6 +17,12 @@ def init_db():
 def drop_db():
     Base.metadata.drop_all(bind=engine)
     print("Database tables dropped.")
+
+
+def check_tables_exist():
+    inspector = inspect(engine)
+    tables = inspector.get_table_names()
+    return len(tables) > 0
 
 
 if __name__ == "__main__":
