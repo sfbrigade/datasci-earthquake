@@ -28,12 +28,12 @@ const Home = () => {
         </Box>
       </Box>
       <Box
-        w={{ base: "base", xl: "xl" }}
+        w={{ base: "base", md: "741px", xl: "xl" }}
         h={{ base: "323px", md: "411px", xl: "462px" }}
         p={{
-          base: "23px 23px 27px 23px",
+          base: "23px 24px 27px 24px",
           md: "37px 27px 28px 26px",
-          xl: "50px 127px 40px 127px",
+          xl: "50px 128px 40px 127px",
         }}
         m="auto"
       >
