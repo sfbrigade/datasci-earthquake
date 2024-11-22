@@ -1,7 +1,6 @@
 import { Box, HStack, IconButton, Text } from "@chakra-ui/react";
-import { MdOutlineIosShare } from "react-icons/md";
-import { AddressData } from "./__mocks__/address-data";
 import CardHazard from "./card-hazard";
+import { AddressData } from "./__mocks__/address-data";
 import { Hazards } from "./__mocks__/hazards";
 
 const Report = () => {

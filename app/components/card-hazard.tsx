@@ -6,7 +6,6 @@ import {
   Text,
   HStack,
 } from "@chakra-ui/react";
-import { Hazards } from "./__mocks__/hazards";
 import Pill from "./pill";
 
 interface CardHazardProps {
@@ -19,7 +18,7 @@ interface CardHazardProps {
   };
 }
 
-const CardHazard: React.FC<CardHazardProps> = ({ hazard }) => {
+const CardHazard: React.FC<CardHazardProps> = ({ hazard, addressData }) => {
   const { title, description, update, color } = hazard;
   return (
     <Card maxW={332}>
