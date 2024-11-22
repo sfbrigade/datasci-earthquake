@@ -57,7 +57,7 @@ const Map = () => {
       });
 
       const map = mapRef.current;
-      const nav = new mapboxgl.NavigationControl();
+      const nav = new mapboxgl.NavigationControl({ showCompass: false });
       map.addControl(nav, "top-right");
 
       map.on("load", () => {
