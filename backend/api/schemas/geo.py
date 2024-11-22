@@ -1,9 +1,10 @@
 from pydantic import BaseModel, Field
+from typing import Tuple
 
 
-class Point(BaseModel):
-    lat: float = Field(..., description="Latitude")
-    lng: float = Field(..., description="Longitude")
+class PointModel(BaseModel):
+    type: str = Field(default="Point")
+    coordinates: Tuple[float, float]  # Longitude, Latitude
 
 
 class Polygon(BaseModel):

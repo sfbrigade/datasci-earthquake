@@ -89,4 +89,4 @@ jobs:
         run: docker compose run frontend npm test 
 
       - name: Clean Up
-        run: docker compose down --volumes
+        run: docker compose down

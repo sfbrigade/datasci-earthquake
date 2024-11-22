@@ -1,8 +1,8 @@
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from ...api.models.combined_risk import Base, CombinedRisk
-from ...api.config import settings
+from backend.api.models.combined_risk import Base, CombinedRisk
+from backend.api.config import settings
 
 
 @pytest.fixture(scope="module")
