@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import mapboxgl, { LngLat, LngLatLike } from "mapbox-gl";
+import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 const lookupCoordinates = {
@@ -40,7 +40,6 @@ const Map = () => {
         container: mapContainerRef.current!,
         style: "mapbox://styles/mapbox/standard",
         center: [-122.437, 37.75],
-        //center: [lng, lat],
         zoom: 11, // Start with more zoomed-out view but not too far
         minZoom: 10.5, // Allow users to zoom out more
         maxZoom: 15, // Increase max zoom to allow closer inspection
