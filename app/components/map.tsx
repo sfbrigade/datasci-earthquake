@@ -3,7 +3,6 @@
 import React, { useRef, useEffect } from "react";
 import mapboxgl, { LngLat, LngLatLike } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { m } from "framer-motion";
 
 const lookupCoordinates = {
   geometry: {
@@ -20,11 +19,6 @@ const softStories = [
   { lng: -122.42698, lat: 37.7616 },
 ];
 
-/*
-//lng: number = -122.437, lat: number = 37.75
-*/
-
-//const Map = ({ lng = -122.437, lat = 37.75 }: { lng: number; lat: number }) => {
 const Map = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -61,11 +55,8 @@ const Map = () => {
       map.addControl(nav, "top-right");
 
       map.on("load", () => {
-        console.log("loaded");
         const el = document.createElement("div");
-
         const center = map.getCenter();
-        console.log(center);
 
         const marker = new mapboxgl.Marker({
           anchor: "bottom",
