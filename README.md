@@ -89,6 +89,11 @@ This project uses Docker and Docker Compose to run the application, which includ
     - The app is running at http://localhost:3000.
     - The API is accessible at http://localhost:8000.
     - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
+    - To interact with a running container, use `docker exec [OPTIONS] CONTAINER COMMAND [ARG...]`
+      - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
+      - To execute a python scrupt, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
+
+    **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `requirements.txt`, `package.json`), you should run `docker-compose up -d --build` to rebuild the images and apply the changes!
 
 ## Shutting Down the Application
 
@@ -101,6 +106,8 @@ To stop and shut down the application:
     This will:
     - Stop all services.
     - Remove the containers, but it will **not** delete volumes (so the database data will persist).
+   
+    **Note:** If you want to start with a clean slate and remove all data inside the containers, run `docker-compose down -v`.
 
 ---
 

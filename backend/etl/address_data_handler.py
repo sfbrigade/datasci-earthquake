@@ -7,7 +7,7 @@ ADDRESSES_URL = "https://data.sfgov.org/resource/ramy-di5m.geojson"  # This API 
 
 
 class AddressDataHandler(DataHandler):
-    def parse_addresses(self, data: dict) -> list[dict]:
+    def parse_data(self, data: dict) -> list[dict]:
         features = data["features"]
         parsed_data = []
 
@@ -44,10 +44,10 @@ class AddressDataHandler(DataHandler):
 
 
 if __name__ == "__main__":
-    handler = AddressDataHandler()
+    handler = AddressDataHandler(ADDRESSES_URL, Address)
     try:
-        addresses = handler.fetch_data(ADDRESSES_URL)
-        address_objects = handler.parse_addresses(addresses)
-        handler.bulk_insert_data(address_objects, Address, "eas_fullid")
+        addresses = handler.fetch_data()
+        address_objects = handler.parse_data(addresses)
+        handler.bulk_insert_data(address_objects, "eas_fullid")
     except Exception as e:
         print(f"Failed after retries: {e}")
