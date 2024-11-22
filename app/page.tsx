@@ -37,7 +37,14 @@ const Home = () => {
         }}
         m="auto"
       >
-        <Box h="100%" border="1px solid" borderColor="grey.400">
+        <Box
+          h="100%"
+          border="1px solid"
+          borderColor="grey.400"
+          borderRadius="8px"
+          boxShadow="0px 2px 4px -1px #0000000F, 0px 4px 6px -1px #0000001A"
+          overflow="hidden"
+        >
           <Map />
         </Box>
       </Box>
