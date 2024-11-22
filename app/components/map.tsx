@@ -3,6 +3,9 @@
 import React, { useRef, useEffect } from "react";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { FeatureCollection, Geometry } from "geojson";
+import seismicData from "../../seismic-11212024.json";
+import tsunamiData from "../../tsunami-11212024.json";
 
 const lookupCoordinates = {
   geometry: {
@@ -19,6 +22,8 @@ const softStories = [
   { lng: -122.42698, lat: 37.7616 },
 ];
 
+const typedSeismicData: FeatureCollection<Geometry> = seismicData;
+const typedTsunamiData: FeatureCollection<Geometry> = tsunamiData;
 const Map = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -76,6 +81,38 @@ const Map = () => {
           })
             .setLngLat(new LngLat(lng, lat))
             .addTo(map);
+        });
+
+        // Add sources
+        map.addSource("seismic", {
+          type: "geojson",
+          data: typedSeismicData,
+        });
+
+        map.addSource("tsunami", {
+          type: "geojson",
+          data: typedTsunamiData,
+        });
+
+        // Add layers
+        map.addLayer({
+          id: "seismicLayer",
+          source: "seismic",
+          type: "fill",
+          paint: {
+            "fill-color": "#F6AD55", // orange/300
+            "fill-opacity": 0.25, // 25% opacity
+          },
+        });
+
+        map.addLayer({
+          id: "tsunamiLayer",
+          source: "tsunami",
+          type: "fill",
+          paint: {
+            "fill-color": "#ED64A6", // pink/400
+            "fill-opacity": 0.25, // 25% opacity
+          },
         });
       });
 
