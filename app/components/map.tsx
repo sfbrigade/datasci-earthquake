@@ -24,7 +24,7 @@ const Map = () => {
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
   useEffect(() => {
-    const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+    const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
       console.error("Mapbox access token or container is not set!");
