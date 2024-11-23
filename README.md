@@ -86,7 +86,8 @@ This project uses Docker and Docker Compose to run the application, which includ
 - Start all services defined in the docker-compose.yml file (e.g., frontend, backend, database).
 
 2.  **Access the Application**:
-    - The app is running at http://localhost:3000.
+
+    - The app is running at http://localhost:3000. Note that this may conflict with your local dev server. If so, one will be running on port 3000 and the other on port 3001.
     - The API is accessible at http://localhost:8000.
     - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
     - To interact with a running container, use `docker exec [OPTIONS] CONTAINER COMMAND [ARG...]`
@@ -104,9 +105,10 @@ To stop and shut down the application:
 2.  **Bring Down the Containers**: If you want to stop and remove the containers completely, run:
     `docker-compose down`
     This will:
+
     - Stop all services.
     - Remove the containers, but it will **not** delete volumes (so the database data will persist).
-   
+
     **Note:** If you want to start with a clean slate and remove all data inside the containers, run `docker-compose down -v`.
 
 ---
@@ -124,8 +126,8 @@ We use GitHub Secrets to store sensitive environment variables. A template `.env
 The file is organized into three main sections:
 
 - **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.
-- **Backend Environment Variables**. These variables are used by the backend (e.g., FastAPI) to configure its behavior and to connect to the database and the frontend application.
-- **Frontend Environment Variables**. This section contains the base URL for API calls to the backend and `NODE_ENV` variable that determines in which environment the Node.js application is running.
+- **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
+- **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
 
 ---
 
