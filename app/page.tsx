@@ -1,20 +1,14 @@
-import { Box, Flex, Highlight, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import SearchBar from "./components/search-bar";
 import Heading from "./components/heading";
 import Map from "./components/map";
 import "./globals.css";
-import { LngLat } from "mapbox-gl";
 
 const Home = () => {
-  //const coords = new LngLat(-122.463733, 37.777448);
-  const lng = -122.463733;
-  const lat = 37.777448;
-
   return (
     <Flex direction="column">
       <Box bgColor="blue">
         <Box
-          // fontWeight="medium" lg={{ fontWeight: "bold" }
           w={{ base: "base", xl: "xl" }}
           p={{
             base: "45px 23px 50px 23px",
