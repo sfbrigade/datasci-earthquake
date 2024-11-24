@@ -22,8 +22,10 @@ const softStories = [
   { lng: -122.42698, lat: 37.7616 },
 ];
 
-const typedSeismicData: FeatureCollection<Geometry> = seismicData;
-const typedTsunamiData: FeatureCollection<Geometry> = tsunamiData;
+const typedSeismicData: FeatureCollection<Geometry> =
+  seismicData as FeatureCollection<Geometry>;
+const typedTsunamiData: FeatureCollection<Geometry> =
+  tsunamiData as FeatureCollection<Geometry>;
 const Map = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
