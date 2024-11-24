@@ -22,7 +22,7 @@ interface CardHazardProps {
 const CardHazard: React.FC<CardHazardProps> = ({ hazard }) => {
   const { title, description, update, color } = hazard;
   return (
-    <Card maxW={332}>
+    <Card>
       <CardHeader
         p={{
           base: "10px 23px 0px 23px",
