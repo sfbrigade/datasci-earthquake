@@ -7,7 +7,7 @@ import { FeatureCollection, Geometry } from "geojson";
 import seismicData from "../../seismic-11212024.json";
 import tsunamiData from "../../tsunami-11212024.json";
 
-const lookupCoordinates = {
+const addressLookupCoordinates = {
   geometry: {
     type: "Point",
     coordinates: [-122.463733, 37.777448],
@@ -29,6 +29,8 @@ const typedTsunamiData: FeatureCollection<Geometry> =
 const Map = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
+  const coords = addressLookupCoordinates.geometry.coordinates;
+  const addressLngLat = new LngLat(coords[0], coords[1]);
 
   useEffect(() => {
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
@@ -61,16 +63,15 @@ const Map = () => {
       map.addControl(nav, "top-right");
 
       map.on("load", () => {
+        // Draw address marker
         const el = document.createElement("div");
-        const center = map.getCenter();
 
-        const marker = new mapboxgl.Marker({
+        const addressMarker = new mapboxgl.Marker({
           anchor: "bottom",
           element: el,
           className: "marker",
-          draggable: true,
         })
-          .setLngLat(center)
+          .setLngLat(addressLngLat)
           .addTo(map);
 
         softStories.forEach(({ lng, lat }) => {
