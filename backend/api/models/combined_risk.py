@@ -4,7 +4,7 @@ from .base import Base
 
 
 class CombinedRisk(Base):
-    __tablename__ = "combined_risks"
+    __tablename__ = "combined_risk"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     address = Column(String(50), nullable=False, unique=True)
