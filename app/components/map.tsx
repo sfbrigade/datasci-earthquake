@@ -113,7 +113,7 @@ const Map = () => {
           source: "soft-stories",
           type: "circle",
           paint: {
-            "circle-radius": 5.5,
+            "circle-radius": 4.5,
             "circle-stroke-width": 1,
             "circle-stroke-color": "#FFFFFF",
             "fill-color": "#171923", // gray/900
