@@ -8,13 +8,6 @@ import seismicData from "../../seismic-11212024.json";
 import tsunamiData from "../../tsunami-11212024.json";
 import softStoriesData from "../../soft-stories-11232024.json";
 
-const addressLookupCoordinates = {
-  geometry: {
-    type: "Point",
-    coordinates: [-122.463733, 37.777448],
-  },
-};
-
 const typedSeismicData: FeatureCollection<Geometry> =
   seismicData as FeatureCollection<Geometry>;
 const typedTsunamiData: FeatureCollection<Geometry> =
@@ -22,11 +15,18 @@ const typedTsunamiData: FeatureCollection<Geometry> =
 const typedSoftStoriesData: FeatureCollection<Geometry> =
   softStoriesData as FeatureCollection<Geometry>;
 
+const addressLookupCoordinates = {
+  geometry: {
+    type: "Point",
+    coordinates: [-122.463733, 37.777448],
+  },
+};
+const coords = addressLookupCoordinates.geometry.coordinates;
+const addressLngLat = new LngLat(coords[0], coords[1]);
+
 const Map = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
-  const coords = addressLookupCoordinates.geometry.coordinates;
-  const addressLngLat = new LngLat(coords[0], coords[1]);
 
   useEffect(() => {
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
