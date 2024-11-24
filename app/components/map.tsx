@@ -53,9 +53,17 @@ const Map = () => {
           [-122.6, 37.65], // Southwest coordinates
           [-122.25, 37.85], // Northeast coordinates
         ],
+        config: {
+          // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
+          basemap: {
+            // 'default', 'faded', or 'monochrome'
+            theme: "default",
+          },
+        },
       });
 
       const map = mapRef.current;
+
       const nav = new mapboxgl.NavigationControl({ showCompass: false });
       map.addControl(nav, "top-right");
 
