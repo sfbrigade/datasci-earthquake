@@ -8,6 +8,7 @@ import seismicData from "../../seismic-11212024.json";
 import tsunamiData from "../../tsunami-11212024.json";
 import softStoriesData from "../../soft-stories-11232024.json";
 
+// TODO: this is mock data; replace w/eg API calls and pass in
 const typedSeismicData: FeatureCollection<Geometry> =
   seismicData as FeatureCollection<Geometry>;
 const typedTsunamiData: FeatureCollection<Geometry> =
