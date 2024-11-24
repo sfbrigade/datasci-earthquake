@@ -4,9 +4,9 @@ import React, { useRef, useEffect } from "react";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
-import seismicData from "../../seismic-20241121.json";
-import tsunamiData from "../../tsunami-20241121.json";
-import softStoriesData from "../../soft-stories-20241123.json";
+import seismicData from "../data/seismic-20241121.json";
+import tsunamiData from "../data/tsunami-20241121.json";
+import softStoriesData from "../data/soft-stories-20241123.json";
 
 // TODO: this is mock data sourced from datasf.org; replace w/eg API calls and pass in
 const typedSeismicData: FeatureCollection<Geometry> =
