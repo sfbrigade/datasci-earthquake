@@ -6,6 +6,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
 import seismicData from "../../seismic-11212024.json";
 import tsunamiData from "../../tsunami-11212024.json";
+import softStoriesData from "../../soft-stories-11232024.json";
 
 const addressLookupCoordinates = {
   geometry: {
@@ -14,18 +15,13 @@ const addressLookupCoordinates = {
   },
 };
 
-const softStories = [
-  { lng: -122.424145, lat: 37.80379 },
-  { lng: -122.433985, lat: 37.7751 },
-  { lng: -122.40082, lat: 37.76169 },
-  { lng: -122.42539, lat: 37.7195 },
-  { lng: -122.42698, lat: 37.7616 },
-];
-
 const typedSeismicData: FeatureCollection<Geometry> =
   seismicData as FeatureCollection<Geometry>;
 const typedTsunamiData: FeatureCollection<Geometry> =
   tsunamiData as FeatureCollection<Geometry>;
+const typedSoftStoriesData: FeatureCollection<Geometry> =
+  softStoriesData as FeatureCollection<Geometry>;
+
 const Map = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -36,6 +32,7 @@ const Map = () => {
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
+      // TODO: turn this into a toast with friendly error message
       console.error("Mapbox access token or container is not set!");
       return;
     }
@@ -74,18 +71,6 @@ const Map = () => {
           .setLngLat(addressLngLat)
           .addTo(map);
 
-        softStories.forEach(({ lng, lat }) => {
-          const el = document.createElement("div");
-
-          const storyMarker = new mapboxgl.Marker({
-            element: el,
-            className: "soft-story",
-            draggable: true,
-          })
-            .setLngLat(new LngLat(lng, lat))
-            .addTo(map);
-        });
-
         // Add sources
         map.addSource("seismic", {
           type: "geojson",
@@ -95,6 +80,11 @@ const Map = () => {
         map.addSource("tsunami", {
           type: "geojson",
           data: typedTsunamiData,
+        });
+
+        map.addSource("soft-stories", {
+          type: "geojson",
+          data: typedSoftStoriesData,
         });
 
         // Add layers
@@ -115,6 +105,18 @@ const Map = () => {
           paint: {
             "fill-color": "#ED64A6", // pink/400
             "fill-opacity": 0.25, // 25% opacity
+          },
+        });
+
+        map.addLayer({
+          id: "softStoriesLayer",
+          source: "soft-stories",
+          type: "circle",
+          paint: {
+            "circle-radius": 5.5,
+            "circle-stroke-width": 1,
+            "circle-stroke-color": "#FFFFFF",
+            "fill-color": "#171923", // gray/900
           },
         });
       });
