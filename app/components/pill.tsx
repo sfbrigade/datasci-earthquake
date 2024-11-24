@@ -1,7 +1,11 @@
 import { Box, Text } from "@chakra-ui/react";
-import { AddressData } from "./__mocks__/address-data";
+import { AddressData, AddressDataType } from "./__mocks__/address-data";
 
-const Pill = () => {
+interface PillProps {
+  name: string;
+}
+
+const Pill: React.FC<PillProps> = ({ name }) => {
   const getBgColor = (status: string) => {
     switch (status) {
       case "No data":
@@ -15,15 +19,17 @@ const Pill = () => {
     }
   };
 
+  const status = AddressData[name as keyof AddressDataType] || "No data";
+
   return (
     <Box>
       <Text
-        bgColor={getBgColor(AddressData.softStory)}
+        bgColor={getBgColor(status)}
         color="white"
         p="2px 12px 2px 12px"
         borderRadius="25"
       >
-        {AddressData.softStory}
+        {status}
       </Text>
     </Box>
   );

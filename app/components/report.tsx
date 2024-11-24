@@ -8,7 +8,9 @@ const Report = () => {
     <Box>
       <HStack justifyContent="space-between">
         {AddressData.address && (
-          <Text textStyle="headerMedium">{AddressData.address}</Text>
+          <Text textStyle="headerMedium" mb="16px">
+            {AddressData.address}
+          </Text>
         )}
         <HStack>
           <Text textStyle="textMedium" color="blue">

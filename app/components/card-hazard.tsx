@@ -11,6 +11,7 @@ import Pill from "./pill";
 interface CardHazardProps {
   hazard: {
     id: number;
+    name: string;
     title: string;
     description: string;
     update: string;
@@ -18,7 +19,7 @@ interface CardHazardProps {
   };
 }
 
-const CardHazard: React.FC<CardHazardProps> = ({ hazard, addressData }) => {
+const CardHazard: React.FC<CardHazardProps> = ({ hazard }) => {
   const { title, description, update, color } = hazard;
   return (
     <Card maxW={332}>
@@ -31,7 +32,7 @@ const CardHazard: React.FC<CardHazardProps> = ({ hazard, addressData }) => {
       >
         <HStack justifyContent="space-between">
           <Text textStyle="textBig">{title}</Text>
-          <Pill />
+          <Pill name={hazard.name} />
         </HStack>
       </CardHeader>
       <CardBody
