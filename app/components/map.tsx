@@ -8,7 +8,8 @@ import seismicData from "../data/seismic-20241121.json";
 import tsunamiData from "../data/tsunami-20241121.json";
 import softStoriesData from "../data/soft-stories-20241123.json";
 
-// TODO: this is mock data sourced from datasf.org; replace w/eg API calls and pass in
+// TODO: replace data w/eg API calls and pass in; this is meant to be placeholder data sourced from datasf.org.
+// See `../data/README.md` for more information.
 const typedSeismicData: FeatureCollection<Geometry> =
   seismicData as FeatureCollection<Geometry>;
 const typedTsunamiData: FeatureCollection<Geometry> =
