@@ -40,8 +40,9 @@ const Home = () => {
           overflow="hidden"
         >
           <Map />
-        <Box>
-          <Report />
+          <Box>
+            <Report />
+          </Box>
         </Box>
       </Box>
       <Box bgColor="blue">
