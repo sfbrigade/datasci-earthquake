@@ -25,9 +25,21 @@ const Home = () => {
       <Box
         w={{ base: "base", xl: "xl" }}
         p={{
-          base: "23px 24px 27px 24px",
-          md: "37px 27px 28px 26px",
-          xl: "50px 128px 40px 127px",
+          base: "23px 24px 16px 24px",
+          md: "37px 27px 16px 26px",
+          xl: "50px 128px 16px 127px",
+        }}
+        m="auto"
+      >
+        <Report />
+      </Box>
+      <Box
+        w={{ base: "base", md: "741px", xl: "xl" }}
+        h={{ base: "323px", md: "411px", xl: "462px" }}
+        p={{
+          base: "0px 24px 27px 24px",
+          md: "0px 27px 28px 26px",
+          xl: "0px 128px 40px 127px",
         }}
         m="auto"
       >
@@ -40,9 +52,6 @@ const Home = () => {
           overflow="hidden"
         >
           <Map />
-          <Box>
-            <Report />
-          </Box>
         </Box>
       </Box>
       <Box bgColor="blue">

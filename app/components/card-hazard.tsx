@@ -19,8 +19,9 @@ interface CardHazardProps {
   };
 }
 
-const CardHazard: React.FC<CardHazardProps> = ({ hazard }) => {
-  const { title, description, update, color } = hazard;
+const CardHazard: React.FC<CardHazardProps> = ({
+  hazard: { title, name, description, update, color },
+}) => {
   return (
     <Card>
       <CardHeader
@@ -32,7 +33,7 @@ const CardHazard: React.FC<CardHazardProps> = ({ hazard }) => {
       >
         <HStack justifyContent="space-between">
           <Text textStyle="textBig">{title}</Text>
-          <Pill name={hazard.name} />
+          <Pill name={name} />
         </HStack>
       </CardHeader>
       <CardBody

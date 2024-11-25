@@ -2,6 +2,7 @@ import { Box, HStack, IconButton, Text } from "@chakra-ui/react";
 import CardHazard from "./card-hazard";
 import { AddressData } from "./__mocks__/address-data";
 import { Hazards } from "./__mocks__/hazards";
+import Map from "./map";
 
 const Report = () => {
   return (
@@ -54,6 +55,7 @@ const Report = () => {
         justifyContent="space-between"
         alignItems="stretch"
         flexDirection={{ base: "column", md: "row" }}
+        mb="16px"
       >
         {Hazards.map((hazard) => {
           return <CardHazard key={hazard.id} hazard={hazard} />;
