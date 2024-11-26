@@ -6,12 +6,13 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
 from datetime import datetime
+from backend.api.models.base import Base
 
 
-MAPPED_COLUMN_STRING_LENGTH = 200
+MAPPED_COLUMN_STRING_LENGTH = 255
 
 
-class TsunamiZone(DeclarativeBase):
+class TsunamiZone(Base):
     """
     All data of the Tsunami Hazard table from conservation.ca.gov.
     """
@@ -19,18 +20,25 @@ class TsunamiZone(DeclarativeBase):
     __tablename__ = "tsunami_zones"
 
     identifier: Mapped[int] = mapped_column(Integer, primary_key=True)
-    evacuate: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
-    county: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
-    gis_link: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
-    kmz_link: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
-    map_link: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
-    label: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
-    shape_length: Mapped[float] = mapped_column(Float)
-    shape_area: Mapped[float] = mapped_column(Float)
-    # This data is ingested as PolygonZ but should be stored as MultiPolygon
-    geometry: Mapped[Geometry] = mapped_column(Geometry("MULTIPOLYGON", srid=4326))
+    evacuate: Mapped[str] = mapped_column(
+        String(MAPPED_COLUMN_STRING_LENGTH), nullable=False
+    )
+    county: Mapped[str] = mapped_column(
+        String(MAPPED_COLUMN_STRING_LENGTH), nullable=False
+    )
+    globalID: Mapped[str] = mapped_column(
+        String(MAPPED_COLUMN_STRING_LENGTH), nullable=False
+    )
+    shape_length: Mapped[float] = mapped_column(Float, nullable=True)
+    shape_area: Mapped[float] = mapped_column(Float, nullable=True)
+    geometry: Mapped[Geometry] = mapped_column(
+        Geometry("MULTIPOLYGON", srid=4326), nullable=False
+    )
     update_timestamp: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        onupdate=func.now(),
     )
 
     def __repr__(self) -> str:

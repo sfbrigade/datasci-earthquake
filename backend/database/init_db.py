@@ -3,9 +3,39 @@ from sqlalchemy import inspect
 from backend.database.session import engine
 from backend.api.models.base import Base
 from backend.api.models.addresses import Address
+from backend.api.models.tsunami import TsunamiZone
+
+"""
+Database Initialization Script
+
+This script provides functions to manage database tables using SQLAlchemy. It includes 
+functions to create, drop, and check the existence of tables in the database. 
+
+Functions:
+    init_db(): Creates all tables defined in the SQLAlchemy `Base` metadata. 
+               Drops existing tables if they already exist.
+    drop_db(): Drops all tables defined in the SQLAlchemy `Base` metadata. 
+               Use with caution, as this action is irreversible.
+    check_tables_exist(): Checks if any tables exist in the database.
+
+Usage:
+    Run this script in docker to initialize the database by creating all necessary tables. 
+    If existing tables are detected, they will be dropped and recreated.
+
+Example:
+    $ docker exec -it datasci-earthquake-backend-1 python backend/database/init_db.py
+    Database tables created.
+
+Note:
+    - The `Base` object should be imported from your SQLAlchemy model definitions.
+
+Caution:
+    - The `drop_db()` function will irreversibly remove all tables from the database. 
+      Ensure you have backups if necessary.
+
+"""
 
 
-# Function to create tables
 def init_db():
     if check_tables_exist():
         drop_db()
@@ -13,7 +43,6 @@ def init_db():
     print("Database tables created.")
 
 
-# Optional: function to drop tables (use with caution)
 def drop_db():
     Base.metadata.drop_all(bind=engine)
     print("Database tables dropped.")
