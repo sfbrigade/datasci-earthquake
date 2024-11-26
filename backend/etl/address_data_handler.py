@@ -1,13 +1,22 @@
 from backend.etl.data_handler import DataHandler
 from backend.api.models.addresses import Address
 from shapely.geometry import Point
+from geoalchemy2.shape import from_shape, to_shape
 
 
 ADDRESSES_URL = "https://data.sfgov.org/resource/ramy-di5m.geojson"  # This API has a default limit of providing 1,000 rows
 
 
 class AddressDataHandler(DataHandler):
+    """
+    This class fetches, parses and loads SF Addresses from data.sfgov.org
+    """
+
     def parse_data(self, data: dict) -> list[dict]:
+        """
+        Parses fetched GeoJSON data and returns a list of dictionaries representing address records.
+        Points are represented in a WKT format (e.g., "Point(lat lon)").
+        """
         features = data["features"]
         parsed_data = []
 
@@ -17,7 +26,6 @@ class AddressDataHandler(DataHandler):
 
             if geometry.get("type") == "Point" and "coordinates" in geometry:
                 geom_longitude, geom_latitude = geometry["coordinates"]
-                address = {}
                 address = {
                     "eas_fullid": props.get("eas_fullid"),
                     "address": props.get("address"),

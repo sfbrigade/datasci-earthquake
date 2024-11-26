@@ -29,7 +29,7 @@ class Address(Base):
     latitude: Mapped[str] = mapped_column(Float, nullable=False)  # str
     zip_code: Mapped[int] = mapped_column(Integer, nullable=False)  # str
     point: Mapped[Geometry] = mapped_column(
-        Geometry("POINT", srid=3395, spatial_index=True), nullable=False
+        Geometry("POINT", srid=4326, spatial_index=True), nullable=False
     )
     supdist: Mapped[str] = mapped_column(
         String(MAPPED_COLUMN_STRING_LENGTH), nullable=True

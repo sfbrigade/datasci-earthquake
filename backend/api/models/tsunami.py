@@ -32,7 +32,7 @@ class TsunamiZone(Base):
     shape_length: Mapped[float] = mapped_column(Float, nullable=True)
     shape_area: Mapped[float] = mapped_column(Float, nullable=True)
     geometry: Mapped[Geometry] = mapped_column(
-        Geometry("MULTIPOLYGON", srid=3857), nullable=False
+        Geometry("MULTIPOLYGON", srid=4326), nullable=False
     )
     update_timestamp: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
