@@ -13,12 +13,12 @@ class DataHandler(ABC):
         self.url = url
         self.table = table
 
-    def fetch_data(self) -> dict:
+    def fetch_data(self, params=None) -> dict:
         retry = Retry(total=5, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retry)
         session = requests.Session()
         session.mount("https://", adapter)
-        response = session.get(self.url, timeout=60)
+        response = session.get(self.url, params=params, timeout=60)
         response.raise_for_status()
         return response.json()
 

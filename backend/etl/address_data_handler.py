@@ -32,7 +32,7 @@ class AddressDataHandler(DataHandler):
                     "longitude": props.get("longitude"),
                     "latitude": props.get("latitude"),
                     "zip_code": int(props.get("zip_code")),
-                    "point": f"Point({geom_longitude} {geom_latitude})",
+                    "point": f"Point({geom_latitude} {geom_longitude})",
                     "supdist": props.get("supdist", None),
                     "supervisor": int(props.get("supervisor", None)),
                     "supname": props.get("supname", None),
