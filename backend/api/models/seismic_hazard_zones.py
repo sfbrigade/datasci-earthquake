@@ -20,7 +20,7 @@ class SeismicHazardZone(Base):
     identifier: Mapped[int] = mapped_column(Integer, primary_key=True)
     geometry: Mapped[Geometry] = mapped_column(Geometry("MULTIPOLYGON", srid=4326))
     update_timestamp: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
     def __repr__(self) -> str:
