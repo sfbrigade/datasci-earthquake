@@ -126,7 +126,7 @@ const Map = () => {
             "circle-radius": 4.5,
             "circle-stroke-width": 1,
             "circle-stroke-color": "#FFFFFF",
-            "circle-color": "#171923", // gray/900
+            "circle-color": "#a0aec0", // gray/400
           },
         });
       });
