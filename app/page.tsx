@@ -34,7 +34,8 @@ const Home = () => {
       >
         <Report />
       </Box>
-      <Box w="base" h={{ base: "323px", md: "411px", xl: "462px" }} m="auto">
+      {/* <Box w="base" h={{ base: "323px", md: "411px", xl: "462px" }} m="auto"> */}
+      <Box w="base" h={{ base: "646px", md: "822px", xl: "924px" }} m="auto">
         <Box
           h="100%"
           border="1px solid"
