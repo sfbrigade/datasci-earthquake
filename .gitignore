@@ -12,6 +12,7 @@ lib/
 
 # Virtual Environment
 venv
+.venv
 
 # Node
 node_modules
