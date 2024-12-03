@@ -17,8 +17,8 @@
 
   box-sizing: border-box;
   position: absolute;
-  /* gray/900 */
-  background-color: #171923;
+  /* gray/400 */
+  background-color: #a0aec0;
   border: 1px solid #ffffff;
   border-radius: 50%;
 }
