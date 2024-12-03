@@ -113,7 +113,7 @@ const Map = () => {
           source: "tsunami",
           type: "fill",
           paint: {
-            "fill-color": "#ED64A6", // pink/400
+            "fill-color": "#63B3ED", // blue/300
             "fill-opacity": 0.25, // 25% opacity
           },
         });
