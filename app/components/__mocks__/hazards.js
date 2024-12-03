@@ -6,7 +6,7 @@ export const Hazards = [
     description:
       "Soft story buildings have less structural integrity in an earthquake",
     update: "00-00-0000",
-    color: "#171923",
+    color: "#A0AEC0", // grey/400
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ export const Hazards = [
     description:
       "This region is known to experience more focused seismic activity",
     update: "00-00-0000",
-    color: "#F6AD55",
+    color: "#F6AD55", // orange/300
   },
   {
     id: 3,
@@ -24,6 +24,6 @@ export const Hazards = [
     description:
       "These coastal areas can be at risk of flooding in the event of a tsunami",
     update: "00-00-0000",
-    color: "#ED64A6",
+    color: "#ED64A6", // pink/400
   },
 ];
