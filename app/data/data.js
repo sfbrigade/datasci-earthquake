@@ -36,18 +36,18 @@ export const Info = [
     list: [
       {
         id: 1,
-        name: "Ready.gov",
-        ulr: "https://www.ready.gov/",
+        title: "Ready.gov",
+        url: "https://www.ready.gov/",
       },
       {
         id: 2,
-        name: "Earthquake Authority",
-        ulr: "https://www.earthquakeauthority.com/",
+        title: "Earthquake Authority",
+        url: "https://www.earthquakeauthority.com/",
       },
       {
         id: 3,
-        name: "MyShake app",
-        ulr: "https://myshake.berkeley.edu/",
+        title: "MyShake app",
+        url: "https://myshake.berkeley.edu/",
       },
     ],
   },
@@ -58,8 +58,8 @@ export const Info = [
     list: [
       {
         id: 1,
-        name: "Find a contractor",
-        ulr: "https://www.californiaresidentialmitigationprogram.com/resources/find-a-contractor/",
+        title: "Find a contractor",
+        url: "https://www.californiaresidentialmitigationprogram.com/resources/find-a-contractor/",
       },
     ],
   },
@@ -70,13 +70,13 @@ export const Info = [
     list: [
       {
         id: 1,
-        name: "Earthquake Brace + Bolt program",
-        ulr: "https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ebb-retrofit",
+        title: "Earthquake Brace + Bolt program",
+        url: "https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ebb-retrofit",
       },
       {
         id: 2,
-        name: "EarthquakeSoftStory.com",
-        ulr: "https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit",
+        title: "EarthquakeSoftStory.com",
+        url: "https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit",
       },
     ],
   },

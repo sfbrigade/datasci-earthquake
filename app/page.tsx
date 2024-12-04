@@ -58,7 +58,6 @@ const Home = () => {
       <Box bgColor="blue">
         <Box
           w={{ base: "base", xl: "xl" }}
-          h={{ base: "166px", md: "213px", xl: "261px" }}
           p={{
             base: "26px 23px 28px 23px",
             md: "37px 23px 28px 24px",

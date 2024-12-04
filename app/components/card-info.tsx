@@ -2,10 +2,11 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
   Text,
   HStack,
   List,
+  ListItem,
+  Link,
 } from "@chakra-ui/react";
 
 interface CardInfoProps {
@@ -13,15 +14,17 @@ interface CardInfoProps {
     id: number;
     name: string;
     title: string;
-    list: Array<object>;
+    list: Array<{
+      id: number;
+      title: string;
+      url: string;
+    }>;
   };
 }
 
 const CardInfo: React.FC<CardInfoProps> = ({ info: { name, title, list } }) => {
-  const infoListItem = "";
-
   return (
-    <Card>
+    <Card flex={1}>
       <CardHeader
         p={{
           base: "10px 23px 0px 23px",
@@ -35,12 +38,22 @@ const CardInfo: React.FC<CardInfoProps> = ({ info: { name, title, list } }) => {
       </CardHeader>
       <CardBody
         p={{
-          base: "10px 23px 0px 23px",
-          md: "17px 16px 0px 16px",
-          xl: "14px 22px 0px 22px",
+          base: "10px 23px 10px 23px",
+          md: "17px 16px 17px 16px",
+          xl: "14px 22px 14px 22px",
         }}
       >
-        <List></List>
+        <List styleType="disc" ml={4}>
+          {list.map((item) => {
+            return (
+              <ListItem key={item.id}>
+                <Text>
+                  <Link href={item.url}>{item.title}</Link>
+                </Text>
+              </ListItem>
+            );
+          })}
+        </List>
       </CardBody>
     </Card>
   );
