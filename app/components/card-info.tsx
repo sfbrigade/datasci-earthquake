@@ -27,9 +27,9 @@ const CardInfo: React.FC<CardInfoProps> = ({ info: { name, title, list } }) => {
     <Card flex={1}>
       <CardHeader
         p={{
-          base: "10px 23px 0px 23px",
-          md: "17px 16px 0px 16px",
-          xl: "22px 22px 0px 22px",
+          base: "20px 24px 0px 24px",
+          md: "20px 22px 0px 22px",
+          xl: "20px 22px 0px 22px",
         }}
       >
         <HStack justifyContent="space-between">
@@ -38,9 +38,9 @@ const CardInfo: React.FC<CardInfoProps> = ({ info: { name, title, list } }) => {
       </CardHeader>
       <CardBody
         p={{
-          base: "10px 23px 10px 23px",
-          md: "17px 16px 17px 16px",
-          xl: "14px 22px 14px 22px",
+          base: "8px 23px 24px 23px",
+          md: "8px 16px 22px 16px",
+          xl: "8px 22px 20px 22px",
         }}
       >
         <List styleType="disc" ml={4}>
