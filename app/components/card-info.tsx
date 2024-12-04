@@ -14,17 +14,17 @@ interface CardInfoProps {
     id: number;
     name: string;
     title: string;
-    list: Array<{
+    list: {
       id: number;
       title: string;
       url: string;
-    }>;
+    }[];
   };
 }
 
 const CardInfo: React.FC<CardInfoProps> = ({ info: { name, title, list } }) => {
   return (
-    <Card flex={1}>
+    <Card flex={1} maxW={400}>
       <CardHeader
         p={{
           base: "20px 24px 0px 24px",
@@ -48,7 +48,9 @@ const CardInfo: React.FC<CardInfoProps> = ({ info: { name, title, list } }) => {
             return (
               <ListItem key={item.id}>
                 <Text>
-                  <Link href={item.url}>{item.title}</Link>
+                  <Link href={item.url} target="_blank">
+                    {item.title}
+                  </Link>
                 </Text>
               </ListItem>
             );
