@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import CardHazard from "../card-hazard";
-import { Hazards } from "../__mocks__/hazards";
+import { Hazards } from "../../data/data";
 import "@testing-library/jest-dom";
 
 // eslint-disable-next-line react/display-name
