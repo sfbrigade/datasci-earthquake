@@ -2,44 +2,26 @@
 from pydantic import BaseModel
 from datetime import datetime
 from geoalchemy2 import Geometry
-from .geo import PointModel
+from backend.api.models.addresses import Address
+from backend.api.schemas.geo import PointModel
 
 
-class AddressBase(BaseModel):
-    eas_baseid: int
-    eas_subid: int
+class AddressResponse(BaseModel):
     eas_fullid: str
     address: str
-    unit_number: str
-    address_number: int
-    address_number_suffix: str
-    street_name: str
-    street_type: str
-    parcel_number: str
-    block: str
-    lot: str
-    cnn: int
-    longitude: float
-    latitude: float
     zip_code: int
     point: PointModel
-    supdist: str
-    supervisor: int
-    supdistpad: str
-    numbertext: str
-    supname: str
-    nhood: str
-    complete_landmark_name: str
-    sfdata_as_of: datetime
-    sfdata_loaded_at: datetime
 
-
-class AddressCreate(AddressBase):
-    pass
-
-
-class AddressResponse(AddressBase):
-    eas_fullid: str
+    @staticmethod
+    def from_sqlalchemy_model(address: Address):
+        """Convert SQLAlchemy model to Pydantic AddressResponse"""
+        point_geometry = address.point_as_shapely
+        return AddressResponse(
+            eas_fullid=address.eas_fullid,
+            address=address.address,
+            zip_code=address.zip_code,
+            point=PointModel(coordinates=(point_geometry.x, point_geometry.y)),
+        )
 
     class Config:
         orm_mode = True

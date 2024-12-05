@@ -6,6 +6,8 @@ from geoalchemy2 import Geometry
 from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
 from backend.api.models.base import Base
+from geoalchemy2.shape import to_shape
+from sqlalchemy.ext.hybrid import hybrid_property
 
 """Data from https://data.sfgov.org/Geographic-Locations-and-Boundaries/Addresses-with-Units-Enterprise-Addressing-System/ramy-di5m/about_data"""
 
@@ -53,6 +55,11 @@ class Address(Base):
         server_default=func.now(),
         onupdate=func.now(),
     )
+
+    @hybrid_property
+    def point_as_shapely(self):
+        """Convert geometry to Shapely Point"""
+        return to_shape(self.point)
 
     def __repr__(self):
         return f"<Address(id={self.eas_fullid}, address='{self.address}, lot={self.lot}, point={self.point}, created_timestamp={self.created_timestamp}, update_timestamp={self.update_timestamp}')"

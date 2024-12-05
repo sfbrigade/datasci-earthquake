@@ -20,7 +20,14 @@ combined risk records.
 # - a new API key for OpenGate
 # - fuzzy logic to match addresses
 # Make: each get method return that of their pydantic annotations
-from .routers import combined_risk, polygons, soft_story, seismic, tsunami, addresses
+from backend.api.routers import (
+    combined_risk,
+    polygons,
+    soft_story,
+    seismic,
+    tsunami,
+    addresses,
+)
 from fastapi import FastAPI
 
 

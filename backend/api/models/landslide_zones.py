@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
 from datetime import datetime
-from .base import Base
+from backend.api.models.base import Base
 
 
 class LandslideZone(Base):

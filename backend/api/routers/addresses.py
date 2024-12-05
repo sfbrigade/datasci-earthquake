@@ -18,4 +18,4 @@ def get_address(eas_fullid: str, db: Session = Depends(get_db)):
     address = db.query(Address).filter(Address.eas_fullid == eas_fullid).first()
     if address is None:
         raise HTTPException(status_code=404, detail="Address not found")
-    return address
+    return AddressResponse.from_sqlalchemy_model(address)

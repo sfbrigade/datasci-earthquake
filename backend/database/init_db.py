@@ -1,7 +1,7 @@
+from backend.api.models.base import Base
 from sqlalchemy.orm import Session
 from sqlalchemy import inspect
 from backend.database.session import engine
-from backend.api.models.base import Base
 from backend.api.models.addresses import Address
 from backend.api.models.tsunami import TsunamiZone
 
