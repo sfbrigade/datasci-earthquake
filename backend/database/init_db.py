@@ -4,6 +4,8 @@ from sqlalchemy import inspect
 from backend.database.session import engine
 from backend.api.models.addresses import Address
 from backend.api.models.tsunami import TsunamiZone
+from backend.api.models.landslide_zones import LandslideZone
+from backend.api.models.seismic_hazard_zones import SeismicHazardZone
 
 """
 Database Initialization Script

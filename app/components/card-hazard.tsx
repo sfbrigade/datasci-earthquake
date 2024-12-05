@@ -23,7 +23,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
   hazard: { title, name, description, update, color },
 }) => {
   return (
-    <Card>
+    <Card flex={1} maxW={400}>
       <CardHeader
         p={{
           base: "10px 23px 0px 23px",

@@ -1,10 +1,12 @@
 ### This is a project of SF Civic Tech [https://www.sfcivictech.org/](https://www.sfcivictech.org/)
 
-## Introduction
+# Introduction
 
 This is a hybrid Next.js + Python app that uses Next.js as the frontend and FastAPI as the API backend.
 
-## Getting Started
+# Getting Started
+
+You can work on this app locally or using Docker. If you choose to work locally, do the following:
 
 First, install the dependencies:
 
@@ -38,35 +40,9 @@ To learn more about Next.js, take a look at the following resources:
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 - [FastAPI Documentation](https://fastapi.tiangolo.com/) - learn about FastAPI features and API.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/).
 
 ---
-
-# Formatting with a Pre-Commit Hook
-
-This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project.
-
-## Prerequisites
-
-- If you haven't already, install pre-commit:
-  `pip install pre-commit`
-- Run the following command to install the pre-commit hooks defined in the configuration file `.pre-commit-config.yaml`:
-  `pre-commit install`
-  This command sets up pre-commit to automatically run ESLint, Black, and MyPy before each commit.
-
-## Usage
-
-- **Running Black Automatically**: After setup, every time you attempt to commit code, Black will check the staged files and apply formatting if necessary. If files are reformatted, the commit will be stopped, and you’ll need to review the changes before committing again.
-- **Bypassing the Hook**: If you want to skip the pre-commit hook for a specific commit, use the --no-verify flag with your commit command:
-  `git commit -m "your commit message" --no-verify`.
-
-  **Note**: The `--no-verify` flag is helpful in cases where you need to make a quick commit without running the pre-commit checks, but it should be used sparingly to maintain code quality. CI pipeline will fail during the `pull request` action if the code is not formatted.
-
-- **Running Pre-commit on All Files**: If you want to format all files in the repository, use:
-  `pre-commit run --all-files`
-
----
-
 # Docker
 
 This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.
@@ -110,6 +86,39 @@ To stop and shut down the application:
     - Remove the containers, but it will **not** delete volumes (so the database data will persist).
 
     **Note:** If you want to start with a clean slate and remove all data inside the containers, run `docker-compose down -v`.
+
+## Troubleshooting
+
+1. You can find the list of running containers (their ids, names, status and ports) by running `docker ps -a`.
+2. If a container failed, start troublshooting by inspecting logs with `docker logs <container-id>`.
+3. Containers fail when their build contexts were modified but the containers weren't rebuilt. If logs show that some dependencies are missing, this can be likely solved by rebuilding the containers.
+3. Many problems are caused by disk usage issues. Run `docker system df` to show disk usage. Use pruning commands such as `docker system prune`to clean up unused resources. 
+4. `Error response from daemon: network not found` occurs when Docker tries to use a network that has already been deleted or is dangling (not associated with any container). Prune unused networks to resolve this issue: `docker network prune -f`. If this doesn't help, run `docker system prune`.
+
+---
+
+# Formatting with a Pre-Commit Hook
+
+This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project.
+
+## Prerequisites
+
+- If you haven't already, install pre-commit:
+  `pip install pre-commit`
+- Run the following command to install the pre-commit hooks defined in the configuration file `.pre-commit-config.yaml`:
+  `pre-commit install`
+  This command sets up pre-commit to automatically run ESLint, Black, and MyPy before each commit.
+
+## Usage
+
+- **Running Black Automatically**: After setup, every time you attempt to commit code, Black will check the staged files and apply formatting if necessary. If files are reformatted, the commit will be stopped, and you’ll need to review the changes before committing again.
+- **Bypassing the Hook**: If you want to skip the pre-commit hook for a specific commit, use the --no-verify flag with your commit command:
+  `git commit -m "your commit message" --no-verify`.
+
+  **Note**: The `--no-verify` flag is helpful in cases where you need to make a quick commit without running the pre-commit checks, but it should be used sparingly to maintain code quality. CI pipeline will fail during the `pull request` action if the code is not formatted.
+
+- **Running Pre-commit on All Files**: If you want to format all files in the repository, use:
+  `pre-commit run --all-files`
 
 ---
 

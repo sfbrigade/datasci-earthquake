@@ -4,6 +4,7 @@ import Heading from "./components/heading";
 import Map from "./components/map";
 import "./globals.css";
 import Report from "./components/report";
+import Information from "./components/information";
 
 const Home = () => {
   return (
@@ -57,7 +58,6 @@ const Home = () => {
       <Box bgColor="blue">
         <Box
           w={{ base: "base", xl: "xl" }}
-          h={{ base: "166px", md: "213px", xl: "261px" }}
           p={{
             base: "26px 23px 28px 23px",
             md: "37px 23px 28px 24px",
@@ -65,9 +65,7 @@ const Home = () => {
           }}
           m="auto"
         >
-          <Box h="100%" border="1px solid" borderColor="grey.400">
-            <Text textStyle="headerSmall">Cards box</Text>
-          </Box>
+          <Information />
         </Box>
       </Box>
     </Flex>

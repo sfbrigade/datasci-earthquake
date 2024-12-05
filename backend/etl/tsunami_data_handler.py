@@ -36,7 +36,7 @@ class TsunamiDataHandler(DataHandler):
             )
             geoalchemy_multipolygon = from_shape(transformed_multipolygon, srid=4326)
             tsunami_zone = {
-                "identifier": properties.get("OBJECTID"),
+                "identifier": int(properties.get("OBJECTID")),
                 "evacuate": properties.get("Evacuate"),
                 "county": properties.get("County"),
                 "globalID": properties.get("GlobalID"),
