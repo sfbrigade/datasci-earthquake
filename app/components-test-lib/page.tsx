@@ -3,6 +3,9 @@
 import { Box, Heading, VStack, Text, HStack, Divider } from "@chakra-ui/react";
 import SearchBar from "../components/search-bar";
 import CardHazard from "../components/card-hazard";
+import { Hazards } from "../data/data";
+import { Info } from "../data/data";
+import CardInfo from "../components/card-info";
 
 const ComponentsTestLib = () => {
   return (
@@ -37,7 +40,14 @@ const ComponentsTestLib = () => {
       <Text mb={4}>This section demonstrates Hazard Card component</Text>
       <VStack spacing={4} align="start">
         <HStack w="100%">
-          <CardHazard />
+          <CardHazard hazard={Hazards[0]} />
+        </HStack>
+        <Divider mb={2} />
+      </VStack>
+      <Text mb={4}>This section demonstrates Info Card component</Text>
+      <VStack spacing={4} align="start">
+        <HStack w="100%">
+          <CardInfo info={Info[0]} />
         </HStack>
         <Divider mb={2} />
       </VStack>
