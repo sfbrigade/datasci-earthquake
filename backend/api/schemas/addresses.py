@@ -1,7 +1,6 @@
-# backend/schemas/address.py
+"""Database schema to store addresses"""
 from pydantic import BaseModel
 from datetime import datetime
-from geoalchemy2 import Geometry
 from .geo import PointModel
 
 

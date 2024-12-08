@@ -1,13 +1,13 @@
-import uvicorn
-
-
 """
-Index of API.
+API index
 
 Allows getting, putting, and deleting soft story records,
 and seismic risk and tsunami polygons and the resulting
-combined risk records.
+combined risk records
 """
+import uvicorn
+from .routers import combined_risk, polygons, soft_story, seismic, tsunami, addresses
+from fastapi import FastAPI
 # TODO:
 # Decide:
 # - whether old polygons should be kept #53
@@ -20,8 +20,6 @@ combined risk records.
 # - a new API key for OpenGate
 # - fuzzy logic to match addresses
 # Make: each get method return that of their pydantic annotations
-from .routers import combined_risk, polygons, soft_story, seismic, tsunami, addresses
-from fastapi import FastAPI
 
 
 app = FastAPI()

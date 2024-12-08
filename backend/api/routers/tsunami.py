@@ -1,5 +1,4 @@
-"""Router to get tsunami risk and CRUD tsunami polygons."""
-
+"""Router to get tsunami risk"""
 from fastapi import APIRouter
 from ..tags import Tags
 

@@ -1,5 +1,4 @@
 """Tsunami Risk Zone data"""
-
 from sqlalchemy import String, Integer, Float, DateTime, func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
@@ -9,25 +8,24 @@ from datetime import datetime
 from backend.api.models.base import Base
 
 
-MAPPED_COLUMN_STRING_LENGTH = 255
+_STRING_LENGTH = 255
 
 
 class TsunamiZone(Base):
     """
-    All data of the Tsunami Hazard table from conservation.ca.gov.
+    All data of the Tsunami Hazard table from conservation.ca.gov
     """
-
     __tablename__ = "tsunami_zones"
 
     identifier: Mapped[int] = mapped_column(Integer, primary_key=True)
     evacuate: Mapped[str] = mapped_column(
-        String(MAPPED_COLUMN_STRING_LENGTH), nullable=False
+        String(_STRING_LENGTH), nullable=False
     )
     county: Mapped[str] = mapped_column(
-        String(MAPPED_COLUMN_STRING_LENGTH), nullable=False
+        String(_STRING_LENGTH), nullable=False
     )
     globalID: Mapped[str] = mapped_column(
-        String(MAPPED_COLUMN_STRING_LENGTH), nullable=False
+        String(_STRING_LENGTH), nullable=False
     )
     shape_length: Mapped[float] = mapped_column(Float, nullable=True)
     shape_area: Mapped[float] = mapped_column(Float, nullable=True)

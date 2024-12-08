@@ -1,5 +1,4 @@
-"""All data of the Liquefaction Zones table from SFData."""
-
+"""All data of the Liquefaction Zones table from SFData"""
 from sqlalchemy import Integer, String, Float, DateTime, func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
@@ -11,11 +10,11 @@ from .base import Base
 
 class LiquefactionZone(Base):
     """
-    All data of the Liquefaction Zones table from SFData.
-    Contains multipolygon geometries defining soil liquefaction zones as High (H) or
-    Very High (VH) susceptibility.
-    """
+    All data of the Liquefaction Zones table from SFData
 
+    Contains multipolygon geometries defining soil liquefaction zones
+    as High (H) or Very High (VH) susceptibility
+    """
     __tablename__ = "liquefaction_zones"
 
     identifier: Mapped[int] = mapped_column(

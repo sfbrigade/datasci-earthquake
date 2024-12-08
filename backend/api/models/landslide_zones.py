@@ -1,5 +1,4 @@
-"""All data of the Landslide Zones table from SFData."""
-
+"""All data of the Landslide Zones table from SFData"""
 from sqlalchemy import String, Integer, DateTime, func, Float
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
@@ -11,10 +10,10 @@ from .base import Base
 
 class LandslideZone(Base):
     """
-    All data of the Landslide Zones table from SFData.
-    Contains multipolygon geometries defining landslide zones.
+    All data of the Landslide Zones table from SFData
+    
+    Contains multipolygon geometries defining landslide zones
     """
-
     __tablename__ = "landslide_zones"
 
     identifier: Mapped[int] = mapped_column(Integer, primary_key=True)
