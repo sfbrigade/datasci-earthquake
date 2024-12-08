@@ -50,10 +50,6 @@ if __name__ == "__main__":
     handler = _SoftStoryPropertiesDataHandler(
         _SOFT_STORY_PROPERTIES_URL, SoftStoryProperty
     )
-    """soft_story_properties = handler.fetch_data()
-    soft_story_property_objects = handler.parse_data(soft_story_properties)
-    handler.bulk_insert_data_autoincremented(soft_story_property_objects)"""
-    # ORIGINAL CODE: UN-COMMENT IT AFTER WORK
     try:
         soft_story_properties = handler.fetch_data()
         soft_story_property_objects = handler.parse_data(soft_story_properties)
