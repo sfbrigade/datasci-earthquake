@@ -15,6 +15,7 @@ class LiquefactionZone(Base):
     Contains multipolygon geometries defining soil liquefaction zones
     as High (H) or Very High (VH) susceptibility
     """
+
     __tablename__ = "liquefaction_zones"
 
     identifier: Mapped[int] = mapped_column(

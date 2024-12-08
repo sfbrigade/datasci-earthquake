@@ -9,6 +9,7 @@ router = APIRouter(prefix="/api/polygons", tags=[Tags.POLYGONS])
 
 class Polygon(BaseModel):
     """GIS data container of vertices defining a polygon."""
+
     pass
 
 

@@ -8,6 +8,7 @@ combined risk records
 import uvicorn
 from .routers import combined_risk, polygons, soft_story, seismic, tsunami, addresses
 from fastapi import FastAPI
+
 # TODO:
 # Decide:
 # - whether old polygons should be kept #53

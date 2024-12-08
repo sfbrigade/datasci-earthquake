@@ -9,8 +9,9 @@ class PointModel(BaseModel):
         - type: Point
         - coordinates: Longitude, Latitude
     """
+
     type: str = Field(default="Point")
-    coordinates: Tuple[float, float] 
+    coordinates: Tuple[float, float]
 
 
 class Polygon(BaseModel):
@@ -20,4 +21,5 @@ class Polygon(BaseModel):
     Complex pydantic object bounding which addresses are at
     risk of area-based perils and which ones are not
     """
+
     pass

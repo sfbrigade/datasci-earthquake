@@ -30,16 +30,10 @@ class Address(Base):
     point: Mapped[Geometry] = mapped_column(
         Geometry("POINT", srid=4326, spatial_index=True), nullable=False
     )
-    supdist: Mapped[str] = mapped_column(
-        String(_STRING_LENGTH), nullable=True
-    )
+    supdist: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
     supervisor: Mapped[int] = mapped_column(Integer, nullable=True)  # str
-    supname: Mapped[str] = mapped_column(
-        String(_STRING_LENGTH), nullable=True
-    )
-    nhood: Mapped[str] = mapped_column(
-        String(_STRING_LENGTH), nullable=False
-    )
+    supname: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
+    nhood: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=False)
     sfdata_as_of: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False
     )

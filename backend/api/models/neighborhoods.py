@@ -15,6 +15,7 @@ class Neighborhood(Base):
     """
     Stores neighborhood boundaries as multipolygon geometries.
     """
+
     __tablename__ = "neighborhoods"
 
     identifier: Mapped[int] = mapped_column(Integer, primary_key=True)

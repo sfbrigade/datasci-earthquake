@@ -17,6 +17,7 @@ class SoftStoryProperty(Base):
     Contains point geometries for properties.
     Used for spatial comparison to determine hazard zone overlaps.
     """
+
     __tablename__ = "soft_story_properties"
 
     identifier: Mapped[int] = mapped_column(
