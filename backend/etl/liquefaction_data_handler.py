@@ -41,13 +41,9 @@ class _LiquefactionDataHandler(DataHandler):
 
 if __name__ == "__main__":
     handler = _LiquefactionDataHandler(_LIQUEFACTION_URL, LiquefactionZone)
-    liquefaction_zones = handler.fetch_data()
-    liquefaction_zones_objects = handler.parse_data(liquefaction_zones)
-    handler.bulk_insert_data(liquefaction_zones_objects, "identifier")
-    # ORIGINAL CODE: UN-COMMENT IT AFTER WORK
-    # try:
-    #     liquefaction_zones = handler.fetch_data()
-    #     liquefaction_zones_objects = handler.parse_data(liquefaction_zones)
-    #     handler.bulk_insert_data(liquefaction_zones_objects, "identifier")
-    # except Exception as e:
-    #     print(f"Failed after retries: {e}")
+    try:
+        liquefaction_zones = handler.fetch_data()
+        liquefaction_zones_objects = handler.parse_data(liquefaction_zones)
+        handler.bulk_insert_data(liquefaction_zones_objects, "identifier")
+    except Exception as e:
+        print(f"Failed after retries: {e}")
