@@ -38,7 +38,7 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
                     "bos_district": properties.get("bos_district"),
                     "point": (
                         f"Point({geom_latitude} {geom_longitude})" if geometry else None
-                    ),  # geometry.get("coordinates") if geometry else None,
+                    ),
                     "sfdata_as_of": properties.get("data_as_of"),
                     "sfdata_loaded_at": properties.get("data_loaded_at"),
                 }
