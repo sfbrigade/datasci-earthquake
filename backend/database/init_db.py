@@ -30,6 +30,7 @@ Caution:
     The `drop_db()` function will irreversibly remove all tables from 
     the database. Ensure you have backups if necessary.
 """
+
 from sqlalchemy.orm import Session
 from sqlalchemy import inspect
 from backend.database.session import engine

@@ -9,16 +9,17 @@ _LIQUEFACTION_URL = "https://data.sfgov.org/resource/i4t7-35u3.geojson"
 
 class _LiquefactionDataHandler(DataHandler):
     """
-    This class fetches, parses and loads SF liquefaction data from 
+    This class fetches, parses and loads SF liquefaction data from
     data.sfgov.org
     """
+
     def parse_data(self, data: dict) -> list[dict]:
         """
-        Extracts feature attributes and geometry data to construct a 
+        Extracts feature attributes and geometry data to construct a
         list of dictionaries.
 
-        Each dictionary represents a row for the database table. 
-        Geometry data is converted into a GeoAlchemy-compatible 
+        Each dictionary represents a row for the database table.
+        Geometry data is converted into a GeoAlchemy-compatible
         MultiPolygon with srid 4326.
         """
         features = data["features"]
@@ -50,11 +51,3 @@ if __name__ == "__main__":
     #     handler.bulk_insert_data(liquefaction_zones_objects, "identifier")
     # except Exception as e:
     #     print(f"Failed after retries: {e}")
-
-    
-
-
-
-
-
-
