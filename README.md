@@ -76,7 +76,7 @@ This project uses Docker and Docker Compose to run the application, which includ
 
 To stop and shut down the application:
 
-1.  **Stop Docker Compose**: In the same directory where the `docker-compose.yml` file is located, press `Ctrl + C` in the terminal where the app is running.
+1.  **Stop Docker Compose**: Type `docker compose stop`.
 
 2.  **Bring Down the Containers**: If you want to stop and remove the containers completely, run:
     `docker-compose down`
