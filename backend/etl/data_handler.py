@@ -43,14 +43,14 @@ class DataHandler(ABC):
 
     def transform_geometry(self, geometry, source_srid, target_srid=4326):
         """
-        Transform geometry from source_srid to target_srid using
-        pyproj.
+        Transforms geometry from source_srid to target_srid using
+        pyproj
 
         Args:
-            geometry: The geometry object (Polygon or MultiPolygon).
-            source_srid: The original SRID of the geometry.
+            geometry: The geometry object (Polygon or MultiPolygon)
+            source_srid: The original SRID of the geometry
             target_srid: The target SRID for the transformation,
-                         default is 4326.
+                         default is 4326
 
         Returns:
             The transformed geometry.
@@ -67,15 +67,16 @@ class DataHandler(ABC):
     def parse_data(self, data: dict) -> list[dict]:
         """
         Abstract method to parse the fetched data into a list of
-        database row dictionaries.
+        database row dictionaries
         """
         pass
 
     def bulk_insert_data(self, data_dicts: list[dict], id_field: str):
         """
         Inserts the list of dictionaries into the database table as
-        SQLAlchemy objects. Rows that cause conflicts based on the
-        `id_field` are skipped.
+        SQLAlchemy objects.
+
+        Rows that cause conflicts based on the `id_field` are skipped
         """
         # TODO: Implement logic to upsert only changed data
         with next(get_db()) as db:
@@ -87,7 +88,7 @@ class DataHandler(ABC):
     def bulk_insert_data_autoincremented(self, data_dicts: list[dict]):
         """
         Inserts the list of dictionaries into the database table as
-        SQLAlchemy objects.
+        SQLAlchemy objects
         """
         # TODO: Implement logic to upsert only changed data
         with next(get_db()) as db:

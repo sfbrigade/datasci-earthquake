@@ -9,15 +9,18 @@ TSUNAMI_URL = "https://services2.arcgis.com/zr3KAIbsRSUyARHG/ArcGIS/rest/service
 
 class TsunamiDataHandler(DataHandler):
     """
-    This class fetches, parses and loads SF tsunami data from conservation.ca.gov
+    This class fetches, parses and loads SF tsunami data from
+    conservation.ca.gov
     """
 
     def parse_data(self, data: dict) -> list[dict]:
         """
-        Extracts feature attributes and geometry data to construct a list of dictionaries.
+        Extracts feature attributes and geometry data to construct a
+        list of dictionaries.
 
-        Each dictionary represents a row for the database table. Geometry data is converted into a
-        GeoAlchemy-compatible MultiPolygon with srid 4326.
+        Each dictionary represents a row for the database table.
+        Geometry data is converted into a GeoAlchemy-compatible
+        MultiPolygon with srid 4326.
         """
         features = data["features"]
         parsed_data = []

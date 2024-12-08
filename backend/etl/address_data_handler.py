@@ -14,8 +14,10 @@ class AddressDataHandler(DataHandler):
 
     def parse_data(self, data: dict) -> list[dict]:
         """
-        Parses fetched GeoJSON data and returns a list of dictionaries representing address records.
-        Points are represented in a WKT format (e.g., "Point(lat lon)").
+        Parses fetched GeoJSON data and returns a list of dictionaries
+        representing address records
+
+        Points are represented in a WKT format (e.g., "Point(lat lon)")
         """
         features = data["features"]
         parsed_data = []
