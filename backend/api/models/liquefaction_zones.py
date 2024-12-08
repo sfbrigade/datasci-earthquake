@@ -1,6 +1,6 @@
 """All data of the Liquefaction Zones table from SFData."""
 
-from sqlalchemy import String, Float, DateTime, func
+from sqlalchemy import Integer, String, Float, DateTime, func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -18,7 +18,7 @@ class LiquefactionZone(Base):
 
     __tablename__ = "liquefaction_zones"
 
-    identifier: Mapped[int] = mapped_column(primary_key=True)
+    identifier: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     geometry: Mapped[Geometry] = mapped_column(Geometry("MULTIPOLYGON", srid=4326))
     susceptibility: Mapped[str] = mapped_column(String)
     shape_length: Mapped[float] = mapped_column(Float)

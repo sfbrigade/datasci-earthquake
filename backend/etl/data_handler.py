@@ -14,7 +14,8 @@ from geoalchemy2.shape import from_shape
 
 class DataHandler(ABC):
     """
-    Abstract base class for handling data operations with an external API and database.
+    Abstract base class for handling data operations with an external
+    API and database.
 
     Attributes:
         url (str): The API endpoint URL.
@@ -27,7 +28,10 @@ class DataHandler(ABC):
 
     def fetch_data(self, params=None) -> dict:
         """
-        Fetch data from the API with retry logic. Retries the request up to 5 times if necessary. Returns the response data as a dictionary.
+        Fetch data from the API with retry logic. 
+        
+        Retries the request up to 5 times if necessary. 
+        Returns the response data as a dictionary.
         """
         retry = Retry(total=5, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retry)
@@ -39,12 +43,14 @@ class DataHandler(ABC):
 
     def transform_geometry(self, geometry, source_srid, target_srid=4326):
         """
-        Transform geometry from source_srid to target_srid using pyproj.
+        Transform geometry from source_srid to target_srid using 
+        pyproj.
 
         Args:
             geometry: The geometry object (Polygon or MultiPolygon).
             source_srid: The original SRID of the geometry.
-            target_srid: The target SRID for the transformation, default is 4326.
+            target_srid: The target SRID for the transformation, 
+                         default is 4326.
 
         Returns:
             The transformed geometry.
@@ -60,17 +66,31 @@ class DataHandler(ABC):
     @abstractmethod
     def parse_data(self, data: dict) -> list[dict]:
         """
-        Abstract method to parse the fetched data into a list of database row dictionaries.
+        Abstract method to parse the fetched data into a list of
+        database row dictionaries.
         """
         pass
 
     def bulk_insert_data(self, data_dicts: list[dict], id_field: str):
         """
-        Inserts the list of dictionaries into the database table as SQLAlchemy objects. Rows that cause conflicts based on the `id_field` are skipped.
+        Inserts the list of dictionaries into the database table as 
+        SQLAlchemy objects. Rows that cause conflicts based on the 
+        `id_field` are skipped.
         """
         # TODO: Implement logic to upsert only changed data
         with next(get_db()) as db:
             stmt = pg_insert(self.table).values(data_dicts)
             stmt = stmt.on_conflict_do_nothing(index_elements=[id_field])
+            db.execute(stmt)
+            db.commit()
+
+    def bulk_insert_data_autoincremented(self, data_dicts: list[dict]):
+        """
+        Inserts the list of dictionaries into the database table as 
+        SQLAlchemy objects.
+        """
+        # TODO: Implement logic to upsert only changed data
+        with next(get_db()) as db:
+            stmt = pg_insert(self.table).values(data_dicts)
             db.execute(stmt)
             db.commit()
