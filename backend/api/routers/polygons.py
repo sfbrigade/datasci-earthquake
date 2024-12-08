@@ -1,5 +1,4 @@
-"""Router to CRUD polygons."""
-
+"""Router to CRUD for polygons"""
 from fastapi import APIRouter
 from pydantic import BaseModel
 from ..tags import Tags

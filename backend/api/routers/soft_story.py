@@ -1,3 +1,4 @@
+"""CRUD for soft story properties"""
 from fastapi import APIRouter, Query
 from typing import Annotated
 from ..tags import Tags

@@ -49,7 +49,7 @@ create table if not exists combined_risk (
     liquefaction_risk boolean not null default false
 );
 
-create table if not exists soft_story_addresses (
+/*create table if not exists soft_story_addresses (
     identifier integer not null,
     block varchar(255),
     lot varchar(255),
@@ -64,7 +64,7 @@ create table if not exists soft_story_addresses (
     sfdata_loaded_at timestamp
     --update_timestamp timestamp
 );
-
+*/
 insert into combined_risk (address,                                soft_story_risk, seismic_hazard_risk, landslide_risk, liquefaction_risk) values 
                           ('3560 PIERCE ST, SAN FRANCISCO CA',     true,            false,               false,          false),
                           ('3484 18TH ST, SAN FRANCISCO CA',       true,            true,                false,          true),
@@ -87,10 +87,11 @@ insert into combined_risk (address,                                soft_story_ri
 --status column is a varchar in the database but must be transformed into a boolean for use
 --possibly keep the booleans in the transformed database in memory between updates
 
-insert into soft_story_addresses (identifier, block, lot, parcel_number, property_address, address,                            tier, status,                      bos_district, sfdata_as_of,             sfdata_loaded_at) values
+/*insert into soft_story_addresses (identifier, block, lot, parcel_number, property_address, address,                            tier, status,                      bos_district, sfdata_as_of,             sfdata_loaded_at) values
                                  (1,          3578,  71,  3578071,       '3549 17TH ST',   '3549 17TH ST, SAN FRANCISCO CA',   3,    'Work Complete CFC Issued',  8,            '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM'), 
                                  (2,          41,    4,   41004,         '2231 POWELL ST', '2231 POWELL ST, SAN FRANCISCO CA', 3,    'Non-Compliant',             3,            '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM'),
                                  (3,          1896,  46,  1896046,       '1612 48TH AV',   '1612 48TH AV, SAN FRANCISCO CA',   3,    'Work Complete, CFC Issued', 4,            '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM'),
                                  (4,          1222,  55,  1222055,       '253 CENTRAL AV', '253 CENTRAL AV, SAN FRANCISCO CA', 3,    'Work Complete, CFC Issued', 5,            '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM'),
                                  (5,          1730,  49,  1730049,       '1240 21ST AV',   '1240 21ST AV, SAN FRANCISCO CA',   3,    'Work Complete, CFC Issued', 4,            '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM'),
                                  (6,          4217,  12,  4217012,       '2120 24TH ST',   '2120 24TH ST, SAN FRANCISCO CA',   3,    'Work Complete, CFC Issued', 10,           '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM');
+                                 */
