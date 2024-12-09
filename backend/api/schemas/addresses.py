@@ -1,12 +1,8 @@
-# backend/schemas/address.py
-from pydantic import BaseModel
-from datetime import datetime
-from geoalchemy2 import Geometry
+from pydantic import BaseModel, Field
 from backend.api.models.addresses import Address
-from geojson_pydantic import Feature, FeatureCollection, Point, MultiPolygon
+from geojson_pydantic import Feature, FeatureCollection, Point
 from geoalchemy2.shape import to_shape
 from typing import List
-from pydantic import BaseModel, Field
 
 
 class AddressProperties(BaseModel):
