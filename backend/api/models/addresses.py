@@ -1,3 +1,5 @@
+"""Data from https://data.sfgov.org/Geographic-Locations-and-Boundaries/Addresses-with-Units-Enterprise-Addressing-System/ramy-di5m/about_data"""
+
 from sqlalchemy import Integer, String, Boolean, Float, DateTime, func
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped
@@ -7,10 +9,8 @@ from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
 from backend.api.models.base import Base
 
-"""Data from https://data.sfgov.org/Geographic-Locations-and-Boundaries/Addresses-with-Units-Enterprise-Addressing-System/ramy-di5m/about_data"""
 
-
-MAPPED_COLUMN_STRING_LENGTH = 255
+_STRING_LENGTH = 255
 
 
 class Address(Base):
@@ -31,16 +31,10 @@ class Address(Base):
     point: Mapped[Geometry] = mapped_column(
         Geometry("POINT", srid=4326, spatial_index=True), nullable=False
     )
-    supdist: Mapped[str] = mapped_column(
-        String(MAPPED_COLUMN_STRING_LENGTH), nullable=True
-    )
+    supdist: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
     supervisor: Mapped[int] = mapped_column(Integer, nullable=True)  # str
-    supname: Mapped[str] = mapped_column(
-        String(MAPPED_COLUMN_STRING_LENGTH), nullable=True
-    )
-    nhood: Mapped[str] = mapped_column(
-        String(MAPPED_COLUMN_STRING_LENGTH), nullable=False
-    )
+    supname: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
+    nhood: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=False)
     sfdata_as_of: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False
     )

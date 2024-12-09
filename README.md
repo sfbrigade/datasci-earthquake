@@ -76,7 +76,7 @@ This project uses Docker and Docker Compose to run the application, which includ
 
 To stop and shut down the application:
 
-1.  **Stop Docker Compose**: In the same directory where the `docker-compose.yml` file is located, press `Ctrl + C` in the terminal where the app is running.
+1.  **Stop Docker Compose**: Type `docker compose stop`.
 
 2.  **Bring Down the Containers**: If you want to stop and remove the containers completely, run:
     `docker-compose down`
@@ -99,7 +99,7 @@ To stop and shut down the application:
 
 # Formatting with a Pre-Commit Hook
 
-This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project.
+This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project.  It works for *only* the staged files.  If you have edited unstaged files in your repository and want to make them comply with the CI pipeline, then run `black .` `mypy .` for Python code and `npm run lint .` for Javascript code.
 
 ## Prerequisites
 
