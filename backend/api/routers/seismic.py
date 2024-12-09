@@ -1,4 +1,5 @@
 """Router to get seismic risk."""
+
 from fastapi import APIRouter
 from ..tags import Tags
 

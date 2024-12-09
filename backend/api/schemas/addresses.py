@@ -1,4 +1,5 @@
 """Database schema to store addresses"""
+
 from pydantic import BaseModel
 from datetime import datetime
 from .geo import PointModel

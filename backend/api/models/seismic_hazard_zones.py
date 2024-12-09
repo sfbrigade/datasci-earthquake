@@ -1,4 +1,5 @@
 """All data of the Seismic Hazard table from SFData"""
+
 from sqlalchemy import Integer, DateTime, func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped

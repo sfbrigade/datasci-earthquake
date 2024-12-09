@@ -1,4 +1,5 @@
 """All data of the Soft Story table from SFData."""
+
 from sqlalchemy import String, Integer, DateTime, func
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
