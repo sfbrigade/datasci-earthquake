@@ -1,3 +1,4 @@
+/* TODO: line up property values with ./theme.ts OR add automation that outputs design tokens for both CSS (SCSS?) and TS */
 .marker {
   /* Pin */
   width: 26.2px;
@@ -7,27 +8,26 @@
   border-radius: 0;
 }
 
+/* TODO: CSS rules unused after this point, but can be manually referenced for cards; clean up if no longer needed for reference */
 .soft-story {
   /* Pin */
   width: 11px;
   height: 11px;
   background-size: cover;
 
-  /* Ellipse 10 */
   box-sizing: border-box;
   position: absolute;
   /* gray/900 */
   background-color: #171923;
-  /* white */
-  border: 1px solid #FFFFFF;
-  border-radius: 50%
+  border: 1px solid #ffffff;
+  border-radius: 50%;
 }
 
 .key {
   /* Key */
   width: 16px;
   height: 16px;
-  border-radius: 50%
+  border-radius: 50%;
 }
 
 .key-soft-story {
