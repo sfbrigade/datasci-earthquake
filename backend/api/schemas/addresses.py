@@ -3,28 +3,24 @@ from pydantic import BaseModel
 from datetime import datetime
 from geoalchemy2 import Geometry
 from backend.api.models.addresses import Address
-from backend.api.schemas.geo import PointModel
-from backend.api.schemas.base_geojson_models import (
-    FeatureProperties,
-    FeatureModel,
-    FeatureCollectionModel,
-)
+from geojson_pydantic import Feature, FeatureCollection, Point, MultiPolygon
 from geoalchemy2.shape import to_shape
 from typing import List
 from pydantic import BaseModel, Field
 
 
-class AddressProperties(FeatureProperties):
+class AddressProperties(BaseModel):
     eas_fullid: str
     address: str
 
-    """class Config:
-        orm_mode = True"""
 
-
-class AddressResponse(FeatureModel):
-    geometry: PointModel
+class AddressFeature(Feature):
+    type: str = Field(default="Feature")  # type: ignore
+    geometry: Point
     properties: AddressProperties
+
+    class Config:
+        from_attributes = True
 
     @staticmethod
     def from_sqlalchemy_model(address: Address):
@@ -34,7 +30,7 @@ class AddressResponse(FeatureModel):
             address.point_as_shapely.x,
             address.point_as_shapely.y,
         ]  # Longitude, Latitude
-        return AddressResponse(
+        return AddressFeature(
             type="Feature",
             geometry={"type": "Point", "coordinates": coordinates},
             properties={
@@ -43,31 +39,7 @@ class AddressResponse(FeatureModel):
             },
         )
 
-    def to_dict(self):
-        return {
-            "type": self.type,
-            "geometry": self.geometry.dict(),
-            "properties": self.properties.dict(),
-        }
 
-    """class Config:
-        orm_mode = True"""
-
-
-"""class AddressesResponse(FeatureCollectionModel):
-    features: List[AddressResponse]
-
-    class Config:
-        # orm_mode = True
-        json_encoders = {
-            AddressResponse: lambda v: v.dict(),
-            PointModel: lambda v: v.dict(),
-            AddressProperties: lambda v: v.dict(),
-        }
-
-"""
-
-
-class AddressFeatureCollection(BaseModel):
-    type: str = Field(default="FeatureCollection")
-    features: List[AddressResponse]
+class AddressFeatureCollection(FeatureCollection):
+    type: str = Field(default="FeatureCollection")  # type: ignore
+    features: List[AddressFeature]
