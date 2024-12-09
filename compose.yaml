@@ -38,7 +38,7 @@ services:
     env_file:
       - .env
     volumes:
-      - db-data:/var/lib/postgr esql/data
+      - db-data:/var/lib/postgresql/data
       - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
     ports:
       - 5432:5432
