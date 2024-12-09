@@ -1,3 +1,4 @@
+from http.client import HTTPException
 from backend.etl.data_handler import DataHandler
 from backend.api.models.seismic_hazard_zones import SeismicHazardZone
 from shapely.geometry import shape
@@ -43,5 +44,5 @@ if __name__ == "__main__":
         seismic_zones = handler.fetch_data()
         seismic_zone_objects = handler.parse_data(seismic_zones)
         handler.bulk_insert_data(seismic_zone_objects, "identifier")
-    except Exception as e:
+    except HTTPException as e:
         print(f"Failed after retries: {e}")

@@ -1,3 +1,4 @@
+from http.client import HTTPException
 from backend.etl.data_handler import DataHandler
 from backend.api.models.soft_story_properties import SoftStoryProperty
 
@@ -54,5 +55,5 @@ if __name__ == "__main__":
         soft_story_properties = handler.fetch_data()
         soft_story_property_objects = handler.parse_data(soft_story_properties)
         handler.bulk_insert_data_autoincremented(soft_story_property_objects)
-    except Exception as e:
+    except HTTPException as e:
         print(f"Failed after retries: {e}")

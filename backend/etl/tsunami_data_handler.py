@@ -1,3 +1,4 @@
+from http.client import HTTPException
 from backend.etl.data_handler import DataHandler
 from backend.api.models.tsunami import TsunamiZone
 from shapely.geometry import Polygon, MultiPolygon
@@ -62,5 +63,5 @@ if __name__ == "__main__":
         tsunami_zones = handler.fetch_data(params)
         tsunami_zones_objects = handler.parse_data(tsunami_zones)
         handler.bulk_insert_data(tsunami_zones_objects, "identifier")
-    except Exception as e:
+    except HTTPException as e:
         print(f"Failed after retries: {e}")

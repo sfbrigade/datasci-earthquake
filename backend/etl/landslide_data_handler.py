@@ -1,3 +1,4 @@
+from http.client import HTTPException
 from backend.etl.data_handler import DataHandler
 from backend.api.models.landslide_zones import LandslideZone
 from shapely.geometry import shape
@@ -52,5 +53,5 @@ if __name__ == "__main__":
         lanslide_zones = handler.fetch_data()
         lanslide_zone_objects = handler.parse_data(lanslide_zones)
         handler.bulk_insert_data(lanslide_zone_objects, "identifier")
-    except Exception as e:
+    except HTTPException as e:
         print(f"Failed after retries: {e}")

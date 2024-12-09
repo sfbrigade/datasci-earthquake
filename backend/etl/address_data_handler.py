@@ -1,3 +1,4 @@
+from http.client import HTTPException
 from backend.etl.data_handler import DataHandler
 from backend.api.models.addresses import Address
 from shapely.geometry import Point
@@ -59,5 +60,5 @@ if __name__ == "__main__":
         addresses = handler.fetch_data()
         address_objects = handler.parse_data(addresses)
         handler.bulk_insert_data(address_objects, "eas_fullid")
-    except Exception as e:
+    except HTTPException as e:
         print(f"Failed after retries: {e}")
