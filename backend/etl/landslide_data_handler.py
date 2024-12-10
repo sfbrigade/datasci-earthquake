@@ -1,22 +1,29 @@
+from http.client import HTTPException
 from backend.etl.data_handler import DataHandler
 from backend.api.models.landslide_zones import LandslideZone
 from shapely.geometry import shape
 from geoalchemy2.shape import from_shape
 
 
-LANDSLIDE_URL = "https://data.sfgov.org/resource/bna4-itif.geojson"  # This API has a default limit of providing 1,000 rows
+# This API has a default limit of providing 1,000 rows
+LANDSLIDE_URL = "https://data.sfgov.org/resource/bna4-itif.geojson"
 
 
 class LandslideDataHandler(DataHandler):
     """
-    This class fetches, parses and loads landslide zones from data.sfgov.org
-    If gridcode is 8,9,10 than area is High Susceptibility for landslides
+    Fetches, parses and loads landslide zones from data.sfgov.org
+
+    If gridcode is 8,9,10 then area is High Susceptibility for
+    landslides
     """
 
     def parse_data(self, data: dict) -> list[dict]:
         """
-        Parses fetched GeoJSON data and returns a list of dictionaries representing address records.
-        Geometry data is converted into a GeoAlchemy-compatible MultiPolygon with srid 4326.
+        Parses fetched GeoJSON data and returns a list of dictionaries
+        representing address records
+
+        Geometry data is converted into a GeoAlchemy-compatible
+        MultiPolygon with srid 4326.
         """
         features = data["features"]
         parsed_data = []
@@ -46,5 +53,5 @@ if __name__ == "__main__":
         lanslide_zones = handler.fetch_data()
         lanslide_zone_objects = handler.parse_data(lanslide_zones)
         handler.bulk_insert_data(lanslide_zone_objects, "identifier")
-    except Exception as e:
+    except HTTPException as e:
         print(f"Failed after retries: {e}")

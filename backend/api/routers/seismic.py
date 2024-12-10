@@ -1,4 +1,4 @@
-"""Router to get seismic risk and CRUD seismic polygons."""
+"""Router to get seismic risk."""
 
 from fastapi import Depends, HTTPException, APIRouter
 from ..tags import Tags

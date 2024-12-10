@@ -1,4 +1,4 @@
-"""All data of the Seismic Hazard table from SFData."""
+"""All data of the Seismic Hazard table from SFData"""
 
 from sqlalchemy import Integer, DateTime, func
 from sqlalchemy.orm import DeclarativeBase
@@ -14,8 +14,9 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 class SeismicHazardZone(Base):
     """
-    All data of the Seismic Hazard table from SFData.
-    Contains multipolygon geometries defining seismic hazard areas.
+    All data of the Seismic Hazard table from SFData
+
+    Contains multipolygon geometries defining seismic hazard areas
     """
 
     __tablename__ = "seismic_hazard_zones"

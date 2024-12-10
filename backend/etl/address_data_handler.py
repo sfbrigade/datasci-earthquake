@@ -1,3 +1,4 @@
+from http.client import HTTPException
 from backend.etl.data_handler import DataHandler
 from backend.api.models.addresses import Address
 from shapely.geometry import Point
@@ -14,8 +15,10 @@ class AddressDataHandler(DataHandler):
 
     def parse_data(self, data: dict) -> list[dict]:
         """
-        Parses fetched GeoJSON data and returns a list of dictionaries representing address records.
-        Points are represented in a WKT format (e.g., "Point(lat lon)").
+        Parses fetched GeoJSON data and returns a list of dictionaries
+        representing address records
+
+        Points are represented in a WKT format (e.g., "Point(lat lon)")
         """
         features = data["features"]
         parsed_data = []
@@ -57,5 +60,5 @@ if __name__ == "__main__":
         addresses = handler.fetch_data()
         address_objects = handler.parse_data(addresses)
         handler.bulk_insert_data(address_objects, "eas_fullid")
-    except Exception as e:
+    except HTTPException as e:
         print(f"Failed after retries: {e}")

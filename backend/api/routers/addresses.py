@@ -1,3 +1,5 @@
+"""Router to get addresses"""
+
 from fastapi import Depends, HTTPException, APIRouter
 from ..tags import Tags
 from sqlalchemy.orm import Session

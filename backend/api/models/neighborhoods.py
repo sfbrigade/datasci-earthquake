@@ -9,7 +9,7 @@ from datetime import datetime
 from backend.api.models.base import Base
 
 
-MAPPED_COLUMN_STRING_LENGTH = 200
+_STRING_LENGTH = 255
 
 
 class Neighborhood(Base):
@@ -20,7 +20,7 @@ class Neighborhood(Base):
     __tablename__ = "neighborhoods"
 
     identifier: Mapped[int] = mapped_column(Integer, primary_key=True)
-    neighborhood: Mapped[str] = mapped_column(String(MAPPED_COLUMN_STRING_LENGTH))
+    neighborhood: Mapped[str] = mapped_column(String(_STRING_LENGTH))
     geometry: Mapped[Geometry] = mapped_column(Geometry("MULTIPOLYGON", srid=4326))
     update_timestamp: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
