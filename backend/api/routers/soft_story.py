@@ -1,51 +1,29 @@
 """CRUD for soft story properties"""
 
-from fastapi import APIRouter, Query
-from typing import Annotated
+from fastapi import APIRouter, HTTPException, Depends
 from ..tags import Tags
-
+from sqlalchemy.orm import Session
+from backend.database.session import get_db
+from backend.api.schemas.soft_story_schemas import (
+    SoftStoryFeature,
+    SoftStoryFeatureCollection,
+)
+from backend.api.models.soft_story_properties import SoftStoryProperty
 
 router = APIRouter(
-    prefix="/api/soft-story",
+    prefix="/api/soft-stories",
     tags=[Tags.SOFT_STORY],
 )
 
 
-@router.delete("/{address}")
-async def delete_soft_story(address: str):
-    """
-    Delete the record that the building at an address has a soft
-    story.
-    """
-    return {"message": "This endpoint is not yet implemented"}
+@router.get("/", response_model=SoftStoryFeatureCollection)
+async def get_soft_stories(db: Session = Depends(get_db)):
+    soft_stories = (
+        db.query(SoftStoryProperty).filter(SoftStoryProperty.point.isnot(None)).all()
+    )
+    # If no soft story properties are found, raise a 404 error
+    if not soft_stories:
+        raise HTTPException(status_code=404, detail="No soft stories found")
 
-
-@router.put("/{address}")
-async def put_soft_story(
-    address: str, soft_story: Annotated[bool, Query(alias="soft-story")]
-):
-    """
-    Update whether the building at an address has a soft story
-    to the database.
-    """
-    return {"message": "This endpoint is not yet implemented"}
-
-
-@router.post("/{address}")
-async def post_soft_story(
-    address: str, soft_story: Annotated[bool, Query(alias="soft-story")]
-):
-    """
-    Add that the building at an address has a soft story to the
-    database.
-    """
-    return {"message": "This endpoint is not yet implemented"}
-
-
-@router.get("/{address}")
-async def get_soft_story(address: str):
-    """
-    Return whether the building at an address has a soft story.
-    """
-    # TODO: Change return type to boolean to avoid validation error
-    return {"message": "This endpoint is not yet implemented"}
+    features = [SoftStoryFeature.from_sqlalchemy_model(story) for story in soft_stories]
+    return SoftStoryFeatureCollection(type="FeatureCollection", features=features)

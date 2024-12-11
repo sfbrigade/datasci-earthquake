@@ -31,6 +31,7 @@ Caution:
     the database. Ensure you have backups if necessary.
 """
 
+from backend.api.models.base import Base
 from sqlalchemy.orm import Session
 from sqlalchemy import inspect
 from backend.database.session import engine

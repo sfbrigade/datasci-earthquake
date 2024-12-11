@@ -5,7 +5,6 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
-from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
 from backend.api.models.base import Base
 from geoalchemy2.shape import to_shape
@@ -17,6 +16,7 @@ _STRING_LENGTH = 255
 
 class Address(Base):
     __tablename__ = "addresses"
+    __table_args__ = {"extend_existing": True}
     eas_fullid: Mapped[str] = mapped_column(String, primary_key=True)
     address: Mapped[str] = mapped_column(String, nullable=False)
     unit_number: Mapped[str] = mapped_column(String, nullable=True)

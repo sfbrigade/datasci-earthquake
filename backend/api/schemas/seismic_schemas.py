@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field
-from geoalchemy2 import Geometry
 from backend.api.models.seismic_hazard_zones import SeismicHazardZone
 from geojson_pydantic import Feature, FeatureCollection, MultiPolygon
 from geoalchemy2.shape import to_shape

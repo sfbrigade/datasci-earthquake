@@ -6,6 +6,8 @@ from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
 from datetime import datetime
 from backend.api.models.base import Base
+from geoalchemy2.shape import to_shape
+from sqlalchemy.ext.hybrid import hybrid_property
 
 
 _STRING_LENGTH = 255
@@ -42,6 +44,11 @@ class SoftStoryProperty(Base):
     update_timestamp: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+
+    @hybrid_property
+    def point_as_shapely(self):
+        """Convert geometry to Shapely Point"""
+        return to_shape(self.point)
 
     def __repr__(self) -> str:
         return f"<SoftStoryProperty(id={self.identifier}, property_address={self.property_address})>"
