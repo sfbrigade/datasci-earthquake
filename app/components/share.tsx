@@ -1,6 +1,6 @@
 import {
   Text,
-  IconButton,
+  Button,
   Menu,
   MenuButton,
   MenuList,
@@ -10,9 +10,11 @@ import {
 const Share = () => {
   return (
     <Menu>
-      <MenuButton>
-        Share report
-        <IconButton aria-label="Share report" variant="ghost">
+      <MenuButton
+        as={Button}
+        aria-label="Share report"
+        variant="ghost"
+        rightIcon={
           <svg
             width="24"
             height="24"
@@ -39,7 +41,9 @@ const Share = () => {
               fill="#2C5282"
             />
           </svg>
-        </IconButton>
+        }
+      >
+        <Text textStyle="textMedium">Share report</Text>
       </MenuButton>
       <MenuList p={"6px 16px 6px 16px"}>
         <MenuItem gap="10px">
@@ -74,8 +78,8 @@ const Share = () => {
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
+              fillRule="evenodd"
+              clipRule="evenodd"
               d="M22.5 12.0633C22.5 6.26486 17.7984 1.56329 12 1.56329C6.20156 1.56329 1.5 6.26486 1.5 12.0633C1.5 17.3039 5.33906 21.6478 10.3594 22.4363V15.0994H7.69266V12.0633H10.3594V9.75001C10.3594 7.11892 11.9273 5.66439 14.3255 5.66439C15.4744 5.66439 16.6763 5.8697 16.6763 5.8697V8.45392H15.3516C14.048 8.45392 13.6402 9.26298 13.6402 10.0945V12.0633H16.552L16.087 15.0994H13.6406V22.4372C18.6609 21.6492 22.5 17.3053 22.5 12.0633Z"
               fill="#316FF6"
             />
