@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.future import select
 from backend.database.session import get_db
 from ..models.addresses import Address  # SQLAlchemy model
-from ..schemas.addresses import (
+from ..schemas.addresses_schemas import (
     AddressFeature,
     AddressFeatureCollection,
 )
@@ -19,7 +19,7 @@ router = APIRouter(
 
 
 @router.get("/{eas_fullid}", response_model=AddressFeature)
-def get_address_by_id(eas_fullid: str, db: Session = Depends(get_db)):
+async def get_address_by_id(eas_fullid: str, db: Session = Depends(get_db)):
     address = db.query(Address).filter(Address.eas_fullid == eas_fullid).first()
     if address is None:
         raise HTTPException(status_code=404, detail="Address not found")
@@ -27,7 +27,7 @@ def get_address_by_id(eas_fullid: str, db: Session = Depends(get_db)):
 
 
 @router.get("/", response_model=AddressFeatureCollection)
-def get_all_addresses(db: Session = Depends(get_db)):
+async def get_all_addresses(db: Session = Depends(get_db)):
     # Query the database for all addresses
     addresses = db.query(Address).all()
     print(f"Fetched {len(addresses)} addresses")  # Debugging
