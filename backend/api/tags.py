@@ -12,3 +12,4 @@ class Tags(Enum):
     POLYGONS = "polygons"
     ADDRESSES = "addresses"
     LANDSLIDE = "landslide"
+    LIQUEFACTION = "liquefaction"

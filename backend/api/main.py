@@ -15,6 +15,7 @@ from .routers import (
     tsunami,
     addresses,
     landslide_api,
+    liquefaction_api,
 )
 from fastapi import FastAPI
 
@@ -42,6 +43,7 @@ app.include_router(seismic.router)
 app.include_router(tsunami.router)
 app.include_router(addresses.router)
 app.include_router(landslide_api.router)
+app.include_router(liquefaction_api.router)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

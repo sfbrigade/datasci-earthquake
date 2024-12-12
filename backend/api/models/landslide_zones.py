@@ -34,7 +34,7 @@ class LandslideZone(Base):
 
     @hybrid_property
     def multipolygon_as_geosjon(self):
-        """Convert multipolygons to Shapely Point"""
+        """Convert multipolygon to a geojson"""
         return to_geojson(to_shape(self.geometry))
 
     def __repr__(self) -> str:
