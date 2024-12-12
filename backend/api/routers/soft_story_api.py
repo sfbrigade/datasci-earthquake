@@ -11,13 +11,25 @@ from backend.api.schemas.soft_story_schemas import (
 from backend.api.models.soft_story_properties import SoftStoryProperty
 
 router = APIRouter(
-    prefix="/api/soft-stories",
+    prefix="/soft-stories",
     tags=[Tags.SOFT_STORY],
 )
 
 
 @router.get("/", response_model=SoftStoryFeatureCollection)
 async def get_soft_stories(db: Session = Depends(get_db)):
+    """
+    Retrieve all soft story properties (which coordinates are known) from the database.
+
+    Args:
+        db (Session): The database session dependency.
+
+    Returns:
+        SoftStoryFeatureCollection: A collection of all soft story properties as GeoJSON Features.
+
+    Raises:
+        HTTPException: If no zones are found (404 error).
+    """
     soft_stories = (
         db.query(SoftStoryProperty).filter(SoftStoryProperty.point.isnot(None)).all()
     )

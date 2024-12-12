@@ -1,4 +1,4 @@
-"""Router to get landslide risk."""
+"""Router to handle landslide-related API endpoints"""
 
 from fastapi import Depends, HTTPException, APIRouter
 from ..tags import Tags
@@ -11,13 +11,25 @@ from ..schemas.landslide_schemas import (
 from backend.api.models.landslide_zones import LandslideZone
 
 router = APIRouter(
-    prefix="/api/landslides",
+    prefix="/landslides",
     tags=[Tags.LANDSLIDE],
 )
 
 
 @router.get("/", response_model=LandslideFeatureCollection)
 async def get_landslide_zones(db: Session = Depends(get_db)):
+    """
+    Retrieve all hazardous landslide zones (with gridcode 8, 9, 10) from the database.
+
+    Args:
+        db (Session): The database session dependency.
+
+    Returns:
+        LandslideFeatureCollection: A collection of all landslide zones as GeoJSON Features.
+
+    Raises:
+        HTTPException: If no zones are found (404 error).
+    """
     # Query the database for all seismic zones
     landslide_zones = (
         db.query(LandslideZone).filter(LandslideZone.gridcode.in_([8, 9, 10])).all()

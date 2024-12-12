@@ -9,13 +9,25 @@ from backend.api.models.tsunami import TsunamiZone
 
 
 router = APIRouter(
-    prefix="/api/tsunami",
+    prefix="/tsunami",
     tags=[Tags.TSUNAMI],
 )
 
 
 @router.get("/", response_model=TsunamiFeatureCollection)
 async def get_tsunami_zones(db: Session = Depends(get_db)):
+    """
+    Retrieve all tsunami hazard zones from the database.
+
+    Args:
+        db (Session): The database session dependency.
+
+    Returns:
+        SoftStoryFeatureCollection: A collection of all tsunami zones as GeoJSON Features.
+
+    Raises:
+        HTTPException: If no zones are found (404 error).
+    """
     tsunami_zones = (
         db.query(TsunamiZone)
         .filter(TsunamiZone.evacuate == "Yes, Tsunami Hazard Area")

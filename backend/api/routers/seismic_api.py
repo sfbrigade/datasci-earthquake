@@ -1,4 +1,4 @@
-"""Router to get seismic risk."""
+"""Router to handle seismic-related API endpoints"""
 
 from fastapi import Depends, HTTPException, APIRouter
 from ..tags import Tags
@@ -11,13 +11,25 @@ from ..schemas.seismic_schemas import (
 from backend.api.models.seismic_hazard_zones import SeismicHazardZone
 
 router = APIRouter(
-    prefix="/api/seismic-zones",
+    prefix="/seismic-zones",
     tags=[Tags.SEISMIC],
 )
 
 
 @router.get("/", response_model=SeismicFeatureCollection)
 async def get_seismic_hazard_zones(db: Session = Depends(get_db)):
+    """
+    Retrieve all seismic zones from the database.
+
+    Args:
+        db (Session): The database session dependency.
+
+    Returns:
+        SeismicFeatureCollection: A collection of all seismic zones as GeoJSON Features.
+
+    Raises:
+        HTTPException: If no zones are found (404 error).
+    """
     # Query the database for all seismic zones
     seismic_zones = db.query(SeismicHazardZone).all()
 

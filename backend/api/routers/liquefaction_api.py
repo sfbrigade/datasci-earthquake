@@ -1,4 +1,4 @@
-"""Router to get liquefaction risk."""
+"""Router to handle liquefaction-related API endpoints"""
 
 from fastapi import Depends, HTTPException, APIRouter
 from ..tags import Tags
@@ -11,13 +11,25 @@ from ..schemas.liquefaction_schemas import (
 from backend.api.models.liquefaction_zones import LiquefactionZone
 
 router = APIRouter(
-    prefix="/api/liquefaction-zones",
+    prefix="/liquefaction-zones",
     tags=[Tags.LIQUEFACTION],
 )
 
 
 @router.get("/", response_model=LiquefactionFeatureCollection)
 async def get_liquefaction_zones(db: Session = Depends(get_db)):
+    """
+    Retrieve all liquefaction zones from the database.
+
+    Args:
+        db (Session): The database session dependency.
+
+    Returns:
+        LiquefactionFeatureCollection: A collection of all liquefaction zones as GeoJSON Features.
+
+    Raises:
+        HTTPException: If no zones are found (404 error).
+    """
     # Query the database for all seismic zones
     liquefaction_zones = db.query(LiquefactionZone).all()
 

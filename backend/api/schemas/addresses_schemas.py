@@ -6,11 +6,28 @@ from typing import List
 
 
 class AddressProperties(BaseModel):
+    """
+    Pydantic model for address properties.
+
+    Attributes:
+        eas_fullid (str): Unique identifier for the address.
+        address (str): Full address string.
+    """
+
     eas_fullid: str
     address: str
 
 
 class AddressFeature(Feature):
+    """
+    Pydantic model for an address feature, conforming to GeoJSON Feature structure.
+
+    Attributes:
+        type (str): The type of GeoJSON object. Always "Feature".
+        geometry (Point): The geographical point of the address.
+        properties (AddressProperties): Additional properties of the address.
+    """
+
     type: str = Field(default="Feature")  # type: ignore
     geometry: Point
     properties: AddressProperties
@@ -20,7 +37,6 @@ class AddressFeature(Feature):
 
     @staticmethod
     def from_sqlalchemy_model(address: Address):
-        """Convert SQLAlchemy model to Pydantic AddressResponse"""
         # Extract coordinates from the Shapely Point
         coordinates = [
             address.point_as_shapely.x,
@@ -37,5 +53,13 @@ class AddressFeature(Feature):
 
 
 class AddressFeatureCollection(FeatureCollection):
+    """
+    Pydantic model for a collection of address features, conforming to GeoJSON FeatureCollection structure.
+
+    Attributes:
+        type (str): The type of GeoJSON object. Always "FeatureCollection".
+        features (List[AddressFeature]): List of AddressFeature objects.
+    """
+
     type: str = Field(default="FeatureCollection")  # type: ignore
     features: List[AddressFeature]
