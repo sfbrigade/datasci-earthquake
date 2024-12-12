@@ -104,7 +104,7 @@ const Map = () => {
           type: "fill",
           paint: {
             "fill-color": "#F6AD55", // orange/300
-            "fill-opacity": 0.25, // 25% opacity
+            "fill-opacity": 0.5, // 50% opacity
           },
         });
 
@@ -113,8 +113,8 @@ const Map = () => {
           source: "tsunami",
           type: "fill",
           paint: {
-            "fill-color": "#63B3ED", // blue/300
-            "fill-opacity": 0.25, // 25% opacity
+            "fill-color": "#ED64A6", // pink/400
+            "fill-opacity": 0.5, // 50% opacity
           },
         });
 
@@ -126,7 +126,7 @@ const Map = () => {
             "circle-radius": 4.5,
             "circle-stroke-width": 1,
             "circle-stroke-color": "#FFFFFF",
-            "circle-color": "#a0aec0", // gray/400
+            "circle-color": "#171923", // gray/900
           },
         });
       });
