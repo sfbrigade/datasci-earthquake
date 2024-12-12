@@ -25,7 +25,6 @@ const Home = () => {
       </Box>
       <Box
         w={{ base: "base", xl: "xl" }}
-        // w="base"
         p={{
           base: "23px 24px 16px 24px",
           md: "37px 27px 16px 26px",
@@ -35,8 +34,7 @@ const Home = () => {
       >
         <Report />
       </Box>
-      {/* <Box w="base" h={{ base: "323px", md: "411px", xl: "462px" }} m="auto"> */}
-      <Box w="base" h={{ base: "646px", md: "822px", xl: "924px" }} m="auto">
+      <Box w="base" h={{ base: "323px", md: "411px", xl: "462px" }} m="auto">
         <Box
           h="100%"
           border="1px solid"
