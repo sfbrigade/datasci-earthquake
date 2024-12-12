@@ -11,3 +11,4 @@ class Tags(Enum):
     COMBINED_RISK = "combined risk"
     POLYGONS = "polygons"
     ADDRESSES = "addresses"
+    LANDSLIDE = "landslide"

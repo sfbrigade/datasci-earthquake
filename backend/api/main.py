@@ -7,7 +7,15 @@ combined risk records
 """
 
 import uvicorn
-from .routers import combined_risk, polygons, soft_story, seismic, tsunami, addresses
+from .routers import (
+    combined_risk,
+    polygons,
+    soft_story,
+    seismic,
+    tsunami,
+    addresses,
+    landslide_api,
+)
 from fastapi import FastAPI
 
 # TODO:
@@ -33,6 +41,7 @@ app.include_router(polygons.router)
 app.include_router(seismic.router)
 app.include_router(tsunami.router)
 app.include_router(addresses.router)
+app.include_router(landslide_api.router)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

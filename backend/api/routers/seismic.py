@@ -11,7 +11,7 @@ from ..schemas.seismic_schemas import (
 from backend.api.models.seismic_hazard_zones import SeismicHazardZone
 
 router = APIRouter(
-    prefix="/api/seismic",
+    prefix="/api/seismic-zones",
     tags=[Tags.SEISMIC],
 )
 
