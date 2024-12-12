@@ -17,16 +17,15 @@ const typedTsunamiData: FeatureCollection<Geometry> =
 const typedSoftStoriesData: FeatureCollection<Geometry> =
   softStoriesData as FeatureCollection<Geometry>;
 
-const addressLookupCoordinates = {
-  geometry: {
-    type: "Point",
-    coordinates: [-122.463733, 37.777448],
-  },
-};
-const coords = addressLookupCoordinates.geometry.coordinates;
-const addressLngLat = new LngLat(coords[0], coords[1]);
+const defaultCoords = [-122.463733, 37.777448];
+interface MapProps {
+  coordinates: number[];
+}
 
-const Map = () => {
+const Map: React.FC<MapProps> = (
+  { coordinates } = { coordinates: defaultCoords }
+) => {
+  const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
@@ -59,7 +58,7 @@ const Map = () => {
           // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
           basemap: {
             // 'default', 'faded', or 'monochrome'
-            theme: "default",
+            theme: "faded",
           },
         },
       });

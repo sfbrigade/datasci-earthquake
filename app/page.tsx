@@ -6,6 +6,14 @@ import "./globals.css";
 import Report from "./components/report";
 import Information from "./components/information";
 
+const addressLookupCoordinates = {
+  geometry: {
+    type: "Point",
+    coordinates: [-122.408020683, 37.801698301],
+  },
+};
+const coords = addressLookupCoordinates.geometry.coordinates ?? [];
+
 const Home = () => {
   return (
     <Flex direction="column">
@@ -41,7 +49,7 @@ const Home = () => {
           borderColor="grey.400"
           overflow="hidden"
         >
-          <Map />
+          <Map coordinates={coords} />
         </Box>
       </Box>
       <Box bgColor="blue">
