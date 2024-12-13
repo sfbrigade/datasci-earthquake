@@ -5,9 +5,10 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
-from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
 from backend.api.models.base import Base
+from geoalchemy2.shape import to_shape
+from sqlalchemy.ext.hybrid import hybrid_property
 
 
 _STRING_LENGTH = 255
@@ -15,6 +16,7 @@ _STRING_LENGTH = 255
 
 class Address(Base):
     __tablename__ = "addresses"
+    __table_args__ = {"extend_existing": True}
     eas_fullid: Mapped[str] = mapped_column(String, primary_key=True)
     address: Mapped[str] = mapped_column(String, nullable=False)
     unit_number: Mapped[str] = mapped_column(String, nullable=True)
@@ -47,6 +49,11 @@ class Address(Base):
         server_default=func.now(),
         onupdate=func.now(),
     )
+
+    @hybrid_property
+    def point_as_shapely(self):
+        """Convert geometry to Shapely Point"""
+        return to_shape(self.point)
 
     def __repr__(self):
         return f"<Address(id={self.eas_fullid}, address='{self.address}, lot={self.lot}, point={self.point}, created_timestamp={self.created_timestamp}, update_timestamp={self.update_timestamp}')"

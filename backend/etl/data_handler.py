@@ -47,7 +47,7 @@ class DataHandler(ABC):
         pyproj
 
         Args:
-            geometry: The geometry object (Polygon or MultiPolygon)
+            geometry: The geometry object (Point, Polygon or MultiPolygon)
             source_srid: The original SRID of the geometry
             target_srid: The target SRID for the transformation,
                          default is 4326
@@ -87,7 +87,7 @@ class DataHandler(ABC):
 
     def bulk_insert_data_autoincremented(self, data_dicts: list[dict]):
         """
-        Inserts the list of dictionaries into the database table as
+        Inserts the list of dictionaries with SQLAlchemy-generated IDs into the database table as
         SQLAlchemy objects
         """
         # TODO: Implement logic to upsert only changed data
