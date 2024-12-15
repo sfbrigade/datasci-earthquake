@@ -28,6 +28,7 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/backend
+      - ./backend/alembic.ini:/backend/alembic.ini
   db:
     image: postgis-custom
     build:
