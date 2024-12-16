@@ -31,10 +31,10 @@ Caution:
     the database. Ensure you have backups if necessary.
 """
 
+from backend.api.models.base import Base
 from sqlalchemy.orm import Session
 from sqlalchemy import inspect
 from backend.database.session import engine
-from backend.api.models.base import Base
 from backend.api.models.addresses import Address
 from backend.api.models.tsunami import TsunamiZone
 from backend.api.models.landslide_zones import LandslideZone
