@@ -4,6 +4,7 @@ from geojson_pydantic import Feature, FeatureCollection, MultiPolygon
 from geoalchemy2.shape import to_shape
 from typing import List
 import json
+from datetime import datetime
 
 
 class SeismicProperties(BaseModel):
@@ -15,6 +16,7 @@ class SeismicProperties(BaseModel):
     """
 
     identifier: int
+    update_timestamp: datetime
 
 
 class SeismicFeature(Feature):
@@ -50,6 +52,7 @@ class SeismicFeature(Feature):
             geometry=json.loads(seismic_hazard_zone.multipolygon_as_geosjon),
             properties={
                 "identifier": seismic_hazard_zone.identifier,
+                "update_timestamp": seismic_hazard_zone.update_timestamp,
             },
         )
 

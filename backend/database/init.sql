@@ -5,7 +5,7 @@ create extension if not exists postgis;
 
 set search_path to public;
 
-create table if not exists address (
+create table if not exists addresses (
     eas_fullid varchar(255) primary key,
     address varchar(255) not null,
     unit_number varchar(255),
@@ -16,23 +16,42 @@ create table if not exists address (
     block varchar(255),
     lot varchar(255),
     cnn integer,
-    longitude str not null,
-    latitude str not null,
+    longitude float not null,
+    latitude float not null,
     zip_code integer not null,
     point Geometry(point, 4326) not null,
     supdist varchar(255),
     supervisor integer,
     supname varchar(255),
     nhood varchar(255),
-    sfdata_as_of date not null,
+    sfdata_as_of timestamp not null,
     created_timestamp timestamp,
     update_timestamp timestamp
 );
 
+create table if not exists seismic_hazard_zones (
+    identifier integer primary key,
+    geometry Geometry(multipolygon, 4326) not null,
+    update_timestamp timestamp
+);
 -- Potential functions to creat a Point: ST_MakePoint(-122.41228, 37.77967); ST_GeomFromText('POINT(-122.41228, 37.77967)', 4326); ST_SetSRID(ST_MakePoint(-122.41228, 37.77967), 4326)
 
-insert into address (eas_fullid,        address,        unit_number,  address_number, street_name, street_type, parcel_number, block, lot, cnn,    longitude,  latitude, zip_code,  point,                                                  supdist,                    supervisor, supname,         nhood,     sfdata_as_of,             created_timestamp,      update_timestamp) values 
-                    ('495990-764765-0', '46 AUBURN ST', '',           46,             'AUBURN',    'ST',        '',            '',    '',  830000, '-122.41228', '37.77967', 94133, ST_SetSRID(ST_MakePoint(-122.41228, 37.77967), 4326),   'SUPERVISORIAL DISTRICT 3', 3,          'Aaron Peskin', 'Nob Hill', '2024/10/28 03:40:00 AM', '2024/10/28 10:11:26 PM', '2024/11/28 15:11:26 PM');
+insert into addresses (eas_fullid,        address,      unit_number,  address_number, street_name, street_type, parcel_number, block, lot, cnn,    longitude,  latitude, zip_code,  point,                                                  supdist,                    supervisor, supname,         nhood,     sfdata_as_of,             created_timestamp,      update_timestamp) values 
+                    ('495990-764765-0', '46 AUBURN ST', '',           46,             'AUBURN',    'ST',        '',            '',    '',  830000, -122.41228, 37.77967, 94133, ST_SetSRID(ST_MakePoint(-122.41228, 37.77967), 4326),   'SUPERVISORIAL DISTRICT 3', 3,          'Aaron Peskin', 'Nob Hill', '2024/10/28 03:40:00 AM', '2024/10/28 10:11:26 PM', '2024/11/28 5:11:26 PM'),
+                    ('12345-678-9',     '10 TEST ST',   '',           10,             'TEST',    'ST',        '',            '',     '',    800050, -122.41509, 37.64097, 94000, ST_SetSRID(ST_MakePoint(-122.41509, 37.64097), 4326),   'SUPERVISORIAL DISTRICT 2', 2,          'User Name', 'Nob Hill', '2024/10/29 03:40:00 AM', '2024/10/29 10:11:26 PM', '2024/11/29 5:11:26 PM');
+
+insert into seismic_hazard_zones (identifier, geometry, update_timestamp) values 
+                                (1, ST_GeomFromText('MULTIPOLYGON(
+                                        ((-122.5 37.7, -122.4 37.7, -122.4 37.8, -122.5 37.8, -122.5 37.7)),
+                                        ((-122.6 37.6, -122.5 37.6, -122.5 37.7, -122.6 37.7, -122.6 37.6))
+                                    )', 4326), 
+                                '2024/12/16 5:10:00 PM'),
+
+                                (2, ST_GeomFromText('MULTIPOLYGON(
+                                        ((-122.4 37.8, -122.3 37.8, -122.35 37.85, -122.4 37.8)),
+                                        ((-122.5 37.7, -122.4 37.7, -122.4 37.8, -122.5 37.8, -122.5 37.7))
+                                    )', 4326), 
+                                '2024/12/17 3:10:00 PM');
 
 
 create table if not exists combined_risk (

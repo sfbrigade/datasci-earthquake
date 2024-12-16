@@ -1,50 +1,10 @@
 import pytest
-from fastapi.testclient import TestClient
-
-# Will the .. be stable?
-from ..main import app
-from ..schemas.geo import Polygon
+from backend.api.tests.test_session_config import test_engine, test_session, client
 
 
-@pytest.fixture
-def client():
-    return TestClient(app)
-
-
-def test_delete_polygon(client):
-    response = client.delete("/api/polygons/1?table_name=seismic")
+def test_get_seismic_hazard_zones(client):
+    response = client.get(f"/seismic-zones/")
+    response_dict = response.json()
+    print(response_dict)
     assert response.status_code == 200
-    # Temporary guaranteed failure until test is written
-    assert False
-
-
-def test_put_polygon(client):
-    response = client.put(
-        "/api/polygons/1?table_name=seismic", json=Polygon().model_dump()
-    )
-    assert response.status_code == 200
-    # Temporary guaranteed failure until test is written
-    assert False
-
-
-def test_post_polygon(client):
-    response = client.put(
-        "/api/polygons/1?table_name=seismic", json=Polygon().model_dump()
-    )
-    assert response.status_code == 200
-    # Temporary guaranteed failure until test is written
-    assert False
-
-
-def test_get_polygon(client):
-    response = client.get("/api/polygons/1?table_name=seismic")
-    assert response.status_code == 200
-    # Temporary guaranteed failure until test is written
-    assert False
-
-
-def test_get_seismic_risk(client):
-    response = client.get("/api/seismic-risk/address")
-    assert response.status_code == 200
-    # Temporary guaranteed failure until test is written
-    assert False
+    assert len(response_dict) == 2

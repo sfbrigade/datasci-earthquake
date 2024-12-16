@@ -4,6 +4,7 @@ from geojson_pydantic import Feature, FeatureCollection, Point
 from geoalchemy2.shape import to_shape
 from typing import List
 import json
+from datetime import datetime
 
 
 class SoftStoryProperties(BaseModel):
@@ -15,6 +16,7 @@ class SoftStoryProperties(BaseModel):
     """
 
     identifier: int
+    update_timestamp: datetime
 
 
 class SoftStoryFeature(Feature):
@@ -55,6 +57,7 @@ class SoftStoryFeature(Feature):
             geometry={"type": "Point", "coordinates": coordinates},
             properties={
                 "identifier": soft_story.identifier,
+                "update_timestamp": soft_story.update_timestamp,
             },
         )
 
