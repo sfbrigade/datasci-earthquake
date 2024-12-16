@@ -6,38 +6,33 @@ create extension if not exists postgis;
 set search_path to public;
 
 create table if not exists address (
-    eas_baseid integer not null,
-    eas_subid integer not null,
     eas_fullid varchar(255) primary key,
     address varchar(255) not null,
     unit_number varchar(255),
     address_number integer,
-    address_number_suffix varchar(255) not null,
     street_name varchar(255) not null,
     street_type varchar(255),
     parcel_number varchar(255),
     block varchar(255),
     lot varchar(255),
     cnn integer,
-    longitude float not null,
-    latitude float not null,
+    longitude str not null,
+    latitude str not null,
     zip_code integer not null,
-    point geography(point, 4326) not null,
+    point Geometry(point, 4326) not null,
     supdist varchar(255),
     supervisor integer,
-    supdistpad varchar(255),
-    numbertext varchar(255),
     supname varchar(255),
     nhood varchar(255),
-    complete_landmark_name varchar(255),
     sfdata_as_of date not null,
-    sfdata_loaded_at timestamp not null
+    created_timestamp timestamp,
+    update_timestamp timestamp
 );
 
 -- Potential functions to creat a Point: ST_MakePoint(-122.41228, 37.77967); ST_GeomFromText('POINT(-122.41228, 37.77967)', 4326); ST_SetSRID(ST_MakePoint(-122.41228, 37.77967), 4326)
 
-insert into address (eas_baseid, eas_subid, eas_fullid,        address,        unit_number, address_number, address_number_suffix, street_name, street_type, parcel_number, block, lot, cnn,    longitude,  latitude, zip_code, point,                                                  supdist,                    supervisor, supdistpad, numbertext, supname,        nhood,      complete_landmark_name, sfdata_as_of,             sfdata_loaded_at) values 
-                    (495990,     764765,    '495990-764765-0', '46 AUBURN ST', '',          46,             '',                    'AUBURN',    'ST',        '',            '',    '',  830000, -122.41228, 37.77967, 94133,    ST_SetSRID(ST_MakePoint(-122.41228, 37.77967), 4326),   'SUPERVISORIAL DISTRICT 3', 3,          3,          'THREE',    'Aaron Peskin', 'Nob Hill', '',                     '2024/10/28 03:40:00 AM', '2024/10/28 10:11:26 PM');
+insert into address (eas_fullid,        address,        unit_number,  address_number, street_name, street_type, parcel_number, block, lot, cnn,    longitude,  latitude, zip_code,  point,                                                  supdist,                    supervisor, supname,         nhood,     sfdata_as_of,             created_timestamp,      update_timestamp) values 
+                    ('495990-764765-0', '46 AUBURN ST', '',           46,             'AUBURN',    'ST',        '',            '',    '',  830000, '-122.41228', '37.77967', 94133, ST_SetSRID(ST_MakePoint(-122.41228, 37.77967), 4326),   'SUPERVISORIAL DISTRICT 3', 3,          'Aaron Peskin', 'Nob Hill', '2024/10/28 03:40:00 AM', '2024/10/28 10:11:26 PM', '2024/11/28 15:11:26 PM');
 
 
 create table if not exists combined_risk (
