@@ -8,7 +8,7 @@ from backend.api.config import settings
 @pytest.fixture(scope="module")
 def test_db():
     # Create a session using the existing database
-    engine = create_engine(settings.database_url)
+    engine = create_engine(settings.database_url_sqlalchemy_test)
     connection = engine.connect()
 
     # Begin a transaction
