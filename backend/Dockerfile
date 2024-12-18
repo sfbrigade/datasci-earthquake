@@ -27,6 +27,7 @@ RUN adduser \
 
 COPY requirements.txt /backend/requirements.txt
 
+
 # Install Python dependencies using a cache mount
 RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install --no-cache-dir -r /backend/requirements.txt
@@ -34,6 +35,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Copy the source code into the container.
 COPY backend ./backend
 
+RUN chmod +x ./backend/etl/startup.sh
 
 # Switch to the non-privileged user to run the application.
 USER appuser

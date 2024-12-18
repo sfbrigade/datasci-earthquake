@@ -28,11 +28,10 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/backend
+      - ./backend/etl/startup.sh:/startup.sh
+    command: bash /startup.sh
   db_test:
     image: postgis-custom
-    build:
-      context: ./backend/database
-      dockerfile: Dockerfile
     container_name: my_postgis_db_test
     restart: always
     env_file:
@@ -41,8 +40,13 @@ services:
       - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
     ports:
       - 5433:5432
+    depends_on:
+      - db
   db:
     image: postgis-custom
+    build:
+      context: ./backend/database
+      dockerfile: Dockerfile
     container_name: my_postgis_db
     restart: always
     env_file:
