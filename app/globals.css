@@ -1,3 +1,4 @@
+/* TODO: line up property values with ./theme.ts OR add automation that outputs design tokens for both CSS (SCSS?) and TS */
 .marker {
   /* Pin */
   width: 26.2px;
@@ -5,42 +6,4 @@
   background-image: url("/marker.svg");
   background-size: cover;
   border-radius: 0;
-}
-
-.soft-story {
-  /* Pin */
-  width: 11px;
-  height: 11px;
-  background-size: cover;
-
-  /* Ellipse 10 */
-  box-sizing: border-box;
-  position: absolute;
-  /* gray/900 */
-  background-color: #171923;
-  /* white */
-  border: 1px solid #FFFFFF;
-  border-radius: 50%
-}
-
-.key {
-  /* Key */
-  width: 16px;
-  height: 16px;
-  border-radius: 50%
-}
-
-.key-soft-story {
-  /* gray/900 */
-  background-color: #171923;
-}
-
-.key-seismic {
-  /* orange/300 */
-  background-color: #f6ad55;
-}
-
-.key-tsunami {
-  /* pink/400 */
-  background-color: #ed64a6;
 }
