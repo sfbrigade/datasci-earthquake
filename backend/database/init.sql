@@ -6,6 +6,7 @@ create extension if not exists postgis;
 set search_path to public;
 
 create table if not exists addresses (
+create table if not exists addresses (
     eas_fullid varchar(255) primary key,
     address varchar(255) not null,
     unit_number varchar(255),
@@ -19,6 +20,7 @@ create table if not exists addresses (
     longitude float not null,
     latitude float not null,
     zip_code integer not null,
+    point Geometry(point, 4326) not null,
     point Geometry(point, 4326) not null,
     supdist varchar(255),
     supervisor integer,
