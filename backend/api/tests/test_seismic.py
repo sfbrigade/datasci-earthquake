@@ -7,4 +7,4 @@ def test_get_seismic_hazard_zones(client):
     response_dict = response.json()
     print(response_dict)
     assert response.status_code == 200
-    assert len(response_dict) == 2
+    assert len(response_dict["features"]) == 2

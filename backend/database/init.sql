@@ -34,7 +34,31 @@ create table if not exists seismic_hazard_zones (
     geometry Geometry(multipolygon, 4326) not null,
     update_timestamp timestamp
 );
--- Potential functions to creat a Point: ST_MakePoint(-122.41228, 37.77967); ST_GeomFromText('POINT(-122.41228, 37.77967)', 4326); ST_SetSRID(ST_MakePoint(-122.41228, 37.77967), 4326)
+
+create table if not exists combined_risk (
+    id serial primary key,
+    address varchar(50) not null unique,
+    soft_story_risk boolean not null default false,
+    seismic_hazard_risk boolean not null default false,
+    landslide_risk boolean not null default false,
+    liquefaction_risk boolean not null default false
+);
+
+create table if not exists soft_story_properties (
+    identifier integer not null,
+    block varchar(255),
+    lot varchar(255),
+    parcel_number varchar(255),
+    property_address varchar(255),
+    address varchar(255) not null,
+    tier integer,
+    status varchar(255),
+    bos_district integer,
+    point Geometry(point, 4326),
+    sfdata_as_of timestamp,
+    sfdata_loaded_at timestamp,
+    update_timestamp timestamp
+);
 
 insert into addresses (eas_fullid,        address,      unit_number,  address_number, street_name, street_type, parcel_number, block, lot, cnn,    longitude,  latitude, zip_code,  point,                                                  supdist,                    supervisor, supname,         nhood,     sfdata_as_of,             created_timestamp,      update_timestamp) values 
                     ('495990-764765-0', '46 AUBURN ST', '',           46,             'AUBURN',    'ST',        '',            '',    '',  830000, -122.41228, 37.77967, 94133, ST_SetSRID(ST_MakePoint(-122.41228, 37.77967), 4326),   'SUPERVISORIAL DISTRICT 3', 3,          'Aaron Peskin', 'Nob Hill', '2024/10/28 03:40:00 AM', '2024/10/28 10:11:26 PM', '2024/11/28 5:11:26 PM'),
@@ -53,32 +77,6 @@ insert into seismic_hazard_zones (identifier, geometry, update_timestamp) values
                                     )', 4326), 
                                 '2024/12/17 3:10:00 PM');
 
-
-create table if not exists combined_risk (
-    id serial primary key,
-    address varchar(50) not null unique,
-    soft_story_risk boolean not null default false,
-    seismic_hazard_risk boolean not null default false,
-    landslide_risk boolean not null default false,
-    liquefaction_risk boolean not null default false
-);
-
-/*create table if not exists soft_story_addresses (
-    identifier integer not null,
-    block varchar(255),
-    lot varchar(255),
-    parcel_number varchar(255),
-    property_address varchar(255),
-    address varchar(255),
-    tier integer,
-    status varchar(255),
-    bos_district integer,
-    --point: Mapped[Geometry] = mapped_column(Geometry("POINT", srid=4326))
-    sfdata_as_of timestamp,
-    sfdata_loaded_at timestamp
-    --update_timestamp timestamp
-);
-*/
 insert into combined_risk (address,                                soft_story_risk, seismic_hazard_risk, landslide_risk, liquefaction_risk) values 
                           ('3560 PIERCE ST, SAN FRANCISCO CA',     true,            false,               false,          false),
                           ('3484 18TH ST, SAN FRANCISCO CA',       true,            true,                false,          true),
@@ -101,11 +99,11 @@ insert into combined_risk (address,                                soft_story_ri
 --status column is a varchar in the database but must be transformed into a boolean for use
 --possibly keep the booleans in the transformed database in memory between updates
 
-/*insert into soft_story_addresses (identifier, block, lot, parcel_number, property_address, address,                            tier, status,                      bos_district, sfdata_as_of,             sfdata_loaded_at) values
-                                 (1,          3578,  71,  3578071,       '3549 17TH ST',   '3549 17TH ST, SAN FRANCISCO CA',   3,    'Work Complete CFC Issued',  8,            '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM'), 
-                                 (2,          41,    4,   41004,         '2231 POWELL ST', '2231 POWELL ST, SAN FRANCISCO CA', 3,    'Non-Compliant',             3,            '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM'),
-                                 (3,          1896,  46,  1896046,       '1612 48TH AV',   '1612 48TH AV, SAN FRANCISCO CA',   3,    'Work Complete, CFC Issued', 4,            '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM'),
-                                 (4,          1222,  55,  1222055,       '253 CENTRAL AV', '253 CENTRAL AV, SAN FRANCISCO CA', 3,    'Work Complete, CFC Issued', 5,            '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM'),
-                                 (5,          1730,  49,  1730049,       '1240 21ST AV',   '1240 21ST AV, SAN FRANCISCO CA',   3,    'Work Complete, CFC Issued', 4,            '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM'),
-                                 (6,          4217,  12,  4217012,       '2120 24TH ST',   '2120 24TH ST, SAN FRANCISCO CA',   3,    'Work Complete, CFC Issued', 10,           '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM');
-                                 */
+insert into soft_story_properties (identifier, block, lot, parcel_number, property_address, address,                            tier, status,                      bos_district, point,                                                       sfdata_as_of,             sfdata_loaded_at,         update_timestamp) values
+                                 (1,          3578,  71,  3578071,       '3549 17TH ST',   '3549 17TH ST, SAN FRANCISCO CA',   3,    'Work Complete CFC Issued',  8,            ST_SetSRID(ST_MakePoint(-122.424966202, 37.762929444), 4326), '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM', '2024/11/28 5:11:26 PM'), 
+                                 (2,          41,    4,   41004,         '2231 POWELL ST', '2231 POWELL ST, SAN FRANCISCO CA', 3,    'Non-Compliant',             3,            ST_SetSRID(ST_MakePoint(-122.412108664, 37.805406258), 4326), '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM', '2024/11/28 5:11:26 PM'),
+                                 (3,          1896,  46,  1896046,       '1612 48TH AV',   '1612 48TH AV, SAN FRANCISCO CA',   3,    'Work Complete, CFC Issued', 4,            ST_SetSRID(ST_MakePoint(-122.507457108, 37.756334425), 4326), '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM', '2024/11/28 5:11:26 PM'),
+                                 (4,          1222,  55,  1222055,       '253 CENTRAL AV', '253 CENTRAL AV, SAN FRANCISCO CA', 3,    'Work Complete, CFC Issued', 5,            ST_SetSRID(ST_MakePoint(-122.444181708, 37.771944708), 4326), '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM', '2024/11/28 5:11:26 PM'),
+                                 (5,          1730,  49,  1730049,       '1240 21ST AV',   '1240 21ST AV, SAN FRANCISCO CA',   3,    'Work Complete, CFC Issued', 4,            ST_SetSRID(ST_MakePoint(-122.479013074, 37.764537366), 4326), '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM', '2024/11/28 5:11:26 PM'),
+                                 (6,          4217,  12,  4217012,       '2120 24TH ST',   '2120 24TH ST, SAN FRANCISCO CA',   3,    'Work Complete, CFC Issued', 10,           ST_SetSRID(ST_MakePoint(-122.400877183, 37.753556427), 4326), '2024/11/04 03:18:13 AM', '2024/11/04 03:30:26 AM', '2024/11/28 5:11:26 PM');
+                                
