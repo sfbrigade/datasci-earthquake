@@ -6,6 +6,7 @@ import CardHazard from "../components/card-hazard";
 import { Hazards } from "../data/data";
 import { Info } from "../data/data";
 import CardInfo from "../components/card-info";
+import Share from "../components/share";
 
 const ComponentsTestLib = () => {
   return (
@@ -48,6 +49,13 @@ const ComponentsTestLib = () => {
       <VStack spacing={4} align="start">
         <HStack w="100%">
           <CardInfo info={Info[0]} />
+        </HStack>
+        <Divider mb={2} />
+      </VStack>
+      <Text mb={4}>This section demonstrates Share menu component</Text>
+      <VStack spacing={4} align="start">
+        <HStack w="100%">
+          <Share />
         </HStack>
         <Divider mb={2} />
       </VStack>
