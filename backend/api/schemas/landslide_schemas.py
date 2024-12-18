@@ -4,6 +4,7 @@ from geojson_pydantic import Feature, FeatureCollection, MultiPolygon
 from geoalchemy2.shape import to_shape
 from typing import List
 import json
+from datetime import datetime
 
 
 class LandslideProperties(BaseModel):
@@ -17,6 +18,7 @@ class LandslideProperties(BaseModel):
 
     identifier: int
     gridcode: int
+    update_timestamp: datetime
 
 
 class LandslideFeature(Feature):
@@ -53,6 +55,7 @@ class LandslideFeature(Feature):
             properties={
                 "identifier": landslide_zone.identifier,
                 "gridcode": landslide_zone.gridcode,
+                "update_timestamp": landslide_zone.update_timestamp,
             },
         )
 

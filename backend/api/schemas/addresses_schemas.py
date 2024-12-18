@@ -3,6 +3,7 @@ from backend.api.models.addresses import Address
 from geojson_pydantic import Feature, FeatureCollection, Point
 from geoalchemy2.shape import to_shape
 from typing import List
+from datetime import datetime
 
 
 class AddressProperties(BaseModel):
@@ -16,6 +17,7 @@ class AddressProperties(BaseModel):
 
     eas_fullid: str
     address: str
+    update_timestamp: datetime
 
 
 class AddressFeature(Feature):
@@ -48,6 +50,7 @@ class AddressFeature(Feature):
             properties={
                 "eas_fullid": address.eas_fullid,
                 "address": address.address,
+                "update_timestamp": address.update_timestamp,
             },
         )
 

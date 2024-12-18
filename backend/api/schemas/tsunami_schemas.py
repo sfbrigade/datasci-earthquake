@@ -3,6 +3,7 @@ from backend.api.models.tsunami import TsunamiZone
 from geojson_pydantic import Feature, FeatureCollection, MultiPolygon
 from typing import List
 import json
+from datetime import datetime
 
 
 class TsunamiProperties(BaseModel):
@@ -16,6 +17,7 @@ class TsunamiProperties(BaseModel):
 
     identifier: int
     evacuate: str
+    update_timestamp: datetime
 
 
 class TsunamiFeature(Feature):
@@ -52,6 +54,7 @@ class TsunamiFeature(Feature):
             properties={
                 "identifier": tsunami_zone.identifier,
                 "evacuate": tsunami_zone.evacuate,
+                "update_timestamp": tsunami_zone.update_timestamp,
             },
         )
 
