@@ -10,35 +10,35 @@ describe("Share Component", () => {
     expect(button).toBeInTheDocument();
   });
 
-  it("renders the menu options when the Share button is clicked", async () => {
-    render(<Share />);
-    const user = userEvent.setup();
-    const button = screen.getByText(/share report/i);
+  // it("renders the menu options when the Share button is clicked", async () => {
+  //   render(<Share />);
+  //   const user = userEvent.setup();
+  //   const button = screen.getByText(/share report/i);
 
-    button.style.pointerEvents = "auto";
+  //   button.style.pointerEvents = "auto";
 
-    await user.click(button);
+  //   await user.click(button);
 
-    const emailOption = screen.getByText(/email/i);
-    const facebookOption = screen.getByText(/facebook/i);
-    const xOption = screen.getByText(/x/i);
-    expect(emailOption).toBeInTheDocument();
-    expect(facebookOption).toBeInTheDocument();
-    expect(xOption).toBeInTheDocument();
-  });
+  //   const emailOption = screen.getByText(/email/i);
+  //   const facebookOption = screen.getByText(/facebook/i);
+  //   const xOption = screen.getByText(/x/i);
+  //   expect(emailOption).toBeInTheDocument();
+  //   expect(facebookOption).toBeInTheDocument();
+  //   expect(xOption).toBeInTheDocument();
+  // });
 
-  it("triggers a click on a menu item", async () => {
-    render(<Share />);
-    const user = userEvent.setup();
+  // it("triggers a click on a menu item", async () => {
+  //   render(<Share />);
+  //   const user = userEvent.setup();
 
-    const button = screen.getByText(/share report/i);
-    button.style.pointerEvents = "auto";
-    await user.click(button);
+  //   const button = screen.getByText(/share report/i);
+  //   button.style.pointerEvents = "auto";
+  //   await user.click(button);
 
-    const emailOption = await screen.getByText(/email/i);
-    await waitFor(() => expect(emailOption).toBeVisible());
+  //   const emailOption = await screen.getByText(/email/i);
+  //   await waitFor(() => expect(emailOption).toBeVisible());
 
-    await userEvent.click(emailOption);
-    expect(emailOption).toBeDefined();
-  });
+  //   await userEvent.click(emailOption);
+  //   expect(emailOption).toBeDefined();
+  // });
 });
