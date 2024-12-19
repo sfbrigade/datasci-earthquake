@@ -21,7 +21,8 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "types": ["@testing-library/jest-dom", "@testing-library/user-event"]
   },
   "include": [
     "next-env.d.ts",
