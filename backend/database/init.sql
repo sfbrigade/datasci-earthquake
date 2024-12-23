@@ -6,7 +6,6 @@ create extension if not exists postgis;
 set search_path to public;
 
 create table if not exists addresses (
-create table if not exists addresses (
     eas_fullid varchar(255) primary key,
     address varchar(255) not null,
     unit_number varchar(255),
@@ -21,7 +20,6 @@ create table if not exists addresses (
     latitude float not null,
     zip_code integer not null,
     point Geometry(point, 4326) not null,
-    point Geometry(point, 4326) not null,
     supdist varchar(255),
     supervisor integer,
     supname varchar(255),
@@ -33,6 +31,38 @@ create table if not exists addresses (
 
 create table if not exists seismic_hazard_zones (
     identifier integer primary key,
+    geometry Geometry(multipolygon, 4326) not null,
+    update_timestamp timestamp
+);
+
+
+create table if not exists liquefaction_zones (
+    identifier integer primary key,
+    geometry Geometry(multipolygon, 4326) not null,
+    liq varchar(255),
+    shape_length float,
+    shape_area float,
+    update_timestamp timestamp
+);
+
+create table if not exists landslide_zones (
+    identifier integer primary key,
+    geometry Geometry(multipolygon, 4326) not null,
+    gridcode integer,
+    sum_shape float,
+    shape_length float,
+    shape_length_1 float,
+    shape_area float,
+    update_timestamp timestamp
+);
+
+create table if not exists tsunami_zones (
+    identifier integer primary key,
+    evacuate varchar(255) not null,
+    county varchar(255) not null,
+    global_id varchar(255) not null,
+    shape_length float,
+    shape_area float,
     geometry Geometry(multipolygon, 4326) not null,
     update_timestamp timestamp
 );
@@ -73,11 +103,53 @@ insert into seismic_hazard_zones (identifier, geometry, update_timestamp) values
                                     )', 4326), 
                                 '2024/12/16 5:10:00 PM'),
 
-                                (2, ST_GeomFromText('MULTIPOLYGON(
-                                        ((-122.4 37.8, -122.3 37.8, -122.35 37.85, -122.4 37.8)),
-                                        ((-122.5 37.7, -122.4 37.7, -122.4 37.8, -122.5 37.8, -122.5 37.7))
-                                    )', 4326), 
+                                (2, ST_GeomFromText('MULTIPOLYGON(((-122.5 37.7, -122.5 37.8, -122.4 37.8, -122.4 37.7, -122.5 37.7)), 
+             ((-122.6 37.6, -122.6 37.7, -122.5 37.7, -122.5 37.6, -122.6 37.6)))', 4326), 
                                 '2024/12/17 3:10:00 PM');
+
+insert into landslide_zones (
+    identifier, geometry, gridcode, sum_shape, shape_length, shape_area, update_timestamp
+) values
+    (3, ST_GeomFromText('MULTIPOLYGON(
+        ((-122.5 37.7, -121.9 30.7, -122.4 37.8, -122.5 37.8, -122.5 37.7)),
+        ((-122.6 37.6, -121.5 37.6, -122.5 37.7, -122.6 37.7, -122.6 37.6))
+    )', 4326), 8, 1000.00, 25.8, 12.0, '2024-12-10 20:20:00'),
+
+    (4, ST_GeomFromText('MULTIPOLYGON(
+        ((-122.5 37.7, -122.5 37.9, -122.3 37.9, -122.3 37.7, -122.5 37.7)),
+        ((-122.4 37.75, -122.4 37.85, -122.35 37.85, -122.35 37.75, -122.4 37.75))
+    )', 4326), 3, 897.6, 12.2, 87.0, '2024-12-10 13:15:00'),
+
+    (5, ST_GeomFromText('MULTIPOLYGON(
+        ((-122.5 37.7, -122.5 37.8, -122.4 37.8, -122.4 37.7, -122.5 37.7)),
+        ((-122.48 37.73, -122.48 37.77, -122.46 37.77, -122.46 37.73, -122.48 37.73))
+    )', 4326), 10, 56.11, 18.3, 43.1, '2024-12-10 13:15:00');                         
+
+insert into liquefaction_zones (identifier, geometry, liq, shape_length, shape_area, update_timestamp) values 
+                                (6, ST_GeomFromText('MULTIPOLYGON(
+                                        ((-121.0 37.6, -121.9 30.7, -122.4 37.8, -122.5 37.8, -121.0 37.6)),
+                                        ((-123.1 33.6, -121.5 37.6, -122.5 37.7, -122.6 37.7, -123.1 33.6))
+                                    )', 4326), 
+                                'H', 25.8, 12.0, '2024/12/19 8:20:00 PM'),
+
+                                (7, ST_GeomFromText('MULTIPOLYGON(
+                                        ((-125.9 37.8, -121.3 37.8, -122.35 37.85, -125.9 37.8)),
+                                        ((-122.5 37.7, -129.4 37.7, -122.4 37.8, -122.5 37.8, -122.5 37.7))
+                                    )', 4326), 
+                                'VH', 12.2, 87.0, '2024/12/19 1:15:00 PM'),
+                                (8, ST_GeomFromText('MULTIPOLYGON(
+                                        ((-123.9 37.8, -123.3 37.8, -122.35 37.85, -123.9 37.8)),
+                                        ((-124.0 27.9, -127.4 37.7, -122.4 37.8, -122.5 37.8, -124.0 27.9))
+                                    )', 4326), 
+                                'H', 123.4, 432.1, '2024/12/19 1:15:00 PM')                                
+                                ;
+
+insert into tsunami_zones (identifier, evacuate, county, global_id, shape_length, shape_area, geometry, update_timestamp) values 
+                                (9, 'Yes, Tsunami Hazard Area', 'San Francisco', 'd63b7111-a144-49ca-aa79-69f69721e3d3', 123.45, 67.8, ST_GeomFromText('MULTIPOLYGON(
+                                    ((-122.5 37.7, -122.5 37.9, -122.3 37.9, -122.3 37.7, -122.5 37.7)),
+                                    ((-122.4 37.75, -122.4 37.85, -122.35 37.85, -122.35 37.75, -122.4 37.75))
+                                )', 4326), 
+                                '2024/12/16 5:10:00 PM');                                
 
 insert into combined_risk (address,                                soft_story_risk, seismic_hazard_risk, landslide_risk, liquefaction_risk) values 
                           ('3560 PIERCE ST, SAN FRANCISCO CA',     true,            false,               false,          false),
@@ -86,14 +158,6 @@ insert into combined_risk (address,                                soft_story_ri
                           ('106 HAIGHT ST, SAN FRANCISCO CA',      true,            true,                true,           true),
                           ('3852 CALIFORNIA ST, SAN FRANCISCO CA', false,           true,                false,          true);
 
---add point column between bos_district and sfdata_as_of
---Here they are in order for our rows
---POINT (-122.424966202 37.762929444)
---POINT (-122.412108664 37.805406258)
---POINT (-122.507457108 37.756334425)
---POINT (-122.444181708 37.771944708)
---POINT (-122.479013074 37.764537366)
---POINT (-122.400877183 37.753556427)
 
 --add update_timestamp column after sfdata_loaded_at
 --this column will be filled with data generated at runtime by our code

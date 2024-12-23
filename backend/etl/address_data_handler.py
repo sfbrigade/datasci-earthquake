@@ -32,11 +32,11 @@ class AddressDataHandler(DataHandler):
                 address = {
                     "eas_fullid": props.get("eas_fullid"),
                     "address": props.get("address"),
-                    "unit_number": props.get("address", None),
+                    "unit_number": props.get("unit_number", None),
                     "address_number": int(props.get("address_number", None)),
                     "street_name": props.get("street_name"),
                     "street_type": props.get("street_type", None),
-                    "parcel_number": props.get("street_type", None),
+                    "parcel_number": props.get("parcel_number", None),
                     "block": props.get("block", None),
                     "lot": props.get("lot", None),
                     "cnn": props.get("cnn", None),

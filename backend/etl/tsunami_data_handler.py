@@ -43,7 +43,7 @@ class TsunamiDataHandler(DataHandler):
                 "identifier": int(properties.get("OBJECTID")),
                 "evacuate": properties.get("Evacuate"),
                 "county": properties.get("County"),
-                "globalID": properties.get("GlobalID"),
+                "global_id": properties.get("GlobalID"),
                 "shape_length": properties.get("Shape__Length", None),
                 "shape_area": properties.get("Shape__Area", None),
                 "geometry": geoalchemy_multipolygon,
