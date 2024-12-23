@@ -41,6 +41,7 @@ def test_get_soft_story(client):
     # Temporary guaranteed failure until test is written
     assert False
 
+
 def test_is_soft_story(client):
     lat, lon = [-122.446575165, 37.766034349]
     response = client.get(f"/api/soft-story/is-soft-story?lat={lat}&lon={lon}")
@@ -49,6 +50,8 @@ def test_is_soft_story(client):
 
     # These should not be soft stories
     wrong_lat, wrong_lon = [0.0, 0.0]
-    response = client.get(f"/api/soft-story/is-soft-story?lat={wrong_lat}&lon={wrong_lon}")
+    response = client.get(
+        f"/api/soft-story/is-soft-story?lat={wrong_lat}&lon={wrong_lon}"
+    )
     assert response.status_code == 200
     assert not response.json()  # False

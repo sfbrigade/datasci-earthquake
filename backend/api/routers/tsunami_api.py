@@ -56,6 +56,7 @@ async def is_in_tsunami_zone(lat: float, lon: float, db: Session = Depends(get_d
     """
     query = db.query(TsunamiZone).filter(
         TsunamiZone.geometry.ST_Contains(
-            geo_func.ST_SetSRID(geo_func.ST_GeomFromText(f"POINT({lon} {lat})"), 4326))
+            geo_func.ST_SetSRID(geo_func.ST_GeomFromText(f"POINT({lon} {lat})"), 4326)
+        )
     )
     return db.query(query.exists()).scalar()

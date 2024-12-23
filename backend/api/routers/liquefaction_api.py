@@ -45,7 +45,9 @@ async def get_liquefaction_zones(db: Session = Depends(get_db)):
 
 
 @router.get("/is-in-liquefaction-zone", response_model=bool)
-async def is_in_liquefaction_zone(lat: float, lon: float, db: Session = Depends(get_db)):
+async def is_in_liquefaction_zone(
+    lat: float, lon: float, db: Session = Depends(get_db)
+):
     """
     Check if a point is in a liquefaction zone.
 
@@ -59,6 +61,7 @@ async def is_in_liquefaction_zone(lat: float, lon: float, db: Session = Depends(
     """
     query = db.query(LiquefactionZone).filter(
         LiquefactionZone.geometry.ST_Contains(
-            geo_func.ST_SetSRID(geo_func.ST_GeomFromText(f"POINT({lon} {lat})"), 4326))
+            geo_func.ST_SetSRID(geo_func.ST_GeomFromText(f"POINT({lon} {lat})"), 4326)
+        )
     )
     return db.query(query.exists()).scalar()

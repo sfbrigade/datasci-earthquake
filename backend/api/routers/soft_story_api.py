@@ -46,16 +46,16 @@ async def get_soft_stories(db: Session = Depends(get_db)):
 async def is_soft_story(lat: float, lon: float, db: Session = Depends(get_db)):
     """
     Check if a point is a soft story property.
-    
+
     Args:
         lat (float): Latitude of the point.
         lon (float): Longitude of the point.
         db (Session): The database session dependency.
-    
+
     Returns:
         bool: True if the point is a soft story property, False otherwise.
     """
     query = db.query(SoftStoryProperty).filter(
-        SoftStoryProperty.point == geo_func.ST_GeomFromText(f"POINT({lon} {lat})",4326)
+        SoftStoryProperty.point == geo_func.ST_GeomFromText(f"POINT({lon} {lat})", 4326)
     )
     return db.query(query.exists()).scalar()
