@@ -1,5 +1,5 @@
 
-'use·client'
+"use client"
 import {
   Text,
   Button,
