@@ -20,29 +20,24 @@ import Link from "next/link";
 const Share = () => {
   const copyReportToClipBoard = () => {
     // copy the current url to the clipboard
-    navigator.clipboard.writeText(currentUrl) 
+    navigator.clipboard.writeText(currentUrl);
   };
   const [currentUrl, setCurrentUrl] = useState("");
   useEffect(() => {
     // get the current url
-    if(window.location.href.includes('address-1')){
+    if (window.location.href.includes("address-1")) {
       // address does not need to be formated
       setCurrentUrl(window.location.href);
-    }
-    else{
+    } else {
       // format the adress using addressData.address
-    console.log(window.location.href); 
-    const addreessParts = AddressData.address.split("");
-    let joinedstring = addreessParts.join('+');
+      console.log(window.location.href);
+      const addreessParts = AddressData.address.split("");
+      let joinedstring = addreessParts.join("+");
 
-    const urlString = `${window.location.href}/?address-1=${joinedstring}`;
-   
-    setCurrentUrl(urlString)
+      const urlString = `${window.location.href}/?address-1=${joinedstring}`;
 
+      setCurrentUrl(urlString);
     }
-    
-    
-
   }, []);
 
   return (
@@ -56,49 +51,38 @@ const Share = () => {
         <Text textStyle="textMedium">Share report</Text>
       </MenuButton>
       <MenuList p={"6px 16px 6px 16px"}>
-
-
-      <Link href=
-      {"mailto:placeholder@example.com?subject=Share Report&body="+currentUrl}>
-        
-        <MenuItem gap="10px">
-
-          <EmailIcon />
-          <Text>Email</Text>
-
-        </MenuItem>
+        <Link
+          href={
+            "mailto:placeholder@example.com?subject=Share Report&body=" +
+            currentUrl
+          }
+        >
+          <MenuItem gap="10px">
+            <EmailIcon />
+            <Text>Email</Text>
+          </MenuItem>
         </Link>
 
-      
-        <Link  href=
-        {`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`}>
-
-        <MenuItem gap="10px">
-         
-          <FacebookIcon />
-          <Text>Facebook</Text>
-          
-        </MenuItem>
+        <Link
+          href={`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`}
+        >
+          <MenuItem gap="10px">
+            <FacebookIcon />
+            <Text>Facebook</Text>
+          </MenuItem>
         </Link>
 
-     
-        <Link href=
-        {`https://twitter.com/intent/tweet?url=${currentUrl}`}>
-
-        <MenuItem gap="10px">
-          
-          <XIcon />
-          <Text>X</Text>
-          
-        </MenuItem>
+        <Link href={`https://twitter.com/intent/tweet?url=${currentUrl}`}>
+          <MenuItem gap="10px">
+            <XIcon />
+            <Text>X</Text>
+          </MenuItem>
         </Link>
 
-  
         <MenuItem gap="10px" onClick={copyReportToClipBoard}>
           <LinkIcon />
           <Text>Copy Link</Text>
         </MenuItem>
-
       </MenuList>
     </Menu>
   );
