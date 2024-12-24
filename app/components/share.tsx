@@ -19,17 +19,40 @@ import { AddressData } from "./__mocks__/address-data";
 import Link from "next/link";
 
 const Share = () => {
-  const handleClick = () => {
-    console.log(currentUrl);
+  const copyReportToClipBoard = () => {
+
+    // copy the current url to the clipboard
+    navigator.clipboard.writeText(currentUrl)
+    
   };
 
   const [currentUrl, setCurrentUrl] = useState('');
   
   useEffect(() => {
   
- 
-    setCurrentUrl(window.location.href)
-    console.log(currentUrl);
+    // want to create the url if address-1 is not in the url
+
+    // this will allow productionized app to work aswell if we do not change
+
+    if(window.location.href.includes('address-1')){
+
+      // address does not need to be formated
+      setCurrentUrl(window.location.href)
+    }
+    else{
+      // format the adress using addressData.address
+    console.log(window.location.href) 
+    const addreessParts = AddressData.address.split(' ');
+    let joinedstring = addreessParts.join('+')
+
+    const urlString = `${window.location.href}/?address-1=${joinedstring}`
+   
+    setCurrentUrl(urlString)
+
+    }
+    
+    
+
   }, []);
 
   return (
@@ -43,28 +66,36 @@ const Share = () => {
         <Text textStyle="textMedium">Share report</Text>
       </MenuButton>
       <MenuList p={"6px 16px 6px 16px"}>
+      <Link href={ 'mailto:placeholder@example.com?subject=Share Report&body='+currentUrl}>
         <MenuItem gap="10px">
           <EmailIcon />
-          <Link href={'mailto:'}>
+        
           <Text>
         
             Email</Text>
-            </Link>
+           
           
         </MenuItem>
+        </Link>
+
+        <Link  href={`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`}>
         <MenuItem gap="10px">
-          <Link  href={''}/*href={"https://www.facebook.com/sharer/sharer.php?"}*/>
+         
           <FacebookIcon />
           <Text>Facebook</Text>
-          </Link>
+          
         </MenuItem>
-        <MenuItem gap="10px">""
-          <Link href={"https://twitter.com/intent/tweet?"}>
+        </Link>
+
+        <Link href={`https://twitter.com/intent/tweet?url=${currentUrl}`}>
+        <MenuItem gap="10px">
+          
           <XIcon />
           <Text>X</Text>
-          </Link>
+          
         </MenuItem>
-        <MenuItem gap="10px">
+        </Link>
+        <MenuItem gap="10px" onClick={copyReportToClipBoard}>
          
           <LinkIcon />
           <Text>Copy Link</Text>
