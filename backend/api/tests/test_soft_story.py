@@ -9,15 +9,15 @@ def test_get_soft_stories(client):
 
 
 def test_is_soft_story(client):
-    lat, lon = [-122.446575165, 37.766034349]
-    response = client.get(f"/api/soft-story/is-soft-story?lat={lat}&lon={lon}")
+    lon, lat = [-122.424966202, 37.762929444]
+    response = client.get(f"/soft-stories/is-soft-story?lon={lon}&lat={lat}")
     assert response.status_code == 200
     assert response.json()  # True
 
     # These should not be soft stories
-    wrong_lat, wrong_lon = [0.0, 0.0]
+    wrong_lon, wrong_lat = [0.0, 0.0]
     response = client.get(
-        f"/api/soft-story/is-soft-story?lat={wrong_lat}&lon={wrong_lon}"
+        f"/soft-stories/is-soft-story?lon={wrong_lon}&lat={wrong_lat}"
     )
     assert response.status_code == 200
     assert not response.json()  # False

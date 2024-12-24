@@ -43,13 +43,13 @@ async def get_soft_stories(db: Session = Depends(get_db)):
 
 
 @router.get("/is-soft-story", response_model=bool)
-async def is_soft_story(lat: float, lon: float, db: Session = Depends(get_db)):
+async def is_soft_story(lon: float, lat: float, db: Session = Depends(get_db)):
     """
     Check if a point is a soft story property.
 
     Args:
-        lat (float): Latitude of the point.
         lon (float): Longitude of the point.
+        lat (float): Latitude of the point.
         db (Session): The database session dependency.
 
     Returns:

@@ -43,13 +43,13 @@ async def get_seismic_hazard_zones(db: Session = Depends(get_db)):
 
 
 @router.get("/is-in-seismic-zone", response_model=bool)
-async def is_in_seismic_zone(lat: float, lon: float, db: Session = Depends(get_db)):
+async def is_in_seismic_zone(lon: float, lat: float, db: Session = Depends(get_db)):
     """
     Check if a point is in a liquefaction zone.
 
     Args:
-        lat (float): Latitude of the point.
         lon (float): Longitude of the point.
+        lat (float): Latitude of the point.
         db (Session): The database session dependency.
 
     Returns:

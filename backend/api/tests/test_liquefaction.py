@@ -9,17 +9,17 @@ def test_get_liquefaction_zones(client):
 
 
 def test_is_in_liquefaction_zone(client):
-    lat, lon = [37.779759, -122.407436]
+    lon, lat = [-122.35, 37.83]
     response = client.get(
-        f"/api/liquefaction-zones/is-in-liquefaction-zone?lat={lat}&lon={lon}"
+        f"/liquefaction-zones/is-in-liquefaction-zone?lon={lon}&lat={lat}"
     )
     assert response.status_code == 200
     assert response.json()  # True
 
     # These should not be in liquefaction zones
-    wrong_lat, wrong_lon = [0.0, 0.0]
+    wrong_lon, wrong_lat = [0.0, 0.0]
     response = client.get(
-        f"/api/liquefaction-zones/is-in-liquefaction-zone?lat={wrong_lat}&lon={wrong_lon}"
+        f"/liquefaction-zones/is-in-liquefaction-zone?lon={wrong_lon}&lat={wrong_lat}"
     )
     assert response.status_code == 200
     assert not response.json()  # False

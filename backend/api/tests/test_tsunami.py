@@ -9,15 +9,15 @@ def test_get_tsunami_zones(client):
 
 
 def test_is_in_tsunami_zone(client):
-    lat, lon = [37.759039, -122.509515]
-    response = client.get(f"/api/tsunami/is-in-tsunami-zone?lat={lat}&lon={lon}")
+    lon, lat = [-122.4, 37.75]
+    response = client.get(f"/tsunami-zones/is-in-tsunami-zone?lon={lon}&lat={lat}")
     assert response.status_code == 200
     assert response.json()  # True
 
     # These should not be in our tsunami zone
-    wrong_lat, wrong_lon = [0.0, 0.0]
+    wrong_lon, wrong_lat = [0.0, 0.0]
     response = client.get(
-        f"/api/tsunami/is-in-tsunami-zone?lat={wrong_lat}&lon={wrong_lon}"
+        f"/tsunami-zones/is-in-tsunami-zone?lon={wrong_lon}&lat={wrong_lat}"
     )
     assert response.status_code == 200
     assert not response.json()  # False
