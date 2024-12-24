@@ -1,4 +1,4 @@
-from backend.api.tests.test_session_config import client
+from backend.api.tests.test_session_config import test_engine, test_session, client
 
 
 def test_get_landslide_zones(client):

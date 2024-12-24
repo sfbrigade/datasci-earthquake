@@ -1,4 +1,4 @@
-from backend.api.tests.test_session_config import client
+from backend.api.tests.test_session_config import test_session, test_engine, client
 
 
 def test_get_tsunami_zones(client):
