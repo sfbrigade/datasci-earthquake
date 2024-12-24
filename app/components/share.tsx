@@ -1,4 +1,3 @@
-
 "use client";
 import {
   Text,
@@ -13,29 +12,20 @@ import FacebookIcon from "../img/icon-facebook.svg";
 import EmailIcon from "../img/icon-email.svg";
 import XIcon from "../img/icon-x.svg";
 import LinkIcon from "../img/icon-link.svg";
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { AddressData } from "./__mocks__/address-data";
 import Link from "next/link";
 
 const Share = () => {
   const copyReportToClipBoard = () => {
-
     // copy the current url to the clipboard
-    navigator.clipboard.writeText(currentUrl)
-    
+    navigator.clipboard.writeText(currentUrl) 
   };
-
   const [currentUrl, setCurrentUrl] = useState("");
-  
   useEffect(() => {
-  
-    // want to create the url if address-1 is not in the url
-
-    // this will allow productionized app to work aswell if we do not change
-
+    // get the current url
     if(window.location.href.includes('address-1')){
-
       // address does not need to be formated
       setCurrentUrl(window.location.href);
     }
