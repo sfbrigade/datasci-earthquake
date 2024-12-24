@@ -68,7 +68,8 @@ const Share = () => {
       <MenuList p={"6px 16px 6px 16px"}>
 
 
-      <Link href={ 'mailto:placeholder@example.com?subject=Share Report&body='+currentUrl}>
+      <Link href=
+      {'mailto:placeholder@example.com?subject=Share Report&body='+currentUrl}>
         <MenuItem gap="10px">
 
           <EmailIcon />
@@ -78,7 +79,8 @@ const Share = () => {
         </Link>
 
       
-        <Link  href={`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`}>
+        <Link  href=
+        {`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`}>
         <MenuItem gap="10px">
          
           <FacebookIcon />
@@ -88,7 +90,8 @@ const Share = () => {
         </Link>
 
      
-        <Link href={`https://twitter.com/intent/tweet?url=${currentUrl}`}>
+        <Link href=
+        {`https://twitter.com/intent/tweet?url=${currentUrl}`}>
         <MenuItem gap="10px">
           
           <XIcon />
