@@ -104,7 +104,7 @@ insert into seismic_hazard_zones (identifier, geometry, update_timestamp) values
                                 '2024/12/16 5:10:00 PM'),
 
                                 (2, ST_GeomFromText('MULTIPOLYGON(((-122.5 37.7, -122.5 37.8, -122.4 37.8, -122.4 37.7, -122.5 37.7)), 
-             ((-122.6 37.6, -122.6 37.7, -122.5 37.7, -122.5 37.6, -122.6 37.6)))', 4326), 
+                                ((-122.6 37.6, -122.6 37.7, -122.5 37.7, -122.5 37.6, -122.6 37.6)))', 4326), 
                                 '2024/12/17 3:10:00 PM');
 
 insert into landslide_zones (
