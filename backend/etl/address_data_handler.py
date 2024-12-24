@@ -1,8 +1,6 @@
 from http.client import HTTPException
 from backend.etl.data_handler import DataHandler
 from backend.api.models.addresses import Address
-from shapely.geometry import Point
-from geoalchemy2.shape import from_shape, to_shape
 
 
 ADDRESSES_URL = "https://data.sfgov.org/resource/ramy-di5m.geojson"  # This API has a default limit of providing 1,000 rows
@@ -32,18 +30,18 @@ class AddressDataHandler(DataHandler):
                 address = {
                     "eas_fullid": props.get("eas_fullid"),
                     "address": props.get("address"),
-                    "unit_number": props.get("address", None),
+                    "unit_number": props.get("unit_number", None),
                     "address_number": int(props.get("address_number", None)),
                     "street_name": props.get("street_name"),
                     "street_type": props.get("street_type", None),
-                    "parcel_number": props.get("street_type", None),
+                    "parcel_number": props.get("parcel_number", None),
                     "block": props.get("block", None),
                     "lot": props.get("lot", None),
                     "cnn": props.get("cnn", None),
                     "longitude": props.get("longitude"),
                     "latitude": props.get("latitude"),
                     "zip_code": int(props.get("zip_code")),
-                    "point": f"Point({geom_latitude} {geom_longitude})",
+                    "point": f"Point({geom_longitude} {geom_latitude})",
                     "supdist": props.get("supdist", None),
                     "supervisor": int(props.get("supervisor", None)),
                     "supname": props.get("supname", None),

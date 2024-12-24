@@ -1,45 +1,11 @@
-"""
-Test the API of soft_story.py.
-"""
-
-import pytest
-from fastapi.testclient import TestClient
-
-# Will the .. be stable?
-from ..main import app
+from backend.api.tests.test_session_config import client
 
 
-@pytest.fixture
-def client():
-    return TestClient(app)
-
-
-def test_delete_soft_story(client):
-    response = client.delete("/api/soft-story/address")
+def test_get_soft_stories(client):
+    response = client.get(f"/soft-stories/")
+    response_dict = response.json()
     assert response.status_code == 200
-    # Temporary guaranteed failure until test is written
-    assert False
-
-
-def test_put_soft_story(client):
-    response = client.put("/api/soft-story/address?soft-story=true")
-    assert response.status_code == 200
-    # Temporary guaranteed failure until test is written
-    assert False
-
-
-def test_post_soft_story(client):
-    response = client.put("/api/soft-story/address?soft-story=true")
-    assert response.status_code == 200
-    # Temporary guaranteed failure until test is written
-    assert False
-
-
-def test_get_soft_story(client):
-    response = client.get("/api/soft-story/address")
-    assert response.status_code == 200
-    # Temporary guaranteed failure until test is written
-    assert False
+    assert len(response_dict["features"]) == 6
 
 
 def test_is_soft_story(client):

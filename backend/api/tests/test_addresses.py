@@ -1,5 +1,4 @@
-import pytest
-from backend.api.tests.test_session_config import test_engine, test_session, client
+from backend.api.tests.test_session_config import client
 
 
 def test_get_address_by_id(client):
@@ -15,4 +14,4 @@ def test_get_addresses(client):
     response = client.get(f"/addresses/")
     response_dict = response.json()
     assert response.status_code == 200
-    assert len(response_dict) == 2
+    assert len(response_dict["features"]) == 2

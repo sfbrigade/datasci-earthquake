@@ -1,7 +1,6 @@
 """All data of the Landslide Zones table from SFData"""
 
-from sqlalchemy import String, Integer, DateTime, func, Float
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy import Integer, DateTime, func, Float
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
@@ -24,10 +23,10 @@ class LandslideZone(Base):
     identifier: Mapped[int] = mapped_column(Integer, primary_key=True)
     geometry: Mapped[Geometry] = mapped_column(Geometry("MULTIPOLYGON", srid=4326))
     gridcode: Mapped[int] = mapped_column(Integer)
-    sum_shape: Mapped[str] = mapped_column(Float)
-    shape_length: Mapped[str] = mapped_column(Float)
-    shape_length_1: Mapped[str] = mapped_column(Float)
-    shape_area: Mapped[str] = mapped_column(Float)
+    sum_shape: Mapped[float] = mapped_column(Float)
+    shape_length: Mapped[float] = mapped_column(Float)
+    shape_length_1: Mapped[float] = mapped_column(Float)
+    shape_area: Mapped[float] = mapped_column(Float)
     update_timestamp: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )

@@ -1,17 +1,11 @@
-"""
-Test the API of liquefaction_api.py.
-"""
-
-import pytest
-from fastapi.testclient import TestClient
-
-# Will the .. be stable?
-from ..main import app
+from backend.api.tests.test_session_config import client
 
 
-@pytest.fixture
-def client():
-    return TestClient(app)
+def test_get_liquefaction_zones(client):
+    response = client.get(f"/liquefaction-zones/")
+    response_dict = response.json()
+    assert response.status_code == 200
+    assert len(response_dict["features"]) == 3
 
 
 def test_is_in_liquefaction_zone(client):
