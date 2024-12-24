@@ -66,18 +66,18 @@ const Share = () => {
         <Text textStyle="textMedium">Share report</Text>
       </MenuButton>
       <MenuList p={"6px 16px 6px 16px"}>
+
+
       <Link href={ 'mailto:placeholder@example.com?subject=Share Report&body='+currentUrl}>
         <MenuItem gap="10px">
+
           <EmailIcon />
-        
-          <Text>
-        
-            Email</Text>
-           
-          
+          <Text>Email</Text>
+
         </MenuItem>
         </Link>
 
+      
         <Link  href={`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`}>
         <MenuItem gap="10px">
          
@@ -87,6 +87,7 @@ const Share = () => {
         </MenuItem>
         </Link>
 
+     
         <Link href={`https://twitter.com/intent/tweet?url=${currentUrl}`}>
         <MenuItem gap="10px">
           
@@ -95,12 +96,13 @@ const Share = () => {
           
         </MenuItem>
         </Link>
+
+  
         <MenuItem gap="10px" onClick={copyReportToClipBoard}>
-         
           <LinkIcon />
           <Text>Copy Link</Text>
-    
         </MenuItem>
+
       </MenuList>
     </Menu>
   );
