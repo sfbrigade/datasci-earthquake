@@ -2,7 +2,7 @@ from http.client import HTTPException
 from backend.etl.data_handler import DataHandler
 from backend.api.models.tsunami import TsunamiZone
 from shapely.geometry import Polygon, MultiPolygon
-from geoalchemy2.shape import from_shape, to_shape
+from geoalchemy2.shape import from_shape
 
 
 TSUNAMI_URL = "https://services2.arcgis.com/zr3KAIbsRSUyARHG/ArcGIS/rest/services/CA_Tsunami_Hazard_Area/FeatureServer/0/query"

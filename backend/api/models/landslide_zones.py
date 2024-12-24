@@ -1,7 +1,6 @@
 """All data of the Landslide Zones table from SFData"""
 
-from sqlalchemy import String, Integer, DateTime, func, Float
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy import Integer, DateTime, func, Float
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry

@@ -1,4 +1,3 @@
-import pytest
 from backend.api.tests.test_session_config import test_engine, test_session, client
 
 

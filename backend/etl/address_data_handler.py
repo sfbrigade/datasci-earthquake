@@ -1,8 +1,6 @@
 from http.client import HTTPException
 from backend.etl.data_handler import DataHandler
 from backend.api.models.addresses import Address
-from shapely.geometry import Point
-from geoalchemy2.shape import from_shape, to_shape
 
 
 ADDRESSES_URL = "https://data.sfgov.org/resource/ramy-di5m.geojson"  # This API has a default limit of providing 1,000 rows
