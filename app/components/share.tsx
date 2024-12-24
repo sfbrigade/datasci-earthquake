@@ -1,5 +1,5 @@
 
-'use client'
+"use·client"
 import {
   Text,
   Button,
@@ -26,7 +26,7 @@ const Share = () => {
     
   };
 
-  const [currentUrl, setCurrentUrl] = useState('');
+  const [currentUrl, setCurrentUrl] = useState("");
   
   useEffect(() => {
   
@@ -42,7 +42,7 @@ const Share = () => {
     else{
       // format the adress using addressData.address
     console.log(window.location.href) 
-    const addreessParts = AddressData.address.split(' ');
+    const addreessParts = AddressData.address.split("");
     let joinedstring = addreessParts.join('+')
 
     const urlString = `${window.location.href}/?address-1=${joinedstring}`
