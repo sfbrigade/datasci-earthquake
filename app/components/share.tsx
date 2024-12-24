@@ -1,5 +1,5 @@
 
-"use client"
+"use client";
 import {
   Text,
   Button,
@@ -37,15 +37,15 @@ const Share = () => {
     if(window.location.href.includes('address-1')){
 
       // address does not need to be formated
-      setCurrentUrl(window.location.href)
+      setCurrentUrl(window.location.href);
     }
     else{
       // format the adress using addressData.address
-    console.log(window.location.href) 
+    console.log(window.location.href); 
     const addreessParts = AddressData.address.split("");
-    let joinedstring = addreessParts.join('+')
+    let joinedstring = addreessParts.join('+');
 
-    const urlString = `${window.location.href}/?address-1=${joinedstring}`
+    const urlString = `${window.location.href}/?address-1=${joinedstring}`;
    
     setCurrentUrl(urlString)
 
