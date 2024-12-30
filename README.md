@@ -139,6 +139,19 @@ The file is organized into three main sections:
 - **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
 
 ---
+# Migrating the Database
+
+If you have changed the models in backend/api/models, then you must migrate the database from its current models to the new ones with the following two commands:
+
+`docker exec -it BACKEND_CONTAINER_NAME bash -c "cd backend && alembic revision --autogenerate -m 'MIGRATION NAME'"`
+
+and
+
+`docker exec -it CONTAINER_NAME bash -c "cd backend && alembic upgrade head"`
+
+where `BACKEND_CONTAINER_NAME` may change with the project and perhaps its deployment but, for local Docker development is `datasci-earthquake-backend-1` and `MIGRATION NAME` is your choice and should describe the migration.
+
+The former command generates a migration script in `backend/alembic/versions`, and the second command runs it. 
 
 # Disclaimer
 
