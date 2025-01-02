@@ -65,3 +65,4 @@ uvloop==0.20.0
 virtualenv==20.26.6
 watchfiles==0.24.0
 websockets==13.0.1
+alembic==1.14.0
