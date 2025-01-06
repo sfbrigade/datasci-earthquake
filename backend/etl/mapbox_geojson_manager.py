@@ -63,6 +63,7 @@ class _BatchMapboxGeocoder:
                     "Number of batch addresses does not match number of batch responses"
                 )
 
+            # Update batch features with the SFData address, which will be used to join the SFData soft story dataset
             for feature_collection, address in zip(batch_response, batch_addresses):
                 if len(feature_collection["features"]) == 0:
                     feature_collection["features"].append({"properties": {}})
