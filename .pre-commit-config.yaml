@@ -1,10 +1,10 @@
 repos:
   - repo: https://github.com/psf/black
-    rev: 23.3.0
+    rev: 24.10.0 
     hooks:
       - id: black
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v1.13.0"
+    rev: "v1.14.1"
     hooks:
       - id: mypy
         args: ["--config-file", "mypy.ini"]
@@ -16,7 +16,7 @@ repos:
           - "GeoAlchemy2>=0.15.2"
           - "pytest>=8.3.3"
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: "v9.14.0"
+    rev: "v9.17.0"
     hooks:
       - id: eslint
         args:
