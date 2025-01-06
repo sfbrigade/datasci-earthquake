@@ -21,6 +21,35 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
         self.mapbox_geojson_manager = MapboxGeojsonManager(api_key=mapbox_api_key)
         super().__init__(url, table)
 
+    def fill_in_missing_mapbox_points(self, parsed_data: list[dict]):
+        # Try to fix the mapbox_point fields that were not in the geojson. We will batch geocode these addresses.
+        # FIXME: two cases in which mapbox_point was None: 1. the address is not in the geojson,
+        # 2. mapbox couldn't resolve the address, therefore it was stored in the geojson as None
+        # We should handle the second case, but we are not doing it now.
+        addresses = [
+            data_point["address"]
+            for data_point in parsed_data
+            if data_point["mapbox_point"] is None
+        ]
+
+        if not addresses:
+            return parsed_data
+
+        mapbox_coordinates_map: Dict[
+            str, Tuple[float, float]
+        ] = self.mapbox_geojson_manager.batch_geocode_addresses(addresses)
+
+        for data_point in parsed_data:
+            if data_point["mapbox_point"] is None:
+                # Try to fill, if found in the mapbox geojson
+                address = data_point["address"]
+                # mapbox_coordinates_map only contains the addresses that MapBox could resolve, so not all addresses will be there
+                if address in mapbox_coordinates_map:
+                    lon, lat = mapbox_coordinates_map[address]
+                    data_point["mapbox_point"] = f"Point({lon} {lat})"
+
+        return parsed_data
+
     def parse_data(self, data: dict) -> list[dict]:
         """
         Extracts feature attributes and geometry data to construct a
@@ -64,29 +93,7 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
                 }
             )
 
-        # Try to fix the mapbox_point fields that were not in the geojson. We will batch geocode these addresses.
-        # FIXME: two cases in which mapbox_point was None: 1. the address is not in the geojson,
-        # 2. mapbox couldn't resolve the address, therefore it was stored in the geojson as None
-        # We should handle the second case, but we are not doing it now.
-        addresses = [
-            data_point["address"]
-            for data_point in parsed_data
-            if data_point["mapbox_point"] is None
-        ]
-        mapbox_coordinates_map: Dict[
-            str, Tuple[float, float]
-        ] = self.mapbox_geojson_manager.batch_geocode_addresses(addresses)
-
-        for data_point in parsed_data:
-            if data_point["mapbox_point"] is None:
-                # Try to fill, if found in the mapbox geojson
-                address = data_point["address"]
-                # mapbox_coordinates_map only contains the addresses that MapBox could resolve, so not all addresses will be there
-                if address in mapbox_coordinates_map:
-                    lon, lat = mapbox_coordinates_map[address]
-                    data_point["mapbox_point"] = f"Point({lon} {lat})"
-
-        return parsed_data
+        return self.fill_in_missing_mapbox_points(parsed_data)
 
 
 if __name__ == "__main__":
