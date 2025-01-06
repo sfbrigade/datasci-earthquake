@@ -35,9 +35,9 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
         if not addresses:
             return parsed_data
 
-        mapbox_coordinates_map: Dict[
-            str, Tuple[float, float]
-        ] = self.mapbox_geojson_manager.batch_geocode_addresses(addresses)
+        mapbox_coordinates_map: Dict[str, Tuple[float, float]] = (
+            self.mapbox_geojson_manager.batch_geocode_addresses(addresses)
+        )
 
         for data_point in parsed_data:
             if data_point["mapbox_point"] is None:
