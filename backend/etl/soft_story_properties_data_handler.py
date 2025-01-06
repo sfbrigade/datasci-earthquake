@@ -4,8 +4,7 @@ from backend.api.models.soft_story_properties import SoftStoryProperty
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from dotenv import load_dotenv
 import os
-from pathlib import Path
-from backend.etl.mapbox_geocoder import MapboxGeojsonManager
+from etl.mapbox_geojson_manager import MapboxGeojsonManager
 from typing import Dict, Tuple
 
 
@@ -86,8 +85,6 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
                 if address in mapbox_coordinates_map:
                     lon, lat = mapbox_coordinates_map[address]
                     data_point["mapbox_point"] = f"Point({lon} {lat})"
-
-        # self.mapbox_geocoder.batch_geocode_and_store(addresses, self.output_path)
 
         return parsed_data
 
