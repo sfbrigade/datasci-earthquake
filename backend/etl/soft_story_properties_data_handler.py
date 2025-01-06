@@ -87,9 +87,11 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
                     ),
                     "sfdata_as_of": properties.get("data_as_of"),
                     "sfdata_loaded_at": properties.get("data_loaded_at"),
-                    "mapbox_point": f"Point({mapbox_coordinates[0]} {mapbox_coordinates[1]})"
-                    if mapbox_coordinates
-                    else None,
+                    "mapbox_point": (
+                        f"Point({mapbox_coordinates[0]} {mapbox_coordinates[1]})"
+                        if mapbox_coordinates
+                        else None
+                    ),
                 }
             )
 
