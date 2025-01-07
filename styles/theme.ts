@@ -56,6 +56,9 @@ const customTheme = extendTheme({
     green: "#25855A",
     orange: "#F6AD55",
     pink: "#ED64A6",
+    gradient: {
+      blue: "radial-gradient(circle, #3B6294 0%, #183252 100%)",
+    },
   },
   space: {
     12: "128px",
