@@ -6,7 +6,7 @@ from typing import List, Tuple, Dict, Any, Optional
 
 
 _MAPBOX_GEOCODE_API_ENDPOINT = "https://api.mapbox.com/search/geocode/v6/batch"
-_MAPBOX_SOFT_STORY_JSON = "etl/data/mapbox_soft_story.geojson"
+_MAPBOX_SOFT_STORY_JSON = "data/mapbox_soft_story.geojson"
 _MAPBOX_BATCH_LIMIT = 1000
 
 

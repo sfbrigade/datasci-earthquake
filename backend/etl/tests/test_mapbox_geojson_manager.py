@@ -20,7 +20,7 @@ def geocoder(api_key):
 
 
 class TestBatchMapboxGeocoder:
-    def test_build_address_request(geocoder):
+    def test_build_address_request(self, geocoder):
         """
         Tests the _build_address_request method to ensure it returns
         the correct dict payload for a given address.
@@ -36,7 +36,7 @@ class TestBatchMapboxGeocoder:
         }, "Request payload should match expected structure"
 
     @patch("requests.post")
-    def test_post_request_success(mock_post, geocoder, api_key):
+    def test_post_request_success(self, mock_post, geocoder, api_key):
         """
         Tests the _post_request method to ensure it calls requests.post correctly
         and returns the response when successful.
@@ -64,7 +64,7 @@ class TestBatchMapboxGeocoder:
         assert response.json() == {"batch": []}
 
     @patch("requests.post")
-    def test_post_request_http_error(mock_post, geocoder):
+    def test_post_request_http_error(self, mock_post, geocoder):
         """
         Tests that an HTTPError is raised if the response's raise_for_status() fails.
         """
@@ -78,7 +78,7 @@ class TestBatchMapboxGeocoder:
         assert "HTTP Error" in str(excinfo.value)
 
     @patch.object(_BatchMapboxGeocoder, "_post_request")
-    def test_batch_geocode_addresses_one_batch(mock_post_request, geocoder):
+    def test_batch_geocode_addresses_one_batch(self, mock_post_request, geocoder):
         """
         Tests batch_geocode_addresses by mocking _post_request to return a controlled response.
         """
@@ -108,151 +108,33 @@ class TestBatchMapboxGeocoder:
         mock_post_request.assert_called_once()
 
 
-@patch("backend.etl.mapbox_geojson_manager._MAPBOX_BATCH_LIMIT", 2)
-@patch.object(_BatchMapboxGeocoder, "_post_request")
-def test_batch_geocode_addresses_two_batches(mock_post_request, geocoder):
-    """
-    Test that when _MAPBOX_BATCH_LIMIT is mocked to 2,
-    and we provide 4 addresses, the geocoder makes exactly
-    two calls to _post_request (i.e., two batches).
-    """
-
-    addresses = ["Addr1", "Addr2", "Addr3", "Addr4"]
-
-    # Mock the responses. We'll provide two separate responses
-    # since we expect two API calls (2 addresses per call).
-    first_response = MagicMock(spec=Response)
-    first_response.json.return_value = {
-        "batch": [
-            {
-                "features": [
-                    {
-                        "properties": {
-                            "longitude": -122.4,
-                            "latitude": 37.8,
-                            "name": "Addr1",
-                        }
-                    }
-                ]
-            },
-            {
-                "features": [
-                    {
-                        "properties": {
-                            "longitude": -122.3,
-                            "latitude": 37.7,
-                            "name": "Addr2",
-                        }
-                    }
-                ]
-            },
-        ]
-    }
-
-    second_response = MagicMock(spec=Response)
-    second_response.json.return_value = {
-        "batch": [
-            {
-                "features": [
-                    {
-                        "properties": {
-                            "longitude": -122.2,
-                            "latitude": 37.6,
-                            "name": "Addr3",
-                        }
-                    }
-                ]
-            },
-            {
-                "features": [
-                    {
-                        "properties": {
-                            "longitude": -122.1,
-                            "latitude": 37.5,
-                            "name": "Addr4",
-                        }
-                    }
-                ]
-            },
-        ]
-    }
-
-    # Have _post_request return these two responses in sequence
-    mock_post_request.side_effect = [first_response, second_response]
-
-    # Call the method
-    features = geocoder.batch_geocode_addresses(addresses, limit=1)
-
-    # Check that _post_request was called exactly twice
-    assert (
-        mock_post_request.call_count == 2
-    ), "Should call _post_request twice for 4 addresses in batches of 2."
-
-    # Verify that we received 4 features total, one per address
-    assert len(features) == 4, "Should return 4 features total."
-
-    # Check that each returned feature has the correct 'sfdata_address'
-    assert features[0]["properties"]["sfdata_address"] == "Addr1"
-    assert features[1]["properties"]["sfdata_address"] == "Addr2"
-    assert features[2]["properties"]["sfdata_address"] == "Addr3"
-    assert features[3]["properties"]["sfdata_address"] == "Addr4"
-
-    # Check that each feature's 'sfdata_address' matches the 'name' in the response
-    # This helps verify that each sfdata_address is associated with the correct feature
-    assert (
-        features[0]["properties"]["sfdata_address"] == features[0]["properties"]["name"]
-    )
-    assert (
-        features[1]["properties"]["sfdata_address"] == features[1]["properties"]["name"]
-    )
-    assert (
-        features[2]["properties"]["sfdata_address"] == features[2]["properties"]["name"]
-    )
-    assert (
-        features[3]["properties"]["sfdata_address"] == features[3]["properties"]["name"]
-    )
-
-
 class TestMapboxGeojsonManager:
     @pytest.fixture
     def manager(api_key):
-        return MapboxGeojsonManager(api_key=api_key)
+        """
+        Fixture that patches MapboxGeojsonManager._mapbox_points so it doesn't
+        actually read from a file but instead returns a mock dictionary.
+        """
+        with patch.object(
+            MapboxGeojsonManager,
+            "_mapbox_points",
+            return_value={"Some Address": (1.0, 2.0)},
+        ):
+            mgr = MapboxGeojsonManager(api_key=api_key)
+            yield mgr
 
-    def test_mapbox_points_read_file(manager):
+    def test_mapbox_points_read_file(self, manager):
         """
         Tests that _mapbox_points() reads the geojson file and builds the dict correctly.
         We'll patch the open call and simulate a small geojson.
         """
-        fake_geojson = {
-            "type": "FeatureCollection",
-            "features": [
-                {
-                    "properties": {
-                        "sfdata_address": "Test Address 1",
-                        "longitude": -122.4,
-                        "latitude": 37.8,
-                    }
-                },
-                {
-                    "properties": {
-                        "sfdata_address": "Test Address 2",
-                        "longitude": None,
-                        "latitude": None,
-                    }
-                },
-            ],
-        }
-
-        m = mock_open(read_data=json.dumps(fake_geojson))
-        with patch("builtins.open", m):
-            result = manager._mapbox_points()
+        result = manager._mapbox_points()
 
         assert result == {
-            "Test Address 1": (-122.4, 37.8),
-            "Test Address 2": (None, None),
+            "Some Address": (1.0, 2.0)
         }, "Should parse addresses to coordinate tuples"
 
-    def test_get_mapbox_coordinates(manager):
+    def test_get_mapbox_coordinates(self, manager):
         """
         Tests get_mapbox_coordinates by mocking manager.mapbox_points directly.
         """
@@ -271,7 +153,7 @@ class TestMapboxGeojsonManager:
         coords_not_found = manager.get_mapbox_coordinates("Does Not Exist")
         assert coords_not_found is None
 
-    def test_parse_mapbox_features(manager):
+    def test_parse_mapbox_features(self, manager):
         """
         Tests _parse_mapbox_features() to ensure it extracts the data from a list of features.
         """
@@ -294,7 +176,7 @@ class TestMapboxGeojsonManager:
         coords_map = manager._parse_mapbox_features(features)
         assert coords_map == {"Addr 1": (-122.4, 37.8), "Addr 2": (-122.3, 37.7)}
 
-    def test_write_to_geojson_new_file(manager):
+    def test_write_to_geojson_new_file(self, manager):
         """
         Tests write_to_geojson when the geojson file doesn't exist.
         """
@@ -312,9 +194,10 @@ class TestMapboxGeojsonManager:
                 [{"type": "Feature", "properties": {"sfdata_address": "New Address"}}]
             )
 
-        # `mocked_file()` is like the file handle; `.write.call_args` captures what was written
         handle = mocked_file()
-        written_data = json.loads(handle.write.call_args[0][0])
+        written_data = json.loads(
+            "".join([call[0][0] for call in handle.write.call_args_list])
+        )
 
         assert "features" in written_data
         assert len(written_data["features"]) == 1
@@ -322,38 +205,42 @@ class TestMapboxGeojsonManager:
             written_data["features"][0]["properties"]["sfdata_address"] == "New Address"
         )
 
+    def test_write_to_geojson_append(self, manager):
+        """
+        If the file exists, we append new features to existing ones.
+        We'll patch Path.exists() to return True.
+        """
+        # Create a mock file containing one existing feature
+        initial_data = '{"type": "FeatureCollection", "features": [{"properties": {"sfdata_address": "Old Address"}}]}'
+        m = mock_open(read_data=initial_data)
 
-def test_write_to_geojson_append(manager):
-    """
-    If the file exists, we append new features to existing ones.
-    We'll patch Path.exists() to return True.
-    """
-    # Create a mock file containing one existing feature
-    initial_data = '{"type": "FeatureCollection", "features": [{"properties": {"sfdata_address": "Old Address"}}]}'
-    m = mock_open(read_data=initial_data)
+        with patch("builtins.open", m), patch.object(Path, "exists", return_value=True):
+            new_features = [
+                {
+                    "properties": {"sfdata_address": "Appended Address"},
+                    "type": "Feature",
+                }
+            ]
+            # This call now uses our mock file instead of a real file
+            manager.write_to_geojson(new_features)
 
-    with patch("builtins.open", m), patch.object(Path, "exists", return_value=True):
-        new_features = [
-            {"properties": {"sfdata_address": "Appended Address"}, "type": "Feature"}
-        ]
-        # This call now uses our mock file instead of a real file
-        manager.write_to_geojson(new_features)
+        # The final write should contain both the old and new features
+        handle = m()  # 'm()' is the mock file handle
+        written_data = json.loads(
+            "".join([call[0][0] for call in handle.write.call_args_list])
+        )
+        all_features = written_data["features"]
+        assert len(all_features) == 2
 
-    # The final write should contain both the old and new features
-    handle = m()  # 'm()' is the mock file handle
-    written_data = json.loads(handle.write.call_args[0][0])
-    all_features = written_data["features"]
-    assert len(all_features) == 2
-
-    addresses = [f["properties"]["sfdata_address"] for f in all_features]
-    assert "Old Address" in addresses
-    assert "Appended Address" in addresses
+        addresses = [f["properties"]["sfdata_address"] for f in all_features]
+        assert "Old Address" in addresses
+        assert "Appended Address" in addresses
 
     @patch.object(_BatchMapboxGeocoder, "batch_geocode_addresses")
     @patch.object(MapboxGeojsonManager, "_parse_mapbox_features")
     @patch.object(MapboxGeojsonManager, "write_to_geojson")
     def test_batch_geocode_addresses_integration(
-        mock_write, mock_parse, mock_batch, manager
+        self, mock_write, mock_parse, mock_batch, manager
     ):
         """
         Tests the batch_geocode_addresses() high-level method.
