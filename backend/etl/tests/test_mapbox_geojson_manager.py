@@ -117,7 +117,7 @@ class TestMapboxGeojsonManager:
         """
         with patch.object(
             MapboxGeojsonManager,
-            "_mapbox_points",
+            "_get_mapbox_points",
             return_value={"Some Address": (1.0, 2.0)},
         ):
             mgr = MapboxGeojsonManager(api_key=api_key)
