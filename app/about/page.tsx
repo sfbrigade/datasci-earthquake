@@ -1,6 +1,7 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Link, Text, Box, VStack, HStack } from "@chakra-ui/react";
 import Heading from "../components/heading";
 import { Headings } from "../data/data";
+import NextLink from "next/link";
 
 const About = () => {
   const headingData = Headings.about;
@@ -16,13 +17,137 @@ const About = () => {
       m="auto"
     >
       <Heading headingData={headingData} />
-      <Text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu justo
-        ipsum. Nullam eleifend consectetur mauris ac porta. Fusce venenatis,
-        libero vitae fringilla volutpat, odio diam maximus nibh, eu vestibulum
-        lacus tellus sed felis. Suspendisse potenti. Nulla iaculis sapien vitae
-        iaculis egestas.
+      <Text textStyle="textBig" fontWeight="400" color="grey.900" mb="8">
+        Quisque nec sagittis sapien. Proin vestibulum purus nec tellus molestie
+        tempus. Pellentesque at vestibulum ipsum.{" "}
+        <Link
+          as={NextLink}
+          href="https://www.lipsum.com/"
+          color="blue"
+          target="_blank"
+        >
+          Link to another website
+        </Link>{" "}
+        neque vel laoreet tempor. Proin non lobortis urna. Praesent sodales
+        molestie augue sed posuere. Cras non iaculis nisi, eu placerat leo.
+        Phasellus in lobortis metus, vel euismod turpis. Proin in placerat elit.
+        Nullam ornare elementum lectus blandit convallis.
       </Text>
+      <Flex as="section" direction="column" gap="5">
+        <Box>
+          <Text
+            as="h3"
+            textStyle="headerMedium"
+            fontWeight="400"
+            color="grey.900"
+          >
+            Subhead
+          </Text>
+          <Text textStyle="textMedium">
+            Quisque nec sagittis sapien. Proin vestibulum purus nec tellus
+            molestie tempus. Pellentesque at vestibulum ipsum. Praesent maximus
+            neque vel laoreet tempor. Proin non lobortis urna. Praesent sodales
+            molestie augue sed posuere. Cras non iaculis nisi, eu placerat leo.
+            Phasellus in lobortis metus, vel euismod turpis. Proin in placerat
+            elit. Nullam ornare elementum lectus blandit convallis.
+          </Text>
+        </Box>
+        <Flex direction={{ base: "column", md: "row" }} gap="3">
+          <Box>
+            <Text
+              as="h3"
+              textStyle="headerMedium"
+              fontWeight="400"
+              color="grey.900"
+            >
+              Subhead
+            </Text>
+            <Text textStyle="textMedium">
+              Quisque nec sagittis sapien. Proin vestibulum purus nec tellus
+              molestie tempus. Pellentesque at vestibulum ipsum. Praesent
+              maximus neque vel laoreet tempor. Proin non lobortis urna.
+              Praesent sodales molestie augue sed posuere. Cras non iaculis
+              nisi, eu placerat leo. Phasellus in lobortis metus, vel euismod
+              turpis. Proin in placerat elit. Nullam ornare elementum lectus
+              blandit convallis.
+            </Text>
+          </Box>
+          <Box>
+            <Text
+              as="h3"
+              textStyle="headerMedium"
+              fontWeight="400"
+              color="grey.900"
+            >
+              Subhead
+            </Text>
+            <Text textStyle="textMedium">
+              Quisque nec sagittis sapien. Proin vestibulum purus nec tellus
+              molestie tempus. Pellentesque at vestibulum ipsum. Praesent
+              maximus neque vel laoreet tempor. Proin non lobortis urna.
+              Praesent sodales molestie augue sed posuere. Cras non iaculis
+              nisi, eu placerat leo. Phasellus in lobortis metus, vel euismod
+              turpis. Proin in placerat elit. Nullam ornare elementum lectus
+              blandit convallis.
+            </Text>
+          </Box>
+          <Box>
+            <Text
+              as="h3"
+              textStyle="headerMedium"
+              fontWeight="400"
+              color="grey.900"
+            >
+              Subhead
+            </Text>
+            <Text textStyle="textMedium">
+              Quisque nec sagittis sapien. Proin vestibulum purus nec tellus
+              molestie tempus. Pellentesque at vestibulum ipsum. Praesent
+              maximus neque vel laoreet tempor. Proin non lobortis urna.
+              Praesent sodales molestie augue sed posuere. Cras non iaculis
+              nisi, eu placerat leo. Phasellus in lobortis metus, vel euismod
+              turpis. Proin in placerat elit. Nullam ornare elementum lectus
+              blandit convallis.
+            </Text>
+          </Box>
+        </Flex>
+        <Box>
+          <Text
+            as="h3"
+            textStyle="headerMedium"
+            fontWeight="400"
+            color="grey.900"
+          >
+            Subhead
+          </Text>
+          <Text textStyle="textMedium">
+            Quisque nec sagittis sapien. Proin vestibulum purus nec tellus
+            molestie tempus. Pellentesque at vestibulum ipsum. Praesent maximus
+            neque vel laoreet tempor. Proin non lobortis urna. Praesent sodales
+            molestie augue sed posuere. Cras non iaculis nisi, eu placerat leo.
+            Phasellus in lobortis metus, vel euismod turpis. Proin in placerat
+            elit. Nullam ornare elementum lectus blandit convallis.
+          </Text>
+        </Box>
+        <Box>
+          <Text
+            as="h3"
+            textStyle="headerMedium"
+            fontWeight="400"
+            color="grey.900"
+          >
+            Subhead
+          </Text>
+          <Text textStyle="textMedium">
+            Quisque nec sagittis sapien. Proin vestibulum purus nec tellus
+            molestie tempus. Pellentesque at vestibulum ipsum. Praesent maximus
+            neque vel laoreet tempor. Proin non lobortis urna. Praesent sodales
+            molestie augue sed posuere. Cras non iaculis nisi, eu placerat leo.
+            Phasellus in lobortis metus, vel euismod turpis. Proin in placerat
+            elit. Nullam ornare elementum lectus blandit convallis.
+          </Text>
+        </Box>
+      </Flex>
     </Flex>
   );
 };

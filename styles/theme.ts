@@ -1,4 +1,4 @@
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, textDecoration } from "@chakra-ui/react";
 
 const customTheme = extendTheme({
   fonts: {
@@ -41,6 +41,12 @@ const customTheme = extendTheme({
       fontSize: "xs",
       fontWeight: "normal",
       color: "grey.900",
+    },
+    linkBig: {
+      fontSize: "xl",
+      fontWeight: "normal",
+      color: "blue",
+      textDecoration: "underline",
     },
   },
   colors: {
