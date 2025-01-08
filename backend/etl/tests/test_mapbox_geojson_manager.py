@@ -125,10 +125,10 @@ class TestMapboxGeojsonManager:
 
     def test_mapbox_points_read_file(self, manager):
         """
-        Tests that _mapbox_points() reads the geojson file and builds the dict correctly.
+        Tests that _get_mapbox_points() reads the geojson file and builds the dict correctly.
         We'll patch the open call and simulate a small geojson.
         """
-        result = manager._mapbox_points()
+        result = manager._get_mapbox_points()
 
         assert result == {
             "Some Address": (1.0, 2.0)
