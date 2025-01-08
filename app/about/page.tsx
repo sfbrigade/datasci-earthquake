@@ -52,7 +52,7 @@ const About = () => {
             elit. Nullam ornare elementum lectus blandit convallis.
           </Text>
         </Box>
-        <Flex direction={{ base: "column", md: "row" }} gap="3">
+        <Flex direction={{ base: "column", md: "row" }} gap="5">
           <Box>
             <Text
               as="h3"

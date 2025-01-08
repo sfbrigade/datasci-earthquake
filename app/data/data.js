@@ -93,8 +93,8 @@ export const Headings = {
   about: {
     text: "Our mission is to consectetur vestibulum purus nec tellus",
     highlight: "Our mission is to",
-    style: { color: "blue", fontSize: "55px", fontWeight: "700" },
+    style: { color: "blue", fontWeight: "700" },
     highlightStyle: { fontWeight: "400", color: "grey.900" },
-    maxWidth: { base: "100%", md: "100%", xl: "817px" },
+    maxWidth: { base: "100%", md: "100%", xl: "842px" },
   },
 };
