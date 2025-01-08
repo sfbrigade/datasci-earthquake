@@ -5,8 +5,11 @@ import Map from "./components/map";
 import "./globals.css";
 import Report from "./components/report";
 import Information from "./components/information";
+import { Headings } from "./data/data";
 
 const Home = () => {
+  const headingData = Headings.home;
+
   return (
     <Flex direction="column">
       <Box bgColor="blue">
@@ -19,7 +22,7 @@ const Home = () => {
           }}
           m="auto"
         >
-          <Heading />
+          <Heading headingData={headingData} />
           <SearchBar />
         </Box>
       </Box>

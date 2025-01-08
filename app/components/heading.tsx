@@ -1,14 +1,25 @@
 import { Highlight, Text } from "@chakra-ui/react";
 
-const Heading = () => {
+interface HeadingProps {
+  text: string;
+  highlight: string;
+  style?: {
+    [key: string]: string;
+  };
+  highlightStyle?: {
+    [key: string]: string;
+  };
+  maxWidth?: {
+    [key: string]: string;
+  };
+}
+
+const Heading: React.FC<{ headingData: HeadingProps }> = ({ headingData }) => {
+  const { text, highlight, style, highlightStyle, maxWidth } = headingData;
   return (
-    <Text
-      textStyle="headerBig"
-      mb="43px"
-      maxW={{ base: "332px", md: "457px", xl: "546px" }}
-    >
-      <Highlight query="Learn about" styles={{ color: "yellow" }}>
-        Learn about your home’s earthquake readiness.
+    <Text textStyle="headerBig" mb="43px" maxW={maxWidth} sx={style}>
+      <Highlight query={highlight} styles={highlightStyle}>
+        {text}
       </Highlight>
     </Text>
   );

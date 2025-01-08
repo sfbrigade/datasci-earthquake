@@ -81,3 +81,20 @@ export const Info = [
     ],
   },
 ];
+
+export const Headings = {
+  home: {
+    text: "Learn about your home’s earthquake readiness.",
+    highlight: "Learn about",
+    style: {},
+    highlightStyle: { color: "yellow" },
+    maxWidth: { base: "332px", md: "457px", xl: "546px" },
+  },
+  about: {
+    text: "Our mission is to consectetur vestibulum purus nec tellus",
+    highlight: "Our mission is to",
+    style: { color: "blue", fontSize: "55px", fontWeight: "700" },
+    highlightStyle: { fontWeight: "400", color: "grey.900" },
+    maxWidth: { base: "100%", md: "100%", xl: "817px" },
+  },
+};
