@@ -21,17 +21,10 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
         self.mapbox_geojson_manager = MapboxGeojsonManager(api_key=mapbox_api_key)
         super().__init__(url, table)
 
-    def fill_in_missing_mapbox_points(self, parsed_data: list[dict]):
+    def fill_in_missing_mapbox_points(
+        self, parsed_data: list[dict], addresses: list[str]
+    ):
         # Try to fix the mapbox_point fields that were not in the geojson. We will batch geocode these addresses.
-        # FIXME: two cases in which mapbox_point was None: 1. the address is not in the geojson,
-        # 2. mapbox couldn't resolve the address, therefore it was stored in the geojson as None
-        # We should handle the second case, but we are not doing it now.
-        addresses = [
-            data_point["address"]
-            for data_point in parsed_data
-            if data_point["mapbox_point"] is None
-        ]
-
         if not addresses:
             return parsed_data
 
@@ -44,7 +37,10 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
                 # Try to fill, if found in the mapbox geojson
                 address = data_point["address"]
                 # mapbox_coordinates_map only contains the addresses that MapBox could resolve, so not all addresses will be there
-                if address in mapbox_coordinates_map:
+                if (
+                    address in mapbox_coordinates_map
+                    and mapbox_coordinates_map[address]
+                ):
                     lon, lat = mapbox_coordinates_map[address]
                     data_point["mapbox_point"] = f"Point({lon} {lat})"
 
@@ -65,12 +61,17 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
             geometry = feature.get("geometry", {})
             if geometry:
                 geom_longitude, geom_latitude = geometry["coordinates"]
-            addresses.append(properties.get("address"))
 
             # Search for the address in the mapbox geojson
-            mapbox_coordinates = self.mapbox_geojson_manager.get_mapbox_coordinates(
+            if not self.mapbox_geojson_manager.is_address_in_geojson(
                 properties.get("address")
-            )
+            ):
+                addresses.append(properties.get("address"))
+                mapbox_coordinates = None
+            else:
+                mapbox_coordinates = self.mapbox_geojson_manager.get_mapbox_coordinates(
+                    properties.get("address")
+                )
 
             parsed_data.append(
                 {
@@ -95,7 +96,7 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
                 }
             )
 
-        return self.fill_in_missing_mapbox_points(parsed_data)
+        return self.fill_in_missing_mapbox_points(parsed_data, addresses)
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@ from typing import List, Tuple, Dict, Any, Optional
 
 
 _MAPBOX_GEOCODE_API_ENDPOINT = "https://api.mapbox.com/search/geocode/v6/batch"
-_MAPBOX_SOFT_STORY_JSON = "data/mapbox_soft_story.geojson"
+_MAPBOX_SOFT_STORY_JSON = "backend/etl/data/mapbox_soft_story.geojson"
 _MAPBOX_BATCH_LIMIT = 1000
 
 
@@ -74,16 +74,16 @@ class _BatchMapboxGeocoder:
 
 
 class MapboxGeojsonManager:
-    geojson_file: Path
-    geocoder: _BatchMapboxGeocoder
-    mapbox_points: Dict[str, Optional[Tuple[float, float]]]
+    _geojson_file: Path
+    _geocoder: _BatchMapboxGeocoder
+    _mapbox_points: Dict[str, Optional[Tuple[float, float]]]
 
     def __init__(self, api_key: str):
         self.geojson_path = Path(_MAPBOX_SOFT_STORY_JSON)
-        self.geocoder = _BatchMapboxGeocoder(api_key)
-        self.mapbox_points = self._mapbox_points()
+        self._geocoder = _BatchMapboxGeocoder(api_key)
+        self._mapbox_points = self._get_mapbox_points()
 
-    def _mapbox_points(self) -> Dict[str, Optional[Tuple[float, float]]]:
+    def _get_mapbox_points(self) -> Dict[str, Optional[Tuple[float, float]]]:
         """
         Parse the mapbox geojson file and return a dictionary mapping SFData addresses to their respective MapBox coordinates.
         """
@@ -96,20 +96,26 @@ class MapboxGeojsonManager:
             address = properties.get("sfdata_address")
             if address is None:
                 raise ValueError("No address found in geojson's 'properties' field")
-            if properties is None:
+            if "coordinates" not in properties:
                 parsed_data[address] = None
             else:
-                longitude = properties.get("longitude")
-                latitude = properties.get("latitude")
+                longitude = properties["coordinates"]["longitude"]
+                latitude = properties["coordinates"]["latitude"]
                 parsed_data[address] = (longitude, latitude)
 
         return parsed_data
+
+    def is_address_in_geojson(self, address: str) -> bool:
+        """
+        Returns True if the address exists in the geojson, otherwise False
+        """
+        return address in self._mapbox_points
 
     def get_mapbox_coordinates(self, address: str) -> Optional[Tuple[float, float]]:
         """
         Returns mapbox coordinates for this address if it exists in the geojson, otherwise None
         """
-        return self.mapbox_points.get(address, None)
+        return self._mapbox_points.get(address, None)
 
     def _parse_mapbox_features(
         self, features: List[Dict[str, Any]]
@@ -120,9 +126,14 @@ class MapboxGeojsonManager:
         coordinates = {}
         for feature in features:
             properties = feature["properties"]
-            longitude = float(properties.get("longitude"))
-            latitude = float(properties.get("latitude"))
-            coordinates[properties["sfdata_address"]] = (longitude, latitude)
+            coordinates = properties.get("coordinates", {})
+            if coordinates:
+                longitude = float(coordinates["longitude"])
+                latitude = float(coordinates["latitude"])
+                coordinates[properties["sfdata_address"]] = (longitude, latitude)
+            else:
+                coordinates[properties["sfdata_address"]] = None
+
         return coordinates
 
     def write_to_geojson(self, features: List[Dict[str, Any]]):
@@ -150,7 +161,7 @@ class MapboxGeojsonManager:
         """
         Batch geocode a list of addresses and update the geojson file with the new data.
         """
-        features = self.geocoder.batch_geocode_addresses(addresses)
+        features = self._geocoder.batch_geocode_addresses(addresses)
         coordinates = self._parse_mapbox_features(features)
 
         self.write_to_geojson(features)
