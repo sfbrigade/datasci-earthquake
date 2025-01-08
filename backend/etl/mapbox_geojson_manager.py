@@ -119,22 +119,22 @@ class MapboxGeojsonManager:
 
     def _parse_mapbox_features(
         self, features: List[Dict[str, Any]]
-    ) -> Dict[str, Tuple[float, float]]:
+    ) -> Dict[str, Optional[Tuple[float, float]]]:
         """
         Parse the features from the Mapbox response and return a dictionary mapping addresses to their respective coordinates.
         """
-        coordinates = {}
+        coordinate_map: Dict[str, Optional[Tuple[float, float]]] = {}
         for feature in features:
             properties = feature["properties"]
             coordinates = properties.get("coordinates", {})
             if coordinates:
                 longitude = float(coordinates["longitude"])
                 latitude = float(coordinates["latitude"])
-                coordinates[properties["sfdata_address"]] = (longitude, latitude)
+                coordinate_map[properties["sfdata_address"]] = (longitude, latitude)
             else:
-                coordinates[properties["sfdata_address"]] = None
+                coordinate_map[properties["sfdata_address"]] = None
 
-        return coordinates
+        return coordinate_map
 
     def write_to_geojson(self, features: List[Dict[str, Any]]):
         """
@@ -157,7 +157,7 @@ class MapboxGeojsonManager:
 
     def batch_geocode_addresses(
         self, addresses: List[str]
-    ) -> Dict[str, Tuple[float, float]]:
+    ) -> Dict[str, Optional[Tuple[float, float]]]:
         """
         Batch geocode a list of addresses and update the geojson file with the new data.
         """
