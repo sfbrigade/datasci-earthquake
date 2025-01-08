@@ -138,7 +138,7 @@ class TestMapboxGeojsonManager:
         """
         Tests get_mapbox_coordinates by mocking manager.mapbox_points directly.
         """
-        manager.mapbox_points = {
+        manager._mapbox_points = {
             "Some Address": (-123.0, 38.0),
             "Missing Address": None,
         }
@@ -161,15 +161,19 @@ class TestMapboxGeojsonManager:
             {
                 "properties": {
                     "sfdata_address": "Addr 1",
-                    "longitude": "-122.4",
-                    "latitude": "37.8",
+                    "coordinates": {
+                        "longitude": "-122.4",
+                        "latitude": "37.8",
+                    },
                 }
             },
             {
                 "properties": {
                     "sfdata_address": "Addr 2",
-                    "longitude": "-122.3",
-                    "latitude": "37.7",
+                    "coordinates": {
+                        "longitude": "-122.3",
+                        "latitude": "37.7",
+                    },
                 }
             },
         ]
