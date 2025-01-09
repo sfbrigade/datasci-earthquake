@@ -1,43 +1,23 @@
-"""
-Test the API of soft_story.py.
-"""
-
-import pytest
-from fastapi.testclient import TestClient
-
-# Will the .. be stable?
-from ..main import app
-from ..schemas.geo import Polygon
+from backend.api.tests.test_session_config import test_engine, test_session, client
 
 
-@pytest.fixture
-def client():
-    return TestClient(app)
-
-
-def test_delete_soft_story(client):
-    response = client.delete("/api/soft-story/address")
+def test_get_soft_stories(client):
+    response = client.get(f"/soft-stories/")
+    response_dict = response.json()
     assert response.status_code == 200
-    # Temporary guaranteed failure until test is written
-    assert False
+    assert len(response_dict["features"]) == 6
 
 
-def test_put_soft_story(client):
-    response = client.put("/api/soft-story/address?soft-story=true")
+def test_is_soft_story(client):
+    lon, lat = [-122.424966202, 37.762929444]
+    response = client.get(f"/soft-stories/is-soft-story?lon={lon}&lat={lat}")
     assert response.status_code == 200
-    # Temporary guaranteed failure until test is written
-    assert False
+    assert response.json()  # True
 
-
-def test_post_soft_story(client):
-    response = client.put("/api/soft-story/address?soft-story=true")
+    # These should not be soft stories
+    wrong_lon, wrong_lat = [0.0, 0.0]
+    response = client.get(
+        f"/soft-stories/is-soft-story?lon={wrong_lon}&lat={wrong_lat}"
+    )
     assert response.status_code == 200
-    # Temporary guaranteed failure until test is written
-    assert False
-
-
-def test_get_soft_story(client):
-    response = client.get("/api/soft-story/address")
-    assert response.status_code == 200
-    # Temporary guaranteed failure until test is written
-    assert False
+    assert not response.json()  # False

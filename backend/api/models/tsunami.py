@@ -1,7 +1,6 @@
 """Tsunami Risk Zone data"""
 
 from sqlalchemy import String, Integer, Float, DateTime, func
-from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from geoalchemy2 import Geometry
@@ -25,7 +24,7 @@ class TsunamiZone(Base):
     identifier: Mapped[int] = mapped_column(Integer, primary_key=True)
     evacuate: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=False)
     county: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=False)
-    globalID: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=False)
+    global_id: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=False)
     shape_length: Mapped[float] = mapped_column(Float, nullable=True)
     shape_area: Mapped[float] = mapped_column(Float, nullable=True)
     geometry: Mapped[Geometry] = mapped_column(

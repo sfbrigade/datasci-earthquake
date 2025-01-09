@@ -11,7 +11,7 @@ from ..schemas.landslide_schemas import (
 from backend.api.models.landslide_zones import LandslideZone
 
 router = APIRouter(
-    prefix="/landslides",
+    prefix="/landslide-zones",
     tags=[Tags.LANDSLIDE],
 )
 

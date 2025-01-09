@@ -3,6 +3,7 @@
 from fastapi import Depends, HTTPException, APIRouter
 from ..tags import Tags
 from sqlalchemy.orm import Session
+from geoalchemy2 import functions as geo_func
 from backend.database.session import get_db
 from ..schemas.seismic_schemas import (
     SeismicFeature,
@@ -39,3 +40,24 @@ async def get_seismic_hazard_zones(db: Session = Depends(get_db)):
 
     features = [SeismicFeature.from_sqlalchemy_model(zone) for zone in seismic_zones]
     return SeismicFeatureCollection(type="FeatureCollection", features=features)
+
+
+@router.get("/is-in-seismic-zone", response_model=bool)
+async def is_in_seismic_zone(lon: float, lat: float, db: Session = Depends(get_db)):
+    """
+    Check if a point is in a liquefaction zone.
+
+    Args:
+        lon (float): Longitude of the point.
+        lat (float): Latitude of the point.
+        db (Session): The database session dependency.
+
+    Returns:
+        bool: True if the point is in a liquefaction zone, False otherwise.
+    """
+    query = db.query(SeismicHazardZone).filter(
+        SeismicHazardZone.geometry.ST_Contains(
+            geo_func.ST_SetSRID(geo_func.ST_GeomFromText(f"POINT({lon} {lat})"), 4326)
+        )
+    )
+    return db.query(query.exists()).scalar()
