@@ -4,10 +4,18 @@ import Heading from "../heading";
 import { ChakraProvider } from "@chakra-ui/react";
 
 describe("Heading component", () => {
+  const headingData = {
+    text: "Learn about your home’s earthquake readiness.",
+    highlight: "Learn about",
+    style: { color: "black" },
+    highlightStyle: { color: "yellow" },
+    maxWidth: { base: "100%", md: "50%" },
+  };
+
   const renderComponent = () =>
     render(
       <ChakraProvider>
-        <Heading />
+        <Heading headingData={headingData} />
       </ChakraProvider>
     );
 
@@ -22,6 +30,6 @@ describe("Heading component", () => {
   test("highlights the correct text with yellow color", () => {
     renderComponent();
     const highlightedText = screen.getByText(/Learn about/i);
-    expect(highlightedText).toHaveStyle({ color: "yellow" });
+    expect(highlightedText).toHaveStyle("color: yellow");
   });
 });
