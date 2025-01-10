@@ -30,8 +30,8 @@ const Share = () => {
       setCurrentUrl(window.location.href);
     } else {
       // format the adress using addressData.address
-      const addreessParts = AddressData.address.split("");
-      let joinedstring = addreessParts.join("+");
+      const addressParts = AddressData.address.split("");
+      let joinedstring = addressParts.join("+");
 
       const urlString = `${window.location.href}/?address-1=${joinedstring}`;
 
