@@ -9,7 +9,7 @@ def test_get_soft_stories(client):
 
 
 def test_is_soft_story(client):
-    lon, lat = [-122.424966202, 37.762929444]
+    lon, lat = [-122.424968, 37.76293]
     response = client.get(f"/soft-stories/is-soft-story?lon={lon}&lat={lat}")
     assert response.status_code == 200
     assert response.json()  # True
