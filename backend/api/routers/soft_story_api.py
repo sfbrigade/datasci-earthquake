@@ -59,7 +59,6 @@ async def is_soft_story(lon: float, lat: float, db: Session = Depends(get_db)):
         otherwise
     """
     query = db.query(SoftStoryProperty).filter(
-        SoftStoryProperty.mapbox_point
-        == geo_func.ST_GeomFromText(f"POINT({lon} {lat})", 4326)
+        SoftStoryProperty.point == geo_func.ST_GeomFromText(f"POINT({lon} {lat})", 4326)
     )
     return db.query(query.exists()).scalar()

@@ -113,7 +113,8 @@ class MapboxGeojsonManager:
 
     def get_mapbox_coordinates(self, address: str) -> Optional[Tuple[float, float]]:
         """
-        Returns mapbox coordinates for this address if it exists in the geojson, otherwise None
+        Returns mapbox coordinates for this address if it exists in the
+        geojson, otherwise None
         """
         return self._mapbox_points.get(address, None)
 
@@ -121,7 +122,8 @@ class MapboxGeojsonManager:
         self, features: List[Dict[str, Any]]
     ) -> Dict[str, Optional[Tuple[float, float]]]:
         """
-        Parse the features from the Mapbox response and return a dictionary mapping addresses to their respective coordinates.
+        Parses the features from the Mapbox response and return a
+        dictionary mapping addresses to their respective coordinates
         """
         coordinate_map: Dict[str, Optional[Tuple[float, float]]] = {}
         for feature in features:
@@ -138,7 +140,10 @@ class MapboxGeojsonManager:
 
     def write_to_geojson(self, features: List[Dict[str, Any]]):
         """
-        Write the new features to a geojson file. If the geojson file doesn't exist, it creates one with the given features.
+        Writes the new features to a geojson file
+
+        If the geojson file doesn't exist, it creates one with the
+        given features.
         """
         # If file not found, create a new one
         if not self.geojson_path.exists():

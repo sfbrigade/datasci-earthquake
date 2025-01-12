@@ -35,9 +35,6 @@ class SoftStoryProperty(Base):
     status: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
     bos_district: Mapped[int] = mapped_column(Integer, nullable=True)
     point: Mapped[Geometry] = mapped_column(Geometry("POINT", srid=4326), nullable=True)
-    mapbox_point: Mapped[Geometry] = mapped_column(
-        Geometry("POINT", srid=4326), nullable=True
-    )
     sfdata_as_of: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
@@ -47,6 +44,7 @@ class SoftStoryProperty(Base):
     update_timestamp: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+    point_source: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
 
     @hybrid_property
     def point_as_shapely(self):
