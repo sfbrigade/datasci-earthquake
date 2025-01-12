@@ -36,17 +36,16 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
         )
 
         for data_point in parsed_data:
-            if data_point["point"] is None and data_point["point_source"] != "mapbox":
-                # Try to fill, if found in the mapbox geojson
-                address = data_point["address"]
+            if (
+                data_point["point_source"] != "mapbox"
+                and data_point["address"] in mapbox_coordinates_map
+                and mapbox_coordinates_map[data_point["address"]]
+            ):
                 # mapbox_coordinates_map only contains the addresses that MapBox could resolve, so not all addresses will be there
-                if (
-                    address in mapbox_coordinates_map
-                    and mapbox_coordinates_map[address]
-                ):
-                    lon, lat = mapbox_coordinates_map[address]
-                    data_point["point"] = f"Point({lon} {lat})"
-                    data_point["point_source"] = "mapbox"
+                address = data_point["address"]
+                lon, lat = mapbox_coordinates_map[address]
+                data_point["point"] = f"Point({lon} {lat})"
+                data_point["point_source"] = "mapbox"
 
         return parsed_data
 
