@@ -24,7 +24,7 @@ const Share = () => {
   };
   const [currentUrl, setCurrentUrl] = useState("");
   useEffect(() => {
-    // get the current url
+    // get the current url from the browser
     if (window.location.href.includes("address-1")) {
       // address does not need to be formated
       setCurrentUrl(window.location.href);
