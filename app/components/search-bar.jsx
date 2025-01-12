@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
-import { AddressAutofill } from "@mapbox/search-js-react";
+import DynamicAddressAutofill from "./address-autofill";
 
 const SearchBar = () => {
   const [address, setAddress] = useState("");
@@ -28,7 +28,7 @@ const SearchBar = () => {
 
   return (
     <form>
-      <AddressAutofill
+      <DynamicAddressAutofill
         accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
         onRetrieve={handleRetrieve}
       >
@@ -76,7 +76,7 @@ const SearchBar = () => {
             />
           </InputRightElement>
         </InputGroup>
-      </AddressAutofill>
+      </DynamicAddressAutofill>
     </form>
   );
 };
