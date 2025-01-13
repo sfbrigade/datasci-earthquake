@@ -1,4 +1,4 @@
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, textDecoration } from "@chakra-ui/react";
 
 const customTheme = extendTheme({
   fonts: {
@@ -42,6 +42,12 @@ const customTheme = extendTheme({
       fontWeight: "normal",
       color: "grey.900",
     },
+    linkBig: {
+      fontSize: "xl",
+      fontWeight: "normal",
+      color: "blue",
+      textDecoration: "underline",
+    },
   },
   colors: {
     grey: {
@@ -56,6 +62,9 @@ const customTheme = extendTheme({
     green: "#25855A",
     orange: "#F6AD55",
     pink: "#ED64A6",
+    gradient: {
+      blue: "radial-gradient(circle, #3B6294 0%, #183252 100%)",
+    },
   },
   space: {
     12: "128px",
