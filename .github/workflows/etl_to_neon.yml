@@ -4,6 +4,9 @@ name: ETL to neon
 on:
   schedule:
     - cron: "0 2 * * 0"  # Runs at 2am UTC every Sunday
+  push:
+    branches:
+        - add_etl_workflow    
   workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
