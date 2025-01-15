@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from backend.api.config import settings
 
 # Set up the database engine using settings
-engine = create_engine(settings.database_url_sqlalchemy, echo=True)
+engine = create_engine(settings.neon_url, echo=True)
 
 # Create a session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

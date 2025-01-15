@@ -1,0 +1,28 @@
+name: ETL to neon
+
+# Workflow triggers
+on:
+  schedule:
+    - cron: "0 2 * * 0"  # Runs at 2am UTC every Sunday
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
+jobs:
+  neon-etl:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: ETL data to Neon DB
+        run: |
+          python -m backend.etl.tsunami_data_handler
