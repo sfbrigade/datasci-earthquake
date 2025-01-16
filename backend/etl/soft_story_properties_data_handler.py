@@ -74,10 +74,19 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
                 coordinates = sf_geometry["coordinates"] if sf_geometry else None
                 point_source = "sfdata" if sf_geometry else None
             else:
-                coordinates = self.mapbox_geojson_manager.get_mapbox_coordinates(
+                mapbox_coordinates = self.mapbox_geojson_manager.get_mapbox_coordinates(
                     properties.get("address")
                 )
-                point_source = "mapbox"
+                coordinates = (
+                    mapbox_coordinates
+                    if mapbox_coordinates
+                    else sf_geometry["coordinates"] if sf_geometry else None
+                )
+                point_source = (
+                    "mapbox"
+                    if mapbox_coordinates
+                    else "sfdata" if sf_geometry else None
+                )
 
             parsed_data.append(
                 {
