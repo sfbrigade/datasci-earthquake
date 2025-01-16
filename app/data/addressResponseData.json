@@ -1,0 +1,469 @@
+{
+  "attribution": "NOTICE: © 2024 Mapbox and its suppliers. All rights reserved. Use of this data is subject to the Mapbox Terms of Service (https://www.mapbox.com/about/maps/). This response and the information it contains may not be retained. POI(s) provided by Foursquare.",
+  "suggestions": [
+    {
+      "accuracy": "street",
+      "mapbox_id": "dXJuOm1ieGFkci1zdHI6M2Q0MTc1OGMtYWI1Ni00YTM2LWIwNTUtZmU4ODQyMjUyYTIw",
+      "match_code": {
+        "address_number": "unmatched",
+        "street": "unmatched",
+        "postcode": "unmatched",
+        "place": "unmatched",
+        "region": "unmatched",
+        "locality": "not_applicable",
+        "country": "inferred",
+        "confidence": "low"
+      },
+      "place_type": ["address"],
+      "place_name": "Abc Ave, Chino, California 91710, United States",
+      "street": "Abc Ave",
+      "context": [
+        {
+          "id": "postcode.303804140",
+          "mapbox_id": "dXJuOm1ieHBsYzpFaHV1N0E",
+          "text_en": "91710",
+          "text": "91710"
+        },
+        {
+          "id": "place.59975916",
+          "mapbox_id": "dXJuOm1ieHBsYzpBNU1vN0E",
+          "wikidata": "Q506395",
+          "text_en": "Chino",
+          "language_en": "en",
+          "text": "Chino",
+          "language": "en"
+        },
+        {
+          "id": "district.20498156",
+          "mapbox_id": "dXJuOm1ieHBsYzpBVGpHN0E",
+          "wikidata": "Q108053",
+          "text_en": "San Bernardino County",
+          "language_en": "en",
+          "text": "San Bernardino County",
+          "language": "en"
+        },
+        {
+          "id": "region.419052",
+          "mapbox_id": "dXJuOm1ieHBsYzpCbVRz",
+          "wikidata": "Q99",
+          "short_code": "US-CA",
+          "text_en": "California",
+          "language_en": "en",
+          "text": "California",
+          "language": "en"
+        },
+        {
+          "id": "country.8940",
+          "mapbox_id": "dXJuOm1ieHBsYzpJdXc",
+          "wikidata": "Q30",
+          "short_code": "us",
+          "text_en": "United States",
+          "language_en": "en",
+          "text": "United States",
+          "language": "en"
+        }
+      ],
+      "id": "address.6576540716278648",
+      "external_ids": {
+        "carmen": "address.6576540716278648",
+        "federated": "carmen.address.6576540716278648"
+      },
+      "feature_name": "Abc Ave",
+      "matching_name": "Abc Ave",
+      "description": "Chino, California, United States",
+      "metadata": {
+        "iso_3166_2": "US-CA",
+        "iso_3166_1": "us"
+      },
+      "language": "en",
+      "maki": "marker",
+      "postcode": "91710",
+      "place": "Chino",
+      "district": "San Bernardino County",
+      "region": "California",
+      "region_code": "CA",
+      "country": "United States",
+      "country_code": "us",
+      "full_address": "Abc Ave, Chino, California 91710, United States",
+      "address_line1": "Abc Ave",
+      "address_line2": "",
+      "address_line3": "",
+      "address_level1": "CA",
+      "address_level2": "Chino",
+      "address_level3": "",
+      "action": {
+        "id": "fid.eyJ0eXBlcyI6ImFkZHJlc3MiLCJzdHJlZXRzIjoidHJ1ZSIsImxhbmd1YWdlIjoiZW4iLCJwcm94aW1pdHkiOiItMTIyLjI0LDM3LjQ3IiwibW9kZSI6ImZvcndhcmQiLCJxdWVyeSI6ImFiYyJ9.0"
+      }
+    },
+    {
+      "accuracy": "street",
+      "mapbox_id": "dXJuOm1ieGFkci1zdHI6ZTNkMjU2YWUtZDZiOC00M2Q1LTkwN2QtYzI4YzUxNjVjOTQ2",
+      "match_code": {
+        "address_number": "unmatched",
+        "street": "matched",
+        "postcode": "unmatched",
+        "place": "unmatched",
+        "region": "unmatched",
+        "locality": "not_applicable",
+        "country": "inferred",
+        "confidence": "low"
+      },
+      "place_type": ["address"],
+      "place_name": "Abc, Norco, California 92860, United States",
+      "street": "Abc",
+      "context": [
+        {
+          "id": "postcode.308457196",
+          "mapbox_id": "dXJuOm1ieHBsYzpFbUt1N0E",
+          "text_en": "92860",
+          "text": "92860"
+        },
+        {
+          "id": "place.234989804",
+          "mapbox_id": "dXJuOm1ieHBsYzpEZ0dvN0E",
+          "wikidata": "Q983606",
+          "text_en": "Norco",
+          "language_en": "en",
+          "text": "Norco",
+          "language": "en"
+        },
+        {
+          "id": "district.19949292",
+          "mapbox_id": "dXJuOm1ieHBsYzpBVEJtN0E",
+          "wikidata": "Q108111",
+          "text_en": "Riverside County",
+          "language_en": "en",
+          "text": "Riverside County",
+          "language": "en"
+        },
+        {
+          "id": "region.419052",
+          "mapbox_id": "dXJuOm1ieHBsYzpCbVRz",
+          "wikidata": "Q99",
+          "short_code": "US-CA",
+          "text_en": "California",
+          "language_en": "en",
+          "text": "California",
+          "language": "en"
+        },
+        {
+          "id": "country.8940",
+          "mapbox_id": "dXJuOm1ieHBsYzpJdXc",
+          "wikidata": "Q30",
+          "short_code": "us",
+          "text_en": "United States",
+          "language_en": "en",
+          "text": "United States",
+          "language": "en"
+        }
+      ],
+      "id": "address.2296082878830116",
+      "external_ids": {
+        "carmen": "address.2296082878830116",
+        "federated": "carmen.address.2296082878830116"
+      },
+      "feature_name": "Abc",
+      "matching_name": "Abc",
+      "description": "Norco, California, United States",
+      "metadata": {
+        "iso_3166_2": "US-CA",
+        "iso_3166_1": "us"
+      },
+      "language": "en",
+      "maki": "marker",
+      "postcode": "92860",
+      "place": "Norco",
+      "district": "Riverside County",
+      "region": "California",
+      "region_code": "CA",
+      "country": "United States",
+      "country_code": "us",
+      "full_address": "Abc, Norco, California 92860, United States",
+      "address_line1": "Abc",
+      "address_line2": "",
+      "address_line3": "",
+      "address_level1": "CA",
+      "address_level2": "Norco",
+      "address_level3": "",
+      "action": {
+        "id": "fid.eyJ0eXBlcyI6ImFkZHJlc3MiLCJzdHJlZXRzIjoidHJ1ZSIsImxhbmd1YWdlIjoiZW4iLCJwcm94aW1pdHkiOiItMTIyLjI0LDM3LjQ3IiwibW9kZSI6ImZvcndhcmQiLCJxdWVyeSI6ImFiYyJ9.1"
+      }
+    },
+    {
+      "accuracy": "street",
+      "mapbox_id": "dXJuOm1ieGFkci1zdHI6NGM4NDUyYzMtNTcyMS00YTJmLTg4YzAtZmIyYWYxMjM2MzZk",
+      "match_code": {
+        "address_number": "unmatched",
+        "street": "matched",
+        "postcode": "unmatched",
+        "place": "unmatched",
+        "region": "unmatched",
+        "locality": "not_applicable",
+        "country": "inferred",
+        "confidence": "low"
+      },
+      "place_type": ["address"],
+      "place_name": "Abc-Straat, 8900 Ypres, West Flanders, Belgium",
+      "street": "Abc-Straat",
+      "context": [
+        {
+          "id": "postcode.8310293",
+          "mapbox_id": "dXJuOm1ieHBsYzpmczRW",
+          "text_en": "8900",
+          "text": "8900"
+        },
+        {
+          "id": "place.2107413",
+          "mapbox_id": "dXJuOm1ieHBsYzpJQ2dW",
+          "wikidata": "Q102728",
+          "text_en": "Ypres",
+          "language_en": "en",
+          "text": "Ypres",
+          "language": "en"
+        },
+        {
+          "id": "region.17429",
+          "mapbox_id": "dXJuOm1ieHBsYzpSQlU",
+          "wikidata": "Q1113",
+          "short_code": "BE-VWV",
+          "text_en": "West Flanders",
+          "language_en": "en",
+          "text": "West Flanders",
+          "language": "en"
+        },
+        {
+          "id": "country.8725",
+          "mapbox_id": "dXJuOm1ieHBsYzpJaFU",
+          "wikidata": "Q31",
+          "short_code": "be",
+          "text_en": "Belgium",
+          "language_en": "en",
+          "text": "Belgium",
+          "language": "en"
+        }
+      ],
+      "id": "address.6875384682815302",
+      "external_ids": {
+        "carmen": "address.6875384682815302",
+        "federated": "carmen.address.6875384682815302"
+      },
+      "feature_name": "Abc-Straat",
+      "matching_name": "Abc-Straat",
+      "description": "Ypres, West Flanders, Belgium",
+      "metadata": {
+        "iso_3166_2": "BE-VWV",
+        "iso_3166_1": "be"
+      },
+      "language": "en",
+      "maki": "marker",
+      "postcode": "8900",
+      "place": "Ypres",
+      "region": "West Flanders",
+      "region_code": "VWV",
+      "country": "Belgium",
+      "country_code": "be",
+      "full_address": "Abc-Straat, 8900 Ypres, West Flanders, Belgium",
+      "address_line1": "Abc-Straat",
+      "address_line2": "",
+      "address_line3": "",
+      "address_level1": "West Flanders",
+      "address_level2": "Ypres",
+      "address_level3": "",
+      "action": {
+        "id": "fid.eyJ0eXBlcyI6ImFkZHJlc3MiLCJzdHJlZXRzIjoidHJ1ZSIsImxhbmd1YWdlIjoiZW4iLCJwcm94aW1pdHkiOiItMTIyLjI0LDM3LjQ3IiwibW9kZSI6ImZvcndhcmQiLCJxdWVyeSI6ImFiYyJ9.2"
+      }
+    },
+    {
+      "accuracy": "street",
+      "override:postcode": "",
+      "mapbox_id": "dXJuOm1ieGFkci1zdHI6YTViOTVlNjEtZTdkNS00ODQwLTliOTUtZDRjZjE0MmE4OTY3",
+      "match_code": {
+        "address_number": "unmatched",
+        "street": "unmatched",
+        "postcode": "unmatched",
+        "place": "unmatched",
+        "region": "unmatched",
+        "locality": "not_applicable",
+        "country": "inferred",
+        "confidence": "low"
+      },
+      "place_type": ["address"],
+      "place_name": "Abc Acres, Caledonia, Nova Scotia B0T 1B0, Canada",
+      "street": "Abc Acres",
+      "context": [
+        {
+          "id": "postcode.99487271",
+          "mapbox_id": "dXJuOm1ieHBsYzpCZTRPSnc",
+          "text_en": "B0T 1B0",
+          "text": "B0T 1B0"
+        },
+        {
+          "id": "place.93767719",
+          "mapbox_id": "dXJuOm1ieHBsYzpCWmJJSnc",
+          "text_en": "Caledonia",
+          "text": "Caledonia"
+        },
+        {
+          "id": "district.1222183",
+          "mapbox_id": "dXJuOm1ieHBsYzpFcVlu",
+          "wikidata": "Q2006307",
+          "text_en": "Queens County",
+          "language_en": "en",
+          "text": "Queens County",
+          "language": "en"
+        },
+        {
+          "id": "region.42023",
+          "mapbox_id": "dXJuOm1ieHBsYzpwQ2M",
+          "wikidata": "Q1952",
+          "short_code": "CA-NS",
+          "text_en": "Nova Scotia",
+          "language_en": "en",
+          "text": "Nova Scotia",
+          "language": "en"
+        },
+        {
+          "id": "country.8743",
+          "mapbox_id": "dXJuOm1ieHBsYzpJaWM",
+          "wikidata": "Q16",
+          "short_code": "ca",
+          "text_en": "Canada",
+          "language_en": "en",
+          "text": "Canada",
+          "language": "en"
+        }
+      ],
+      "id": "address.5113008099362460",
+      "external_ids": {
+        "carmen": "address.5113008099362460",
+        "federated": "carmen.address.5113008099362460"
+      },
+      "feature_name": "Abc Acres",
+      "matching_name": "Abc Acres",
+      "description": "Caledonia, Nova Scotia, Canada",
+      "metadata": {
+        "iso_3166_2": "CA-NS",
+        "iso_3166_1": "ca"
+      },
+      "language": "en",
+      "maki": "marker",
+      "postcode": "B0T 1B0",
+      "place": "Caledonia",
+      "district": "Queens County",
+      "region": "Nova Scotia",
+      "region_code": "NS",
+      "country": "Canada",
+      "country_code": "ca",
+      "full_address": "Abc Acres, Caledonia, Nova Scotia B0T 1B0, Canada",
+      "address_line1": "Abc Acres",
+      "address_line2": "",
+      "address_line3": "",
+      "address_level1": "Nova Scotia",
+      "address_level2": "Caledonia",
+      "address_level3": "",
+      "action": {
+        "id": "fid.eyJ0eXBlcyI6ImFkZHJlc3MiLCJzdHJlZXRzIjoidHJ1ZSIsImxhbmd1YWdlIjoiZW4iLCJwcm94aW1pdHkiOiItMTIyLjI0LDM3LjQ3IiwibW9kZSI6ImZvcndhcmQiLCJxdWVyeSI6ImFiYyJ9.3"
+      }
+    },
+    {
+      "accuracy": "street",
+      "mapbox_id": "dXJuOm1ieGFkci1zdHI6ODI3NDAyNGMtNjA5Ny00NTQyLTk4YjEtYmNhNTBiOGQ1OTUz",
+      "match_code": {
+        "address_number": "unmatched",
+        "street": "unmatched",
+        "postcode": "unmatched",
+        "place": "unmatched",
+        "region": "not_applicable",
+        "locality": "unmatched",
+        "country": "inferred",
+        "confidence": "low"
+      },
+      "place_type": ["address"],
+      "place_name": "Abchurch Yard, City of London, London, EC4N 7BA, United Kingdom",
+      "street": "Abchurch Yard",
+      "context": [
+        {
+          "id": "postcode.7246416813824178",
+          "text_en": "EC4N 7BA",
+          "text": "EC4N 7BA"
+        },
+        {
+          "id": "locality.38775375",
+          "mapbox_id": "dXJuOm1ieHBsYzpBaytxVHc",
+          "text_en": "City of London",
+          "text": "City of London"
+        },
+        {
+          "id": "place.6957135",
+          "mapbox_id": "dXJuOm1ieHBsYzphaWhQ",
+          "wikidata": "Q84",
+          "text_en": "London",
+          "language_en": "en",
+          "text": "London",
+          "language": "en"
+        },
+        {
+          "id": "district.591439",
+          "mapbox_id": "dXJuOm1ieHBsYzpDUVpQ",
+          "wikidata": "Q23306",
+          "text_en": "Greater London",
+          "language_en": "en",
+          "text": "Greater London",
+          "language": "en"
+        },
+        {
+          "id": "region.9295",
+          "mapbox_id": "dXJuOm1ieHBsYzpKRTg",
+          "wikidata": "Q21",
+          "short_code": "GB-ENG",
+          "text_en": "England",
+          "language_en": "en",
+          "text": "England",
+          "language": "en"
+        },
+        {
+          "id": "country.8783",
+          "mapbox_id": "dXJuOm1ieHBsYzpJazg",
+          "wikidata": "Q145",
+          "short_code": "gb",
+          "text_en": "United Kingdom",
+          "language_en": "en",
+          "text": "United Kingdom",
+          "language": "en"
+        }
+      ],
+      "id": "address.7246416813824178",
+      "external_ids": {
+        "carmen": "address.7246416813824178",
+        "federated": "carmen.address.7246416813824178"
+      },
+      "feature_name": "Abchurch Yard",
+      "matching_name": "Abchurch Yard",
+      "description": "City of London, London, United Kingdom",
+      "metadata": {
+        "iso_3166_2": "GB-ENG",
+        "iso_3166_1": "gb"
+      },
+      "language": "en",
+      "maki": "marker",
+      "postcode": "EC4N 7BA",
+      "locality": "City of London",
+      "place": "London",
+      "district": "Greater London",
+      "region": "England",
+      "region_code": "ENG",
+      "country": "United Kingdom",
+      "country_code": "gb",
+      "full_address": "Abchurch Yard, City of London, London, EC4N 7BA, United Kingdom",
+      "address_line1": "Abchurch Yard",
+      "address_line2": "",
+      "address_line3": "",
+      "address_level1": "England",
+      "address_level2": "London",
+      "address_level3": "City of London",
+      "action": {
+        "id": "fid.eyJ0eXBlcyI6ImFkZHJlc3MiLCJzdHJlZXRzIjoidHJ1ZSIsImxhbmd1YWdlIjoiZW4iLCJwcm94aW1pdHkiOiItMTIyLjI0LDM3LjQ3IiwibW9kZSI6ImZvcndhcmQiLCJxdWVyeSI6ImFiYyJ9.4"
+      }
+    }
+  ]
+}

@@ -25,11 +25,28 @@ interface MapProps {
 const Map: React.FC<MapProps> = (
   { coordinates } = { coordinates: defaultCoords }
 ) => {
-  const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
   useEffect(() => {
+    console.log(coordinates);
+    const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
+    const el = document.createElement("div");
+    const map = mapRef.current;
+
+    if (map) {
+      const addressMarker = new mapboxgl.Marker({
+        anchor: "bottom",
+        element: el,
+        className: "marker",
+      })
+        .setLngLat(addressLngLat)
+        .addTo(map);
+    }
+  }, [coordinates]);
+
+  useEffect(() => {
+    const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
@@ -147,7 +164,26 @@ const Map: React.FC<MapProps> = (
   }, []);
 
   return (
-    <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
+    <>
+      <div
+        ref={mapContainerRef}
+        style={{
+          width: "100%",
+          height: "calc(100% - 50px)",
+        }}
+      ></div>
+      <div
+        style={{
+          backgroundColor: "pink",
+          height: "50px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        Testing: {coordinates[0] + ", " + coordinates[1]}
+      </div>
+    </>
   );
 };
 
