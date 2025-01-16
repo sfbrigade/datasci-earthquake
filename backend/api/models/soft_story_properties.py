@@ -44,6 +44,7 @@ class SoftStoryProperty(Base):
     update_timestamp: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+    point_source: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
 
     @hybrid_property
     def point_as_shapely(self):
