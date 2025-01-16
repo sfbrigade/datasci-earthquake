@@ -7,6 +7,14 @@ import Report from "./components/report";
 import Information from "./components/information";
 import { Headings } from "./data/data";
 
+const addressLookupCoordinates = {
+  geometry: {
+    type: "Point",
+    coordinates: [-122.408020683, 37.801698301],
+  },
+};
+const coords = addressLookupCoordinates.geometry.coordinates ?? [];
+
 const Home = () => {
   const headingData = Headings.home;
 
@@ -37,25 +45,14 @@ const Home = () => {
       >
         <Report />
       </Box>
-      <Box
-        w={{ base: "base", md: "741px", xl: "xl" }}
-        h={{ base: "323px", md: "411px", xl: "462px" }}
-        p={{
-          base: "0px 24px 27px 24px",
-          md: "0px 27px 28px 26px",
-          xl: "0px 128px 40px 127px",
-        }}
-        m="auto"
-      >
+      <Box w="base" h={{ base: "323px", md: "411px", xl: "462px" }} m="auto">
         <Box
           h="100%"
           border="1px solid"
           borderColor="grey.400"
-          borderRadius="8px"
-          boxShadow="0px 2px 4px -1px #0000000F, 0px 4px 6px -1px #0000001A"
           overflow="hidden"
         >
-          <Map />
+          <Map coordinates={coords} />
         </Box>
       </Box>
       <Box bgColor="blue">

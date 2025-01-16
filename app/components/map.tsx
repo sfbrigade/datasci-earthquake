@@ -3,23 +3,29 @@
 import React, { useRef, useEffect } from "react";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { FeatureCollection, Geometry } from "geojson";
+import seismicData from "../data/seismic-20241121.json";
+import tsunamiData from "../data/tsunami-20241121.json";
+import softStoriesData from "../data/soft-stories-20241123.json";
 
-const lookupCoordinates = {
-  geometry: {
-    type: "Point",
-    coordinates: [-122.463733, 37.777448],
-  },
-};
+// TODO: replace data w/eg API calls and pass in; this is meant to be placeholder data sourced from datasf.org.
+// See `../data/README.md` for more information.
+const typedSeismicData: FeatureCollection<Geometry> =
+  seismicData as FeatureCollection<Geometry>;
+const typedTsunamiData: FeatureCollection<Geometry> =
+  tsunamiData as FeatureCollection<Geometry>;
+const typedSoftStoriesData: FeatureCollection<Geometry> =
+  softStoriesData as FeatureCollection<Geometry>;
 
-const softStories = [
-  { lng: -122.424145, lat: 37.80379 },
-  { lng: -122.433985, lat: 37.7751 },
-  { lng: -122.40082, lat: 37.76169 },
-  { lng: -122.42539, lat: 37.7195 },
-  { lng: -122.42698, lat: 37.7616 },
-];
+const defaultCoords = [-122.463733, 37.777448];
+interface MapProps {
+  coordinates: number[];
+}
 
-const Map = () => {
+const Map: React.FC<MapProps> = (
+  { coordinates } = { coordinates: defaultCoords }
+) => {
+  const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
@@ -27,6 +33,7 @@ const Map = () => {
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
+      // TODO: turn this into a toast with friendly error message
       console.error("Mapbox access token or container is not set!");
       return;
     }
@@ -47,35 +54,79 @@ const Map = () => {
           [-122.6, 37.65], // Southwest coordinates
           [-122.25, 37.85], // Northeast coordinates
         ],
+        config: {
+          // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
+          basemap: {
+            // 'default', 'faded', or 'monochrome'
+            theme: "faded",
+          },
+        },
       });
 
       const map = mapRef.current;
+
       const nav = new mapboxgl.NavigationControl({ showCompass: false });
       map.addControl(nav, "top-right");
 
       map.on("load", () => {
+        // Draw address marker
         const el = document.createElement("div");
-        const center = map.getCenter();
 
-        const marker = new mapboxgl.Marker({
+        const addressMarker = new mapboxgl.Marker({
           anchor: "bottom",
           element: el,
           className: "marker",
-          draggable: true,
         })
-          .setLngLat(center)
+          .setLngLat(addressLngLat)
           .addTo(map);
 
-        softStories.forEach(({ lng, lat }) => {
-          const el = document.createElement("div");
+        // Add sources
+        map.addSource("seismic", {
+          type: "geojson",
+          data: typedSeismicData,
+        });
 
-          const storyMarker = new mapboxgl.Marker({
-            element: el,
-            className: "soft-story",
-            draggable: true,
-          })
-            .setLngLat(new LngLat(lng, lat))
-            .addTo(map);
+        map.addSource("tsunami", {
+          type: "geojson",
+          data: typedTsunamiData,
+        });
+
+        map.addSource("soft-stories", {
+          type: "geojson",
+          data: typedSoftStoriesData,
+        });
+
+        // Add layers
+        map.addLayer({
+          id: "seismicLayer",
+          source: "seismic",
+          type: "fill",
+          paint: {
+            "fill-color": "#F6AD55", // orange/300
+            "fill-opacity": 0.5, // 50% opacity
+          },
+        });
+
+        map.addLayer({
+          id: "tsunamiLayer",
+          source: "tsunami",
+          type: "fill",
+          paint: {
+            "fill-color": "#ED64A6", // pink/400
+            "fill-opacity": 0.5, // 50% opacity
+          },
+        });
+
+        map.addLayer({
+          id: "softStoriesLayer",
+          source: "soft-stories",
+          type: "circle",
+          paint: {
+            "circle-radius": 4.5,
+            "circle-stroke-width": 1,
+            "circle-stroke-color": "#FFFFFF",
+            "circle-color": "#171923", // gray/900
+          },
         });
       });
 
