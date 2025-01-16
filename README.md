@@ -72,7 +72,7 @@ This project uses Docker and Docker Compose to run the application, which includ
       - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
       - To execute a python scrupt, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
 
-    **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `requirements.txt`, `package.json`), you should run `docker-compose up -d --build` to rebuild the images and apply the changes!
+    **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `requirements.txt`, `package.json`), you should run `docker-compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
 
 ## Shutting Down the Application
 
@@ -131,7 +131,7 @@ We use GitHub Secrets to store sensitive environment variables. A template `.env
 **Note**: Before starting work on the project, make sure to:
 
 1. Get **write** access to the repository
-2. Trigger the `Generate .env File` workflow and download the artifact.
+2. Trigger the `Generate .env File` workflow [on the repository's Actions page](https://github.com/sfbrigade/datasci-earthquake/actions) download the artifact. You can trigger the workflow with the `Run workflow` button, navigate to the workflow run page, and find the artifact at the bottom.
 3. Place the artifact in the root folder of the project. Make sure the file is named `.env`.
 
 The file is organized into three main sections:
@@ -141,6 +141,7 @@ The file is organized into three main sections:
 - **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
 
 ---
+
 # Migrating the Database
 
 If you have changed the models in backend/api/models, then you must migrate the database from its current models to the new ones with the following two commands:
@@ -153,7 +154,7 @@ and
 
 where `BACKEND_CONTAINER_NAME` may change with the project and perhaps its deployment but, for local Docker development is `datasci-earthquake-backend-1` and `MIGRATION NAME` is your choice and should describe the migration.
 
-The former command generates a migration script in `backend/alembic/versions`, and the second command runs it. 
+The former command generates a migration script in `backend/alembic/versions`, and the second command runs it.
 
 # Disclaimer
 
