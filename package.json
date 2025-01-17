@@ -4,13 +4,17 @@
   "private": true,
   "scripts": {
     "fastapi-dev": "pip3 install -r requirements.txt && fastapi dev backend/api/main.py",
-    "next-dev": "next dev",
+    "next-dev": "npm install && next dev",
     "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "test": "jest"
+    "test": "jest",
+    "dev-back": "npm run docker-front && npm run fastapi-dev",
+    "dev-front": "npm run docker-back && npm run next-dev",
+    "docker-back": "docker compose up -d db db_test backend --build",
+    "docker-front": "docker compose up -d frontend --build"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.2.0",
