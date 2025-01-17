@@ -2,11 +2,23 @@
 
 # Introduction
 
-This is a hybrid Next.js + Python app that uses Next.js as the frontend and FastAPI as the API backend.
+This is a hybrid Next.js + Python app that uses Next.js as the frontend and FastAPI as the API backend. It also uses PostgreSQL as the database.
 
 # Getting Started
 
-You can work on this app locally or using Docker. If you choose to work locally, do the following:
+You can work on this app [locally](#local-development), [using Docker](#development-with-docker), or a [combination of the two](#hybrid-development).
+
+---
+
+## Local development
+
+### Prerequisites
+
+- **PostgreSQL**: Ensure PostgreSQL is installed if you want to run the database locally (instead of in a Docker container).
+
+### Starting the Application
+
+If you choose to work locally, do the following:
 
 First, install the dependencies:
 
@@ -30,34 +42,23 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-The FastApi server will be running on [http://127.0.0.1:8000](http://127.0.0.1:8000) – feel free to change the port in `package.json` (you'll also need to update it in `next.config.js`).
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [FastAPI Documentation](https://fastapi.tiangolo.com/) - learn about FastAPI features and API.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/).
+The FastAPI server will be running on [http://127.0.0.1:8000](http://127.0.0.1:8000) – feel free to change the port in `package.json` (you'll also need to update it in `next.config.js`).
 
 ---
 
-# Docker
+## Development with Docker
 
 This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.
 
-## Prerequisites
+### Prerequisites
 
 - **Docker**: Make sure Docker is installed on your machine. [Get Docker](https://docs.docker.com/get-docker/).
 - **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
-- **PostgreSQL (optional)**: Ensure PostgreSQL is installed if you want to run the database locally (instead of in a Docker container).
 
-## Starting the Application
+### Starting the Application
 
 1. **Run Docker Compose**: From the project root directory (where the docker-compose.yml file is located), run:
-   `docker-compose up -d`
+   `docker compose up -d`
    This will:
 
 - Build the necessary Docker images (if not already built).
@@ -72,30 +73,67 @@ This project uses Docker and Docker Compose to run the application, which includ
       - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
       - To execute a python scrupt, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
 
-    **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `requirements.txt`, `package.json`), you should run `docker-compose up -d --build` to rebuild the images and apply the changes!
+    **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `requirements.txt`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
 
-## Shutting Down the Application
+### Shutting Down the Application
 
 To stop and shut down the application:
 
 1.  **Stop Docker Compose**: Type `docker compose stop`.
 
 2.  **Bring Down the Containers**: If you want to stop and remove the containers completely, run:
-    `docker-compose down`
+    `docker compose down`
     This will:
 
     - Stop all services.
     - Remove the containers, but it will **not** delete volumes (so the database data will persist).
 
-    **Note:** If you want to start with a clean slate and remove all data inside the containers, run `docker-compose down -v`.
+    **Note:** If you want to start with a clean slate and remove all data inside the containers, run `docker compose down -v`.
 
-## Troubleshooting
+### Troubleshooting
 
 1. You can find the list of running containers (their ids, names, status and ports) by running `docker ps -a`.
 2. If a container failed, start troublshooting by inspecting logs with `docker logs <container-id>`.
 3. Containers fail when their build contexts were modified but the containers weren't rebuilt. If logs show that some dependencies are missing, this can be likely solved by rebuilding the containers.
 4. Many problems are caused by disk usage issues. Run `docker system df` to show disk usage. Use pruning commands such as `docker system prune`to clean up unused resources.
 5. `Error response from daemon: network not found` occurs when Docker tries to use a network that has already been deleted or is dangling (not associated with any container). Prune unused networks to resolve this issue: `docker network prune -f`. If this doesn't help, run `docker system prune`.
+
+---
+
+## Hybrid development
+
+If you will be working exclusively on the front end or back end, you can run the Docker containers for the part of the stack you won't be doing development on. A handful of NPM scripts have been provided to make this a bit easier.
+
+### Prerequisites
+
+- **Docker**: Make sure Docker is installed on your machine. [Get Docker](https://docs.docker.com/get-docker/).
+- **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
+- **PostgreSQL** (optional for back end development): Ensure PostgreSQL is installed if you want to run the database locally (instead of in a Docker container).
+
+### Front end
+
+For front end development, first run `npm install`, and then you can run `npm run dev-front`, which will:
+
+- install dependencies and start up your Next.js development server locally
+- build and restart your backend (and database) Docker containers
+
+If you need to rebuild the containers, run `npm run docker-back`.
+
+### Back end
+
+For back end development, you can run `npm run dev-back`, which will:
+
+- install dependencies and start up your FastAPI server locally
+- build and restart your frontend Docker containers
+
+If you need to rebuild the container, run `npm run docker-front`.
+
+NOTE: You will need to run PostgreSQL locally or in a Docker container as well.
+
+### Servers
+
+- The app is running at http://localhost:3000.
+- The API is accessible at http://localhost:8000.
 
 ---
 
@@ -131,7 +169,7 @@ We use GitHub Secrets to store sensitive environment variables. A template `.env
 **Note**: Before starting work on the project, make sure to:
 
 1. Get **write** access to the repository
-2. Trigger the `Generate .env File` workflow and download the artifact.
+2. Trigger the `Generate .env File` workflow [on the repository's Actions page](https://github.com/sfbrigade/datasci-earthquake/actions) download the artifact. You can trigger the workflow with the `Run workflow` button, navigate to the workflow run page, and find the artifact at the bottom.
 3. Place the artifact in the root folder of the project. Make sure the file is named `.env`.
 
 The file is organized into three main sections:
@@ -141,6 +179,7 @@ The file is organized into three main sections:
 - **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
 
 ---
+
 # Migrating the Database
 
 If you have changed the models in backend/api/models, then you must migrate the database from its current models to the new ones with the following two commands:
@@ -153,7 +192,19 @@ and
 
 where `BACKEND_CONTAINER_NAME` may change with the project and perhaps its deployment but, for local Docker development is `datasci-earthquake-backend-1` and `MIGRATION NAME` is your choice and should describe the migration.
 
-The former command generates a migration script in `backend/alembic/versions`, and the second command runs it. 
+The former command generates a migration script in `backend/alembic/versions`, and the second command runs it.
+
+# Other resources
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [FastAPI Documentation](https://fastapi.tiangolo.com/) - learn about FastAPI features and API.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/).
 
 # Disclaimer
 
