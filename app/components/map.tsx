@@ -54,16 +54,22 @@ const Map: React.FC<MapProps> = (
           [-122.6, 37.65], // Southwest coordinates
           [-122.25, 37.85], // Northeast coordinates
         ],
+        dragRotate: false, // turn off rotation on drag
+        touchPitch: false, // turn off pitch change w/touch
+        touchZoomRotate: true, // turn on zoom/rotate w/touch
+        keyboard: true, // turn on keyboard shortcuts
         config: {
           // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
           basemap: {
             // 'default', 'faded', or 'monochrome'
-            theme: "faded",
+            theme: "monochrome",
           },
         },
       });
 
       const map = mapRef.current;
+
+      map.touchZoomRotate.disableRotation(); // turn off rotate w/touch
 
       const nav = new mapboxgl.NavigationControl({ showCompass: false });
       map.addControl(nav, "top-right");
@@ -96,23 +102,25 @@ const Map: React.FC<MapProps> = (
           data: typedSoftStoriesData,
         });
 
+        map.addLayer({
+          id: "tsunamiLayer",
+          source: "tsunami",
+          type: "fill",
+          slot: "middle",
+          paint: {
+            "fill-color": "#63B3ED", // blue/300
+            "fill-opacity": 0.5, // 50% opacity
+          },
+        });
+
         // Add layers
         map.addLayer({
           id: "seismicLayer",
           source: "seismic",
           type: "fill",
+          slot: "middle",
           paint: {
             "fill-color": "#F6AD55", // orange/300
-            "fill-opacity": 0.5, // 50% opacity
-          },
-        });
-
-        map.addLayer({
-          id: "tsunamiLayer",
-          source: "tsunami",
-          type: "fill",
-          paint: {
-            "fill-color": "#ED64A6", // pink/400
             "fill-opacity": 0.5, // 50% opacity
           },
         });
@@ -121,11 +129,13 @@ const Map: React.FC<MapProps> = (
           id: "softStoriesLayer",
           source: "soft-stories",
           type: "circle",
+          slot: "middle",
+          filter: ["all", ["==", "status", "Non-Compliant"]],
           paint: {
             "circle-radius": 4.5,
             "circle-stroke-width": 1,
             "circle-stroke-color": "#FFFFFF",
-            "circle-color": "#171923", // gray/900
+            "circle-color": "#A0AEC0", // gray/400
           },
         });
       });
