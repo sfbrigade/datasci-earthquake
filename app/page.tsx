@@ -15,8 +15,9 @@ const addressLookupCoordinates = {
 };
 const coords = addressLookupCoordinates.geometry.coordinates ?? [];
 
-const Home = () => {
+const Home = async () => {
   const headingData = Headings.home;
+  const data = await fetchSoftStory();
 
   return (
     <Flex direction="column">
@@ -30,6 +31,7 @@ const Home = () => {
           }}
           m="auto"
         >
+          <>{JSON.stringify(data)}</>
           <Heading headingData={headingData} />
           <SearchBar />
         </Box>
