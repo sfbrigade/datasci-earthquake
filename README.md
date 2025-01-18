@@ -194,6 +194,26 @@ where `BACKEND_CONTAINER_NAME` may change with the project and perhaps its deplo
 
 The former command generates a migration script in `backend/alembic/versions`, and the second command runs it.
 
+---
+
+# Pull Requests
+
+When opening a pull request, please:
+
+- add reviewers
+- use draft/WIP if it turns out to be not ready for review
+
+Ideally, we maintain a readable, clean, and linear commit history. To that end, when merging a pull request, please use `Squash and Merge`¹.
+
+> ¹ you can optionally use `Rebase and Merge` _if and only if_ the following conditions are met on your branch:
+>
+> - commits are atomic, no WIP
+> - there is more than one commit
+> - ideally, there are no more than 3 commits
+> - commit messages are useful
+>
+> NOTE: An interactive rebase (e.g., `git rebase -i`) can help you rewrite your branch's _local_ history to meet the criteria above
+
 # Other resources
 
 ## Learn More
