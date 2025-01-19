@@ -49,13 +49,13 @@ class _BatchMapboxGeocoder:
         clean_address = re.sub(r"\b0+(\d)", r"\1", address)
         # Remove any text in parentheses
         clean_address = re.sub(r"\s*\([^)]*\)", "", clean_address)
-        # BL to B
+        # BL to BOULEVARD
         clean_address = re.sub(r"\bBL\b", "BOULEVARD", clean_address)
         # TR to TERRACE
         clean_address = re.sub(r"\bTR\b", "TERRACE", clean_address)
         # AL to ALLEY
         clean_address = re.sub(r"\bAL\b", "ALLEY", clean_address)
-        # WEST AV to 'AVENUE WEST
+        # WEST AV to AVENUE WEST
         clean_address = re.sub(r"\bWEST AV\b", "AVENUE WEST", clean_address)
 
         return clean_address
