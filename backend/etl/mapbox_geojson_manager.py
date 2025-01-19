@@ -2,6 +2,7 @@ import requests
 from requests import Response
 from pathlib import Path
 import json
+import re
 from typing import List, Tuple, Dict, Any, Optional
 
 
@@ -22,8 +23,11 @@ class _BatchMapboxGeocoder:
         """
         Build a single address request for the Mapbox API.
         """
+        # Only use clean addresses to query mapbox, but store original address in the geojson
+        clean_address = self._clean_address(address)
+
         # For consistency with the rest of the data, we assume here
-        return {"types": ["address"], "q": address, "limit": limit}
+        return {"types": ["address"], "q": clean_address, "limit": limit}
 
     def _post_request(self, batch_payload: List[Dict[str, Any]]) -> Response:
         """
@@ -40,12 +44,32 @@ class _BatchMapboxGeocoder:
         response.raise_for_status()
         return response
 
+    def _clean_address(self, address: str) -> str:
+        # Remove leading zeros
+        clean_address = re.sub(r"\b0+(\d)", r"\1", address)
+        # Remove any text in parentheses
+        clean_address = re.sub(r"\s*\([^)]*\)", "", clean_address)
+        # BL to B
+        clean_address = re.sub(r"\bBL\b", "BOULEVARD", clean_address)
+        # TR to TERRACE
+        clean_address = re.sub(r"\bTR\b", "TERRACE", clean_address)
+        # AL to ALLEY
+        clean_address = re.sub(r"\bAL\b", "ALLEY", clean_address)
+        # WEST AV to 'AVENUE WEST
+        clean_address = re.sub(r"\bWEST AV\b", "AVENUE WEST", clean_address)
+
+        return clean_address
+
     def batch_geocode_addresses(
         self, addresses: List[str], limit: int = 1
     ) -> List[Dict[str, Any]]:
         """
-        Geocode a list of addresses in batches of _MAPBOX_BATCH_LIMIT addresses. This limit is imposed by Mapbox.
-        Returns a list of geojson features, with a property "sfdata_address" added to each feature.
+        Geocodes a list of addresses in batches of _MAPBOX_BATCH_LIMIT
+        addresses
+
+        This limit is imposed by Mapbox.
+        Returns a list of geojson features, with a property "sfdata_address"
+        added to each feature
         """
         features = []
         for i in range(0, len(addresses), _MAPBOX_BATCH_LIMIT):
@@ -87,6 +111,9 @@ class MapboxGeojsonManager:
         """
         Parse the mapbox geojson file and return a dictionary mapping SFData addresses to their respective MapBox coordinates.
         """
+        if not self.geojson_path.exists():
+            return {}
+
         with open(self.geojson_path, "r") as f:
             soft_story_json = json.load(f)
 
