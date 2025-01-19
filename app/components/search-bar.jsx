@@ -10,10 +10,12 @@ import {
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
+import { data } from "autoprefixer";
 
 const SearchBar = () => {
   const [address, setAddress] = useState("");
   const [fullAddress, setFullAddress] = useState(null);
+  const [coordinates, setCoordinates] = useState([0, 0]);
 
   const handleClearClick = () => {
     console.log(address);
@@ -26,11 +28,33 @@ const SearchBar = () => {
     setFullAddress(addressData);
   };
 
+  const handleAddressChange = async (event) => {
+    setAddress(event.target.value);
+    setFullAddress(event.target.value);
+    
+    try{
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${fullAddress}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`;
+      const response = await fetch(url);
+      const response_data =await  response.json()
+      
+      
+      if (response_data.features.length > 0){
+        setCoordinates(response_data.features[0].center)
+        
+      }
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
+
   return (
     <form>
       <DynamicAddressAutofill
         accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
         onRetrieve={handleRetrieve}
+        
+        
       >
         <InputGroup
           maxW={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
@@ -59,7 +83,9 @@ const SearchBar = () => {
             type="text"
             name="address-1"
             value={address}
-            onChange={(event) => setAddress(event.target.value)}
+            onChange={
+              handleAddressChange
+            }
             _hover={{
               borderColor: "yellow",
               _placeholder: { color: "grey.900" },
