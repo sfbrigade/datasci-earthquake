@@ -20,16 +20,18 @@ router = APIRouter(
 @router.get("/", response_model=SoftStoryFeatureCollection)
 async def get_soft_stories(db: Session = Depends(get_db)):
     """
-    Retrieve all soft story properties (which coordinates are known) from the database.
+    Retrieves all soft story properties (of which coordinates are
+    known) from the database
 
     Args:
-        db (Session): The database session dependency.
+        db (Session): The database session dependency
 
     Returns:
-        SoftStoryFeatureCollection: A collection of all soft story properties as GeoJSON Features.
+        SoftStoryFeatureCollection: A collection of all soft story
+        properties as GeoJSON Features
 
     Raises:
-        HTTPException: If no zones are found (404 error).
+        HTTPException: If no zones are found (404 error)
     """
     soft_stories = (
         db.query(SoftStoryProperty).filter(SoftStoryProperty.point.isnot(None)).all()
@@ -45,15 +47,16 @@ async def get_soft_stories(db: Session = Depends(get_db)):
 @router.get("/is-soft-story", response_model=bool)
 async def is_soft_story(lon: float, lat: float, db: Session = Depends(get_db)):
     """
-    Check if a point is a soft story property.
+    Checks if a point is a soft story property
 
     Args:
-        lon (float): Longitude of the point.
-        lat (float): Latitude of the point.
-        db (Session): The database session dependency.
+        lon (float): Longitude of the point
+        lat (float): Latitude of the point
+        db (Session): The database session dependency
 
     Returns:
-        bool: True if the point is a soft story property, False otherwise.
+        bool: True if the point is a soft story property, False
+        otherwise
     """
     query = db.query(SoftStoryProperty).filter(
         SoftStoryProperty.point == geo_func.ST_GeomFromText(f"POINT({lon} {lat})", 4326)

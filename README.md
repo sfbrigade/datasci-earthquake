@@ -43,6 +43,7 @@ To learn more about Next.js, take a look at the following resources:
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/).
 
 ---
+
 # Docker
 
 This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.
@@ -51,6 +52,7 @@ This project uses Docker and Docker Compose to run the application, which includ
 
 - **Docker**: Make sure Docker is installed on your machine. [Get Docker](https://docs.docker.com/get-docker/).
 - **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
+- **PostgreSQL (optional)**: Ensure PostgreSQL is installed if you want to run the database locally (instead of in a Docker container).
 
 ## Starting the Application
 
@@ -92,14 +94,14 @@ To stop and shut down the application:
 1. You can find the list of running containers (their ids, names, status and ports) by running `docker ps -a`.
 2. If a container failed, start troublshooting by inspecting logs with `docker logs <container-id>`.
 3. Containers fail when their build contexts were modified but the containers weren't rebuilt. If logs show that some dependencies are missing, this can be likely solved by rebuilding the containers.
-3. Many problems are caused by disk usage issues. Run `docker system df` to show disk usage. Use pruning commands such as `docker system prune`to clean up unused resources. 
-4. `Error response from daemon: network not found` occurs when Docker tries to use a network that has already been deleted or is dangling (not associated with any container). Prune unused networks to resolve this issue: `docker network prune -f`. If this doesn't help, run `docker system prune`.
+4. Many problems are caused by disk usage issues. Run `docker system df` to show disk usage. Use pruning commands such as `docker system prune`to clean up unused resources.
+5. `Error response from daemon: network not found` occurs when Docker tries to use a network that has already been deleted or is dangling (not associated with any container). Prune unused networks to resolve this issue: `docker network prune -f`. If this doesn't help, run `docker system prune`.
 
 ---
 
 # Formatting with a Pre-Commit Hook
 
-This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project.  It works for *only* the staged files.  If you have edited unstaged files in your repository and want to make them comply with the CI pipeline, then run `black .` `mypy .` for Python code and `npm run lint .` for Javascript code.
+This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project. It works for _only_ the staged files. If you have edited unstaged files in your repository and want to make them comply with the CI pipeline, then run `black .` `mypy .` for Python code and `npm run lint .` for Javascript code.
 
 ## Prerequisites
 
