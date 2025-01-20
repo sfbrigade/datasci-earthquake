@@ -24,7 +24,7 @@ class _LiquefactionDataHandler(DataHandler):
         Geometry data is converted into a GeoAlchemy-compatible
         MultiPolygon with srid 4326.
 
-        To avoid API timeout errors, this method reduces the complexity of the multipolygons by collapsing points that are closer than 0.00001 degrees into a single point.
+        To avoid API timeout errors, this method reduces the complexity of the multipolygons by collapsing points that are closer than 0.0001 degrees into a single point.
         Note that the dataset contains the length and area of the original multipoygons.
         """
         tolerance = 0.0001
