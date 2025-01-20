@@ -4,7 +4,7 @@ from backend.api.models.soft_story_properties import SoftStoryProperty
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from dotenv import load_dotenv
 import os
-from etl.mapbox_geojson_manager import MapboxGeojsonManager
+from backend.etl.mapbox_geojson_manager import MapboxGeojsonManager
 from typing import Dict, Tuple
 
 
@@ -32,7 +32,7 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
             return parsed_data
 
         mapbox_coordinates_map: Dict[str, Tuple[float, float]] = (
-            self.mapbox_geojson_manager.batch_geocode_addresses(addresses)
+            self.mapbox_geojson_manager.batch_geocode_addresses(addresses)  # type: ignore
         )
 
         for data_point in parsed_data:
@@ -123,6 +123,6 @@ if __name__ == "__main__":
     try:
         soft_story_properties = handler.fetch_data()
         soft_story_property_objects = handler.parse_data(soft_story_properties)
-        handler.bulk_insert_data_autoincremented(soft_story_property_objects)
+        handler.bulk_insert_data(soft_story_property_objects, "property_address")
     except HTTPException as e:
         print(f"Failed after retries: {e}")

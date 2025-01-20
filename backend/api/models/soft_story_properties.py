@@ -29,7 +29,9 @@ class SoftStoryProperty(Base):
     block: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
     lot: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
     parcel_number: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
-    property_address: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
+    property_address: Mapped[str] = mapped_column(
+        String(_STRING_LENGTH), nullable=True, unique=True
+    )
     address: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=False)
     tier: Mapped[int] = mapped_column(Integer, nullable=True)
     status: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)

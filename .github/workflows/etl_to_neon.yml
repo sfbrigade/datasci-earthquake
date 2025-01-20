@@ -44,3 +44,5 @@ jobs:
       - name: ETL data to Neon DB
         run: |
           python -m backend.etl.tsunami_data_handler
+          python -m backend.etl.soft_story_properties_data_handler
+          python -m backend.etl.liquefaction_data_handler
