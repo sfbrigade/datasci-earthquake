@@ -1,11 +1,12 @@
 from http.client import HTTPException
+from typing import Type, Dict, Tuple
 from backend.etl.data_handler import DataHandler
 from backend.api.models.soft_story_properties import SoftStoryProperty
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from dotenv import load_dotenv
 import os
 from etl.mapbox_geojson_manager import MapboxGeojsonManager
-from typing import Dict, Tuple
+from backend.api.models.base import ModelType
 
 
 _SOFT_STORY_PROPERTIES_URL = "https://data.sfgov.org/resource/beah-shgi.geojson"
@@ -17,7 +18,7 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
     data.sfgov.org
     """
 
-    def __init__(self, url: str, table: DeclarativeMeta, mapbox_api_key: str):
+    def __init__(self, url: str, table: Type[ModelType], mapbox_api_key: str):
         self.mapbox_geojson_manager = MapboxGeojsonManager(api_key=mapbox_api_key)
         super().__init__(url, table)
 
