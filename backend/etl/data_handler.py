@@ -2,14 +2,15 @@ from abc import ABC, abstractmethod
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, DeclarativeBase
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from backend.database.session import get_db
-from sqlalchemy.ext.declarative import DeclarativeMeta
+from backend.api.models.base import ModelType
 from shapely.geometry import Polygon, MultiPolygon
 from shapely.ops import transform
 from pyproj import CRS, Transformer
 from geoalchemy2.shape import from_shape
+from typing import Type, TypeVar
 
 
 class DataHandler(ABC):
@@ -19,10 +20,10 @@ class DataHandler(ABC):
 
     Attributes:
         url (str): The API endpoint URL.
-        table (DeclarativeMeta): The SQLAlchemy table object.
+        table (ModelType): The SQLAlchemy table object.
     """
 
-    def __init__(self, url: str, table: DeclarativeMeta):
+    def __init__(self, url: str, table: Type[ModelType]):
         self.url = url
         self.table = table
 
