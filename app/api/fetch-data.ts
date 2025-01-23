@@ -1,7 +1,8 @@
 export const fetchData = async ( endpoint: string ) => {
-  let loading = true;
   try {
-    const response = await fetch(endpoint);
+    const response = await fetch(endpoint, {
+      cache: 'no-store',
+    });
     if (!response.ok) {
       switch (response.status) {
         case 404:
@@ -13,10 +14,9 @@ export const fetchData = async ( endpoint: string ) => {
       }
     }
     const data = await response.json();
-    loading = false;
-    return [data, loading];
+    return data;
   } catch (error: any) {
     console.log("Error: " + error.message);
-    return [null, false];
+    return null;
   }
 };
