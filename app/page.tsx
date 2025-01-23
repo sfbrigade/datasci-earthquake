@@ -6,6 +6,11 @@ import "./globals.css";
 import Report from "./components/report";
 import Information from "./components/information";
 import { Headings } from "./data/data";
+import {
+  fetchSoftStories,
+  fetchTsunami,
+  fetchLiquefaction,
+} from "./api/services";
 
 const addressLookupCoordinates = {
   geometry: {
@@ -17,7 +22,10 @@ const coords = addressLookupCoordinates.geometry.coordinates ?? [];
 
 const Home = async () => {
   const headingData = Headings.home;
-  const data = await fetchSoftStory();
+
+  const softStoryData = await fetchSoftStories();
+  const tsunamiData = await fetchTsunami();
+  const liquefactionData = await fetchLiquefaction();
 
   return (
     <Flex direction="column">
@@ -31,7 +39,6 @@ const Home = async () => {
           }}
           m="auto"
         >
-          <>{JSON.stringify(data)}</>
           <Heading headingData={headingData} />
           <SearchBar />
         </Box>
