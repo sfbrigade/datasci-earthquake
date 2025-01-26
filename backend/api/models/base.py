@@ -1,3 +1,10 @@
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.ext.declarative import DeclarativeMeta
+from typing import TypeVar
 
-Base = declarative_base()
+
+class Base(DeclarativeBase):
+    pass
+
+
+ModelType = TypeVar("ModelType", bound=DeclarativeBase)
