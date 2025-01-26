@@ -5,7 +5,7 @@ from requests import Response
 from backend.etl.mapbox_geojson_manager import (
     _BatchMapboxGeocoder,
     MapboxGeojsonManager,
-    MapboxConfig
+    MapboxConfig,
 )
 from pathlib import Path
 
@@ -18,19 +18,19 @@ def api_key():
 @pytest.fixture
 def mapbox_config(api_key):
     return MapboxConfig(
-            westmost_longitude=122.51436038,
-            southmost_latitude=37.70799051,
-            eastmost_longitude=-122.36206898,
-            northmost_latitude=37.83179017,
-            geocode_api_endpoint_url="https://someurl.com/endpoint",
-            soft_story_geojson_path=Path("data.geojson"),
-            api_key=api_key
-        )
+        min_longitude=-122.51436038,
+        min_latitude=37.70799051,
+        max_longitude=-122.36206898,
+        max_latitude=37.83179017,
+        geocode_api_endpoint_url="https://someurl.com/endpoint",
+        soft_story_geojson_path=Path("data.geojson"),
+        api_key=api_key,
+    )
 
 
 @pytest.fixture
-def geocoder(api_key):
-    return _BatchMapboxGeocoder(api_key=api_key)
+def geocoder(mapbox_config):
+    return _BatchMapboxGeocoder(mapbox_config)
 
 
 class TestBatchMapboxGeocoder:
@@ -46,6 +46,7 @@ class TestBatchMapboxGeocoder:
             "types": ["address"],
             "q": address,
             "limit": geocoder._mapbox_config.post_request_result_limit,
+            "bbox": geocoder._mapbox_config.bounding_box_string,
         }, "Request payload should match expected structure"
 
     @patch("requests.post")
@@ -69,7 +70,10 @@ class TestBatchMapboxGeocoder:
         mock_post.assert_called_once_with(
             geocoder._mapbox_config.geocode_api_endpoint_url,
             json=batch_payload,
-            params={"access_token": geocoder._mapbox_config.api_key, "permanent": "false"},
+            params={
+                "access_token": geocoder._mapbox_config.api_key,
+                "permanent": "false",
+            },
             headers={"Content-Type": "application/json"},
         )
         # Verify the return value
@@ -123,7 +127,7 @@ class TestBatchMapboxGeocoder:
 
 class TestMapboxGeojsonManager:
     @pytest.fixture
-    def manager(mapbox_config):
+    def manager(self, mapbox_config):
         """
         Fixture that patches MapboxGeojsonManager._mapbox_points so it doesn't
         actually read from a file but instead returns a mock dictionary.
