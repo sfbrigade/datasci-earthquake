@@ -21,15 +21,15 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
     """
 
     def __init__(self, url: str, table: DeclarativeMeta, mapbox_api_key: str):
-        # These values are for San Francisco
         mapbox_config = MapboxConfig(
-            westmost_longitude=122.51436038,
-            southmost_latitude=37.70799051,
-            eastmost_longitude=-122.36206898,
-            northmost_latitude=37.83179017,
+            # These values are for San Francisco
+            min_longitude=-122.51436038,
+            min_latitude=37.70799051,
+            max_longitude=-122.36206898,
+            max_latitude=37.83179017,
             geocode_api_endpoint_url=_MAPBOX_GEOCODE_API_ENDPOINT_URL,
             soft_story_geojson_path=Path(_MAPBOX_SOFT_STORY_GEOJSON_PATH),
-            api_key=mapbox_api_key
+            api_key=mapbox_api_key,
         )
         self.mapbox_geojson_manager = MapboxGeojsonManager(mapbox_config)
         super().__init__(url, table)

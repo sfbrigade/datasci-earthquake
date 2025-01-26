@@ -9,10 +9,10 @@ from dataclasses import dataclass
 
 @dataclass
 class MapboxConfig:
-    westmost_longitude: float
-    southmost_latitude: float
-    eastmost_longitude: float
-    northmost_latitude: float
+    min_longitude: float
+    min_latitude: float
+    max_longitude: float
+    max_latitude: float
     geocode_api_endpoint_url: str
     soft_story_geojson_path: Path
     api_key: str
@@ -21,7 +21,7 @@ class MapboxConfig:
 
     @property
     def bounding_box_string(self) -> str:
-        return f"{self.westmost_longitude},{self.southmost_latitude},{self.eastmost_longitude},{self.northmost_latitude}"
+        return f"{self.min_longitude},{self.min_latitude},{self.max_longitude},{self.max_latitude}"
 
 
 class _BatchMapboxGeocoder:
@@ -54,8 +54,10 @@ class _BatchMapboxGeocoder:
         params = {"access_token": self._mapbox_config.api_key, "permanent": "false"}
 
         response = requests.post(
-            self._mapbox_config.geocode_api_endpoint_url, 
-            json=batch_payload, params=params, headers=headers
+            self._mapbox_config.geocode_api_endpoint_url,
+            json=batch_payload,
+            params=params,
+            headers=headers,
         )
 
         # Raise an HTTPError if one occurred
@@ -82,9 +84,7 @@ class _BatchMapboxGeocoder:
 
         return clean_address
 
-    def batch_geocode_addresses(
-        self, addresses: List[str]
-    ) -> List[Dict[str, Any]]:
+    def batch_geocode_addresses(self, addresses: List[str]) -> List[Dict[str, Any]]:
         """
         Geocodes a list of addresses in batches of _MAPBOX_BATCH_LIMIT
         addresses
@@ -97,8 +97,7 @@ class _BatchMapboxGeocoder:
         for i in range(0, len(addresses), self._mapbox_config.batch_limit):
             batch_addresses = addresses[i : i + self._mapbox_config.batch_limit]
             batch_payload = [
-                self._build_address_request(address)
-                for address in batch_addresses
+                self._build_address_request(address) for address in batch_addresses
             ]
             response = self._post_request(batch_payload)
 
