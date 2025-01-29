@@ -9,6 +9,7 @@ from typing import Dict, Tuple
 from backend.etl.mapbox_geojson_manager import MapboxConfig, MapboxGeojsonManager
 from backend.api.models.base import ModelType
 import json
+from pathlib import Path
 
 
 _SOFT_STORY_PROPERTIES_URL = "https://data.sfgov.org/resource/beah-shgi.geojson"
@@ -129,20 +130,20 @@ if __name__ == "__main__":
     )
     try:
         # Fetch and save data for debugging
-        #soft_story_properties = handler.fetch_data()
-        #print("Fetched soft story properties: ", len(soft_story_properties))
+        soft_story_properties = handler.fetch_data()
+        print("Fetched soft story properties: ", len(soft_story_properties))
         
-        #Save to debug file
-        #debug_file = Path(_DEBUG_DATA_PATH)
-        #debug_file.parent.mkdir(parents=True, exist_ok=True)
-        #with open(debug_file, 'w') as f:
-        #    json.dump(soft_story_properties, f, indent=2)
-        #print(f"Saved debug data to {_DEBUG_DATA_PATH}")
+        # Save to debug file
+        debug_file = Path(_DEBUG_DATA_PATH)
+        debug_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(debug_file, 'w') as f:
+           json.dump(soft_story_properties, f, indent=2)
+        print(f"Saved debug data to {_DEBUG_DATA_PATH}")
 
         # For debugging, read from file instead of API
-        with open(_DEBUG_DATA_PATH) as f:
-            soft_story_properties = json.load(f)
-        print("Loaded from debug file: ", len(soft_story_properties['features']), "features")
+        # with open(_DEBUG_DATA_PATH) as f:
+        #     soft_story_properties = json.load(f)
+        # print("Loaded from debug file: ", len(soft_story_properties['features']), "features")
         
         soft_story_property_objects = handler.parse_data(soft_story_properties)
         print("Parsed soft story properties: ", len(soft_story_property_objects))
