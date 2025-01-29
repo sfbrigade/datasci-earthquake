@@ -7,15 +7,13 @@ from dotenv import load_dotenv
 import os
 from pathlib import Path
 from typing import Dict, Tuple
-from backend.etl.mapbox_geojson_manager import MapboxConfig, MapboxGeojsonManager
+from etl.mapbox_geojson_manager import MapboxConfig, MapboxGeojsonManager
 from backend.api.models.base import ModelType
-import json
 
 
 _SOFT_STORY_PROPERTIES_URL = "https://data.sfgov.org/resource/beah-shgi.geojson"
 _MAPBOX_GEOCODE_API_ENDPOINT_URL = "https://api.mapbox.com/search/geocode/v6/batch"
 _MAPBOX_SOFT_STORY_GEOJSON_PATH = "backend/etl/data/mapbox_soft_story.geojson"
-_DEBUG_DATA_PATH = "backend/etl/data/debug_soft_story_data.json"
 
 
 class _SoftStoryPropertiesDataHandler(DataHandler):
@@ -130,7 +128,6 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
 
 
 if __name__ == "__main__":
-    print("Starting soft story properties data handler")
     load_dotenv()
 
     handler = _SoftStoryPropertiesDataHandler(
@@ -139,25 +136,8 @@ if __name__ == "__main__":
         mapbox_api_key=os.environ["NEXT_PUBLIC_MAPBOX_TOKEN"],
     )
     try:
-        # Fetch and save data for debugging
-        #soft_story_properties = handler.fetch_data()
-        #print("Fetched soft story properties: ", len(soft_story_properties))
-        
-        #Save to debug file
-        #debug_file = Path(_DEBUG_DATA_PATH)
-        #debug_file.parent.mkdir(parents=True, exist_ok=True)
-        #with open(debug_file, 'w') as f:
-        #    json.dump(soft_story_properties, f, indent=2)
-        #print(f"Saved debug data to {_DEBUG_DATA_PATH}")
-
-        # For debugging, read from file instead of API
-        with open(_DEBUG_DATA_PATH) as f:
-            soft_story_properties = json.load(f)
-        print("Loaded from debug file: ", len(soft_story_properties['features']), "features")
-        
+        soft_story_properties = handler.fetch_data()
         soft_story_property_objects = handler.parse_data(soft_story_properties)
-        print("Parsed soft story properties: ", len(soft_story_property_objects))
         handler.bulk_insert_data(soft_story_property_objects, "property_address")
-        print("Inserted soft story properties")
     except HTTPException as e:
         print(f"Failed after retries: {e}")
