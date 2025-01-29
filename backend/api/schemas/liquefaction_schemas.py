@@ -12,11 +12,11 @@ class LiquefactionProperties(BaseModel):
     Pydantic model for liquefaction properties.
 
     Attributes:
-        identifier (int): Unique identifier for the liquefaction zone.
+        identifier (str): Unique identifier for the liquefaction zone.
         liq (str): Represents the level of susceptibility (High (H) or Very High (VH)).
     """
 
-    identifier: int
+    identifier: str
     liq: str
     update_timestamp: datetime
 
