@@ -37,7 +37,7 @@ create table if not exists seismic_hazard_zones (
 
 
 create table if not exists liquefaction_zones (
-    identifier integer primary key,
+    identifier varchar(255) primary key,
     geometry Geometry(multipolygon, 4326) not null,
     liq varchar(255),
     shape_length float,
@@ -127,18 +127,18 @@ insert into landslide_zones (
     )', 4326), 10, 56.11, 18.3, 43.1, '2024-12-10 13:15:00');                         
 
 insert into liquefaction_zones (identifier, geometry, liq, shape_length, shape_area, update_timestamp) values 
-                                (6, ST_GeomFromText('MULTIPOLYGON(
+                                ('6', ST_GeomFromText('MULTIPOLYGON(
                                         ((-121.0 37.6, -121.9 30.7, -122.4 37.8, -122.5 37.8, -121.0 37.6)),
                                         ((-123.1 33.6, -121.5 37.6, -122.5 37.7, -122.6 37.7, -123.1 33.6))
                                     )', 4326), 
                                 'H', 25.8, 12.0, '2024/12/19 8:20:00 PM'),
 
-                                (7, ST_GeomFromText('MULTIPOLYGON(
+                                ('7', ST_GeomFromText('MULTIPOLYGON(
                                         ((-125.9 37.8, -121.3 37.8, -122.35 37.85, -125.9 37.8)),
                                         ((-122.5 37.7, -129.4 37.7, -122.4 37.8, -122.5 37.8, -122.5 37.7))
                                     )', 4326), 
                                 'VH', 12.2, 87.0, '2024/12/19 1:15:00 PM'),
-                                (8, ST_GeomFromText('MULTIPOLYGON(
+                                ('8', ST_GeomFromText('MULTIPOLYGON(
                                         ((-123.9 37.8, -123.3 37.8, -122.35 37.85, -123.9 37.8)),
                                         ((-124.0 27.9, -127.4 37.7, -122.4 37.8, -122.5 37.8, -124.0 27.9))
                                     )', 4326), 
