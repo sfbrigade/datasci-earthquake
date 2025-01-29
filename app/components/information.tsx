@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, HStack } from "@chakra-ui/react";
 import CardInfo from "./card-info";
 import { Info } from "../data/data";

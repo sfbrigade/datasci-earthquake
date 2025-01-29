@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Text } from "@chakra-ui/react";
 import { AddressData, AddressDataType } from "./__mocks__/address-data";
 

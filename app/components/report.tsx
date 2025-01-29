@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, HStack, IconButton, Text } from "@chakra-ui/react";
 import CardHazard from "./card-hazard";
 import { AddressData } from "./__mocks__/address-data";

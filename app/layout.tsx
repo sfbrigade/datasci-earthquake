@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Container, Flex } from "@chakra-ui/react";
 import { Providers } from "./providers";
 import Header from "./components/header";
@@ -7,10 +9,10 @@ import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/700.css";
 
-export const metadata = {
-  title: "SF Quake Safe",
-  description: "Learn about your home's earthquake readiness",
-};
+// export const metadata = {
+//   title: "SF Quake Safe",
+//   description: "Learn about your home's earthquake readiness",
+// };
 
 export default function RootLayout({
   children,
