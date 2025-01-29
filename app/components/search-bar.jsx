@@ -48,8 +48,24 @@ const SearchBar = () => {
     }
   }
 
+  const sendCoordinates = (event) => {
+    event.preventDefault();
+    console.log(coordinates);
+
+    // Send coordinates to the backend
+    let res = fetch(
+  `http://127.0.0.1:8000/soft-stories/is-soft-story?lon=${coordinates[0]}&lat=${coordinates[1]}`) // Send the coordinates to the backend
+    .then((response) => response.json())
+    .then((data) => console.log(data))  // Handle the response  here    
+
+
+
+    console.log(res);
+
+    };
+
   return (
-    <form>
+    <form onSubmit={sendCoordinates}>
       <DynamicAddressAutofill
         accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
         onRetrieve={handleRetrieve}
