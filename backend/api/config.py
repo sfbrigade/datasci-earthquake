@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     postgres_db: str
     postgis_version: str
     frontend_host: str
-    neon_url: str
+    neon_url: str = ""
     database_url: str
     localhost_database_url: str
     database_url_sqlalchemy: str
