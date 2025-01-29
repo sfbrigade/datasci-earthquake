@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Generator
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -12,7 +11,6 @@ from shapely.ops import transform
 from pyproj import CRS, Transformer
 from geoalchemy2.shape import from_shape
 from typing import Type, TypeVar
-import time
 
 
 class DataHandler(ABC):
@@ -31,55 +29,18 @@ class DataHandler(ABC):
 
     def fetch_data(self, params=None) -> dict:
         """
-        Fetches data from the API with retry logic
+        Fetch data from the API with retry logic.
 
         Retries the request up to 5 times if necessary.
         Returns the response data as a dictionary.
         """
-        # ####### ######## ######## ######## ####### ######## ##########
-        ## ####### ######## ########TODO##### ####### ######## #########
-        ## FIX THIS CODE BECAUSE IT RETURNS NOTHING FOR SOFT STORIES ###
-        #### ### AND POSSIBLY OTHER DATA SETS; I HAVEN'T CHECKED. ######
-        ## IT RETURNS ALL THE SOFT STORY DATA WHEN RUN IN A NOTEBOOK. ##
-        # SEE ALSO parse_data in soft_story_properties_data_handler.py #
-        ####### ####### ######## ######## ######## ####### ######## ####
-        @staticmethod
-        def _yield_data(url) -> Generator:
-            # Start with an initial offset or page number if needed (depends on API)
-            offset = 0
-            while True:
-                # Adjust the params to include pagination (if applicable)
-                paginated_params = params.copy() if params else {}
-                paginated_params.update({"$offset": offset})
-                try:
-                    response = session.get(url, params=paginated_params, timeout=60)
-                    response.raise_for_status()
-                    # Assuming the response is paginated and contains a 'features' key
-                    data = response.json()
-                    # Yield only the 'features' part of the response
-                    features = data.get('features', [])
-                    if features:
-                        yield features
-                        time.sleep(1)
-                    # Check if there are more pages (assuming an empty 'features' list means we're done)
-                    if not data.get('features'):  # If 'features' is empty, end the loop
-                        break
-                    # Update the offset for the next page (pagination logic)
-                    offset += len(data.get('features', []))
-                except requests.RequestException as e:
-                    # Handle any HTTP request exceptions (e.g., network error)
-                    print(f"Request failed: {e}")
-                    break
-
         retry = Retry(total=5, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retry)
         session = requests.Session()
         session.mount("https://", adapter)
-        all_features = []
-        for features in _yield_data(self.url):
-            all_features.extend(features)
-        return {"features": all_features}
-        
+        response = session.get(self.url, params=params, timeout=60)
+        response.raise_for_status()
+        return response.json()
 
     def transform_geometry(self, geometry, source_srid, target_srid=4326):
         """
