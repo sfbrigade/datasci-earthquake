@@ -57,7 +57,7 @@ const Share = () => {
           }
         >
           <MenuItem gap="10px">
-            {/* <EmailIcon /> */}
+            <EmailIcon />
             <Text>Email</Text>
           </MenuItem>
         </Link>
@@ -66,20 +66,20 @@ const Share = () => {
           href={`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`}
         >
           <MenuItem gap="10px">
-            {/* <FacebookIcon /> */}
+            <FacebookIcon />
             <Text>Facebook</Text>
           </MenuItem>
         </Link>
 
         <Link href={`https://twitter.com/intent/tweet?url=${currentUrl}`}>
           <MenuItem gap="10px">
-            {/* <XIcon /> */}
+            <XIcon />
             <Text>X</Text>
           </MenuItem>
         </Link>
 
         <MenuItem gap="10px" onClick={copyReportToClipBoard}>
-          {/* <LinkIcon /> */}
+          <LinkIcon />
           <Text>Copy Link</Text>
         </MenuItem>
       </MenuList>
