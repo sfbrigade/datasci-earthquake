@@ -12,12 +12,12 @@ from ..schemas.liquefaction_schemas import (
 from backend.api.models.liquefaction_zones import LiquefactionZone
 
 router = APIRouter(
-    prefix="/liquefaction-zones",
+    prefix="/api/liquefaction-zones",
     tags=[Tags.LIQUEFACTION],
 )
 
 
-@router.get("/", response_model=LiquefactionFeatureCollection)
+@router.get("", response_model=LiquefactionFeatureCollection)
 async def get_liquefaction_zones(db: Session = Depends(get_db)):
     """
     Retrieve all liquefaction zones from the database.

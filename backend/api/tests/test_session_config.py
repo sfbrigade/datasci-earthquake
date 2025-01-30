@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from backend.api.config import settings
 from fastapi.testclient import TestClient
-from ..main import app
+from api.index import app
 from backend.database.session import get_db
 
 

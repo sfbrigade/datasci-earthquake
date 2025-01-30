@@ -12,12 +12,12 @@ from backend.api.schemas.soft_story_schemas import (
 from backend.api.models.soft_story_properties import SoftStoryProperty
 
 router = APIRouter(
-    prefix="/soft-stories",
+    prefix="/api/soft-stories",
     tags=[Tags.SOFT_STORY],
 )
 
 
-@router.get("/", response_model=SoftStoryFeatureCollection)
+@router.get("", response_model=SoftStoryFeatureCollection)
 async def get_soft_stories(db: Session = Depends(get_db)):
     """
     Retrieves all soft story properties (of which coordinates are
