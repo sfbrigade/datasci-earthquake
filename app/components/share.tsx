@@ -7,7 +7,7 @@ import {
   MenuList,
   MenuItem,
 } from "@chakra-ui/react";
-import ShareIcon from "../img/icon-share.svg";
+import ShareIconRaw from "../img/icon-share.svg";
 import FacebookIcon from "../img/icon-facebook.svg";
 import EmailIcon from "../img/icon-email.svg";
 import XIcon from "../img/icon-x.svg";
@@ -16,6 +16,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { AddressData } from "./__mocks__/address-data";
 import Link from "next/link";
+
+// TODO: fix the ShareIcon being passed into `rightIcon` property to work with NextJS 15
+const ShareIcon = () => <div>SHARE</div>;
+console.dir(ShareIconRaw.toString());
+console.log(typeof ShareIconRaw);
+console.dir(ShareIcon.toString());
+console.log(typeof ShareIcon);
 
 const Share = () => {
   const copyReportToClipBoard = () => {
@@ -45,7 +52,7 @@ const Share = () => {
         as={Button}
         aria-label="Share report"
         variant="ghost"
-        // rightIcon={<ShareIcon />}
+        //rightIcon={<ShareIcon />}
       >
         <Text textStyle="textMedium">Share report</Text>
       </MenuButton>
