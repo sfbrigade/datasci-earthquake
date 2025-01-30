@@ -39,7 +39,7 @@ const Home = async () => {
       </PageSection>
       <PageSection>
         <span style={{ display: "none" }}></span>
-        {/* <Report /> */}
+        <Report />
       </PageSection>
       <PageSectionMap>
         <Map coordinates={coords} />
