@@ -1,5 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    turbo: {
+      rules: {
+        "*.svg": {
+          loaders: ["@svgr/webpack"],
+          as: "*.js",
+          options: {
+            icon: true, // Optional: Optimize for icon usage
+          },
+        },
+      },
+    },
+  },
   rewrites: async () => {
     return [
       {
@@ -42,5 +55,10 @@ const nextConfig = {
     return config;
   },
 };
+
+// from https://nextjs.org/docs/app/api-reference/config/next-config-js/turbo
+/*
+Turbopack for Next.js does not require loaders nor loader configuration for built-in functionality. Turbopack has built-in support for CSS and compiling modern JavaScript, so there's no need for css-loader, postcss-loader, or babel-loader if you're using @babel/preset-env.
+*/
 
 module.exports = nextConfig;
