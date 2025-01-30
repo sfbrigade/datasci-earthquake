@@ -10,7 +10,11 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "test": "jest"
+    "test": "jest",
+    "dev-back": "npm run docker-front && npm run fastapi-dev",
+    "dev-front": "npm run docker-back && npm run next-dev",
+    "docker-back": "docker compose up -d db db_test backend --build",
+    "docker-front": "docker compose up -d frontend --build"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.2.0",
