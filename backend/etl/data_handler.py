@@ -10,7 +10,12 @@ from shapely.geometry import Polygon, MultiPolygon
 from shapely.ops import transform
 from pyproj import CRS, Transformer
 from geoalchemy2.shape import from_shape
-from typing import Type, TypeVar
+from typing import Type, Generator
+import time
+import logging
+
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 class DataHandler(ABC):
@@ -29,18 +34,51 @@ class DataHandler(ABC):
 
     def fetch_data(self, params=None) -> dict:
         """
-        Fetch data from the API with retry logic.
+        Fetches data from the API with retry logic
 
         Retries the request up to 5 times if necessary.
         Returns the response data as a dictionary.
         """
+        @staticmethod
+        def _yield_data(url, session) -> Generator:
+            # Start with an initial offset or page number if needed (depends on API)
+            offset = 0
+            pages = 1
+            while True:
+                # Adjust the params to include pagination (if applicable)
+                paginated_params = params.copy() if params else {}
+                paginated_params.update({"$offset": offset})
+                try:
+                    response = session.get(url, params=paginated_params, timeout=60)
+                    response.raise_for_status()
+                    # Assuming the response is paginated and contains a 'features' key
+                    data = response.json()
+                    # Yield only the 'features' part of the response
+                    features = data.get('features', [])
+                    if features:
+                        yield features
+                        time.sleep(1)
+                        logging.info(f"Retrieved {len(features)} features on page {pages}.")
+                        pages += 1
+                    # Check if there are more pages (assuming an empty 'features' list means we're done)
+                    if not data.get('features'):  # If 'features' is empty, end the loop
+                        logging.info("Finished retrieving all pages")
+                        break
+                    # Update the offset for the next page (pagination logic)
+                    offset += len(data.get('features', []))
+                except requests.RequestException as e:
+                    # Handle any HTTP request exceptions (e.g., network error)
+                    print(f"Request failed: {e}")
+                    break
+
         retry = Retry(total=5, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retry)
         session = requests.Session()
         session.mount("https://", adapter)
-        response = session.get(self.url, params=params, timeout=60)
-        response.raise_for_status()
-        return response.json()
+        all_features = []
+        for features in _yield_data(self.url, session):
+            all_features.extend(features)
+        return {"features": all_features}
 
     def transform_geometry(self, geometry, source_srid, target_srid=4326):
         """
