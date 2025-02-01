@@ -3,19 +3,16 @@ import CardHazard from "./card-hazard";
 import { Hazards } from "../data/data";
 
 const Report = () => {
-  const sharedStyles = {
-    px: { base: 3, md: 5, lg: 10 },
-  };
-
   return (
     <Box>
       <HStack
-        justifyContent="space-between"
+        justifyContent="center"
         alignItems="stretch"
         flexDirection={{ base: "column", md: "row" }}
         mb="16px"
         py={5}
-        {...sharedStyles}
+        px={{ base: 2, md: 20 }}
+        spacing={{ base: 1, md: 2 }}
       >
         {Hazards.map((hazard) => {
           return <CardHazard key={hazard.id} hazard={hazard} />;

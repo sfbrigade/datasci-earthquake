@@ -44,7 +44,7 @@ const Home = async () => {
           <SearchBar />
         </Box>
       </Box>
-      <Box>
+      <Box zIndex={2} boxShadow="10px black">
         <AddressBar />
       </Box>
       <Box w="base" h={{ base: "100vh", md: "100vh", xl: "100vh" }} m="auto">
