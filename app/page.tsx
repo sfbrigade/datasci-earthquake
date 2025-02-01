@@ -44,10 +44,8 @@ const Home = async () => {
           <SearchBar />
         </Box>
       </Box>
-      <Box zIndex={2} boxShadow="10px black">
-        <AddressBar />
-      </Box>
-      <Box w="base" h={{ base: "100vh", md: "100vh", xl: "100vh" }} m="auto">
+      <Box zIndex={2} boxShadow="10px black"></Box>
+      <Box w="base" h={{ base: "1200px", md: "1000px", xl: "900px" }} m="auto">
         <Box
           h="100%"
           border="1px solid"

@@ -5,7 +5,7 @@ import Share from "./share";
 export const AddressBar = () => {
   return (
     <Collapse in={!!AddressData.address}>
-      <Box w="100%" mb="16px" gap="0" px={20} pt={5} borderRadius={0}>
+      <Card w="100%" mb="16px" gap="0" px={20} pt={5} pb={2} borderRadius={0}>
         <Box
           display="flex"
           flexDirection={{ base: "column", md: "row" }}
@@ -33,7 +33,7 @@ export const AddressBar = () => {
           </HStack>
           <Share />
         </Box>
-      </Box>
+      </Card>
     </Collapse>
   );
 };
