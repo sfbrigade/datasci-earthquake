@@ -43,7 +43,6 @@ const Home = async () => {
           <SearchBar />
         </Box>
       </Box>
-      <Box zIndex={2} boxShadow="10px black"></Box>
       <Box w="base" h={{ base: "1200px", md: "110vh", xl: "800px" }} m="auto">
         <Box
           h="100%"
@@ -58,19 +57,8 @@ const Home = async () => {
           <Map coordinates={coords} />
         </Box>
       </Box>
-      <Box bgColor="blue" position="relative">
-        <Box
-          w={{ base: "base", xl: "xl" }}
-          p={{
-            base: "26px 23px 28px 23px",
-            md: "37px 23px 28px 24px",
-            xl: "24px 127px 22px 127px",
-          }}
-          m="auto"
-          position="absolute"
-          bottom={0}
-          zIndex={10}
-        >
+      <Box position="relative">
+        <Box position="absolute" bottom={0}>
           <Information />
         </Box>
       </Box>
