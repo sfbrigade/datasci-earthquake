@@ -30,22 +30,7 @@ const SearchBar: React.FC = () => {
   const [address, setAddress] = useState("");
   const [fullAddress, setFullAddress] =
     useState<AddressAutofillFeatureSuggestion | null>(null);
-  const [coordinates, setCoordinates] = useState([0, 0]);
-  const [inputValue, setInputValue] = useState(coords[0]);
-  const [input2Value, setInput2Value] = useState(coords[1]);
   const addressInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    console.log(inputValue, input2Value);
-  }, [inputValue, input2Value]);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(parseFloat(event.target.value));
-  };
-
-  const handleInput2Change = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInput2Value(parseFloat(event.target.value));
-  };
 
   const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -75,18 +60,6 @@ const SearchBar: React.FC = () => {
 
   return (
     <form>
-      <input
-        name="lat"
-        type="text"
-        value={inputValue}
-        onChange={handleInputChange}
-      />
-      <input
-        name="long"
-        type="text"
-        value={input2Value}
-        onChange={handleInput2Change}
-      />
       <DynamicAddressAutofill
         accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ""}
       >

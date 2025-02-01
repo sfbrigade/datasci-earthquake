@@ -4,18 +4,18 @@ import React, { useRef, useEffect } from "react";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
-// import seismicData from "../data/seismic-20241121.json";
-// import tsunamiData from "../data/tsunami-20241121.json";
-// import softStoriesData from "../data/soft-stories-20241123.json";
+import seismicData from "../data/seismic-20241121.json";
+import tsunamiData from "../data/tsunami-20241121.json";
+import softStoriesData from "../data/soft-stories-20241123.json";
 
-// // TODO: replace data w/eg API calls and pass in; this is meant to be placeholder data sourced from datasf.org.
-// // See `../data/README.md` for more information.
-// const typedSeismicData: FeatureCollection<Geometry> =
-//   seismicData as FeatureCollection<Geometry>;
-// const typedTsunamiData: FeatureCollection<Geometry> =
-//   tsunamiData as FeatureCollection<Geometry>;
-// const typedSoftStoriesData: FeatureCollection<Geometry> =
-//   softStoriesData as FeatureCollection<Geometry>;
+// TODO: replace data w/eg API calls and pass in; this is meant to be placeholder data sourced from datasf.org.
+// See `../data/README.md` for more information.
+const typedSeismicData: FeatureCollection<Geometry> =
+  seismicData as FeatureCollection<Geometry>;
+const typedTsunamiData: FeatureCollection<Geometry> =
+  tsunamiData as FeatureCollection<Geometry>;
+const typedSoftStoriesData: FeatureCollection<Geometry> =
+  softStoriesData as FeatureCollection<Geometry>;
 
 const defaultCoords = [-122.463733, 37.777448];
 interface MapProps {
@@ -31,35 +31,17 @@ const Map: React.FC<MapProps> = ({
   tsunamiData,
   liquefactionData,
 }) => {
-  const typedSeismicData: FeatureCollection<Geometry> =
-    liquefactionData as FeatureCollection<Geometry>;
-  const typedTsunamiData: FeatureCollection<Geometry> =
-    tsunamiData as FeatureCollection<Geometry>;
-  const typedSoftStoriesData: FeatureCollection<Geometry> =
-    softStoryData as FeatureCollection<Geometry>;
+  // const typedSeismicData: FeatureCollection<Geometry> =
+  //   liquefactionData as FeatureCollection<Geometry>;
+  // const typedTsunamiData: FeatureCollection<Geometry> =
+  //   tsunamiData as FeatureCollection<Geometry>;
+  // const typedSoftStoriesData: FeatureCollection<Geometry> =
+  //   softStoryData as FeatureCollection<Geometry>;
 
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
   useEffect(() => {
-    console.log(coordinates);
-    const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
-    const el = document.createElement("div");
-    const map = mapRef.current;
-
-    if (map) {
-      const addressMarker = new mapboxgl.Marker({
-        anchor: "bottom",
-        element: el,
-        className: "marker",
-      })
-        .setLngLat(addressLngLat)
-        .addTo(map);
-    }
-  }, [coordinates]);
-
-  useEffect(() => {
-    const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
@@ -182,20 +164,9 @@ const Map: React.FC<MapProps> = ({
         ref={mapContainerRef}
         style={{
           width: "100%",
-          height: "calc(100% - 50px)",
+          height: "100",
         }}
-      ></div>
-      <div
-        style={{
-          backgroundColor: "pink",
-          height: "50px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        Testing: {coordinates[0] + ", " + coordinates[1]}
-      </div>
+      />
     </>
   );
 };
