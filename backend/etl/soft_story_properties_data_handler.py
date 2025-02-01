@@ -1,14 +1,19 @@
 from http.client import HTTPException
+from typing import Type, Dict, Tuple
 from backend.etl.data_handler import DataHandler
 from backend.api.models.soft_story_properties import SoftStoryProperty
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from dotenv import load_dotenv
 import os
-from etl.mapbox_geojson_manager import MapboxGeojsonManager
+from pathlib import Path
 from typing import Dict, Tuple
+from etl.mapbox_geojson_manager import MapboxConfig, MapboxGeojsonManager
+from backend.api.models.base import ModelType
 
 
 _SOFT_STORY_PROPERTIES_URL = "https://data.sfgov.org/resource/beah-shgi.geojson"
+_MAPBOX_GEOCODE_API_ENDPOINT_URL = "https://api.mapbox.com/search/geocode/v6/batch"
+_MAPBOX_SOFT_STORY_GEOJSON_PATH = "backend/etl/data/mapbox_soft_story.geojson"
 
 
 class _SoftStoryPropertiesDataHandler(DataHandler):
@@ -17,8 +22,18 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
     data.sfgov.org
     """
 
-    def __init__(self, url: str, table: DeclarativeMeta, mapbox_api_key: str):
-        self.mapbox_geojson_manager = MapboxGeojsonManager(api_key=mapbox_api_key)
+    def __init__(self, url: str, table: Type[ModelType], mapbox_api_key: str):
+        mapbox_config = MapboxConfig(
+            # These values are for San Francisco
+            min_longitude=-122.51436038,
+            min_latitude=37.70799051,
+            max_longitude=-122.36206898,
+            max_latitude=37.83179017,
+            geocode_api_endpoint_url=_MAPBOX_GEOCODE_API_ENDPOINT_URL,
+            soft_story_geojson_path=Path(_MAPBOX_SOFT_STORY_GEOJSON_PATH),
+            api_key=mapbox_api_key,
+        )
+        self.mapbox_geojson_manager = MapboxGeojsonManager(mapbox_config)
         super().__init__(url, table)
 
     def fill_in_missing_mapbox_points(
@@ -32,7 +47,7 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
             return parsed_data
 
         mapbox_coordinates_map: Dict[str, Tuple[float, float]] = (
-            self.mapbox_geojson_manager.batch_geocode_addresses(addresses)
+            self.mapbox_geojson_manager.batch_geocode_addresses(addresses)  # type: ignore
         )
 
         for data_point in parsed_data:
@@ -123,6 +138,6 @@ if __name__ == "__main__":
     try:
         soft_story_properties = handler.fetch_data()
         soft_story_property_objects = handler.parse_data(soft_story_properties)
-        handler.bulk_insert_data_autoincremented(soft_story_property_objects)
+        handler.bulk_insert_data(soft_story_property_objects, "property_address")
     except HTTPException as e:
         print(f"Failed after retries: {e}")

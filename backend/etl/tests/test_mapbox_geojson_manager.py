@@ -5,6 +5,7 @@ from requests import Response
 from backend.etl.mapbox_geojson_manager import (
     _BatchMapboxGeocoder,
     MapboxGeojsonManager,
+    MapboxConfig,
 )
 from pathlib import Path
 
@@ -15,8 +16,21 @@ def api_key():
 
 
 @pytest.fixture
-def geocoder(api_key):
-    return _BatchMapboxGeocoder(api_key=api_key)
+def mapbox_config(api_key):
+    return MapboxConfig(
+        min_longitude=-122.51436038,
+        min_latitude=37.70799051,
+        max_longitude=-122.36206898,
+        max_latitude=37.83179017,
+        geocode_api_endpoint_url="https://someurl.com/endpoint",
+        soft_story_geojson_path=Path("data.geojson"),
+        api_key=api_key,
+    )
+
+
+@pytest.fixture
+def geocoder(mapbox_config):
+    return _BatchMapboxGeocoder(mapbox_config)
 
 
 class TestBatchMapboxGeocoder:
@@ -26,17 +40,17 @@ class TestBatchMapboxGeocoder:
         the correct dict payload for a given address.
         """
         address = "1600 Pennsylvania Ave NW, Washington, DC"
-        limit = 2
-        request_payload = geocoder._build_address_request(address, limit)
+        request_payload = geocoder._build_address_request(address)
 
         assert request_payload == {
             "types": ["address"],
             "q": address,
-            "limit": limit,
+            "limit": geocoder._mapbox_config.post_request_result_limit,
+            "bbox": geocoder._mapbox_config.bounding_box_string,
         }, "Request payload should match expected structure"
 
     @patch("requests.post")
-    def test_post_request_success(self, mock_post, geocoder, api_key):
+    def test_post_request_success(self, mock_post, geocoder):
         """
         Tests the _post_request method to ensure it calls requests.post correctly
         and returns the response when successful.
@@ -54,9 +68,12 @@ class TestBatchMapboxGeocoder:
 
         # Check that requests.post was called with the correct arguments
         mock_post.assert_called_once_with(
-            geocoder.url,
+            geocoder._mapbox_config.geocode_api_endpoint_url,
             json=batch_payload,
-            params={"access_token": api_key, "permanent": "false"},
+            params={
+                "access_token": geocoder._mapbox_config.api_key,
+                "permanent": "false",
+            },
             headers={"Content-Type": "application/json"},
         )
         # Verify the return value
@@ -97,7 +114,7 @@ class TestBatchMapboxGeocoder:
         mock_post_request.return_value = mock_response
 
         # Call the method under test
-        features = geocoder.batch_geocode_addresses(addresses, limit=1)
+        features = geocoder.batch_geocode_addresses(addresses)
 
         # We expect two feature dictionaries, each with a "properties" dict containing "sfdata_address"
         assert len(features) == 2
@@ -110,7 +127,7 @@ class TestBatchMapboxGeocoder:
 
 class TestMapboxGeojsonManager:
     @pytest.fixture
-    def manager(api_key):
+    def manager(self, mapbox_config):
         """
         Fixture that patches MapboxGeojsonManager._mapbox_points so it doesn't
         actually read from a file but instead returns a mock dictionary.
@@ -120,7 +137,7 @@ class TestMapboxGeojsonManager:
             "_get_mapbox_points",
             return_value={"Some Address": (1.0, 2.0)},
         ):
-            mgr = MapboxGeojsonManager(api_key=api_key)
+            mgr = MapboxGeojsonManager(mapbox_config)
             yield mgr
 
     def test_mapbox_points_read_file(self, manager):
@@ -194,7 +211,7 @@ class TestMapboxGeojsonManager:
         with patch("builtins.open", mocked_file), patch.object(
             Path, "exists", return_value=False
         ):
-            manager.write_to_geojson(
+            manager._write_to_geojson(
                 [{"type": "Feature", "properties": {"sfdata_address": "New Address"}}]
             )
 
@@ -226,7 +243,7 @@ class TestMapboxGeojsonManager:
                 }
             ]
             # This call now uses our mock file instead of a real file
-            manager.write_to_geojson(new_features)
+            manager._write_to_geojson(new_features)
 
         # The final write should contain both the old and new features
         handle = m()  # 'm()' is the mock file handle
@@ -242,7 +259,7 @@ class TestMapboxGeojsonManager:
 
     @patch.object(_BatchMapboxGeocoder, "batch_geocode_addresses")
     @patch.object(MapboxGeojsonManager, "_parse_mapbox_features")
-    @patch.object(MapboxGeojsonManager, "write_to_geojson")
+    @patch.object(MapboxGeojsonManager, "_write_to_geojson")
     def test_batch_geocode_addresses_integration(
         self, mock_write, mock_parse, mock_batch, manager
     ):
@@ -251,7 +268,7 @@ class TestMapboxGeojsonManager:
         Ensures it:
         1) Calls geocoder.batch_geocode_addresses()
         2) Calls _parse_mapbox_features() on the result
-        3) Calls write_to_geojson() with those features
+        3) Calls _write_to_geojson() with those features
         4) Returns the coordinate dictionary
         """
         # Mock the geocoder's return

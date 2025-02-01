@@ -22,9 +22,7 @@ class LiquefactionZone(Base):
 
     __tablename__ = "liquefaction_zones"
 
-    identifier: Mapped[int] = mapped_column(
-        Integer, primary_key=True, autoincrement=True
-    )
+    identifier: Mapped[str] = mapped_column(String, primary_key=True)
     geometry: Mapped[Geometry] = mapped_column(Geometry("MULTIPOLYGON", srid=4326))
     liq: Mapped[str] = mapped_column(String)
     shape_length: Mapped[float] = mapped_column(Float)

@@ -4,6 +4,7 @@
 # Python
 __pycache__/
 pytest_cache/
+.pytest_cache/
 mypy_cache/
 *.py[cod]
 bin/
