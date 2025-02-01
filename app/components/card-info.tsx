@@ -14,15 +14,20 @@ interface CardInfoProps {
     id: number;
     name: string;
     title: string;
+    textStyle?: string;
     list: {
       id: number;
       title: string;
+      subtitle?: string;
       url: string;
     }[];
   };
 }
 
-const CardInfo: React.FC<CardInfoProps> = ({ info: { name, title, list } }) => {
+const CardInfo: React.FC<CardInfoProps> = ({
+  info: { title, list, textStyle },
+}) => {
+  const textProps = textStyle === "bold" ? { fontWeight: "bold" } : {};
   return (
     <Card flex={1} maxW={400}>
       <CardHeader
@@ -47,11 +52,14 @@ const CardInfo: React.FC<CardInfoProps> = ({ info: { name, title, list } }) => {
           {list.map((item) => {
             return (
               <ListItem key={item.id}>
-                <Text>
-                  <Link href={item.url} target="_blank">
-                    {item.title}
-                  </Link>
-                </Text>
+                <HStack direction="row" spacing={1}>
+                  <Text {...textProps}>
+                    <Link href={item.url} target="_blank">
+                      {item.title}
+                    </Link>
+                  </Text>
+                  {item.subtitle && <Text>- {item.subtitle}</Text>}
+                </HStack>
               </ListItem>
             );
           })}

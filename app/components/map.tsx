@@ -23,9 +23,9 @@ interface MapProps {
 }
 
 const Map: React.FC<MapProps> = (
-  { coordinates } = { coordinates: defaultCoords }
+  { coordinates: [lng, lat] } = { coordinates: defaultCoords }
 ) => {
-  const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
+  const addressLngLat = new LngLat(lng, lat);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
@@ -46,13 +46,14 @@ const Map: React.FC<MapProps> = (
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current!,
         style: "mapbox://styles/mapbox/standard",
-        center: [-122.437, 37.75],
+        // offset center slightly so that the central point isn't covered by the hazards cards
+        center: [lng, lat + 0.5],
         zoom: 11, // Start with more zoomed-out view but not too far
         minZoom: 10.5, // Allow users to zoom out more
         maxZoom: 15, // Increase max zoom to allow closer inspection
         maxBounds: [
-          [-122.6, 37.65], // Southwest coordinates
-          [-122.25, 37.85], // Northeast coordinates
+          [-122.6, 37.67], // Southwest coordinates
+          [-122.25, 37.9], // Northeast coordinates
         ],
         dragRotate: false, // turn off rotation on drag
         touchPitch: false, // turn off pitch change w/touch

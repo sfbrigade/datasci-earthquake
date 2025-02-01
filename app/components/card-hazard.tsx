@@ -5,8 +5,10 @@ import {
   CardFooter,
   Text,
   HStack,
+  Link,
 } from "@chakra-ui/react";
 import Pill from "./pill";
+import NextLink from "next/link";
 
 interface CardHazardProps {
   hazard: {
@@ -31,9 +33,18 @@ const CardHazard: React.FC<CardHazardProps> = ({
           xl: "22px 22px 0px 22px",
         }}
       >
-        <HStack justifyContent="space-between">
+        <HStack>
+          <svg width="19" height="18" viewBox="0 0 19 18" fill="none">
+            <circle
+              cx="9.5"
+              cy="9"
+              r="8.5"
+              fill={color}
+              stroke="white"
+              role="img"
+            />
+          </svg>
           <Text textStyle="textBig">{title}</Text>
-          <Pill name={name} />
         </HStack>
       </CardHeader>
       <CardBody
@@ -52,18 +63,17 @@ const CardHazard: React.FC<CardHazardProps> = ({
           xl: "14px 22px 22px 22px",
         }}
       >
-        <HStack>
-          <svg width="19" height="18" viewBox="0 0 19 18" fill="none">
-            <circle
-              cx="9.5"
-              cy="9"
-              r="8.5"
-              fill={color}
-              stroke="white"
-              role="img"
-            />
-          </svg>
-          <Text textStyle="textSmall">{"Updated " + update}</Text>
+        <HStack justifyContent="space-between" width="100%">
+          <Link as={NextLink} href="">
+            <Text
+              textStyle="textMedium"
+              color="lightBlue"
+              textDecoration="underline"
+            >
+              More info
+            </Text>
+          </Link>
+          <Pill name={name} />
         </HStack>
       </CardFooter>
     </Card>

@@ -57,6 +57,7 @@ const customTheme = extendTheme({
     },
     white: "#FFF",
     blue: "#2C5282",
+    lightBlue: "#3182CE",
     yellow: "#ECC94B",
     red: "#E53E3E",
     green: "#25855A",

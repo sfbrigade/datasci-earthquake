@@ -7,12 +7,12 @@ import Share from "./share";
 const Report = () => {
   return (
     <Box>
-      <Collapse in={!!AddressData.address}>
+      <Collapse in={!!AddressData.address} style={{ overflow: "visible" }}>
         <Card
           w="100%"
           mb="16px"
           gap="0"
-          px={{ base: 2, md: 20 }}
+          px={{ base: 2, md: 10, lg: 20 }}
           pt={5}
           pb={2}
           borderRadius={0}
@@ -29,12 +29,6 @@ const Report = () => {
             }}
             width="100%"
             position="relative"
-            backgroundColor={{
-              base: "green",
-              sm: "yellow",
-              md: "red",
-              lg: "blue",
-            }}
           >
             <Box
               position={{ base: "relative", md: "absolute" }}
@@ -60,7 +54,7 @@ const Report = () => {
         flexDirection={{ base: "column", md: "row" }}
         mb="16px"
         py={5}
-        px={{ base: 2, md: 20 }}
+        px={{ base: 2, md: 10, lg: 20 }}
         spacing={{ base: 1, md: 2 }}
       >
         {Hazards.map((hazard) => {

@@ -47,9 +47,11 @@ const Share = () => {
         variant="ghost"
         rightIcon={<ShareIcon />}
       >
-        <Text textStyle="textMedium">Share report</Text>
+        <Text textStyle="textMedium" color="blue">
+          Share report
+        </Text>
       </MenuButton>
-      <MenuList p={"6px 16px 6px 16px"}>
+      <MenuList id="menu-list" p={"6px 16px 6px 16px"}>
         <Link
           href={
             "mailto:placeholder@example.com?subject=Share Report&body=" +
