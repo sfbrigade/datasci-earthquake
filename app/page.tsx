@@ -18,7 +18,12 @@ const Home = async () => {
 
   return (
     <Flex direction="column">
-      <AddressMapper headingData={headingData} />
+      <AddressMapper
+        headingData={headingData}
+        softStoryData={softStoryData}
+        tsunamiData={tsunamiData}
+        liquefactionData={liquefactionData}
+      />
       <Box bgColor="blue">
         <Box
           w={{ base: "base", xl: "xl" }}

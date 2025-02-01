@@ -7,9 +7,17 @@ import Report from "./report";
 
 interface AddressMapperProps {
   headingData: HeadingProps;
+  softStoryData: {};
+  tsunamiData: {};
+  liquefactionData: {};
 }
 
-const AddressMapper: React.FC<AddressMapperProps> = ({ headingData }) => {
+const AddressMapper: React.FC<AddressMapperProps> = ({
+  headingData,
+  softStoryData,
+  tsunamiData,
+  liquefactionData,
+}) => {
   return (
     <>
       <Box bgColor="blue">
@@ -45,7 +53,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({ headingData }) => {
           overflow="hidden"
         >
           {/* <Map coordinates={[inputValue, input2Value]} /> */}
-          <Map coordinates={[0, 0]} />
+          <Map
+            coordinates={[0, 0]}
+            softStoryData={softStoryData}
+            tsunamiData={tsunamiData}
+            liquefactionData={liquefactionData}
+          />
         </Box>
       </Box>
     </>

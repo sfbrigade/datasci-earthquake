@@ -4,27 +4,40 @@ import React, { useRef, useEffect } from "react";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
-import seismicData from "../data/seismic-20241121.json";
-import tsunamiData from "../data/tsunami-20241121.json";
-import softStoriesData from "../data/soft-stories-20241123.json";
+// import seismicData from "../data/seismic-20241121.json";
+// import tsunamiData from "../data/tsunami-20241121.json";
+// import softStoriesData from "../data/soft-stories-20241123.json";
 
-// TODO: replace data w/eg API calls and pass in; this is meant to be placeholder data sourced from datasf.org.
-// See `../data/README.md` for more information.
-const typedSeismicData: FeatureCollection<Geometry> =
-  seismicData as FeatureCollection<Geometry>;
-const typedTsunamiData: FeatureCollection<Geometry> =
-  tsunamiData as FeatureCollection<Geometry>;
-const typedSoftStoriesData: FeatureCollection<Geometry> =
-  softStoriesData as FeatureCollection<Geometry>;
+// // TODO: replace data w/eg API calls and pass in; this is meant to be placeholder data sourced from datasf.org.
+// // See `../data/README.md` for more information.
+// const typedSeismicData: FeatureCollection<Geometry> =
+//   seismicData as FeatureCollection<Geometry>;
+// const typedTsunamiData: FeatureCollection<Geometry> =
+//   tsunamiData as FeatureCollection<Geometry>;
+// const typedSoftStoriesData: FeatureCollection<Geometry> =
+//   softStoriesData as FeatureCollection<Geometry>;
 
 const defaultCoords = [-122.463733, 37.777448];
 interface MapProps {
   coordinates: number[];
+  softStoryData: {};
+  tsunamiData: {};
+  liquefactionData: {};
 }
 
-const Map: React.FC<MapProps> = (
-  { coordinates } = { coordinates: defaultCoords }
-) => {
+const Map: React.FC<MapProps> = ({
+  coordinates = defaultCoords,
+  softStoryData,
+  tsunamiData,
+  liquefactionData,
+}) => {
+  const typedSeismicData: FeatureCollection<Geometry> =
+    liquefactionData as FeatureCollection<Geometry>;
+  const typedTsunamiData: FeatureCollection<Geometry> =
+    tsunamiData as FeatureCollection<Geometry>;
+  const typedSoftStoriesData: FeatureCollection<Geometry> =
+    softStoryData as FeatureCollection<Geometry>;
+
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
