@@ -11,6 +11,7 @@ import {
   fetchTsunami,
   fetchLiquefaction,
 } from "./api/services";
+import { AddressBar } from "./components/address-bar";
 
 const addressLookupCoordinates = {
   geometry: {
@@ -43,24 +44,20 @@ const Home = async () => {
           <SearchBar />
         </Box>
       </Box>
-      <Box
-        w={{ base: "base", xl: "xl" }}
-        p={{
-          base: "23px 24px 16px 24px",
-          md: "37px 27px 16px 26px",
-          xl: "50px 128px 16px 127px",
-        }}
-        m="auto"
-      >
-        <Report />
+      <Box>
+        <AddressBar />
       </Box>
-      <Box w="base" h={{ base: "323px", md: "411px", xl: "462px" }} m="auto">
+      <Box w="base" h={{ base: "100vh", md: "100vh", xl: "100vh" }} m="auto">
         <Box
           h="100%"
           border="1px solid"
           borderColor="grey.400"
           overflow="hidden"
+          position="relative"
         >
+          <Box w="100%" zIndex={10} p={0} m="auto" top={0} position="absolute">
+            <Report />
+          </Box>
           <Map coordinates={coords} />
         </Box>
       </Box>
