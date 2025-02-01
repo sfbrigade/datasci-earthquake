@@ -34,7 +34,6 @@ app.include_router(liquefaction_api.router)
 origins = [
     "http://localhost",
     "http://localhost:3000",
-    "http://localhost:8000",
 ]
 
 app.add_middleware(
