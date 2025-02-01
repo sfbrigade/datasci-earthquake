@@ -34,51 +34,77 @@ class DataHandler(ABC):
 
     def fetch_data(self, params=None) -> dict:
         """
-        Fetches data from the API with retry logic
+        Fetches data from the API with retry logic.
 
-        Retries the request up to 5 times if necessary.
-        Returns the response data as a dictionary.
+        Args:
+            params (dict, optional): Query parameters for the API request.
+
+        Returns:
+            dict: Dictionary containing list of features under 'features' key.
+
+        Raises:
+            requests.RequestException: If all retry attempts fail.
         """
         @staticmethod
-        def _yield_data(url, session) -> Generator:
-            # Start with an initial offset or page number if needed (depends on API)
+        def _yield_data(url: str, session: requests.Session, params: dict = None) -> Generator:
+            """
+            Yields features from the url, paginating if necessary.
+
+            Args:
+                url: API endpoint URL
+                session: Configured requests session
+                params: Base query parameters
+
+            Yields:
+                list: Features from current page
+            """
             offset = 0
-            pages = 1
+            page_num = 1
             while True:
-                # Adjust the params to include pagination (if applicable)
                 paginated_params = params.copy() if params else {}
                 paginated_params.update({"$offset": offset})
+                
                 try:
                     response = session.get(url, params=paginated_params, timeout=60)
                     response.raise_for_status()
-                    # Assuming the response is paginated and contains a 'features' key
                     data = response.json()
-                    # Yield only the 'features' part of the response
+                    
                     features = data.get('features', [])
-                    if features:
-                        yield features
-                        time.sleep(1)
-                        logging.info(f"Retrieved {len(features)} features on page {pages}.")
-                        pages += 1
-                    # Check if there are more pages (assuming an empty 'features' list means we're done)
-                    if not data.get('features'):  # If 'features' is empty, end the loop
-                        logging.info("Finished retrieving all pages")
+                    if not features:
+                        logging.info(f"{self.table.__name__}: Finished retrieving all pages.")
                         break
-                    # Update the offset for the next page (pagination logic)
-                    offset += len(data.get('features', []))
-                except requests.RequestException as e:
-                    # Handle any HTTP request exceptions (e.g., network error)
-                    print(f"Request failed: {e}")
-                    break
+                        
+                    yield features
+                    logging.info(f"{self.table.__name__}: Retrieved {len(features)} features on page {page_num}.")
+                    
+                    offset += len(features)
+                    page_num += 1
 
-        retry = Retry(total=5, backoff_factor=1)
-        adapter = HTTPAdapter(max_retries=retry)
+                    time.sleep(1)
+                    
+                except requests.RequestException as e:
+                    logging.error(f"{self.table.__name__}: Request failed on page {page_num}: {str(e)}. Aborting fetching data.")
+                    raise  # Re-raise to trigger retry logic
+
+        retry_strategy = Retry(
+            total=5,
+            backoff_factor=1,
+            status_forcelist=[429, 500, 502, 503, 504],  # status codes to retry
+            allowed_methods=["GET"]
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy)
         session = requests.Session()
         session.mount("https://", adapter)
-        all_features = []
-        for features in _yield_data(self.url, session):
-            all_features.extend(features)
-        return {"features": all_features}
+        session.mount("http://", adapter)
+
+        try:
+            all_features = []
+            for features in _yield_data(self.url, session, params):
+                all_features.extend(features)
+            logging.info(f"{self.table.__name__}: Successfully fetched {len(all_features)} total features.")
+            return {"features": all_features}
+        finally:
+            session.close()
 
     def transform_geometry(self, geometry, source_srid, target_srid=4326):
         """
