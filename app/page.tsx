@@ -51,7 +51,7 @@ const Home = async () => {
           overflow="hidden"
           position="relative"
         >
-          <Box w="100%" zIndex={10} p={0} m="auto" top={0} position="absolute">
+          <Box zIndex={10} p={0} top={0} position="absolute">
             <Report />
           </Box>
           <Map coordinates={coords} />
