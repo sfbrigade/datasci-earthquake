@@ -26,7 +26,7 @@ interface CardHazardProps {
 const CardHazard: React.FC<CardHazardProps> = ({
   hazard: { title, name, description, update, color },
 }) => {
-  const props = {
+  const cardProps = {
     header: (
       <HStack>
         <svg width="19" height="18" viewBox="0 0 19 18" fill="none">
@@ -59,7 +59,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
   };
 
   return (
-    <BaseCard {...props}>
+    <BaseCard {...cardProps}>
       <Text textStyle="textMedium">{description}</Text>
     </BaseCard>
   );
