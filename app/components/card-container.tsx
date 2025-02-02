@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Center, Stack } from "@chakra-ui/react";
+import { Center, Stack } from "@chakra-ui/react";
 
 export const CardContainer = ({ children }: { children: React.ReactNode }) => {
   return (

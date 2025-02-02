@@ -13,7 +13,6 @@ import EmailIcon from "../img/icon-email.svg";
 import XIcon from "../img/icon-x.svg";
 import LinkIcon from "../img/icon-link.svg";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { AddressData } from "./__mocks__/address-data";
 import Link from "next/link";
 

@@ -1,21 +1,11 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Text,
-  HStack,
-  Link,
-  VStack,
-} from "@chakra-ui/react";
+import { Text, HStack } from "@chakra-ui/react";
 import Pill from "./pill";
-import NextLink from "next/link";
 import { BaseCard } from "./base-card";
 
 interface CardHazardProps {
   hazard: {
     id: number;
-    name?: string;
+    name: string;
     title: string;
     description: string;
     update: string;
@@ -44,16 +34,15 @@ const CardHazard: React.FC<CardHazardProps> = ({
     ),
     footer: (
       <HStack justifyContent="space-between" width="100%">
-        <Link as={NextLink} href="">
-          <Text
-            textStyle="textMedium"
-            color="lightBlue"
-            textDecoration="underline"
-          >
-            More info
-          </Text>
-        </Link>
-        {name && <Pill name={name} />}
+        <Text
+          cursor="pointer"
+          textStyle="textMedium"
+          color="lightBlue"
+          textDecoration="underline"
+        >
+          More info
+        </Text>
+        <Pill name={name} />
       </HStack>
     ),
   };

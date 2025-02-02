@@ -1,14 +1,4 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Text,
-  HStack,
-  List,
-  ListItem,
-  Link,
-  Box,
-} from "@chakra-ui/react";
+import { Text, List, ListItem, Link, Box } from "@chakra-ui/react";
 import { BaseCard } from "./base-card";
 
 interface CardInfoProps {
