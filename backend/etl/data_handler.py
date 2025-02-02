@@ -67,7 +67,6 @@ class DataHandler(ABC):
             while True:
                 paginated_params = params.copy() if params else {}
                 paginated_params.update({"$offset": offset})
-
                 try:
                     response = session.get(url, params=paginated_params, timeout=60)
                     response.raise_for_status()
