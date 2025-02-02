@@ -17,7 +17,7 @@ const typedTsunamiData: FeatureCollection<Geometry> =
 const typedSoftStoriesData: FeatureCollection<Geometry> =
   softStoriesData as FeatureCollection<Geometry>;
 
-const defaultCoords = [-122.463733, 37.777448];
+// const defaultCoords = [-122.463733, 37.777448];
 interface MapProps {
   coordinates: number[];
   softStoryData: {};
@@ -26,24 +26,27 @@ interface MapProps {
 }
 
 const Map: React.FC<MapProps> = ({
-  coordinates = defaultCoords,
+  // coordinates = defaultCoords,
+  coordinates,
   softStoryData,
   tsunamiData,
   liquefactionData,
 }) => {
-  const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
   // const typedSeismicData: FeatureCollection<Geometry> =
   //   liquefactionData as FeatureCollection<Geometry>;
   // const typedTsunamiData: FeatureCollection<Geometry> =
   //   tsunamiData as FeatureCollection<Geometry>;
   // const typedSoftStoriesData: FeatureCollection<Geometry> =
   //   softStoryData as FeatureCollection<Geometry>;
+  console.log(coordinates);
 
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
   useEffect(() => {
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+    const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
+    console.log(coordinates);
 
     if (!mapContainerRef.current || !mapboxToken) {
       // TODO: turn this into a toast with friendly error message
@@ -53,111 +56,116 @@ const Map: React.FC<MapProps> = ({
 
     mapboxgl.accessToken = mapboxToken;
 
-    if (mapRef.current) {
-      return;
-    } else {
-      mapRef.current = new mapboxgl.Map({
-        container: mapContainerRef.current!,
-        style: "mapbox://styles/mapbox/standard",
-        center: [-122.437, 37.75],
-        zoom: 11, // Start with more zoomed-out view but not too far
-        minZoom: 10.5, // Allow users to zoom out more
-        maxZoom: 15, // Increase max zoom to allow closer inspection
-        maxBounds: [
-          [-122.6, 37.65], // Southwest coordinates
-          [-122.25, 37.85], // Northeast coordinates
-        ],
-        dragRotate: false, // turn off rotation on drag
-        touchPitch: false, // turn off pitch change w/touch
-        touchZoomRotate: true, // turn on zoom/rotate w/touch
-        keyboard: true, // turn on keyboard shortcuts
-        config: {
-          // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
-          basemap: {
-            // 'default', 'faded', or 'monochrome'
-            theme: "monochrome",
-          },
+    // if (mapRef.current) {
+    //   console.log(mapRef.current);
+    //   console.log("returned");
+    //   return;
+    // } else {
+    //   console.log("making map wee");
+    mapRef.current = new mapboxgl.Map({
+      container: mapContainerRef.current!,
+      style: "mapbox://styles/mapbox/standard",
+      center: [-122.437, 37.75],
+      zoom: 11, // Start with more zoomed-out view but not too far
+      minZoom: 10.5, // Allow users to zoom out more
+      maxZoom: 15, // Increase max zoom to allow closer inspection
+      maxBounds: [
+        [-122.6, 37.65], // Southwest coordinates
+        [-122.25, 37.85], // Northeast coordinates
+      ],
+      dragRotate: false, // turn off rotation on drag
+      touchPitch: false, // turn off pitch change w/touch
+      touchZoomRotate: true, // turn on zoom/rotate w/touch
+      keyboard: true, // turn on keyboard shortcuts
+      config: {
+        // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
+        basemap: {
+          // 'default', 'faded', or 'monochrome'
+          theme: "monochrome",
         },
-      });
+      },
+    });
 
-      const map = mapRef.current;
+    const map = mapRef.current;
 
-      map.touchZoomRotate.disableRotation(); // turn off rotate w/touch
+    map.touchZoomRotate.disableRotation(); // turn off rotate w/touch
 
-      const nav = new mapboxgl.NavigationControl({ showCompass: false });
-      map.addControl(nav, "top-right");
+    const nav = new mapboxgl.NavigationControl({ showCompass: false });
+    map.addControl(nav, "top-right");
 
-      map.on("load", () => {
-        // Draw address marker
-        const el = document.createElement("div");
+    // map.on("load", () => {
+    //   // Draw address marker
+    //   const el = document.createElement("div");
 
-        const addressMarker = new mapboxgl.Marker({
-          anchor: "bottom",
-          element: el,
-          className: "marker",
-        })
-          .setLngLat(addressLngLat)
-          .addTo(map);
+    //   console.log("loaded");
 
-        // Add sources
-        map.addSource("seismic", {
-          type: "geojson",
-          data: typedSeismicData,
-        });
+    //   const addressMarker = new mapboxgl.Marker({
+    //     anchor: "bottom",
+    //     element: el,
+    //     className: "marker",
+    //   })
+    //     .setLngLat(addressLngLat)
+    //     .addTo(map);
 
-        map.addSource("tsunami", {
-          type: "geojson",
-          data: typedTsunamiData,
-        });
+    //   // Add sources
+    //   map.addSource("seismic", {
+    //     type: "geojson",
+    //     data: typedSeismicData,
+    //   });
 
-        map.addSource("soft-stories", {
-          type: "geojson",
-          data: typedSoftStoriesData,
-        });
+    //   map.addSource("tsunami", {
+    //     type: "geojson",
+    //     data: typedTsunamiData,
+    //   });
 
-        map.addLayer({
-          id: "tsunamiLayer",
-          source: "tsunami",
-          type: "fill",
-          slot: "middle",
-          paint: {
-            "fill-color": "#63B3ED", // blue/300
-            "fill-opacity": 0.5, // 50% opacity
-          },
-        });
+    //   map.addSource("soft-stories", {
+    //     type: "geojson",
+    //     data: typedSoftStoriesData,
+    //   });
 
-        // Add layers
-        map.addLayer({
-          id: "seismicLayer",
-          source: "seismic",
-          type: "fill",
-          slot: "middle",
-          paint: {
-            "fill-color": "#F6AD55", // orange/300
-            "fill-opacity": 0.5, // 50% opacity
-          },
-        });
+    //   map.addLayer({
+    //     id: "tsunamiLayer",
+    //     source: "tsunami",
+    //     type: "fill",
+    //     slot: "middle",
+    //     paint: {
+    //       "fill-color": "#63B3ED", // blue/300
+    //       "fill-opacity": 0.5, // 50% opacity
+    //     },
+    //   });
 
-        map.addLayer({
-          id: "softStoriesLayer",
-          source: "soft-stories",
-          type: "circle",
-          slot: "middle",
-          filter: ["all", ["==", "status", "Non-Compliant"]], // TODO: this temporarily filters for only non-compliant soft stories; replace with clustering or another solution
-          paint: {
-            "circle-radius": 4.5,
-            "circle-stroke-width": 1,
-            "circle-stroke-color": "#FFFFFF",
-            "circle-color": "#A0AEC0", // gray/400
-          },
-        });
-      });
+    //   // Add layers
+    //   map.addLayer({
+    //     id: "seismicLayer",
+    //     source: "seismic",
+    //     type: "fill",
+    //     slot: "middle",
+    //     paint: {
+    //       "fill-color": "#F6AD55", // orange/300
+    //       "fill-opacity": 0.5, // 50% opacity
+    //     },
+    //   });
 
-      return () => {
-        if (mapRef.current) mapRef.current.remove();
-      };
-    }
-  }, [addressLngLat]);
+    //   map.addLayer({
+    //     id: "softStoriesLayer",
+    //     source: "soft-stories",
+    //     type: "circle",
+    //     slot: "middle",
+    //     filter: ["all", ["==", "status", "Non-Compliant"]], // TODO: this temporarily filters for only non-compliant soft stories; replace with clustering or another solution
+    //     paint: {
+    //       "circle-radius": 4.5,
+    //       "circle-stroke-width": 1,
+    //       "circle-stroke-color": "#FFFFFF",
+    //       "circle-color": "#A0AEC0", // gray/400
+    //     },
+    //   });
+    // });
+
+    return () => {
+      if (mapRef.current) mapRef.current.remove();
+    };
+    // }
+  }, [coordinates]);
 
   return (
     <>

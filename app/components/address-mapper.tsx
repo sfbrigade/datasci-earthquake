@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import SearchBar from "./search-bar";
 import Heading, { HeadingProps } from "./heading";
@@ -18,6 +20,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   tsunamiData,
   liquefactionData,
 }) => {
+  const [coordinates, setCoordinates] = useState([-122.463733, 37.777448]);
+
   return (
     <>
       <Box bgColor="blue">
@@ -54,7 +58,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         >
           {/* <Map coordinates={[inputValue, input2Value]} /> */}
           <Map
-            coordinates={[0, 0]}
+            coordinates={[coordinates[0], coordinates[1]]}
             softStoryData={softStoryData}
             tsunamiData={tsunamiData}
             liquefactionData={liquefactionData}
