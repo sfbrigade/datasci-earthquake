@@ -6,8 +6,7 @@ from sqlalchemy.ext.declarative import DeclarativeMeta
 from dotenv import load_dotenv
 import os
 from pathlib import Path
-from typing import Dict, Tuple
-from etl.mapbox_geojson_manager import MapboxConfig, MapboxGeojsonManager
+from backend.etl.mapbox_geojson_manager import MapboxConfig, MapboxGeojsonManager
 from backend.api.models.base import ModelType
 
 
