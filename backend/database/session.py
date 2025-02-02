@@ -1,19 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from backend.api.config import settings
-import logging
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 
 def _get_database_url() -> str:
     match settings.environment:
         case "local":
-            logger.info("LOCAL ENV")
             return settings.database_url_sqlalchemy
         case "ci" | "prod":
-            logger.info("CI ENV")
             return settings.neon_url
         case _:
             raise ValueError(f"Unknown environment: {settings.environment}")
