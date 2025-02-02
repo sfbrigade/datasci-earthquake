@@ -43,7 +43,7 @@ const Home = async () => {
           <SearchBar />
         </Box>
       </Box>
-      <Box w="base" h={{ base: "1200px", md: "1000px", xl: "950px" }} m="auto">
+      <Box w="base" h={{ base: "1400px", md: "1000px" }} m="auto">
         <Box
           h="100%"
           border="1px solid"
@@ -51,7 +51,7 @@ const Home = async () => {
           overflow="hidden"
           position="relative"
         >
-          <Box zIndex={10} p={0} top={0} position="absolute">
+          <Box zIndex={10} top={0} position="absolute">
             <Report />
           </Box>
           <Map coordinates={coords} />

@@ -18,7 +18,7 @@ const Report = () => {
           alignItems="center"
         >
           <Stack
-            w={{ base: "95%", lg: "1000px" }}
+            w={{ base: "95%", xl: "1100px" }}
             direction={{ base: "column", sm: "row" }}
             alignItems="center"
             justifyContent={{
@@ -26,11 +26,11 @@ const Report = () => {
               xl: "center",
             }}
             position="relative"
-            px={2}
+            px={{ base: 0, md: 2 }}
           >
             <Stack
               position={{ base: "relative", xl: "absolute" }}
-              left={1}
+              left={{ base: 0, xl: 2 }}
               direction={{ base: "column", md: "row" }}
               alignItems={{ base: "flex-start", md: "center" }}
               spacing={{ base: 0, md: 1 }}
