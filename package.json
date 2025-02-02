@@ -14,7 +14,11 @@
     "dev-back": "npm run docker-front && npm run fastapi-dev",
     "dev-front": "npm run docker-back && npm run next-dev",
     "docker-back": "docker compose up -d db db_test backend --build",
-    "docker-front": "docker compose up -d frontend --build"
+    "docker-front": "docker compose up -d frontend --build",
+    "clean": "npm run clean-front",
+    "clean-front": "rm -rf .next && rm -rf node_modules && npm cache clean --force",
+    "rebuild": "npm run rebuild-front",
+    "rebuild-front": "npm run clean-front && npm install && npm run build"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.2.0",

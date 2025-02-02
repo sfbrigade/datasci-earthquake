@@ -24,7 +24,7 @@ jobs:
         envkey_DATABASE_URL_SQLALCHEMY: ${{ secrets.DATABASE_URL_SQLALCHEMY }}
         envkey_DATABASE_URL_SQLALCHEMY_TEST: ${{ secrets.DATABASE_URL_SQLALCHEMY_TEST }}
         envkey_LOCALHOST_DATABASE_URL_SQLALCHEMY: ${{ secrets.LOCALHOST_DATABASE_URL_SQLALCHEMY }}
-        envkey_ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+        envkey_ENVIRONMENT: local
         envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
         envkey_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
