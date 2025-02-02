@@ -2,8 +2,19 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from backend.api.config import settings
 
+
+def _get_database_url() -> str:
+    match settings.environment:
+        case "local":
+            return settings.database_url_sqlalchemy
+        case "ci" | "prod":
+            return settings.neon_url
+        case _:
+            raise ValueError(f"Unknown environment: {settings.environment}")
+
+
 # Set up the database engine using settings
-engine = create_engine(settings.neon_url, echo=True)
+engine = create_engine(_get_database_url(), echo=True)
 
 # Create a session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
