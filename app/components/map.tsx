@@ -31,6 +31,7 @@ const Map: React.FC<MapProps> = ({
   tsunamiData,
   liquefactionData,
 }) => {
+  const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
   // const typedSeismicData: FeatureCollection<Geometry> =
   //   liquefactionData as FeatureCollection<Geometry>;
   // const typedTsunamiData: FeatureCollection<Geometry> =
@@ -156,7 +157,7 @@ const Map: React.FC<MapProps> = ({
         if (mapRef.current) mapRef.current.remove();
       };
     }
-  }, []);
+  }, [addressLngLat]);
 
   return (
     <>

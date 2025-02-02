@@ -15,7 +15,12 @@ const Home = async () => {
   const softStoryData = await fetchSoftStories();
   const tsunamiData = await fetchTsunami();
   const liquefactionData = await fetchLiquefaction();
-  console.log(softStoryData, tsunamiData, liquefactionData);
+  console.log(
+    "server-side fetch:",
+    softStoryData,
+    tsunamiData,
+    liquefactionData
+  );
 
   return (
     <Flex direction="column">
