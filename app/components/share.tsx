@@ -50,7 +50,7 @@ const Share = () => {
           Share report
         </Text>
       </MenuButton>
-      <MenuList zIndex={20} id="menu-list" p={"6px 16px 6px 16px"}>
+      <MenuList zIndex={20} p={"6px 16px 6px 16px"}>
         <Link
           href={
             "mailto:placeholder@example.com?subject=Share Report&body=" +
