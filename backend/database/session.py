@@ -6,8 +6,10 @@ from backend.api.config import settings
 def _get_database_url() -> str:
     match settings.environment:
         case "local":
+            print("::warning::LOCAL ENV")
             return settings.database_url_sqlalchemy
         case "ci" | "prod":
+            print("::warning::CI ENV")
             return settings.neon_url
         case _:
             raise ValueError(f"Unknown environment: {settings.environment}")

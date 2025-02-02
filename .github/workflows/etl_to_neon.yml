@@ -25,7 +25,6 @@ jobs:
       - name: Get Run ID of Most Recent Successful Run
         id: get_run_id
         run: |
-          echo "CURRENT ENV: ${{ secrets.ENVIRONMENT}}"
           response=$(curl -s -H "Authorization: token ${{ secrets.GH_PAT }}" \
           "https://api.github.com/repos/sfbrigade/datasci-earthquake/actions/workflows/env_vars.yml/runs?status=completed&conclusion=success")
           run_id=$(echo $response | jq '.workflow_runs[0].id')
