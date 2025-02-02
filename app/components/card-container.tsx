@@ -3,7 +3,7 @@ import { Box, Center, Stack } from "@chakra-ui/react";
 
 export const CardContainer = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Center pb="35px" zIndex={10} w="100vw">
+    <Center pb="35px" pt="16px" zIndex={10} w="100vw">
       <Stack
         justifyContent="space-between"
         direction={{ base: "column", md: "row" }}

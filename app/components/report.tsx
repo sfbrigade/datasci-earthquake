@@ -8,10 +8,13 @@ import { CardContainer } from "./card-container";
 const Report = () => {
   return (
     <Center flexDirection="column">
-      <Collapse in={!!AddressData.address} style={{ overflow: "visible" }}>
+      <Collapse
+        endingHeight="64px"
+        in={!!AddressData.address}
+        style={{ overflow: "visible" }}
+      >
         <Card
           w="100vw"
-          mb={2}
           py={2}
           borderRadius={0}
           display="flex"
