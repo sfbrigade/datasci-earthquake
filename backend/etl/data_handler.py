@@ -15,7 +15,9 @@ import time
 import logging
 
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 class DataHandler(ABC):
@@ -45,8 +47,10 @@ class DataHandler(ABC):
         Raises:
             requests.RequestException: If all retry attempts fail.
         """
-        @staticmethod
-        def _yield_data(url: str, session: requests.Session, params: dict = None) -> Generator:
+
+        def _yield_data(
+            url: str, table_name: str, session: requests.Session, params: dict = {}
+        ) -> Generator:
             """
             Yields features from the url, paginating if necessary.
 
@@ -63,34 +67,38 @@ class DataHandler(ABC):
             while True:
                 paginated_params = params.copy() if params else {}
                 paginated_params.update({"$offset": offset})
-                
+
                 try:
                     response = session.get(url, params=paginated_params, timeout=60)
                     response.raise_for_status()
                     data = response.json()
-                    
-                    features = data.get('features', [])
+
+                    features = data.get("features", [])
                     if not features:
-                        logging.info(f"{self.table.__name__}: Finished retrieving all pages.")
+                        logging.info(f"{table_name}: Finished retrieving all pages.")
                         break
-                        
+
                     yield features
-                    logging.info(f"{self.table.__name__}: Retrieved {len(features)} features on page {page_num}.")
-                    
+                    logging.info(
+                        f"{table_name}: Retrieved {len(features)} features on page {page_num}."
+                    )
+
                     offset += len(features)
                     page_num += 1
 
                     time.sleep(1)
-                    
+
                 except requests.RequestException as e:
-                    logging.error(f"{self.table.__name__}: Request failed on page {page_num}: {str(e)}. Aborting fetching data.")
+                    logging.error(
+                        f"{table_name}: Request failed on page {page_num}: {str(e)}. Aborting fetching data."
+                    )
                     raise  # Re-raise to trigger retry logic
 
         retry_strategy = Retry(
             total=5,
             backoff_factor=1,
             status_forcelist=[429, 500, 502, 503, 504],  # status codes to retry
-            allowed_methods=["GET"]
+            allowed_methods=["GET"],
         )
         adapter = HTTPAdapter(max_retries=retry_strategy)
         session = requests.Session()
@@ -99,9 +107,11 @@ class DataHandler(ABC):
 
         try:
             all_features = []
-            for features in _yield_data(self.url, session, params):
+            for features in _yield_data(self.url, self.table.__name__, session, params):
                 all_features.extend(features)
-            logging.info(f"{self.table.__name__}: Successfully fetched {len(all_features)} total features.")
+            logging.info(
+                f"{self.table.__name__}: Successfully fetched {len(all_features)} total features."
+            )
             return {"features": all_features}
         finally:
             session.close()
