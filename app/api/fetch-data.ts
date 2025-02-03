@@ -1,7 +1,7 @@
 export const fetchData = async ( endpoint: string ) => {
   try {
     const response = await fetch(endpoint, {
-      cache: 'no-store',
+      cache: 'no-cache',
     });
     if (!response.ok) {
       switch (response.status) {
