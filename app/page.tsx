@@ -61,7 +61,7 @@ const Home = async () => {
           borderColor="grey.400"
           overflow="hidden"
         >
-          <Map coordinates={coords} />
+          <Map softStoryData={softStoryData} coordinates={coords} />
         </Box>
       </Box>
       <Box bgColor="blue">

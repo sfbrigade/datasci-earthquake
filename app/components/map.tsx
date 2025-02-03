@@ -18,18 +18,24 @@ const typedSoftStoriesData: FeatureCollection<Geometry> =
   softStoriesData as FeatureCollection<Geometry>;
 
 const defaultCoords = [-122.463733, 37.777448];
+
 interface MapProps {
   coordinates: number[];
+  softStoryData: FeatureCollection<Geometry>;
 }
 
-const Map: React.FC<MapProps> = (
-  { coordinates } = { coordinates: defaultCoords }
-) => {
+const defaultProps: MapProps = {
+  coordinates: defaultCoords,
+  softStoryData: {} as FeatureCollection<Geometry>,
+};
+
+const Map: React.FC<MapProps> = ({ coordinates, softStoryData }) => {
   const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
   useEffect(() => {
+    console.log(softStoryData);
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
@@ -87,64 +93,76 @@ const Map: React.FC<MapProps> = (
           .addTo(map);
 
         // Add sources
-        map.addSource("seismic", {
-          type: "geojson",
-          data: typedSeismicData,
-        });
+        // map.addSource("seismic", {
+        //   type: "geojson",
+        //   data: typedSeismicData,
+        // });
 
-        map.addSource("tsunami", {
-          type: "geojson",
-          data: typedTsunamiData,
-        });
+        // map.addSource("tsunami", {
+        //   type: "geojson",
+        //   data: typedTsunamiData,
+        // });
 
-        map.addSource("soft-stories", {
-          type: "geojson",
-          data: typedSoftStoriesData,
-        });
+        if (softStoryData) {
+          map.addSource("soft-stories", {
+            type: "geojson",
+            data: softStoryData,
+          });
+          map.addLayer({
+            id: "softStoriesLayer",
+            source: "soft-stories",
+            type: "circle",
+            paint: {
+              "circle-radius": 4.5,
+              "circle-stroke-width": 1,
+              "circle-stroke-color": "#FFFFFF",
+              "circle-color": "#A0AEC0",
+            },
+          });
+          // map.addLayer({
+          //   id: "softStoriesLayer",
+          //   source: "soft-stories",
+          //   type: "circle",
+          //   slot: "middle",
+          //   filter: ["all", ["==", "status", "Non-Compliant"]], // TODO: this temporarily filters for only non-compliant soft stories; replace with clustering or another solution
+          //   paint: {
+          //     "circle-radius": 4.5,
+          //     "circle-stroke-width": 1,
+          //     "circle-stroke-color": "#FFFFFF",
+          //     "circle-color": "#A0AEC0", // gray/400
+          //   },
+          // });
+        }
 
-        map.addLayer({
-          id: "tsunamiLayer",
-          source: "tsunami",
-          type: "fill",
-          slot: "middle",
-          paint: {
-            "fill-color": "#63B3ED", // blue/300
-            "fill-opacity": 0.5, // 50% opacity
-          },
-        });
+        // map.addLayer({
+        //   id: "tsunamiLayer",
+        //   source: "tsunami",
+        //   type: "fill",
+        //   slot: "middle",
+        //   paint: {
+        //     "fill-color": "#63B3ED", // blue/300
+        //     "fill-opacity": 0.5, // 50% opacity
+        //   },
+        // });
 
-        // Add layers
-        map.addLayer({
-          id: "seismicLayer",
-          source: "seismic",
-          type: "fill",
-          slot: "middle",
-          paint: {
-            "fill-color": "#F6AD55", // orange/300
-            "fill-opacity": 0.5, // 50% opacity
-          },
-        });
-
-        map.addLayer({
-          id: "softStoriesLayer",
-          source: "soft-stories",
-          type: "circle",
-          slot: "middle",
-          filter: ["all", ["==", "status", "Non-Compliant"]], // TODO: this temporarily filters for only non-compliant soft stories; replace with clustering or another solution
-          paint: {
-            "circle-radius": 4.5,
-            "circle-stroke-width": 1,
-            "circle-stroke-color": "#FFFFFF",
-            "circle-color": "#A0AEC0", // gray/400
-          },
-        });
+        // // Add layers
+        // map.addLayer({
+        //   id: "seismicLayer",
+        //   source: "seismic",
+        //   type: "fill",
+        //   slot: "middle",
+        //   paint: {
+        //     "fill-color": "#F6AD55", // orange/300
+        //     "fill-opacity": 0.5, // 50% opacity
+        //   },
+        // });
       });
 
       return () => {
         if (mapRef.current) mapRef.current.remove();
       };
     }
-  }, []);
+  }, [softStoryData, addressLngLat]);
 
   return (
     <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
