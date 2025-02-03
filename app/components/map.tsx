@@ -19,9 +19,16 @@ const typedSoftStoriesData: FeatureCollection<Geometry> =
   softStoriesData as FeatureCollection<Geometry>;
 
 const defaultCoords = [-122.463733, 37.777448];
+
 interface MapProps {
   coordinates: number[];
+  softStoryData: FeatureCollection<Geometry>;
 }
+
+const defaultProps: MapProps = {
+  coordinates: defaultCoords,
+  softStoryData: {} as FeatureCollection<Geometry>,
+};
 
 const Map: React.FC<MapProps> = ({ coordinates = defaultCoords }: MapProps) => {
   const debug = useSearchParams().get("debug");
@@ -30,6 +37,7 @@ const Map: React.FC<MapProps> = ({ coordinates = defaultCoords }: MapProps) => {
   const markerRef = useRef<mapboxgl.Marker>();
 
   useEffect(() => {
+    console.log(softStoryData);
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
@@ -90,15 +98,15 @@ const Map: React.FC<MapProps> = ({ coordinates = defaultCoords }: MapProps) => {
         markerRef.current = addressMarker;
 
         // Add sources
-        map.addSource("seismic", {
-          type: "geojson",
-          data: typedSeismicData,
-        });
+        // map.addSource("seismic", {
+        //   type: "geojson",
+        //   data: typedSeismicData,
+        // });
 
-        map.addSource("tsunami", {
-          type: "geojson",
-          data: typedTsunamiData,
-        });
+        // map.addSource("tsunami", {
+        //   type: "geojson",
+        //   data: typedTsunamiData,
+        // });
 
         map.addSource("soft-stories", {
           type: "geojson",
