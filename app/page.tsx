@@ -17,9 +17,9 @@ const Home = async () => {
   const liquefactionData = await fetchLiquefaction();
   console.log(
     "server-side fetch:",
-    softStoryData.features.length,
-    tsunamiData.features.length,
-    liquefactionData.features.length
+    softStoryData?.features?.length,
+    tsunamiData?.features?.length,
+    liquefactionData?.features?.length
   );
 
   return (

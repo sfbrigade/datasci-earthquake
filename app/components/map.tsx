@@ -38,7 +38,7 @@ const Map: React.FC<MapProps> = ({
   //   tsunamiData as FeatureCollection<Geometry>;
   // const typedSoftStoriesData: FeatureCollection<Geometry> =
   //   softStoryData as FeatureCollection<Geometry>;
-  console.log(coordinates);
+  console.log("1:", coordinates);
 
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -46,7 +46,7 @@ const Map: React.FC<MapProps> = ({
   useEffect(() => {
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
     const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
-    console.log(coordinates);
+    console.log("2:", coordinates);
 
     if (!mapContainerRef.current || !mapboxToken) {
       // TODO: turn this into a toast with friendly error message
@@ -54,14 +54,15 @@ const Map: React.FC<MapProps> = ({
       return;
     }
 
+    if (mapRef.current) {
+      console.log(mapRef.current);
+      console.log("3a: returned");
+      return;
+    }
+
     mapboxgl.accessToken = mapboxToken;
 
-    // if (mapRef.current) {
-    //   console.log(mapRef.current);
-    //   console.log("returned");
-    //   return;
-    // } else {
-    //   console.log("making map wee");
+    console.log("3b: making map");
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current!,
       style: "mapbox://styles/mapbox/standard",
@@ -85,8 +86,11 @@ const Map: React.FC<MapProps> = ({
         },
       },
     });
+    console.log("4:", "map created");
 
     const map = mapRef.current;
+
+    console.dir(map);
 
     map.touchZoomRotate.disableRotation(); // turn off rotate w/touch
 
@@ -160,23 +164,24 @@ const Map: React.FC<MapProps> = ({
     //     },
     //   });
     // });
+    console.log("5:", "controls added");
 
     return () => {
-      if (mapRef.current) mapRef.current.remove();
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
     };
-    // }
   }, [coordinates]);
 
   return (
-    <>
-      <div
-        ref={mapContainerRef}
-        style={{
-          width: "100%",
-          height: "100",
-        }}
-      />
-    </>
+    <div
+      ref={mapContainerRef}
+      style={{
+        width: "100%",
+        height: "100",
+      }}
+    />
   );
 };
 
