@@ -10,6 +10,8 @@ mypy_cache/
 bin/
 build/
 lib/
+.coverage
+coverage.xml
 
 # Virtual Environment
 venv
