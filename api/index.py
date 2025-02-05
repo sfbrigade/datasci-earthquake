@@ -9,7 +9,15 @@ app.include_router(liquefaction_api.router)
 app.include_router(tsunami_api.router)
 app.include_router(soft_story_api.router)
 
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+]
 
-@app.get("/api/helloFastApi")
-def hello_fast_api():
-    return {"message": "Hello from FastAPI"}
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
