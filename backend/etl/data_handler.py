@@ -90,7 +90,7 @@ class DataHandler(ABC):
 
                 except requests.RequestException as e:
                     logging.error(
-                        f"{table_name}: Request failed on page {page_num}: {str(e)}. Aborting fetching data."
+                        f"{table_name}: Request failed with offset {offset} on page {page_num}: {str(e)}. Will retry up to 5 times."
                     )
                     raise  # Re-raise to trigger retry logic
 
