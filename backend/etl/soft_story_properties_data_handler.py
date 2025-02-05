@@ -5,12 +5,14 @@ from backend.api.models.soft_story_properties import SoftStoryProperty
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from dotenv import load_dotenv
 import os
-from typing import Dict, Tuple
-from backend.etl.mapbox_geojson_manager import MapboxGeojsonManager
+from pathlib import Path
+from backend.etl.mapbox_geojson_manager import MapboxConfig, MapboxGeojsonManager
 from backend.api.models.base import ModelType
 
 
 _SOFT_STORY_PROPERTIES_URL = "https://data.sfgov.org/resource/beah-shgi.geojson"
+_MAPBOX_GEOCODE_API_ENDPOINT_URL = "https://api.mapbox.com/search/geocode/v6/batch"
+_MAPBOX_SOFT_STORY_GEOJSON_PATH = "backend/etl/data/mapbox_soft_story.geojson"
 
 
 class _SoftStoryPropertiesDataHandler(DataHandler):
@@ -20,7 +22,17 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
     """
 
     def __init__(self, url: str, table: Type[ModelType], mapbox_api_key: str):
-        self.mapbox_geojson_manager = MapboxGeojsonManager(api_key=mapbox_api_key)
+        mapbox_config = MapboxConfig(
+            # These values are for San Francisco
+            min_longitude=-122.51436038,
+            min_latitude=37.70799051,
+            max_longitude=-122.36206898,
+            max_latitude=37.83179017,
+            geocode_api_endpoint_url=_MAPBOX_GEOCODE_API_ENDPOINT_URL,
+            soft_story_geojson_path=Path(_MAPBOX_SOFT_STORY_GEOJSON_PATH),
+            api_key=mapbox_api_key,
+        )
+        self.mapbox_geojson_manager = MapboxGeojsonManager(mapbox_config)
         super().__init__(url, table)
 
     def fill_in_missing_mapbox_points(
