@@ -1,6 +1,6 @@
 import { Highlight, Text } from "@chakra-ui/react";
 
-interface HeadingProps {
+export interface HeadingProps {
   text: string;
   highlight: string;
   style?: {
