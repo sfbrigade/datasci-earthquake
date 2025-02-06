@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
@@ -22,12 +23,11 @@ interface MapProps {
   coordinates: number[];
 }
 
-const Map: React.FC<MapProps> = (
-  { coordinates } = { coordinates: defaultCoords }
-) => {
-  const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
+const Map: React.FC<MapProps> = ({ coordinates = defaultCoords }: MapProps) => {
+  const debug = useSearchParams().get("debug");
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<mapboxgl.Map | null>(null);
+  const mapRef = useRef<mapboxgl.Map>();
+  const markerRef = useRef<mapboxgl.Marker>();
 
   useEffect(() => {
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
@@ -40,9 +40,8 @@ const Map: React.FC<MapProps> = (
 
     mapboxgl.accessToken = mapboxToken;
 
-    if (mapRef.current) {
-      return;
-    } else {
+    if (!mapRef.current) {
+      // initial pass: render map
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current!,
         style: "mapbox://styles/mapbox/standard",
@@ -74,10 +73,12 @@ const Map: React.FC<MapProps> = (
       const nav = new mapboxgl.NavigationControl({ showCompass: false });
       map.addControl(nav, "right");
 
+      // wait for map to load before drawing marker
       map.on("load", () => {
         // Draw address marker
         const el = document.createElement("div");
 
+        const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
         const addressMarker = new mapboxgl.Marker({
           anchor: "bottom",
           element: el,
@@ -85,6 +86,8 @@ const Map: React.FC<MapProps> = (
         })
           .setLngLat(addressLngLat)
           .addTo(map);
+
+        markerRef.current = addressMarker;
 
         // Add sources
         map.addSource("seismic", {
@@ -139,15 +142,35 @@ const Map: React.FC<MapProps> = (
           },
         });
       });
-
-      return () => {
-        if (mapRef.current) mapRef.current.remove();
-      };
+    } else {
+      // subsequent passes: update map
+      const map = mapRef.current;
+      const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
+      map.panTo(addressLngLat);
+      markerRef.current?.setLngLat(addressLngLat);
+      return;
     }
-  }, []);
+  }, [coordinates]);
 
   return (
-    <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
+    <>
+      <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
+      {debug === "true" && (
+        <span
+          style={{
+            backgroundColor: "pink",
+            position: "absolute",
+            top: 0,
+            right: 0,
+            zIndex: 99,
+            fontSize: 24,
+            padding: "4px",
+          }}
+        >
+          {`${coordinates[0]}, ${coordinates[1]}`}
+        </span>
+      )}
+    </>
   );
 };
 
