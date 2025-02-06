@@ -11,8 +11,8 @@ const Header = () => {
   return (
     <Box
       as="header"
-      bg={isHome ? "white" : "gradient.blue"}
-      w={{ base: "base", xl: "xl" }}
+      bg="gradient.blue"
+      w="100%"
       p={{
         base: "19px 23px 8px 23px",
         md: "26px 27px 14px 26px",
@@ -20,14 +20,14 @@ const Header = () => {
       }}
     >
       <HStack justifyContent="space-between">
-        <Link as={NextLink} color={isHome ? "blue" : "white"} href="/">
-          <Text textStyle="logo" color={isHome ? "" : "white"}>
+        <Link as={NextLink} color="white" href="/">
+          <Text textStyle="logo" color="white">
             SF QuakeSafe
           </Text>
         </Link>
         {isHome ? (
-          <Link as={NextLink} color="blue" href="/about">
-            <Text textStyle="textMedium" color="blue">
+          <Link as={NextLink} color="white" href="/about">
+            <Text textStyle="textMedium" color="white">
               About
             </Text>
           </Link>
