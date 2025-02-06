@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import SearchBar from "./search-bar";
 import Heading, { HeadingProps } from "./heading";
@@ -11,23 +14,28 @@ const addressLookupCoordinates = {
     coordinates: [-122.408020683, 37.801698301],
   },
 };
-const coords = addressLookupCoordinates.geometry.coordinates ?? [];
+const defaultCoords = addressLookupCoordinates.geometry.coordinates ?? [];
 
 interface AddressMapperProps {
-  coords: number[];
   headingData: HeadingProps;
   softStoryData: {};
   tsunamiData: {};
   liquefactionData: {};
 }
 
+// TODO: pass data down to Map component
 const AddressMapper: React.FC<AddressMapperProps> = ({
-  coords,
   headingData,
   softStoryData,
   tsunamiData,
   liquefactionData,
 }) => {
+  const [coordinates, setCoordinates] = useState(defaultCoords);
+
+  const updateMap = (coords: number[]) => {
+    setCoordinates(coords);
+  };
+
   return (
     <Flex direction="column">
       <Box bgColor="blue">
@@ -41,7 +49,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           m="auto"
         >
           <Heading headingData={headingData} />
-          <SearchBar />
+          <SearchBar coordinates={coordinates} onSearchChange={updateMap} />
         </Box>
       </Box>
       <Box w="base" h={{ base: "1400px", md: "1000px" }} m="auto">
@@ -55,7 +63,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           <Box zIndex={10} top={0} position="absolute">
             <Report />
           </Box>
-          <Map coordinates={coords} />
+          <Map coordinates={coordinates} />
           <Box position="absolute" bottom={0}>
             <Information />
           </Box>

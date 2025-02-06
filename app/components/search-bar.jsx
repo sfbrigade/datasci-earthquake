@@ -1,19 +1,27 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import {
+  HStack,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
 
-const SearchBar = () => {
+const SearchBar = ({ coordinates, onSearchChange }) => {
   const [address, setAddress] = useState("");
   const [fullAddress, setFullAddress] = useState(null);
+  const debug = useSearchParams().get("debug");
 
   const handleClearClick = () => {
     console.log(address);
@@ -24,10 +32,50 @@ const SearchBar = () => {
   const handleRetrieve = (event) => {
     const addressData = event.features[0];
     setFullAddress(addressData);
+    // TODO: move to proper event handler and replace with coordinates from API
+    onSearchChange([coordinates[0] + 0.025, coordinates[1] + 0.025]);
   };
 
   return (
     <form>
+      {debug === "true" && (
+        <HStack>
+          <NumberInput
+            bg="white"
+            size="xs"
+            width="auto"
+            defaultValue={coordinates[0]}
+            precision={9}
+            step={0.005}
+            onChange={(valueString) =>
+              onSearchChange([parseFloat(valueString), coordinates[1]])
+            }
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+          <NumberInput
+            bg="white"
+            size="xs"
+            width="auto"
+            defaultValue={coordinates[1]}
+            precision={9}
+            step={0.005}
+            onChange={(valueString) =>
+              onSearchChange([coordinates[0], parseFloat(valueString)])
+            }
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </HStack>
+      )}
       <DynamicAddressAutofill
         accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
         onRetrieve={handleRetrieve}
