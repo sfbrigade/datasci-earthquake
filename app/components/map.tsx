@@ -72,7 +72,7 @@ const Map: React.FC<MapProps> = (
       map.touchZoomRotate.disableRotation(); // turn off rotate w/touch
 
       const nav = new mapboxgl.NavigationControl({ showCompass: false });
-      map.addControl(nav, "top-right");
+      map.addControl(nav, "right");
 
       map.on("load", () => {
         // Draw address marker
