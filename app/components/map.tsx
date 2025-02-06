@@ -98,15 +98,15 @@ const Map: React.FC<MapProps> = ({ coordinates = defaultCoords }: MapProps) => {
         markerRef.current = addressMarker;
 
         // Add sources
-        // map.addSource("seismic", {
-        //   type: "geojson",
-        //   data: typedSeismicData,
-        // });
+        map.addSource("seismic", {
+          type: "geojson",
+          data: typedSeismicData,
+        });
 
-        // map.addSource("tsunami", {
-        //   type: "geojson",
-        //   data: typedTsunamiData,
-        // });
+        map.addSource("tsunami", {
+          type: "geojson",
+          data: typedTsunamiData,
+        });
 
         map.addSource("soft-stories", {
           type: "geojson",
