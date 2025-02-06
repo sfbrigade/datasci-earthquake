@@ -2,14 +2,11 @@ from abc import ABC, abstractmethod
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-from sqlalchemy.orm import Session, DeclarativeBase
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from backend.database.session import get_db
 from backend.api.models.base import ModelType
-from shapely.geometry import Polygon, MultiPolygon
 from shapely.ops import transform
-from pyproj import CRS, Transformer
-from geoalchemy2.shape import from_shape
+from pyproj import Transformer
 from typing import Type, Generator
 import time
 import logging
