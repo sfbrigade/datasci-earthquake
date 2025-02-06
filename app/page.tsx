@@ -29,17 +29,20 @@ const Home = async () => {
 
   return (
     <Flex direction="column">
-      <Box bgColor="blue">
+      <Box bg="gradient.blue">
         <Box
-          w={{ base: "base", xl: "xl" }}
+          w={{ base: "100%", md: "65%" }}
           p={{
             base: "45px 23px 50px 23px",
-            md: "52px 260px 56px 26px",
-            xl: "53px 470px 46px 127px",
+            md: "52px 0px 56px 26px",
+            xl: "53px 0px 46px 127px",
           }}
-          m="auto"
         >
           <Heading headingData={headingData} />
+          <Text textStyle="headerSmall" mb="30px">
+            Supporting the City of San Francisco’s initiative to increase the
+            earthquake safety of its multifamily residences.
+          </Text>
           <SearchBar />
         </Box>
       </Box>
