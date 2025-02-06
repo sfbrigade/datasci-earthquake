@@ -67,14 +67,16 @@ const SearchBar = () => {
             _invalid={{ borderColor: "red" }}
             autoComplete="address-line1"
           />
-          <InputRightElement>
-            <RxCross2
-              color="grey.900"
-              fontSize="1.1em"
-              data-testid="clear-icon"
-              onClick={handleClearClick}
-            />
-          </InputRightElement>
+          {address.length != 0 && (
+            <InputRightElement>
+              <RxCross2
+                color="grey.900"
+                fontSize="1.1em"
+                data-testid="clear-icon"
+                onClick={handleClearClick}
+              />
+            </InputRightElement>
+          )}
         </InputGroup>
       </DynamicAddressAutofill>
     </form>
