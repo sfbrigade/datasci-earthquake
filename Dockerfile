@@ -26,4 +26,4 @@ USER appuser
 EXPOSE 3000
 
 # Start the Next.js application in development mode
-CMD ["npm", "run", "dev"]   
+CMD ["npm", "run", "next-dev"]   
