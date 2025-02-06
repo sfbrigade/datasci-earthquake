@@ -13,7 +13,7 @@ router = APIRouter(
 @router.delete("/{address}")
 async def delete_combined_risks(address: str):
     """
-    Remove the combined seismic risks of an address from
+    Remove the combined risks of an address from
     the database.
     """
     return {"message": "This endpoint is not yet implemented"}
@@ -22,7 +22,7 @@ async def delete_combined_risks(address: str):
 @router.put("/{address}")
 async def put_combined_risks(address: str, risks: dict):
     """
-    Add the combined seismic risks of an address to the database.
+    Add the combined risks of an address to the database.
     """
     return {"message": "This endpoint is not yet implemented"}
 
