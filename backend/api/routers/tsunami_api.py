@@ -10,12 +10,12 @@ from backend.api.models.tsunami import TsunamiZone
 
 
 router = APIRouter(
-    prefix="/tsunami-zones",
+    prefix="/api/tsunami-zones",
     tags=[Tags.TSUNAMI],
 )
 
 
-@router.get("/", response_model=TsunamiFeatureCollection)
+@router.get("", response_model=TsunamiFeatureCollection)
 async def get_tsunami_zones(db: Session = Depends(get_db)):
     """
     Retrieve all tsunami hazard zones from the database.
