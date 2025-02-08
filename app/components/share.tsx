@@ -13,7 +13,6 @@ import EmailIcon from "../img/icon-email.svg";
 import XIcon from "../img/icon-x.svg";
 import LinkIcon from "../img/icon-link.svg";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { AddressData } from "./__mocks__/address-data";
 import Link from "next/link";
 
@@ -47,9 +46,11 @@ const Share = () => {
         variant="ghost"
         rightIcon={<ShareIcon />}
       >
-        <Text textStyle="textMedium">Share report</Text>
+        <Text textStyle="textMedium" color="blue">
+          Share report
+        </Text>
       </MenuButton>
-      <MenuList p={"6px 16px 6px 16px"}>
+      <MenuList zIndex={20} p={"6px 16px 6px 16px"}>
         <Link
           href={
             "mailto:placeholder@example.com?subject=Share Report&body=" +

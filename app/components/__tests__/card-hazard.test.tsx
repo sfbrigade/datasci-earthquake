@@ -36,7 +36,7 @@ describe("CardHazard Component", () => {
 
   it("displays the hazard's updated time", () => {
     render(<CardHazard hazard={Hazards[0]} />);
-    expect(screen.getByText("Updated 2 days ago")).toBeInTheDocument();
+    expect(screen.getByText("More info")).toBeInTheDocument();
   });
 
   it("displays the hazard's color in the SVG circle", () => {

@@ -2,15 +2,19 @@ from abc import ABC, abstractmethod
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-from sqlalchemy.orm import Session, DeclarativeBase
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from backend.database.session import get_db
 from backend.api.models.base import ModelType
-from shapely.geometry import Polygon, MultiPolygon
 from shapely.ops import transform
-from pyproj import CRS, Transformer
-from geoalchemy2.shape import from_shape
-from typing import Type, TypeVar
+from pyproj import Transformer
+from typing import Type, Generator
+import time
+import logging
+
+
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 class DataHandler(ABC):
@@ -29,18 +33,85 @@ class DataHandler(ABC):
 
     def fetch_data(self, params=None) -> dict:
         """
-        Fetch data from the API with retry logic.
+        Fetches data from the API with retry logic.
 
-        Retries the request up to 5 times if necessary.
-        Returns the response data as a dictionary.
+        Args:
+            params (dict, optional): Query parameters for the API request.
+
+        Returns:
+            dict: Dictionary containing list of features under 'features' key.
+
+        Raises:
+            requests.RequestException: If all retry attempts fail.
         """
-        retry = Retry(total=5, backoff_factor=1)
-        adapter = HTTPAdapter(max_retries=retry)
+
+        def _yield_data(
+            url: str, table_name: str, session: requests.Session, params: dict = {}
+        ) -> Generator:
+            """
+            Yields features from the url, paginating if necessary.
+
+            Args:
+                url: API endpoint URL
+                session: Configured requests session
+                params: Base query parameters
+
+            Yields:
+                list: Features from current page
+            """
+            offset = 0
+            page_num = 1
+            while True:
+                paginated_params = params.copy() if params else {}
+                paginated_params.update({"$offset": offset})
+
+                try:
+                    response = session.get(url, params=paginated_params, timeout=60)
+                    response.raise_for_status()
+                    data = response.json()
+
+                    features = data.get("features", [])
+                    if not features:
+                        logging.info(f"{table_name}: Finished retrieving all pages.")
+                        break
+
+                    yield features
+                    logging.info(
+                        f"{table_name}: Retrieved {len(features)} features on page {page_num}."
+                    )
+
+                    offset += len(features)
+                    page_num += 1
+
+                    time.sleep(1)
+
+                except requests.RequestException as e:
+                    logging.error(
+                        f"{table_name}: Request failed with offset {offset} on page {page_num}: {str(e)}. Will retry up to 5 times."
+                    )
+                    raise  # Re-raise to trigger retry logic
+
+        retry_strategy = Retry(
+            total=5,
+            backoff_factor=1,
+            status_forcelist=[429, 500, 502, 503, 504],  # status codes to retry
+            allowed_methods=["GET"],
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy)
         session = requests.Session()
         session.mount("https://", adapter)
-        response = session.get(self.url, params=params, timeout=60)
-        response.raise_for_status()
-        return response.json()
+        session.mount("http://", adapter)
+
+        try:
+            all_features = []
+            for features in _yield_data(self.url, self.table.__name__, session, params):
+                all_features.extend(features)
+            logging.info(
+                f"{self.table.__name__}: Successfully fetched {len(all_features)} total features."
+            )
+            return {"features": all_features}
+        finally:
+            session.close()
 
     def transform_geometry(self, geometry, source_srid, target_srid=4326):
         """

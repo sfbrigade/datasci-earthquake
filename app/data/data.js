@@ -24,7 +24,7 @@ export const Hazards = [
     description:
       "These coastal areas can be at risk of flooding in the event of a tsunami",
     update: "00-00-0000",
-    color: "#ED64A6", // pink/400
+    color: "#63B3ED", // blue/300
   },
 ];
 
@@ -33,10 +33,12 @@ export const Info = [
     id: 1,
     name: "preparedness",
     title: "Preparedness",
+    textStyle: "bold",
     list: [
       {
         id: 1,
         title: "Ready.gov",
+        subtitle: "Earthquake guide",
         url: "https://www.ready.gov/",
       },
       {
@@ -47,6 +49,7 @@ export const Info = [
       {
         id: 3,
         title: "MyShake app",
+        subtitle: "Early warning",
         url: "https://myshake.berkeley.edu/",
       },
     ],

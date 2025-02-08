@@ -1,35 +1,70 @@
-import { Box, HStack, IconButton, Text } from "@chakra-ui/react";
+import { Card, Center, Collapse, Stack, Text } from "@chakra-ui/react";
 import CardHazard from "./card-hazard";
-import { AddressData } from "./__mocks__/address-data";
 import { Hazards } from "../data/data";
+import { AddressData } from "./__mocks__/address-data";
 import Share from "./share";
+import { CardContainer } from "./card-container";
 
 const Report = () => {
   return (
-    <Box>
-      <HStack
-        justifyContent="space-between"
-        alignItems={{ base: "flex-start", md: "center" }}
-        flexDirection={{ base: "column", md: "row" }}
-        mb="16px"
-        gap="0"
+    <Center flexDirection="column">
+      <Collapse
+        endingHeight="64px"
+        in={!!AddressData.address}
+        style={{ overflow: "visible" }}
       >
-        {AddressData.address && (
-          <Text textStyle="headerMedium">{AddressData.address}</Text>
-        )}
-        <Share />
-      </HStack>
-      <HStack
-        justifyContent="space-between"
-        alignItems="stretch"
-        flexDirection={{ base: "column", md: "row" }}
-        mb="16px"
-      >
+        <Card
+          w="100vw"
+          py={2}
+          borderRadius={0}
+          display="flex"
+          alignItems="center"
+        >
+          <Stack
+            w={{ base: "95%", xl: "1100px" }}
+            direction={{ base: "column", sm: "row" }}
+            alignItems="center"
+            justifyContent={{
+              base: "space-between",
+              xl: "center",
+            }}
+            position="relative"
+            px={{ base: 0, md: 2 }}
+          >
+            <Stack
+              position={{ base: "relative", xl: "absolute" }}
+              left={{ base: 0, xl: 2 }}
+              direction={{ base: "column", md: "row" }}
+              alignItems={{ base: "flex-start", md: "center" }}
+              spacing={{ base: 0, md: 1 }}
+            >
+              <Text
+                textStyle="headerSmall"
+                fontWeight="normal"
+                fontSize="22px"
+                color="gray.900"
+              >
+                Report for:
+              </Text>
+              <Text
+                textStyle="headerMedium"
+                fontWeight="normal"
+                color="gray.900"
+                pb="4px"
+              >
+                {AddressData.address}
+              </Text>
+            </Stack>
+            <Share />
+          </Stack>
+        </Card>
+      </Collapse>
+      <CardContainer>
         {Hazards.map((hazard) => {
           return <CardHazard key={hazard.id} hazard={hazard} />;
         })}
-      </HStack>
-    </Box>
+      </CardContainer>
+    </Center>
   );
 };
 
