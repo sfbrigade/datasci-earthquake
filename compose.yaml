@@ -12,7 +12,7 @@ services:
     volumes:
       - .:/app:rw,delegated # Mount after dependencies are installed
       - /app/node_modules # This excludes the node_modules from being overwritten
-      - /app/.next/cache # Ensure the Next.js cache is properly mounted 
+      - /app/build/cache # Ensure the Next.js cache is properly mounted 
   backend:
     build:
       context: .

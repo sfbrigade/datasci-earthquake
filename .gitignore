@@ -19,6 +19,7 @@ venv
 
 # Node
 node_modules
+build
 
 # Mac
 .DS_Store
