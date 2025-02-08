@@ -31,7 +31,6 @@ def test_insert_combined_risk(test_db):
     new_risk = CombinedRisk(
         address="124 Test St, San Francisco, CA",
         soft_story_risk=True,
-        seismic_hazard_risk=False,
         landslide_risk=False,
         liquefaction_risk=False,
     )
@@ -48,7 +47,6 @@ def test_insert_combined_risk(test_db):
     )
     assert result is not None
     assert result.soft_story_risk is True
-    assert result.seismic_hazard_risk is False
 
 
 def test_query_combined_risk(test_db):
