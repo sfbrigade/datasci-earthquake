@@ -8,11 +8,19 @@ from geoalchemy2.shape import from_shape
 TSUNAMI_URL = "https://services2.arcgis.com/zr3KAIbsRSUyARHG/ArcGIS/rest/services/CA_Tsunami_Hazard_Area/FeatureServer/0/query"
 
 
-class TsunamiDataHandler(DataHandler):
-    """
-    This class fetches, parses and loads SF tsunami data from
-    conservation.ca.gov
-    """
+class _TsunamiDataHandler(DataHandler):
+    def __init__(self):
+        params = {
+            "where": "County='San Francisco'",
+            "outFields": "*",
+            "f": "json",
+        }
+        super().__init__(
+            url=TSUNAMI_URL,
+            table=TsunamiZone,
+            page_size=1000,
+            params=params
+        )
 
     def parse_data(self, data: dict) -> list[dict]:
         """
@@ -53,14 +61,9 @@ class TsunamiDataHandler(DataHandler):
 
 
 if __name__ == "__main__":
-    handler = TsunamiDataHandler(TSUNAMI_URL, TsunamiZone)
+    handler = _TsunamiDataHandler()
     try:
-        params = {
-            "where": "County='San Francisco'",
-            "outFields": "*",
-            "f": "json",
-        }
-        tsunami_zones = handler.fetch_data(params)
+        tsunami_zones = handler.fetch_data()
         tsunami_zones_objects = handler.parse_data(tsunami_zones)
         handler.bulk_insert_data(tsunami_zones_objects, "identifier")
     except HTTPException as e:
