@@ -4,15 +4,15 @@ const Footer = () => {
   return (
     <Box
       as="footer"
-      w={{ base: "base", xl: "xl" }}
+      w="100%"
       p={{
-        base: "19px 23px 8px 23px",
-        md: "26px 27px 14px 26px",
-        xl: "29px 127px 13px 127px",
+        base: "8px 23px 8px 23px",
+        md: "14px 26px 14px 26px",
+        xl: "16px 127px 16px 127px",
       }}
     >
       <HStack justifyContent="space-between">
-        <Text textStyle="textSmall" color="grey.900">
+        <Text textStyle="textMedium" color="grey.900">
           © 2024 SF Civic Tech
         </Text>
       </HStack>
