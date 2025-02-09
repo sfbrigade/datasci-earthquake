@@ -36,14 +36,6 @@ create table if not exists tsunami_zones (
     update_timestamp timestamp
 );
 
-create table if not exists combined_risk (
-    id serial primary key,
-    address varchar(50) not null unique,
-    soft_story_risk boolean not null default false,
-    landslide_risk boolean not null default false,
-    liquefaction_risk boolean not null default false
-);
-
 create table if not exists soft_story_properties (
     identifier integer not null,
     block varchar(255),
@@ -104,13 +96,6 @@ insert into tsunami_zones (identifier, evacuate, county, global_id, shape_length
                                     ((-122.4 37.75, -122.4 37.85, -122.35 37.85, -122.35 37.75, -122.4 37.75))
                                 )', 4326), 
                                 '2024/12/16 5:10:00 PM');                                
-
-insert into combined_risk (address,                                soft_story_risk, seismic_hazard_risk, landslide_risk, liquefaction_risk) values 
-                          ('3560 PIERCE ST, SAN FRANCISCO CA',     true,            false,               false,          false),
-                          ('3484 18TH ST, SAN FRANCISCO CA',       true,            true,                false,          true),
-                          ('175 ALHAMBRA ST, SAN FRANCISCO CA',    false,           false,               false,          false),
-                          ('106 HAIGHT ST, SAN FRANCISCO CA',      true,            true,                true,           true),
-                          ('3852 CALIFORNIA ST, SAN FRANCISCO CA', false,           true,                false,          true);
 
 
 --add update_timestamp column after sfdata_loaded_at
