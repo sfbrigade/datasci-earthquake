@@ -72,31 +72,6 @@ def test_fetch_data_success(data_handler):
                 },
             ],
         },
-        {
-            "type": "FeatureCollection",
-            "features": [
-                {
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [-122.413289566, 37.797485886],
-                    },
-                    "properties": {
-                        "tier": "3",
-                        "data_loaded_at": "2025-01-15T01:03:50.028",
-                        "block": "0149",
-                        "property_address": "1632 TAYLOR ST",
-                        "status": "Work Complete, CFC Issued",
-                        "bos_district": "3",
-                        "lot": "094",
-                        "address": "1632 TAYLOR ST, SAN FRANCISCO CA",
-                        "parcel_number": "0149094",
-                        "data_as_of": "2025-01-15T01:02:43.989",
-                    },
-                }
-            ],
-        },
-        {"type": "FeatureCollection", "features": []},  # Empty page to end pagination
     ]
 
     mock_response = Mock()
@@ -111,17 +86,59 @@ def test_fetch_data_success(data_handler):
 
         result = data_handler.fetch_data()
 
-        assert len(result["features"]) == 3  # Should have features
-        assert (
-            mock_session.get.call_count == 3
-        )  # Should make 3 calls (2 with data, 1 empty)
+        assert len(result["features"]) == 2
+        assert mock_session.get.call_count == 1
 
         first_call = mock_session.get.call_args_list[0]
-        assert first_call[1]["params"] == {"$offset": 0}
-        second_call = mock_session.get.call_args_list[1]
-        assert second_call[1]["params"] == {"$offset": 2}
-        third_call = mock_session.get.call_args_list[2]
-        assert third_call[1]["params"] == {"$offset": 3}
+        assert first_call[1]["params"] == {"$offset": 0, "$limit": 1000}
+
+
+def test_fetch_data_partial_page():
+    """Test that pagination stops when receiving fewer records than page_size"""
+
+    page_size = 3
+    handler = DummyDataHandler("http://test.url", DummyModel, page_size=page_size)
+
+    # Create mock responses
+    full_page_response = Mock()
+    full_page_response.json.return_value = {
+        "type": "FeatureCollection",
+        "features": [
+            {"id": 0},
+            {"id": 1},
+            {"id": 2},
+        ],
+    }
+
+    partial_page_response = Mock()
+    partial_page_response.json.return_value = {
+        "type": "FeatureCollection",
+        "features": [
+            {"id": 3},
+            {"id": 4},
+        ],
+    }
+
+    mock_session = Mock()
+    mock_session.get.side_effect = [full_page_response, partial_page_response]
+
+    with patch("requests.Session", return_value=mock_session):
+        with patch("time.sleep", return_value=None):  # Skip sleep delays
+            result = handler.fetch_data()
+
+            # Verify API calls
+            assert mock_session.get.call_count == 2
+
+            # Verify pagination params
+            calls = mock_session.get.call_args_list
+            assert calls[0][1]["params"] == {"$offset": 0, "$limit": page_size}
+            assert calls[1][1]["params"] == {"$offset": 3, "$limit": page_size}
+
+            # Verify content
+            all_features = result["features"]
+            assert len(all_features) == 5
+            assert all_features[0]["id"] == 0
+            assert all_features[-1]["id"] == 4
 
 
 def test_fetch_data_request_exception(data_handler):
