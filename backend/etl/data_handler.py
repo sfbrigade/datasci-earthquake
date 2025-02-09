@@ -27,12 +27,12 @@ class DataHandler(ABC):
         logger: Optional[logging.Logger] = None
     ):
         """
-        Initialize DataHandler with configurable dependencies.
-        
+        Abstract base class for handling data operations with an external
+        API and database.        
         Args:
-            url: API endpoint URL
-            table: SQLAlchemy table model
-            page_size: Number of records per page
+            url (str): The API endpoint URL.
+            table (ModelType): The SQLAlchemy table object.
+            page_size (int): Number of records to fetch per page.
             params: Base query parameters for API requests
             session: Optional pre-configured requests session
             logger: Optional logger instance
@@ -122,29 +122,34 @@ class DataHandler(ABC):
                 "$limit": self.page_size
             })
             
+            start_time = time.time()
             data = self._make_request(self.url, paginated_params)
             features = data.get("features", [])
-            
+            request_time = time.time() - start_time
             if not features:
                 self.logger.info(
                     f"{self.table.__name__}: Completed pagination. "
                     f"Final stats: Pages={page_num-1}, "
-                    f"Total Features={offset}"
+                    f"Total Features={offset}, "
+                    f"Last Offset={offset}, "
+                    f"Request time: {request_time:.2f}s"
                 )
                 break
                 
             if len(features) < self.page_size:
                 self.logger.info(
-                    f"{self.table.__name__}: Last page detected. "
-                    f"Features count: {len(features)}"
+                    f"{self.table.__name__}: Received fewer records ({len(features)}) than page size ({self.page_size}). "
+                    f"Assuming final page and stopping fetch. "
+                    f"Request time: {request_time:.2f}s"
                 )
                 yield features
                 break
                 
             yield features
             self.logger.info(
-                f"{self.table.__name__}: Retrieved {len(features)} features "
-                f"on page {page_num}"
+                f"{self.table.__name__}: Retrieved {len(features)} features on page {page_num}. "
+                f"Offset: {offset}, "
+                f"Request time: {request_time:.2f}s"
             )
             
             offset += len(features)
@@ -167,6 +172,9 @@ class DataHandler(ABC):
             all_features = []
             for features in self._yield_data():
                 all_features.extend(features)
+            self.logger.info(
+                f"{self.table.__name__}: Successfully fetched {len(all_features)} total features."
+            )
                 
             return {"features": all_features}
             
@@ -176,6 +184,7 @@ class DataHandler(ABC):
         finally:
             if not self.session:
                 self.session.close()
+                self.logger.debug("Closed session")
 
     def transform_geometry(self, geometry, source_srid, target_srid=4326):
         """
@@ -220,3 +229,6 @@ class DataHandler(ABC):
             stmt = stmt.on_conflict_do_nothing(index_elements=[id_field])
             db.execute(stmt)
             db.commit()
+            self.logger.info(
+                f"{self.table.__name__}: Inserted {len(data_dicts)} rows into {self.table.__name__}."
+            )

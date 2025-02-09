@@ -6,7 +6,7 @@ from backend.etl.data_handler import DataHandler
 from backend.api.models.base import Base
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-
+import logging
 
 class DummyModel(Base):
     """Dummy model for testing"""
@@ -33,14 +33,13 @@ def data_handler(mock_session):
         url="http://test.url",
         table=DummyModel,
         page_size=1000,
-        params={"$select": "*"},
-        session=mock_session
+        session=mock_session,
     )
 
 
-def test_fetch_data_success(data_handler):
+def test_fetch_data_success(data_handler, caplog):
     """Test successful data fetching with pagination"""
-
+    caplog.set_level(logging.INFO)
     mock_responses = [
         {
             "type": "FeatureCollection",
@@ -99,6 +98,7 @@ def test_fetch_data_success(data_handler):
 
         result = data_handler.fetch_data()
 
+        print("result", result)
         assert len(result["features"]) == 2
         assert mock_session.get.call_count == 1
 
@@ -107,7 +107,6 @@ def test_fetch_data_success(data_handler):
 
 
 def test_fetch_data_partial_page(data_handler):
-    # Configure mock responses
     data_handler.session.get.side_effect = [
         MagicMock(
             json=lambda: {"features": [{"id": i} for i in range(1000)]}
