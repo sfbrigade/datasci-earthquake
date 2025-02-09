@@ -59,7 +59,7 @@ jobs:
           run_id=$(echo $response | jq '.workflow_runs[0].id')
           echo "Run ID: $run_id"
           echo "run_id=$run_id" >> $GITHUB_ENV     
-      - name: Print PRINT Run ID 
+      - name: Debugging the token
         run: echo "Run ID is ${{ env.run_id }}"             
       - name: Download .env Artifact 
         uses: actions/download-artifact@v4
