@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - master
+            - bug/fix-ci
     pull_request: 
         types: [opened, synchronize, reopened]         
         branches:
@@ -57,7 +58,9 @@ jobs:
             "https://api.github.com/repos/sfbrigade/datasci-earthquake/actions/workflows/env_vars.yml/runs?status=completed&conclusion=success")
           run_id=$(echo $response | jq '.workflow_runs[0].id')
           echo "Run ID: $run_id"
-          echo "run_id=$run_id" >> $GITHUB_ENV        
+          echo "run_id=$run_id" >> $GITHUB_ENV     
+      - name: Debug Run ID
+        run: echo "Run ID is ${{ env.run_id }}"             
       - name: Download .env Artifact 
         uses: actions/download-artifact@v4
         with:
