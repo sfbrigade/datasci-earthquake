@@ -98,6 +98,15 @@ To stop and shut down the application:
 4. Many problems are caused by disk usage issues. Run `docker system df` to show disk usage. Use pruning commands such as `docker system prune`to clean up unused resources.
 5. `Error response from daemon: network not found` occurs when Docker tries to use a network that has already been deleted or is dangling (not associated with any container). Prune unused networks to resolve this issue: `docker network prune -f`. If this doesn't help, run `docker system prune`.
 
+### Running unit tests with Docker
+
+#### Backend
+
+1. First update code and/or rebuild any containers as necessary. Otherwise you may get false results.
+2. Run the containers (`docker compose up -d)`
+3. Run pytest: `docker compose run backend pytest backend`
+   * Alternatively, run pytest with container cleanup: `docker compose run --remove-orphans backend pytest backend`
+   * 
 ---
 
 ## Hybrid development
