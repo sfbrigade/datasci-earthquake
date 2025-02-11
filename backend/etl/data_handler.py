@@ -41,8 +41,8 @@ class DataHandler(ABC):
         self.table = table
         self.page_size = page_size
         self.params = params or {}
-        self.session = session or self._create_session()
         self.logger = logger or logging.getLogger(f"{self.__class__.__name__}")
+        self.session = session or self._create_session()
         
         self.logger.info(
             f"Initialized handler for {table.__name__} "
@@ -53,14 +53,62 @@ class DataHandler(ABC):
 
     def _create_session(self) -> requests.Session:
         """Create a configured requests session with retry logic."""
-        retry_strategy = Retry(
+        class LoggingRetry(Retry):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.logger = logging.getLogger("RetryLogger")
+                self.logger.setLevel(logging.INFO)
+                self._retry_count = 0
+            
+            def new(self, **kw):
+                """Called when making a copy of the retry object"""
+                obj = super().new(**kw)
+                obj._retry_count = self._retry_count
+                return obj
+            
+            def increment(self, method=None, url=None, response=None, error=None, *args, **kwargs):
+                """Called when a retry is needed"""
+                self._retry_count += 1
+                status = response.status_code if response else "no response"
+                error_msg = str(error) if error else "no error"
+                
+                self.logger.warning(
+                    f"Request failed - Retry {self._retry_count} of {self.total}\n"
+                    f"URL: {url}\n"
+                    f"Method: {method}\n"
+                    f"Status: {status}\n"
+                    f"Error: {error_msg}\n"
+                    f"Backoff: {self.get_backoff_time()} seconds"
+                )
+                
+                return super().increment(
+                    method=method, url=url, response=response, error=error, 
+                    *args, **kwargs
+                )
+            
+            def get_backoff_time(self):
+                """Calculate the backoff time for the current retry attempt"""
+                return self.backoff_factor * (2 ** (self._retry_count - 1))
+        
+        retry_strategy = LoggingRetry(
             total=5,
             backoff_factor=1,
-            status_forcelist=[429, 500, 502, 503, 504],
-            allowed_methods=["GET"]
+            status_forcelist=[404, 429, 500, 502, 503, 504],
+            allowed_methods=["GET"],
+            raise_on_status=True,
+            respect_retry_after_header=True
         )
-        adapter = HTTPAdapter(max_retries=retry_strategy)
+        
+        self.logger.info(
+            f"Creating session with retry config:\n"
+            f"Max retries: {retry_strategy.total}\n"
+            f"Backoff factor: {retry_strategy.backoff_factor}\n"
+            f"Status codes: {retry_strategy.status_forcelist}\n"
+            f"Allowed methods: {retry_strategy.allowed_methods}"
+        )
+        
         session = requests.Session()
+        adapter = HTTPAdapter(max_retries=retry_strategy)
         session.mount("https://", adapter)
         session.mount("http://", adapter)
         return session
@@ -84,23 +132,44 @@ class DataHandler(ABC):
         """
         start_time = time.time()
         try:
+            self.logger.info(f"Making request to {url} with params {params}")
             response = self.session.get(url, params=params, timeout=timeout)
+            
+            self.logger.info(
+                f"Received response:\n"
+                f"Status: {response.status_code}\n"
+                f"Time: {time.time() - start_time:.2f}s"
+            )
+            
             response.raise_for_status()
             data = response.json()
-            request_time = time.time() - start_time
             
-            self.logger.debug(
-                f"Request completed in {request_time:.2f}s: "
-                f"URL={url}, "
-                f"params={params}"
+            self.logger.info(
+                f"Request completed successfully:\n"
+                f"URL: {url}\n"
+                f"Params: {params}\n"
+                f"Time: {time.time() - start_time:.2f}s"
             )
             
             return data
+            
+        except requests.HTTPError as e:
+            self.logger.error(
+                f"HTTP Error occurred:\n"
+                f"Status Code: {e.response.status_code}\n"
+                f"URL: {url}\n"
+                f"Params: {params}\n"
+                f"Time: {time.time() - start_time:.2f}s",
+                exc_info=True
+            )
+            raise
         except Exception as e:
             self.logger.error(
-                f"Request failed: {str(e)}, "
-                f"URL={url}, "
-                f"params={params}",
+                f"Request failed:\n"
+                f"Error: {str(e)}\n"
+                f"URL: {url}\n"
+                f"Params: {params}\n"
+                f"Time: {time.time() - start_time:.2f}s",
                 exc_info=True
             )
             raise
