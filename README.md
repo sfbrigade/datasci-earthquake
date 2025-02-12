@@ -71,7 +71,7 @@ This project uses Docker and Docker Compose to run the application, which includ
     - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
     - To interact with a running container, use `docker exec [OPTIONS] CONTAINER COMMAND [ARG...]`
       - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
-      - To execute a python scrupt, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
+      - To execute a python script, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
 
     **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `requirements.txt`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
 
@@ -97,6 +97,15 @@ To stop and shut down the application:
 3. Containers fail when their build contexts were modified but the containers weren't rebuilt. If logs show that some dependencies are missing, this can be likely solved by rebuilding the containers.
 4. Many problems are caused by disk usage issues. Run `docker system df` to show disk usage. Use pruning commands such as `docker system prune`to clean up unused resources.
 5. `Error response from daemon: network not found` occurs when Docker tries to use a network that has already been deleted or is dangling (not associated with any container). Prune unused networks to resolve this issue: `docker network prune -f`. If this doesn't help, run `docker system prune`.
+
+### Running unit tests with Docker
+
+#### Backend
+
+1. First update code and/or rebuild any containers as necessary. Otherwise you may get false results.
+2. Run the containers (`docker compose up -d)`
+3. Run pytest: `docker compose run backend pytest backend`
+   * Alternatively, run pytest with container cleanup: `docker compose run --remove-orphans backend pytest backend`
 
 ---
 
