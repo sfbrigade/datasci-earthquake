@@ -47,13 +47,7 @@ const Home = async () => {
         </Box>
       </Box>
       <Box w="base" h={{ base: "1400px", md: "1000px" }} m="auto">
-        <Box
-          h="100%"
-          border="1px solid"
-          borderColor="grey.400"
-          overflow="hidden"
-          position="relative"
-        >
+        <Box h="100%" overflow="hidden" position="relative">
           <Box zIndex={10} top={0} position="absolute">
             <Report />
           </Box>
