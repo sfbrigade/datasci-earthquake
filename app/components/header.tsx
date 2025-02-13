@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, HStack, Text, Link } from "@chakra-ui/react";
+import { Box, HStack, Text, Link, Image } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import NextLink from "next/link";
 
@@ -21,9 +21,20 @@ const Header = () => {
     >
       <HStack justifyContent="space-between">
         <Link as={NextLink} color="white" href="/">
-          <Text textStyle="logo" color="white">
-            SF QuakeSafe
-          </Text>
+          <HStack align="center">
+            <Image
+              src="/SFSafeHome-logo.svg"
+              alt="Logo"
+              color="white"
+              boxSize={{
+                base: "22px",
+                md: "28px",
+              }}
+            />
+            <Text textStyle="logo" color="white">
+              SF QuakeSafe
+            </Text>
+          </HStack>
         </Link>
         {isHome ? (
           <Link as={NextLink} color="white" href="/about">
