@@ -5,9 +5,18 @@ from ..tags import Tags
 from sqlalchemy.orm import Session
 from geoalchemy2 import functions as geo_func
 from backend.database.session import get_db
-from backend.api.schemas.tsunami_schemas import TsunamiFeature, TsunamiFeatureCollection
+from backend.api.schemas.tsunami_schemas import (
+    TsunamiFeature,
+    TsunamiFeatureCollection,
+    IsInTsunamiZoneView,
+)
 from backend.api.models.tsunami import TsunamiZone
+import logging
 
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/api/tsunami-zones",
@@ -41,7 +50,7 @@ async def get_tsunami_zones(db: Session = Depends(get_db)):
     return TsunamiFeatureCollection(type="FeatureCollection", features=features)
 
 
-@router.get("/is-in-tsunami-zone", response_model=bool)
+@router.get("/is-in-tsunami-zone", response_model=IsInTsunamiZoneView)
 async def is_in_tsunami_zone(lon: float, lat: float, db: Session = Depends(get_db)):
     """
     Check if a point is in a tsunami zone.
@@ -52,11 +61,42 @@ async def is_in_tsunami_zone(lon: float, lat: float, db: Session = Depends(get_d
         db (Session): The database session dependency.
 
     Returns:
-        bool: True if the point is in a tsunami zone, False otherwise.
+        IsInTsunamiZoneView containing:
+            - exists: True if point is in a tsunami zone
+            - last_updated: Timestamp of last update if exists, None otherwise
     """
-    query = db.query(TsunamiZone).filter(
-        TsunamiZone.geometry.ST_Contains(
-            geo_func.ST_SetSRID(geo_func.ST_GeomFromText(f"POINT({lon} {lat})"), 4326)
+    logger.info(f"Checking tsunami zone for coordinates: lon={lon}, lat={lat}")
+
+    try:
+        query = db.query(TsunamiZone).filter(
+            TsunamiZone.geometry.ST_Contains(
+                geo_func.ST_SetSRID(
+                    geo_func.ST_GeomFromText(f"POINT({lon} {lat})"), 4326
+                )
+            )
         )
-    )
-    return db.query(query.exists()).scalar()
+
+        exists = db.query(query.exists()).scalar()
+
+        zone = query.first() if exists else None
+        last_updated = zone.update_timestamp if zone else None
+
+        logger.info(
+            f"Tsunami zone check result for coordinates: lon={lon}, lat={lat} - "
+            f"exists: {exists}, "
+            f"last_updated: {last_updated}"
+        )
+
+        return IsInTsunamiZoneView(exists=exists, last_updated=last_updated)
+
+    except Exception as e:
+        logger.error(
+            f"Error checking tsunami zone status for coordinates: lon={lon}, lat={lat}, "
+            f"error: {str(e)}",
+            exc_info=True,
+        )
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error checking tsunami zone status for coordinates: lon={lon}, lat={lat}, "
+            f"error: {str(e)}",
+        )
