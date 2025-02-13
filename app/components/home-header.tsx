@@ -3,18 +3,15 @@
 import { Box, Text } from "@chakra-ui/react";
 import SearchBar from "./search-bar";
 import Heading from "./heading";
-import { usePathname } from "next/navigation";
 import { Headings } from "../data/data";
 
 const HomeHeader = () => {
-  const pathname = usePathname();
-  const isHome = pathname === "/";
   const headingData = Headings.home;
 
   return (
     <Box
       bg="gradient.blue"
-      paddingTop={isHome ? { base: "57px", md: "76px", xl: "78px" } : undefined}
+      paddingTop={{ base: "57px", md: "76px", xl: "78px" }}
     >
       <Box
         w={{ base: "100%", md: "65%" }}
