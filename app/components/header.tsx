@@ -11,8 +11,10 @@ const Header = () => {
   return (
     <Box
       as="header"
-      bg="gradient.blue"
+      bg={isHome ? undefined : "gradient.blue"}
       w="100%"
+      position={isHome ? "absolute" : undefined}
+      top={isHome ? "0" : undefined}
       p={{
         base: "19px 23px 8px 23px",
         md: "26px 26px 14px 26px",
