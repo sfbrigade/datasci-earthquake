@@ -33,7 +33,7 @@ jobs:
       - name: Download .env Artifact 
         uses: actions/download-artifact@v4
         with:
-          name: env-file
+          name: encrypted-env-file
           github-token: ${{ secrets.GH_PAT }}
           repository: sfbrigade/datasci-earthquake
           run-id: ${{ env.run_id }}                  
