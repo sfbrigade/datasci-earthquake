@@ -22,6 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+
       - name: Get Run ID of Most Recent Successful Run
         id: get_run_id
         run: |
@@ -29,19 +30,24 @@ jobs:
           "https://api.github.com/repos/sfbrigade/datasci-earthquake/actions/workflows/env_vars.yml/runs?status=completed&conclusion=success")
           run_id=$(echo $response | jq '.workflow_runs[0].id')
           echo "Run ID: $run_id"
-          echo "run_id=$run_id" >> $GITHUB_ENV        
+          echo "run_id=$run_id" >> $GITHUB_ENV     
+
       - name: Download .env Artifact 
         uses: actions/download-artifact@v4
         with:
           name: encrypted-env-file
           github-token: ${{ secrets.GH_PAT }}
           repository: sfbrigade/datasci-earthquake
-          run-id: ${{ env.run_id }}                  
+          run-id: ${{ env.run_id }}    
+
       - name: Decrypt .env File
         run: |
           openssl aes-256-cbc -d -salt -pbkdf2 -k "${{ secrets.ARTIFACT_PASS }}" -in .env.enc -out .env
-          echo "Decryption complete"          
+          echo "Decryption complete"      
 
+      - name: Override an env variable
+        run: echo "ENVIRONMENT=ci" >> .env
+        
       - name: ETL data to Neon DB
         run: |
           python -m backend.etl.tsunami_data_handler
