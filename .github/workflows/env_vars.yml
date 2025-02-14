@@ -35,10 +35,14 @@ jobs:
         directory: './'
         fail_on_empty: false
         sort_keys: false
+    - name: Encrypt .env file using OpenSSL
+      run: openssl aes-256-cbc -salt -pbkdf2 -k "$ARTIFACT_PASS" -in .env -out .env.enc
+      env:
+        ARTIFACT_PASS: ${{ secrets.ARTIFACT_PASS }}        
 
-    - name: Upload .env as Artifact
+    - name: Upload .env as encrypted Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: env-file
+        name: encrypted-env-file
         include-hidden-files: true
-        path: ./.env
+        path: ./.env.enc
