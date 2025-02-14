@@ -71,17 +71,18 @@ async def is_in_liquefaction_zone(
     logger.info(f"Checking liquefaction zone for coordinates: lon={lon}, lat={lat}")
 
     try:
-        query = db.query(LiquefactionZone).filter(
-            LiquefactionZone.geometry.ST_Contains(
-                geo_func.ST_SetSRID(
-                    geo_func.ST_GeomFromText(f"POINT({lon} {lat})"), 4326
+        zone = (
+            db.query(LiquefactionZone)
+            .filter(
+                LiquefactionZone.geometry.ST_Contains(
+                    geo_func.ST_SetSRID(
+                        geo_func.ST_GeomFromText(f"POINT({lon} {lat})"), 4326
+                    )
                 )
             )
+            .first()
         )
-
-        exists = db.query(query.exists()).scalar()
-
-        zone = query.first() if exists else None
+        exists = zone is not None
         last_updated = zone.update_timestamp if zone else None
 
         logger.info(

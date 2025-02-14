@@ -72,13 +72,16 @@ async def is_soft_story(lon: float, lat: float, db: Session = Depends(get_db)):
     logger.info(f"Checking soft story status for coordinates: lon={lon}, lat={lat}")
 
     try:
-        query = db.query(SoftStoryProperty).filter(
-            SoftStoryProperty.point
-            == geo_func.ST_GeomFromText(f"POINT({lon} {lat})", 4326)
+        property = (
+            db.query(SoftStoryProperty)
+            .filter(
+                SoftStoryProperty.point
+                == geo_func.ST_GeomFromText(f"POINT({lon} {lat})", 4326)
+            )
+            .first()
         )
 
-        exists = db.query(query.exists()).scalar()
-        property = query.first() if exists else None
+        exists = property is not None
         last_updated = property.update_timestamp if property else None
 
         logger.info(
