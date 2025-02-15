@@ -37,7 +37,7 @@ jobs:
       env:
         ARTIFACT_PASS: ${{ secrets.ARTIFACT_PASS }}        
 
-    - name: Upload .env as encrypted Artifact
+    - name: Upload .env as an encrypted Artifact
       uses: actions/upload-artifact@v4
       with:
         name: encrypted-env-file
