@@ -4,7 +4,6 @@ on:
     push:
         branches:
             - master
-            - bug/secure-env-vars
     pull_request: 
         types: [opened, synchronize, reopened]         
         branches:
@@ -54,7 +53,7 @@ jobs:
       - name: Get Run ID of Most Recent Successful Run
         id: get_run_id
         run: |
-          response=$(curl -s -H "Authorization: token ${{ secrets.GH_PAT }}" \
+          response=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/sfbrigade/datasci-earthquake/actions/workflows/env_vars.yml/runs?status=completed&conclusion=success")
           run_id=$(echo $response | jq '.workflow_runs[0].id')
           echo "Run ID: $run_id"
@@ -63,7 +62,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: encrypted-env-file
-          github-token: ${{ secrets.GH_PAT }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: sfbrigade/datasci-earthquake
           run-id: ${{ env.run_id }}
 

@@ -19,13 +19,10 @@ jobs:
 
         envkey_NEON_URL: ${{ secrets.NEON_URL }}
         envkey_FRONTEND_HOST: ${{ secrets.FRONTEND_HOST }}
-        envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        envkey_LOCALHOST_DATABASE_URL: ${{ secrets.LOCALHOST_DATABASE_URL }}
         envkey_DATABASE_URL_SQLALCHEMY: ${{ secrets.DATABASE_URL_SQLALCHEMY }}
         envkey_DATABASE_URL_SQLALCHEMY_TEST: ${{ secrets.DATABASE_URL_SQLALCHEMY_TEST }}
         envkey_LOCALHOST_DATABASE_URL_SQLALCHEMY: ${{ secrets.LOCALHOST_DATABASE_URL_SQLALCHEMY }}
         envkey_ENVIRONMENT: local
-        envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
         envkey_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
         envkey_NEXT_PUBLIC_MAPBOX_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN }}

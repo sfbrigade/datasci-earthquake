@@ -173,13 +173,15 @@ This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code s
 
 # Configuration of environment variables
 
-We use GitHub Secrets to store sensitive environment variables. A template `.env.example` file is provided in the repository as a reference. Only users with **write** access to the repository can manually trigger the `Generate .env File` workflow, which creates and uploads the actual `.env` file as an artifact.
+We use GitHub Secrets to store sensitive environment variables. A template `.env.example` file is provided in the repository as a reference. Only users with **write** access to the repository can manually trigger the `Generate .env File` workflow, which creates and uploads the **encrypted** `.env` file as an artifact.
 
 **Note**: Before starting work on the project, make sure to:
 
-1. Get **write** access to the repository
+1. Get **write** access to the repository.
+2. Get the **decryption passphrase** from other devs or in the Slack Engineering channel.
 2. Trigger the `Generate .env File` workflow [on the repository's Actions page](https://github.com/sfbrigade/datasci-earthquake/actions) download the artifact. You can trigger the workflow with the `Run workflow` button, navigate to the workflow run page, and find the artifact at the bottom.
-3. Place the artifact in the root folder of the project. Make sure the file is named `.env`.
+3. Decrypt the env file using OpenSSL. In the folder with the artifact, run `openssl aes-256-cbc -d -salt -pbkdf2 -k <YOUR_PASSPHRASE> -in .env.enc -out env` in the terminal. This creates a decrypted file named `env`. 
+4. Place the decrypted file in the root folder of the project and rename it to `.env`.
 
 The file is organized into three main sections:
 
