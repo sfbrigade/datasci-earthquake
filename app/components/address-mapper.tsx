@@ -7,6 +7,7 @@ import Heading, { HeadingProps } from "./heading";
 import Map from "./map";
 import Report from "./report";
 import Information from "./information";
+import { FeatureCollection, Geometry } from "geojson";
 
 const addressLookupCoordinates = {
   geometry: {
@@ -18,9 +19,9 @@ const defaultCoords = addressLookupCoordinates.geometry.coordinates ?? [];
 
 interface AddressMapperProps {
   headingData: HeadingProps;
-  softStoryData: {};
-  tsunamiData: {};
-  liquefactionData: {};
+  softStoryData: FeatureCollection<Geometry>;
+  tsunamiData: FeatureCollection<Geometry>;
+  liquefactionData: FeatureCollection<Geometry>;
 }
 
 // TODO: pass data down to Map component
@@ -63,7 +64,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           <Box zIndex={10} top={0} position="absolute">
             <Report />
           </Box>
-          <Map coordinates={coordinates} />
+          <Map
+            coordinates={coordinates}
+            softStoryData={softStoryData}
+            tsunamiData={tsunamiData}
+            liquefactionData={liquefactionData}
+          />
           <Box position="absolute" bottom={0}>
             <Information />
           </Box>
