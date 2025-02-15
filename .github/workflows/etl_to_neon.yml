@@ -47,7 +47,7 @@ jobs:
 
       - name: Override an env variable
         run: echo "ENVIRONMENT=ci" >> .env
-
+        
       - name: ETL data to Neon DB
         run: |
           python -m backend.etl.tsunami_data_handler

@@ -5,31 +5,29 @@ import { useSearchParams } from "next/navigation";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
-import seismicData from "../data/seismic-20241121.json";
-import tsunamiData from "../data/tsunami-20241121.json";
-import softStoriesData from "../data/soft-stories-20241123.json";
-
-// TODO: replace data w/eg API calls and pass in; this is meant to be placeholder data sourced from datasf.org.
-// See `../data/README.md` for more information.
-const typedSeismicData: FeatureCollection<Geometry> =
-  seismicData as FeatureCollection<Geometry>;
-const typedTsunamiData: FeatureCollection<Geometry> =
-  tsunamiData as FeatureCollection<Geometry>;
-const typedSoftStoriesData: FeatureCollection<Geometry> =
-  softStoriesData as FeatureCollection<Geometry>;
 
 const defaultCoords = [-122.463733, 37.777448];
+
 interface MapProps {
   coordinates: number[];
+  softStoryData: FeatureCollection<Geometry>;
+  tsunamiData: FeatureCollection<Geometry>;
+  liquefactionData: FeatureCollection<Geometry>;
 }
 
-const Map: React.FC<MapProps> = ({ coordinates = defaultCoords }: MapProps) => {
+const Map: React.FC<MapProps> = ({
+  coordinates = defaultCoords,
+  softStoryData,
+  tsunamiData,
+  liquefactionData,
+}: MapProps) => {
   const debug = useSearchParams().get("debug");
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>();
   const markerRef = useRef<mapboxgl.Marker>();
 
   useEffect(() => {
+    console.log(softStoryData);
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
@@ -92,19 +90,20 @@ const Map: React.FC<MapProps> = ({ coordinates = defaultCoords }: MapProps) => {
         // Add sources
         map.addSource("seismic", {
           type: "geojson",
-          data: typedSeismicData,
+          data: liquefactionData,
         });
 
         map.addSource("tsunami", {
           type: "geojson",
-          data: typedTsunamiData,
+          data: tsunamiData,
         });
 
         map.addSource("soft-stories", {
           type: "geojson",
-          data: typedSoftStoriesData,
+          data: softStoryData,
         });
 
+        // Add layers
         map.addLayer({
           id: "tsunamiLayer",
           source: "tsunami",
@@ -116,7 +115,6 @@ const Map: React.FC<MapProps> = ({ coordinates = defaultCoords }: MapProps) => {
           },
         });
 
-        // Add layers
         map.addLayer({
           id: "seismicLayer",
           source: "seismic",
@@ -133,7 +131,6 @@ const Map: React.FC<MapProps> = ({ coordinates = defaultCoords }: MapProps) => {
           source: "soft-stories",
           type: "circle",
           slot: "middle",
-          filter: ["all", ["==", "status", "Non-Compliant"]], // TODO: this temporarily filters for only non-compliant soft stories; replace with clustering or another solution
           paint: {
             "circle-radius": 4.5,
             "circle-stroke-width": 1,
@@ -150,7 +147,7 @@ const Map: React.FC<MapProps> = ({ coordinates = defaultCoords }: MapProps) => {
       markerRef.current?.setLngLat(addressLngLat);
       return;
     }
-  }, [coordinates]);
+  }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
 
   return (
     <>
