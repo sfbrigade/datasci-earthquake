@@ -5,7 +5,7 @@ import { AddressData } from "./__mocks__/address-data";
 import Share from "./share";
 import { CardContainer } from "./card-container";
 
-const Report = () => {
+const Report = ({ searchedAddress }: { searchedAddress: string }) => {
   return (
     <Center flexDirection="column">
       <Collapse
@@ -52,7 +52,7 @@ const Report = () => {
                 color="gray.900"
                 pb="4px"
               >
-                {AddressData.address}
+                {searchedAddress}
               </Text>
             </Stack>
             <Share />
