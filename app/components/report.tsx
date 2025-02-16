@@ -10,7 +10,7 @@ const Report = ({ searchedAddress }: { searchedAddress: string }) => {
     <Center flexDirection="column">
       <Collapse
         endingHeight="64px"
-        in={!!AddressData.address}
+        in={searchedAddress.length > 0}
         style={{ overflow: "visible" }}
       >
         <Card
@@ -26,7 +26,7 @@ const Report = ({ searchedAddress }: { searchedAddress: string }) => {
             alignItems="center"
             justifyContent={{
               base: "space-between",
-              xl: "center",
+              xl: "flex-end",
             }}
             position="relative"
             px={{ base: 0, md: 2 }}

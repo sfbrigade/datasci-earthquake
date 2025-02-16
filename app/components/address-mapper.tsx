@@ -66,7 +66,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           position="relative"
         >
           <Box zIndex={10} top={0} position="absolute">
-            {searchedAddress && <Report searchedAddress={searchedAddress} />}
+            <Report searchedAddress={searchedAddress} />
           </Box>
           <Map
             coordinates={coordinates}
