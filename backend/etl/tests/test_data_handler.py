@@ -1,9 +1,11 @@
 import pytest
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, patch, MagicMock    
 import requests
 from sqlalchemy import Column, Integer
 from backend.etl.data_handler import DataHandler
 from backend.api.models.base import Base
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 
 class DummyModel(Base):
@@ -22,8 +24,7 @@ class DummyDataHandler(DataHandler):
 
 @pytest.fixture
 def data_handler():
-    return DummyDataHandler(url="https://api.test.com", table=DummyModel)
-
+    return DummyDataHandler(url="https://api.test.com", table=DummyModel, page_size=3)
 
 def test_fetch_data_success(data_handler):
     """Test successful data fetching with pagination"""
@@ -78,19 +79,16 @@ def test_fetch_data_success(data_handler):
     mock_response.json.side_effect = mock_responses
     mock_response.raise_for_status.return_value = None
 
-    mock_session = Mock()
-    mock_session.get.return_value = mock_response
+    data_handler.session = Mock()
+    data_handler.session.get.return_value = mock_response
 
-    with patch("requests.Session") as mock_session_class:
-        mock_session_class.return_value = mock_session
+    result = data_handler.fetch_data()
 
-        result = data_handler.fetch_data()
+    assert len(result["features"]) == 2
+    assert data_handler.session.get.call_count == 1
 
-        assert len(result["features"]) == 2
-        assert mock_session.get.call_count == 1
-
-        first_call = mock_session.get.call_args_list[0]
-        assert first_call[1]["params"] == {"$offset": 0, "$limit": 1000}
+    first_call = data_handler.session.get.call_args_list[0]
+    assert first_call[1]["params"] == {"$offset": 0, "$limit": 3}
 
 
 def test_fetch_data_partial_page():
