@@ -138,17 +138,21 @@ def test_fetch_data_partial_page(data_handler):
     assert result["features"][0]["id"] == 0
     assert result["features"][-1]["id"] == 4
 
-def test_fetch_data_request_exception(data_handler):
+def test_fetch_data_request_exception(data_handler, caplog):
     """Test handling of request exceptions"""
-    mock_session = Mock()
-    mock_session.get.side_effect = requests.RequestException("API Error")
 
-    with patch("requests.Session") as mock_session_class:
-        mock_session_class.return_value = mock_session
+    # Arrange
+    data_handler.session = Mock()
+    data_handler.session.get.side_effect = requests.RequestException("API Error")
 
-        with pytest.raises(requests.RequestException):
-            data_handler.fetch_data()
+    # Act
+    with pytest.raises(requests.RequestException):
+        data_handler.fetch_data()
 
+    # Assert
+    assert data_handler.session.get.call_count == 1
+    assert "Data fetch failed" in caplog.text
+    assert "API Error" in caplog.text
 
 def test_fetch_data_session_cleanup(data_handler):
     """Test that the session is properly closed"""
