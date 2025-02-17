@@ -26,7 +26,7 @@ class DummyDataHandler(DataHandler):
 def data_handler():
     return DummyDataHandler(url="https://api.test.com", table=DummyModel, page_size=3)
 
-def test_fetch_data_success(data_handler):
+def test_fetch_data_success(data_handler, caplog):
     """Test successful data fetching with pagination"""
 
     # Arrange
@@ -72,7 +72,21 @@ def test_fetch_data_success(data_handler):
                         "data_as_of": "2025-01-15T01:02:43.989",
                     },
                 },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-122.465245267, 37.783172916],
+                    },
+                    "properties": {
+                        "id": 3,
+                    },
+                },
             ],
+        },
+        {
+            "type": "FeatureCollection",
+            "features": [],
         },
     ]
 
@@ -87,14 +101,15 @@ def test_fetch_data_success(data_handler):
     result = data_handler.fetch_data()
 
     # Assert
-    assert len(result["features"]) == 2
-    assert data_handler.session.get.call_count == 1
+    assert len(result["features"]) == 3
+    assert data_handler.session.get.call_count == 2
 
     first_call = data_handler.session.get.call_args_list[0]
     assert first_call[1]["params"] == {"$offset": 0, "$limit": 3}
+    assert "Request completed successfully" in caplog.text 
+    assert "URL: https://api.test.com" in caplog.text
 
-
-def test_fetch_data_partial_page(data_handler):
+def test_fetch_data_partial_page(data_handler, caplog):
     """Test that pagination stops when receiving fewer records than page_size"""
     
     # Arrange
@@ -131,12 +146,12 @@ def test_fetch_data_partial_page(data_handler):
     # Assert
     assert len(result["features"]) == 5
     assert data_handler.session.get.call_count == 2
-
     calls = data_handler.session.get.call_args_list
     assert calls[0][1]["params"] == {"$offset": 0, "$limit": 3}
     assert calls[1][1]["params"] == {"$offset": 3, "$limit": 3}
     assert result["features"][0]["id"] == 0
     assert result["features"][-1]["id"] == 4
+    assert "Assuming final page and stopping fetch" in caplog.text
 
 def test_fetch_data_request_exception(data_handler, caplog):
     """Test handling of request exceptions"""
