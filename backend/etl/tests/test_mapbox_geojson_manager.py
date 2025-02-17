@@ -23,7 +23,7 @@ def mapbox_config(api_key):
         max_longitude=-122.36206898,
         max_latitude=37.83179017,
         geocode_api_endpoint_url="https://someurl.com/endpoint",
-        soft_story_geojson_path=Path("data.geojson"),
+        soft_story_geojson_path=Path("data/soft_story_geojson.json.gz"),
         api_key=api_key,
     )
 
@@ -208,7 +208,7 @@ class TestMapboxGeojsonManager:
         )
 
         # Patch the builtin open to use our mock
-        with patch("builtins.open", mocked_file), patch.object(
+        with patch("gzip.open", mocked_file), patch.object(
             Path, "exists", return_value=False
         ):
             manager._write_to_geojson(
@@ -235,7 +235,7 @@ class TestMapboxGeojsonManager:
         initial_data = '{"type": "FeatureCollection", "features": [{"properties": {"sfdata_address": "Old Address"}}]}'
         m = mock_open(read_data=initial_data)
 
-        with patch("builtins.open", m), patch.object(Path, "exists", return_value=True):
+        with patch("gzip.open", m), patch.object(Path, "exists", return_value=True):
             new_features = [
                 {
                     "properties": {"sfdata_address": "Appended Address"},

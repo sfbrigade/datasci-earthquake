@@ -71,7 +71,7 @@ This project uses Docker and Docker Compose to run the application, which includ
     - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
     - To interact with a running container, use `docker exec [OPTIONS] CONTAINER COMMAND [ARG...]`
       - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
-      - To execute a python scrupt, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
+      - To execute a python script, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
 
     **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `requirements.txt`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
 
@@ -97,6 +97,15 @@ To stop and shut down the application:
 3. Containers fail when their build contexts were modified but the containers weren't rebuilt. If logs show that some dependencies are missing, this can be likely solved by rebuilding the containers.
 4. Many problems are caused by disk usage issues. Run `docker system df` to show disk usage. Use pruning commands such as `docker system prune`to clean up unused resources.
 5. `Error response from daemon: network not found` occurs when Docker tries to use a network that has already been deleted or is dangling (not associated with any container). Prune unused networks to resolve this issue: `docker network prune -f`. If this doesn't help, run `docker system prune`.
+
+### Running unit tests with Docker
+
+#### Backend
+
+1. First update code and/or rebuild any containers as necessary. Otherwise you may get false results.
+2. Run the containers (`docker compose up -d)`
+3. Run pytest: `docker compose run backend pytest backend`
+   * Alternatively, run pytest with container cleanup: `docker compose run --remove-orphans backend pytest backend`
 
 ---
 
@@ -164,13 +173,15 @@ This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code s
 
 # Configuration of environment variables
 
-We use GitHub Secrets to store sensitive environment variables. A template `.env.example` file is provided in the repository as a reference. Only users with **write** access to the repository can manually trigger the `Generate .env File` workflow, which creates and uploads the actual `.env` file as an artifact.
+We use GitHub Secrets to store sensitive environment variables. A template `.env.example` file is provided in the repository as a reference. Only users with **write** access to the repository can manually trigger the `Generate .env File` workflow, which creates and uploads the **encrypted** `.env` file as an artifact.
 
 **Note**: Before starting work on the project, make sure to:
 
-1. Get **write** access to the repository
+1. Get **write** access to the repository.
+2. Get the **decryption passphrase** from other devs or in the Slack Engineering channel.
 2. Trigger the `Generate .env File` workflow [on the repository's Actions page](https://github.com/sfbrigade/datasci-earthquake/actions) download the artifact. You can trigger the workflow with the `Run workflow` button, navigate to the workflow run page, and find the artifact at the bottom.
-3. Place the artifact in the root folder of the project. Make sure the file is named `.env`.
+3. Decrypt the env file using OpenSSL. In the folder with the artifact, run `openssl aes-256-cbc -d -salt -pbkdf2 -k <YOUR_PASSPHRASE> -in .env.enc -out env` in the terminal. This creates a decrypted file named `env`. 
+4. Place the decrypted file in the root folder of the project and rename it to `.env`.
 
 The file is organized into three main sections:
 

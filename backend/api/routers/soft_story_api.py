@@ -8,8 +8,15 @@ from geoalchemy2 import functions as geo_func
 from backend.api.schemas.soft_story_schemas import (
     SoftStoryFeature,
     SoftStoryFeatureCollection,
+    IsSoftStoryPropertyView,
 )
 from backend.api.models.soft_story_properties import SoftStoryProperty
+import logging
+
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/api/soft-stories",
@@ -36,18 +43,21 @@ async def get_soft_stories(db: Session = Depends(get_db)):
     soft_stories = (
         db.query(SoftStoryProperty).filter(SoftStoryProperty.point.isnot(None)).all()
     )
+
     # If no soft story properties are found, raise a 404 error
     if not soft_stories:
+        logger.warning("No soft story properties found in database")
         raise HTTPException(status_code=404, detail="No soft stories found")
 
     features = [SoftStoryFeature.from_sqlalchemy_model(story) for story in soft_stories]
+    logger.info(f"Successfully retrieved {len(features)} soft story properties")
     return SoftStoryFeatureCollection(type="FeatureCollection", features=features)
 
 
-@router.get("/is-soft-story", response_model=bool)
+@router.get("/is-soft-story", response_model=IsSoftStoryPropertyView)
 async def is_soft_story(lon: float, lat: float, db: Session = Depends(get_db)):
     """
-    Checks if a point is a soft story property
+    Checks if a point is a soft story property and returns its last update time
 
     Args:
         lon (float): Longitude of the point
@@ -55,10 +65,41 @@ async def is_soft_story(lon: float, lat: float, db: Session = Depends(get_db)):
         db (Session): The database session dependency
 
     Returns:
-        bool: True if the point is a soft story property, False
-        otherwise
+        IsSoftStoryPropertyView containing:
+        - exists: True if point is in a soft story property
+        - last_updated: Timestamp of last update if exists, None otherwise
     """
-    query = db.query(SoftStoryProperty).filter(
-        SoftStoryProperty.point == geo_func.ST_GeomFromText(f"POINT({lon} {lat})", 4326)
-    )
-    return db.query(query.exists()).scalar()
+    logger.info(f"Checking soft story status for coordinates: lon={lon}, lat={lat}")
+
+    try:
+        property = (
+            db.query(SoftStoryProperty)
+            .filter(
+                SoftStoryProperty.point
+                == geo_func.ST_GeomFromText(f"POINT({lon} {lat})", 4326)
+            )
+            .first()
+        )
+
+        exists = property is not None
+        last_updated = property.update_timestamp if property else None
+
+        logger.info(
+            f"Soft story check result for coordinates: lon={lon}, lat={lat} - "
+            f"exists: {exists}, "
+            f"last_updated: {last_updated}"
+        )
+
+        return IsSoftStoryPropertyView(exists=exists, last_updated=last_updated)
+
+    except Exception as e:
+        logger.error(
+            f"Error checking soft story status for coordinates: lon={lon}, lat={lat}, "
+            f"error: {str(e)}",
+            exc_info=True,
+        )
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error checking soft story status for coordinates: lon={lon}, lat={lat}, "
+            f"error: {str(e)}",
+        )
