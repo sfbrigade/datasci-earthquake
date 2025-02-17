@@ -29,7 +29,8 @@ def data_handler():
 def test_fetch_data_success(data_handler):
     """Test successful data fetching with pagination"""
 
-    mock_responses = [
+    # Arrange
+    stubbed_responses = [
         {
             "type": "FeatureCollection",
             "features": [
@@ -76,14 +77,16 @@ def test_fetch_data_success(data_handler):
     ]
 
     mock_response = Mock()
-    mock_response.json.side_effect = mock_responses
+    mock_response.json.side_effect = stubbed_responses
     mock_response.raise_for_status.return_value = None
 
     data_handler.session = Mock()
     data_handler.session.get.return_value = mock_response
 
+    # Act
     result = data_handler.fetch_data()
 
+    # Assert
     assert len(result["features"]) == 2
     assert data_handler.session.get.call_count == 1
 
@@ -91,13 +94,11 @@ def test_fetch_data_success(data_handler):
     assert first_call[1]["params"] == {"$offset": 0, "$limit": 3}
 
 
-def test_fetch_data_partial_page():
+def test_fetch_data_partial_page(data_handler):
     """Test that pagination stops when receiving fewer records than page_size"""
-
-    page_size = 3
-    handler = DummyDataHandler("http://test.url", DummyModel, page_size=page_size)
-
-    # Create mock responses
+    
+    # Arrange
+    # Create mock response objects instead of plain dictionaries, to simulate a response object.
     full_page_response = Mock()
     full_page_response.json.return_value = {
         "type": "FeatureCollection",
@@ -107,6 +108,8 @@ def test_fetch_data_partial_page():
             {"id": 2},
         ],
     }
+    full_page_response.status_code = 200
+    full_page_response.raise_for_status.return_value = None
 
     partial_page_response = Mock()
     partial_page_response.json.return_value = {
@@ -116,28 +119,24 @@ def test_fetch_data_partial_page():
             {"id": 4},
         ],
     }
+    partial_page_response.status_code = 200
+    partial_page_response.raise_for_status.return_value = None
 
-    mock_session = Mock()
-    mock_session.get.side_effect = [full_page_response, partial_page_response]
+    data_handler.session = Mock()
+    data_handler.session.get.side_effect = [full_page_response, partial_page_response]
 
-    with patch("requests.Session", return_value=mock_session):
-        with patch("time.sleep", return_value=None):  # Skip sleep delays
-            result = handler.fetch_data()
+    # Act
+    result = data_handler.fetch_data()
 
-            # Verify API calls
-            assert mock_session.get.call_count == 2
+    # Assert
+    assert len(result["features"]) == 5
+    assert data_handler.session.get.call_count == 2
 
-            # Verify pagination params
-            calls = mock_session.get.call_args_list
-            assert calls[0][1]["params"] == {"$offset": 0, "$limit": page_size}
-            assert calls[1][1]["params"] == {"$offset": 3, "$limit": page_size}
-
-            # Verify content
-            all_features = result["features"]
-            assert len(all_features) == 5
-            assert all_features[0]["id"] == 0
-            assert all_features[-1]["id"] == 4
-
+    calls = data_handler.session.get.call_args_list
+    assert calls[0][1]["params"] == {"$offset": 0, "$limit": 3}
+    assert calls[1][1]["params"] == {"$offset": 3, "$limit": 3}
+    assert result["features"][0]["id"] == 0
+    assert result["features"][-1]["id"] == 4
 
 def test_fetch_data_request_exception(data_handler):
     """Test handling of request exceptions"""
