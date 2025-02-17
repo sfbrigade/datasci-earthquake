@@ -10,12 +10,11 @@ from pyproj import Transformer
 from typing import Type, Generator, Optional
 import time
 import logging
-from unittest.mock import MagicMock
 
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
+
 
 class DataHandler(ABC):
     def __init__(
@@ -25,11 +24,11 @@ class DataHandler(ABC):
         page_size: int = 1000,
         params: Optional[dict] = None,
         session: Optional[requests.Session] = None,
-        logger: Optional[logging.Logger] = None
+        logger: Optional[logging.Logger] = None,
     ):
         """
         Abstract base class for handling data operations with an external
-        API and database.        
+        API and database.
         Args:
             url (str): The API endpoint URL.
             table (ModelType): The SQLAlchemy table object.
@@ -44,7 +43,7 @@ class DataHandler(ABC):
         self.params = params or {}
         self.logger = logger or logging.getLogger(f"{self.__class__.__name__}")
         self.session = session or self._create_session()
-        
+
         self.logger.info(
             f"Initialized handler for {table.__name__} "
             f"with URL: {url}, "
@@ -54,101 +53,128 @@ class DataHandler(ABC):
 
     def _create_session(self) -> requests.Session:
         """Create a configured requests session with retry logic."""
+
         class LoggingRetry(Retry):
             def __init__(self, *args, **kwargs):
                 super().__init__(*args, **kwargs)
                 self.logger = logging.getLogger("RetryLogger")
                 self.logger.setLevel(logging.INFO)
                 self._retry_count = 0
-            
+
+                # Debug log retry configuration
+                self.logger.info(
+                    f"""
+                === Retry Configuration ===
+                Total retries: {self.total}
+                Backoff factor: {self.backoff_factor}
+                Status forcelist: {self.status_forcelist}
+                Allowed methods: {self.allowed_methods}
+                """
+                )
+
             def new(self, **kw):
                 """Called when making a copy of the retry object"""
+                self.logger.info(f"Creating new retry object with: {kw}")
                 obj = super().new(**kw)
                 obj._retry_count = self._retry_count
                 return obj
-            
-            def increment(self, method=None, url=None, response=None, error=None, *args, **kwargs):
+
+            def increment(
+                self, method=None, url=None, response=None, error=None, *args, **kwargs
+            ):
                 """Called when a retry is needed"""
                 self._retry_count += 1
                 status = response.status_code if response else "no response"
                 error_msg = str(error) if error else "no error"
-                
+
                 self.logger.warning(
-                    f"Request failed - Retry {self._retry_count} of {self.total}\n"
-                    f"URL: {url}\n"
-                    f"Method: {method}\n"
-                    f"Status: {status}\n"
-                    f"Error: {error_msg}\n"
-                    f"Backoff: {self.get_backoff_time()} seconds"
+                    f"""
+                    === Retry Attempt {self._retry_count} ===
+                    URL: {url}
+                    Method: {method}
+                    Status: {status}
+                    Error: {error_msg}
+                    Backoff: {self.get_backoff_time()} seconds
+                    Error type: {type(error)}
+                    """
                 )
-                
+
                 return super().increment(
-                    method=method, url=url, response=response, error=error, 
-                    *args, **kwargs
+                    method=method,
+                    url=url,
+                    response=response,
+                    error=error,
+                    *args,
+                    **kwargs,
                 )
-            
+
             def get_backoff_time(self):
                 """Calculate the backoff time for the current retry attempt"""
                 return self.backoff_factor * (2 ** (self._retry_count - 1))
-        
+
         retry_strategy = LoggingRetry(
             total=5,
             backoff_factor=1,
             status_forcelist=[404, 429, 500, 502, 503, 504],
             allowed_methods=["GET"],
             raise_on_status=True,
-            respect_retry_after_header=True
+            respect_retry_after_header=True,
         )
-        
+
         self.logger.info(
-            f"Creating session with retry config:\n"
-            f"Max retries: {retry_strategy.total}\n"
-            f"Backoff factor: {retry_strategy.backoff_factor}\n"
-            f"Status codes: {retry_strategy.status_forcelist}\n"
-            f"Allowed methods: {retry_strategy.allowed_methods}"
+            f"""
+            === Creating Session ===
+            Max retries: {retry_strategy.total}
+            Backoff factor: {retry_strategy.backoff_factor}
+            Status codes: {retry_strategy.status_forcelist}
+            Allowed methods: {retry_strategy.allowed_methods}
+            """
         )
-        
+
         session = requests.Session()
         adapter = HTTPAdapter(max_retries=retry_strategy)
         session.mount("https://", adapter)
         session.mount("http://", adapter)
         return session
 
-    def _make_request(
-        self,
-        url: str,
-        params: dict,
-        timeout: int = 60
-    ) -> dict:
+    def _make_request(self, url: str, params: dict, timeout: int = 60) -> dict:
         """
         Make HTTP request with error handling.
-        
+
         Args:
             url: Request URL
             params: Query parameters
             timeout: Request timeout in seconds
-            
+
         Returns:
             Response data as dictionary containing list of features under 'features' key.
         """
         start_time = time.time()
         try:
             self.logger.info(f"Making request to {url} with params {params}")
+            self.logger.info(f"Session config: {self.session.adapters}")
+
             response = self.session.get(url, params=params, timeout=timeout)
-            
-            data = response.json.return_value
-            
+            self.logger.info(f"Got response with status: {response.status_code}")
+
+            try:
+                data = response.json()
+                self.logger.info(f"Response data: {data}")
+            except Exception as e:
+                self.logger.error(f"Failed to parse JSON: {str(e)}")
+                raise
+
             response.raise_for_status()
-            
+
             self.logger.info(
                 f"Request completed successfully:\n"
                 f"URL: {url}\n"
                 f"Params: {params}\n"
                 f"Time: {time.time() - start_time:.2f}s"
             )
-            
+
             return data
-            
+
         except requests.HTTPError as e:
             self.logger.error(
                 f"HTTP Error occurred:\n"
@@ -156,7 +182,7 @@ class DataHandler(ABC):
                 f"URL: {url}\n"
                 f"Params: {params}\n"
                 f"Time: {time.time() - start_time:.2f}s",
-                exc_info=True
+                exc_info=True,
             )
             raise
         except Exception as e:
@@ -166,27 +192,24 @@ class DataHandler(ABC):
                 f"URL: {url}\n"
                 f"Params: {params}\n"
                 f"Time: {time.time() - start_time:.2f}s",
-                exc_info=True
+                exc_info=True,
             )
             raise
 
     def _yield_data(self) -> Generator:
         """
         Yield paginated data from API.
-        
+
         Yields:
             Feature data from each page
         """
         offset = 0
         page_num = 1
-        
+
         while True:
             paginated_params = self.params.copy()
-            paginated_params.update({
-                "$offset": offset,
-                "$limit": self.page_size
-            })
-            
+            paginated_params.update({"$offset": offset, "$limit": self.page_size})
+
             start_time = time.time()
             data = self._make_request(self.url, paginated_params)
             features = data.get("features", [])
@@ -200,7 +223,7 @@ class DataHandler(ABC):
                     f"Request time: {request_time:.2f}s"
                 )
                 break
-                
+
             if len(features) < self.page_size:
                 self.logger.info(
                     f"{self.table.__name__}: Received fewer records ({len(features)}) than page size ({self.page_size}). "
@@ -209,14 +232,14 @@ class DataHandler(ABC):
                 )
                 yield features
                 break
-                
+
             yield features
             self.logger.info(
                 f"{self.table.__name__}: Retrieved {len(features)} features on page {page_num}. "
                 f"Offset: {offset}, "
                 f"Request time: {request_time:.2f}s"
             )
-            
+
             offset += len(features)
             page_num += 1
             time.sleep(1)  # Rate limiting
@@ -224,7 +247,7 @@ class DataHandler(ABC):
     def fetch_data(self) -> dict:
         """
         Fetch all data from API using configured parameters.
-        
+
         Returns:
             Dictionary with all features
         """
@@ -232,7 +255,7 @@ class DataHandler(ABC):
             f"Starting data fetch for {self.table.__name__} "
             f"with params: {self.params}"
         )
-        
+
         try:
             all_features = []
             for features in self._yield_data():
@@ -240,9 +263,9 @@ class DataHandler(ABC):
             self.logger.info(
                 f"{self.table.__name__}: Successfully fetched {len(all_features)} total features."
             )
-                
+
             return {"features": all_features}
-            
+
         except Exception as e:
             self.logger.error(f"Data fetch failed: {str(e)}", exc_info=True)
             raise

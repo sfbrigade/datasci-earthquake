@@ -16,10 +16,7 @@ class _TsunamiDataHandler(DataHandler):
             "f": "json",
         }
         super().__init__(
-            url=TSUNAMI_URL,
-            table=TsunamiZone,
-            page_size=1000,
-            params=params
+            url=TSUNAMI_URL, table=TsunamiZone, page_size=1000, params=params
         )
 
     def parse_data(self, data: dict) -> list[dict]:

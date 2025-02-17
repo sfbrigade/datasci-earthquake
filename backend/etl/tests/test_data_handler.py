@@ -7,6 +7,9 @@ from backend.api.models.base import Base
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import logging
+from http.client import HTTPMessage
+import json
+
 
 class DummyModel(Base):
     """Dummy model for testing"""
@@ -24,7 +27,14 @@ class DummyDataHandler(DataHandler):
 
 @pytest.fixture
 def mock_session():
-    return MagicMock()
+    mock_session = MagicMock()
+    retry_strategy = Retry(
+        total=5, backoff_factor=1, status_forcelist=[429, 500, 502, 503, 504]
+    )
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    mock_session.mount("http://", adapter)
+    mock_session.mount("https://", adapter)
+    return mock_session
 
 
 @pytest.fixture
@@ -109,7 +119,7 @@ def test_fetch_data_success(data_handler, caplog):
 def test_fetch_data_partial_page(data_handler, caplog):
     """Test fetching data with a partial second page"""
     caplog.set_level(logging.INFO)
-    
+
     # Create first page response (full page)
     mock_response_1 = MagicMock()
     mock_response_1.json = MagicMock()
@@ -117,7 +127,7 @@ def test_fetch_data_partial_page(data_handler, caplog):
         "features": [{"id": i} for i in range(3)]  # 3 items (page_size)
     }
     mock_response_1.status_code = 200
-    
+
     # Create second page response (partial page)
     mock_response_2 = MagicMock()
     mock_response_2.json = MagicMock()
@@ -125,49 +135,128 @@ def test_fetch_data_partial_page(data_handler, caplog):
         "features": [{"id": i} for i in range(2)]  # 2 items (less than page_size)
     }
     mock_response_2.status_code = 200
-    
+
     data_handler.session.get.side_effect = [mock_response_1, mock_response_2]
-    
+
     # Execute test
-    with patch('time.sleep'):  # Skip sleep delays
+    with patch("time.sleep"):  # Skip sleep delays
         result = data_handler.fetch_data()
-    
+
     assert len(result["features"]) == 5  # Total items (3 + 2)
     assert data_handler.session.get.call_count == 2  # Called twice for two pages
-    
+
     first_call = data_handler.session.get.call_args_list[0]
     second_call = data_handler.session.get.call_args_list[1]
     assert first_call[1]["params"] == {"$offset": 0, "$limit": 3}  # First page
     assert second_call[1]["params"] == {"$offset": 3, "$limit": 3}  # Second page
-    
+
     assert "Starting data fetch for DummyModel with params: {}" in caplog.text
-    assert "Making request to http://test.url with params {'$offset': 0, '$limit': 3}" in caplog.text
-    assert "Making request to http://test.url with params {'$offset': 3, '$limit': 3}" in caplog.text
+    assert (
+        "Making request to http://test.url with params {'$offset': 0, '$limit': 3}"
+        in caplog.text
+    )
+    assert (
+        "Making request to http://test.url with params {'$offset': 3, '$limit': 3}"
+        in caplog.text
+    )
     assert "Request completed successfully" in caplog.text
     assert f"URL: {data_handler.url}" in caplog.text
     assert "{'$offset': 0, '$limit': 3}" in caplog.text
     assert "{'$offset': 3, '$limit': 3}" in caplog.text
 
+
+def test_fetch_data_retry_exhausted(data_handler, caplog):
+    """Test handling of request exceptions with retry logic"""
+    caplog.set_level(logging.INFO)
+
+    # Create retry strategy
+    retry_strategy = Retry(
+        total=5,
+        backoff_factor=0.1,
+        status_forcelist=[500, 502, 503, 504],
+        allowed_methods=["GET", "HEAD", "PUT", "DELETE", "OPTIONS", "TRACE"],
+        raise_on_status=True,
+    )
+
+    # Create session with retry strategy
+    session = requests.Session()
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+
+    # Create mock responses that will fail
+    def get_with_retries(*args, **kwargs):
+        # Track which attempt this is
+        get_with_retries.calls += 1
+        print(f"\n=== Request Attempt {get_with_retries.calls} ===")
+
+        if get_with_retries.calls == 1:
+            raise requests.exceptions.ConnectionError("Connection refused")
+        elif get_with_retries.calls == 2:
+            raise requests.exceptions.Timeout("Request timed out")
+        else:
+            raise requests.exceptions.RequestException("Server error")
+
+    # Initialize call counter
+    get_with_retries.calls = 0
+
+    # Configure session to use our retry-enabled mock
+    session.get = MagicMock(side_effect=get_with_retries)
+    data_handler.session = session
+
+    print("\n=== Debug Mock Setup ===")
+    print("Configured session with retry strategy:")
+    print(f"Max retries: {retry_strategy.total}")
+    print(f"Backoff factor: {retry_strategy.backoff_factor}")
+    print(f"Status forcelist: {retry_strategy.status_forcelist}")
+    print("Configured failures:")
+    print("Attempt 1: ConnectionError - Connection refused")
+    print("Attempt 2: Timeout - Request timed out")
+    print("Attempt 3: RequestException - Server error")
+
+    # Execute test - should raise RequestException after retries
+    with pytest.raises(requests.exceptions.RequestException), patch("time.sleep"):
+        data_handler.fetch_data()
+
+    # Print captured logs
+    print("\n=== Captured Logs ===")
+    for record in caplog.records:
+        print(f"{record.levelname}: {record.name}: {record.message}")
+
+    # Print call count
+    print(f"\n=== Call Count: {get_with_retries.calls} ===")
+
+    # Verify retry attempts
+    assert (
+        get_with_retries.calls == 3
+    ), f"Expected 3 retries, got {get_with_retries.calls}"
+
+    # Verify error logging
+    assert "Request failed:" in caplog.text
+    assert "Connection refused" in caplog.text
+    assert "Request timed out" in caplog.text
+    assert "Server error" in caplog.text
+
+
 def test_fetch_data_request_exception(data_handler):
     """Test handling of request exceptions with retry logic"""
     # Create a session with retry configuration
     retry_strategy = Retry(
-        total=5,
-        backoff_factor=1,
-        status_forcelist=[429, 500, 502, 503, 504]
+        total=5, backoff_factor=1, status_forcelist=[429, 500, 502, 503, 504]
     )
     adapter = HTTPAdapter(max_retries=retry_strategy)
 
-
     with patch("requests.Session") as mock_session_class:
         mock_session_class.return_value = data_handler.session
-        
+
         # Mock the get method to always fail
-        data_handler.session.get = Mock(side_effect=requests.RequestException("API Error"))
-        
+        data_handler.session.get = Mock(
+            side_effect=requests.RequestException("API Error")
+        )
+
         with pytest.raises(requests.RequestException):
             data_handler.fetch_data()
-        
+
         # Verify it tried 5 times
         assert data_handler.session.get.call_count == 5
 
