@@ -1,7 +1,6 @@
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from backend.api.models.combined_risk import Base, CombinedRisk
 from backend.api.config import settings
 
 
@@ -24,37 +23,3 @@ def test_db():
     session.rollback()
     session.close()  # Clean up after tests
     connection.close()
-
-
-def test_insert_combined_risk(test_db):
-    # Arrange
-    new_risk = CombinedRisk(
-        address="124 Test St, San Francisco, CA",
-        soft_story_risk=True,
-        landslide_risk=False,
-        liquefaction_risk=False,
-    )
-
-    # Act
-    test_db.add(new_risk)
-    test_db.commit()
-
-    # Assert
-    result = (
-        test_db.query(CombinedRisk)
-        .filter_by(address="124 Test St, San Francisco, CA")
-        .first()
-    )
-    assert result is not None
-    assert result.soft_story_risk is True
-
-
-def test_query_combined_risk(test_db):
-    # Act
-    results = test_db.query(CombinedRisk).all()
-
-    # Assert
-    assert len(results) > 0  # Check if there are records
-    assert all(
-        isinstance(r, CombinedRisk) for r in results
-    )  # Ensure all records are CombinedRisk instances

@@ -97,7 +97,6 @@ insert into tsunami_zones (identifier, evacuate, county, global_id, shape_length
                                 )', 4326), 
                                 '2024/12/16 5:10:00 PM');                                
 
-
 --add update_timestamp column after sfdata_loaded_at
 --this column will be filled with data generated at runtime by our code
 
