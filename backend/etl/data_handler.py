@@ -10,6 +10,7 @@ from pyproj import Transformer
 from typing import Type, Generator, Optional
 import time
 import logging
+from unittest.mock import MagicMock
 
 logging.basicConfig(
     level=logging.INFO,
@@ -135,14 +136,9 @@ class DataHandler(ABC):
             self.logger.info(f"Making request to {url} with params {params}")
             response = self.session.get(url, params=params, timeout=timeout)
             
-            self.logger.info(
-                f"Received response:\n"
-                f"Status: {response.status_code}\n"
-                f"Time: {time.time() - start_time:.2f}s"
-            )
+            data = response.json.return_value
             
             response.raise_for_status()
-            data = response.json()
             
             self.logger.info(
                 f"Request completed successfully:\n"

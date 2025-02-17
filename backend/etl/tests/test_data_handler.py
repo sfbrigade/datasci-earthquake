@@ -32,7 +32,7 @@ def data_handler(mock_session):
     return DummyDataHandler(
         url="http://test.url",
         table=DummyModel,
-        page_size=1000,
+        page_size=3,
         session=mock_session,
     )
 
@@ -106,21 +106,47 @@ def test_fetch_data_success(data_handler, caplog):
         assert first_call[1]["params"] == {"$offset": 0, "$limit": 1000}
 
 
-def test_fetch_data_partial_page(data_handler):
-    data_handler.session.get.side_effect = [
-        MagicMock(
-            json=lambda: {"features": [{"id": i} for i in range(1000)]}
-        ),
-        MagicMock(
-            json=lambda: {"features": [{"id": i} for i in range(500)]}
-        )
-    ]
+def test_fetch_data_partial_page(data_handler, caplog):
+    """Test fetching data with a partial second page"""
+    caplog.set_level(logging.INFO)
     
-    # Test
-    with patch('time.sleep'):
+    # Create first page response (full page)
+    mock_response_1 = MagicMock()
+    mock_response_1.json = MagicMock()
+    mock_response_1.json.return_value = {
+        "features": [{"id": i} for i in range(3)]  # 3 items (page_size)
+    }
+    mock_response_1.status_code = 200
+    
+    # Create second page response (partial page)
+    mock_response_2 = MagicMock()
+    mock_response_2.json = MagicMock()
+    mock_response_2.json.return_value = {
+        "features": [{"id": i} for i in range(2)]  # 2 items (less than page_size)
+    }
+    mock_response_2.status_code = 200
+    
+    data_handler.session.get.side_effect = [mock_response_1, mock_response_2]
+    
+    # Execute test
+    with patch('time.sleep'):  # Skip sleep delays
         result = data_handler.fetch_data()
-        assert len(result["features"]) == 1500
-
+    
+    assert len(result["features"]) == 5  # Total items (3 + 2)
+    assert data_handler.session.get.call_count == 2  # Called twice for two pages
+    
+    first_call = data_handler.session.get.call_args_list[0]
+    second_call = data_handler.session.get.call_args_list[1]
+    assert first_call[1]["params"] == {"$offset": 0, "$limit": 3}  # First page
+    assert second_call[1]["params"] == {"$offset": 3, "$limit": 3}  # Second page
+    
+    assert "Starting data fetch for DummyModel with params: {}" in caplog.text
+    assert "Making request to http://test.url with params {'$offset': 0, '$limit': 3}" in caplog.text
+    assert "Making request to http://test.url with params {'$offset': 3, '$limit': 3}" in caplog.text
+    assert "Request completed successfully" in caplog.text
+    assert f"URL: {data_handler.url}" in caplog.text
+    assert "{'$offset': 0, '$limit': 3}" in caplog.text
+    assert "{'$offset': 3, '$limit': 3}" in caplog.text
 
 def test_fetch_data_request_exception(data_handler):
     """Test handling of request exceptions with retry logic"""
