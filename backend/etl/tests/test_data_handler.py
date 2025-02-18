@@ -1,11 +1,13 @@
 import pytest
-from unittest.mock import Mock, patch, MagicMock    
+from unittest.mock import Mock, patch, MagicMock
 import requests
 from sqlalchemy import Column, Integer
 from backend.etl.data_handler import DataHandler
 from backend.api.models.base import Base
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+import logging
+from unittest.mock import call
 
 
 class DummyModel(Base):
@@ -25,6 +27,7 @@ class DummyDataHandler(DataHandler):
 @pytest.fixture
 def data_handler():
     return DummyDataHandler(url="https://api.test.com", table=DummyModel, page_size=3)
+
 
 def test_fetch_data_success(data_handler, caplog):
     """Test successful data fetching with pagination"""
@@ -107,12 +110,13 @@ def test_fetch_data_success(data_handler, caplog):
     first_call = data_handler.session.get.call_args_list[0]
     assert first_call[1]["params"] == {"$offset": 0, "$limit": 3}
     assert "Completed pagination" in caplog.text
-    assert "Request completed successfully" in caplog.text 
+    assert "Request completed successfully" in caplog.text
     assert "URL: https://api.test.com" in caplog.text
+
 
 def test_fetch_data_partial_page(data_handler, caplog):
     """Test that pagination stops when receiving fewer records than page_size"""
-    
+
     # Arrange
     # Create mock response objects instead of plain dictionaries, to simulate a response object.
     full_page_response = Mock()
@@ -154,6 +158,7 @@ def test_fetch_data_partial_page(data_handler, caplog):
     assert result["features"][-1]["id"] == 4
     assert "Assuming final page and stopping fetch" in caplog.text
 
+
 def test_fetch_data_request_exception(data_handler, caplog):
     """Test handling of request exceptions"""
 
@@ -169,6 +174,47 @@ def test_fetch_data_request_exception(data_handler, caplog):
     assert data_handler.session.get.call_count == 1
     assert "Data fetch failed" in caplog.text
     assert "API Error" in caplog.text
+
+
+def test_fetch_data_retry_exhausted(data_handler, caplog):
+    """Test that retry mechanism works and eventually exhausts"""
+
+    # Arrange
+    retry_strategy = Retry(
+        total=5,
+        backoff_factor=1,
+        status_forcelist=[404, 429, 500, 502, 503, 504],
+        allowed_methods=["GET"],
+        raise_on_status=True,
+        respect_retry_after_header=True,
+    )
+    session = requests.Session()
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+
+    mock_response = Mock()
+    mock_response.status_code = 500
+    mock_response.raise_for_status.side_effect = requests.HTTPError(
+        "500 Server Error", response=mock_response
+    )
+    mock_response.json.return_value = {"error": "Server Error"}
+
+    # Replace the session's get method but keep retry configuration
+    session.get = Mock(return_value=mock_response)
+    data_handler.session = session
+
+    # Act
+    with pytest.raises(requests.HTTPError) as exc_info:
+        data_handler.fetch_data()
+
+    # Assert
+    assert session.get.call_count == 6  # 1 initial + 5 retries
+    assert "Request failed:" in caplog.text
+    assert "500 Server Error" in caplog.text
+    calls = [call for call in caplog.records if "Closed session" in call.message]
+    assert len(calls) == 1
+
 
 def test_fetch_data_session_cleanup(data_handler, caplog):
     """Test that the session is properly closed"""
