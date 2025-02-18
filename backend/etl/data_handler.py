@@ -8,9 +8,8 @@ from pyproj import Transformer
 from typing import Type, Generator, Optional
 import time
 import logging
-from urllib.parse import unquote
-from .session_manager import SessionManager
-from .request_handler import RequestHandler
+from backend.etl.session_manager import SessionManager
+from backend.etl.request_handler import RequestHandler
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -106,8 +105,7 @@ class DataHandler(ABC):
             Dictionary with all features
         """
         self.logger.info(
-            f"Starting data fetch for {self.table.__name__} "
-            f"with params: {params}"
+            f"Starting data fetch for {self.table.__name__} " f"with params: {params}"
         )
 
         try:

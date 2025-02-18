@@ -1,7 +1,8 @@
 import requests
 from requests.adapters import HTTPAdapter
-from .retry import LoggingRetry
+from backend.etl.retry import LoggingRetry
 import logging
+from typing import Optional
 
 
 class SessionManager:
@@ -10,7 +11,7 @@ class SessionManager:
     logger = logging.getLogger("SessionManager")
 
     @staticmethod
-    def create_session(logger: logging.Logger = None) -> requests.Session:
+    def create_session(logger: Optional[logging.Logger] = None) -> requests.Session:
         """Create a configured requests session with retry logic"""
         retry_strategy = LoggingRetry(
             total=5,

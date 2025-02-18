@@ -239,7 +239,7 @@ def test_fetch_data_session_cleanup(data_handler, caplog):
     data_handler.request_handler = RequestHandler(
         data_handler.session, data_handler.logger
     )
-    
+
     # Act
     data_handler.fetch_data()
 
