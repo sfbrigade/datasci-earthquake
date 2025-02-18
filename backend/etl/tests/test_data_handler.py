@@ -180,40 +180,18 @@ def test_fetch_data_retry_exhausted(data_handler, caplog):
     """Test that retry mechanism works and eventually exhausts"""
 
     # Arrange
-    retry_strategy = Retry(
-        total=5,
-        backoff_factor=1,
-        status_forcelist=[404, 429, 500, 502, 503, 504],
-        allowed_methods=["GET"],
-        raise_on_status=True,
-        respect_retry_after_header=True,
-    )
-    session = requests.Session()
-    adapter = HTTPAdapter(max_retries=retry_strategy)
-    session.mount("https://", adapter)
-    session.mount("http://", adapter)
-
-    mock_response = Mock()
-    mock_response.status_code = 500
-    mock_response.raise_for_status.side_effect = requests.HTTPError(
-        "500 Server Error", response=mock_response
-    )
-    mock_response.json.return_value = {"error": "Server Error"}
-
-    # Replace the session's get method but keep retry configuration
-    session.get = Mock(return_value=mock_response)
-    data_handler.session = session
+    # Use a URL that will return a 504 error
+    data_handler.url = "https://httpstat.us/504"
 
     # Act
-    with pytest.raises(requests.HTTPError) as exc_info:
+    with pytest.raises(requests.exceptions.RetryError) as exc_info:
         data_handler.fetch_data()
 
     # Assert
-    assert session.get.call_count == 6  # 1 initial + 5 retries
-    assert "Request failed:" in caplog.text
-    assert "500 Server Error" in caplog.text
-    calls = [call for call in caplog.records if "Closed session" in call.message]
-    assert len(calls) == 1
+    assert "Retry Attempt 3 of 5" in caplog.text
+    assert "Max retries (5) exceeded. Giving up." in caplog.text
+    assert "too many 504 error responses" in str(exc_info.value)
+    assert "Closed session" in caplog.text
 
 
 def test_fetch_data_session_cleanup(data_handler, caplog):

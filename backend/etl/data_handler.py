@@ -10,6 +10,7 @@ from pyproj import Transformer
 from typing import Type, Generator, Optional
 import time
 import logging
+from urllib.parse import unquote
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -62,7 +63,7 @@ class DataHandler(ABC):
                 super().__init__(*args, **kwargs)
                 self.logger = logging.getLogger("RetryLogger")
                 self.logger.setLevel(logging.INFO)
-                self._max_allowed_retries = kwargs.get('total', 0)  
+                self._max_allowed_retries = kwargs.get("total", 0)
 
             def increment(
                 self, method=None, url=None, response=None, error=None, *args, **kwargs
@@ -83,18 +84,18 @@ class DataHandler(ABC):
                     )
 
                 current_attempt = self._max_allowed_retries - self.total + 1
-                
-                if response and hasattr(response, 'status_code'):
+
+                if response and hasattr(response, "status_code"):
                     status = response.status_code
                 else:
                     status = "unknown"
 
                 backoff = self.get_backoff_time()
-                
+
                 self.logger.warning(
                     f"""
                             === Retry Attempt {current_attempt} of {self._max_allowed_retries} ===
-                            URL: {url}
+                            URL: {unquote(url)}
                             Method: {method}
                             Status: {status}
                             Error: {str(error) if error else "no error"}
@@ -134,7 +135,7 @@ class DataHandler(ABC):
                 return obj
 
         retry_strategy = LoggingRetry(
-            total=5,                     
+            total=5,
             backoff_factor=1,
             status_forcelist=[
                 404,  # Not Found
@@ -144,8 +145,8 @@ class DataHandler(ABC):
                 503,  # Service Unavailable
                 504,  # Gateway Timeout
             ],
-            allowed_methods=["GET"],     
-            raise_on_status=True,        
+            allowed_methods=["GET"],
+            raise_on_status=True,
             respect_retry_after_header=True,
         )
 
@@ -154,7 +155,7 @@ class DataHandler(ABC):
         adapter = HTTPAdapter(max_retries=retry_strategy)
         session.mount("https://", adapter)
         session.mount("http://", adapter)
-        
+
         self.logger.info(
             f"Created new session with retry configuration:\n"
             f"Max retries: {retry_strategy.total}\n"
@@ -163,7 +164,7 @@ class DataHandler(ABC):
             f"Allowed methods: {retry_strategy.allowed_methods}\n"
             f"Respect retry after header: {retry_strategy.respect_retry_after_header}"
         )
-        
+
         return session
 
     def _make_request(self, url: str, params: dict, timeout: int = 60) -> dict:
@@ -182,7 +183,7 @@ class DataHandler(ABC):
 
             response = self.session.get(url, params=params, timeout=timeout)
             self.logger.info(f"Got response with status: {response.status_code}")
-            
+
             response.raise_for_status()
             try:
                 data = response.json()
