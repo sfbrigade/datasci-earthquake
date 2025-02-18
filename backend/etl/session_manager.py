@@ -8,8 +8,6 @@ from typing import Optional
 class SessionManager:
     """Handles HTTP session creation and configuration"""
 
-    logger = logging.getLogger("SessionManager")
-
     @staticmethod
     def create_session(logger: Optional[logging.Logger] = None) -> requests.Session:
         """Create a configured requests session with retry logic"""
