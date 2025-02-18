@@ -8,6 +8,8 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import logging
 from unittest.mock import call
+from backend.etl.retry import LoggingRetry
+from backend.etl.request_handler import RequestHandler
 
 
 class DummyModel(Base):
@@ -27,6 +29,24 @@ class DummyDataHandler(DataHandler):
 @pytest.fixture
 def data_handler():
     return DummyDataHandler(url="https://api.test.com", table=DummyModel, page_size=3)
+
+
+@pytest.fixture
+def fast_retry_session():
+    """Create a session with fast retry settings for testing"""
+    retry_strategy = LoggingRetry(
+        total=5,
+        backoff_factor=0.1,  # Fast backoff for tests
+        status_forcelist=[504],
+        allowed_methods=["GET"],
+        raise_on_status=True,
+    )
+
+    session = requests.Session()
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+    return session
 
 
 def test_fetch_data_success(data_handler, caplog):
@@ -99,6 +119,9 @@ def test_fetch_data_success(data_handler, caplog):
 
     data_handler.session = Mock()
     data_handler.session.get.return_value = mock_response
+    data_handler.request_handler = RequestHandler(
+        data_handler.session, data_handler.logger
+    )
 
     # Act
     result = data_handler.fetch_data()
@@ -144,6 +167,9 @@ def test_fetch_data_partial_page(data_handler, caplog):
 
     data_handler.session = Mock()
     data_handler.session.get.side_effect = [full_page_response, partial_page_response]
+    data_handler.request_handler = RequestHandler(
+        data_handler.session, data_handler.logger
+    )
 
     # Act
     result = data_handler.fetch_data()
@@ -165,7 +191,9 @@ def test_fetch_data_request_exception(data_handler, caplog):
     # Arrange
     data_handler.session = Mock()
     data_handler.session.get.side_effect = requests.RequestException("API Error")
-
+    data_handler.request_handler = RequestHandler(
+        data_handler.session, data_handler.logger
+    )
     # Act
     with pytest.raises(requests.RequestException):
         data_handler.fetch_data()
@@ -176,12 +204,15 @@ def test_fetch_data_request_exception(data_handler, caplog):
     assert "API Error" in caplog.text
 
 
-def test_fetch_data_retry_exhausted(data_handler, caplog):
+def test_fetch_data_retry_exhausted(fast_retry_session, caplog):
     """Test that retry mechanism works and eventually exhausts"""
-
-    # Arrange
-    # Use a URL that will return a 504 error
-    data_handler.url = "https://httpstat.us/504"
+    # Create handler with fast retry session
+    data_handler = DummyDataHandler(
+        url="https://httpstat.us/504",
+        table=DummyModel,
+        page_size=3,
+        session=fast_retry_session,  # Use the fast retry session
+    )
 
     # Act
     with pytest.raises(requests.exceptions.RetryError) as exc_info:
@@ -204,7 +235,9 @@ def test_fetch_data_session_cleanup(data_handler, caplog):
 
     data_handler.session = Mock()
     data_handler.session.get.return_value = mock_response
-
+    data_handler.request_handler = RequestHandler(
+        data_handler.session, data_handler.logger
+    )
     # Act
     data_handler.fetch_data()
 
