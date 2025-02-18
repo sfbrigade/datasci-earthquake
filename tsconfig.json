@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,9 +24,14 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     },
-    "types": ["@testing-library/jest-dom", "@testing-library/user-event"]
+    "types": [
+      "@testing-library/jest-dom",
+      "@testing-library/user-event"
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -31,7 +40,10 @@
     ".next/types/**/*.ts",
     "app/components/search-bar.jsx",
     "app/components/__tests__/autofill.test.js",
-    "app/components/__tests__/search-bar.test.jsx"
+    "app/components/__tests__/search-bar.test.jsx",
+    "build/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
