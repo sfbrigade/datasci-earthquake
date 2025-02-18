@@ -106,6 +106,7 @@ def test_fetch_data_success(data_handler, caplog):
 
     first_call = data_handler.session.get.call_args_list[0]
     assert first_call[1]["params"] == {"$offset": 0, "$limit": 3}
+    assert "Completed pagination" in caplog.text
     assert "Request completed successfully" in caplog.text 
     assert "URL: https://api.test.com" in caplog.text
 
@@ -169,17 +170,20 @@ def test_fetch_data_request_exception(data_handler, caplog):
     assert "Data fetch failed" in caplog.text
     assert "API Error" in caplog.text
 
-def test_fetch_data_session_cleanup(data_handler):
+def test_fetch_data_session_cleanup(data_handler, caplog):
     """Test that the session is properly closed"""
-    mock_session = Mock()
+
+    # Arrange
     mock_response = Mock()
     mock_response.json.return_value = {"features": []}
     mock_response.raise_for_status.return_value = None
-    mock_session.get.return_value = mock_response
 
-    with patch("requests.Session") as mock_session_class:
-        mock_session_class.return_value = mock_session
+    data_handler.session = Mock()
+    data_handler.session.get.return_value = mock_response
 
-        data_handler.fetch_data()
+    # Act
+    data_handler.fetch_data()
 
-        mock_session.close.assert_called_once()
+    # Assert
+    assert data_handler.session.close.call_count == 1
+    assert "Closed session" in caplog.text

@@ -248,9 +248,9 @@ class DataHandler(ABC):
             self.logger.error(f"Data fetch failed: {str(e)}", exc_info=True)
             raise
         finally:
-            if not self.session:
+            if self.session:
                 self.session.close()
-                self.logger.debug("Closed session")
+                self.logger.info("Closed session")
 
     def transform_geometry(self, geometry, source_srid, target_srid=4326):
         """
