@@ -25,7 +25,6 @@ class DataHandler(ABC):
         url (str): The API endpoint URL.
         table (ModelType): The SQLAlchemy table object.
         page_size (int): Number of records to fetch per page.
-        params: Base query parameters for API requests
         session: Optional pre-configured requests session
         logger: Optional logger instance
     """
@@ -35,14 +34,12 @@ class DataHandler(ABC):
         url: str,
         table: Type[ModelType],
         page_size: int = 1000,
-        params: Optional[dict] = None,
         session: Optional[requests.Session] = None,
         logger: Optional[logging.Logger] = None,
     ):
         self.url = url
         self.table = table
         self.page_size = page_size
-        self.params = params or {}
         self.logger = logger or logging.getLogger(f"{self.__class__.__name__}")
         self.session = session or SessionManager.create_session(self.logger)
         self.request_handler = RequestHandler(self.session, self.logger)
@@ -51,11 +48,10 @@ class DataHandler(ABC):
             f"Initialized handler for {table.__name__} "
             f"with URL: {url}, "
             f"page size: {page_size}, "
-            f"params: {params}, "
             f"session: {session}"
         )
 
-    def _yield_data(self) -> Generator:
+    def _yield_data(self, params: Optional[dict] = None) -> Generator:
         """
         Yield paginated data from API.
         Yields:
@@ -65,7 +61,7 @@ class DataHandler(ABC):
         page_num = 1
 
         while True:
-            paginated_params = self.params.copy()
+            paginated_params = params.copy() if params else {}
             paginated_params.update({"$offset": offset, "$limit": self.page_size})
 
             start_time = time.time()
@@ -103,7 +99,7 @@ class DataHandler(ABC):
             page_num += 1
             time.sleep(1)
 
-    def fetch_data(self) -> dict:
+    def fetch_data(self, params: Optional[dict] = None) -> dict:
         """
         Fetch all data from API using configured parameters.
         Returns:
@@ -111,12 +107,12 @@ class DataHandler(ABC):
         """
         self.logger.info(
             f"Starting data fetch for {self.table.__name__} "
-            f"with params: {self.params}"
+            f"with params: {params}"
         )
 
         try:
             all_features = []
-            for features in self._yield_data():
+            for features in self._yield_data(params):
                 all_features.extend(features)
             self.logger.info(
                 f"{self.table.__name__}: Successfully fetched {len(all_features)} total features."
@@ -128,9 +124,8 @@ class DataHandler(ABC):
             self.logger.error(f"Data fetch failed: {str(e)}", exc_info=True)
             raise
         finally:
-            if self.session:
-                self.session.close()
-                self.logger.info("Closed session")
+            self.session.close()
+            self.logger.info("Closed session")
 
     def transform_geometry(self, geometry, source_srid, target_srid=4326):
         """

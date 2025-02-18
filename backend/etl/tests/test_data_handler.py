@@ -194,6 +194,7 @@ def test_fetch_data_request_exception(data_handler, caplog):
     data_handler.request_handler = RequestHandler(
         data_handler.session, data_handler.logger
     )
+
     # Act
     with pytest.raises(requests.RequestException):
         data_handler.fetch_data()
@@ -238,6 +239,7 @@ def test_fetch_data_session_cleanup(data_handler, caplog):
     data_handler.request_handler = RequestHandler(
         data_handler.session, data_handler.logger
     )
+    
     # Act
     data_handler.fetch_data()
 

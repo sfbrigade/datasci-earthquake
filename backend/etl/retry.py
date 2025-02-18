@@ -15,7 +15,8 @@ class LoggingRetry(Retry):
         self, method=None, url=None, response=None, error=None, *args, **kwargs
     ):
         """Called when a retry is needed"""
-        # Check if we've exhausted our retries
+        # `Retry.total` counts down from `self._max_allowed_retries`. 
+        # Check if we've exhausted our retries.
         if self.total <= 0:
             self.logger.error(
                 f"Max retries ({self._max_allowed_retries}) exceeded. Giving up."
