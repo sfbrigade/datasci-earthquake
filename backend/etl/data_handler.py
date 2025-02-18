@@ -50,7 +50,9 @@ class DataHandler(ABC):
             f"params: {params}, "
             f"session: {session}"
         )
-        self.session = session or requests.Session()
+        if session is None:
+            session = self._create_session()
+        self.session = session
 
     def _create_session(self) -> requests.Session:
         """Create a configured requests session with retry logic."""
@@ -60,28 +62,51 @@ class DataHandler(ABC):
                 super().__init__(*args, **kwargs)
                 self.logger = logging.getLogger("RetryLogger")
                 self.logger.setLevel(logging.INFO)
-                self._retry_count = 0
+                self._max_allowed_retries = kwargs.get('total', 0)  
 
             def increment(
                 self, method=None, url=None, response=None, error=None, *args, **kwargs
             ):
                 """Called when a retry is needed"""
-                self._retry_count += 1
-                status = response.status_code if response else "no response"
-                error_msg = str(error) if error else "no error"
+                # Check if we've exhausted our retries
+                if self.total <= 0:
+                    self.logger.error(
+                        f"Max retries ({self._max_allowed_retries}) exceeded. Giving up."
+                    )
+                    return super().increment(
+                        method=method,
+                        url=url,
+                        response=response,
+                        error=error,
+                        *args,
+                        **kwargs,
+                    )
 
+                current_attempt = self._max_allowed_retries - self.total + 1
+                
+                if response and hasattr(response, 'status_code'):
+                    status = response.status_code
+                else:
+                    status = "unknown"
+
+                backoff = self.get_backoff_time()
+                
                 self.logger.warning(
                     f"""
-                    === Retry Attempt {self._retry_count} ===
-                    URL: {url}
-                    Method: {method}
-                    Status: {status}
-                    Error: {error_msg}
-                    Backoff: {self.get_backoff_time()} seconds
-                    Error type: {type(error)}
+                            === Retry Attempt {current_attempt} of {self._max_allowed_retries} ===
+                            URL: {url}
+                            Method: {method}
+                            Status: {status}
+                            Error: {str(error) if error else "no error"}
+                            Backoff: {backoff} seconds
                     """
                 )
 
+                # Sleep for backoff duration
+                if backoff:
+                    time.sleep(backoff)
+
+                # Call parent's increment to handle the retry logic
                 return super().increment(
                     method=method,
                     url=url,
@@ -92,32 +117,53 @@ class DataHandler(ABC):
                 )
 
             def get_backoff_time(self):
-                """Calculate the backoff time for the current retry attempt"""
-                return self.backoff_factor * (2 ** (self._retry_count - 1))
+                """
+                Calculate the backoff time for the current retry attempt.
+                Using *args to maintain compatibility with parent class calls.
+                """
+                current_attempt = self._max_allowed_retries - self.total
+                if current_attempt <= 0:
+                    return 0
+                # Calculate exponential backoff: 0, 2, 4, 8, 16 seconds
+                return self.backoff_factor * (2 ** (current_attempt))
+
+            def new(self, **kw):
+                """Preserve initial total when copying the retry object"""
+                obj = super().new(**kw)
+                obj._max_allowed_retries = self._max_allowed_retries
+                return obj
 
         retry_strategy = LoggingRetry(
-            total=5,
+            total=5,                     
             backoff_factor=1,
-            status_forcelist=[404, 429, 500, 502, 503, 504],
-            allowed_methods=["GET"],
-            raise_on_status=True,
+            status_forcelist=[
+                404,  # Not Found
+                429,  # Too Many Requests
+                500,  # Internal Server Error
+                502,  # Bad Gateway
+                503,  # Service Unavailable
+                504,  # Gateway Timeout
+            ],
+            allowed_methods=["GET"],     
+            raise_on_status=True,        
             respect_retry_after_header=True,
         )
 
-        self.logger.info(
-            f"""
-            === Creating Session ===
-            Max retries: {retry_strategy.total}
-            Backoff factor: {retry_strategy.backoff_factor}
-            Status codes: {retry_strategy.status_forcelist}
-            Allowed methods: {retry_strategy.allowed_methods}
-            """
-        )
-
+        # Create session with retry strategy
         session = requests.Session()
         adapter = HTTPAdapter(max_retries=retry_strategy)
         session.mount("https://", adapter)
         session.mount("http://", adapter)
+        
+        self.logger.info(
+            f"Created new session with retry configuration:\n"
+            f"Max retries: {retry_strategy.total}\n"
+            f"Backoff factor: {retry_strategy.backoff_factor}\n"
+            f"Status codes: {retry_strategy.status_forcelist}\n"
+            f"Allowed methods: {retry_strategy.allowed_methods}\n"
+            f"Respect retry after header: {retry_strategy.respect_retry_after_header}"
+        )
+        
         return session
 
     def _make_request(self, url: str, params: dict, timeout: int = 60) -> dict:
@@ -136,15 +182,13 @@ class DataHandler(ABC):
 
             response = self.session.get(url, params=params, timeout=timeout)
             self.logger.info(f"Got response with status: {response.status_code}")
-
+            
+            response.raise_for_status()
             try:
                 data = response.json()
-                self.logger.info(f"Response data: {data}")
             except Exception as e:
                 self.logger.error(f"Failed to parse JSON: {str(e)}")
                 raise
-
-            response.raise_for_status()
 
             self.logger.info(
                 f"Request completed successfully:\n"
