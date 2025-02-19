@@ -212,7 +212,7 @@ def test_fetch_data_retry_exhausted(fast_retry_session, caplog):
         url="https://httpstat.us/504",
         table=DummyModel,
         page_size=3,
-        session=fast_retry_session,  # Use the fast retry session
+        session=fast_retry_session,
     )
 
     # Act

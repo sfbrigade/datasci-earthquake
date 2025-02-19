@@ -36,6 +36,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Copy the source code into the container.
 COPY backend ./backend
 
+# Copy the pytest configuration file to ensure pytest logs are captured
+# in the container to assert test results.
+COPY pytest.ini .
+
 RUN chmod +x ./backend/etl/startup.sh
 
 # Switch to the non-privileged user to run the application.
