@@ -86,7 +86,7 @@ const Report = () => {
             icon={<FaSquareFull />}
           />
           <KeyElem
-            name="Tsunami Zone"
+            name="Tsunami zone"
             color="tsunamiBlue"
             icon={<FaSquareFull />}
           />
