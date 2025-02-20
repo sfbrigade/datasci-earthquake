@@ -15,7 +15,7 @@ export const Hazards = [
     description:
       "This region is known to experience more focused seismic activity",
     update: "00-00-0000",
-    color: "#F6AD55", // orange/300
+    color: "#F6AD55", // orange
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ export const Hazards = [
     description:
       "These coastal areas can be at risk of flooding in the event of a tsunami",
     update: "00-00-0000",
-    color: "#63B3ED", // blue/300
+    color: "#63B3ED", // tsunamiBlue
   },
 ];
 
