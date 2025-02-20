@@ -72,8 +72,7 @@ const Report = ({ searchedAddress }: { searchedAddress: string }) => {
       <Box
         w="100vw"
         py={2}
-        borderBottomWidth="1px"
-        borderColor="rgba(0, 0, 0, 0.3)"
+        boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
         display="flex"
         justifyContent="center"
         alignItems="center"
