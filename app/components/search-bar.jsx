@@ -79,27 +79,24 @@ const SearchBar = ({
     console.log(coordinates);
 
     // Send coordinates to the backend
-    let resSoftStory = fetch(
-      `http://127.0.0.1:8000/soft-stories/is-soft-story?lon=${coordinates[0]}&lat=${coordinates[1]}`
+    const isSoftStory = fetch(
+      `http://127.0.0.1:8000/api/soft-stories/is-soft-story?lon=${coordinates[0]}&lat=${coordinates[1]}`
     ) // Send the coordinates to the backend
-      .then((response) => response.json())
-      .then((data) => console.log(data)); // Handle the response  here
+      .then((response) => response.json());
 
-    // Send coordinates to the backend
-    let resLiquefaction = fetch(
-      `http://127.0.0.1:8000/tsunami-zones/is-in-tsunami-zone?lon=${coordinates[0]}&lat=${coordinates[1]}`
+    const isInTsunamiZone = fetch(
+      `http://127.0.0.1:8000/api/tsunami-zones/is-in-tsunami-zone?lon=${coordinates[0]}&lat=${coordinates[1]}`
     ) // Send the coordinates to the backend
-      .then((response) => response.json())
-      .then((data) => console.log(data)); // Handle the response  here
+      .then((response) => response.json());
 
-    // Send coordinates to the backend
-    let resTsunami = fetch(
-      `http://127.0.0.1:8000/liquefaction-zones/is-in-liquefaction-zone?lon=${coordinates[0]}&lat=${coordinates[1]}`
+    const isInLiquefactionZone = fetch(
+      `http://127.0.0.1:8000/api/liquefaction-zones/is-in-liquefaction-zone?lon=${coordinates[0]}&lat=${coordinates[1]}`
     ) // Send the coordinates to the backend
-      .then((response) => response.json())
-      .then((data) => console.log(data)); // Handle the response  here
+      .then((response) => response.json());
 
-    console.log(resSoftStory, resLiquefaction, resTsunami);
+    Promise.all([isSoftStory, isInTsunamiZone, isInLiquefactionZone]).then(
+      (values) => console.log("values", values)
+    );
   };
 
   return (
