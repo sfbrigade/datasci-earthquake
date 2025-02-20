@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod
 import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from backend.database.session import get_db
 from backend.api.models.base import ModelType
 from shapely.ops import transform
 from pyproj import Transformer
-from typing import Type, Generator
+from typing import Type, Generator, Optional
 import time
 import logging
+from backend.etl.session_manager import SessionManager
+from backend.etl.request_handler import RequestHandler
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -20,133 +20,110 @@ class DataHandler(ABC):
     """
     Abstract base class for handling data operations with an external
     API and database.
-
-    Attributes:
+    Args:
         url (str): The API endpoint URL.
         table (ModelType): The SQLAlchemy table object.
         page_size (int): Number of records to fetch per page.
+        session: Optional pre-configured requests session
+        logger: Optional logger instance
     """
 
-    def __init__(self, url: str, table: Type[ModelType], page_size: int = 1000):
+    def __init__(
+        self,
+        url: str,
+        table: Type[ModelType],
+        page_size: int = 1000,
+        session: Optional[requests.Session] = None,
+        logger: Optional[logging.Logger] = None,
+    ):
         self.url = url
         self.table = table
         self.page_size = page_size
-        self.logger = logging.getLogger(f"{self.__class__.__name__}")
+        self.logger = logger or logging.getLogger(f"{self.__class__.__name__}")
+        self.session = session or SessionManager.create_session(self.logger)
+        self.request_handler = RequestHandler(self.session, self.logger)
+
         self.logger.info(
             f"Initialized handler for {table.__name__} "
             f"with URL: {url}, "
-            f"page size: {page_size}"
+            f"page size: {page_size}, "
+            f"session: {session}"
         )
 
-    def fetch_data(self, params=None) -> dict:
+    def _yield_data(self, params: Optional[dict] = None) -> Generator:
         """
-        Fetches data from the API with retry logic.
+        Yield paginated data from API.
+        Yields:
+            Feature data from each page
+        """
+        offset = 0
+        page_num = 1
 
-        Args:
-            params (dict, optional): Query parameters for the API request.
+        while True:
+            paginated_params = params.copy() if params else {}
+            paginated_params.update({"$offset": offset, "$limit": self.page_size})
 
+            start_time = time.time()
+            data = self.request_handler.make_request(self.url, paginated_params)
+            features = data.get("features", [])
+            request_time = time.time() - start_time
+
+            if not features:
+                self.logger.info(
+                    f"{self.table.__name__}: Completed pagination. "
+                    f"Final stats: Pages={page_num-1}, "
+                    f"Total Features={offset}, "
+                    f"Last Offset={offset}, "
+                    f"Request time: {request_time:.2f}s"
+                )
+                break
+
+            if len(features) < self.page_size:
+                self.logger.info(
+                    f"{self.table.__name__}: Received fewer records ({len(features)}) than page size ({self.page_size}). "
+                    f"Assuming final page and stopping fetch. "
+                    f"Request time: {request_time:.2f}s"
+                )
+                yield features
+                break
+
+            yield features
+            self.logger.info(
+                f"{self.table.__name__}: Retrieved {len(features)} features on page {page_num}. "
+                f"Offset: {offset}, "
+                f"Request time: {request_time:.2f}s"
+            )
+
+            offset += len(features)
+            page_num += 1
+            time.sleep(1)
+
+    def fetch_data(self, params: Optional[dict] = None) -> dict:
+        """
+        Fetch all data from API using configured parameters.
         Returns:
-            dict: Dictionary containing list of features under 'features' key.
-
-        Raises:
-            requests.RequestException: If all retry attempts fail.
+            Dictionary with all features
         """
-        self.logger.info(f"Starting data fetch for {self.table.__name__}")
-        if params:
-            self.logger.debug(f"Using query parameters: {params}")
-
-        def _yield_data(
-            url: str, table_name: str, session: requests.Session, params: dict = {}
-        ) -> Generator:
-            """
-            Yields features from the url, paginating if necessary.
-            Args:
-                url: API endpoint URL
-                session: Configured requests session
-                params: Base query parameters
-            Yields:
-                list: All features from url
-            """
-            offset = 0
-            page_num = 1
-
-            while True:
-                paginated_params = params.copy() if params else {}
-                paginated_params.update({"$offset": offset, "$limit": self.page_size})
-
-                try:
-                    start_time = time.time()
-                    response = session.get(url, params=paginated_params, timeout=60)
-                    response.raise_for_status()
-                    data = response.json()
-                    request_time = time.time() - start_time
-
-                    features = data.get("features", [])
-
-                    if not features:
-                        self.logger.info(
-                            f"{table_name}: Completed pagination. "
-                            f"Final stats: Pages={page_num-1}, "
-                            f"Total Features={offset}, "
-                            f"Last Offset={offset}, "
-                            f"Request time: {request_time:.2f}s"
-                        )
-                        break
-
-                    # Stop if we get less than configured page_size
-                    if len(features) < self.page_size:
-                        self.logger.info(
-                            f"{table_name}: Received fewer records ({len(features)}) than page size ({self.page_size}). "
-                            f"Assuming final page and stopping fetch. "
-                            f"Request time: {request_time:.2f}s"
-                        )
-                        yield features
-                        break
-
-                    yield features
-                    self.logger.info(
-                        f"{table_name}: Retrieved {len(features)} features on page {page_num}. "
-                        f"Offset: {offset}, "
-                        f"Request time: {request_time:.2f}s"
-                    )
-
-                    offset += len(features)
-                    page_num += 1
-
-                    time.sleep(1)
-
-                except requests.RequestException as e:
-                    self.logger.error(
-                        f"{table_name}: Request failed with offset {offset} on page {page_num}: {str(e)}",
-                        exc_info=True,
-                    )
-                    raise
-
-        retry_strategy = Retry(
-            total=5,
-            backoff_factor=1,
-            status_forcelist=[429, 500, 502, 503, 504],
-            allowed_methods=["GET"],
+        self.logger.info(
+            f"Starting data fetch for {self.table.__name__} " f"with params: {params}"
         )
-        adapter = HTTPAdapter(max_retries=retry_strategy)
-        session = requests.Session()
-        session.mount("https://", adapter)
-        session.mount("http://", adapter)
 
         try:
             all_features = []
-            for features in _yield_data(self.url, self.table.__name__, session, params):
+            for features in self._yield_data(params):
                 all_features.extend(features)
             self.logger.info(
                 f"{self.table.__name__}: Successfully fetched {len(all_features)} total features."
             )
+
             return {"features": all_features}
+
         except Exception as e:
             self.logger.error(f"Data fetch failed: {str(e)}", exc_info=True)
             raise
         finally:
-            session.close()
-            self.logger.debug("Closed session")
+            self.session.close()
+            self.logger.info("Closed session")
 
     def transform_geometry(self, geometry, source_srid, target_srid=4326):
         """
@@ -191,3 +168,6 @@ class DataHandler(ABC):
             stmt = stmt.on_conflict_do_nothing(index_elements=[id_field])
             db.execute(stmt)
             db.commit()
+            self.logger.info(
+                f"{self.table.__name__}: Inserted {len(data_dicts)} rows into {self.table.__name__}."
+            )
