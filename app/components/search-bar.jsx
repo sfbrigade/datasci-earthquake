@@ -61,7 +61,11 @@ const SearchBar = ({
       const response = await fetch(url);
       const response_data = await response.json();
 
-      if (response_data.features.length > 0) {
+      if (
+        response_data &&
+        response_data.features &&
+        response_data.features.length > 0
+      ) {
         onSearchChange(response_data.features[0].center);
       }
     } catch (err) {
@@ -70,6 +74,7 @@ const SearchBar = ({
   };
 
   const sendCoordinates = (event) => {
+    console.log("send coordinates");
     event.preventDefault();
     console.log(coordinates);
 
