@@ -19,6 +19,7 @@ import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
 import { mockAddressHazardData as values } from "../data/data";
 import { data } from "autoprefixer";
+import { API_ENDPOINTS } from "../api/endpoints";
 
 const SearchBar = ({
   coordinates,
@@ -80,17 +81,17 @@ const SearchBar = ({
 
     // Send coordinates to the backend
     const isSoftStory = fetch(
-      `http://127.0.0.1:8000/api/soft-stories/is-soft-story?lon=${coordinates[0]}&lat=${coordinates[1]}`
+      `${API_ENDPOINTS.isSoftStory}?lon=${coordinates[0]}&lat=${coordinates[1]}`
     ) // Send the coordinates to the backend
       .then((response) => response.json());
 
     const isInTsunamiZone = fetch(
-      `http://127.0.0.1:8000/api/tsunami-zones/is-in-tsunami-zone?lon=${coordinates[0]}&lat=${coordinates[1]}`
+      `${API_ENDPOINTS.isInTsunamiZone}?lon=${coordinates[0]}&lat=${coordinates[1]}`
     ) // Send the coordinates to the backend
       .then((response) => response.json());
 
     const isInLiquefactionZone = fetch(
-      `http://127.0.0.1:8000/api/liquefaction-zones/is-in-liquefaction-zone?lon=${coordinates[0]}&lat=${coordinates[1]}`
+      `${API_ENDPOINTS.isInLiquefactionZone}?lon=${coordinates[0]}&lat=${coordinates[1]}`
     ) // Send the coordinates to the backend
       .then((response) => response.json());
 
