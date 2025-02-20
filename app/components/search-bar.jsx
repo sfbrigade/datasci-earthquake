@@ -17,6 +17,7 @@ import {
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
+import { ENDPOINTS } from "../api/endpoints";
 
 const SearchBar = ({ coordinates, onSearchChange }) => {
   const [address, setAddress] = useState("");
@@ -62,17 +63,17 @@ const SearchBar = ({ coordinates, onSearchChange }) => {
 
     // Send coordinates to the backend
     const isSoftStory = fetch(
-      `http://127.0.0.1:8000/api/soft-stories/is-soft-story?lon=${coordinates[0]}&lat=${coordinates[1]}`
+      `${ENDPOINTS.isSoftStory}?lon=${coordinates[0]}&lat=${coordinates[1]}`
     ) // Send the coordinates to the backend
       .then((response) => response.json());
 
     const isInTsunamiZone = fetch(
-      `http://127.0.0.1:8000/api/tsunami-zones/is-in-tsunami-zone?lon=${coordinates[0]}&lat=${coordinates[1]}`
+      `${ENDPOINTS.isInTsunamiZone}?lon=${coordinates[0]}&lat=${coordinates[1]}`
     ) // Send the coordinates to the backend
       .then((response) => response.json());
 
     const isInLiquefactionZone = fetch(
-      `http://127.0.0.1:8000/api/liquefaction-zones/is-in-liquefaction-zone?lon=${coordinates[0]}&lat=${coordinates[1]}`
+      `${ENDPOINTS.isInLiquefactionZone}?lon=${coordinates[0]}&lat=${coordinates[1]}`
     ) // Send the coordinates to the backend
       .then((response) => response.json());
 
