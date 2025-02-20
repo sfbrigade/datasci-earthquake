@@ -17,7 +17,6 @@ import {
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
-import { data } from "autoprefixer";
 
 const SearchBar = ({ coordinates, onSearchChange }) => {
   const [address, setAddress] = useState("");
@@ -33,8 +32,6 @@ const SearchBar = ({ coordinates, onSearchChange }) => {
   const handleRetrieve = (event) => {
     const addressData = event.features[0];
     setFullAddress(addressData);
-    // TODO: move to proper event handler and replace with coordinates from API
-    onSearchChange([coordinates[0] + 0.025, coordinates[1] + 0.025]);
   };
 
   const handleAddressChange = async (event) => {
@@ -59,13 +56,27 @@ const SearchBar = ({ coordinates, onSearchChange }) => {
     console.log(coordinates);
 
     // Send coordinates to the backend
-    let res = fetch(
+    let resSoftStory = fetch(
       `http://127.0.0.1:8000/soft-stories/is-soft-story?lon=${coordinates[0]}&lat=${coordinates[1]}`
     ) // Send the coordinates to the backend
       .then((response) => response.json())
       .then((data) => console.log(data)); // Handle the response  here
 
-    console.log(res);
+    // Send coordinates to the backend
+    let resLiquefaction = fetch(
+      `http://127.0.0.1:8000/tsunami-zones/is-in-tsunami-zone?lon=${coordinates[0]}&lat=${coordinates[1]}`
+    ) // Send the coordinates to the backend
+      .then((response) => response.json())
+      .then((data) => console.log(data)); // Handle the response  here
+
+    // Send coordinates to the backend
+    let resTsunami = fetch(
+      `http://127.0.0.1:8000/liquefaction-zones/is-in-liquefaction-zone?lon=${coordinates[0]}&lat=${coordinates[1]}`
+    ) // Send the coordinates to the backend
+      .then((response) => response.json())
+      .then((data) => console.log(data)); // Handle the response  here
+
+    console.log(resSoftStory, resLiquefaction, resTsunami);
   };
 
   return (
