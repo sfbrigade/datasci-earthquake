@@ -17,27 +17,107 @@ import {
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
+import { ENDPOINTS } from "../api/endpoints";
 
 const SearchBar = ({ coordinates, onSearchChange }) => {
   const [address, setAddress] = useState("");
   const [fullAddress, setFullAddress] = useState(null);
   const debug = useSearchParams().get("debug");
 
+  // fires when X button in search box is clicked
   const handleClearClick = () => {
-    console.log(address);
     console.log(fullAddress);
     setAddress("");
   };
 
+  /*
+    user types into search box
+    mapbox API is called with search term to retrieve suggestions (which contain full address AND coordinates)
+    suggestions show
+    a) user selects suggestion
+        full address AND coordinates are extracted from selected suggestion
+        UI is updated to reflect address
+        our API is called with coordinates to retrieve metadata
+        cards are updated with metadata
+    b) user presses enter (effectively ignoring suggestions) ... do we even handle this?
+        - should we prevent enter?
+        - google maps will sometimes select the first option
+        - show an info box? -Merlin
+        - placeholder label "Type address and select below"
+        - highlight first option?
+        - do nothing
+  */
+
+  // fired when the user has selected suggestion, before the form is autofilled (from https://docs.mapbox.com/mapbox-search-js/api/react/autofill/)
+  //
+  // extract feature data (address, coordinates) from response and:
+  // - update full address
+  // - retrieve additional data about coordinates from our API
+  // //- retrieve associated coordinates from our API
   const handleRetrieve = (event) => {
     const addressData = event.features[0];
+    const coords = addressData.geometry.coordinates;
+    onSearchChange(coords);
     setFullAddress(addressData);
-    // TODO: move to proper event handler and replace with coordinates from API
-    onSearchChange([coordinates[0] + 0.025, coordinates[1] + 0.025]);
+    getCoordData(coords).then((values) => console.log("values", values));
+    // TODO: use the values to update the hazard cards
+  };
+
+  // will be called every time the user types or modifies the input value in the search box (and loses focus?)
+  //
+  // retrieve coordinates from Mapbox API by providing full address
+  const handleAddressChange = async (event) => {
+    // TODO: is this handler needed? (especially considering we have the data we need from AddressAutofill)
+    // setAddress(event.target.value);
+    /*
+    setFullAddress(event.target.value);
+
+    try {
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${fullAddress}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`;
+      const response = await fetch(url);
+      const response_data = await response.json();
+
+      if (
+        response_data &&
+        response_data.features &&
+        response_data.features.length > 0
+      ) {
+        onSearchChange(response_data.features[0].center);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    */
+  };
+
+  // (gets fired when user presses enter (or if there was a submit button, when the user clicks it))
+  //
+  // update coordinates
+  const onSubmit = (event) => {
+    // event.preventDefault();
+    // onSearchChange(); // TODO: how to grab coordinates to pass to this function?
+  };
+
+  // gets metadata from Mapbox API for given coordinates
+  const getCoordData = (coords = coordinates) => {
+    // Send coordinates to the backend
+    const isSoftStory = fetch(
+      `${ENDPOINTS.isSoftStory}?lon=${coords[0]}&lat=${coords[1]}`
+    ).then((response) => response.json());
+
+    const isInTsunamiZone = fetch(
+      `${ENDPOINTS.isInTsunamiZone}?lon=${coords[0]}&lat=${coords[1]}`
+    ).then((response) => response.json());
+
+    const isInLiquefactionZone = fetch(
+      `${ENDPOINTS.isInLiquefactionZone}?lon=${coords[0]}&lat=${coords[1]}`
+    ).then((response) => response.json());
+
+    return Promise.all([isSoftStory, isInTsunamiZone, isInLiquefactionZone]);
   };
 
   return (
-    <form>
+    <form onSubmit={onSubmit}>
       {debug === "true" && (
         <HStack>
           <NumberInput
@@ -107,7 +187,7 @@ const SearchBar = ({ coordinates, onSearchChange }) => {
             type="text"
             name="address-1"
             value={address}
-            onChange={(event) => setAddress(event.target.value)}
+            onChange={handleAddressChange}
             _hover={{
               borderColor: "yellow",
               _placeholder: { color: "grey.900" },
