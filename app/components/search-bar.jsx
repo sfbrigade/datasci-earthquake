@@ -34,30 +34,26 @@ const SearchBar = ({
 
   // fires when X button in search box is clicked
   const handleClearClick = () => {
-    console.log("!!! clear click");
-    console.log(address);
     console.log(fullAddress);
     setAddress("");
   };
 
   /*
     user types into search box
-    mapbox API is called with search term to retrieve suggestions (which contain coordinates)
+    mapbox API is called with search term to retrieve suggestions (which contain full address AND coordinates)
     suggestions show
     a) user selects suggestion
-        new address and coordinates are extracted from selected suggestion
-        UI is updated to reflect new address
+        full address AND coordinates are extracted from selected suggestion
+        UI is updated to reflect address
         our API is called with coordinates to retrieve metadata
         cards are updated with metadata
     b) user presses enter (effectively ignoring suggestions) ... do we even handle this?
         - should we prevent enter?
-        - google maps will sometimes select the first optionk
+        - google maps will sometimes select the first option
         - show an info box? -Merlin
         - placeholder label "Type address and select below"
         - highlight first option?
         - do nothing
-    
-
   */
 
   // fired when the user has selected suggestion, before the form is autofilled (from https://docs.mapbox.com/mapbox-search-js/api/react/autofill/)
@@ -67,18 +63,14 @@ const SearchBar = ({
   // - retrieve additional data about coordinates from our API
   // //- retrieve associated coordinates from our API
   const handleRetrieve = (event) => {
-    console.log("!!! retrieve");
-    console.log(event);
-    console.dir(event.features);
-    console.log(event.features[0]);
     const addressData = event.features[0];
     const addressLine = event.features[0].properties.feature_name;
     onAddressSearch(addressLine);
     const coords = addressData.geometry.coordinates;
     onSearchChange(coords);
     setFullAddress(addressData);
-    console.log("coords", coords);
-    getCoordData(coords);
+    getCoordData(coords).then((values) => console.log("values", values));
+    // TODO: use the values to update the hazard cards
   };
 
   useEffect(() => {
@@ -93,9 +85,8 @@ const SearchBar = ({
   //
   // retrieve coordinates from Mapbox API by providing full address
   const handleAddressChange = async (event) => {
-    console.log("!!! address change");
-    setAddress(event.target.value);
-
+    // TODO: is this handler needed? (especially considering we have the data we need from AddressAutofill)
+    // setAddress(event.target.value);
     /*
     setFullAddress(event.target.value);
 
@@ -121,37 +112,26 @@ const SearchBar = ({
   //
   // update coordinates
   const onSubmit = (event) => {
-    // console.log("!!! onSubmit");
     // event.preventDefault();
     // onSearchChange(); // TODO: how to grab coordinates to pass to this function?
   };
 
   // gets metadata from Mapbox API for given coordinates
   const getCoordData = (coords = coordinates) => {
-    console.log("!!! get coordinate data");
-    console.log(coords);
-
     // Send coordinates to the backend
     const isSoftStory = fetch(
       `${API_ENDPOINTS.isSoftStory}?lon=${coords[0]}&lat=${coords[1]}`
-    ) // Send the coordinates to the backend
-      .then((response) => response.json());
+    ).then((response) => response.json());
 
     const isInTsunamiZone = fetch(
       `${API_ENDPOINTS.isInTsunamiZone}?lon=${coords[0]}&lat=${coords[1]}`
-    ) // Send the coordinates to the backend
-      .then((response) => response.json());
+    ).then((response) => response.json());
 
     const isInLiquefactionZone = fetch(
       `${API_ENDPOINTS.isInLiquefactionZone}?lon=${coords[0]}&lat=${coords[1]}`
-    ) // Send the coordinates to the backend
-      .then((response) => response.json());
+    ).then((response) => response.json());
 
-    Promise.all([isSoftStory, isInTsunamiZone, isInLiquefactionZone]).then(
-      (values) => console.log("values", values)
-    );
-
-    // return values?
+    return Promise.all([isSoftStory, isInTsunamiZone, isInLiquefactionZone]);
   };
 
   return (
