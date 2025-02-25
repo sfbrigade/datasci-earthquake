@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 import requests
+from pathlib import Path
+import json
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from backend.database.session import get_db
 from backend.api.models.base import ModelType
@@ -14,6 +16,8 @@ from backend.etl.request_handler import RequestHandler
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
+
+_PREFIX_DATA_GEOJSON_PATH = "public/data/"
 
 
 class DataHandler(ABC):
@@ -148,10 +152,14 @@ class DataHandler(ABC):
         return transform(transformer.transform, geometry)
 
     @abstractmethod
-    def parse_data(self, data: dict) -> list[dict]:
+    def parse_data(self, data: dict) -> tuple[list[dict], dict]:
         """
-        Abstract method to parse the fetched data into a list of
-        database row dictionaries
+        Abstract method to parse and transform the fetched data
+
+        Returns:
+            A tuple containing:
+                - A list of dictionaries (each representing a row for the database).
+                - A dictionary representing the same data in GeoJSON format.
         """
         pass
 
@@ -171,3 +179,16 @@ class DataHandler(ABC):
             self.logger.info(
                 f"{self.table.__name__}: Inserted {len(data_dicts)} rows into {self.table.__name__}."
             )
+
+    def save_geojson(self, features) -> None:
+        """
+        Write the geojson file to the public/data folder
+        """
+        geojson_path = Path(f"{_PREFIX_DATA_GEOJSON_PATH}{self.table.__name__}.geojson")
+
+        with open(geojson_path, "wt") as f:
+            json.dump(features, f)
+
+        self.logger.info(
+            f"Generated {_PREFIX_DATA_GEOJSON_PATH}{self.table.__name__}.geojson"
+        )

@@ -15,25 +15,27 @@ class _LiquefactionDataHandler(DataHandler):
     data.sfgov.org
     """
 
-    def parse_data(self, data: dict) -> list[dict]:
+    def parse_data(self, data: dict) -> tuple[list[dict], dict]:
         """
-        Extracts feature attributes and geometry data to construct a
-        list of dictionaries.
+        Extracts feature attributes and geometry data, applies transformations and constructs:
+         - A list of dictionaries where each dictionary represents a row for the database table.
+         - A dictionary representing the same data in GeoJSON format.
 
-        Each dictionary represents a row for the database table.
         Geometry data is converted into a GeoAlchemy-compatible
         MultiPolygon with srid 4326.
 
-        To avoid API timeout errors, this method reduces the complexity of the multipolygons by collapsing points that are closer than 0.0001 degrees into a single point.
+        To avoid API timeout errors, this method reduces the complexity of the satabase-stored multipolygons by collapsing points that are closer than 0.0001 degrees into a single point.
         Note that the dataset contains the length and area of the original multipoygons.
         """
         tolerance = 0.0001
         features = data["features"]
         parsed_data = []
+        geojson_features = []
+
         for feature in features:
             properties = feature.get("properties", {})
             geometry = feature.get("geometry", {})
-            multipolygon = shape(geometry)
+            multipolygon = shape(geometry)  # Convert GeoJSON to Shapely geometry
             geoalchemy_multipolygon = from_shape(multipolygon, srid=4326)
             simplified_geoalchemy_multipolygon = ST_Simplify(
                 geoalchemy_multipolygon, tolerance
@@ -46,14 +48,26 @@ class _LiquefactionDataHandler(DataHandler):
                 "shape_area": properties.get("shape_area"),
             }
             parsed_data.append(liquefaction_zone)
-        return parsed_data
+
+            # Constructing GeoJSON feature
+            geojson_feature = {
+                "type": "Feature",
+                "geometry": geometry,
+                "properties": {"liq": liquefaction_zone["liq"]},
+            }
+            geojson_features.append(geojson_feature)
+        geojson = {"type": "FeatureCollection", "features": geojson_features}
+        return parsed_data, geojson
 
 
 if __name__ == "__main__":
     handler = _LiquefactionDataHandler(_LIQUEFACTION_URL, LiquefactionZone)
     try:
         liquefaction_zones = handler.fetch_data()
-        liquefaction_zones_objects = handler.parse_data(liquefaction_zones)
+        liquefaction_zones_objects, liquefaction_zones_geojson = handler.parse_data(
+            liquefaction_zones
+        )
+        handler.save_geojson(liquefaction_zones_geojson)
         handler.bulk_insert_data(liquefaction_zones_objects, "identifier")
     except HTTPException as e:
         print(f"Failed after retries: {e}")

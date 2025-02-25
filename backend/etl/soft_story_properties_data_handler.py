@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Dict, Tuple
 from backend.etl.mapbox_geojson_manager import MapboxConfig, MapboxGeojsonManager
 from backend.api.models.base import ModelType
+from shapely.wkt import loads
 
 
 _SOFT_STORY_PROPERTIES_URL = "https://data.sfgov.org/resource/beah-shgi.geojson"
@@ -64,12 +65,35 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
 
         return parsed_data
 
-    def parse_data(self, sf_data: dict) -> list[dict]:
+    def _convert_to_geojson(self, data: list[dict]) -> dict:
         """
-        Extracts feature attributes and geometry data to construct a
-        list of dictionaries
+        Iterates over a list of dicts representing database rows and creates a geojson
+        """
+        features = []
+        for item in data:
+            wkt_point = item.get("point")  # Extract 'point' value (WKT)
+            self.logger.info(f"wkt_point: {wkt_point}")
+            if wkt_point:
+                point_geom = loads(wkt_point)  # Convert WKT to Shapely Point
 
-        Each dictionary represents a row for the database table.
+                feature = {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [point_geom.x, point_geom.y],
+                    },
+                    "properties": {},
+                }
+                features.append(feature)
+        geojson = {"type": "FeatureCollection", "features": features}
+        return geojson
+
+    def parse_data(self, sf_data: dict) -> tuple[list[dict], dict]:
+        """
+        Extracts feature attributes and geometry data to construct:
+         - A list of dictionaries (each dictionary represents a row for the database table)
+         - A dictionary representing the same data in GeoJSON format.
+
         Geometry data is converted into a GeoAlchemy-compatible
         Point with srid 4326.
         """
@@ -102,29 +126,33 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
                     if mapbox_coordinates
                     else "sfdata" if sf_geometry else None
                 )
+                parsed_data.append(
+                    {
+                        "block": properties.get("block"),
+                        "lot": properties.get("lot"),
+                        "parcel_number": properties.get("parcel_number"),
+                        "property_address": properties.get("property_address"),
+                        "address": properties.get("address"),
+                        "tier": properties.get("tier"),
+                        "status": properties.get("status"),
+                        "bos_district": properties.get("bos_district"),
+                        "point": (
+                            f"Point({coordinates[0]} {coordinates[1]})"
+                            if coordinates
+                            else None
+                        ),
+                        "sfdata_as_of": properties.get("data_as_of"),
+                        "sfdata_loaded_at": properties.get("data_loaded_at"),
+                        "point_source": point_source,
+                    }
+                )
 
-            parsed_data.append(
-                {
-                    "block": properties.get("block"),
-                    "lot": properties.get("lot"),
-                    "parcel_number": properties.get("parcel_number"),
-                    "property_address": properties.get("property_address"),
-                    "address": properties.get("address"),
-                    "tier": properties.get("tier"),
-                    "status": properties.get("status"),
-                    "bos_district": properties.get("bos_district"),
-                    "point": (
-                        f"Point({coordinates[0]} {coordinates[1]})"
-                        if coordinates
-                        else None
-                    ),
-                    "sfdata_as_of": properties.get("data_as_of"),
-                    "sfdata_loaded_at": properties.get("data_loaded_at"),
-                    "point_source": point_source,
-                }
-            )
+        parsed_data_complete = self.fill_in_missing_mapbox_points(
+            parsed_data, addresses
+        )
+        geojson = self._convert_to_geojson(parsed_data_complete)
 
-        return self.fill_in_missing_mapbox_points(parsed_data, addresses)
+        return parsed_data_complete, geojson
 
 
 if __name__ == "__main__":
@@ -137,7 +165,10 @@ if __name__ == "__main__":
     )
     try:
         soft_story_properties = handler.fetch_data()
-        soft_story_property_objects = handler.parse_data(soft_story_properties)
+        soft_story_property_objects, soft_story_property_geojson = handler.parse_data(
+            soft_story_properties
+        )
+        handler.save_geojson(soft_story_property_geojson)
         handler.bulk_insert_data(soft_story_property_objects, "property_address")
     except HTTPException as e:
         print(f"Failed after retries: {e}")
