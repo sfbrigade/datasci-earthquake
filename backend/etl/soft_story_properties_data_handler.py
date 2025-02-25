@@ -126,26 +126,26 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
                     if mapbox_coordinates
                     else "sfdata" if sf_geometry else None
                 )
-                parsed_data.append(
-                    {
-                        "block": properties.get("block"),
-                        "lot": properties.get("lot"),
-                        "parcel_number": properties.get("parcel_number"),
-                        "property_address": properties.get("property_address"),
-                        "address": properties.get("address"),
-                        "tier": properties.get("tier"),
-                        "status": properties.get("status"),
-                        "bos_district": properties.get("bos_district"),
-                        "point": (
-                            f"Point({coordinates[0]} {coordinates[1]})"
-                            if coordinates
-                            else None
-                        ),
-                        "sfdata_as_of": properties.get("data_as_of"),
-                        "sfdata_loaded_at": properties.get("data_loaded_at"),
-                        "point_source": point_source,
-                    }
-                )
+            parsed_data.append(
+                {
+                    "block": properties.get("block"),
+                    "lot": properties.get("lot"),
+                    "parcel_number": properties.get("parcel_number"),
+                    "property_address": properties.get("property_address"),
+                    "address": properties.get("address"),
+                    "tier": properties.get("tier"),
+                    "status": properties.get("status"),
+                    "bos_district": properties.get("bos_district"),
+                    "point": (
+                        f"Point({coordinates[0]} {coordinates[1]})"
+                        if coordinates
+                        else None
+                    ),
+                    "sfdata_as_of": properties.get("data_as_of"),
+                    "sfdata_loaded_at": properties.get("data_loaded_at"),
+                    "point_source": point_source,
+                }
+            )
 
         parsed_data_complete = self.fill_in_missing_mapbox_points(
             parsed_data, addresses

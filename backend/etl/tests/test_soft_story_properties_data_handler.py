@@ -168,7 +168,6 @@ def test_parse_data_address_not_in_mapbox(handler, mock_mapbox_manager):
     # Assert
     assert len(parsed) == 2
     result = parsed[0][0]
-    print("result not in mapbox:", parsed)
 
     # The fill_in_missing_mapbox_points method should update
     # the point from the batch geocode.
