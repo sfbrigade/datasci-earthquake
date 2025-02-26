@@ -22,8 +22,8 @@ class DummyModel(Base):
 class DummyDataHandler(DataHandler):
     """Concrete implementation of DataHandler for testing"""
 
-    def parse_data(self, data: dict) -> list[dict]:
-        return [data]
+    def parse_data(self, data: dict) -> tuple[list[dict], dict]:
+        return [data], {"type": "FeatureCollection", "features": data}
 
 
 @pytest.fixture

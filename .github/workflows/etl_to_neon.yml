@@ -53,3 +53,11 @@ jobs:
           python -m backend.etl.tsunami_data_handler
           python -m backend.etl.soft_story_properties_data_handler
           python -m backend.etl.liquefaction_data_handler
+
+      - name: Commit & Push Changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add public/data/*.geojson
+          git commit -m "Update datasets (ETL auto-update)" || echo "No changes to commit"
+          git push origin master || echo "No changes to push"          
