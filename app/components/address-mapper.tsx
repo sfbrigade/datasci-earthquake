@@ -31,7 +31,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   liquefactionData,
 }) => {
   const [coordinates, setCoordinates] = useState(defaultCoords);
-  const [searchedAddress, setSearchedAdress] = useState("");
+  const [searchedAddress, setSearchedAddress] = useState("");
 
   const updateMap = (coords: number[]) => {
     setCoordinates(coords);
@@ -53,7 +53,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           <SearchBar
             coordinates={coordinates}
             onSearchChange={updateMap}
-            onAddressSearch={setSearchedAdress}
+            onAddressSearch={setSearchedAddress}
           />
         </Box>
       </Box>
