@@ -1,19 +1,32 @@
-export const fetchData = async ( endpoint: string ) => {
+export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
   try {
-    const response = await fetch(endpoint, {
+    // Try fetching from CDN first
+    const cdnResponse = await fetch(cdnEndpoint, { cache: "no-store" });
+    if (cdnResponse.ok) {
+      return await cdnResponse.json();
+    } else {
+      console.warn(`CDN fetch failed: ${cdnResponse.status}. Falling back to API.`);
+    }
+  } catch (error: any) {
+    console.warn(`CDN fetch error: ${error.message}. Falling back to API.`);
+  }
+
+  // Fallback to API
+  try {
+    const apiResponse = await fetch(apiEndpoint, {
       cache: 'no-store',
     });
-    if (!response.ok) {
-      switch (response.status) {
+    if (!apiResponse.ok) {
+      switch (apiResponse.status) {
         case 404:
           throw new Error("404 Not Found");
         case 500:
           throw new Error("500 Internal Server Error")
         default:
-          throw new Error(response.status + " Unexpected Error")
+          throw new Error(apiResponse.status + " Unexpected Error")
       }
     }
-    const data = await response.json();
+    const data = await apiResponse.json();
     return data;
   } catch (error: any) {
     console.log("Error: " + error.message);
