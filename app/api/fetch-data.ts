@@ -5,7 +5,7 @@ export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
     if (cdnResponse.ok) {
       return await cdnResponse.json();
     } else {
-      console.warn(`CDN fetch failed: ${cdnResponse.status}. Falling back to API.`);
+      console.warn(`CDN fetch failed with: ${cdnResponse.status} (${cdnResponse.statusText}). Falling back to API.`);
     }
   } catch (error: any) {
     console.warn(`CDN fetch error: ${error.message}. Falling back to API.`);
@@ -30,6 +30,6 @@ export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
     return data;
   } catch (error: any) {
     console.log("Error: " + error.message);
-    return null;
+    return { error: true, message: error.message };
   }
 };

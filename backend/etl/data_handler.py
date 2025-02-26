@@ -185,10 +185,13 @@ class DataHandler(ABC):
         Write the geojson file to the public/data folder
         """
         geojson_path = Path(f"{_PREFIX_DATA_GEOJSON_PATH}{self.table.__name__}.geojson")
+        try:
+            with open(geojson_path, "wt") as f:
+                json.dump(features, f)
 
-        with open(geojson_path, "wt") as f:
-            json.dump(features, f)
-
-        self.logger.info(
-            f"Generated {_PREFIX_DATA_GEOJSON_PATH}{self.table.__name__}.geojson"
-        )
+            self.logger.info(
+                f"Generated {_PREFIX_DATA_GEOJSON_PATH}{self.table.__name__}.geojson"
+            )
+        except Exception as e:
+            self.logger.error(f"Failed to write GeoJSON: {e}")
+            raise
