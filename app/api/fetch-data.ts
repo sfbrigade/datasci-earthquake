@@ -1,6 +1,7 @@
 export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
   try {
     // Try fetching from CDN first
+    console.log("CDN endpoint: ", cdnEndpoint)
     const cdnResponse = await fetch(cdnEndpoint, { cache: "no-store" });
     if (cdnResponse.ok) {
       return await cdnResponse.json();
