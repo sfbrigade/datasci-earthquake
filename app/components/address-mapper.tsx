@@ -24,7 +24,6 @@ interface AddressMapperProps {
   liquefactionData: FeatureCollection<Geometry>;
 }
 
-// TODO: pass data down to Map component
 const AddressMapper: React.FC<AddressMapperProps> = ({
   headingData,
   softStoryData,
@@ -32,6 +31,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   liquefactionData,
 }) => {
   const [coordinates, setCoordinates] = useState(defaultCoords);
+  const [searchedAddress, setSearchedAddress] = useState("");
 
   const updateMap = (coords: number[]) => {
     setCoordinates(coords);
@@ -50,7 +50,11 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           m="auto"
         >
           <Heading headingData={headingData} />
-          <SearchBar coordinates={coordinates} onSearchChange={updateMap} />
+          <SearchBar
+            coordinates={coordinates}
+            onSearchChange={updateMap}
+            onAddressSearch={setSearchedAddress}
+          />
         </Box>
       </Box>
       <Box w="base" h={{ base: "1400px", md: "1000px" }} m="auto">
@@ -62,7 +66,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           position="relative"
         >
           <Box zIndex={10} top={0} position="absolute">
-            <Report />
+            <Report searchedAddress={searchedAddress} />
           </Box>
           <Map
             coordinates={coordinates}
