@@ -18,9 +18,10 @@ import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
 
-const SearchBar = ({ coordinates, onSearchChange }) => {
+const SearchBar = ({ coordinates, onSearchChange, onAddressSearch }) => {
   const [address, setAddress] = useState("");
   const [fullAddress, setFullAddress] = useState(null);
+  const [addressLine, setAddressLine] = useState("");
   const debug = useSearchParams().get("debug");
 
   const handleClearClick = () => {
@@ -31,6 +32,8 @@ const SearchBar = ({ coordinates, onSearchChange }) => {
 
   const handleRetrieve = (event) => {
     const addressData = event.features[0];
+    const addressLine = event.features[0].properties.feature_name;
+    onAddressSearch(addressLine);
     setFullAddress(addressData);
     // TODO: move to proper event handler and replace with coordinates from API
     onSearchChange([coordinates[0] + 0.025, coordinates[1] + 0.025]);
