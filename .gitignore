@@ -1,5 +1,6 @@
 # Next
 .next
+pnpm-lock.yaml
 
 # Python
 __pycache__/
