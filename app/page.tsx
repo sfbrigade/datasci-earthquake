@@ -9,6 +9,7 @@ import {
 } from "./api/services";
 
 const Home = async () => {
+  const headingData = Headings.home;
   const softStoryData = await fetchSoftStories();
   const tsunamiData = await fetchTsunami();
   const liquefactionData = await fetchLiquefaction();
