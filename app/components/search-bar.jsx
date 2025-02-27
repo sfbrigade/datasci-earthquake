@@ -107,6 +107,7 @@ const SearchBar = ({ coordinates, onSearchChange, onAddressSearch }) => {
             borderRadius="50"
             bgColor="white"
             focusBorderColor="yellow"
+            boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
             type="text"
             name="address-1"
             value={address}
@@ -118,14 +119,16 @@ const SearchBar = ({ coordinates, onSearchChange, onAddressSearch }) => {
             _invalid={{ borderColor: "red" }}
             autoComplete="address-line1"
           />
-          <InputRightElement>
-            <RxCross2
-              color="grey.900"
-              fontSize="1.1em"
-              data-testid="clear-icon"
-              onClick={handleClearClick}
-            />
-          </InputRightElement>
+          {address.length != 0 && (
+            <InputRightElement>
+              <RxCross2
+                color="grey.900"
+                fontSize="1.1em"
+                data-testid="clear-icon"
+                onClick={handleClearClick}
+              />
+            </InputRightElement>
+          )}
         </InputGroup>
       </DynamicAddressAutofill>
     </form>
