@@ -1,18 +1,18 @@
 name: CI Pipeline
 
-on: 
-    push:
-        branches:
-            - master
-    pull_request: 
-        types: [opened, synchronize, reopened]         
-        branches:
-            - master
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - master
 
 jobs:
   eslint:
     runs-on: ubuntu-latest
-    steps:    
+    steps:
       - uses: actions/checkout@v4
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -35,9 +35,9 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: | 
+        run: |
           pip install black==24.10.0 mypy
-          pip install fastapi pydantic pydantic-settings sqlalchemy GeoAlchemy2 pytest     
+          pip install fastapi pydantic pydantic-settings sqlalchemy GeoAlchemy2 pytest
       - name: Check code formatting with black
         run: black --check .
 
@@ -57,8 +57,8 @@ jobs:
             "https://api.github.com/repos/sfbrigade/datasci-earthquake/actions/workflows/env_vars.yml/runs?status=completed&conclusion=success")
           run_id=$(echo $response | jq '.workflow_runs[0].id')
           echo "Run ID: $run_id"
-          echo "run_id=$run_id" >> $GITHUB_ENV        
-      - name: Download .env Artifact 
+          echo "run_id=$run_id" >> $GITHUB_ENV
+      - name: Download .env Artifact
         uses: actions/download-artifact@v4
         with:
           name: encrypted-env-file
@@ -80,18 +80,18 @@ jobs:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-      
+            ${{ runner.os }}-buildx-
       - name: Build Docker Containers
-        run: docker compose build 
+        run: docker compose build
 
       - name: Start Services
-        run: docker compose up -d  
+        run: docker compose up -d --wait --wait-timeout 90
 
       - name: Run Backend Tests
         run: docker compose run backend pytest backend
 
       - name: Run Frontend Tests
-        run: docker compose run frontend npm test 
+        run: docker compose run frontend npm test
 
       - name: Clean Up
         run: docker compose down
