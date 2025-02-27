@@ -28,17 +28,15 @@ const SearchBar = ({
   onCoordDataRetrieve,
 }) => {
   const [address, setAddress] = useState("");
-  const [fullAddress, setFullAddress] = useState(null);
-  const [addressLine, setAddressLine] = useState("");
   const debug = useSearchParams().get("debug");
 
   // fires when X button in search box is clicked
   const handleClearClick = () => {
-    console.log(fullAddress);
     setAddress("");
   };
 
   /*
+    # User flow
     user types into search box
     mapbox API is called with search term to retrieve suggestions (which contain full address AND coordinates)
     suggestions show
@@ -68,9 +66,9 @@ const SearchBar = ({
     onAddressSearch(addressLine);
     const coords = addressData.geometry.coordinates;
     onSearchChange(coords);
-    setFullAddress(addressData);
     getCoordData(coords).then((values) => console.log("values", values));
     // TODO: use the values to update the hazard cards
+    // TODO: grab resolved address as well to update rest of UI
   };
 
   useEffect(() => {
@@ -84,11 +82,18 @@ const SearchBar = ({
   // will be called every time the user types or modifies the input value in the search box (and loses focus?)
   //
   // retrieve coordinates from Mapbox API by providing full address
-  const handleAddressChange = async (event) => {
-    // TODO: is this handler needed? (especially considering we have the data we need from AddressAutofill)
-    // setAddress(event.target.value);
-    /*
-    setFullAddress(event.target.value);
+  const handleAddressChange = (event) => {
+    setAddress(event.target.value);
+  };
+
+  // (gets fired when user presses enter (or if there was a submit button, when the user clicks it))
+  //
+  // see part b of comment above; do we even need to handle pressing enter?
+  // update coordinates
+  const onSubmit = async (event) => {
+    event.preventDefault();
+
+    const fullAddress = event.target.value;
 
     try {
       const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${fullAddress}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`;
@@ -101,23 +106,16 @@ const SearchBar = ({
         response_data.features.length > 0
       ) {
         onSearchChange(response_data.features[0].center);
+        // TODO: grab resolved address as well to update rest of UI
       }
     } catch (err) {
       console.log(err);
     }
-    */
-  };
-
-  // (gets fired when user presses enter (or if there was a submit button, when the user clicks it))
-  //
-  // update coordinates
-  const onSubmit = (event) => {
-    // event.preventDefault();
-    // onSearchChange(); // TODO: how to grab coordinates to pass to this function?
   };
 
   // gets metadata from Mapbox API for given coordinates
   const getCoordData = (coords = coordinates) => {
+    // TODO: convert from promises to async/await
     // Send coordinates to the backend
     const isSoftStory = fetch(
       `${API_ENDPOINTS.isSoftStory}?lon=${coords[0]}&lat=${coords[1]}`
