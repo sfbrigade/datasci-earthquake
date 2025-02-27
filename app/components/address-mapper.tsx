@@ -42,9 +42,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     <Flex direction="column">
       <HomeHeader />
       <Box w="base" h={{ base: "1400px", md: "1000px" }} m="auto">
-        <Box
-          h="100%"
-          overflow="hidden"
+        <Box h="100%"
+        overflow="hidden"
           position="relative"
         >
           <Box zIndex={10} top={0} position="absolute">
