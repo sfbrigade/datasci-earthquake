@@ -10,9 +10,11 @@ import {
 
 const Home = async () => {
   const headingData = Headings.home;
-  const softStoryData = await fetchSoftStories();
-  const tsunamiData = await fetchTsunami();
-  const liquefactionData = await fetchLiquefaction();
+  const [softStoryData, tsunamiData, liquefactionData] = await Promise.all([
+    fetchSoftStories(),
+    fetchTsunami(),
+    fetchLiquefaction(),
+  ]);
 
   return (
     <AddressMapper
