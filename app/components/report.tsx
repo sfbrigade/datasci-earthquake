@@ -5,12 +5,12 @@ import { AddressData } from "./__mocks__/address-data";
 import Share from "./share";
 import { CardContainer } from "./card-container";
 
-const Report = () => {
+const Report = ({ searchedAddress }: { searchedAddress: string }) => {
   return (
     <Center flexDirection="column">
       <Collapse
         endingHeight="64px"
-        in={!!AddressData.address}
+        in={searchedAddress.length > 0}
         style={{ overflow: "visible" }}
       >
         <Card
@@ -26,7 +26,7 @@ const Report = () => {
             alignItems="center"
             justifyContent={{
               base: "space-between",
-              xl: "center",
+              xl: "flex-end",
             }}
             position="relative"
             px={{ base: 0, md: 2 }}
@@ -52,7 +52,7 @@ const Report = () => {
                 color="gray.900"
                 pb="4px"
               >
-                {AddressData.address}
+                {searchedAddress}
               </Text>
             </Stack>
             <Share />

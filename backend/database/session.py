@@ -14,7 +14,7 @@ def _get_database_url() -> str:
 
 
 # Set up the database engine using settings
-engine = create_engine(_get_database_url(), echo=True)
+engine = create_engine(_get_database_url())
 
 # Create a session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

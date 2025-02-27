@@ -8,16 +8,23 @@ from backend.database.session import get_db
 from ..schemas.liquefaction_schemas import (
     LiquefactionFeature,
     LiquefactionFeatureCollection,
+    IsInLiquefactionZoneView,
 )
 from backend.api.models.liquefaction_zones import LiquefactionZone
+import logging
+
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
-    prefix="/liquefaction-zones",
+    prefix="/api/liquefaction-zones",
     tags=[Tags.LIQUEFACTION],
 )
 
 
-@router.get("/", response_model=LiquefactionFeatureCollection)
+@router.get("", response_model=LiquefactionFeatureCollection)
 async def get_liquefaction_zones(db: Session = Depends(get_db)):
     """
     Retrieve all liquefaction zones from the database.
@@ -31,7 +38,7 @@ async def get_liquefaction_zones(db: Session = Depends(get_db)):
     Raises:
         HTTPException: If no zones are found (404 error).
     """
-    # Query the database for all seismic zones
+    # Query the database for all liquefaction zones
     liquefaction_zones = db.query(LiquefactionZone).all()
 
     # If no zones are found, raise a 404 error
@@ -44,7 +51,7 @@ async def get_liquefaction_zones(db: Session = Depends(get_db)):
     return LiquefactionFeatureCollection(type="FeatureCollection", features=features)
 
 
-@router.get("/is-in-liquefaction-zone", response_model=bool)
+@router.get("/is-in-liquefaction-zone", response_model=IsInLiquefactionZoneView)
 async def is_in_liquefaction_zone(
     lon: float, lat: float, db: Session = Depends(get_db)
 ):
@@ -57,11 +64,43 @@ async def is_in_liquefaction_zone(
         db (Session): The database session dependency.
 
     Returns:
-        bool: True if the point is in a liquefaction zone, False otherwise.
+        IsInLiquefactionZoneView containing:
+            - exists: True if point is in a liquefaction zone
+            - last_updated: Timestamp of last update if exists, None otherwise
     """
-    query = db.query(LiquefactionZone).filter(
-        LiquefactionZone.geometry.ST_Contains(
-            geo_func.ST_SetSRID(geo_func.ST_GeomFromText(f"POINT({lon} {lat})"), 4326)
+    logger.info(f"Checking liquefaction zone for coordinates: lon={lon}, lat={lat}")
+
+    try:
+        zone = (
+            db.query(LiquefactionZone)
+            .filter(
+                LiquefactionZone.geometry.ST_Contains(
+                    geo_func.ST_SetSRID(
+                        geo_func.ST_GeomFromText(f"POINT({lon} {lat})"), 4326
+                    )
+                )
+            )
+            .first()
         )
-    )
-    return db.query(query.exists()).scalar()
+        exists = zone is not None
+        last_updated = zone.update_timestamp if zone else None
+
+        logger.info(
+            f"Liquefaction zone check result for coordinates: lon={lon}, lat={lat} - "
+            f"exists: {exists}, "
+            f"last_updated: {last_updated}"
+        )
+
+        return IsInLiquefactionZoneView(exists=exists, last_updated=last_updated)
+
+    except Exception as e:
+        logger.error(
+            f"Error checking liquefaction zone status for coordinates: lon={lon}, lat={lat}, "
+            f"error: {str(e)}",
+            exc_info=True,
+        )
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error checking liquefaction zone status for coordinates: lon={lon}, lat={lat}, "
+            f"error: {str(e)}",
+        )

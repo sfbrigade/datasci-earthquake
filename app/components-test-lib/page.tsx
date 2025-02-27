@@ -30,7 +30,11 @@ const ComponentsTestLib = () => {
       <VStack spacing={4} align="start">
         <HStack w="100%">
           <Box w="400px">
-            <SearchBar />
+            <SearchBar
+              coordinates={[0, 0]}
+              onSearchChange={() => {}}
+              onAddressSearch={() => {}}
+            />
           </Box>
         </HStack>
         <Divider mb={2} />

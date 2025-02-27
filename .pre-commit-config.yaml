@@ -23,6 +23,9 @@ repos:
           - "--config=.eslintrc.js"
           - "--cache"
           - "--ignore-pattern=node_modules/*"
+          - "--ignore-pattern=dist/*"
+          - "--ignore-pattern=.next/*"       
+          - "--ignore-pattern=next.config.js"
         entry: npm run lint
         language: node
         files: \.[jt]sx?$

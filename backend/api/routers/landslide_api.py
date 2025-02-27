@@ -30,7 +30,7 @@ async def get_landslide_zones(db: Session = Depends(get_db)):
     Raises:
         HTTPException: If no zones are found (404 error).
     """
-    # Query the database for all seismic zones
+    # Query the database for all landslide zones
     landslide_zones = (
         db.query(LandslideZone).filter(LandslideZone.gridcode.in_([8, 9, 10])).all()
     )

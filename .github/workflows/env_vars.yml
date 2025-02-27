@@ -19,13 +19,10 @@ jobs:
 
         envkey_NEON_URL: ${{ secrets.NEON_URL }}
         envkey_FRONTEND_HOST: ${{ secrets.FRONTEND_HOST }}
-        envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        envkey_LOCALHOST_DATABASE_URL: ${{ secrets.LOCALHOST_DATABASE_URL }}
         envkey_DATABASE_URL_SQLALCHEMY: ${{ secrets.DATABASE_URL_SQLALCHEMY }}
         envkey_DATABASE_URL_SQLALCHEMY_TEST: ${{ secrets.DATABASE_URL_SQLALCHEMY_TEST }}
         envkey_LOCALHOST_DATABASE_URL_SQLALCHEMY: ${{ secrets.LOCALHOST_DATABASE_URL_SQLALCHEMY }}
         envkey_ENVIRONMENT: local
-        envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
         envkey_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
         envkey_NEXT_PUBLIC_MAPBOX_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN }}
@@ -35,10 +32,14 @@ jobs:
         directory: './'
         fail_on_empty: false
         sort_keys: false
+    - name: Encrypt .env file using OpenSSL
+      run: openssl aes-256-cbc -salt -pbkdf2 -k "$ARTIFACT_PASS" -in .env -out .env.enc
+      env:
+        ARTIFACT_PASS: ${{ secrets.ARTIFACT_PASS }}        
 
-    - name: Upload .env as Artifact
+    - name: Upload .env as an encrypted Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: env-file
+        name: encrypted-env-file
         include-hidden-files: true
-        path: ./.env
+        path: ./.env.enc
