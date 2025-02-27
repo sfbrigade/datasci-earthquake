@@ -12,7 +12,14 @@ services:
     volumes:
       - .:/app:rw,delegated # Mount after dependencies are installed
       - /app/node_modules # This excludes the node_modules from being overwritten
-      - /app/.next/cache # Ensure the Next.js cache is properly mounted 
+      - /app/.next/cache # Ensure the Next.js cache is properly mounted
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:3000 || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
   backend:
     build:
       context: .
@@ -30,6 +37,13 @@ services:
       - ./backend:/backend
       - ./backend/etl/startup.sh:/startup.sh
     command: bash /startup.sh
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8000 || exit 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 1m
+
   db_test:
     image: postgis-custom
     container_name: my_postgis_db_test
