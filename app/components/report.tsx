@@ -12,19 +12,6 @@ const Report = ({
   searchedAddress: string;
   addressHazardData: object[];
 }) => {
-  const buildHazardCards = () => {
-    console.log("buildHazardCards", "addressHazardData: ", addressHazardData);
-    return Hazards.map((hazard, index) => {
-      return (
-        <CardHazard
-          key={hazard.id}
-          hazard={hazard}
-          hazardData={addressHazardData[index] ?? undefined}
-        />
-      );
-    });
-  };
-
   return (
     <Center flexDirection="column">
       <Collapse
@@ -79,8 +66,7 @@ const Report = ({
         </Card>
       </Collapse>
       <CardContainer>
-        {buildHazardCards()}
-        {/* {Hazards.map((hazard, index) => {
+        {Hazards.map((hazard, index) => {
           return (
             <CardHazard
               key={hazard.id}
@@ -88,7 +74,7 @@ const Report = ({
               hazardData={addressHazardData[index] ?? undefined}
             />
           );
-        })} */}
+        })}
       </CardContainer>
     </Center>
   );
