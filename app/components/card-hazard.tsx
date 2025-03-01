@@ -19,12 +19,6 @@ const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
   const { title, name, description } = hazard;
   const { exists, last_updated: date } = hazardData || {};
 
-  const buildPill = () => {
-    console.log("hazardData: ", hazardData);
-    console.log("risk: ", exists);
-    if (exists !== undefined) return <Pill exists={exists} />;
-  };
-
   const cardProps = {
     header: (
       <HStack>
@@ -41,8 +35,7 @@ const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
         >
           More info
         </Text>
-        {buildPill()}
-        {/* {risk ? <Pill risk={risk} /> : ""} */}
+        {exists !== undefined ? <Pill exists={exists} /> : ""}
       </HStack>
     ),
   };
