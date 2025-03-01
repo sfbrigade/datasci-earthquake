@@ -8,27 +8,26 @@ interface CardHazardProps {
     name: string;
     title: string;
     description: string;
-    update: string;
-    color: string;
+  };
+  hazardData?: {
+    exists?: boolean;
+    last_updated?: string;
   };
 }
 
-const CardHazard: React.FC<CardHazardProps> = ({
-  hazard: { title, name, description, update, color },
-}) => {
+const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
+  const { title, name, description } = hazard;
+  const { exists, last_updated: date } = hazardData || {};
+
+  const buildPill = () => {
+    console.log("hazardData: ", hazardData);
+    console.log("risk: ", exists);
+    if (exists !== undefined) return <Pill exists={exists} />;
+  };
+
   const cardProps = {
     header: (
       <HStack>
-        <svg width="19" height="18" viewBox="0 0 19 18" fill="none">
-          <circle
-            cx="9.5"
-            cy="9"
-            r="8.5"
-            fill={color}
-            stroke="white"
-            role="img"
-          />
-        </svg>
         <Text textStyle="textBig">{title}</Text>
       </HStack>
     ),
@@ -42,7 +41,8 @@ const CardHazard: React.FC<CardHazardProps> = ({
         >
           More info
         </Text>
-        <Pill name={name} />
+        {buildPill()}
+        {/* {risk ? <Pill risk={risk} /> : ""} */}
       </HStack>
     ),
   };

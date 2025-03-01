@@ -44,9 +44,7 @@ const ComponentsTestLib = () => {
       </Heading>
       <Text mb={4}>This section demonstrates Hazard Card component</Text>
       <VStack spacing={4} align="start">
-        <HStack w="100%">
-          <CardHazard hazard={Hazards[0]} />
-        </HStack>
+        <HStack w="100%">{/* <CardHazard hazard={Hazards[0]} /> */}</HStack>
         <Divider mb={2} />
       </VStack>
       <Text mb={4}>This section demonstrates Info Card component</Text>
