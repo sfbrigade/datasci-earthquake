@@ -2,29 +2,23 @@ export const Hazards = [
   {
     id: 1,
     name: "softStory",
-    title: "Soft story",
+    title: "Structural safety",
     description:
-      "Soft story buildings have less structural integrity in an earthquake",
-    update: "00-00-0000",
-    color: "#A0AEC0", // grey/400
+      "Soft story buildings may need reinforcement to stay safe in an earthquake.",
   },
   {
     id: 2,
-    name: "seismic",
-    title: "Seismic",
+    name: "liquefaction",
+    title: "Liquefaction zones",
     description:
-      "This region is known to experience more focused seismic activity",
-    update: "00-00-0000",
-    color: "#F6AD55", // orange/300
+      "These areas are on less stable ground, which can result in shifting or sinking during an earthquake.y",
   },
   {
     id: 3,
     name: "tsunami",
-    title: "Tsunami",
+    title: "Tsunami zones",
     description:
-      "These coastal areas can be at risk of flooding in the event of a tsunami",
-    update: "00-00-0000",
-    color: "#63B3ED", // blue/300
+      "Coastal areas can be at risk of flooding in the event of a tsunami.",
   },
 ];
 
@@ -101,3 +95,9 @@ export const Headings = {
     maxWidth: { base: "100%", md: "100%", xl: "842px" },
   },
 };
+
+export const mockAddressHazardData = [
+  { exists: false, last_updated: null },
+  { exists: false, last_updated: null },
+  { exists: false, last_updated: null },
+];

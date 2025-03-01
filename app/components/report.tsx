@@ -5,7 +5,26 @@ import { AddressData } from "./__mocks__/address-data";
 import Share from "./share";
 import { CardContainer } from "./card-container";
 
-const Report = ({ searchedAddress }: { searchedAddress: string }) => {
+const Report = ({
+  searchedAddress,
+  addressHazardData,
+}: {
+  searchedAddress: string;
+  addressHazardData: object[];
+}) => {
+  const buildHazardCards = () => {
+    console.log("buildHazardCards", "addressHazardData: ", addressHazardData);
+    return Hazards.map((hazard, index) => {
+      return (
+        <CardHazard
+          key={hazard.id}
+          hazard={hazard}
+          hazardData={addressHazardData[index] ?? undefined}
+        />
+      );
+    });
+  };
+
   return (
     <Center flexDirection="column">
       <Collapse
@@ -60,9 +79,16 @@ const Report = ({ searchedAddress }: { searchedAddress: string }) => {
         </Card>
       </Collapse>
       <CardContainer>
-        {Hazards.map((hazard) => {
-          return <CardHazard key={hazard.id} hazard={hazard} />;
-        })}
+        {buildHazardCards()}
+        {/* {Hazards.map((hazard, index) => {
+          return (
+            <CardHazard
+              key={hazard.id}
+              hazard={hazard}
+              hazardData={addressHazardData[index] ?? undefined}
+            />
+          );
+        })} */}
       </CardContainer>
     </Center>
   );
