@@ -25,6 +25,9 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
+# Install curl
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt /backend/requirements.txt
 
 COPY api /api
