@@ -8,17 +8,17 @@ export const Hazards = [
   },
   {
     id: 2,
-    name: "liquefaction",
-    title: "Liquefaction zones",
-    description:
-      "These areas are on less stable ground, which can result in shifting or sinking during an earthquake.y",
-  },
-  {
-    id: 3,
     name: "tsunami",
     title: "Tsunami zones",
     description:
       "Coastal areas can be at risk of flooding in the event of a tsunami.",
+  },
+  {
+    id: 3,
+    name: "liquefaction",
+    title: "Liquefaction zones",
+    description:
+      "These areas are on less stable ground, which can result in shifting or sinking during an earthquake.y",
   },
 ];
 
@@ -97,6 +97,6 @@ export const Headings = {
 
 export const mockAddressHazardData = [
   { exists: false, last_updated: null },
-  { exists: false, last_updated: null },
+  { exists: true, last_updated: null },
   { exists: false, last_updated: null },
 ];
