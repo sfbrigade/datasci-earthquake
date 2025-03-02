@@ -14,6 +14,7 @@ router = APIRouter(
     tags=[Tags.SYSTEM],
 )
 
+
 @router.get("")
 async def health_check():
     """
