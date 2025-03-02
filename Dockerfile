@@ -4,21 +4,19 @@
 
 FROM node:18-alpine
 
-WORKDIR /app
+# Install curl
+RUN apk add --no-cache curl
 
 # Create a non-privileged user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+WORKDIR /app
 
 # Copy package.json and install dependencies
 COPY ./package*.json ./
 RUN npm install
 
 # Copy the rest of the application code
-COPY . .
-
-
-# Change ownership of the app files
-RUN chown -R appuser:appgroup /app
+COPY --chown=appuser:appgroup . .
 
 # Switch to the non-privileged user
 USER appuser
@@ -26,4 +24,4 @@ USER appuser
 EXPOSE 3000
 
 # Start the Next.js application in development mode
-CMD ["npm", "run", "next-dev"]   
+CMD ["npm", "run", "next-dev"]
