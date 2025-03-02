@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import SearchBar from "./search-bar";
 import Heading, { HeadingProps } from "./heading";
@@ -32,6 +32,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 }) => {
   const [coordinates, setCoordinates] = useState(defaultCoords);
   const [searchedAddress, setSearchedAddress] = useState("");
+  const [addressHazardData, setAddressHazardData] = useState<any[]>([]);
 
   const updateMap = (coords: number[]) => {
     setCoordinates(coords);
@@ -54,6 +55,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             coordinates={coordinates}
             onSearchChange={updateMap}
             onAddressSearch={setSearchedAddress}
+            onCoordDataRetrive={setAddressHazardData}
           />
         </Box>
       </Box>
@@ -66,7 +68,10 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           position="relative"
         >
           <Box zIndex={10} top={0} position="absolute">
-            <Report searchedAddress={searchedAddress} />
+            <Report
+              searchedAddress={searchedAddress}
+              addressHazardData={addressHazardData}
+            />
           </Box>
           <Map
             coordinates={coordinates}

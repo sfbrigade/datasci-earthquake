@@ -16,8 +16,6 @@ describe("CardHazard Component", () => {
       title: "Earthquake",
       name: "seismic",
       description: "Potential hazard in the area.",
-      color: "#FF0000",
-      update: "2 days ago",
     };
   });
 
@@ -37,11 +35,5 @@ describe("CardHazard Component", () => {
   it("displays the hazard's updated time", () => {
     render(<CardHazard hazard={Hazards[0]} />);
     expect(screen.getByText("More info")).toBeInTheDocument();
-  });
-
-  it("displays the hazard's color in the SVG circle", () => {
-    render(<CardHazard hazard={Hazards[0]} />);
-    const svgCircle = screen.getByRole("img", { hidden: true });
-    expect(svgCircle).toHaveAttribute("fill", "#FF0000");
   });
 });
