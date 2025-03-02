@@ -8,7 +8,6 @@ import Map from "./map";
 import Report from "./report";
 import Information from "./information";
 import { FeatureCollection, Geometry } from "geojson";
-import { mockAddressHazardData } from "../data/data";
 
 const addressLookupCoordinates = {
   geometry: {
@@ -39,15 +38,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     setCoordinates(coords);
   };
 
-  useEffect(() => {
-    if (searchedAddress.length > 0) {
-      console.log("setAddressHazardData");
-      setAddressHazardData(mockAddressHazardData);
-    } else {
-      setAddressHazardData([]);
-    }
-  }, [searchedAddress]);
-
   return (
     <Flex direction="column">
       <Box bgColor="blue">
@@ -65,6 +55,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             coordinates={coordinates}
             onSearchChange={updateMap}
             onAddressSearch={setSearchedAddress}
+            onCoordDataRetrive={setAddressHazardData}
           />
         </Box>
       </Box>
