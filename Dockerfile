@@ -17,7 +17,7 @@ RUN npm install
 
 # Copy the rest of the application code
 COPY --chown=appuser:appgroup . .
-
+RUN mkdir -p .next && chmod -R 777 .next
 # Switch to the non-privileged user
 USER appuser
 
