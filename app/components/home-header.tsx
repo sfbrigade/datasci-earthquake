@@ -5,7 +5,17 @@ import SearchBar from "./search-bar";
 import Heading from "./heading";
 import { Headings } from "../data/data";
 
-const HomeHeader = () => {
+interface HomeHeaderProps {
+  coordinates: number[];
+  onSearchChange: (coords: number[]) => void;
+  onAddressSearch: (address: string) => void;
+}
+
+const HomeHeader = ({
+  coordinates,
+  onSearchChange,
+  onAddressSearch,
+}: HomeHeaderProps) => {
   const headingData = Headings.home;
 
   return (
@@ -26,7 +36,11 @@ const HomeHeader = () => {
           Supporting the City of San Francisco’s initiative to increase the
           earthquake safety of its multifamily residences.
         </Text>
-        <SearchBar />
+        <SearchBar
+          coordinates={coordinates}
+          onSearchChange={onSearchChange}
+          onAddressSearch={onAddressSearch}
+        />
       </Box>
     </Box>
   );

@@ -40,7 +40,11 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
   return (
     <Flex direction="column">
-      <HomeHeader />
+      <HomeHeader
+        coordinates={coordinates}
+        onSearchChange={updateMap}
+        onAddressSearch={setSearchedAddress}
+      />
       <Box w="base" h={{ base: "1400px", md: "1000px" }} m="auto">
         <Box h="100%" overflow="hidden" position="relative">
           <Box zIndex={10} top={0} position="absolute">
