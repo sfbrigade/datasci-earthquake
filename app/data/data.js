@@ -93,10 +93,10 @@ export const Headings = {
     highlightStyle: { color: "yellow" },
   },
   about: {
-    text: "Our mission is to consectetur vestibulum purus nec tellus",
-    highlight: "Our mission is to",
-    style: { color: "blue", fontWeight: "700" },
-    highlightStyle: { fontWeight: "400", color: "grey.900" },
+    text: "Earthquake safety starts with knowledge. We're here to help.",
+    highlight: "",
+    style: { color: "blue", fontWeight: "300", paddingRight: "100" },
+    highlightStyle: {},
     maxWidth: { base: "100%", md: "100%", xl: "842px" },
   },
 };

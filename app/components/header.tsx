@@ -15,13 +15,17 @@ const Header = () => {
       w="100%"
       position={isHome ? "absolute" : undefined}
       top={isHome ? "0" : undefined}
-      p={{
-        base: "19px 23px 8px 23px",
-        md: "26px 26px 14px 26px",
-        xl: "29px 127px 13px 127px",
-      }}
     >
-      <HStack justifyContent="space-between">
+      <HStack
+        w={{ base: "base", xl: "xl" }}
+        justifyContent="space-between"
+        m="auto"
+        p={{
+          base: "19px 23px 8px 23px",
+          md: "26px 26px 14px 26px",
+          xl: "29px 127px 13px 127px",
+        }}
+      >
         <Link as={NextLink} color="white" href="/">
           <HStack align="center">
             <Image
