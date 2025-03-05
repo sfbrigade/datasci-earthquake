@@ -91,7 +91,6 @@ export const Headings = {
     highlight: "Learn about",
     style: {},
     highlightStyle: { color: "yellow" },
-    maxWidth: { base: "332px", md: "457px", xl: "546px" },
   },
   about: {
     text: "Our mission is to consectetur vestibulum purus nec tellus",

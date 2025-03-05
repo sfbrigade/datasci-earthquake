@@ -9,3 +9,4 @@ class Tags(Enum):
     POLYGONS = "polygons"
     LANDSLIDE = "landslide"
     LIQUEFACTION = "liquefaction"
+    SYSTEM = "system"
