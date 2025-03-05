@@ -3,10 +3,6 @@ import { Providers } from "./providers";
 import Header from "./components/header";
 import Footer from "./components/footer";
 
-import "@fontsource/inter/400.css";
-import "@fontsource/inter/500.css";
-import "@fontsource/inter/700.css";
-
 import { Manrope } from "next/font/google";
 
 const manrope = Manrope({
@@ -15,7 +11,7 @@ const manrope = Manrope({
 });
 
 export const metadata = {
-  title: "SF Safe Home",
+  title: "SafeHome",
   description: "Learn about your home's earthquake readiness",
 };
 

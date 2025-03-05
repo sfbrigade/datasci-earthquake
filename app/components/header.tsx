@@ -34,7 +34,7 @@ const Header = () => {
               }}
             />
             <Text textStyle="logo" color="white">
-              SF QuakeSafe
+              SafeHome
             </Text>
           </HStack>
         </Link>
