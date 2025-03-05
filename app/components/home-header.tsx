@@ -24,15 +24,16 @@ const HomeHeader = ({
       paddingTop={{ base: "57px", md: "76px", xl: "78px" }}
     >
       <Box
-        w={{ base: "100%", md: "65%" }}
+        w={{ base: "base", xl: "xl" }}
         p={{
           base: "35px 23px 40px 23px",
           md: "42px 0px 46px 26px",
           xl: "43px 0px 46px 127px",
         }}
+        margin="auto"
       >
         <Heading headingData={headingData} />
-        <Text textStyle="headerSmall" mb="30px">
+        <Text textStyle="headerSmall" mb="30px" pr="300px">
           Supporting the City of San Francisco’s initiative to increase the
           earthquake safety of its multifamily residences.
         </Text>

@@ -89,7 +89,7 @@ export const Headings = {
   home: {
     text: "Learn about your home’s earthquake readiness.",
     highlight: "Learn about",
-    style: {},
+    style: { paddingRight: "200" },
     highlightStyle: { color: "yellow" },
   },
   about: {
