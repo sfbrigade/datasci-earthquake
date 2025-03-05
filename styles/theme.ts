@@ -2,8 +2,8 @@ import { extendTheme, textDecoration } from "@chakra-ui/react";
 
 const customTheme = extendTheme({
   fonts: {
-    body: "Inter, sans-serif",
-    heading: "Inter, sans-serif",
+    body: "Manrope, sans-serif",
+    heading: "Manrope, sans-serif",
   },
   textStyles: {
     logo: {
