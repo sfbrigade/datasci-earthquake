@@ -45,7 +45,9 @@ services:
       start_period: 30s
 
   db_test:
-    image: postgis-custom
+    build:
+      context: ./backend/database
+      dockerfile: Dockerfile
     container_name: my_postgis_db_test
     restart: always
     env_file:
