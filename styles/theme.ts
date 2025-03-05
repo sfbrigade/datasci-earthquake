@@ -19,7 +19,7 @@ const customTheme = extendTheme({
     },
     headerMedium: {
       fontSize: ["2xl", "2xl", "3xl", "3xl", "3xl", "3xl"],
-      fontWeight: "bold",
+      fontWeight: "500",
       color: "blue",
     },
     headerSmall: {
@@ -29,7 +29,7 @@ const customTheme = extendTheme({
     },
     textBig: {
       fontSize: "xl",
-      fontWeight: "bold",
+      fontWeight: "normal",
       color: "blue",
     },
     textMedium: {

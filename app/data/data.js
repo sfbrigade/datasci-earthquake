@@ -89,13 +89,13 @@ export const Headings = {
   home: {
     text: "Learn about your home’s earthquake readiness.",
     highlight: "Learn about",
-    style: { paddingRight: "200" },
+    style: { paddingRight: "200", marginBottom: "30" },
     highlightStyle: { color: "yellow" },
   },
   about: {
     text: "Earthquake safety starts with knowledge. We're here to help.",
     highlight: "",
-    style: { color: "blue", fontWeight: "300", paddingRight: "100" },
+    style: { color: "blue", fontWeight: "300", paddingRight: "50" },
     highlightStyle: {},
     maxWidth: { base: "100%", md: "100%", xl: "842px" },
   },
