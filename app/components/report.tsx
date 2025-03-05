@@ -19,11 +19,11 @@ const Report = ({ searchedAddress }: { searchedAddress: string }) => {
   return (
     <Center flexDirection="column">
       <Collapse
-        endingHeight="64px"
+        endingHeight="74px"
         in={searchedAddress.length > 0}
         style={{ overflow: "visible" }}
       >
-        <Card
+        <Box
           w="100vw"
           py={2}
           borderBottomWidth="1px"
@@ -34,15 +34,15 @@ const Report = ({ searchedAddress }: { searchedAddress: string }) => {
           alignItems="center"
         >
           <Stack
-            w={{ base: "95%", xl: "1100px" }}
+            w={{ base: "base", xl: "xl" }}
+            px={{
+              base: "23px",
+              md: "26px",
+              xl: "127px",
+            }}
             direction={{ base: "column", sm: "row" }}
             alignItems="center"
-            justifyContent={{
-              base: "space-between",
-              xl: "flex-end",
-            }}
-            position="relative"
-            px={{ base: 0, md: 2 }}
+            justifyContent="space-between"
           >
             <Stack
               direction={{ base: "column", md: "row" }}
@@ -68,7 +68,7 @@ const Report = ({ searchedAddress }: { searchedAddress: string }) => {
             </Stack>
             <Share />
           </Stack>
-        </Card>
+        </Box>
       </Collapse>
       <Box
         w="100vw"
