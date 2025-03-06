@@ -104,8 +104,8 @@ def test_parse_data_address_in_mapbox(handler, mock_mapbox_manager):
     parsed = handler.parse_data(sf_data)
 
     # Assert
-    assert len(parsed) == 1
-    result = parsed[0]
+    assert len(parsed) == 2
+    result = parsed[0][0]
 
     # Because the address is found in Mapbox GeoJSON,
     # the parse_data method uses the coordinates from the manager
@@ -166,8 +166,8 @@ def test_parse_data_address_not_in_mapbox(handler, mock_mapbox_manager):
     parsed = handler.parse_data(sf_data)
 
     # Assert
-    assert len(parsed) == 1
-    result = parsed[0]
+    assert len(parsed) == 2
+    result = parsed[0][0]
 
     # The fill_in_missing_mapbox_points method should update
     # the point from the batch geocode.
@@ -226,8 +226,8 @@ def test_parse_data_address_not_in_mapbox_and_no_geometry(handler, mock_mapbox_m
     parsed = handler.parse_data(sf_data)
 
     # Assert
-    assert len(parsed) == 1
-    result = parsed[0]
+    assert len(parsed) == 2
+    result = parsed[0][0]
 
     # Because geometry was None and batch geocoding didn't resolve anything:
     #  - point remains None
@@ -292,8 +292,8 @@ def test_parse_data_address_not_in_mapbox_but_has_sf_geometry(
     parsed = handler.parse_data(sf_data)
 
     # Assert
-    assert len(parsed) == 1
-    result = parsed[0]
+    assert len(parsed) == 2
+    result = parsed[0][0]
 
     # SF geometry should remain because Mapbox doesn't have or return anything
     assert result["point"] == "Point(-122.4167 37.7833)"
@@ -363,8 +363,8 @@ def test_parse_data_address_in_mapbox_but_mapbox_has_none_coordinates(
     parsed = handler.parse_data(sf_data)
 
     # Assert
-    assert len(parsed) == 1
-    result = parsed[0]
+    assert len(parsed) == 2
+    result = parsed[0][0]
 
     # Because Mapbox's coordinates are None, we expect the SF geometry to be used
     assert (
