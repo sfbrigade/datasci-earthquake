@@ -9,12 +9,47 @@ import {
   ListItem,
 } from "@chakra-ui/react";
 import Heading from "../components/heading";
-import { Headings } from "../data/data";
+import { Headings, DataInfoLinks, TeamMembers } from "../data/data";
 import NextLink from "next/link";
 import Image from "next/image";
 
 const About = () => {
   const headingData = Headings.about;
+
+  const buildInfoLinks = () => {
+    return DataInfoLinks.map((dataInfolink) => {
+      return (
+        <ListItem key={dataInfolink.id}>
+          {buildLink(dataInfolink.url, dataInfolink.label)}
+        </ListItem>
+      );
+    });
+  };
+
+  const buildLink = (url: string, label: string) => {
+    return (
+      <Link as={NextLink} color="black" href={url} textDecoration="underline">
+        {label}
+      </Link>
+    );
+  };
+
+  const buildTeamMembers = () => {
+    return TeamMembers.map((teamMember) => {
+      return (
+        <ListItem key={teamMember.id} mb="5px">
+          <Text>
+            <Text as="span" fontWeight={800}>
+              {teamMember.name}
+              {" - "}
+            </Text>
+            {teamMember.role}
+          </Text>
+        </ListItem>
+      );
+    });
+  };
+
   return (
     <Flex
       w={{ base: "base", xl: "xl" }}
@@ -26,7 +61,7 @@ const About = () => {
       m="auto"
       gap="46px"
     >
-      <Flex direction="column" alignItems={"flex-start"} gap="60px">
+      <Flex direction="column" alignItems={"flex-start"} gap="50px">
         <Heading headingData={headingData} />
         <Text textStyle="textBig" color="black">
           Seismologists predict a 72% probability that the Bay Area will
@@ -67,50 +102,48 @@ const About = () => {
           <Text textStyle="textMedium">
             For more information on the data, please visit:
           </Text>
-          <UnorderedList>
-            <ListItem>
-              <Link
-                as={NextLink}
-                color="black"
-                href="https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data"
-                textDecoration="underline"
-              >
-                Soft Story Dataset
-              </Link>
-            </ListItem>
-            <ListItem>
-              <Link
-                as={NextLink}
-                color="black"
-                href="https://data.sfgov.org/Geographic-Locations-and-Boundaries/Soil-Liquefaction-Hazard-Zone/i4t7-35u3/about_data"
-                textDecoration="underline"
-              >
-                Liquefaction Dataset
-              </Link>
-            </ListItem>
-            <ListItem>
-              <Link
-                as={NextLink}
-                color="black"
-                href="https://www.conservation.ca.gov/cgs/tsunami/maps"
-                textDecoration="underline"
-              >
-                Tsunami Dataset
-              </Link>
-            </ListItem>
-          </UnorderedList>
+          <UnorderedList>{buildInfoLinks()}</UnorderedList>
           <Text textStyle="textMedium">
             For details on the City of San Francisco’s seismic compliance
             requirements, see{" "}
-            <Link
-              as={NextLink}
-              color="black"
-              href="https://codelibrary.amlegal.com/codes/san_francisco/latest/sf_building/0-0-0-88754"
-              textDecoration="underline"
-            >
-              Section 504E
-            </Link>{" "}
+            {buildLink(
+              "https://codelibrary.amlegal.com/codes/san_francisco/latest/sf_building/0-0-0-88754",
+              "Section 504E"
+            )}{" "}
             of the San Francisco Building Inspection Commission Code.
+          </Text>
+        </VStack>
+        <VStack alignItems="flex-start">
+          <Text textStyle="headerMedium">Meet the team</Text>
+          <Text textStyle="textMedium">
+            SafeHome is run by a volunteer team at{" "}
+            {buildLink("https://www.sfcivictech.org/about/", "SF Civic Tech")} ,
+            a diverse group of technologists, creatives, and data scientists
+            building tools to help communities access important services and
+            solve local challenges. 
+          </Text>
+          <UnorderedList listStyleType="none" mb="40px">
+            {buildTeamMembers()}
+          </UnorderedList>
+          <Text>
+            <Text as="span" fontWeight={800}>
+              Interested in joining SF Civic Tech?
+            </Text>{" "}
+            Whether you’re into coding, design, research, or just want to help
+            out, there’s a place for you here.{" "}
+            {buildLink("https://www.sfcivictech.org/get-started/", "Join us")}{" "}
+            to make a difference or explore other civic tech projects helping
+            our city thrive!
+          </Text>
+          <Text>
+            <Text as="span" fontWeight={800}>
+              Have a question or feedback about SafeHome?
+            </Text>{" "}
+            You can get in touch with us at{" "}
+            {buildLink("mailto:hello@sfcivictech.org", "hello@sfcivictech.org")}
+            . Friendly reminder: our team is run entirely by volunteers and it
+            may take some time to direct your message to the right folks! We’ll
+            do our best to get back to you as soon as we can.
           </Text>
         </VStack>
       </Flex>
