@@ -38,12 +38,12 @@ services:
       - ./backend/etl/startup.sh:/startup.sh
       - ./public:/public
     command: bash /startup.sh
-    healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1" ]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 70s
+    # healthcheck:
+    #   test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1" ]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 10
+    #   start_period: 70s
 
   db_test:
     build:
@@ -57,12 +57,12 @@ services:
       - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
     ports:
       - 5433:5432
-    # healthcheck:
-    #   test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 5
-    #   start_period: 30s
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     depends_on:
       - db
   db:
