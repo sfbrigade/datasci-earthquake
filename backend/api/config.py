@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     next_public_mapbox_token: str
     node_env: str
     environment: str = "local"
+    next_public_cdn_url: str
 
     class Config:
         env_file = ".env"

@@ -17,16 +17,18 @@ class LandslideDataHandler(DataHandler):
     landslides
     """
 
-    def parse_data(self, data: dict) -> list[dict]:
+    def parse_data(self, data: dict) -> tuple[list[dict], dict]:
         """
-        Parses fetched GeoJSON data and returns a list of dictionaries
-        representing address records
+        Parses fetched GeoJSON data and returns:
+        - A list of dictionaries representing address records
+        - A dictionary representing the same data in GeoJSON format.
 
         Geometry data is converted into a GeoAlchemy-compatible
         MultiPolygon with srid 4326.
         """
         features = data["features"]
         parsed_data = []
+        geojson_features = []
 
         for feature in features:
             properties = feature.get("properties", {})
@@ -44,14 +46,25 @@ class LandslideDataHandler(DataHandler):
                 "shape_area": properties.get("shape_area"),
             }
             parsed_data.append(lanslide_zone)
-        return parsed_data
+
+            # Constructing GeoJSON feature
+            geojson_feature = {
+                "type": "Feature",
+                "geometry": geometry,
+                "properties": {},
+            }
+            geojson_features.append(geojson_feature)
+        geojson = {"type": "FeatureCollection", "features": geojson_features}
+        return parsed_data, geojson
 
 
 if __name__ == "__main__":
     handler = LandslideDataHandler(LANDSLIDE_URL, LandslideZone)
     try:
         lanslide_zones = handler.fetch_data()
-        lanslide_zone_objects = handler.parse_data(lanslide_zones)
+        lanslide_zone_objects, landslide_zone_geojson = handler.parse_data(
+            lanslide_zones
+        )
         handler.bulk_insert_data(lanslide_zone_objects, "identifier")
     except HTTPException as e:
         print(f"Failed after retries: {e}")
