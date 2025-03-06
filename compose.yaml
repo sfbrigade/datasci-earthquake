@@ -37,7 +37,7 @@ services:
       - ./backend:/backend
       - ./backend/etl/startup.sh:/startup.sh
       - ./public:/public
-    command: bash /startup.sh
+    command: /usr/bin/time -v bash /startup.sh
     # healthcheck:
       # test: [ "CMD-SHELL", "echo 'Healthy' || exit 1" ]
       # interval: 10s
