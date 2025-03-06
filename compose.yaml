@@ -42,8 +42,8 @@ services:
       test: [ "CMD-SHELL", "echo 'Healthy' || exit 1" ]
       interval: 10s
       timeout: 5s
-      retries: 10
-      start_period: 60s
+      retries: 15
+      start_period: 90s
 
   db_test:
     build:
