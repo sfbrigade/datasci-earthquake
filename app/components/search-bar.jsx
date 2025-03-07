@@ -21,14 +21,7 @@ import { mockAddressHazardData as values } from "../data/data";
 import { data } from "autoprefixer";
 import { API_ENDPOINTS } from "../api/endpoints";
 
-/*
-- bbox((string | LngLatBoundsLike)): Limit results to only those contained within the supplied bounding box.
-- country(string): An ISO 3166 alpha-2 country code to be returned. If not specified, results will not be filtered by country.
-- language(string): The IETF language tag to be returned. If not specified, en will be used.
-- limit((string | number)): The number of results to return, up to 10 .
-- proximity((string | LngLatLike)): Bias the response to favor results that are closer to this location. Provide a point coordinate provided as a LngLatLike , or use the string ip to use the requester's IP address.
-- streets((string | boolean)): If enabled, street results may be returned in addition to addresses. Defaults to true .
-*/
+// TODO: share bbox options with what's in `map.tsx`
 const options = {
   bbox: [
     [-122.6, 37.65], // Southwest coordinates
@@ -78,7 +71,7 @@ const SearchBar = ({
   // extract feature data (address, coordinates) from response and:
   // - update full address
   // - retrieve additional data about coordinates from our API
-  // //- retrieve associated coordinates from our API
+  // - retrieve associated coordinates from our API
   const handleRetrieve = (event) => {
     const addressData = event.features[0];
     const addressLine = event.features[0].properties.feature_name;
@@ -105,7 +98,7 @@ const SearchBar = ({
     setAddress(event.target.value);
   };
 
-  // (gets fired when user presses enter (or if there was a submit button, when the user clicks it))
+  // (gets fired when user presses enter--or if there was a submit button, when the user clicks it)
   //
   // see part b of comment above; do we even need to handle pressing enter?
   // update coordinates
