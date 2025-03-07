@@ -29,7 +29,7 @@ const Footer = () => {
         align={isHome ? "right" : undefined}
         m="auto"
       >
-        © 2024 SF Civic Tech
+        © 2025 SF Civic Tech
       </Text>
     </Box>
   );

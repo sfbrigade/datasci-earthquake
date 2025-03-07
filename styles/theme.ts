@@ -2,8 +2,8 @@ import { extendTheme, textDecoration } from "@chakra-ui/react";
 
 const customTheme = extendTheme({
   fonts: {
-    body: "Inter, sans-serif",
-    heading: "Inter, sans-serif",
+    body: "Manrope, sans-serif",
+    heading: "Manrope, sans-serif",
   },
   textStyles: {
     logo: {
@@ -19,7 +19,7 @@ const customTheme = extendTheme({
     },
     headerMedium: {
       fontSize: ["2xl", "2xl", "3xl", "3xl", "3xl", "3xl"],
-      fontWeight: "bold",
+      fontWeight: "500",
       color: "blue",
     },
     headerSmall: {
@@ -29,7 +29,7 @@ const customTheme = extendTheme({
     },
     textBig: {
       fontSize: "xl",
-      fontWeight: "bold",
+      fontWeight: "normal",
       color: "blue",
     },
     textMedium: {
@@ -65,7 +65,7 @@ const customTheme = extendTheme({
     orange: "#F6AD55",
     pink: "#ED64A6",
     gradient: {
-      blue: "radial-gradient(160.55% 242.16% at 17.81% 82.6%, #3B6294 0%, #183252 100%)",
+      blue: "radial-gradient(120% 180% at 17.81% 82.6%, rgba(59,98,148,1) 0%, rgba(24,50,82,1) 100%);",
     },
   },
   space: {

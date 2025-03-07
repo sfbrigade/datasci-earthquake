@@ -53,7 +53,7 @@ describe("Header component", () => {
     (usePathname as jest.Mock).mockReturnValue("/");
     renderComponent();
 
-    expect(screen.getByText("SF QuakeSafe")).toBeInTheDocument();
+    expect(screen.getByText("SafeHome")).toBeInTheDocument();
     const aboutLink = screen.getByRole("link", { name: /about/i });
     expect(aboutLink).toHaveAttribute("href", "/about");
   });
@@ -62,7 +62,7 @@ describe("Header component", () => {
     (usePathname as jest.Mock).mockReturnValue("/about");
     renderComponent();
 
-    expect(screen.getByText("SF QuakeSafe")).toBeInTheDocument();
+    expect(screen.getByText("SafeHome")).toBeInTheDocument();
 
     const backToHomeLink = screen.getByRole("link", { name: /back to home/i });
     expect(backToHomeLink).toHaveAttribute("href", "/");
