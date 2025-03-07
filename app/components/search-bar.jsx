@@ -21,6 +21,25 @@ import { mockAddressHazardData as values } from "../data/data";
 import { data } from "autoprefixer";
 import { API_ENDPOINTS } from "../api/endpoints";
 
+/*
+- bbox((string | LngLatBoundsLike)): Limit results to only those contained within the supplied bounding box.
+- country(string): An ISO 3166 alpha-2 country code to be returned. If not specified, results will not be filtered by country.
+- language(string): The IETF language tag to be returned. If not specified, en will be used.
+- limit((string | number)): The number of results to return, up to 10 .
+- proximity((string | LngLatLike)): Bias the response to favor results that are closer to this location. Provide a point coordinate provided as a LngLatLike , or use the string ip to use the requester's IP address.
+- streets((string | boolean)): If enabled, street results may be returned in addition to addresses. Defaults to true .
+*/
+const options = {
+  bbox: [
+    [-122.6, 37.65], // Southwest coordinates
+    [-122.25, 37.85], // Northeast coordinates
+  ],
+  country: "US",
+  limit: 10,
+  // proximity: , // TODO: consider passing in current center of map
+  streets: false,
+};
+
 const SearchBar = ({
   coordinates,
   onSearchChange,
@@ -91,26 +110,28 @@ const SearchBar = ({
   // see part b of comment above; do we even need to handle pressing enter?
   // update coordinates
   const onSubmit = async (event) => {
+    console.log("onSubmit", event.target.value);
     event.preventDefault();
 
-    const fullAddress = event.target.value;
+    // TODO: capture address on submit OR use first autocomplete suggestion
+    // const fullAddress = event.target.value;
 
-    try {
-      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${fullAddress}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`;
-      const response = await fetch(url);
-      const response_data = await response.json();
+    // try {
+    //   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${fullAddress}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`;
+    //   const response = await fetch(url);
+    //   const response_data = await response.json();
 
-      if (
-        response_data &&
-        response_data.features &&
-        response_data.features.length > 0
-      ) {
-        onSearchChange(response_data.features[0].center);
-        // TODO: grab resolved address as well to update rest of UI
-      }
-    } catch (err) {
-      console.log(err);
-    }
+    //   if (
+    //     response_data &&
+    //     response_data.features &&
+    //     response_data.features.length > 0
+    //   ) {
+    //     onSearchChange(response_data.features[0].center);
+    //     // TODO: grab resolved address as well to update rest of UI
+    //   }
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   // gets metadata from Mapbox API for given coordinates
@@ -174,6 +195,7 @@ const SearchBar = ({
       )}
       <DynamicAddressAutofill
         accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+        options={options}
         onRetrieve={handleRetrieve}
       >
         <InputGroup
