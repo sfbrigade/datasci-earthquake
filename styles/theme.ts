@@ -24,7 +24,7 @@ const customTheme = extendTheme({
     },
     headerSmall: {
       fontSize: ["lg", "lg", "lg", "lg", "xl", "xl"],
-      fontWeight: "bold",
+      fontWeight: "normal",
       color: "white",
     },
     textBig: {
@@ -58,13 +58,14 @@ const customTheme = extendTheme({
     white: "#FFF",
     blue: "#2C5282",
     lightBlue: "#3182CE",
+    tsunamiBlue: "#63B3ED",
     yellow: "#ECC94B",
     red: "#C53030",
     green: "#25855A",
     orange: "#F6AD55",
     pink: "#ED64A6",
     gradient: {
-      blue: "radial-gradient(circle, #3B6294 0%, #183252 100%)",
+      blue: "radial-gradient(160.55% 242.16% at 17.81% 82.6%, #3B6294 0%, #183252 100%)",
     },
   },
   space: {

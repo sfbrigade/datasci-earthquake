@@ -17,7 +17,7 @@ import {
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
-import { ENDPOINTS } from "../api/endpoints";
+import { API_ENDPOINTS } from "../api/endpoints";
 
 // TODO: share bbox options with what's in `map.tsx`
 const options = {
@@ -31,8 +31,10 @@ const options = {
   streets: false,
 };
 
-const SearchBar = ({ coordinates, onSearchChange }) => {
+const SearchBar = ({ coordinates, onSearchChange, onAddressSearch }) => {
   const [address, setAddress] = useState("");
+  const [fullAddress, setFullAddress] = useState(null);
+  const [addressLine, setAddressLine] = useState("");
   const debug = useSearchParams().get("debug");
 
   // fires when X button in search box is clicked
@@ -71,7 +73,11 @@ const SearchBar = ({ coordinates, onSearchChange }) => {
     onSearchChange(coords);
     getCoordData(coords).then((values) => console.log("values", values));
     // TODO: use the values to update the hazard cards
-    // TODO: grab resolved address as well to update rest of UI
+    // TODO: combine setFullAddress and onAddressSearch as they appear to both do the same thing
+
+    const addressLine = addressData.properties.feature_name;
+    onAddressSearch(addressLine);
+    setFullAddress(addressData);
   };
 
   // will be called every time the user types or modifies the input value in the search box (and loses focus?)
@@ -87,6 +93,7 @@ const SearchBar = ({ coordinates, onSearchChange }) => {
   // update coordinates
   const onSubmit = async (event) => {
     console.log("onSubmit", event.target.value);
+    console.log("fullAddress", fullAddress);
     event.preventDefault();
 
     // TODO: capture address on submit OR use first autocomplete suggestion
@@ -115,15 +122,15 @@ const SearchBar = ({ coordinates, onSearchChange }) => {
     // TODO: convert from promises to async/await
     // Send coordinates to the backend
     const isSoftStory = fetch(
-      `${ENDPOINTS.isSoftStory}?lon=${coords[0]}&lat=${coords[1]}`
+      `${API_ENDPOINTS.isSoftStory}?lon=${coords[0]}&lat=${coords[1]}`
     ).then((response) => response.json());
 
     const isInTsunamiZone = fetch(
-      `${ENDPOINTS.isInTsunamiZone}?lon=${coords[0]}&lat=${coords[1]}`
+      `${API_ENDPOINTS.isInTsunamiZone}?lon=${coords[0]}&lat=${coords[1]}`
     ).then((response) => response.json());
 
     const isInLiquefactionZone = fetch(
-      `${ENDPOINTS.isInLiquefactionZone}?lon=${coords[0]}&lat=${coords[1]}`
+      `${API_ENDPOINTS.isInLiquefactionZone}?lon=${coords[0]}&lat=${coords[1]}`
     ).then((response) => response.json());
 
     return Promise.all([isSoftStory, isInTsunamiZone, isInLiquefactionZone]);
@@ -198,6 +205,7 @@ const SearchBar = ({ coordinates, onSearchChange }) => {
             borderRadius="50"
             bgColor="white"
             focusBorderColor="yellow"
+            boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
             type="text"
             name="address-1"
             value={address}
@@ -209,14 +217,16 @@ const SearchBar = ({ coordinates, onSearchChange }) => {
             _invalid={{ borderColor: "red" }}
             autoComplete="address-line1"
           />
-          <InputRightElement>
-            <RxCross2
-              color="grey.900"
-              fontSize="1.1em"
-              data-testid="clear-icon"
-              onClick={handleClearClick}
-            />
-          </InputRightElement>
+          {address.length != 0 && (
+            <InputRightElement>
+              <RxCross2
+                color="grey.900"
+                fontSize="1.1em"
+                data-testid="clear-icon"
+                onClick={handleClearClick}
+              />
+            </InputRightElement>
+          )}
         </InputGroup>
       </DynamicAddressAutofill>
     </form>

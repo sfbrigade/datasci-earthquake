@@ -25,6 +25,9 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
+# Install curl
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt /backend/requirements.txt
 
 COPY api /api
@@ -35,6 +38,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # Copy the source code into the container.
 COPY backend ./backend
+
+# Copy the pytest configuration file to ensure pytest logs are captured
+# in the container to assert test results.
+COPY pytest.ini .
 
 RUN chmod +x ./backend/etl/startup.sh
 

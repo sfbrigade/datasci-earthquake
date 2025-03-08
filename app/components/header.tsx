@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, HStack, Text, Link } from "@chakra-ui/react";
+import { Box, HStack, Text, Link, Image } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import NextLink from "next/link";
 
@@ -11,23 +11,36 @@ const Header = () => {
   return (
     <Box
       as="header"
-      bg={isHome ? "white" : "gradient.blue"}
-      w={{ base: "base", xl: "xl" }}
+      bg={isHome ? undefined : "gradient.blue"}
+      w="100%"
+      position={isHome ? "absolute" : undefined}
+      top={isHome ? "0" : undefined}
       p={{
         base: "19px 23px 8px 23px",
-        md: "26px 27px 14px 26px",
+        md: "26px 26px 14px 26px",
         xl: "29px 127px 13px 127px",
       }}
     >
       <HStack justifyContent="space-between">
-        <Link as={NextLink} color={isHome ? "blue" : "white"} href="/">
-          <Text textStyle="logo" color={isHome ? "" : "white"}>
-            SF QuakeSafe
-          </Text>
+        <Link as={NextLink} color="white" href="/">
+          <HStack align="center">
+            <Image
+              src="/SFSafeHome-logo.svg"
+              alt="Logo"
+              color="white"
+              boxSize={{
+                base: "22px",
+                md: "28px",
+              }}
+            />
+            <Text textStyle="logo" color="white">
+              SF QuakeSafe
+            </Text>
+          </HStack>
         </Link>
         {isHome ? (
-          <Link as={NextLink} color="blue" href="/about">
-            <Text textStyle="textMedium" color="blue">
+          <Link as={NextLink} color="white" href="/about">
+            <Text textStyle="textMedium" color="white">
               About
             </Text>
           </Link>
