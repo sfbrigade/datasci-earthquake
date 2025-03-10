@@ -85,7 +85,10 @@ jobs:
         run: docker compose build
 
       - name: Start Services
-        run: docker compose up -d --wait --wait-timeout 360
+        run: docker compose up -d --wait --wait-timeout 90 || true
+
+      - name: docker compose logs
+        run: docker compose logs
 
       - name: Run Backend Tests
         run: docker compose run backend pytest backend

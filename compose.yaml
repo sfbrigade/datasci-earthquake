@@ -36,14 +36,14 @@ services:
     volumes:
       - ./backend:/backend
       - ./backend/etl/startup.sh:/startup.sh
-      - ./public:/public
-    command: /usr/bin/time -v bash /startup.sh
-    # healthcheck:
-      # test: [ "CMD-SHELL", "echo 'Healthy' || exit 1" ]
-      # interval: 10s
-      # timeout: 5s
-      # retries: 20
-      # start_period: 180s
+      - ./public/data:/public/data
+    command: bash /startup.sh
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   db_test:
     build:
