@@ -36,16 +36,19 @@ services:
     volumes:
       - ./backend:/backend
       - ./backend/etl/startup.sh:/startup.sh
+      - ./public:/public
     command: bash /startup.sh
-    healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
+    # healthcheck:
+    #   test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1" ]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 10
+    #   start_period: 70s
 
   db_test:
-    image: postgis-custom
+    build:
+      context: ./backend/database
+      dockerfile: Dockerfile
     container_name: my_postgis_db_test
     restart: always
     env_file:
