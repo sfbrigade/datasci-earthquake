@@ -38,7 +38,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # Copy the source code into the container.
 COPY backend ./backend
-COPY --chown=appuser:appuser public /public
 
 # Copy the pytest configuration file to ensure pytest logs are captured
 # in the container to assert test results.
