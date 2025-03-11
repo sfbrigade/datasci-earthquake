@@ -36,6 +36,7 @@ services:
     volumes:
       - ./backend:/backend
       - ./backend/etl/startup.sh:/startup.sh
+      - ./public:/public
     command: bash /startup.sh
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1" ]
