@@ -39,12 +39,20 @@ class _LiquefactionDataHandler(DataHandler):
             simplified_shapely_multipolygon = multipolygon.simplify(
                 tolerance, preserve_topology=True
             )
-            # Convert back to GeoAlchemy (if needed for storage)
-            geoalchemy_multipolygon = from_shape(
-                simplified_shapely_multipolygon, srid=4326
+
+            # Trim multipolygon to SF boundary
+            trimmed_multipolygon = simplified_shapely_multipolygon.intersection(
+                self.boundary
             )
+
+            # Skip empty intersections
+            if trimmed_multipolygon.is_empty:
+                continue
+
+            # Convert back to GeoAlchemy (if needed for storage)
+            geoalchemy_multipolygon = from_shape(trimmed_multipolygon, srid=4326)
             # Convert back to GeoJSON
-            simplified_geometry = mapping(simplified_shapely_multipolygon)
+            simplified_geometry = mapping(trimmed_multipolygon)
 
             liquefaction_zone = {
                 "identifier": f'{properties.get("shape_leng")}-{properties.get("shape_area")}-{properties.get("liq")}',

@@ -38,7 +38,14 @@ class TsunamiDataHandler(DataHandler):
             transformed_multipolygon = self.transform_geometry(
                 multi_polygon, source_srid=3857, target_srid=4326
             )
-            geoalchemy_multipolygon = from_shape(transformed_multipolygon, srid=4326)
+
+            trimmed_multipolygon = transformed_multipolygon.intersection(self.boundary)
+
+            # Skip if completely outside boundary
+            if trimmed_multipolygon.is_empty:
+                continue
+
+            geoalchemy_multipolygon = from_shape(trimmed_multipolygon, srid=4326)
             shapely_multipolygon = to_shape(
                 geoalchemy_multipolygon
             )  # Convert WKBElement to Shapely
