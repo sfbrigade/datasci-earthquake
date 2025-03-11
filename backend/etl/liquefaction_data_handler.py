@@ -2,9 +2,9 @@ from http.client import HTTPException
 from backend.etl.data_handler import DataHandler
 from backend.api.models.liquefaction_zones import LiquefactionZone
 from shapely.geometry import shape
-from geoalchemy2.shape import from_shape
+from geoalchemy2.shape import from_shape, to_shape
 from geoalchemy2.functions import ST_Simplify
-
+from shapely.geometry import mapping
 
 _LIQUEFACTION_URL = "https://data.sfgov.org/resource/i4t7-35u3.geojson"
 
@@ -36,10 +36,16 @@ class _LiquefactionDataHandler(DataHandler):
             properties = feature.get("properties", {})
             geometry = feature.get("geometry", {})
             multipolygon = shape(geometry)  # Convert GeoJSON to Shapely geometry
-            geoalchemy_multipolygon = from_shape(multipolygon, srid=4326)
-            simplified_geoalchemy_multipolygon = ST_Simplify(
-                geoalchemy_multipolygon, tolerance
+            simplified_shapely_multipolygon = multipolygon.simplify(
+                tolerance, preserve_topology=True
             )
+            # Convert back to GeoAlchemy (if needed for storage)
+            geoalchemy_multipolygon = from_shape(
+                simplified_shapely_multipolygon, srid=4326
+            )
+            # Convert back to GeoJSON
+            simplified_geometry = mapping(simplified_shapely_multipolygon)
+
             liquefaction_zone = {
                 "identifier": f'{properties.get("shape_leng")}-{properties.get("shape_area")}-{properties.get("liq")}',
                 "liq": properties.get("liq"),
@@ -52,7 +58,7 @@ class _LiquefactionDataHandler(DataHandler):
             # Constructing GeoJSON feature
             geojson_feature = {
                 "type": "Feature",
-                "geometry": geometry,
+                "geometry": simplified_geometry,
                 "properties": {"liq": liquefaction_zone["liq"]},
             }
             geojson_features.append(geojson_feature)
