@@ -15,7 +15,13 @@ import Share from "./share";
 import { CardContainer } from "./card-container";
 import { KeyElem } from "./key-elem";
 
-const Report = ({ searchedAddress }: { searchedAddress: string }) => {
+const Report = ({
+  searchedAddress,
+  addressHazardData,
+}: {
+  searchedAddress: string;
+  addressHazardData: object[];
+}) => {
   return (
     <Center flexDirection="column">
       <Collapse
@@ -107,8 +113,14 @@ const Report = ({ searchedAddress }: { searchedAddress: string }) => {
         </Stack>
       </Box>
       <CardContainer>
-        {Hazards.map((hazard) => {
-          return <CardHazard key={hazard.id} hazard={hazard} />;
+        {Hazards.map((hazard, index) => {
+          return (
+            <CardHazard
+              key={hazard.id}
+              hazard={hazard}
+              hazardData={addressHazardData[index] ?? undefined}
+            />
+          );
         })}
       </CardContainer>
     </Center>
