@@ -95,12 +95,6 @@ jobs:
           echo "Logs for backend:"
           docker logs datasci-earthquake-backend-1 || echo "No logs found"
 
-      - name: Check file permissions
-        if: always() 
-        run: |
-          docker-compose exec backend ls -l /public/data || echo "Directory /public/data does not exist"
-          docker-compose exec backend stat /public/data || echo "Failed to stat /public/data"
-
       - name: Run Backend Tests
         run: docker compose run backend pytest backend
 
