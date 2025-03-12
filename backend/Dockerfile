@@ -29,7 +29,9 @@ RUN adduser \
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # Ensure the public/data directory exists and is writeable
-RUN mkdir -p /public/data && chmod -R 777 /public/data
+RUN mkdir -p /public/data && \
+    chown -R appuser:appuser /public/data && \
+    chmod -R 777 /public/data
 
 COPY requirements.txt /backend/requirements.txt
 
