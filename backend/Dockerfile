@@ -28,6 +28,9 @@ RUN adduser \
 # Install curl
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
+# Ensure the public/data directory exists and is writeable
+RUN mkdir -p /public/data && chmod -R 777 /public/data
+
 COPY requirements.txt /backend/requirements.txt
 
 COPY api /api
@@ -44,6 +47,7 @@ COPY backend ./backend
 COPY pytest.ini .
 
 RUN chmod +x ./backend/etl/startup.sh
+
 
 # Switch to the non-privileged user to run the application.
 USER appuser

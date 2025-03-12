@@ -82,7 +82,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
       - name: Build Docker Containers
-        run: docker compose build --no-cache
+        run: docker compose build
 
       - name: Start Services
         run: docker compose up -d --wait --wait-timeout 190
