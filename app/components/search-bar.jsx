@@ -47,11 +47,11 @@ const SearchBar = ({
 
   useEffect(() => {
     if (fullAddress) {
-      onCoordDataRetrive(values);
+      onCoordDataRetrieve(values);
     } else {
-      onCoordDataRetrive([]);
+      onCoordDataRetrieve([]);
     }
-  }, [fullAddress, onCoordDataRetrive]);
+  }, [fullAddress, onCoordDataRetrieve]);
 
   return (
     <form>
