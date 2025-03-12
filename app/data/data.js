@@ -89,14 +89,103 @@ export const Headings = {
   home: {
     text: "Learn about your home’s earthquake readiness.",
     highlight: "Learn about",
-    style: {},
+    style: { paddingRight: "200", marginBottom: "30" },
     highlightStyle: { color: "yellow" },
   },
   about: {
-    text: "Our mission is to consectetur vestibulum purus nec tellus",
-    highlight: "Our mission is to",
-    style: { color: "blue", fontWeight: "700" },
-    highlightStyle: { fontWeight: "400", color: "grey.900" },
+    text: "Earthquake safety starts with knowledge. We're here to help.",
+    highlight: "",
+    style: { color: "blue", fontWeight: "300", paddingRight: "50" },
+    highlightStyle: {},
     maxWidth: { base: "100%", md: "100%", xl: "842px" },
   },
 };
+
+export const DataInfoLinks = [
+  {
+    id: 1,
+    name: "softStory",
+    label: "Soft Story Dataset",
+    url: "https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data",
+  },
+  {
+    id: 2,
+    name: "liquefaction",
+    label: "Liquefaction Dataset",
+    url: "https://data.sfgov.org/Geographic-Locations-and-Boundaries/Soil-Liquefaction-Hazard-Zone/i4t7-35u3/about_data",
+  },
+  {
+    id: 3,
+    name: "tsunami",
+    label: "Tsunami Dataset",
+    url: "https://www.conservation.ca.gov/cgs/tsunami/maps",
+  },
+];
+
+export const TeamMembers = [
+  {
+    id: 1,
+    role: "Project Manager, Data Science",
+    name: "Leela Solomon",
+  },
+  {
+    id: 2,
+    role: "Assistant Project Manager, Data Science",
+    name: "Oscar Syu",
+  },
+  {
+    id: 3,
+    role: "Product Design Lead",
+    name: "Micah Johnson",
+  },
+  {
+    id: 12,
+    role: "Engineering Lead",
+    name: "Eli Lucherini ",
+  },
+  {
+    id: 4,
+    role: "Engineering Lead",
+    name: "Anna Gennadinik",
+  },
+  {
+    id: 5,
+    role: "Engineering Lead",
+    name: "Svetlana Eliseeva",
+  },
+  {
+    id: 6,
+    role: "Product Designer",
+    name: "Jocelyn Su",
+  },
+  {
+    id: 7,
+    role: "Product Designer",
+    name: "UX Writer",
+  },
+  {
+    id: 8,
+    role: "Front End Engineer",
+    name: "Nick Visutsithiwong",
+  },
+  {
+    id: 9,
+    role: "Front End Engineer",
+    name: "Amna Khan",
+  },
+  {
+    id: 10,
+    role: "Front End Engineer",
+    name: "Diya Baliga",
+  },
+  {
+    id: 11,
+    role: "Back End Engineer",
+    name: "Adam Finkle",
+  },
+  {
+    id: 13,
+    role: "Data Science",
+    name: "Peter Cuddihy",
+  },
+];
