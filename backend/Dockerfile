@@ -28,6 +28,11 @@ RUN adduser \
 # Install curl
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
+# Ensure the public/data directory exists and has correct permissions
+RUN mkdir -p /public/data && \
+    chown -R appuser:appuser /public/data && \
+    chmod -R 777 /public/data
+
 COPY requirements.txt /backend/requirements.txt
 
 COPY api /api
