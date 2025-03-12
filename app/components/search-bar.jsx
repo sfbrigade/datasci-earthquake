@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   HStack,
@@ -17,8 +17,14 @@ import {
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
+import { mockAddressHazardData as values } from "../data/data";
 
-const SearchBar = ({ coordinates, onSearchChange, onAddressSearch }) => {
+const SearchBar = ({
+  coordinates,
+  onSearchChange,
+  onAddressSearch,
+  onCoordDataRetrieve,
+}) => {
   const [address, setAddress] = useState("");
   const [fullAddress, setFullAddress] = useState(null);
   const [addressLine, setAddressLine] = useState("");
@@ -38,6 +44,14 @@ const SearchBar = ({ coordinates, onSearchChange, onAddressSearch }) => {
     // TODO: move to proper event handler and replace with coordinates from API
     onSearchChange([coordinates[0] + 0.025, coordinates[1] + 0.025]);
   };
+
+  useEffect(() => {
+    if (fullAddress) {
+      onCoordDataRetrive(values);
+    } else {
+      onCoordDataRetrive([]);
+    }
+  }, [fullAddress, onCoordDataRetrive]);
 
   return (
     <form>

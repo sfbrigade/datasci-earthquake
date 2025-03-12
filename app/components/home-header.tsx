@@ -9,12 +9,14 @@ interface HomeHeaderProps {
   coordinates: number[];
   onSearchChange: (coords: number[]) => void;
   onAddressSearch: (address: string) => void;
+  onCoordDataRetrieve: (data: any[]) => void;
 }
 
 const HomeHeader = ({
   coordinates,
   onSearchChange,
   onAddressSearch,
+  onCoordDataRetrieve,
 }: HomeHeaderProps) => {
   const headingData = Headings.home;
 
@@ -41,6 +43,7 @@ const HomeHeader = ({
           coordinates={coordinates}
           onSearchChange={onSearchChange}
           onAddressSearch={onAddressSearch}
+          onCoordDataRetrieve={onCoordDataRetrieve}
         />
       </Box>
     </Box>
