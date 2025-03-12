@@ -3,7 +3,7 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - master
+      - 262/pass-healthcheck
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
@@ -86,6 +86,9 @@ jobs:
 
       - name: Start Services
         run: docker compose up -d --wait --wait-timeout 90
+
+      - name: Docker logs
+        run: docker logs datasci-earthquake-backend-1
 
       - name: Run Backend Tests
         run: docker compose run backend pytest backend
