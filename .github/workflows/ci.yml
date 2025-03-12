@@ -3,7 +3,7 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - 262/pass-healthcheck
+      - master
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
@@ -85,7 +85,7 @@ jobs:
         run: docker compose build
 
       - name: Start Services
-        run: docker compose up -d --wait --wait-timeout 190
+        run: docker compose up -d --wait --wait-timeout 90
 
       - name: Docker Logs 
         if: always()  
