@@ -82,13 +82,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
       - name: Build Docker Containers
-        run: docker compose build
+        run: docker compose build --no-cache
 
       - name: Start Services
         run: docker compose up -d --wait --wait-timeout 190
 
-      - name: Docker logs
-        run: docker logs datasci-earthquake-backend-1
+      - name: Debug Logs 
+        if: always()  
+        run: |
+          echo "Checking running containers..."
+          docker ps -a
+          echo "Logs for backend:"
+          docker logs datasci-earthquake-backend-1 || echo "No logs found"
+          echo "Logs for database:"
+          docker logs datasci-earthquake-db-1 || echo "No logs found"
 
       - name: Run Backend Tests
         run: docker compose run backend pytest backend
