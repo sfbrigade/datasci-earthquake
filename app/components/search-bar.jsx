@@ -23,7 +23,7 @@ const SearchBar = ({
   coordinates,
   onSearchChange,
   onAddressSearch,
-  onCoordDataRetrive,
+  onCoordDataRetrieve,
 }) => {
   const [address, setAddress] = useState("");
   const [fullAddress, setFullAddress] = useState(null);
