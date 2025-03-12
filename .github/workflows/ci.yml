@@ -85,7 +85,7 @@ jobs:
         run: docker compose build
 
       - name: Start Services
-        run: docker compose up -d --wait --wait-timeout 90
+        run: docker compose up -d --wait --wait-timeout 190
 
       - name: Docker logs
         run: docker logs datasci-earthquake-backend-1
