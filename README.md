@@ -106,6 +106,7 @@ To stop and shut down the application:
 2. Run the containers (`docker compose up -d)`
 3. Run pytest: `docker compose run backend pytest backend`
    * Alternatively, run pytest with container cleanup: `docker compose run --remove-orphans backend pytest backend`
+4. To get code coverage, run `docker exec -w /backend datasci-earthquake-backend-1 pytest --cov=backend`
 
 ---
 
