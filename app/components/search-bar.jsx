@@ -47,31 +47,12 @@ const SearchBar = ({
     setAddress("");
   };
 
-  /*
-    # User flow
-    user types into search box
-    mapbox API is called with search term to retrieve suggestions (which contain full address AND coordinates)
-    suggestions show
-    a) user selects suggestion
-        full address AND coordinates are extracted from selected suggestion
-        UI is updated to reflect address
-        our API is called with coordinates to retrieve metadata
-        cards are updated with metadata
-    b) user presses enter (effectively ignoring suggestions) ... do we even handle this?
-        - should we prevent enter?
-        - google maps will sometimes select the first option
-        - show an info box? -Merlin
-        - placeholder label "Type address and select below"
-        - highlight first option?
-        - do nothing
-  */
-
-  // fired when the user has selected suggestion, before the form is autofilled (from https://docs.mapbox.com/mapbox-search-js/api/react/autofill/)
-  //
   // extract feature data (address, coordinates) from response and:
   // - update full address
   // - retrieve additional data about coordinates from our API
   // - retrieve associated coordinates from our API
+  //
+  // fired when the user has selected suggestion, before the form is autofilled (from https://docs.mapbox.com/mapbox-search-js/api/react/autofill/)
   const handleRetrieve = (event) => {
     const addressData = event.features[0];
     const addressLine = event.features[0].properties.feature_name;
@@ -91,40 +72,19 @@ const SearchBar = ({
     }
   }, [fullAddress, onCoordDataRetrieve]);
 
-  // will be called every time the user types or modifies the input value in the search box (and loses focus?)
-  //
-  // retrieve coordinates from Mapbox API by providing full address
+  // retrieve coordinates from Mapbox API by providing full address; called every time the user types or modifies the input value in the search box and loses focus?
   const handleAddressChange = (event) => {
     setAddress(event.target.value);
   };
 
-  // (gets fired when user presses enter--or if there was a submit button, when the user clicks it)
-  //
-  // see part b of comment above; do we even need to handle pressing enter?
-  // update coordinates
+  /**
+   * TODO: capture and update address on submit OR use first autocomplete suggestion; see file://./../snippets.md#geocode-on-search for details.
+   */
   const onSubmit = async (event) => {
     console.log("onSubmit", event.target.value);
     event.preventDefault();
 
-    // TODO: capture address on submit OR use first autocomplete suggestion
-    // const fullAddress = event.target.value;
-
-    // try {
-    //   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${fullAddress}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`;
-    //   const response = await fetch(url);
-    //   const response_data = await response.json();
-
-    //   if (
-    //     response_data &&
-    //     response_data.features &&
-    //     response_data.features.length > 0
-    //   ) {
-    //     onSearchChange(response_data.features[0].center);
-    //     // TODO: grab resolved address as well to update rest of UI
-    //   }
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    // TODO: capture and update address as described above
   };
 
   // gets metadata from Mapbox API for given coordinates

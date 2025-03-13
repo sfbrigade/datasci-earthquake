@@ -122,7 +122,7 @@ const Map: React.FC<MapProps> = ({
           slot: "middle",
           paint: {
             "fill-color": "#63B3ED", // blue/300
-            "fill-opacity": 0.5, // 50% opacity
+            "fill-opacity": 0.25, // 50% opacity
           },
         });
 
