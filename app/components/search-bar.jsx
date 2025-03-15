@@ -17,7 +17,6 @@ import {
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
-import { mockAddressHazardData as values } from "../data/data";
 import { API_ENDPOINTS } from "../api/endpoints";
 
 // TODO: share bbox options with what's in `map.tsx`
@@ -61,8 +60,10 @@ const SearchBar = ({
     setFullAddress(addressData);
     const coords = addressData.geometry.coordinates;
     onSearchChange(coords);
-    getCoordData(coords).then((values) => console.log("values", values));
-    // TODO: use the values to update the hazard cards
+    getHazardData(coords).then((values) => {
+      console.log("values", values);
+      onCoordDataRetrieve(values);
+    });
     // TODO: grab resolved address as well to update rest of UI
     // TODO: combine setFullAddress and onAddressSearch as they appear to both do the same thing?
   };
@@ -83,7 +84,7 @@ const SearchBar = ({
   };
 
   // gets metadata from Mapbox API for given coordinates
-  const getCoordData = (coords = coordinates) => {
+  const getHazardData = (coords = coordinates) => {
     // TODO: convert from promises to async/await
     // Send coordinates to the backend
     const isSoftStory = fetch(
@@ -100,14 +101,6 @@ const SearchBar = ({
 
     return Promise.all([isSoftStory, isInTsunamiZone, isInLiquefactionZone]);
   };
-
-  useEffect(() => {
-    if (fullAddress) {
-      onCoordDataRetrieve(values);
-    } else {
-      onCoordDataRetrieve([]);
-    }
-  }, [fullAddress, onCoordDataRetrieve]);
 
   return (
     <form onSubmit={onSubmit}>
