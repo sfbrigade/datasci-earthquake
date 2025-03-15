@@ -37,14 +37,12 @@ const SearchBar = ({
   onAddressSearch,
   onCoordDataRetrieve,
 }) => {
-  const [address, setAddress] = useState("");
-  const [fullAddress, setFullAddress] = useState(null);
-  const [addressLine, setAddressLine] = useState("");
+  const [inputAddress, setInputAddress] = useState("");
   const debug = useSearchParams().get("debug");
 
   // fires when X button in search box is clicked
   const handleClearClick = () => {
-    setAddress("");
+    setInputAddress("");
   };
 
   // extract feature data (address, coordinates) from response and:
@@ -57,20 +55,24 @@ const SearchBar = ({
     const addressData = event.features[0];
     const addressLine = event.features[0].properties.feature_name;
     onAddressSearch(addressLine);
-    setFullAddress(addressData);
     const coords = addressData.geometry.coordinates;
     onSearchChange(coords);
-    getHazardData(coords).then((values) => {
-      console.log("values", values);
-      onCoordDataRetrieve(values);
-    });
-    // TODO: grab resolved address as well to update rest of UI
-    // TODO: combine setFullAddress and onAddressSearch as they appear to both do the same thing?
+    updateHazardData(coords);
   };
 
-  // retrieve coordinates from Mapbox API by providing full address; called every time the user types or modifies the input value in the search box and loses focus?
+  const updateHazardData = async (coords) => {
+    try {
+      const values = await getHazardData(coords);
+      onCoordDataRetrieve(values);
+    } catch {
+      console.log("could not retrieve hazard data");
+      onCoordDataRetrieve([]);
+    }
+  };
+
+  // called every time the user types or modifies the input value in the search box and loses focus?
   const handleAddressChange = (event) => {
-    setAddress(event.target.value);
+    setInputAddress(event.target.value);
   };
 
   /**
@@ -84,22 +86,26 @@ const SearchBar = ({
   };
 
   // gets metadata from Mapbox API for given coordinates
-  const getHazardData = (coords = coordinates) => {
-    // TODO: convert from promises to async/await
-    // Send coordinates to the backend
-    const isSoftStory = fetch(
-      `${API_ENDPOINTS.isSoftStory}?lon=${coords[0]}&lat=${coords[1]}`
-    ).then((response) => response.json());
+  const getHazardData = async (coords = coordinates) => {
+    try {
+      const isSoftStory = await fetch(
+        `${API_ENDPOINTS.isSoftStory}?lon=${coords[0]}&lat=${coords[1]}`
+      ).then((response) => response.json());
 
-    const isInTsunamiZone = fetch(
-      `${API_ENDPOINTS.isInTsunamiZone}?lon=${coords[0]}&lat=${coords[1]}`
-    ).then((response) => response.json());
+      const isInTsunamiZone = await fetch(
+        `${API_ENDPOINTS.isInTsunamiZone}?lon=${coords[0]}&lat=${coords[1]}`
+      ).then((response) => response.json());
 
-    const isInLiquefactionZone = fetch(
-      `${API_ENDPOINTS.isInLiquefactionZone}?lon=${coords[0]}&lat=${coords[1]}`
-    ).then((response) => response.json());
+      const isInLiquefactionZone = await fetch(
+        `${API_ENDPOINTS.isInLiquefactionZone}?lon=${coords[0]}&lat=${coords[1]}`
+      ).then((response) => response.json());
 
-    return Promise.all([isSoftStory, isInTsunamiZone, isInLiquefactionZone]);
+      return Promise.all([isSoftStory, isInTsunamiZone, isInLiquefactionZone]);
+    } catch (error) {
+      console.error("Error fetching hazard data:", error);
+      // TODO: Handle error appropriately, e.g., return a default value or re-throw (for now, we are re-throwing)
+      throw error;
+    }
   };
 
   return (
@@ -174,7 +180,7 @@ const SearchBar = ({
             boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
             type="text"
             name="address-1"
-            value={address}
+            value={inputAddress}
             onChange={handleAddressChange}
             _hover={{
               borderColor: "yellow",
@@ -183,7 +189,7 @@ const SearchBar = ({
             _invalid={{ borderColor: "red" }}
             autoComplete="address-line1"
           />
-          {address.length != 0 && (
+          {inputAddress.length != 0 && (
             <InputRightElement>
               <RxCross2
                 color="grey.900"
