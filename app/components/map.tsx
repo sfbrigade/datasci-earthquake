@@ -105,17 +105,6 @@ const Map: React.FC<MapProps> = ({
 
         // Add layers
         map.addLayer({
-          id: "tsunamiLayer",
-          source: "tsunami",
-          type: "fill",
-          slot: "middle",
-          paint: {
-            "fill-color": "#63B3ED", // blue/300
-            "fill-opacity": 0.5, // 50% opacity
-          },
-        });
-
-        map.addLayer({
           id: "seismicLayer",
           source: "seismic",
           type: "fill",
@@ -123,6 +112,17 @@ const Map: React.FC<MapProps> = ({
           paint: {
             "fill-color": "#F6AD55", // orange/300
             "fill-opacity": 0.5, // 50% opacity
+          },
+        });
+
+        map.addLayer({
+          id: "tsunamiLayer",
+          source: "tsunami",
+          type: "fill",
+          slot: "middle",
+          paint: {
+            "fill-color": "#63B3ED", // blue/300
+            "fill-opacity": 0.25, // 50% opacity
           },
         });
 
