@@ -19,7 +19,7 @@ logging.basicConfig(
 )
 
 _PREFIX_DATA_GEOJSON_PATH = "public/data/"
-_BOUDNARY_PATH = "backend/etl/data/sf_boundary.geojson"
+_BOUNDARY_PATH = "backend/etl/data/sf_boundary.geojson"
 
 
 class DataHandler(ABC):
@@ -48,9 +48,15 @@ class DataHandler(ABC):
         self.logger = logger or logging.getLogger(f"{self.__class__.__name__}")
         self.session = session or SessionManager.create_session(self.logger)
         self.request_handler = RequestHandler(self.session, self.logger)
-        with open(_BOUDNARY_PATH) as f:
-            boundary_geojson = json.load(f)
-        self.boundary = shape(boundary_geojson["features"][0]["geometry"])
+        try:
+            with open(_BOUNDARY_PATH) as f:
+                boundary_geojson = json.load(f)
+            if not boundary_geojson["features"]:
+                raise ValueError("No features found in boundary geojson")
+            self.boundary = shape(boundary_geojson["features"][0]["geometry"])
+        except (FileNotFoundError, json.JSONDecodeError, ValueError) as e:
+            self.logger.error(f"Failed to load boundary geojson: {e}")
+            raise
 
         self.logger.info(
             f"Initialized handler for {table.__name__} "
