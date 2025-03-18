@@ -3,7 +3,6 @@
 import { Box, HStack, Link, Text, VStack, Image } from "@chakra-ui/react";
 import { mockDisclaimers } from "./__mocks__/mock-data";
 import NextLink from "next/link";
-import NextImage from "next/image";
 
 const Footer = () => {
   const buildDisclaimers = () => {
