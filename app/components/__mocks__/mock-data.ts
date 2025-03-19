@@ -1,0 +1,4 @@
+export const mockDisclaimers = [
+  "Duis a justo sit amet dolor molestie volutpat. Donec pharetra justo vel pulvinar gravida. Phasellus tellus arcu, auctor in tellus in, commodo imperdiet enim. Nulla pharetra elit odio, sed ullamcorper ante euismod eget. Maecenas pretium massa non velit faucibus egestas. Vestibulum nec massa mauris. Sed mollis magna lectus, eget commodo sem ultrices id.",
+  "Nunc lacus nisi, tempus ac leo at, tempor gravida sem. Suspendisse et urna dolor. Praesent nec diam sed libero tincidunt vehicula id id eros. Maecenas vel mauris est. Ut ac justo fermentum, tempus tellus at, pretium ipsum. Donec scelerisque risus at odio dignissim porta. Etiam tristique mollis malesuada. Phasellus rutrum malesuada sem non volutpat. Proin bibendum ultricies euismod. Pellentesque vel turpis sit amet dolor mollis facilisis pulvinar et tellus. Donec fringilla hendrerit maximus.",
+];
