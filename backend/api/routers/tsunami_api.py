@@ -38,11 +38,7 @@ async def get_tsunami_zones(db: Session = Depends(get_db)):
     Raises:
         HTTPException: If no zones are found (404 error).
     """
-    tsunami_zones = (
-        db.query(TsunamiZone)
-        .filter(TsunamiZone.evacuate == "Yes, Tsunami Hazard Area")
-        .all()
-    )
+    tsunami_zones = db.query(TsunamiZone).all()
     print("tsunami zones:", tsunami_zones)
     if not tsunami_zones:
         raise HTTPException(status_code=404, detail="No tsunami zones found")

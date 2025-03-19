@@ -65,13 +65,12 @@ class TsunamiDataHandler(DataHandler):
             parsed_data.append(tsunami_zone)
 
             # Constructing GeoJSON feature for the tsunami evacuation zone
-            if tsunami_zone["evacuate"] == "Yes, Tsunami Hazard Area":
-                geojson_feature = {
-                    "type": "Feature",
-                    "geometry": mapping(shapely_multipolygon),
-                    "properties": {"evacuate": tsunami_zone["evacuate"]},
-                }
-                geojson_features.append(geojson_feature)
+            geojson_feature = {
+                "type": "Feature",
+                "geometry": mapping(shapely_multipolygon),
+                "properties": {"evacuate": tsunami_zone["evacuate"]},
+            }
+            geojson_features.append(geojson_feature)
             geojson = {"type": "FeatureCollection", "features": geojson_features}
 
         return parsed_data, geojson
@@ -81,7 +80,7 @@ if __name__ == "__main__":
     handler = TsunamiDataHandler(TSUNAMI_URL, TsunamiZone)
     try:
         params = {
-            "where": "County='San Francisco'",
+            "where": "County='San Francisco' AND Evacuate='Yes, Tsunami Hazard Area'",
             "outFields": "*",
             "f": "json",
         }
