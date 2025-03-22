@@ -49,7 +49,7 @@ class DataHandler(ABC):
         self.session = session or SessionManager.create_session(self.logger)
         self.request_handler = RequestHandler(self.session, self.logger)
         try:
-            with open(_BOUNDARY_PATH) as f:
+            with open(_SF_BOUNDARY_PATH) as f:
                 boundary_geojson = json.load(f)
             if not boundary_geojson["features"]:
                 raise ValueError("No features found in boundary geojson")
