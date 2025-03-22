@@ -19,7 +19,7 @@ logging.basicConfig(
 )
 
 _PREFIX_DATA_GEOJSON_PATH = "public/data/"
-_BOUNDARY_PATH = "backend/etl/data/sf_boundary.geojson"
+_SF_BOUNDARY_PATH = "backend/etl/data/sf_boundary.geojson"
 
 
 class DataHandler(ABC):
