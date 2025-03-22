@@ -45,7 +45,6 @@ class _LiquefactionDataHandler(DataHandler):
                 self.boundary
             )
 
-            # Skip empty intersections
             if trimmed_multipolygon.is_empty:
                 continue
 
