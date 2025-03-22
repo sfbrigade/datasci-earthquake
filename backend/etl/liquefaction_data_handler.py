@@ -40,7 +40,6 @@ class _LiquefactionDataHandler(DataHandler):
                 tolerance, preserve_topology=True
             )
 
-            # Trim multipolygon to SF boundary
             trimmed_multipolygon = simplified_shapely_multipolygon.intersection(
                 self.boundary
             )
