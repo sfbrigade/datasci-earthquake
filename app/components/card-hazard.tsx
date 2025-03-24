@@ -5,12 +5,9 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  PopoverHeader,
   PopoverBody,
-  PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverAnchor,
 } from "@chakra-ui/react";
 
 interface CardHazardProps {
@@ -37,7 +34,7 @@ const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
 
   const buildHazardCardInfo = () => {
     return (
-      <VStack gap={2} p={2}>
+      <VStack gap={5} p={5}>
         {hazard.info.map((infoItem, index) => (
           <Text key={index}>{infoItem}</Text>
         ))}
@@ -55,14 +52,23 @@ const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
       <HStack justifyContent="space-between" width="100%">
         <Popover>
           <PopoverTrigger>
-            <Button>More Info</Button>
+            <Text cursor={"pointer"} textDecoration={"underline"}>
+              More Info
+            </Text>
           </PopoverTrigger>
           <PopoverContent>
             <PopoverArrow />
             <PopoverCloseButton />
             <PopoverBody>
               {buildHazardCardInfo()}
-              <Link href={hazard.link.url} p={2}>
+              <Link
+                display={"inline-block"}
+                pb={3}
+                pl={5}
+                href={hazard.link.url}
+                target="_blank"
+                textDecoration="underline"
+              >
                 {hazard.link.label}
               </Link>
             </PopoverBody>
