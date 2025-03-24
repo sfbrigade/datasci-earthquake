@@ -52,11 +52,11 @@ const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
       <HStack justifyContent="space-between" width="100%">
         <Popover>
           <PopoverTrigger>
-            <Text cursor={"pointer"} textDecoration={"underline"}>
+            <Text cursor={"pointer"} textDecoration={"underline"} width="100%">
               More Info
             </Text>
           </PopoverTrigger>
-          <PopoverContent>
+          <PopoverContent mt={5} width="348px">
             <PopoverArrow />
             <PopoverCloseButton />
             <PopoverBody>
