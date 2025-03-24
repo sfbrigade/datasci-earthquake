@@ -1,4 +1,15 @@
-import { Text, HStack, Button, VStack, Link, CardFooter, CardBody, Card, CardHeader, useDisclosure } from "@chakra-ui/react";
+import {
+  Text,
+  HStack,
+  Button,
+  VStack,
+  Link,
+  CardFooter,
+  CardBody,
+  Card,
+  CardHeader,
+  useDisclosure,
+} from "@chakra-ui/react";
 import Pill from "./pill";
 import {
   Popover,
@@ -43,15 +54,13 @@ const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
 
   return (
     <Card flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
-      <Popover 
-        placement="bottom"
-        returnFocusOnClose={false}
-        closeOnBlur={true}
-      >
+      <Popover placement="bottom" returnFocusOnClose={false} closeOnBlur={true}>
         <PopoverTrigger>
           <VStack cursor={"pointer"} alignItems={"flex-start"} h={"100%"}>
             <CardHeader p={0}>
-              <Text textStyle="textBig" fontWeight={"700"}>{title}</Text>
+              <Text textStyle="textBig" fontWeight={"700"}>
+                {title}
+              </Text>
             </CardHeader>
             <CardBody p={0} mb={"14px"}>
               <Text>{description}</Text>
