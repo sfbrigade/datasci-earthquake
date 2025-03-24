@@ -56,7 +56,7 @@ const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
             <CardBody p={0} mb={"14px"}>
               <Text>{description}</Text>
             </CardBody>
-            <CardFooter p={0}>
+            <CardFooter p={0} width={"100%"}>
               <HStack justifyContent="space-between" width="100%">
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info
