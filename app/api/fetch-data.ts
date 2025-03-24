@@ -1,7 +1,9 @@
+const SECONDS_PER_DAY = 24 * 60 * 60;
+
 export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
   try {
     // Try fetching from CDN first
-    const cdnResponse = await fetch(cdnEndpoint, { cache: "no-store" });
+    const cdnResponse = await fetch(cdnEndpoint, { next: { revalidate: SECONDS_PER_DAY } });
     if (cdnResponse.ok) {
       return await cdnResponse.json();
     } else {
@@ -11,11 +13,10 @@ export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
     console.warn(`CDN fetch error: ${error.message}. Falling back to API.`);
   }
 
+  // TODO: prevent this fallback from running if the CDN call successfully returns valid data
   // Fallback to API
   try {
-    const apiResponse = await fetch(apiEndpoint, {
-      cache: 'no-store',
-    });
+    const apiResponse = await fetch(apiEndpoint, { next: { revalidate: SECONDS_PER_DAY } });
     if (!apiResponse.ok) {
       switch (apiResponse.status) {
         case 404:
