@@ -30,7 +30,6 @@ interface CardHazardProps {
 const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
   const { title, name, description } = hazard;
   const { exists, last_updated: date } = hazardData || {};
-  const { isOpen, onToggle, onClose } = useDisclosure()
 
   const buildHazardCardInfo = () => {
     return (
@@ -47,19 +46,17 @@ const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
       <Popover 
         placement="bottom"
         returnFocusOnClose={false}
-        isOpen={isOpen}
-        onClose={onClose}
-        closeOnBlur={false}
+        closeOnBlur={true}
       >
         <PopoverTrigger>
-          <VStack onClick={onToggle}>
+          <VStack cursor={"pointer"} alignItems={"flex-start"} h={"100%"}>
             <CardHeader p={0}>
-              <Text textStyle="textBig">{title}</Text>
+              <Text textStyle="textBig" fontWeight={"700"}>{title}</Text>
             </CardHeader>
-            <CardBody>
+            <CardBody p={0} mb={"14px"}>
               <Text>{description}</Text>
             </CardBody>
-            <CardFooter>
+            <CardFooter p={0}>
               <HStack justifyContent="space-between" width="100%">
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info

@@ -37,7 +37,7 @@ export const Hazards = [
     name: "liquefaction",
     title: "Liquefaction zones",
     description:
-      "These areas are on less stable ground, which can result in shifting or sinking during an earthquake.y",
+      "These areas are on less stable ground, which can result in shifting or sinking during an earthquake.",
     info: [
       "Liquefaction is a condition where soil turns into a liquid-like state under pressure.",
       "Buildings in liquefaction zones are at risk of sinking, tilting, or collapsing in a major earthquake.",
