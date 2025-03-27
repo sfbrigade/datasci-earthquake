@@ -125,7 +125,7 @@ const SearchBar = ({
       onSearchChange(coords);
       updateHazardData(coords);
     }
-  }, []);
+  }, [onAddressSearch, onSearchChange, searchParams, updateHazardData]);
 
   return (
     <form onSubmit={onSubmit}>

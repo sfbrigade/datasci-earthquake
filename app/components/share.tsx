@@ -47,6 +47,14 @@ const Share = () => {
       });
     } catch (err) {
       console.error("Failed to copy: ", err);
+      toast({
+        title: "Error",
+        description: "Failed to copy link to clipboard.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
     }
   };
 
