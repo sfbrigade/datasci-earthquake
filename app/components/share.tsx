@@ -2,10 +2,6 @@
 import {
   Text,
   Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   useToast,
   Box,
   HStack,
@@ -26,6 +22,7 @@ const Share = () => {
       const currentUrl = `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`;
       await navigator.clipboard.writeText(currentUrl);
       toast({
+        duration: 3000,
         render: ({ onClose }) => (
           <Box
             bg="white"
