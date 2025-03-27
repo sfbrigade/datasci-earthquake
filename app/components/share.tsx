@@ -54,24 +54,17 @@ const Share = () => {
   };
 
   return (
-    <Menu>
-      <MenuButton
-        as={Button}
-        aria-label="Share report"
-        variant="ghost"
-        rightIcon={<ShareIcon />}
-      >
-        <Text textStyle="textMedium" color="blue">
-          Share report
-        </Text>
-      </MenuButton>
-      <MenuList zIndex={20} p={"6px 16px 6px 16px"}>
-        <MenuItem gap="10px" onClick={copyReportToClipBoard}>
-          <LinkIcon />
-          <Text>Copy Link</Text>
-        </MenuItem>
-      </MenuList>
-    </Menu>
+    <Button
+      aria-label="Share report"
+      variant="link"
+      rightIcon={<ShareIcon />}
+      onClick={copyReportToClipBoard}
+      background={"transparent"}
+    >
+      <Text textStyle="textMedium" color="blue">
+        Share report
+      </Text>
+    </Button>
   );
 };
 
