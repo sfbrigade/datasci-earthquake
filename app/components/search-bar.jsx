@@ -119,8 +119,9 @@ const SearchBar = ({
     const lon = searchParams.get("lon");
 
     if (address && lat && lon) {
-      setInputAddress(address);
       const coords = [parseFloat(lon), parseFloat(lat)];
+      setInputAddress(address);
+      onAddressSearch(address);
       onSearchChange(coords);
       updateHazardData(coords);
     }

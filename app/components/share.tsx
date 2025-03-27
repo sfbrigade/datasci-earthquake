@@ -12,13 +12,7 @@ import {
   CloseButton,
 } from "@chakra-ui/react";
 import ShareIcon from "../img/icon-share.svg";
-import FacebookIcon from "../img/icon-facebook.svg";
-import EmailIcon from "../img/icon-email.svg";
-import XIcon from "../img/icon-x.svg";
 import LinkIcon from "../img/icon-link.svg";
-import { useEffect, useState } from "react";
-import { AddressData } from "./__mocks__/address-data";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 const Share = () => {
@@ -31,7 +25,6 @@ const Share = () => {
     try {
       const currentUrl = `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`;
       await navigator.clipboard.writeText(currentUrl);
-      console.log("copied");
       toast({
         render: ({ onClose }) => (
           <Box
