@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   HStack,
   Input,
@@ -39,10 +39,12 @@ const SearchBar = ({
 }) => {
   const [inputAddress, setInputAddress] = useState("");
   const debug = useSearchParams().get("debug");
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // fires when X button in search box is clicked
   const handleClearClick = () => {
     setInputAddress("");
+    router.push("/", { scroll: false });
   };
 
   // extract feature data (address, coordinates) from response and:
@@ -54,10 +56,14 @@ const SearchBar = ({
   const handleRetrieve = (event) => {
     const addressData = event.features[0];
     const addressLine = event.features[0].properties.feature_name;
-    onAddressSearch(addressLine);
     const coords = addressData.geometry.coordinates;
+
+    onAddressSearch(addressLine);
     onSearchChange(coords);
     updateHazardData(coords);
+
+    const newUrl = `?address=${encodeURIComponent(addressLine)}&lat=${coords[1]}&lon=${coords[0]}`;
+    router.push(newUrl, { scroll: false });
   };
 
   const updateHazardData = async (coords) => {
@@ -70,7 +76,6 @@ const SearchBar = ({
     }
   };
 
-  // called every time the user types or modifies the input value in the search box and loses focus?
   const handleAddressChange = (event) => {
     setInputAddress(event.target.value);
   };
@@ -107,6 +112,19 @@ const SearchBar = ({
       throw error;
     }
   };
+
+  useEffect(() => {
+    const address = searchParams.get("address");
+    const lat = searchParams.get("lat");
+    const lon = searchParams.get("lon");
+
+    if (address && lat && lon) {
+      setInputAddress(address);
+      const coords = [parseFloat(lon), parseFloat(lat)];
+      onSearchChange(coords);
+      updateHazardData(coords);
+    }
+  }, []);
 
   return (
     <form onSubmit={onSubmit}>
