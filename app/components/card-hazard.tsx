@@ -54,7 +54,12 @@ const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
 
   return (
     <Card flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
-      <Popover placement="bottom" returnFocusOnClose={false} closeOnBlur={true}>
+      <Popover
+        placement="bottom"
+        returnFocusOnClose={false}
+        closeOnBlur={true}
+        aria-label={`${hazard.title} information`}
+      >
         <PopoverTrigger>
           <VStack cursor={"pointer"} alignItems={"flex-start"} h={"100%"}>
             <CardHeader p={0}>
