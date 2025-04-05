@@ -45,9 +45,9 @@ const ReportHazards = ({
         <Stack
           w={{ base: "base", xl: "xl" }}
           px={{
-            base: "23px",
-            md: "26px",
-            xl: "127px",
+            base: "24px",
+            md: "28px",
+            xl: "128px",
           }}
           spacing={{ base: 1, md: 5 }}
           direction={{ base: "column", md: "row" }}

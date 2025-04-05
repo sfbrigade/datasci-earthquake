@@ -34,14 +34,14 @@ const HomeHeader = ({
   return (
     <Box
       bg="gradient.blue"
-      paddingTop={{ base: "57px", md: "76px", xl: "78px" }}
+      paddingTop={{ base: "56px", md: "72px", xl: "80px" }}
     >
       <Box
         w={{ base: "base", xl: "xl" }}
         p={{
-          base: "35px 23px 40px 23px",
-          md: "42px 26px 46px 26px",
-          xl: "24px 127px 24px 127px",
+          base: "36px 24px 40px 24px",
+          md: "44px 28px 44px 28px",
+          xl: "24px 128px 24px 128px",
         }}
         margin="auto"
       >

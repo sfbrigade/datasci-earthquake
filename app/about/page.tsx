@@ -37,7 +37,7 @@ const About = () => {
   const buildTeamMembers = () => {
     return TeamMembers.map((teamMember) => {
       return (
-        <ListItem key={teamMember.id} mb="5px">
+        <ListItem key={teamMember.id} mb="4px">
           <Text>
             <Text as="span" fontWeight={800}>
               {teamMember.name}
@@ -54,15 +54,15 @@ const About = () => {
     <Flex
       w={{ base: "base", xl: "xl" }}
       p={{
-        base: "23px 24px 16px 24px",
-        md: "37px 27px 16px 26px",
-        xl: "50px 128px 16px 127px",
+        base: "24px 24px 24px 24px",
+        md: "36px 28px 36px 28px",
+        xl: "80px 128px 80px 128px",
       }}
       direction={{ base: "column", lg: "row" }}
       m="auto"
       gap="46px"
     >
-      <Flex direction="column" alignItems={"flex-start"} gap="50px">
+      <Flex direction="column" alignItems={"flex-start"} gap="48px">
         <Heading headingData={headingData} />
         <Text textStyle="textBig" color="black">
           Seismologists predict a 72% probability that the Bay Area will

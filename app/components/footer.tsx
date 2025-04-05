@@ -20,9 +20,9 @@ const Footer = () => {
       <HStack
         w={{ base: "base", xl: "xl" }}
         p={{
-          base: "8px 23px 8px 23px",
-          md: "14px 26px 14px 26px",
-          xl: "70px 131px 75px 131px",
+          base: "8px 24px 8px 24px",
+          md: "14px 28px 14px 28px",
+          xl: "72px 128px 72px 128px",
         }}
         justify="space-between"
         m="auto"
