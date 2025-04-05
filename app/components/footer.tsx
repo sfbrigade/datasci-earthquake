@@ -22,7 +22,7 @@ const Footer = () => {
         p={{
           base: "8px 23px 8px 23px",
           md: "14px 26px 14px 26px",
-          xl: "70px 131px 75px 131px",
+          xl: "70px 130px 70px 130px",
         }}
         justify="space-between"
         m="auto"

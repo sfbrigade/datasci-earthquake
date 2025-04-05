@@ -21,9 +21,9 @@ const Header = () => {
         justifyContent="space-between"
         m="auto"
         p={{
-          base: "19px 23px 8px 23px",
-          md: "26px 26px 14px 26px",
-          xl: "29px 127px 13px 127px",
+          base: "19px 23px 19px 23px",
+          md: "26px 26px 26px 26px",
+          xl: "29px 130px 29px 130px",
         }}
       >
         <Link as={NextLink} color="white" href="/">
