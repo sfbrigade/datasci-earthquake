@@ -14,9 +14,9 @@ const ComponentsTestLib = () => {
       as="section"
       w={{ base: "base", xl: "xl" }}
       p={{
-        base: "10px 23px 10px 23px",
-        md: "8px 27px 8px 26px",
-        xl: "5px 127px 5px 127px",
+        base: "10px 24px 10px 24px",
+        md: "8px 28px 8px 28px",
+        xl: "6px 128px 6px 128px",
       }}
       m="auto"
     >

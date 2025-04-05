@@ -194,7 +194,6 @@ const Map: React.FC<MapProps> = ({
       {debug === "true" && (
         <span
           style={{
-            backgroundColor: "pink",
             position: "absolute",
             top: 0,
             right: 0,

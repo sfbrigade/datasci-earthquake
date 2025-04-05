@@ -3,13 +3,13 @@ import { Center, Stack } from "@chakra-ui/react";
 
 export const CardContainer = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Center pb="35px" pt="16px" zIndex={10} w="100vw">
+    <Center pb="36px" pt="16px" zIndex={10} w="100vw">
       <Stack
         justifyContent="space-between"
         direction={{ base: "column", md: "row" }}
-        spacing="15px"
-        w={{ base: "95%", xl: "1100px" }}
-        px={{ base: 0, md: 2 }}
+        spacing="16px"
+        w={{ base: "base", xl: "xl" }}
+        px={{ base: "24px", md: "28px", xl: "128px" }}
       >
         {children}
       </Stack>

@@ -22,14 +22,14 @@ const Header = () => {
       <Stack
         direction={{ base: "column", md: "row" }}
         w={{ base: "base", xl: "xl" }}
-        h="114px"
+        h="112px"
         justifyContent="flex-start"
         columnGap="25px"
         m="auto"
         p={{
-          base: "19px 23px 8px 23px",
-          md: "26px 26px 14px 26px",
-          xl: "29px 127px 13px 127px",
+          base: "18px 24px 18px 24px",
+          md: "28px 28px 28px 28px",
+          xl: "28px 128px 28px 128px",
         }}
       >
         <Link
@@ -48,7 +48,7 @@ const Header = () => {
               alt="Logo"
               color="white"
               boxSize={{
-                base: "22px",
+                base: "24px",
                 md: "28px",
               }}
             />
