@@ -4,6 +4,7 @@ from pathlib import Path
 import json
 from shapely.geometry import shape
 from sqlalchemy.dialects.postgresql import insert as pg_insert
+from sqlalchemy.dialects.postgresql import Insert
 from backend.database.session import get_db
 from backend.api.models.base import ModelType
 from shapely.ops import transform
@@ -42,6 +43,7 @@ class DataHandler(ABC):
         session: Optional[requests.Session] = None,
         logger: Optional[logging.Logger] = None,
     ):
+        self.db = next(get_db())
         self.url = url
         self.table = table
         self.page_size = page_size
@@ -175,22 +177,49 @@ class DataHandler(ABC):
         pass
 
     def bulk_insert_data(self, data_dicts: list[dict], id_field: str):
-        """
-        Inserts the list of dictionaries into the database table as
-        SQLAlchemy objects.
+        with self.db as db:
+            base_stmt = pg_insert(self.table)
+            stmt = self.insert_policy(base_stmt, data_dicts, id_field)
 
-        Rows that cause conflicts based on the `id_field` are skipped
-        """
-        # TODO: Implement logic to upsert only changed data
-        with next(get_db()) as db:
-            stmt = pg_insert(self.table).values(data_dicts)
-            stmt = stmt.on_conflict_do_nothing(index_elements=[id_field])
+            # Validate insert_policy() returned the correct type
+            if not isinstance(stmt, Insert):
+                raise TypeError(
+                    f"Update policy returned incorrect type {type(stmt).__name__}, expected Insert"
+                )
+
+            # Validate that insert_policy() didn't change the target table
+            if stmt.table != base_stmt.table:
+                raise ValueError(
+                    f"Update policy attempted to modify table {stmt.table.name} "
+                    f"but expected {self.table.__tablename__}"
+                )
+
             db.execute(stmt)
             db.commit()
             self.logger.info(
                 f"{self.table.__name__}: Inserted {len(data_dicts)} rows into {self.table.__name__}."
             )
 
+    @abstractmethod
+    def insert_policy(self, insert: Insert, data_dicts: list[dict], id_field: str) -> Insert:
+        """
+        The insert_policy() defines how bulk_insert_data() should handle insertion operations.
+        insertion wont behave correctly without at least the line stmt.values(data_dicts)
+
+        Args:
+            insert: A SQLAlchemy insert statement, passed in by bulk_insert_data(). This statement is already targeted at the correct table, and validated.
+            data_dicts: a list of dictionaries, to be used for sql comparisons. all comparisons get handled on the database, needing only a single trip
+            id_field: the column name to use as the unique identifier
+
+        Returns:
+            modified Insert statement with the desired conflict handling
+
+        Example:
+        from sqlalchemy.dialects.postgresql import Insert
+        def insert_policy(self, insert: Insert, data_dicts: list[dict], id_field: str) -> Insert:
+            return insert.values(data_dicts).on_conflict_do_nothing(index_elements=[id_field])
+        """
+        pass
     def save_geojson(self, features) -> None:
         """
         Write the geojson file to the public/data folder

@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import Mock, patch, MagicMock
 import requests
-from sqlalchemy import Column, Integer
+from sqlalchemy import Column, Integer, String
 from backend.etl.data_handler import DataHandler
 from backend.api.models.base import Base
 from requests.adapters import HTTPAdapter
@@ -10,6 +10,14 @@ import logging
 from unittest.mock import call
 from backend.etl.retry import LoggingRetry
 from backend.etl.request_handler import RequestHandler
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
+from backend.api.config import settings
+from sqlalchemy.dialects.postgresql import Insert
+from sqlalchemy.dialects.postgresql import insert as pg_insert
+from datetime import datetime
+from sqlalchemy import DateTime
+from sqlalchemy import text
 
 
 class DummyModel(Base):
@@ -17,6 +25,9 @@ class DummyModel(Base):
 
     __tablename__ = "test_table"
     id = Column(Integer, primary_key=True)
+    name = Column(String)
+    value = Column(Integer)
+    data_changed_at = Column(DateTime)
 
 
 class DummyDataHandler(DataHandler):
@@ -24,7 +35,35 @@ class DummyDataHandler(DataHandler):
 
     def parse_data(self, data: dict) -> tuple[list[dict], dict]:
         return [data], {"type": "FeatureCollection", "features": data}
+    def insert_policy(self, insert: Insert, data_dicts, id_field):
+        return insert.values(data_dicts).on_conflict_do_nothing(index_elements=[id_field])
+class SomeOtherModel(Base):
+    __tablename__ = "other_table"
+    id = Column(Integer, primary_key=True)
+    sensitive_data = Column(String)
 
+@pytest.fixture(scope="function")
+def test_db():
+    engine = create_engine(settings.localhost_database_url_sqlalchemy)
+    connection = engine.connect()
+    
+    # We own this code, so we can create our tables!
+    Base.metadata.drop_all(engine)
+    Base.metadata.create_all(engine)
+    
+    transaction = connection.begin()
+    Session = scoped_session(sessionmaker(bind=connection))
+    session = Session()
+    session.begin_nested()
+
+    yield session
+
+    session.rollback()
+    for table in reversed(Base.metadata.sorted_tables):
+        session.execute(table.delete())
+    session.commit()
+    session.close()
+    connection.close()
 
 @pytest.fixture
 def data_handler():
@@ -246,3 +285,141 @@ def test_fetch_data_session_cleanup(data_handler, caplog):
     # Assert
     assert data_handler.session.close.call_count == 1
     assert "Closed session" in caplog.text
+
+def test_bulk_insert_data_with_basic_policy(test_db, data_handler):
+    """
+    As implemented in DummyModel, bulk_insert_data should insert into the database, and shouldn't update existing fields on conflict (upsert)
+
+    Implementation tested:
+    def insert_policy(self, insert: Insert, id_field):
+        return insert.values(data_dicts).on_conflict_do_nothing(index_elements=[id_field])
+    """
+    # by default, data_handler.db is the production db.
+    # maybe this should be changed depending on the environment?
+    data_handler.db = test_db
+    # Setup initial data
+    existing = DummyModel(id=1, name="old name", value=100, data_changed_at=datetime(2024, 1, 1, 12, 0))
+    test_db.add(existing)
+    test_db.commit()
+
+    # Attempt upsert with new data
+    new_data_1 = {"id": 1, "name": "new name", "value": 200, "data_changed_at": datetime(2024, 1, 1, 12, 0)}
+    new_data_2 = {"id": 2, "name": "new name", "value": 200, "data_changed_at": datetime(2024, 1, 1, 12, 0)}
+    data_handler.bulk_insert_data([new_data_1, new_data_2], 'id')
+
+    print("All records in table:")
+    all_records = test_db.query(DummyModel).all()
+    for record in all_records:
+        print(f"ID: {record.id}, Name: {record.name}, Value: {record.value}")
+
+    # Verify no fields were updated
+    result = test_db.query(DummyModel).filter_by(id=1).first()
+    assert result.name == "old name"
+    assert result.value == 100
+
+    # Verify New Data 2 was added
+    result = test_db.query(DummyModel).filter_by(id=2).first()
+    assert result.name == "new name"
+    assert result.value == 200
+
+def test_bulk_insert_data_with_wrong_table_insert_policy(test_db, data_handler):
+    """
+    Verify that insert_policy cannot modify unexpected tables
+    Verify that insert_policy must return the right type
+    """
+    existing = DummyModel(id=1, name="safe data", value=100, data_changed_at=datetime(2024, 1, 1, 12, 0))
+    test_db.add(existing)
+    test_db.commit()
+
+    def malicious_insert_policy(insert, data_dicts, id_field):
+        # Try to target a different table
+        return pg_insert(SomeOtherModel)
+
+    def incorrect_return_type_insert_policy(insert, data_dicts, id_fields):
+        return "meow"
+
+    data_handler.insert_policy = malicious_insert_policy
+
+    with pytest.raises(ValueError, match="Update policy attempted to modify table"):
+        data_handler.bulk_insert_data([{"id": 1}], 'id')
+    
+    data_handler.insert_policy = incorrect_return_type_insert_policy
+
+    with pytest.raises(TypeError, match="Update policy returned incorrect type"):
+        data_handler.bulk_insert_data([{"id": 1}], 'id')
+
+
+    
+
+def test_bulk_insert_data_with_timestamp_upsert_policy(test_db, data_handler):
+    """
+    Tests that bulk_insert_data updates existing records only when the new data 
+    has a more recent data_changed_at timestamp
+    """
+    data_handler.db = test_db
+    
+    # Setup initial data with an older timestamp
+    existing = DummyModel(
+        id=1, 
+        name="old name", 
+        value=100,
+        data_changed_at=datetime(2024, 1, 1, 12, 0)  # January 1st noon
+    )
+    test_db.add(existing)
+    test_db.commit()
+
+    # Three test cases: newer timestamp, older timestamp, and new record
+    data_to_insert = [
+        {   # Case 1: Newer timestamp - should update
+            "id": 1,
+            "name": "new name",
+            "value": 200,
+            "data_changed_at": datetime(2024, 1, 2, 12, 0)  # January 2nd
+        },
+        {   # Case 2: Older timestamp - should not update
+            "id": 2,
+            "name": "won't stick",
+            "value": 300,
+            "data_changed_at": datetime(2024, 1, 1, 11, 0)  # January 1st 11am
+        },
+        {   # Case 3: New record - should insert
+            "id": 3,
+            "name": "totally new",
+            "value": 400,
+            "data_changed_at": datetime(2024, 1, 1, 12, 0)
+        }
+    ]
+    def timestamp_insert_policy(base_stmt: Insert, data_dicts: list[dict], id_field: str) -> Insert:
+        return (
+            base_stmt.values(data_dicts)
+            .on_conflict_do_update(
+                index_elements=[id_field],
+                # The EXCLUDED table represents the row that would have been inserted
+                # So EXCLUDED.data_changed_at is the new timestamp
+                set_=dict(
+                    name=text("CASE WHEN test_table.data_changed_at < EXCLUDED.data_changed_at THEN EXCLUDED.name ELSE test_table.name END"),
+                    value=text("CASE WHEN test_table.data_changed_at < EXCLUDED.data_changed_at THEN EXCLUDED.value ELSE test_table.value END"),
+                    data_changed_at=text("CASE WHEN test_table.data_changed_at < EXCLUDED.data_changed_at THEN EXCLUDED.data_changed_at ELSE test_table.data_changed_at END")
+                )
+            )
+        )
+    data_handler.insert_policy = timestamp_insert_policy
+    data_handler.bulk_insert_data(data_to_insert, 'id')
+
+    # Check Case 1: Should have updated because newer timestamp
+    result = test_db.query(DummyModel).filter_by(id=1).first()
+    assert result.name == "new name"
+    assert result.value == 200
+    assert result.data_changed_at == datetime(2024, 1, 2, 12, 0)
+
+    # Check Case 2: Should not have updated because older timestamp
+    result = test_db.query(DummyModel).filter_by(id=2).first()
+    assert result.name == "won't stick"
+    assert result.value == 300
+    assert result.data_changed_at == datetime(2024, 1, 1, 11, 0)
+
+    # Check Case 3: Should have inserted new record
+    result = test_db.query(DummyModel).filter_by(id=3).first()
+    assert result.name == "totally new"
+    assert result.value == 400
+    assert result.data_changed_at == datetime(2024, 1, 1, 12, 0)
