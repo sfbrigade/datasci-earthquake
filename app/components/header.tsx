@@ -21,7 +21,7 @@ const Header = () => {
     >
       <Stack
         direction={{ base: "column", md: "row" }}
-        w={{ base: "base", xl: "xl" }}
+        w={{ base: "full", xl: "7xl" }}
         h="112px"
         justifyContent="flex-start"
         columnGap="25px"

@@ -37,7 +37,7 @@ const HomeHeader = ({
       paddingTop={{ base: "56px", md: "72px", xl: "80px" }}
     >
       <Box
-        w={{ base: "base", xl: "xl" }}
+        w={{ base: "full", xl: "7xl" }}
         p={{
           base: "36px 24px 40px 24px",
           md: "44px 28px 44px 28px",

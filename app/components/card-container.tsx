@@ -8,7 +8,7 @@ export const CardContainer = ({ children }: { children: React.ReactNode }) => {
         justifyContent="space-between"
         direction={{ base: "column", md: "row" }}
         spacing="16px"
-        w={{ base: "base", xl: "xl" }}
+        w={{ base: "full", xl: "7xl" }}
         px={{ base: "24px", md: "28px", xl: "128px" }}
       >
         {children}

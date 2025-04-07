@@ -43,7 +43,7 @@ const ReportHazards = ({
         alignItems="center"
       >
         <Stack
-          w={{ base: "base", xl: "xl" }}
+          w={{ base: "full", xl: "7xl" }}
           px={{
             base: "24px",
             md: "28px",

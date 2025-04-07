@@ -105,7 +105,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         onCoordDataRetrieve={setAddressHazardData}
         onHazardDataLoading={setHazardDataLoading}
       />
-      <Box w="base" h={{ base: "1400px", md: "1000px" }} m="auto">
+      <Box w="full" h={{ base: "1400px", md: "1000px" }} m="auto">
         <Box h="100%" overflow="hidden" position="relative">
           <Box zIndex={10} top={0} position="absolute">
             <ReportHazards
@@ -123,7 +123,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         </Box>
       </Box>
       <Flex
-        w={{ base: "base", xl: "xl" }}
+        w={{ base: "full", xl: "7xl" }}
         p={{
           base: "24px 24px 24px 24px",
           md: "36px 28px 16px 28px",
