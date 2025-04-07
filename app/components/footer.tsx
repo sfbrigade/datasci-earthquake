@@ -18,7 +18,7 @@ const Footer = () => {
   return (
     <Box as="footer" w="100%" bgColor="blue">
       <HStack
-        w={{ base: "base", xl: "xl" }}
+        w={{ base: "full", xl: "7xl" }}
         p={{
           base: "8px 24px 8px 24px",
           md: "14px 28px 14px 28px",

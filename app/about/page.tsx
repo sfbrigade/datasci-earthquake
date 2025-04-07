@@ -52,7 +52,7 @@ const About = () => {
 
   return (
     <Flex
-      w={{ base: "base", xl: "xl" }}
+      w={{ base: "full", xl: "7xl" }}
       p={{
         base: "24px 24px 24px 24px",
         md: "36px 28px 36px 28px",
@@ -60,7 +60,7 @@ const About = () => {
       }}
       direction={{ base: "column", lg: "row" }}
       m="auto"
-      gap="46px"
+      gap="44px"
     >
       <Flex direction="column" alignItems={"flex-start"} gap="48px">
         <Heading headingData={headingData} />
