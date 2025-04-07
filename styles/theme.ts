@@ -68,25 +68,6 @@ const customTheme = extendTheme({
       blue: "radial-gradient(120% 180% at 17.81% 82.6%, rgba(59,98,148,1) 0%, rgba(24,50,82,1) 100%);",
     },
   },
-  space: {
-    12: "128px",
-    4: "24px",
-    2: "12px",
-  },
-  sizes: {
-    base: "100%",
-    sm: "375px",
-    md: "744px",
-    xl: "1280px",
-  },
-  breakpoints: {
-    base: "0px",
-    sm: "375px",
-    md: "744px",
-    lg: "992px",
-    xl: "1280px",
-    "2xl": "1536px",
-  },
 });
 
 export default customTheme;

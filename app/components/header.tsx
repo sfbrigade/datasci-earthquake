@@ -17,7 +17,7 @@ const Header = () => {
       top={isHome ? "0" : undefined}
     >
       <HStack
-        w={{ base: "base", xl: "xl" }}
+        w={{ base: "full", xl: "7xl" }}
         justifyContent="space-between"
         m="auto"
         p={{

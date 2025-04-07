@@ -47,7 +47,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         onAddressSearch={setSearchedAddress}
         onCoordDataRetrieve={setAddressHazardData}
       />
-      <Box w="base" h={{ base: "1400px", md: "1000px" }} m="auto">
+      <Box w="full" h={{ base: "1400px", md: "1000px" }} m="auto">
         <Box h="100%" overflow="hidden" position="relative">
           <Box zIndex={10} top={0} position="absolute">
             <Report
