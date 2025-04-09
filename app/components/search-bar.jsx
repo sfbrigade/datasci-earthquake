@@ -13,6 +13,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  useToast,
 } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
@@ -41,6 +42,7 @@ const SearchBar = ({
   const debug = useSearchParams().get("debug");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const toast = useToast();
 
   const handleClearClick = () => {
     setInputAddress("");
@@ -70,9 +72,21 @@ const SearchBar = ({
     try {
       const values = await getHazardData(coords);
       onCoordDataRetrieve(values);
-    } catch {
-      console.log("could not retrieve hazard data");
+    } catch (error) {
+      console.error("Error while retrieving data: ", error?.message || error);
       onCoordDataRetrieve([]);
+      toast({
+        description: "Could not retrieve hazard data",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+        containerStyle: {
+          backgroundColor: "#b53d37",
+          opacity: 1,
+          borderRadius: "12px",
+        },
+      });
     }
   };
 
