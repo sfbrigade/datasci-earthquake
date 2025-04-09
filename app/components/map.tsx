@@ -55,6 +55,7 @@ const Map: React.FC<MapProps> = ({
         touchPitch: false, // turn off pitch change w/touch
         touchZoomRotate: true, // turn on zoom/rotate w/touch
         keyboard: true, // turn on keyboard shortcuts
+        cooperativeGestures: true, // scroll-to-zoom requires using the control or command key while scrolling to zoom the map
         config: {
           // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
           basemap: {
