@@ -29,7 +29,7 @@ const Header = () => {
         <Link as={NextLink} color="white" href="/">
           <HStack align="center">
             <Image
-              src="/SFSafeHome-logo.svg"
+              src="/images/SFSafeHome-logo.svg"
               alt="Logo"
               color="white"
               boxSize={{

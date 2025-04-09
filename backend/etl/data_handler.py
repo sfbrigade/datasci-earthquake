@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import requests
 from pathlib import Path
 import json
+from shapely.geometry import shape
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from backend.database.session import get_db
 from backend.api.models.base import ModelType
@@ -18,7 +19,7 @@ logging.basicConfig(
 )
 
 _PREFIX_DATA_GEOJSON_PATH = "/public/data/"
-
+_SF_BOUNDARY_PATH = "backend/etl/data/sf_boundary.geojson"
 
 class DataHandler(ABC):
     """
@@ -46,6 +47,15 @@ class DataHandler(ABC):
         self.logger = logger or logging.getLogger(f"{self.__class__.__name__}")
         self.session = session or SessionManager.create_session(self.logger)
         self.request_handler = RequestHandler(self.session, self.logger)
+        try:
+            with open(_SF_BOUNDARY_PATH) as f:
+                boundary_geojson = json.load(f)
+            if not boundary_geojson["features"]:
+                raise ValueError("No features found in boundary geojson")
+            self.boundary = shape(boundary_geojson["features"][0]["geometry"])
+        except (FileNotFoundError, json.JSONDecodeError, ValueError) as e:
+            self.logger.error(f"Failed to load boundary geojson: {e}")
+            raise
 
         self.logger.info(
             f"Initialized handler for {table.__name__} "

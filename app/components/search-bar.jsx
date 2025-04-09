@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState, useEffect, useCallback } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   HStack,
   Input,
@@ -17,7 +17,19 @@ import {
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
-import { mockAddressHazardData as values } from "../data/data";
+import { API_ENDPOINTS } from "../api/endpoints";
+
+// TODO: share bbox options with what's in `map.tsx`
+const options = {
+  bbox: [
+    [-122.6, 37.65], // Southwest coordinates
+    [-122.25, 37.85], // Northeast coordinates
+  ],
+  country: "US",
+  limit: 10,
+  // proximity: , // TODO: consider passing in current center of map
+  streets: false,
+};
 
 const SearchBar = ({
   coordinates,
@@ -25,36 +37,107 @@ const SearchBar = ({
   onAddressSearch,
   onCoordDataRetrieve,
 }) => {
-  const [address, setAddress] = useState("");
-  const [fullAddress, setFullAddress] = useState(null);
-  const [addressLine, setAddressLine] = useState("");
+  const [inputAddress, setInputAddress] = useState("");
   const debug = useSearchParams().get("debug");
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleClearClick = () => {
-    console.log(address);
-    console.log(fullAddress);
-    setAddress("");
+    setInputAddress("");
+    router.push("/", { scroll: false });
   };
 
+  // extract feature data (address, coordinates) from response and:
+  // - update full address
+  // - retrieve additional data about coordinates from our API
+  // - retrieve associated coordinates from our API
+  //
+  // fired when the user has selected suggestion, before the form is autofilled (from https://docs.mapbox.com/mapbox-search-js/api/react/autofill/)
   const handleRetrieve = (event) => {
     const addressData = event.features[0];
     const addressLine = event.features[0].properties.feature_name;
+    const coords = addressData.geometry.coordinates;
+
     onAddressSearch(addressLine);
-    setFullAddress(addressData);
-    // TODO: move to proper event handler and replace with coordinates from API
-    onSearchChange([coordinates[0] + 0.025, coordinates[1] + 0.025]);
+    onSearchChange(coords);
+    updateHazardData(coords);
+
+    const newUrl = `?address=${encodeURIComponent(addressLine)}&lat=${coords[1]}&lon=${coords[0]}`;
+    router.push(newUrl, { scroll: false });
   };
 
-  useEffect(() => {
-    if (fullAddress) {
+  const updateHazardData = async (coords) => {
+    try {
+      const values = await getHazardData(coords);
       onCoordDataRetrieve(values);
-    } else {
+    } catch {
+      console.log("could not retrieve hazard data");
       onCoordDataRetrieve([]);
     }
-  }, [fullAddress, onCoordDataRetrieve]);
+  };
+
+  const handleAddressChange = (event) => {
+    setInputAddress(event.target.value);
+  };
+
+  /**
+   * TODO: capture and update address on submit OR use first autocomplete suggestion; see file://./../snippets.md#geocode-on-search for details.
+   */
+  const onSubmit = async (event) => {
+    console.log("onSubmit", event.target.value);
+    event.preventDefault();
+
+    // TODO: capture and update address as described above
+  };
+
+  // gets metadata from Mapbox API for given coordinates
+  const getHazardData = async (coords = coordinates) => {
+    try {
+      const isSoftStory = await fetch(
+        `${API_ENDPOINTS.isSoftStory}?lon=${coords[0]}&lat=${coords[1]}`
+      ).then((response) => response.json());
+
+      const isInTsunamiZone = await fetch(
+        `${API_ENDPOINTS.isInTsunamiZone}?lon=${coords[0]}&lat=${coords[1]}`
+      ).then((response) => response.json());
+
+      const isInLiquefactionZone = await fetch(
+        `${API_ENDPOINTS.isInLiquefactionZone}?lon=${coords[0]}&lat=${coords[1]}`
+      ).then((response) => response.json());
+
+      return Promise.all([isSoftStory, isInTsunamiZone, isInLiquefactionZone]);
+    } catch (error) {
+      console.error("Error fetching hazard data:", error);
+      // TODO: Handle error appropriately, e.g., return a default value or re-throw (for now, we are re-throwing)
+      throw error;
+    }
+  };
+  // temporary memoization fix for updating the address in the search bar.
+  // TODO: refactor how we are caching our calls
+  const memoizedOnSearchChange = useCallback(onSearchChange, []);
+  const memoizedOnAddressSearch = useCallback(onAddressSearch, []);
+  const memoizedUpdateHazardData = useCallback(updateHazardData, []);
+
+  useEffect(() => {
+    const address = searchParams.get("address");
+    const lat = searchParams.get("lat");
+    const lon = searchParams.get("lon");
+
+    if (address && lat && lon) {
+      const coords = [parseFloat(lon), parseFloat(lat)];
+      onAddressSearch(address);
+      onSearchChange(coords);
+      updateHazardData(coords);
+    }
+  }, [
+    searchParams,
+    memoizedOnAddressSearch,
+    memoizedOnSearchChange,
+    memoizedUpdateHazardData,
+  ]);
 
   return (
-    <form>
+    <form onSubmit={onSubmit}>
       {debug === "true" && (
         <HStack>
           <NumberInput
@@ -95,6 +178,7 @@ const SearchBar = ({
       )}
       <DynamicAddressAutofill
         accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+        options={options}
         onRetrieve={handleRetrieve}
       >
         <InputGroup
@@ -124,8 +208,8 @@ const SearchBar = ({
             boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
             type="text"
             name="address-1"
-            value={address}
-            onChange={(event) => setAddress(event.target.value)}
+            value={inputAddress}
+            onChange={handleAddressChange}
             _hover={{
               borderColor: "yellow",
               _placeholder: { color: "grey.900" },
@@ -133,7 +217,7 @@ const SearchBar = ({
             _invalid={{ borderColor: "red" }}
             autoComplete="address-line1"
           />
-          {address.length != 0 && (
+          {inputAddress.length != 0 && (
             <InputRightElement>
               <RxCross2
                 color="grey.900"

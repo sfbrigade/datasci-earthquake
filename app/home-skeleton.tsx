@@ -3,13 +3,8 @@ import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
 import AddressMapper from "./components/address-mapper";
 import { Headings } from "./data/data";
-import {
-  fetchSoftStories,
-  fetchTsunami,
-  fetchLiquefaction,
-} from "./api/services";
 
-const Home = async () => {
+const HomeSkeleton = () => {
   const headingData = Headings.home;
   let softStoryData: FeatureCollection<Geometry, GeoJsonProperties> = {
     type: "FeatureCollection",
@@ -24,15 +19,6 @@ const Home = async () => {
     features: [],
   };
 
-  try {
-    [softStoryData, tsunamiData, liquefactionData] = await Promise.all([
-      fetchSoftStories(),
-      fetchTsunami(),
-      fetchLiquefaction(),
-    ]);
-  } catch (error) {
-    console.error("Error:", error); // TODO: how to handle this error gracefully?
-  }
   return (
     <AddressMapper
       headingData={headingData}
@@ -43,4 +29,4 @@ const Home = async () => {
   );
 };
 
-export default Home;
+export default HomeSkeleton;

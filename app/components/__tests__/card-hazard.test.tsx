@@ -16,6 +16,16 @@ describe("CardHazard Component", () => {
       title: "Earthquake",
       name: "seismic",
       description: "Potential hazard in the area.",
+      info: [
+        "A soft story building is a structure built before 1978 that contains an open-floor level, such as a garage or retail space, below one or more living spaces.",
+        "According to DataSF, there are 4,943 soft story buildings in SF. But not all are at risk!",
+        "Some have been retrofitted to reinforce their lower levels and are generally considered earthquake-safe.",
+        "Those that haven't made the required upgrades may face a greater risk of damage in an earthquake.",
+      ],
+      link: {
+        label: "Soft story dataset",
+        url: "https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data",
+      },
     };
   });
 
@@ -30,10 +40,5 @@ describe("CardHazard Component", () => {
     expect(
       screen.getByText("Potential hazard in the area.")
     ).toBeInTheDocument();
-  });
-
-  it("displays the hazard's updated time", () => {
-    render(<CardHazard hazard={Hazards[0]} />);
-    expect(screen.getByText("More info")).toBeInTheDocument();
   });
 });
