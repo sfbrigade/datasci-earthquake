@@ -18,9 +18,11 @@ import { KeyElem } from "./key-elem";
 const Report = ({
   searchedAddress,
   addressHazardData,
+  isHazardDataLoading,
 }: {
   searchedAddress: string;
-  addressHazardData: object[];
+  addressHazardData: object[] | undefined;
+  isHazardDataLoading: boolean;
 }) => {
   return (
     <Center flexDirection="column">
@@ -118,8 +120,11 @@ const Report = ({
             <CardHazard
               key={hazard.id}
               hazard={hazard}
-              hazardData={addressHazardData[index] ?? undefined}
-              showData={searchedAddress ? true : false}
+              hazardData={
+                addressHazardData ? addressHazardData[index] : undefined
+              }
+              showData={addressHazardData ? true : false}
+              isHazardDataLoading={isHazardDataLoading}
             />
           );
         })}

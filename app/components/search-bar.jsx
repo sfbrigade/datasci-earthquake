@@ -37,6 +37,7 @@ const SearchBar = ({
   onSearchChange,
   onAddressSearch,
   onCoordDataRetrieve,
+  onHazardDataLoading,
 }) => {
   const [inputAddress, setInputAddress] = useState("");
   const debug = useSearchParams().get("debug");
@@ -107,6 +108,7 @@ const SearchBar = ({
   // gets metadata from Mapbox API for given coordinates
   const getHazardData = async (coords = coordinates) => {
     try {
+      onHazardDataLoading(true);
       const isSoftStory = await fetch(
         `${API_ENDPOINTS.isSoftStory}?lon=${coords[0]}&lat=${coords[1]}`
       ).then((response) => response.json());
@@ -119,9 +121,14 @@ const SearchBar = ({
         `${API_ENDPOINTS.isInLiquefactionZone}?lon=${coords[0]}&lat=${coords[1]}`
       ).then((response) => response.json());
 
-      return Promise.all([isSoftStory, isInTsunamiZone, isInLiquefactionZone]);
+      return Promise.all([
+        isSoftStory,
+        isInTsunamiZone,
+        isInLiquefactionZone,
+      ]).then(onHazardDataLoading(false));
     } catch (error) {
       console.error("Error fetching hazard data:", error);
+      onHazardDataLoading(false);
       // TODO: Handle error appropriately, e.g., return a default value or re-throw (for now, we are re-throwing)
       throw error;
     }
