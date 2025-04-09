@@ -1,23 +1,41 @@
 import { Box, Text } from "@chakra-ui/react";
-import { AddressData, AddressDataType } from "./__mocks__/address-data";
 
 interface PillProps {
   exists: boolean | undefined;
 }
 
 const Pill: React.FC<PillProps> = ({ exists }) => {
-  const color = exists ? "red" : "green";
-  const status = exists ? "At Risk" : "Low Risk";
+  const getColor = () => {
+    switch (exists) {
+      case true:
+        return "red";
+      case false:
+        return "green";
+      default:
+        return "grey";
+    }
+  };
+
+  const getLabel = () => {
+    switch (exists) {
+      case true:
+        return "At Risk";
+      case false:
+        return "Low Risk";
+      default:
+        return "No Data";
+    }
+  };
 
   return (
     <Box>
       <Text
-        bgColor={color}
+        bgColor={getColor()}
         color="white"
         p="2px 12px 2px 12px"
         borderRadius="25"
       >
-        {status}
+        {getLabel()}
       </Text>
     </Box>
   );

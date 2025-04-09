@@ -36,9 +36,14 @@ interface CardHazardProps {
     exists?: boolean;
     last_updated?: string;
   };
+  showData: boolean;
 }
 
-const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
+const CardHazard: React.FC<CardHazardProps> = ({
+  hazard,
+  hazardData,
+  showData,
+}) => {
   const { title, name, description } = hazard;
   const { exists, last_updated: date } = hazardData || {};
 
@@ -75,7 +80,7 @@ const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info
                 </Text>
-                {exists !== undefined ? <Pill exists={exists} /> : ""}
+                {showData ? <Pill exists={exists} /> : ""}
               </HStack>
             </CardFooter>
           </VStack>

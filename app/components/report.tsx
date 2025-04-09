@@ -119,6 +119,7 @@ const Report = ({
               key={hazard.id}
               hazard={hazard}
               hazardData={addressHazardData[index] ?? undefined}
+              showData={searchedAddress ? true : false}
             />
           );
         })}
