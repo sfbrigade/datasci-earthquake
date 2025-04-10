@@ -75,7 +75,11 @@ const SearchBar = ({
       onCoordDataRetrieve(values);
     } catch (error) {
       console.error("Error while retrieving data: ", error?.message || error);
-      onCoordDataRetrieve({});
+      onCoordDataRetrieve({       
+        softStory: null,
+        tsunami: null,
+        liquefaction: null,
+      });
       toast({
         description: "Could not retrieve hazard data",
         status: "error",

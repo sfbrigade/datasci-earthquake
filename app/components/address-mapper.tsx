@@ -33,9 +33,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 }) => {
   const [coordinates, setCoordinates] = useState(defaultCoords);
   const [searchedAddress, setSearchedAddress] = useState("");
-  const [addressHazardData, setAddressHazardData] = useState<object | undefined>(
-    undefined
-  );
+  const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
 
   const updateMap = (coords: number[]) => {

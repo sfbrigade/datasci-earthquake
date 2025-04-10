@@ -27,7 +27,7 @@ const Report = ({
   isHazardDataLoading,
 }: {
   searchedAddress: string;
-  addressHazardData: HazardData | undefined;
+  addressHazardData: HazardData;
   isHazardDataLoading: boolean;
 }) => {
   return (
@@ -129,7 +129,8 @@ const Report = ({
               hazardData={
                 addressHazardData?.[hazard.name as keyof HazardData] ?? undefined
               }
-              showData={addressHazardData ? true : false}
+              // showData={addressHazardData?.[hazard.name as keyof HazardData] ? true : false}
+              showData={hazard.name in addressHazardData ? true : false}
               isHazardDataLoading={isHazardDataLoading}
             />
           );
