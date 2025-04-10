@@ -15,12 +15,20 @@ import Share from "./share";
 import { CardContainer } from "./card-container";
 import { KeyElem } from "./key-elem";
 
+type HazardData = {
+  softStory?: any;
+  tsunami?: any;
+  liquefaction?: any;
+};
+
 const Report = ({
   searchedAddress,
   addressHazardData,
+  isHazardDataLoading,
 }: {
   searchedAddress: string;
-  addressHazardData: object[];
+  addressHazardData: HazardData;
+  isHazardDataLoading: boolean;
 }) => {
   return (
     <Center flexDirection="column">
@@ -118,7 +126,13 @@ const Report = ({
             <CardHazard
               key={hazard.id}
               hazard={hazard}
-              hazardData={addressHazardData[index] ?? undefined}
+              hazardData={
+                addressHazardData?.[hazard.name as keyof HazardData] ??
+                undefined
+              }
+              // showData={addressHazardData?.[hazard.name as keyof HazardData] ? true : false}
+              showData={hazard.name in addressHazardData ? true : false}
+              isHazardDataLoading={isHazardDataLoading}
             />
           );
         })}

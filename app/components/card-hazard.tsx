@@ -9,6 +9,7 @@ import {
   Card,
   CardHeader,
   useDisclosure,
+  Spinner,
 } from "@chakra-ui/react";
 import Pill from "./pill";
 import {
@@ -36,9 +37,16 @@ interface CardHazardProps {
     exists?: boolean;
     last_updated?: string;
   };
+  showData: boolean;
+  isHazardDataLoading: boolean;
 }
 
-const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
+const CardHazard: React.FC<CardHazardProps> = ({
+  hazard,
+  hazardData,
+  showData,
+  isHazardDataLoading,
+}) => {
   const { title, name, description } = hazard;
   const { exists, last_updated: date } = hazardData || {};
 
@@ -50,6 +58,16 @@ const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
         ))}
       </VStack>
     );
+  };
+
+  const buildHazardPill = () => {
+    if (isHazardDataLoading) {
+      return <Spinner size="xs" />;
+    } else if (showData) {
+      return <Pill exists={exists} />;
+    } else {
+      return "";
+    }
   };
 
   return (
@@ -75,7 +93,7 @@ const CardHazard: React.FC<CardHazardProps> = ({ hazard, hazardData }) => {
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info
                 </Text>
-                {exists !== undefined ? <Pill exists={exists} /> : ""}
+                {buildHazardPill()}
               </HStack>
             </CardFooter>
           </VStack>
