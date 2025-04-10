@@ -17,8 +17,8 @@ import { KeyElem } from "./key-elem";
 
 type HazardData = {
   softStory?: any;
-  tsunamiZone?: any;
-  liquefactionZone?: any;
+  tsunami?: any;
+  liquefaction?: any;
 };
 
 const Report = ({
