@@ -127,7 +127,8 @@ const Report = ({
               key={hazard.id}
               hazard={hazard}
               hazardData={
-                addressHazardData?.[hazard.name as keyof HazardData] ?? undefined
+                addressHazardData?.[hazard.name as keyof HazardData] ??
+                undefined
               }
               // showData={addressHazardData?.[hazard.name as keyof HazardData] ? true : false}
               showData={hazard.name in addressHazardData ? true : false}

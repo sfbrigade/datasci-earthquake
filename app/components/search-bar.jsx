@@ -75,7 +75,7 @@ const SearchBar = ({
       onCoordDataRetrieve(values);
     } catch (error) {
       console.error("Error while retrieving data: ", error?.message || error);
-      onCoordDataRetrieve({       
+      onCoordDataRetrieve({
         softStory: null,
         tsunami: null,
         liquefaction: null,
@@ -112,22 +112,31 @@ const SearchBar = ({
   // gets metadata from Mapbox API for given coordinates
   const getHazardData = async (coords = coordinates) => {
     onHazardDataLoading(true);
-    const buildUrl = (endpoint) => `${endpoint}?lon=${coords[0]}&lat=${coords[1]}`;
+    const buildUrl = (endpoint) =>
+      `${endpoint}?lon=${coords[0]}&lat=${coords[1]}`;
 
     try {
-      const [softStory, tsunamiZone, liquefactionZone] = await Promise.allSettled([
-        fetch(buildUrl(API_ENDPOINTS.isSoftStory)).then(res => res.json()),
-        fetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)).then(res => res.json()),
-        fetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)).then(res => res.json())
-      ]);
+      const [softStory, tsunamiZone, liquefactionZone] =
+        await Promise.allSettled([
+          fetch(buildUrl(API_ENDPOINTS.isSoftStory)).then((res) => res.json()),
+          fetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)).then((res) =>
+            res.json()
+          ),
+          fetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)).then((res) =>
+            res.json()
+          ),
+        ]);
 
       onHazardDataLoading(false);
 
       return {
         softStory: softStory.status === "fulfilled" ? softStory.value : null,
         tsunami: tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
-        liquefaction: liquefactionZone.status === "fulfilled" ? liquefactionZone.value : null,
-      }
+        liquefaction:
+          liquefactionZone.status === "fulfilled"
+            ? liquefactionZone.value
+            : null,
+      };
     } catch (error) {
       console.error("Error fetching hazard data:", error);
       onHazardDataLoading(false);
