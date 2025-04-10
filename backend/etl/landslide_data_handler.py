@@ -3,7 +3,8 @@ from backend.etl.data_handler import DataHandler
 from backend.api.models.landslide_zones import LandslideZone
 from shapely.geometry import shape
 from geoalchemy2.shape import from_shape
-
+from sqlalchemy.dialects.postgresql import Insert
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 # This API has a default limit of providing 1,000 rows
 LANDSLIDE_URL = "https://data.sfgov.org/resource/bna4-itif.geojson"
@@ -16,6 +17,9 @@ class LandslideDataHandler(DataHandler):
     If gridcode is 8,9,10 then area is High Susceptibility for
     landslides
     """
+
+    def insert_policy(self, insert: Insert, data_dicts: list[dict], id_field: str) -> Insert:
+        return insert.values(data_dicts).on_conflict_do_nothing(index_elements=[id_field])
 
     def parse_data(self, data: dict) -> tuple[list[dict], dict]:
         """

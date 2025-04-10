@@ -15,9 +15,14 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from backend.api.config import settings
 from sqlalchemy.dialects.postgresql import Insert
 from sqlalchemy.dialects.postgresql import insert as pg_insert
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import DateTime
 from sqlalchemy import text
+from backend.api.models.tsunami import TsunamiZone
+from backend.api.models.soft_story_properties import SoftStoryProperty
+from backend.api.models.liquefaction_zones import LiquefactionZone
+from backend.etl.tsunami_data_handler import TsunamiDataHandler
+from backend.etl.soft_story_properties_data_handler import _SoftStoryPropertiesDataHandler
 
 
 class DummyModel(Base):
@@ -68,7 +73,6 @@ def test_db():
 @pytest.fixture
 def data_handler():
     return DummyDataHandler(url="https://api.test.com", table=DummyModel, page_size=3)
-
 
 @pytest.fixture
 def fast_retry_session():
@@ -423,3 +427,194 @@ def test_bulk_insert_data_with_timestamp_upsert_policy(test_db, data_handler):
     assert result.name == "totally new"
     assert result.value == 400
     assert result.data_changed_at == datetime(2024, 1, 1, 12, 0)
+
+# Tests for handler specific insert policies:
+@pytest.fixture
+def tsunami_data_handler(test_db):
+    TSUNAMI_URL = "https://services2.arcgis.com/zr3KAIbsRSUyARHG/ArcGIS/rest/services/CA_Tsunami_Hazard_Area/FeatureServer/0/query"
+    handler = TsunamiDataHandler(TSUNAMI_URL, TsunamiZone)
+    handler.db = test_db
+    return handler
+def test_bulk_insert_data_with_tsunami_policy(test_db, tsunami_data_handler):
+    """
+    TsunamiDataHandler's insert_policy should preserve existing records on conflict,
+    following the conservation.ca.gov dataset handling requirements.
+    """
+    tsunami_data_handler.db = test_db
+    
+    # Setup initial data with real SF Bay geometry
+    existing = TsunamiZone(
+        identifier=1,
+        evacuate="YES",
+        county="San Francisco",
+        global_id="sf123",
+        shape_length=1.0,
+        shape_area=1.0,
+        geometry="MULTIPOLYGON(((-122.5 37.7,-122.5 37.9,-122.3 37.9,-122.3 37.7,-122.5 37.7)))"
+    )
+    test_db.add(existing)
+    test_db.commit()
+
+    # Attempt insert with conflicting and new data
+    new_data_1 = {
+        "identifier": 1,
+        "evacuate": "NO",  # Changed
+        "county": "Orange County",  # Changed
+        "global_id": "sf123",
+        "shape_length": 2.0,  # Changed
+        "shape_area": 2.0,  # Changed
+        "geometry": "MULTIPOLYGON(((-122.5 37.7,-122.5 37.9,-122.3 37.9,-122.3 37.7,-122.5 37.7)))"
+    }
+    new_data_2 = {
+        "identifier": 2,
+        "evacuate": "YES",
+        "county": "Marin",
+        "global_id": "marin456",
+        "shape_length": 3.0,
+        "shape_area": 3.0,
+        "geometry": "MULTIPOLYGON(((-122.4 37.75,-122.4 37.85,-122.35 37.85,-122.35 37.75,-122.4 37.75)))"
+    }
+    
+    tsunami_data_handler.bulk_insert_data([new_data_1, new_data_2], 'global_id')
+
+    # Print for debugging
+    print("All records in table:")
+    all_records = test_db.query(TsunamiZone).all()
+    for record in all_records:
+        print(f"ID: {record.identifier}, County: {record.county}, Evacuate: {record.evacuate}")
+
+    # Verify original record wasn't updated
+    result = test_db.query(TsunamiZone).filter_by(identifier=1).first()
+    assert result.county == "San Francisco"
+    assert result.evacuate == "YES"
+    assert result.shape_length == 1.0
+    assert result.shape_area == 1.0
+
+    # Verify new record was added
+    result = test_db.query(TsunamiZone).filter_by(identifier=2).first()
+    assert result.county == "Marin"
+    assert result.evacuate == "YES"
+    assert result.shape_length == 3.0
+    assert result.shape_area == 3.0
+@pytest.fixture
+def soft_story_data_handler(test_db):
+    
+    _SOFT_STORY_PROPERTIES_URL = "https://data.sfgov.org/resource/beah-shgi.geojson"
+    handler = _SoftStoryPropertiesDataHandler(
+        _SOFT_STORY_PROPERTIES_URL,
+        SoftStoryProperty,
+        mapbox_api_key="meow",
+    )
+    handler.db = test_db
+    return handler
+def test_bulk_insert_data_with_soft_story_policy(test_db, soft_story_data_handler):
+    """
+    SoftStoryDataHandler's insert_policy should:
+    - Update all fields when sfdata_as_of is newer
+    - Only update sfdata_loaded_at when data is older but loaded_at is newer
+    - Always update update_timestamp when any change occurs
+    """
+    soft_story_data_handler.db = test_db
+    
+    # Setup initial data
+    existing = SoftStoryProperty(
+        identifier=1,
+        block="123",
+        lot="A",
+        parcel_number="123A",
+        property_address="123 Main St",
+        address="123 Main St, SF",
+        tier=1,
+        status="Active",
+        bos_district=6,
+        point="POINT(-122.4194 37.7749)",
+        sfdata_as_of=datetime(2024, 1, 1),
+        sfdata_loaded_at=datetime(2024, 1, 1),
+        point_source="geocoded"
+    )
+    test_db.add(existing)
+    test_db.commit()
+
+    # Test case 1: Newer data should update everything
+    newer_data = {
+        "identifier": 1,
+        "block": "456",
+        "lot": "B",
+        "parcel_number": "456B",
+        "property_address": "456 Main St",
+        "address": "456 Main St, SF",
+        "tier": 2,
+        "status": "Completed",
+        "bos_district": 8,
+        "point": "POINT(-122.4194 37.7749)",
+        "sfdata_as_of": datetime(2024, 2, 1),
+        "sfdata_loaded_at": datetime(2024, 2, 1),
+        "point_source": "manual"
+    }
+
+    # Test case 2: Older data with newer loaded_at
+    older_data = {
+        "identifier": 2,
+        "block": "789",
+        "lot": "C",
+        "parcel_number": "789C",
+        "property_address": "789 Main St",
+        "address": "789 Main St, SF",
+        "tier": 3,
+        "status": "Pending",
+        "bos_district": 9,
+        "point": "POINT(-122.4194 37.7749)",
+        "sfdata_as_of": datetime(2023, 12, 1),
+        "sfdata_loaded_at": datetime(2024, 2, 2),
+        "point_source": "geocoded"
+    }
+
+    # Test case 3: Same data_as_of but newer loaded_at
+    same_date_data = {
+        "identifier": 3,
+        "block": "123",
+        "lot": "A",
+        "parcel_number": "123A",
+        "property_address": "123 Oak St",
+        "address": "123 Oak St, SF",
+        "tier": 1,
+        "status": "Active",
+        "bos_district": 6,
+        "point": "POINT(-122.4194 37.7749)",
+        "sfdata_as_of": datetime(2024, 1, 1),
+        "sfdata_loaded_at": datetime(2024, 2, 3),
+        "point_source": "geocoded"
+    }
+
+    # Perform bulk insert
+    soft_story_data_handler.bulk_insert_data([newer_data, older_data, same_date_data], 'identifier')
+
+    # Print for debugging
+    print("\nAll records in table:")
+    all_records = test_db.query(SoftStoryProperty).all()
+    for record in all_records:
+        print(f"ID: {record.identifier}, Address: {record.property_address}, LoadedAt: {record.sfdata_loaded_at}, AsOf: {record.sfdata_as_of}")
+
+    # Verify Case 1: Newer data should update everything
+    result = test_db.query(SoftStoryProperty).filter_by(identifier=1).first()
+    assert result.block == "456"
+    assert result.lot == "B"
+    assert result.parcel_number == "456B"
+    assert result.property_address == "456 Main St"
+    assert result.tier == 2
+    assert result.status == "Completed"
+    assert result.bos_district == 8
+    assert result.point_source == "manual"
+    assert result.sfdata_as_of == datetime(2024, 2, 1, tzinfo=timezone.utc)
+    assert result.sfdata_loaded_at == datetime(2024, 2, 1, tzinfo=timezone.utc)
+    assert result.update_timestamp is not None  # Should have been updated
+
+    # Verify Case 2: Older data creates new record
+    result = test_db.query(SoftStoryProperty).filter_by(identifier=2).first()
+    assert result.block == "789"
+    assert result.sfdata_loaded_at == datetime(2024, 2, 2, tzinfo=timezone.utc)
+
+    # Verify Case 3: Same date data creates new record
+    result = test_db.query(SoftStoryProperty).filter_by(identifier=3).first()
+    assert result.block == "123"
+    assert result.sfdata_loaded_at == datetime(2024, 2, 3, tzinfo=timezone.utc)

@@ -5,6 +5,9 @@ from shapely.geometry import shape
 from geoalchemy2.shape import from_shape, to_shape
 from geoalchemy2.functions import ST_Simplify
 from shapely.geometry import mapping
+from sqlalchemy.dialects.postgresql import Insert
+from sqlalchemy.dialects.postgresql import insert as pg_insert
+
 
 _LIQUEFACTION_URL = "https://data.sfgov.org/resource/i4t7-35u3.geojson"
 
@@ -71,6 +74,8 @@ class _LiquefactionDataHandler(DataHandler):
         geojson = {"type": "FeatureCollection", "features": geojson_features}
         return parsed_data, geojson
 
+    def insert_policy(self, insert, data_dicts: list[dict], id_field: str):
+        return insert.values(data_dicts).on_conflict_do_nothing(index_elements=[id_field])
 
 if __name__ == "__main__":
     handler = _LiquefactionDataHandler(_LIQUEFACTION_URL, LiquefactionZone)
