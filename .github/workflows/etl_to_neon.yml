@@ -48,6 +48,11 @@ jobs:
       - name: Override an env variable
         run: echo "ENVIRONMENT=ci" >> .env
         
+      - name: Clear previous ETL data
+        run: |
+          rm -rf public/data/*
+          echo "Cleared old ETL data from public/data"        
+          
       - name: ETL data to Neon DB
         run: |
           python -m backend.etl.tsunami_data_handler
