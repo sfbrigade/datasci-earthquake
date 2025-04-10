@@ -15,13 +15,19 @@ import Share from "./share";
 import { CardContainer } from "./card-container";
 import { KeyElem } from "./key-elem";
 
+type HazardData = {
+  softStory?: any;
+  tsunamiZone?: any;
+  liquefactionZone?: any;
+};
+
 const Report = ({
   searchedAddress,
   addressHazardData,
   isHazardDataLoading,
 }: {
   searchedAddress: string;
-  addressHazardData: object[] | undefined;
+  addressHazardData: HazardData | undefined;
   isHazardDataLoading: boolean;
 }) => {
   return (
@@ -121,7 +127,7 @@ const Report = ({
               key={hazard.id}
               hazard={hazard}
               hazardData={
-                addressHazardData ? addressHazardData[index] : undefined
+                addressHazardData?.[hazard.name as keyof HazardData] ?? undefined
               }
               showData={addressHazardData ? true : false}
               isHazardDataLoading={isHazardDataLoading}
