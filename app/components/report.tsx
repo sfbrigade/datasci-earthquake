@@ -40,11 +40,11 @@ const Report = ({
           alignItems="center"
         >
           <Stack
-            w={{ base: "base", xl: "xl" }}
+            w={{ base: "full", xl: "7xl" }}
             px={{
               base: "23px",
               md: "26px",
-              xl: "127px",
+              xl: "130px",
             }}
             direction={{ base: "column", sm: "row" }}
             alignItems="center"
@@ -86,11 +86,11 @@ const Report = ({
         alignItems="center"
       >
         <Stack
-          w={{ base: "base", xl: "xl" }}
+          w={{ base: "full", xl: "7xl" }}
           px={{
             base: "23px",
             md: "26px",
-            xl: "127px",
+            xl: "130px",
           }}
           spacing={{ base: 1, md: 5 }}
           direction={{ base: "column", md: "row" }}
