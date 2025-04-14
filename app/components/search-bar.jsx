@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   HStack,
@@ -112,6 +112,11 @@ const SearchBar = ({
       throw error;
     }
   };
+  // temporary memoization fix for updating the address in the search bar.
+  // TODO: refactor how we are caching our calls
+  const memoizedOnSearchChange = useCallback(onSearchChange, []);
+  const memoizedOnAddressSearch = useCallback(onAddressSearch, []);
+  const memoizedUpdateHazardData = useCallback(updateHazardData, []);
 
   useEffect(() => {
     const address = searchParams.get("address");
@@ -120,12 +125,16 @@ const SearchBar = ({
 
     if (address && lat && lon) {
       const coords = [parseFloat(lon), parseFloat(lat)];
-      setInputAddress(address);
       onAddressSearch(address);
       onSearchChange(coords);
       updateHazardData(coords);
     }
-  }, [onAddressSearch, onSearchChange, searchParams, updateHazardData]);
+  }, [
+    searchParams,
+    memoizedOnAddressSearch,
+    memoizedOnSearchChange,
+    memoizedUpdateHazardData,
+  ]);
 
   return (
     <form onSubmit={onSubmit}>
