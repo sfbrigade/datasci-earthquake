@@ -47,7 +47,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         onAddressSearch={setSearchedAddress}
         onCoordDataRetrieve={setAddressHazardData}
       />
-      <Box w="base" h={{ base: "1400px", md: "1000px" }} m="auto">
+      <Box w="base" h={{ base: "1200px", md: "900px" }} m="auto">
         <Box h="100%" overflow="hidden" position="relative">
           <Box zIndex={10} top={0} position="absolute">
             <Report
@@ -61,9 +61,9 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             tsunamiData={tsunamiData}
             liquefactionData={liquefactionData}
           />
-          <Box position="absolute" bottom={0}>
+          {/* <Box position="absolute" bottom={0}>
             <Information />
-          </Box>
+          </Box> */}
         </Box>
       </Box>
     </Flex>
