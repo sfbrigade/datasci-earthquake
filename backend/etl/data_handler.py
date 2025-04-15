@@ -18,7 +18,7 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 
-_PREFIX_DATA_GEOJSON_PATH = "public/data/"
+_PREFIX_DATA_GEOJSON_PATH = "/public/data/"
 _SF_BOUNDARY_PATH = "backend/etl/data/sf_boundary.geojson"
 
 
