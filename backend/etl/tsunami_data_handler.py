@@ -3,6 +3,8 @@ from backend.etl.data_handler import DataHandler
 from backend.api.models.tsunami import TsunamiZone
 from shapely.geometry import Polygon, MultiPolygon, mapping
 from geoalchemy2.shape import from_shape, to_shape
+from sqlalchemy.dialects.postgresql import Insert
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 TSUNAMI_URL = "https://services2.arcgis.com/zr3KAIbsRSUyARHG/ArcGIS/rest/services/CA_Tsunami_Hazard_Area/FeatureServer/0/query"
 
@@ -12,6 +14,7 @@ class TsunamiDataHandler(DataHandler):
     This class fetches, parses and loads SF tsunami data from
     conservation.ca.gov
     """
+
 
     def parse_data(self, data: dict) -> tuple[list[dict], dict]:
         """
@@ -74,8 +77,17 @@ class TsunamiDataHandler(DataHandler):
             geojson = {"type": "FeatureCollection", "features": geojson_features}
 
         return parsed_data, geojson
+    def insert_policy(self, base_stmt, data_dicts, id_field) -> Insert:
+        """Define merge behavior for tsunami zone records.
 
-
+        Tsunami zone data comes from CA Department of Conservation as complete
+        dataset releases. Since this data updates very infrequently (last update
+        Oct 2022), we use a conservative approach: new records are inserted,
+        but existing records are left unchanged.
+        """
+        return base_stmt.values(data_dicts).on_conflict_do_nothing(
+            index_elements=['identifier']
+        )
 if __name__ == "__main__":
     handler = TsunamiDataHandler(TSUNAMI_URL, TsunamiZone)
     try:
