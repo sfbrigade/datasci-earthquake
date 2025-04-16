@@ -57,7 +57,9 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
                 and data_point["address"] in mapbox_coordinates_map
                 and mapbox_coordinates_map[data_point["address"]]
             ):
-                # mapbox_coordinates_map only contains the addresses that MapBox could resolve, so not all addresses will be there
+                # mapbox_coordinates_map only contains the addresses
+                # that MapBox could resolve, so not all addresses will
+                # be there
                 address = data_point["address"]
                 lon, lat = mapbox_coordinates_map[address]
                 data_point["point"] = f"Point({lon} {lat})"
@@ -88,6 +90,98 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
         geojson = {"type": "FeatureCollection", "features": features}
         return geojson
 
+    @staticmethod
+    def _addresses_from_range(address_range: str) -> list[str]:
+        """
+        Returns a list of addresses from an address range.
+
+        The range is inclusive on both ends.
+
+        Args:
+            address_range (str): Must be of the form "1234-5678 Street Ave",
+            with a "-" separating the two numbers forming the address range.
+        """
+        # Split the address range into number range and street parts
+        number_range_and_street = address_range.split(" ")
+
+        # Join the street parts back into a single string
+        street = " ".join(number_range_and_street[1:])
+
+        # Split the number range part by the hyphen
+        number_range = number_range_and_street[0].split("-")
+
+        # Convert the number range to a range object
+        number_range = range(int(number_range[0]), int(number_range[1]) + 1)
+
+        # Generate the list of addresses
+        addresses = []
+        for number in number_range:
+            addresses.append(f"{number} {street}")
+
+        return addresses
+
+    def _process_feature(
+        self,
+        properties: dict,
+        address: str,
+        sf_geometry: dict,
+        parsed_data: list,
+        addresses: list,
+    ):
+        """
+        Adds the contents of a feature to parsed_data and possibly
+        addresses
+
+        Works by mutating parsed_data and addresses rather than
+        returning a value because the only way to make this function
+        pure would involve duplicatively checking the condition.
+
+        address must be an argument rather than being taken from
+        properties, which has an address field, because the value of
+        that field can have a range of building numbers and therefore
+        instead must be turned into a list of addresses, one per
+        number, by _addresses_from_range and then passed individually
+        to this function.
+        """
+        # Search for the address in the mapbox geojson.
+        # If it's not there, it might be new, so get it
+        # from MapBox freshly.
+        if not self.mapbox_geojson_manager.is_address_in_geojson(address):
+            # Save it for one big later MapBox query
+            addresses.append(address)
+            coordinates = sf_geometry["coordinates"] if sf_geometry else None
+            point_source = "sfdata" if sf_geometry else None
+        else:
+            mapbox_coordinates = self.mapbox_geojson_manager.get_mapbox_coordinates(
+                properties.get("address")
+            )
+            coordinates = (
+                mapbox_coordinates
+                if mapbox_coordinates
+                else sf_geometry["coordinates"] if sf_geometry else None
+            )
+            point_source = (
+                "mapbox" if mapbox_coordinates else "sfdata" if sf_geometry else None
+            )
+        parsed_data.append(
+            {
+                "block": properties.get("block"),
+                "lot": properties.get("lot"),
+                "parcel_number": properties.get("parcel_number"),
+                "property_address": properties.get("property_address"),
+                "address": address,
+                "tier": properties.get("tier"),
+                "status": properties.get("status"),
+                "bos_district": properties.get("bos_district"),
+                "point": (
+                    f"Point({coordinates[0]} {coordinates[1]})" if coordinates else None
+                ),
+                "sfdata_as_of": properties.get("data_as_of"),
+                "sfdata_loaded_at": properties.get("data_loaded_at"),
+                "point_source": point_source,
+            }
+        )
+
     def parse_data(self, sf_data: dict) -> tuple[list[dict], dict]:
         """
         Extracts feature attributes and geometry data to construct:
@@ -101,51 +195,18 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
         for feature in sf_data["features"]:
             properties = feature.get("properties", {})
             sf_geometry = feature.get("geometry", {})
-
-            # Search for the address in the mapbox geojson.
-            # If it's not there, it might be new, so get it
-            # from MapBox freshly.
-            if not self.mapbox_geojson_manager.is_address_in_geojson(
-                properties.get("address")
-            ):
-                # Save it for one big later MapBox query
-                addresses.append(properties.get("address"))
-                coordinates = sf_geometry["coordinates"] if sf_geometry else None
-                point_source = "sfdata" if sf_geometry else None
+            address = properties.get("address")
+            if "-" in address:
+                for address in _SoftStoryPropertiesDataHandler._addresses_from_range(
+                    address
+                ):
+                    self._process_feature(
+                        properties, address, sf_geometry, parsed_data, addresses
+                    )
             else:
-                mapbox_coordinates = self.mapbox_geojson_manager.get_mapbox_coordinates(
-                    properties.get("address")
+                self._process_feature(
+                    properties, address, sf_geometry, parsed_data, addresses
                 )
-                coordinates = (
-                    mapbox_coordinates
-                    if mapbox_coordinates
-                    else sf_geometry["coordinates"] if sf_geometry else None
-                )
-                point_source = (
-                    "mapbox"
-                    if mapbox_coordinates
-                    else "sfdata" if sf_geometry else None
-                )
-            parsed_data.append(
-                {
-                    "block": properties.get("block"),
-                    "lot": properties.get("lot"),
-                    "parcel_number": properties.get("parcel_number"),
-                    "property_address": properties.get("property_address"),
-                    "address": properties.get("address"),
-                    "tier": properties.get("tier"),
-                    "status": properties.get("status"),
-                    "bos_district": properties.get("bos_district"),
-                    "point": (
-                        f"Point({coordinates[0]} {coordinates[1]})"
-                        if coordinates
-                        else None
-                    ),
-                    "sfdata_as_of": properties.get("data_as_of"),
-                    "sfdata_loaded_at": properties.get("data_loaded_at"),
-                    "point_source": point_source,
-                }
-            )
 
         parsed_data_complete = self.fill_in_missing_mapbox_points(
             parsed_data, addresses
