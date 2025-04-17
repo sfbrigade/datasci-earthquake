@@ -30,6 +30,8 @@ const Report = ({
   addressHazardData: HazardData;
   isHazardDataLoading: boolean;
 }) => {
+  const hazardData = "";
+
   return (
     <Center flexDirection="column">
       <Collapse
@@ -121,7 +123,7 @@ const Report = ({
         </Stack>
       </Box>
       <CardContainer>
-        {Hazards.map((hazard, index) => {
+        {Hazards.map((hazard) => {
           return (
             <CardHazard
               key={hazard.id}
@@ -130,7 +132,6 @@ const Report = ({
                 addressHazardData?.[hazard.name as keyof HazardData] ??
                 undefined
               }
-              // showData={addressHazardData?.[hazard.name as keyof HazardData] ? true : false}
               showData={hazard.name in addressHazardData ? true : false}
               isHazardDataLoading={isHazardDataLoading}
             />

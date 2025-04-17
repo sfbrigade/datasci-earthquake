@@ -50,6 +50,14 @@ const CardHazard: React.FC<CardHazardProps> = ({
   const { title, name, description } = hazard;
   const { exists, last_updated: date } = hazardData || {};
 
+  const hazardPill = isHazardDataLoading ? (
+    <Spinner size="xs" />
+  ) : showData ? (
+    <Pill exists={exists} />
+  ) : (
+    ""
+  );
+
   const buildHazardCardInfo = () => {
     return (
       <VStack gap={5} p={5}>
@@ -58,16 +66,6 @@ const CardHazard: React.FC<CardHazardProps> = ({
         ))}
       </VStack>
     );
-  };
-
-  const buildHazardPill = () => {
-    if (isHazardDataLoading) {
-      return <Spinner size="xs" />;
-    } else if (showData) {
-      return <Pill exists={exists} />;
-    } else {
-      return "";
-    }
   };
 
   return (
@@ -93,7 +91,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info
                 </Text>
-                {buildHazardPill()}
+                {hazardPill}
               </HStack>
             </CardFooter>
           </VStack>
