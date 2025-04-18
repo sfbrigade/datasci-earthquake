@@ -12,15 +12,18 @@ class SoftStoryProperties(BaseModel):
 
     Attributes:
         identifier (int): Unique identifier for the soft story address.
+        update_timestamp (datetime): Last update timestamp.
+        status (str): Compliance status of the soft story.
     """
 
     identifier: int
     update_timestamp: datetime
+    status: str  
 
 
 class SoftStoryFeature(Feature):
     """
-    Pydantic model for an soft story feature, conforming to GeoJSON Feature structure.
+    Pydantic model for a soft story feature, conforming to GeoJSON Feature structure.
 
     Attributes:
         type (str): The type of GeoJSON object. Always "Feature".
@@ -57,6 +60,7 @@ class SoftStoryFeature(Feature):
             properties={
                 "identifier": soft_story.identifier,
                 "update_timestamp": soft_story.update_timestamp,
+                "status": soft_story.status,  
             },
         )
 
