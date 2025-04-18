@@ -52,11 +52,11 @@ const About = () => {
 
   return (
     <Flex
-      w={{ base: "base", xl: "xl" }}
+      w={{ base: "full", xl: "7xl" }}
       p={{
-        base: "23px 24px 16px 24px",
-        md: "37px 27px 16px 26px",
-        xl: "50px 128px 16px 127px",
+        base: "23px 23px 23px 23px",
+        md: "37px 26px 37px 26px",
+        xl: "79px 130px 79px 130px",
       }}
       m="auto"
       gap="46px"

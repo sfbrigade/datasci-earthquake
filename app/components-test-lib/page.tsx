@@ -12,11 +12,11 @@ const ComponentsTestLib = () => {
   return (
     <Box
       as="section"
-      w={{ base: "base", xl: "xl" }}
+      w={{ base: "full", xl: "7xl" }}
       p={{
         base: "10px 23px 10px 23px",
-        md: "8px 27px 8px 26px",
-        xl: "5px 127px 5px 127px",
+        md: "8px 26px 8px 26px",
+        xl: "5px 130px 5px 130px",
       }}
       m="auto"
     >
