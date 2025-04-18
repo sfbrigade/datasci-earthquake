@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
+import { useToast } from "@chakra-ui/react";
 
 const defaultCoords = [-122.463733, 37.777448];
 
@@ -25,13 +26,25 @@ const Map: React.FC<MapProps> = ({
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>();
   const markerRef = useRef<mapboxgl.Marker>();
+  const toast = useToast();
 
   useEffect(() => {
     console.log(softStoryData);
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
-      // TODO: turn this into a toast with friendly error message
+      toast({
+        description: "Mapbox access token or container is not set!",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+        containerStyle: {
+          backgroundColor: "#b53d37",
+          opacity: 1,
+          borderRadius: "12px",
+        },
+      });
       console.error("Mapbox access token or container is not set!");
       return;
     }
