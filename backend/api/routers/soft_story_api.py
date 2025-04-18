@@ -57,7 +57,7 @@ async def get_soft_stories(db: Session = Depends(get_db)):
 @router.get("/is-soft-story", response_model=IsSoftStoryPropertyView)
 async def is_soft_story(lon: float, lat: float, db: Session = Depends(get_db)):
     """
-    Checks if a point is a soft story property and returns its last update time
+    Checks if a point is a soft story property and returns its last update time and status
 
     Args:
         lon (float): Longitude of the point
@@ -68,6 +68,7 @@ async def is_soft_story(lon: float, lat: float, db: Session = Depends(get_db)):
         IsSoftStoryPropertyView containing:
         - exists: True if point is in a soft story property
         - last_updated: Timestamp of last update if exists, None otherwise
+        - status: Compliance status if exists, None otherwise
     """
     logger.info(f"Checking soft story status for coordinates: lon={lon}, lat={lat}")
 
@@ -83,14 +84,16 @@ async def is_soft_story(lon: float, lat: float, db: Session = Depends(get_db)):
 
         exists = property is not None
         last_updated = property.update_timestamp if property else None
+        status = property.status if property else None  
 
         logger.info(
             f"Soft story check result for coordinates: lon={lon}, lat={lat} - "
             f"exists: {exists}, "
-            f"last_updated: {last_updated}"
+            f"last_updated: {last_updated}, "
+            f"status: {status}"
         )
 
-        return IsSoftStoryPropertyView(exists=exists, last_updated=last_updated)
+        return IsSoftStoryPropertyView(exists=exists, last_updated=last_updated, status=status)
 
     except Exception as e:
         logger.error(
