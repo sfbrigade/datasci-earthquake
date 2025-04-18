@@ -15,13 +15,23 @@ import Share from "./share";
 import { CardContainer } from "./card-container";
 import { KeyElem } from "./key-elem";
 
+type HazardData = {
+  softStory?: any;
+  tsunami?: any;
+  liquefaction?: any;
+};
+
 const Report = ({
   searchedAddress,
   addressHazardData,
+  isHazardDataLoading,
 }: {
   searchedAddress: string;
-  addressHazardData: object[];
+  addressHazardData: HazardData;
+  isHazardDataLoading: boolean;
 }) => {
+  const hazardData = "";
+
   return (
     <Center flexDirection="column">
       <Collapse
@@ -113,12 +123,17 @@ const Report = ({
         </Stack>
       </Box>
       <CardContainer>
-        {Hazards.map((hazard, index) => {
+        {Hazards.map((hazard) => {
           return (
             <CardHazard
               key={hazard.id}
               hazard={hazard}
-              hazardData={addressHazardData[index] ?? undefined}
+              hazardData={
+                addressHazardData?.[hazard.name as keyof HazardData] ??
+                undefined
+              }
+              showData={hazard.name in addressHazardData ? true : false}
+              isHazardDataLoading={isHazardDataLoading}
             />
           );
         })}

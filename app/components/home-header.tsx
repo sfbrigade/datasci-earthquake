@@ -10,6 +10,7 @@ interface HomeHeaderProps {
   onSearchChange: (coords: number[]) => void;
   onAddressSearch: (address: string) => void;
   onCoordDataRetrieve: (data: any[]) => void;
+  onHazardDataLoading: (isLoading: boolean) => void;
 }
 
 const HomeHeader = ({
@@ -17,6 +18,7 @@ const HomeHeader = ({
   onSearchChange,
   onAddressSearch,
   onCoordDataRetrieve,
+  onHazardDataLoading,
 }: HomeHeaderProps) => {
   const headingData = Headings.home;
 
@@ -44,6 +46,7 @@ const HomeHeader = ({
           onSearchChange={onSearchChange}
           onAddressSearch={onAddressSearch}
           onCoordDataRetrieve={onCoordDataRetrieve}
+          onHazardDataLoading={onHazardDataLoading}
         />
       </Box>
     </Box>

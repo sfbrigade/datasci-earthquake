@@ -13,6 +13,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  useToast,
 } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
@@ -36,11 +37,13 @@ const SearchBar = ({
   onSearchChange,
   onAddressSearch,
   onCoordDataRetrieve,
+  onHazardDataLoading,
 }) => {
   const [inputAddress, setInputAddress] = useState("");
   const debug = useSearchParams().get("debug");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const toast = useToast();
 
   const handleClearClick = () => {
     setInputAddress("");
@@ -70,9 +73,25 @@ const SearchBar = ({
     try {
       const values = await getHazardData(coords);
       onCoordDataRetrieve(values);
-    } catch {
-      console.log("could not retrieve hazard data");
-      onCoordDataRetrieve([]);
+    } catch (error) {
+      console.error("Error while retrieving data: ", error?.message || error);
+      onCoordDataRetrieve({
+        softStory: null,
+        tsunami: null,
+        liquefaction: null,
+      });
+      toast({
+        description: "Could not retrieve hazard data",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+        containerStyle: {
+          backgroundColor: "#b53d37",
+          opacity: 1,
+          borderRadius: "12px",
+        },
+      });
     }
   };
 
@@ -92,26 +111,39 @@ const SearchBar = ({
 
   // gets metadata from Mapbox API for given coordinates
   const getHazardData = async (coords = coordinates) => {
+    onHazardDataLoading(true);
+    const buildUrl = (endpoint) =>
+      `${endpoint}?lon=${coords[0]}&lat=${coords[1]}`;
+
     try {
-      const isSoftStory = await fetch(
-        `${API_ENDPOINTS.isSoftStory}?lon=${coords[0]}&lat=${coords[1]}`
-      ).then((response) => response.json());
+      const [softStory, tsunamiZone, liquefactionZone] =
+        await Promise.allSettled([
+          fetch(buildUrl(API_ENDPOINTS.isSoftStory)).then((res) => res.json()),
+          fetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)).then((res) =>
+            res.json()
+          ),
+          fetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)).then((res) =>
+            res.json()
+          ),
+        ]);
 
-      const isInTsunamiZone = await fetch(
-        `${API_ENDPOINTS.isInTsunamiZone}?lon=${coords[0]}&lat=${coords[1]}`
-      ).then((response) => response.json());
+      onHazardDataLoading(false);
 
-      const isInLiquefactionZone = await fetch(
-        `${API_ENDPOINTS.isInLiquefactionZone}?lon=${coords[0]}&lat=${coords[1]}`
-      ).then((response) => response.json());
-
-      return Promise.all([isSoftStory, isInTsunamiZone, isInLiquefactionZone]);
+      return {
+        softStory: softStory.status === "fulfilled" ? softStory.value : null,
+        tsunami: tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
+        liquefaction:
+          liquefactionZone.status === "fulfilled"
+            ? liquefactionZone.value
+            : null,
+      };
     } catch (error) {
       console.error("Error fetching hazard data:", error);
-      // TODO: Handle error appropriately, e.g., return a default value or re-throw (for now, we are re-throwing)
+      onHazardDataLoading(false);
       throw error;
     }
   };
+
   // temporary memoization fix for updating the address in the search bar.
   // TODO: refactor how we are caching our calls
   const memoizedOnSearchChange = useCallback(onSearchChange, []);

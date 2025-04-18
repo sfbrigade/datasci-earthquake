@@ -33,7 +33,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 }) => {
   const [coordinates, setCoordinates] = useState(defaultCoords);
   const [searchedAddress, setSearchedAddress] = useState("");
-  const [addressHazardData, setAddressHazardData] = useState<any[]>([]);
+  const [addressHazardData, setAddressHazardData] = useState<object>({});
+  const [isHazardDataLoading, setHazardDataLoading] = useState(false);
 
   const updateMap = (coords: number[]) => {
     setCoordinates(coords);
@@ -46,6 +47,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         onSearchChange={updateMap}
         onAddressSearch={setSearchedAddress}
         onCoordDataRetrieve={setAddressHazardData}
+        onHazardDataLoading={setHazardDataLoading}
       />
       <Box w="base" h={{ base: "1400px", md: "1000px" }} m="auto">
         <Box h="100%" overflow="hidden" position="relative">
@@ -53,6 +55,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             <Report
               searchedAddress={searchedAddress}
               addressHazardData={addressHazardData}
+              isHazardDataLoading={isHazardDataLoading}
             />
           </Box>
           <Map
