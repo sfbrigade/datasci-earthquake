@@ -23,7 +23,7 @@ const CardInfo: React.FC<CardInfoProps> = ({
 
   return (
     <BaseCard header={title}>
-      <List styleType="disc" ml={4}>
+      <List styleType="disc" ml={6}>
         {list.map((item) => {
           return (
             <ListItem key={item.id}>
