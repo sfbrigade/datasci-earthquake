@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, useToast } from "@chakra-ui/react";
 import SearchBar from "./search-bar";
 import Heading, { HeadingProps } from "./heading";
 import Map from "./map";
@@ -25,6 +25,17 @@ interface AddressMapperProps {
   liquefactionData: FeatureCollection<Geometry>;
 }
 
+type ErrorResult = { error: true; message: string };
+
+const isErrorResult = (data: unknown): data is ErrorResult => {
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    "error" in data &&
+    (data as any).error === true
+  );
+};
+
 const AddressMapper: React.FC<AddressMapperProps> = ({
   headingData,
   softStoryData,
@@ -35,10 +46,41 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const [searchedAddress, setSearchedAddress] = useState("");
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
+  const toast = useToast();
 
   const updateMap = (coords: number[]) => {
     setCoordinates(coords);
   };
+
+  useEffect(() => {
+    const sources = [
+      { name: "Soft Story Buildings", data: softStoryData },
+      { name: "Tsunami Zones", data: tsunamiData },
+      { name: "Liquefaction Zones", data: liquefactionData },
+    ];
+
+    const errors = sources
+      .filter((src) => isErrorResult(src.data))
+      .map(
+        (src) =>
+          `${src.name}: ${(src.data as unknown as ErrorResult).message || "Unknown error"}`
+      );
+
+    if (errors.length > 0) {
+      toast({
+        title: "Data Load Error",
+        description: errors.join(" | "),
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+        containerStyle: {
+          backgroundColor: "#b53d37",
+          borderRadius: "12px",
+        },
+      });
+    }
+  }, [softStoryData, tsunamiData, liquefactionData, toast]);
 
   return (
     <Flex direction="column">

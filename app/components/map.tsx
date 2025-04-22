@@ -29,7 +29,6 @@ const Map: React.FC<MapProps> = ({
   const toast = useToast();
 
   useEffect(() => {
-    console.log(softStoryData);
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
