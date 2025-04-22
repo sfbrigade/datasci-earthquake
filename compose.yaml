@@ -37,7 +37,7 @@ services:
     volumes:
       - ./backend:/backend
       - ./backend/etl/startup.sh:/startup.sh
-      - ./public/data:/public/data
+      - public_data:/public/data
     command: bash /startup.sh
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1" ]
@@ -89,4 +89,5 @@ services:
 volumes:
   db-data:
   nextjs_cache:
+  public_data:
     
