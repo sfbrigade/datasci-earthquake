@@ -66,7 +66,7 @@ const Share = () => {
       onClick={copyReportToClipBoard}
       background={"transparent"}
     >
-      <Text textStyle="textMedium" color="blue">
+      <Text textStyle="textMedium" color="white">
         Share report
       </Text>
     </Button>

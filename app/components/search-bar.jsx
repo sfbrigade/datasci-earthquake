@@ -255,6 +255,7 @@ const SearchBar = ({
         <InputGroup
           w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
           size={{ base: "md", md: "lg", xl: "lg" }}
+          mb={"24px"}
           data-testid="search-bar"
         >
           <InputLeftElement>

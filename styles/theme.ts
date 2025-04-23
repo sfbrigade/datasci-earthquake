@@ -19,6 +19,13 @@ const customTheme = extendTheme({
       color: "white",
       fontFamily: "heading",
     },
+    headerReport: {
+      fontSize: ["3xl", "3xl", "4xl", "4xl", "4xl", "4xl"],
+      fontWeight: "300",
+      lineHeight: ["40px", "40px", "48px", "48px", "60px", "60px"],
+      color: "white",
+      fontFamily: "heading",
+    },
     headerMedium: {
       fontSize: ["2xl", "2xl", "3xl", "3xl", "3xl", "3xl"],
       fontWeight: "500",

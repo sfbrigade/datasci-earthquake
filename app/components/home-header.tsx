@@ -42,20 +42,14 @@ const HomeHeader = ({
         p={{
           base: "35px 23px 40px 23px",
           md: "42px 0px 46px 26px",
-          xl: "43px 0px 58px 127px",
+          xl: "24px 127px 24px 127px",
         }}
         margin="auto"
       >
         {isSearchComplete && (
           <Stack
-            w={{ base: "base", xl: "xl" }}
-            px={{
-              base: "23px",
-              md: "26px",
-              xl: "127px",
-            }}
             direction={{ base: "column", sm: "row" }}
-            alignItems="center"
+            alignItems="flex-end"
             justifyContent="space-between"
           >
             <ReportAddress searchedAddress={searchedAddress} />
