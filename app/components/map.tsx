@@ -160,7 +160,7 @@ const Map: React.FC<MapProps> = ({
       markerRef.current?.setLngLat(addressLngLat);
       return;
     }
-  }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
+  }, [coordinates, liquefactionData, softStoryData, tsunamiData, toast]);
 
   return (
     <>
