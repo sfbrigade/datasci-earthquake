@@ -7,6 +7,7 @@ import NextLink from "next/link";
 const Header = () => {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const isAbout = pathname === "/About";
 
   return (
     <Box
@@ -42,13 +43,7 @@ const Header = () => {
             </Text>
           </HStack>
         </Link>
-        {isHome ? (
-          <Link as={NextLink} color="white" href="/about">
-            <Text textStyle="textMedium" color="white">
-              About
-            </Text>
-          </Link>
-        ) : (
+        {isAbout && (
           <Link as={NextLink} color="white" href="/">
             <Text textStyle="textMedium" color="white">
               Back To Home

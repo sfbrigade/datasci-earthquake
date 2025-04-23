@@ -109,9 +109,13 @@ export const Info = [
 
 export const Headings = {
   home: {
-    text: "Learn about your home’s earthquake readiness.",
-    highlight: "Learn about",
-    style: { paddingRight: "200", marginBottom: "30" },
+    text: "How safe is your home\nin an earthquake?",
+    highlight: "How safe ",
+    style: {
+      whiteSpace: "pre-line",
+      paddingRight: "300",
+      marginBottom: "16px",
+    },
     highlightStyle: { color: "yellow" },
   },
   about: {

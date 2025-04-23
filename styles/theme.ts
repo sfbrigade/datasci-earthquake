@@ -2,7 +2,7 @@ import { extendTheme, textDecoration } from "@chakra-ui/react";
 
 const customTheme = extendTheme({
   fonts: {
-    body: "Manrope, sans-serif",
+    body: "Inter, sans-serif",
     heading: "Manrope, sans-serif",
   },
   textStyles: {
@@ -13,7 +13,7 @@ const customTheme = extendTheme({
     },
     headerBig: {
       fontSize: ["4xl", "4xl", "5xl", "5xl", "6xl", "6xl"],
-      fontWeight: "normal",
+      fontWeight: "light",
       lineHeight: ["40px", "40px", "48px", "48px", "60px", "60px"],
       color: "white",
     },
@@ -26,6 +26,7 @@ const customTheme = extendTheme({
       fontSize: ["lg", "lg", "lg", "lg", "xl", "xl"],
       fontWeight: "normal",
       color: "white",
+      fontFamily: "Inter, sans-serif",
     },
     textBig: {
       fontSize: "xl",
@@ -53,6 +54,7 @@ const customTheme = extendTheme({
     grey: {
       200: "#E2E8F0",
       400: "#A0AEC0",
+      600: "#4A5568",
       900: "#171923",
     },
     white: "#FFF",
