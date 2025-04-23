@@ -5,7 +5,7 @@ import { Box, Flex, useToast } from "@chakra-ui/react";
 import SearchBar from "./search-bar";
 import Heading, { HeadingProps } from "./heading";
 import Map from "./map";
-import Report from "./report";
+import Report from "./report-hazards";
 import Information from "./information";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
@@ -90,10 +90,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     <Flex direction="column">
       <HomeHeader
         coordinates={coordinates}
+        searchedAddress={searchedAddress}
         onSearchChange={updateMap}
         onAddressSearch={setSearchedAddress}
         onCoordDataRetrieve={setAddressHazardData}
         onHazardDataLoading={setHazardDataLoading}
+
       />
       <Box w="base" h={{ base: "1400px", md: "1000px" }} m="auto">
         <Box h="100%" overflow="hidden" position="relative">

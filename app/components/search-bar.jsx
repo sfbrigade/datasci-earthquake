@@ -137,7 +137,7 @@ const SearchBar = ({
 
       onHazardDataLoading(false);
       onSearchComplete(true);
-      
+
       return {
         softStory: softStory.status === "fulfilled" ? softStory.value : null,
         tsunami: tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
@@ -253,7 +253,7 @@ const SearchBar = ({
         onRetrieve={handleRetrieve}
       >
         <InputGroup
-          maxW={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
+          w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
           size={{ base: "md", md: "lg", xl: "lg" }}
           data-testid="search-bar"
         >

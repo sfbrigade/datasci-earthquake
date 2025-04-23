@@ -21,7 +21,8 @@ const Header = () => {
     >
       <HStack
         w={{ base: "base", xl: "xl" }}
-        justifyContent="space-between"
+        justifyContent="flex-start"
+        columnGap="25px"
         m="auto"
         p={{
           base: "19px 23px 8px 23px",

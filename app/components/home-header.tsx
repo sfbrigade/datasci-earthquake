@@ -1,14 +1,17 @@
 "use client";
 
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Stack, Text } from "@chakra-ui/react";
 import SearchBar from "./search-bar";
 import Heading from "./heading";
 import { Headings } from "../data/data";
 import { useState } from "react";
 import ReactDOM from "react-dom";
+import ReportAddress from "./report-address";
+import Share from "./share";
 
 interface HomeHeaderProps {
   coordinates: number[];
+  searchedAddress: string;
   onSearchChange: (coords: number[]) => void;
   onAddressSearch: (address: string) => void;
   onCoordDataRetrieve: (data: any[]) => void;
@@ -19,6 +22,7 @@ const SEARCHBAR_PORTAL_ID = "searchbar-portal";
 
 const HomeHeader = ({
   coordinates,
+  searchedAddress,
   onSearchChange,
   onAddressSearch,
   onCoordDataRetrieve,
@@ -42,10 +46,29 @@ const HomeHeader = ({
         }}
         margin="auto"
       >
-        <Heading headingData={headingData} />
-        <Text textStyle="headerSmall" mb="30px" pr="300px">
-          This project was built using data from DataSF.
-        </Text>
+        {isSearchComplete && (
+          <Stack
+            w={{ base: "base", xl: "xl" }}
+            px={{
+              base: "23px",
+              md: "26px",
+              xl: "127px",
+            }}
+            direction={{ base: "column", sm: "row" }}
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <ReportAddress searchedAddress={searchedAddress} />
+            <Share />
+          </Stack>
+          )
+        }
+        {!isSearchComplete && <>
+            <Heading headingData={headingData} />
+            <Text textStyle="headerSmall" mb="30px" pr="300px">
+              This project was built using data from DataSF.
+            </Text>
+        </>}
         {isSearchComplete && typeof window !== "undefined"
           ? ReactDOM.createPortal(
             <SearchBar
