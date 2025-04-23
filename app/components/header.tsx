@@ -21,6 +21,7 @@ const Header = () => {
     >
       <HStack
         w={{ base: "base", xl: "xl" }}
+        h="114px"
         justifyContent="flex-start"
         columnGap="25px"
         m="auto"
@@ -30,8 +31,17 @@ const Header = () => {
           xl: "29px 127px 13px 127px",
         }}
       >
-        <Link as={NextLink} color="white" href="/">
-          <HStack align="center">
+        <Link
+          as={"a"}
+          color="white"
+          href="/"
+          textDecoration={"none"}
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = "/";
+          }}
+        >
+          <HStack align="baseline">
             <Image
               src="/images/SFSafeHome-logo.svg"
               alt="Logo"
@@ -46,10 +56,7 @@ const Header = () => {
             </Text>
           </HStack>
         </Link>
-        {isHome && (
-          <Box ref={portalRef} id="searchbar-portal" />
-        )
-        }
+        {isHome && <Box ref={portalRef} id="searchbar-portal" />}
         {isAbout && (
           <Link as={NextLink} color="white" href="/">
             <Text textStyle="textMedium" color="white">

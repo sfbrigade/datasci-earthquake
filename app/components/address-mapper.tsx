@@ -95,7 +95,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         onAddressSearch={setSearchedAddress}
         onCoordDataRetrieve={setAddressHazardData}
         onHazardDataLoading={setHazardDataLoading}
-
       />
       <Box w="base" h={{ base: "1400px", md: "1000px" }} m="auto">
         <Box h="100%" overflow="hidden" position="relative">

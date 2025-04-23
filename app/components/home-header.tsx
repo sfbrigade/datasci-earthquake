@@ -28,7 +28,6 @@ const HomeHeader = ({
   onCoordDataRetrieve,
   onHazardDataLoading,
 }: HomeHeaderProps) => {
-
   const headingData = Headings.home;
   const [isSearchComplete, setSearchComplete] = useState(false);
 
@@ -55,16 +54,17 @@ const HomeHeader = ({
             <ReportAddress searchedAddress={searchedAddress} />
             <Share />
           </Stack>
-          )
-        }
-        {!isSearchComplete && <>
+        )}
+        {!isSearchComplete && (
+          <>
             <Heading headingData={headingData} />
             <Text textStyle="headerSmall" mb="30px" pr="300px">
               This project was built using data from DataSF.
             </Text>
-        </>}
-        {isSearchComplete && typeof window !== "undefined"
-          ? ReactDOM.createPortal(
+          </>
+        )}
+        {isSearchComplete && typeof window !== "undefined" ? (
+          ReactDOM.createPortal(
             <SearchBar
               coordinates={coordinates}
               onSearchChange={onSearchChange}
@@ -75,8 +75,8 @@ const HomeHeader = ({
             />,
             document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
           )
-          : (
-            <SearchBar
+        ) : (
+          <SearchBar
             coordinates={coordinates}
             onSearchChange={onSearchChange}
             onAddressSearch={onAddressSearch}
@@ -84,8 +84,7 @@ const HomeHeader = ({
             onHazardDataLoading={onHazardDataLoading}
             onSearchComplete={setSearchComplete}
           />
-          )
-        }
+        )}
       </Box>
     </Box>
   );
