@@ -36,7 +36,9 @@ const safeJsonFetch = async (url) => {
   const res = await fetch(url);
   if (!res.ok) {
     const text = await res.text(); // capture any error response
-    throw new Error(`HTTP ${res.status} - ${res.statusText} | ${text}`);
+    throw new Error(
+      `HTTP ${res.status} - ${res.statusText} | ${text} | URL: ${url}`
+    );
   }
   return res.json();
 };
