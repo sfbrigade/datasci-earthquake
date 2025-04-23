@@ -4,6 +4,8 @@ import { Box, Text } from "@chakra-ui/react";
 import SearchBar from "./search-bar";
 import Heading from "./heading";
 import { Headings } from "../data/data";
+import { useState } from "react";
+import ReactDOM from "react-dom";
 
 interface HomeHeaderProps {
   coordinates: number[];
@@ -13,6 +15,8 @@ interface HomeHeaderProps {
   onHazardDataLoading: (isLoading: boolean) => void;
 }
 
+const SEARCHBAR_PORTAL_ID = "searchbar-portal";
+
 const HomeHeader = ({
   coordinates,
   onSearchChange,
@@ -20,7 +24,9 @@ const HomeHeader = ({
   onCoordDataRetrieve,
   onHazardDataLoading,
 }: HomeHeaderProps) => {
+
   const headingData = Headings.home;
+  const [isSearchComplete, setSearchComplete] = useState(false);
 
   return (
     <Box
@@ -40,13 +46,29 @@ const HomeHeader = ({
         <Text textStyle="headerSmall" mb="30px" pr="300px">
           This project was built using data from DataSF.
         </Text>
-        <SearchBar
-          coordinates={coordinates}
-          onSearchChange={onSearchChange}
-          onAddressSearch={onAddressSearch}
-          onCoordDataRetrieve={onCoordDataRetrieve}
-          onHazardDataLoading={onHazardDataLoading}
-        />
+        {isSearchComplete && typeof window !== "undefined"
+          ? ReactDOM.createPortal(
+            <SearchBar
+              coordinates={coordinates}
+              onSearchChange={onSearchChange}
+              onAddressSearch={onAddressSearch}
+              onCoordDataRetrieve={onCoordDataRetrieve}
+              onHazardDataLoading={onHazardDataLoading}
+              onSearchComplete={setSearchComplete}
+            />,
+            document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
+          )
+          : (
+            <SearchBar
+            coordinates={coordinates}
+            onSearchChange={onSearchChange}
+            onAddressSearch={onAddressSearch}
+            onCoordDataRetrieve={onCoordDataRetrieve}
+            onHazardDataLoading={onHazardDataLoading}
+            onSearchComplete={setSearchComplete}
+          />
+          )
+        }
       </Box>
     </Box>
   );

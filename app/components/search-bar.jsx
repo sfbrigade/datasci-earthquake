@@ -48,6 +48,7 @@ const SearchBar = ({
   onAddressSearch,
   onCoordDataRetrieve,
   onHazardDataLoading,
+  onSearchComplete,
 }) => {
   const [inputAddress, setInputAddress] = useState("");
   const debug = useSearchParams().get("debug");
@@ -134,7 +135,10 @@ const SearchBar = ({
           safeJsonFetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)),
         ]);
 
-      const results = {
+      onHazardDataLoading(false);
+      onSearchComplete(true);
+      
+      return {
         softStory: softStory.status === "fulfilled" ? softStory.value : null,
         tsunami: tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
         liquefaction:

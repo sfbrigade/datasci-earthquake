@@ -3,11 +3,13 @@
 import { Box, HStack, Text, Link, Image } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import NextLink from "next/link";
+import { useRef } from "react";
 
 const Header = () => {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const isAbout = pathname === "/About";
+  const portalRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <Box
@@ -43,6 +45,10 @@ const Header = () => {
             </Text>
           </HStack>
         </Link>
+        {isHome && (
+          <Box ref={portalRef} id="searchbar-portal" />
+        )
+        }
         {isAbout && (
           <Link as={NextLink} color="white" href="/">
             <Text textStyle="textMedium" color="white">
