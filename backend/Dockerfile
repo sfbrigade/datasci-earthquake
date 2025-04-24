@@ -50,7 +50,6 @@ COPY pytest.ini .
 
 RUN chmod +x ./backend/etl/startup.sh
 
-
 # Switch to the non-privileged user to run the application.
 USER appuser
 

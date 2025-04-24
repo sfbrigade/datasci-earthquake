@@ -71,8 +71,10 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
         """
         features = []
         for item in data:
+            status = item["status"]
             wkt_point = item.get("point")  # Extract 'point' value (WKT)
-            self.logger.info(f"wkt_point: {wkt_point}")
+            if status and status.lower() == "work complete, cfc issued":
+                continue
             if wkt_point:
                 point_geom = loads(wkt_point)  # Convert WKT to Shapely Point
 
@@ -86,6 +88,7 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
                 }
                 features.append(feature)
         geojson = {"type": "FeatureCollection", "features": features}
+        self.logger.info(f"There are {len(features)} non-retroffited soft stories")
         return geojson
 
     def parse_data(self, sf_data: dict) -> tuple[list[dict], dict]:

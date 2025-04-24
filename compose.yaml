@@ -28,6 +28,7 @@ services:
       - .env
     environment:
       - PYTHONPATH=/backend:/
+      - DATA_GEOJSON_PATH=/public/data/
     ports:
       - 8000:8000
     depends_on:
@@ -89,3 +90,4 @@ volumes:
   db-data:
   nextjs_cache:
   public_data:
+    
