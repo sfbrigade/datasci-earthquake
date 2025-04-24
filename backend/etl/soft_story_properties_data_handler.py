@@ -5,6 +5,7 @@ from backend.api.models.soft_story_properties import SoftStoryProperty
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from dotenv import load_dotenv
 import os
+import re
 from pathlib import Path
 from typing import Dict, Tuple
 from backend.etl.mapbox_geojson_manager import MapboxConfig, MapboxGeojsonManager
@@ -91,33 +92,24 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
         return geojson
 
     @staticmethod
-    def _addresses_from_range(address_range: str) -> list[str]:
+    def _addresses_from_range(
+        start_range: int, end_range: int, street_name: str
+    ) -> list[str]:
         """
-        Returns a list of addresses from an address range.
-
-        The range is inclusive on both ends.
+        Returns a list of addresses from an address range
 
         Args:
-            address_range (str): Must be of the form "1234-5678 Street Ave",
-            with a "-" separating the two numbers forming the address range.
+            start_range: first address number to include
+            end_range: last address to include
+            street_name: name of the street on which the addresses are
+
         """
-        # Split the address range into number range and street parts
-        number_range_and_street = address_range.split(" ")
-
-        # Join the street parts back into a single string
-        street = " ".join(number_range_and_street[1:])
-
-        # Split the number range part by the hyphen
-        number_range = number_range_and_street[0].split("-")
-
-        # Convert the number range to a range object
-        number_range = range(int(number_range[0]), int(number_range[1]) + 1)
-
+        # Convert the start and end into a range object
+        number_range = range(start_range, end_range + 1)
         # Generate the list of addresses
         addresses = []
         for number in number_range:
-            addresses.append(f"{number} {street}")
-
+            addresses.append(f"{number} {street_name}")
         return addresses
 
     def _process_feature(
@@ -153,7 +145,7 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
             point_source = "sfdata" if sf_geometry else None
         else:
             mapbox_coordinates = self.mapbox_geojson_manager.get_mapbox_coordinates(
-                properties.get("address")
+                address
             )
             coordinates = (
                 mapbox_coordinates
@@ -191,14 +183,23 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
         Geometry data is converted into a GeoAlchemy-compatible
         Point with srid 4326.
         """
-        parsed_data, addresses = [], []
+        parsed_data: list[dict] = []
+        addresses: list[str] = []
+        # Address range of the form '1234-5678 Street Ave'
+        # The pattern seeks digits separated by a hyphen
+        pattern = re.compile(r"(\d+)-(\d+)\s+(.*)")
         for feature in sf_data["features"]:
             properties = feature.get("properties", {})
             sf_geometry = feature.get("geometry", {})
             address = properties.get("address")
-            if "-" in address:
+            # Tries to find the regular expression in the address
+            match_result = pattern.search(address)
+            if match_result:
+                start_range = int(match_result[1])  # Before the hyphen
+                end_range = int(match_result[2])  # After the hyphen
+                street_name = match_result[3]  # After the range of addreses
                 for address in _SoftStoryPropertiesDataHandler._addresses_from_range(
-                    address
+                    start_range, end_range, street_name
                 ):
                     self._process_feature(
                         properties, address, sf_geometry, parsed_data, addresses
