@@ -20,15 +20,14 @@ import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
 import { API_ENDPOINTS } from "../api/endpoints";
 
-// TODO: share bbox options with what's in `map.tsx`
 const options = {
-  bbox: [
-    [-122.6, 37.65], // Southwest coordinates
-    [-122.25, 37.85], // Northeast coordinates
-  ],
   country: "US",
   limit: 10,
-  // proximity: , // TODO: consider passing in current center of map
+  bbox: [
+    [-122.55, 37.69],
+    [-122.35, 37.83],
+  ],
+  proximity: { lng: -122.4194, lat: 37.7749 },
   streets: false,
 };
 
