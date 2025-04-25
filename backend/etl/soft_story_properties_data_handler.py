@@ -155,13 +155,19 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
             point_source = (
                 "mapbox" if mapbox_coordinates else "sfdata" if sf_geometry else None
             )
+
         parsed_data.append(
             {
                 "block": properties.get("block"),
                 "lot": properties.get("lot"),
                 "parcel_number": properties.get("parcel_number"),
-                "property_address": properties.get("property_address"),
-                "address": address,
+                # For some reason, address has , SAN FRANCISCO CA, at
+                # its end, which is right for property_address,
+                "property_address": address,
+                # but not for address.
+                # This split removes it from address.
+                # TODO: Fix this problem at the source.
+                "address": address.split(", SAN FRANCISCO CA")[0],
                 "tier": properties.get("tier"),
                 "status": properties.get("status"),
                 "bos_district": properties.get("bos_district"),
