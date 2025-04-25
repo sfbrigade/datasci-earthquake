@@ -27,7 +27,6 @@ const Map: React.FC<MapProps> = ({
   const markerRef = useRef<mapboxgl.Marker>();
 
   useEffect(() => {
-    console.log(softStoryData);
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
