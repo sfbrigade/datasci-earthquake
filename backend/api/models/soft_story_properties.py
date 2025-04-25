@@ -29,11 +29,11 @@ class SoftStoryProperty(Base):
     block: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
     lot: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
     parcel_number: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
-    # number, street, city, and state
+    # number and street only
     property_address: Mapped[str] = mapped_column(
         String(_STRING_LENGTH), nullable=True, unique=True
     )
-    # number and street only
+    # number, street, city, and state
     address: Mapped[str] = mapped_column(
         String(_STRING_LENGTH), unique=True, nullable=False
     )

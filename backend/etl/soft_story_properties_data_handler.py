@@ -161,13 +161,9 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
                 "block": properties.get("block"),
                 "lot": properties.get("lot"),
                 "parcel_number": properties.get("parcel_number"),
-                # For some reason, address has , SAN FRANCISCO CA, at
-                # its end, which is right for property_address,
-                "property_address": address,
-                # but not for address.
-                # This split removes it from address.
-                # TODO: Fix this problem at the source.
-                "address": address.split(", SAN FRANCISCO CA")[0],
+                # Property address is just the number and street
+                "property_address": address.split(", SAN FRANCISCO CA")[0],
+                "address": address,
                 "tier": properties.get("tier"),
                 "status": properties.get("status"),
                 "bos_district": properties.get("bos_district"),
