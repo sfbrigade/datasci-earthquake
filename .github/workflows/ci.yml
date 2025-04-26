@@ -87,6 +87,14 @@ jobs:
       - name: Start Services
         run: docker compose up -d --wait --wait-timeout 90
 
+      - name: Docker Logs 
+        if: always()  
+        run: |
+          echo "Checking running containers..."
+          docker ps -a
+          echo "Logs for backend:"
+          docker logs datasci-earthquake-backend-1 || echo "No logs found"
+
       - name: Run Backend Tests
         run: docker compose run backend pytest backend
 

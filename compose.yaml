@@ -28,6 +28,7 @@ services:
       - .env
     environment:
       - PYTHONPATH=/backend:/
+      - DATA_GEOJSON_PATH=/public/data/
     ports:
       - 8000:8000
     depends_on:
@@ -36,14 +37,14 @@ services:
     volumes:
       - ./backend:/backend
       - ./backend/etl/startup.sh:/startup.sh
-      - ./public:/public
+      - public_data:/public/data
     command: bash /startup.sh
-    # healthcheck:
-    #   test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1" ]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 10
-    #   start_period: 70s
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   db_test:
     build:
@@ -88,3 +89,5 @@ services:
 volumes:
   db-data:
   nextjs_cache:
+  public_data:
+    
