@@ -2,6 +2,7 @@
 
 from fastapi import APIRouter, HTTPException, Depends
 from ..tags import Tags
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from backend.database.session import get_db
 from geoalchemy2 import functions as geo_func
@@ -28,7 +29,8 @@ router = APIRouter(
 async def get_soft_stories(db: Session = Depends(get_db)):
     """
     Retrieves all soft story properties (of which coordinates are
-    known) from the database
+    known) from the database except the ones for which work is
+    complete
 
     Args:
         db (Session): The database session dependency
@@ -41,7 +43,10 @@ async def get_soft_stories(db: Session = Depends(get_db)):
         HTTPException: If no zones are found (404 error)
     """
     soft_stories = (
-        db.query(SoftStoryProperty).filter(SoftStoryProperty.point.isnot(None)).all()
+        db.query(SoftStoryProperty).filter(and_(
+            SoftStoryProperty.point.isnot(None)),
+            SoftStoryProperty.status != "Work Complete, CFC Issued".lower()
+        ).all()
     )
 
     # If no soft story properties are found, raise a 404 error
