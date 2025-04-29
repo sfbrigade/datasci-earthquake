@@ -52,14 +52,13 @@ class SoftStoryFeature(Feature):
             soft_story.point_as_shapely.x,
             soft_story.point_as_shapely.y,
         ]
-        print("debug soft_story.status:", soft_story.status)
         return SoftStoryFeature(
             type="Feature",
             geometry={"type": "Point", "coordinates": coordinates},
             properties={
                 "identifier": soft_story.identifier,
                 "update_timestamp": soft_story.update_timestamp,
-                "status": soft_story.status
+                "status": soft_story.status,
             },
         )
 
