@@ -43,10 +43,12 @@ async def get_soft_stories(db: Session = Depends(get_db)):
         HTTPException: If no zones are found (404 error)
     """
     soft_stories = (
-        db.query(SoftStoryProperty).filter(and_(
-            SoftStoryProperty.point.isnot(None)),
-            func.lower(SoftStoryProperty.status) != "Work Complete, CFC Issued".lower()
-        ).all()
+        db.query(SoftStoryProperty)
+        .filter(
+            and_(SoftStoryProperty.point.isnot(None)),
+            func.lower(SoftStoryProperty.status) != "Work Complete, CFC Issued".lower(),
+        )
+        .all()
     )
 
     # If no soft story properties are found, raise a 404 error
