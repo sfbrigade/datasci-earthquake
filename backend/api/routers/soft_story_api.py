@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter, HTTPException, Depends
 from ..tags import Tags
-from sqlalchemy import and_
+from sqlalchemy import and_, func
 from sqlalchemy.orm import Session
 from backend.database.session import get_db
 from geoalchemy2 import functions as geo_func
@@ -45,7 +45,7 @@ async def get_soft_stories(db: Session = Depends(get_db)):
     soft_stories = (
         db.query(SoftStoryProperty).filter(and_(
             SoftStoryProperty.point.isnot(None)),
-            SoftStoryProperty.status != "Work Complete, CFC Issued".lower()
+            func.lower(SoftStoryProperty.status) != "Work Complete, CFC Issued".lower()
         ).all()
     )
 
