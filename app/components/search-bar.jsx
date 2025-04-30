@@ -31,6 +31,17 @@ const options = {
   streets: false,
 };
 
+const safeJsonFetch = async (url) => {
+  const res = await fetch(url);
+  if (!res.ok) {
+    const text = await res.text(); // capture any error response
+    throw new Error(
+      `HTTP ${res.status} - ${res.statusText} | ${text} | URL: ${url}`
+    );
+  }
+  return res.json();
+};
+
 const SearchBar = ({
   coordinates,
   onSearchChange,
@@ -43,6 +54,7 @@ const SearchBar = ({
   const router = useRouter();
   const searchParams = useSearchParams();
   const toast = useToast();
+  const toastIdFailedHazardData = "failed-hazard-data";
 
   const handleClearClick = () => {
     setInputAddress("");
@@ -117,18 +129,12 @@ const SearchBar = ({
     try {
       const [softStory, tsunamiZone, liquefactionZone] =
         await Promise.allSettled([
-          fetch(buildUrl(API_ENDPOINTS.isSoftStory)).then((res) => res.json()),
-          fetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)).then((res) =>
-            res.json()
-          ),
-          fetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)).then((res) =>
-            res.json()
-          ),
+          safeJsonFetch(buildUrl(API_ENDPOINTS.isSoftStory)),
+          safeJsonFetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)),
+          safeJsonFetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)),
         ]);
 
-      onHazardDataLoading(false);
-
-      return {
+      const results = {
         softStory: softStory.status === "fulfilled" ? softStory.value : null,
         tsunami: tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
         liquefaction:
@@ -136,10 +142,40 @@ const SearchBar = ({
             ? liquefactionZone.value
             : null,
       };
+
+      const failed = [
+        { name: "Soft Story", result: softStory },
+        { name: "Tsunami", result: tsunamiZone },
+        { name: "Liquefaction", result: liquefactionZone },
+      ].filter(({ result }) => result.status === "rejected");
+
+      if (failed.length > 0) {
+        if (!toast.isActive(toastIdFailedHazardData)) {
+          toast({
+            id: "failed-hazard-data",
+            title: "Hazard data warning",
+            description: `Failed to fetch: ${failed
+              .map((f) => f.name)
+              .join(", ")}`,
+            status: "warning",
+            duration: 5000,
+            isClosable: true,
+            position: "top",
+            containerStyle: {
+              backgroundColor: "#b53d37",
+              opacity: 1,
+              borderRadius: "12px",
+            },
+          });
+        }
+      }
+
+      return results;
     } catch (error) {
       console.error("Error fetching hazard data:", error);
-      onHazardDataLoading(false);
       throw error;
+    } finally {
+      onHazardDataLoading(false);
     }
   };
 

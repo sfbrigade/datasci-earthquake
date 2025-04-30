@@ -2,6 +2,7 @@ import "./globals.css";
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
 import AddressMapper from "./components/address-mapper";
+
 import { Headings } from "./data/data";
 
 const HomeSkeleton = () => {

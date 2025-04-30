@@ -8,6 +8,7 @@ import {
   fetchTsunami,
   fetchLiquefaction,
 } from "./api/services";
+import { useToast } from "@chakra-ui/react";
 
 const Home = async () => {
   const headingData = Headings.home;
@@ -30,8 +31,8 @@ const Home = async () => {
       fetchTsunami(),
       fetchLiquefaction(),
     ]);
-  } catch (error) {
-    console.error("Error:", error); // TODO: how to handle this error gracefully?
+  } catch (error: any) {
+    console.error("Error: ", error);
   }
   return (
     <AddressMapper
