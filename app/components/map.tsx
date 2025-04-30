@@ -27,23 +27,28 @@ const Map: React.FC<MapProps> = ({
   const mapRef = useRef<mapboxgl.Map>();
   const markerRef = useRef<mapboxgl.Marker>();
   const toast = useToast();
+  const toastIdInvalidToken = "invalid-token";
+  const toastIdNoToken = "no-token";
 
   useEffect(() => {
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
-      toast({
-        description: "Mapbox access token or container is not set!",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "top",
-        containerStyle: {
-          backgroundColor: "#b53d37",
-          opacity: 1,
-          borderRadius: "12px",
-        },
-      });
+      if (!toast.isActive(toastIdNoToken)) {
+        toast({
+          id: toastIdNoToken,
+          description: "Mapbox access token or container is not set!",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+          containerStyle: {
+            backgroundColor: "#b53d37",
+            opacity: 1,
+            borderRadius: "12px",
+          },
+        });
+      }
       console.error("Mapbox access token or container is not set!");
       return;
     }
@@ -150,6 +155,27 @@ const Map: React.FC<MapProps> = ({
             "circle-stroke-color": "#FFFFFF",
             "circle-color": "#A0AEC0", // gray/400
           },
+        });
+
+        map.on("error", (e) => {
+          if (e.error && e.error.message.includes("access token")) {
+            if (!toast.isActive(toastIdInvalidToken)) {
+              toast({
+                id: toastIdInvalidToken,
+                description: "Invalid Mapbox access token!",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "top",
+                containerStyle: {
+                  backgroundColor: "#b53d37",
+                  opacity: 1,
+                  borderRadius: "12px",
+                },
+              });
+            }
+            console.error("Invalid Mapbox token:", e.error);
+          }
         });
       });
     } else {

@@ -55,6 +55,7 @@ const SearchBar = ({
   const router = useRouter();
   const searchParams = useSearchParams();
   const toast = useToast();
+  const toastIdFailedHazardData = "failed-hazard-data";
 
   const handleClearClick = () => {
     setInputAddress("");
@@ -150,21 +151,24 @@ const SearchBar = ({
       ].filter(({ result }) => result.status === "rejected");
 
       if (failed.length > 0) {
-        toast({
-          title: "Hazard data warning",
-          description: `Failed to fetch: ${failed
-            .map((f) => f.name)
-            .join(", ")}`,
-          status: "warning",
-          duration: 5000,
-          isClosable: true,
-          position: "top",
-          containerStyle: {
-            backgroundColor: "#b53d37",
-            opacity: 1,
-            borderRadius: "12px",
-          },
-        });
+        if (!toast.isActive(toastIdFailedHazardData)) {
+          toast({
+            id: "failed-hazard-data",
+            title: "Hazard data warning",
+            description: `Failed to fetch: ${failed
+              .map((f) => f.name)
+              .join(", ")}`,
+            status: "warning",
+            duration: 5000,
+            isClosable: true,
+            position: "top",
+            containerStyle: {
+              backgroundColor: "#b53d37",
+              opacity: 1,
+              borderRadius: "12px",
+            },
+          });
+        }
       }
 
       return results;

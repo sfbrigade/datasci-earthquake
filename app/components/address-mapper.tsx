@@ -47,6 +47,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
   const toast = useToast();
+  const toastIdDataLoadFailed = "data-load-failed";
 
   const updateMap = (coords: number[]) => {
     setCoordinates(coords);
@@ -67,18 +68,21 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       );
 
     if (errors.length > 0) {
-      toast({
-        title: "Data Load Error",
-        description: errors.join(" | "),
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "top",
-        containerStyle: {
-          backgroundColor: "#b53d37",
-          borderRadius: "12px",
-        },
-      });
+      if (!toast.isActive(toastIdDataLoadFailed)) {
+        toast({
+          id: "data-load-failed",
+          title: "Data Load Error",
+          description: errors.join(" | "),
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+          containerStyle: {
+            backgroundColor: "#b53d37",
+            borderRadius: "12px",
+          },
+        });
+      }
     }
   }, [softStoryData, tsunamiData, liquefactionData, toast]);
 
