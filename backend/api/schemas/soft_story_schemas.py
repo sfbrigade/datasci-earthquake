@@ -16,6 +16,7 @@ class SoftStoryProperties(BaseModel):
 
     identifier: int
     update_timestamp: datetime
+    status: str
 
 
 class SoftStoryFeature(Feature):
@@ -57,6 +58,7 @@ class SoftStoryFeature(Feature):
             properties={
                 "identifier": soft_story.identifier,
                 "update_timestamp": soft_story.update_timestamp,
+                "status": soft_story.status,
             },
         )
 
