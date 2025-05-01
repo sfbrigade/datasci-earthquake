@@ -3,9 +3,14 @@ import { Providers } from "./providers";
 import Header from "./components/header";
 import Footer from "./components/footer";
 
-import { Manrope } from "next/font/google";
+import { Inter, Manrope } from "next/font/google";
 
 const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+});
+
+const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
 });
@@ -22,14 +27,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${manrope.className} ${inter.className}`}>
         <Providers>
-          <Flex
-            className={manrope.className}
-            direction="column"
-            align="center"
-            minH="100vh"
-          >
+          <Flex direction="column" align="center" minH="100vh">
             <Header />
             <Box flex="1" as="main" width="100%">
               {children}

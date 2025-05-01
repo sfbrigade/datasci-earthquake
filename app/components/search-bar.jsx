@@ -48,6 +48,7 @@ const SearchBar = ({
   onAddressSearch,
   onCoordDataRetrieve,
   onHazardDataLoading,
+  onSearchComplete,
 }) => {
   const [inputAddress, setInputAddress] = useState("");
   const debug = useSearchParams().get("debug");
@@ -134,14 +135,8 @@ const SearchBar = ({
           safeJsonFetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)),
         ]);
 
-      const results = {
-        softStory: softStory.status === "fulfilled" ? softStory.value : null,
-        tsunami: tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
-        liquefaction:
-          liquefactionZone.status === "fulfilled"
-            ? liquefactionZone.value
-            : null,
-      };
+      onHazardDataLoading(false);
+      onSearchComplete(true);
 
       const failed = [
         { name: "Soft Story", result: softStory },
@@ -170,7 +165,14 @@ const SearchBar = ({
         }
       }
 
-      return results;
+      return {
+        softStory: softStory.status === "fulfilled" ? softStory.value : null,
+        tsunami: tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
+        liquefaction:
+          liquefactionZone.status === "fulfilled"
+            ? liquefactionZone.value
+            : null,
+      };
     } catch (error) {
       console.error("Error fetching hazard data:", error);
       throw error;
@@ -249,8 +251,9 @@ const SearchBar = ({
         onRetrieve={handleRetrieve}
       >
         <InputGroup
-          maxW={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
+          w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
           size={{ base: "md", md: "lg", xl: "lg" }}
+          mb={"24px"}
           data-testid="search-bar"
         >
           <InputLeftElement>
@@ -262,7 +265,8 @@ const SearchBar = ({
           </InputLeftElement>
           <Input
             placeholder="Search San Francisco address"
-            fontSize={{ base: "md", sm: "md", md: "md", lg: "lg" }}
+            fontFamily="Inter, sans-serif"
+            fontSize={{ base: "md", sm: "md", md: "md", lg: "md" }}
             p={{
               base: "0 10px 0 35px",
               sm: "0 10px 0 35px",
@@ -270,6 +274,7 @@ const SearchBar = ({
               lg: "0 10px 0 48px",
             }}
             borderRadius="50"
+            border="1px solid #4A5568"
             bgColor="white"
             focusBorderColor="yellow"
             boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
