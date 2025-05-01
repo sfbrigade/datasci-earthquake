@@ -56,12 +56,22 @@ const customTheme = extendTheme({
       color: "grey.900",
       fontFamily: "body",
     },
+    textSemibold: {
+      fontWeight: "600",
+    },
     linkBig: {
       fontSize: "xl",
       fontWeight: "normal",
       color: "blue",
       textDecoration: "underline",
       fontFamily: "body",
+    },
+    list: {
+      listStyleType: "disc",
+      paddingLeft: "6",
+    },
+    listItem: {
+      listStyleType: "disc",
     },
   },
   colors: {
