@@ -138,15 +138,6 @@ const SearchBar = ({
       onHazardDataLoading(false);
       onSearchComplete(true);
 
-      return {
-        softStory: softStory.status === "fulfilled" ? softStory.value : null,
-        tsunami: tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
-        liquefaction:
-          liquefactionZone.status === "fulfilled"
-            ? liquefactionZone.value
-            : null,
-      };
-
       const failed = [
         { name: "Soft Story", result: softStory },
         { name: "Tsunami", result: tsunamiZone },
@@ -174,7 +165,14 @@ const SearchBar = ({
         }
       }
 
-      return results;
+      return {
+        softStory: softStory.status === "fulfilled" ? softStory.value : null,
+        tsunami: tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
+        liquefaction:
+          liquefactionZone.status === "fulfilled"
+            ? liquefactionZone.value
+            : null,
+      };
     } catch (error) {
       console.error("Error fetching hazard data:", error);
       throw error;
