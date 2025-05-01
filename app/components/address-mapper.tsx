@@ -186,7 +186,9 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 </Text>
                 , enacted in 2013, requires all multi-unit soft story buildings
                 built before 1978 to be retrofitted in order to minimize the
-                risk of earthquake damage.
+                risk of earthquake damage. Soft-story homes with 1 to 4 units
+                are still vulnerable to earthquake damage, even though the
+                ordinance does not legally require them to be retrofitted.
               </ListItem>
             </List>
 
