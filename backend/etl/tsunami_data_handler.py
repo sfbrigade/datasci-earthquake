@@ -71,8 +71,8 @@ class TsunamiDataHandler(DataHandler):
                 "properties": {"evacuate": tsunami_zone["evacuate"]},
             }
             geojson_features.append(geojson_feature)
-            geojson = {"type": "FeatureCollection", "features": geojson_features}
 
+        geojson = {"type": "FeatureCollection", "features": geojson_features}
         return parsed_data, geojson
 
 
@@ -84,9 +84,6 @@ if __name__ == "__main__":
             "outFields": "*",
             "f": "json",
         }
-        tsunami_zones = handler.fetch_data(params)
-        tsunami_zones_objects, tsunami_zones_geojson = handler.parse_data(tsunami_zones)
-        handler.save_geojson(tsunami_zones_geojson)
-        handler.bulk_insert_data(tsunami_zones_objects, "identifier")
+        handler.fetch_data(params)
     except HTTPException as e:
         print(f"Failed after retries: {e}")

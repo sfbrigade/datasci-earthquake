@@ -35,7 +35,8 @@ class _LiquefactionDataHandler(DataHandler):
         for feature in features:
             properties = feature.get("properties", {})
             geometry = feature.get("geometry", {})
-            multipolygon = shape(geometry)  # Convert GeoJSON to Shapely geometry
+            # Convert GeoJSON to Shapely geometry
+            multipolygon = shape(geometry)
             simplified_shapely_multipolygon = multipolygon.simplify(
                 tolerance, preserve_topology=True
             )
@@ -68,6 +69,7 @@ class _LiquefactionDataHandler(DataHandler):
                 "properties": {"liq": liquefaction_zone["liq"]},
             }
             geojson_features.append(geojson_feature)
+
         geojson = {"type": "FeatureCollection", "features": geojson_features}
         return parsed_data, geojson
 
@@ -75,11 +77,6 @@ class _LiquefactionDataHandler(DataHandler):
 if __name__ == "__main__":
     handler = _LiquefactionDataHandler(_LIQUEFACTION_URL, LiquefactionZone)
     try:
-        liquefaction_zones = handler.fetch_data()
-        liquefaction_zones_objects, liquefaction_zones_geojson = handler.parse_data(
-            liquefaction_zones
-        )
-        handler.save_geojson(liquefaction_zones_geojson)
-        handler.bulk_insert_data(liquefaction_zones_objects, "identifier")
+        handler.fetch_data()
     except HTTPException as e:
         print(f"Failed after retries: {e}")

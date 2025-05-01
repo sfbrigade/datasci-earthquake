@@ -49,7 +49,9 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
             return parsed_data
 
         mapbox_coordinates_map: Dict[str, Tuple[float, float]] = (
-            self.mapbox_geojson_manager.batch_geocode_addresses(addresses)  # type: ignore
+            self.mapbox_geojson_manager.batch_geocode_addresses(
+                addresses
+            )  # type: ignore
         )
 
         for data_point in parsed_data:
@@ -231,11 +233,6 @@ if __name__ == "__main__":
         mapbox_api_key=os.environ["NEXT_PUBLIC_MAPBOX_TOKEN"],
     )
     try:
-        soft_story_properties = handler.fetch_data()
-        soft_story_property_objects, soft_story_property_geojson = handler.parse_data(
-            soft_story_properties
-        )
-        handler.save_geojson(soft_story_property_geojson)
-        handler.bulk_insert_data(soft_story_property_objects, "address")
+        handler.fetch_data()
     except HTTPException as e:
         print(f"Failed after retries: {e}")

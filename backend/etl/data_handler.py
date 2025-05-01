@@ -114,25 +114,30 @@ class DataHandler(ABC):
             page_num += 1
             time.sleep(1)
 
-    def fetch_data(self, params: Optional[dict] = None) -> dict:
+    def fetch_data(self, params: Optional[dict] = None) -> None:
         """
-        Fetch all data from API using configured parameters.
-        Returns:
-            Dictionary with all features
+        Fetch and process data from API in chunks using configured parameters.
+        Each chunk is processed through parse_data() and bulk_insert_data() separately,
+        while accumulating GeoJSON features for a single FeatureCollection.
         """
         self.logger.info(
             f"Starting data fetch for {self.table.__name__} " f"with params: {params}"
         )
 
         try:
-            all_features = []
+            all_geojson_features = []
             for features in self._yield_data(params):
-                all_features.extend(features)
-            self.logger.info(
-                f"{self.table.__name__}: Successfully fetched {len(all_features)} total features."
-            )
+                parsed_data, geojson = self.parse_data({"features": features})
+                if parsed_data:
+                    self.bulk_insert_data(parsed_data, "identifier")
+                all_geojson_features.extend(geojson["features"])
 
-            return {"features": all_features}
+            # Create a single FeatureCollection with all features
+            final_geojson = {
+                "type": "FeatureCollection",
+                "features": all_geojson_features,
+            }
+            self.save_geojson(final_geojson)
 
         except Exception as e:
             self.logger.error(f"Data fetch failed: {str(e)}", exc_info=True)
@@ -140,6 +145,27 @@ class DataHandler(ABC):
         finally:
             self.session.close()
             self.logger.info("Closed session")
+
+    def _process_chunk(self, chunk_data: dict) -> tuple[list[dict], dict]:
+        """
+        Process a single chunk of data through parse_data()
+
+        Args:
+            chunk_data: Dictionary containing features to process
+
+        Returns:
+            A tuple containing:
+                - A list of dictionaries for database insertion
+                - A dictionary containing GeoJSON features
+        """
+        try:
+            parsed_data, geojson = self.parse_data(chunk_data)
+            if parsed_data:
+                self.bulk_insert_data(parsed_data, "identifier")
+            return parsed_data, geojson
+        except Exception as e:
+            self.logger.error(f"Failed to process chunk: {str(e)}", exc_info=True)
+            raise
 
     def transform_geometry(self, geometry, source_srid, target_srid=4326):
         """
