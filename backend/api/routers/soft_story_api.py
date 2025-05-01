@@ -25,6 +25,9 @@ router = APIRouter(
 )
 
 
+STATUS_WORK_COMPLETE_LOWERCASE = "work complete, cfc issued"
+
+
 @router.get("", response_model=SoftStoryFeatureCollection)
 async def get_soft_stories(db: Session = Depends(get_db)):
     """
@@ -46,7 +49,7 @@ async def get_soft_stories(db: Session = Depends(get_db)):
         db.query(SoftStoryProperty)
         .filter(
             and_(SoftStoryProperty.point.isnot(None)),
-            func.lower(SoftStoryProperty.status) != "Work Complete, CFC Issued".lower(),
+            func.lower(SoftStoryProperty.status) != STATUS_WORK_COMPLETE_LOWERCASE,
         )
         .all()
     )

@@ -6,10 +6,10 @@ def test_get_soft_stories(client):
     response = client.get("api/soft-stories")
     response_dict = response.json()
     assert response.status_code == 200
-    assert len(response_dict["features"]) == 2
-    status_reinforced_lowercase = "work complete, cfc issued"
+    assert len(response_dict["features"]) == 1
+    status_work_complete_lowercase = "work complete, cfc issued"
     for feature in response_dict["features"]:
-        assert feature["properties"]["status"].lower() != status_reinforced_lowercase
+        assert feature["properties"]["status"].lower() != status_work_complete_lowercase
 
 
 def test_is_soft_story(client, caplog):
