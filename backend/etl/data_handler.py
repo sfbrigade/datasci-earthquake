@@ -14,6 +14,10 @@ import time
 import logging
 from backend.etl.session_manager import SessionManager
 from backend.etl.request_handler import RequestHandler
+#------------- New Imports
+import hashlib
+import shutil
+import tempfile
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -194,16 +198,55 @@ class DataHandler(ABC):
 
     def save_geojson(self, features) -> None:
         """
-        Write the geojson file to the public/data folder
+        Write the GeoJSON file to the public/data folder only if the content has changed.
+        Uses MD5 hash comparison for change detection
         """
         geojson_path = Path(f"{_PREFIX_DATA_GEOJSON_PATH}{self.table.__name__}.geojson")
+        new_data_str = json.dumps(features, separators=(',',':'), sort_keys=True)
+        new_hash = hashlib.md5(new_data_str.encode()).hexdigest() # human-readable string for logging
+
+        if geojson_path.exists():
+            md5 = hashlib.md5()
+            with open(geojson_path, 'rb') as f:
+                while True:
+                  chunk = f.read(4096)
+                  if chunk == b'':
+                      break
+                  md5.update(chunk)
+            old_hash = md5.hexdigest()
+
+            if old_hash == new_hash:
+                self.logger.info(
+                    f"{self.table.__name__}: GeoJSON unchanged, skipping write."
+                )
+                return
+            
+            self.logger.info(
+                f"{self.table.__name__}: GeoJSON content changed, updating file."
+            )
+        else:
+            self.logger.info(
+                f"{self.table.__name__}: No GeoJsON file exists"
+            )
+                
         try:
-            with open(geojson_path, "wt") as f:
-                json.dump(features, f)
+            with tempfile.NamedTemporaryFile(
+                dir=geojson_path.parent,
+                delete=False,
+                mode='w',
+                suffix='.tmp'
+            ) as tmp_file:
+                tmp_path = Path(tmp_file.name)
+                json.dump(features, tmp_file, separators=(',', ':'))
+
+            shutil.move(tmp_path, geojson_path)
 
             self.logger.info(
                 f"Generated {_PREFIX_DATA_GEOJSON_PATH}{self.table.__name__}.geojson"
             )
         except Exception as e:
             self.logger.error(f"Failed to write GeoJSON: {e}")
+
+            if 'tmp_path' in locals() and tmp_path.exists():
+                tmp_path.unlink(missing_ok=True)
             raise
