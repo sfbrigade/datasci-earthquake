@@ -58,7 +58,11 @@ const HomeHeader = ({
         {!isSearchComplete && (
           <>
             <Heading headingData={headingData} />
-            <Text textStyle="headerSmall" mb="30px" pr="300px">
+            <Text
+              textStyle="headerSmall"
+              mb="30px"
+              pr={{ base: "10px", xl: "300px" }}
+            >
               This project was built using data from DataSF.
             </Text>
           </>
