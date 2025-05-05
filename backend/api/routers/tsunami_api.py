@@ -3,8 +3,9 @@
 from fastapi import Depends, HTTPException, APIRouter
 from ..tags import Tags
 from sqlalchemy.orm import Session
-from geoalchemy2 import functions as geo_func
 from backend.database.session import get_db
+from geoalchemy2.shape import from_shape
+from shapely.geometry import Point
 from backend.api.schemas.tsunami_schemas import (
     TsunamiFeature,
     TsunamiFeatureCollection,
@@ -64,15 +65,10 @@ async def is_in_tsunami_zone(lon: float, lat: float, db: Session = Depends(get_d
     logger.info(f"Checking tsunami zone for coordinates: lon={lon}, lat={lat}")
 
     try:
+        point = from_shape(Point(lon, lat), srid=4326)
         zone = (
             db.query(TsunamiZone)
-            .filter(
-                TsunamiZone.geometry.ST_Contains(
-                    geo_func.ST_SetSRID(
-                        geo_func.ST_GeomFromText(f"POINT({lon} {lat})"), 4326
-                    )
-                )
-            )
+            .filter(TsunamiZone.geometry.ST_Intersects(point))
             .first()
         )
 
