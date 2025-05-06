@@ -9,7 +9,7 @@ const customTheme = extendTheme({
     logo: {
       fontSize: "lg",
       fontWeight: "300",
-      color: "blue",
+      color: "white",
       fontFamily: "heading",
     },
     headerBig: {
@@ -59,13 +59,6 @@ const customTheme = extendTheme({
     textSemibold: {
       fontWeight: "600",
     },
-    linkBig: {
-      fontSize: "xl",
-      fontWeight: "normal",
-      color: "blue",
-      textDecoration: "underline",
-      fontFamily: "body",
-    },
     list: {
       listStyleType: "disc",
       paddingLeft: "6",
@@ -82,9 +75,10 @@ const customTheme = extendTheme({
       900: "#171923",
     },
     white: "#FFF",
-    blue: "#2C5282",
-    lightBlue: "#3182CE",
-    tsunamiBlue: "#63B3ED",
+    blueBackground: "#2C5282", // blue/700
+    blue: "#2B6CB0", // blue/600 (TODO: all headings)
+    lightBlue: "#3182CE", // blue/500 (TODO: remove)
+    tsunamiBlue: "#63B3ED", // blue/300
     yellow: "#ECC94B",
     red: "#C53030",
     green: "#25855A",
@@ -93,20 +87,35 @@ const customTheme = extendTheme({
     gradient: {
       blue: "radial-gradient(120% 180% at 17.81% 82.6%, rgba(59,98,148,1) 0%, rgba(24,50,82,1) 100%);",
     },
-    sizes: {
-      base: "100%",
-      sm: "375px",
-      md: "744px",
-      xl: "1280px",
-    },
-    breakpoints: {
-      base: "0px",
-      sm: "375px",
-      md: "744px",
-      lg: "992px",
-      xl: "1280px",
-      "2xl": "1536px",
-    },
+  },
+  sizes: {
+    // // originals
+    // sm: "24rem", // 384px
+    // md: "28rem", // 448px
+    // lg: "32rem", // 512px, not overridden
+    // xl: "36rem", // 576px
+    // overrides
+    base: "100%", // new
+    sm: "375px", // 375px (vs 384px) !== // xs?
+    md: "744px", // 744px (vs 448px) !==
+    // lg: "512px", // 512px, not overridden ==
+    xl: "1280px", // 1280px (vs 576px) !== // xl?
+  },
+  breakpoints: {
+    // // originals
+    // base: "0em", // 0px
+    // sm: "30em", // 480px
+    // md: "48em", // 768px
+    // lg: "62em", // 992px
+    // xl: "80em", // 1280px
+    // "2xl": "96em", // 1536px
+    // overrides
+    base: "0px", // 0px
+    sm: "375px", // 375px (vs 480px) !=
+    md: "744px", // 744px (vs 768px) !=
+    lg: "992px", // 992px (vs 992px) ==
+    xl: "1280px", // 1280px (vs 1280px) ==
+    "2xl": "1536px", // 1536px (vs 1536px) ==
   },
 });
 

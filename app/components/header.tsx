@@ -52,9 +52,7 @@ const Header = () => {
                 md: "28px",
               }}
             />
-            <Text textStyle="logo" color="white">
-              SafeHome
-            </Text>
+            <Text textStyle="logo">SafeHome</Text>
           </HStack>
         </Link>
         {isHome && <Box ref={portalRef} id="searchbar-portal" />}

@@ -20,7 +20,14 @@ const ComponentsTestLib = () => {
       }}
       m="auto"
     >
-      <Heading as="h1" size="xl" mb={6} bgColor="blue" color="white" p="10px">
+      <Heading
+        as="h1"
+        size="xl"
+        mb={6}
+        bgColor="blueBackground"
+        color="white"
+        p="10px"
+      >
         Components Test Library
       </Heading>
       <Heading as="h2" size="md" mb={3}>
