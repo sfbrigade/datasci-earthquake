@@ -18,4 +18,4 @@ jobs:
         run: curl -s -o /dev/null "https://www.safehome.report/api/tsunami-zone/is-in-tsunami-zones?ping=true"
 
       - name: Ping liquefaction-zones
-        run: curl -s -o /dev/null "https://your-domain.com/api/liquefaction-zone/is-in-liquefaction-zones?ping=true"
+        run: curl -s -o /dev/null "https://www.safehome.report/api/liquefaction-zone/is-in-liquefaction-zones?ping=true"
