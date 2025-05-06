@@ -15,7 +15,7 @@ jobs:
         run: curl -s -o /dev/null "https://www.safehome.report/api/soft-stories/is-soft-story?ping=true"
 
       - name: Ping tsunami-zones
-        run: curl -s -o /dev/null "https://www.safehome.report/api/tsunami-zone/is-in-tsunami-zones?ping=true"
+        run: curl -s -o /dev/null "https://www.safehome.report/api/tsunami-zones/is-in-tsunami-zone?ping=true"
 
       - name: Ping liquefaction-zones
-        run: curl -s -o /dev/null "https://www.safehome.report/api/liquefaction-zone/is-in-liquefaction-zones?ping=true"
+        run: curl -s -o /dev/null "https://www.safehome.report/api/liquefaction-zones/is-in-liquefaction-zone?ping=true"
