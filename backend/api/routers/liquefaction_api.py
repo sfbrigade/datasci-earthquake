@@ -4,7 +4,8 @@ from fastapi import Depends, HTTPException, APIRouter, Query
 from typing import Optional
 from ..tags import Tags
 from sqlalchemy.orm import Session
-from geoalchemy2 import functions as geo_func
+from geoalchemy2.shape import from_shape
+from shapely.geometry import Point
 from backend.database.session import get_db
 from ..schemas.liquefaction_schemas import (
     LiquefactionFeature,
@@ -89,15 +90,10 @@ async def is_in_liquefaction_zone(
     logger.info(f"Checking liquefaction zone for coordinates: lon={lon}, lat={lat}")
 
     try:
+        point = from_shape(Point(lon, lat), srid=4326)
         zone = (
             db.query(LiquefactionZone)
-            .filter(
-                LiquefactionZone.geometry.ST_Contains(
-                    geo_func.ST_SetSRID(
-                        geo_func.ST_GeomFromText(f"POINT({lon} {lat})"), 4326
-                    )
-                )
-            )
+            .filter(LiquefactionZone.geometry.ST_Intersects(point))
             .first()
         )
         exists = zone is not None

@@ -40,15 +40,15 @@ const HomeHeader = ({
         w={{ base: "base", xl: "xl" }}
         p={{
           base: "35px 23px 40px 23px",
-          md: "42px 0px 46px 26px",
+          md: "42px 26px 46px 26px",
           xl: "24px 127px 24px 127px",
         }}
         margin="auto"
       >
         {isSearchComplete && (
           <Stack
-            direction={{ base: "column", sm: "row" }}
-            alignItems="flex-end"
+            direction={{ base: "column", md: "row" }}
+            alignItems={{ base: "flex-start", md: "flex-end" }}
             justifyContent="space-between"
           >
             <ReportAddress searchedAddress={searchedAddress} />
@@ -58,7 +58,11 @@ const HomeHeader = ({
         {!isSearchComplete && (
           <>
             <Heading headingData={headingData} />
-            <Text textStyle="headerSmall" mb="30px" pr="300px">
+            <Text
+              textStyle="headerSmall"
+              mb="30px"
+              pr={{ base: "10px", xl: "300px" }}
+            >
               This project was built using data from DataSF.
             </Text>
           </>

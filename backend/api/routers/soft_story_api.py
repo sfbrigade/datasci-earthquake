@@ -4,6 +4,8 @@ from fastapi import APIRouter, HTTPException, Depends, Query
 from typing import Optional
 from ..tags import Tags
 from sqlalchemy import and_, func
+from geoalchemy2.shape import from_shape
+from shapely.geometry import Point
 from sqlalchemy.orm import Session
 from backend.database.session import get_db
 from geoalchemy2 import functions as geo_func
@@ -24,7 +26,6 @@ router = APIRouter(
     prefix="/api/soft-stories",
     tags=[Tags.SOFT_STORY],
 )
-
 
 STATUS_WORK_COMPLETE_LOWERCASE = "work complete, cfc issued"
 
@@ -102,12 +103,10 @@ async def is_soft_story(
     logger.info(f"Checking soft story status for coordinates: lon={lon}, lat={lat}")
 
     try:
+        point = from_shape(Point(lon, lat), srid=4326)
         property = (
             db.query(SoftStoryProperty)
-            .filter(
-                SoftStoryProperty.point
-                == geo_func.ST_GeomFromText(f"POINT({lon} {lat})", 4326)
-            )
+            .filter(geo_func.ST_DWithin(SoftStoryProperty.point, point, 0.000001))
             .first()
         )
 

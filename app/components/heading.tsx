@@ -4,7 +4,7 @@ export interface HeadingProps {
   text: string;
   highlight: string;
   style?: {
-    [key: string]: string;
+    [key: string]: string | object;
   };
   highlightStyle?: {
     [key: string]: string;
