@@ -4,12 +4,12 @@ export const Hazards = [
     name: "softStory",
     title: "Structural safety",
     description:
-      "Soft story buildings may need reinforcement to stay safe in an earthquake.",
+      "Soft story buildings that haven't been reinforced may be at risk in an earthquake.",
     info: [
       "A soft story building is a structure built before 1978 that contains an open-floor level, such as a garage or retail space, below one or more living spaces.",
       "According to DataSF, there are 4,943 soft story buildings in SF. But not all are at risk!",
       "Some have been retrofitted to reinforce their lower levels and are generally considered earthquake-safe.",
-      "Those that haven't made the required upgrades may face a greater risk of damage in an earthquake.",
+      "Our data doesn't currently include permit history, so some buildings flagged as at risk may have already been upgraded.",
     ],
     link: {
       label: "Soft story dataset",
