@@ -1,6 +1,7 @@
 """Router to handle liquefaction-related API endpoints"""
 
-from fastapi import Depends, HTTPException, APIRouter
+from fastapi import Depends, HTTPException, APIRouter, Query
+from typing import Optional
 from ..tags import Tags
 from sqlalchemy.orm import Session
 from geoalchemy2 import functions as geo_func
@@ -53,8 +54,8 @@ async def get_liquefaction_zones(db: Session = Depends(get_db)):
 
 @router.get("/is-in-liquefaction-zone", response_model=IsInLiquefactionZoneView)
 async def is_in_liquefaction_zone(
-    lon: float | None = None,
-    lat: float | None = None,
+    lon: Optional[float] = Query(None),
+    lat: Optional[float] = Query(None),
     ping: bool = False,
     db: Session = Depends(get_db),
 ):
@@ -77,6 +78,13 @@ async def is_in_liquefaction_zone(
     if ping:
         logger.info(f"Pinging the is-in-liquefaction-zone endpoint")
         return IsInLiquefactionZoneView(exists=False, last_updated=None)  # skip DB call
+
+    if lon is None or lat is None:
+        logger.warning("Missing coordinates in non-ping request")
+        raise HTTPException(
+            status_code=400,
+            detail="Both 'lon' and 'lat' must be provided unless ping=true",
+        )
 
     logger.info(f"Checking liquefaction zone for coordinates: lon={lon}, lat={lat}")
 

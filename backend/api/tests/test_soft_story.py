@@ -37,6 +37,7 @@ def test_is_soft_story(client, caplog):
     )
 
     assert response.status_code == 200
+    caplog.set_level(logging.INFO)
     assert not response.json()["exists"]
     assert response.json()["last_updated"] is None
     assert (
@@ -44,3 +45,27 @@ def test_is_soft_story(client, caplog):
         in caplog.text
     )
     assert "exists: False" in caplog.text
+
+
+def test_is_soft_story_ping(client, caplog):
+    response = client.get(f"api/soft-stories/is-soft-story?ping=true")
+    response_dict = response.json()
+    assert response.status_code == 200
+    assert response_dict["exists"] is False
+    assert response_dict["last_updated"] is None
+    assert "Pinging the is-soft-story endpoint" in caplog.text
+
+
+def test_is_soft_story_missing_params(client, caplog):
+    caplog.set_level(logging.WARN)
+    response = client.get("api/soft-stories/is-soft-story", params={"lon": -122.424968})
+    assert response.status_code == 400
+    assert "Missing coordinates in non-ping request" in caplog.text
+
+    response = client.get("api/soft-stories/is-soft-story", params={"lat": 37.76293})
+    assert response.status_code == 400
+    assert "Missing coordinates in non-ping request" in caplog.text
+
+    response = client.get("api/soft-stories/is-soft-story")
+    assert response.status_code == 400
+    assert "Missing coordinates in non-ping request" in caplog.text

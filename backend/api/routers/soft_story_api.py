@@ -1,6 +1,7 @@
 """CRUD for soft story properties"""
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Query
+from typing import Optional
 from ..tags import Tags
 from sqlalchemy import and_, func
 from sqlalchemy.orm import Session
@@ -66,8 +67,8 @@ async def get_soft_stories(db: Session = Depends(get_db)):
 
 @router.get("/is-soft-story", response_model=IsSoftStoryPropertyView)
 async def is_soft_story(
-    lon: float | None = None,
-    lat: float | None = None,
+    lon: Optional[float] = Query(None),
+    lat: Optional[float] = Query(None),
     ping: bool = False,
     db: Session = Depends(get_db),
 ):
@@ -90,6 +91,13 @@ async def is_soft_story(
     if ping:
         logger.info(f"Pinging the is-soft-story endpoint")
         return IsSoftStoryPropertyView(exists=False, last_updated=None)  # skip DB call
+
+    if lon is None or lat is None:
+        logger.warning("Missing coordinates in non-ping request")
+        raise HTTPException(
+            status_code=400,
+            detail="Both 'lon' and 'lat' must be provided unless ping=true",
+        )
 
     logger.info(f"Checking soft story status for coordinates: lon={lon}, lat={lat}")
 

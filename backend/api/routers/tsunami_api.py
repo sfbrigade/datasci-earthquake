@@ -1,6 +1,7 @@
 """Router to get tsunami risk"""
 
-from fastapi import Depends, HTTPException, APIRouter
+from fastapi import Depends, HTTPException, APIRouter, Query
+from typing import Optional
 from ..tags import Tags
 from sqlalchemy.orm import Session
 from geoalchemy2 import functions as geo_func
@@ -47,8 +48,8 @@ async def get_tsunami_zones(db: Session = Depends(get_db)):
 
 @router.get("/is-in-tsunami-zone", response_model=IsInTsunamiZoneView)
 async def is_in_tsunami_zone(
-    lon: float | None = None,
-    lat: float | None = None,
+    lon: Optional[float] = Query(None),
+    lat: Optional[float] = Query(None),
     ping: bool = False,
     db: Session = Depends(get_db),
 ):
@@ -71,6 +72,13 @@ async def is_in_tsunami_zone(
     if ping:
         logger.info(f"Pinging the is-in-tsunami-zone endpoint")
         return IsInTsunamiZoneView(exists=False, last_updated=None)  # skip DB call
+
+    if lon is None or lat is None:
+        logger.warning("Missing coordinates in non-ping request")
+        raise HTTPException(
+            status_code=400,
+            detail="Both 'lon' and 'lat' must be provided unless ping=true",
+        )
 
     logger.info(f"Checking tsunami zone for coordinates: lon={lon}, lat={lat}")
 
