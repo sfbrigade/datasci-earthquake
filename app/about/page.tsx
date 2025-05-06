@@ -58,7 +58,7 @@ const About = () => {
         md: "37px 27px 16px 26px",
         xl: "50px 128px 16px 127px",
       }}
-      direction={{ base: "column", xl: "row" }}
+      direction={{ base: "column", lg: "row" }}
       m="auto"
       gap="46px"
     >

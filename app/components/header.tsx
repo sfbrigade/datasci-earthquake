@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, HStack, Text, Link, Image } from "@chakra-ui/react";
+import { Box, HStack, Text, Link, Image, Stack } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import NextLink from "next/link";
 import { useRef } from "react";
@@ -19,7 +19,8 @@ const Header = () => {
       position={isHome ? "absolute" : undefined}
       top={isHome ? "0" : undefined}
     >
-      <HStack
+      <Stack
+        direction={{ base: "column", md: "row" }}
         w={{ base: "base", xl: "xl" }}
         h="114px"
         justifyContent="flex-start"
@@ -64,7 +65,7 @@ const Header = () => {
             </Text>
           </Link>
         )}
-      </HStack>
+      </Stack>
     </Box>
   );
 };
