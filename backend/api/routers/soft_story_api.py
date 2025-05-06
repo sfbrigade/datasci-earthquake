@@ -65,20 +65,32 @@ async def get_soft_stories(db: Session = Depends(get_db)):
 
 
 @router.get("/is-soft-story", response_model=IsSoftStoryPropertyView)
-async def is_soft_story(lon: float, lat: float, db: Session = Depends(get_db)):
+async def is_soft_story(
+    lon: float | None = None,
+    lat: float | None = None,
+    ping: bool = False,
+    db: Session = Depends(get_db),
+):
     """
     Checks if a point is a soft story property and returns its last update time
 
     Args:
         lon (float): Longitude of the point
         lat (float): Latitude of the point
+        ping (bool): Optional ping parameter, used to reduce cold starts
         db (Session): The database session dependency
 
     Returns:
         IsSoftStoryPropertyView containing:
         - exists: True if point is in a soft story property
         - last_updated: Timestamp of last update if exists, None otherwise
+
+        If `ping=true` is passed, skips DB call and returns a dummy IsSoftStoryPropertyView(exists=False, last_updated=None) instance
     """
+    if ping:
+        logger.info(f"Pinging the is-soft-story endpoint")
+        return IsSoftStoryPropertyView(exists=False, last_updated=None)  # skip DB call
+
     logger.info(f"Checking soft story status for coordinates: lon={lon}, lat={lat}")
 
     try:

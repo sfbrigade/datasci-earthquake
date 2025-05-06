@@ -39,7 +39,6 @@ async def get_tsunami_zones(db: Session = Depends(get_db)):
         HTTPException: If no zones are found (404 error).
     """
     tsunami_zones = db.query(TsunamiZone).all()
-    print("tsunami zones:", tsunami_zones)
     if not tsunami_zones:
         raise HTTPException(status_code=404, detail="No tsunami zones found")
     features = [TsunamiFeature.from_sqlalchemy_model(zone) for zone in tsunami_zones]
@@ -47,20 +46,32 @@ async def get_tsunami_zones(db: Session = Depends(get_db)):
 
 
 @router.get("/is-in-tsunami-zone", response_model=IsInTsunamiZoneView)
-async def is_in_tsunami_zone(lon: float, lat: float, db: Session = Depends(get_db)):
+async def is_in_tsunami_zone(
+    lon: float | None = None,
+    lat: float | None = None,
+    ping: bool = False,
+    db: Session = Depends(get_db),
+):
     """
     Check if a point is in a tsunami zone.
 
     Args:
         lon (float): Longitude of the point.
         lat (float): Latitude of the point.
+        ping (bool): Optional ping parameter, used to reduce cold starts.
         db (Session): The database session dependency.
 
     Returns:
         IsInTsunamiZoneView containing:
             - exists: True if point is in a tsunami zone
             - last_updated: Timestamp of last update if exists, None otherwise
+
+        If `ping=true` is passed, skips DB call and returns a dummy IsInTsunamiZoneView(exists=False, last_updated=None) instance.
     """
+    if ping:
+        logger.info(f"Pinging the is-in-tsunami-zone endpoint")
+        return IsInTsunamiZoneView(exists=False, last_updated=None)  # skip DB call
+
     logger.info(f"Checking tsunami zone for coordinates: lon={lon}, lat={lat}")
 
     try:

@@ -1,0 +1,21 @@
+name: Keep Serverless Functions Warm
+
+on:
+  schedule:
+    - cron: '*/4 1-3 14 5 *' # Every 4 min between 01:00–03:59 UTC (18:00-21:50 PDT) on May 14 (6–9 PM PDT on May 14)
+
+  workflow_dispatch: 
+
+jobs:
+  ping-endpoints:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping soft-stories
+        run: curl -s -o /dev/null "https://www.safehome.report/api/soft-stories/is-soft-story?ping=true"
+
+      - name: Ping tsunami-zones
+        run: curl -s -o /dev/null "https://www.safehome.report/api/tsunami-zone/is-in-tsunami-zones?ping=true"
+
+      - name: Ping liquefaction-zones
+        run: curl -s -o /dev/null "https://your-domain.com/api/liquefaction-zone/is-in-liquefaction-zones?ping=true"
