@@ -320,7 +320,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               </ListItem>
             </List>
           </div>
-          <Box flexShrink={0}>
+          <Box flexShrink={0} display={{ base: "none", lg: "block" }}>
             <Image
               src="/images/earthquake-ready.png"
               alt="about us"
