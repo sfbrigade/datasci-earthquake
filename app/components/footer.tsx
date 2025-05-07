@@ -45,6 +45,11 @@ const Footer = () => {
                 Contact
               </Text>
             </Link>
+            <Link as={NextLink} color="white" href="/terms">
+              <Text textStyle="textMedium" color="white">
+                Terms of Service
+              </Text>
+            </Link>
           </VStack>
           <Link
             as={NextLink}
