@@ -1,6 +1,7 @@
 """Router to handle liquefaction-related API endpoints"""
 
-from fastapi import Depends, HTTPException, APIRouter
+from fastapi import Depends, HTTPException, APIRouter, Query
+from typing import Optional
 from ..tags import Tags
 from sqlalchemy.orm import Session
 from geoalchemy2.shape import from_shape
@@ -54,7 +55,10 @@ async def get_liquefaction_zones(db: Session = Depends(get_db)):
 
 @router.get("/is-in-liquefaction-zone", response_model=IsInLiquefactionZoneView)
 async def is_in_liquefaction_zone(
-    lon: float, lat: float, db: Session = Depends(get_db)
+    lon: Optional[float] = Query(None),
+    lat: Optional[float] = Query(None),
+    ping: bool = False,
+    db: Session = Depends(get_db),
 ):
     """
     Check if a point is in a liquefaction zone.
@@ -62,13 +66,27 @@ async def is_in_liquefaction_zone(
     Args:
         lon (float): Longitude of the point.
         lat (float): Latitude of the point.
+        ping (bool): Optional ping parameter, used to reduce cold starts.
         db (Session): The database session dependency.
 
     Returns:
         IsInLiquefactionZoneView containing:
             - exists: True if point is in a liquefaction zone
             - last_updated: Timestamp of last update if exists, None otherwise
+
+         If `ping=true` is passed, skips DB call and returns a dummy IsInLiquefactionZoneView(exists=False, last_updated=None) instance.
     """
+    if ping:
+        logger.info(f"Pinging the is-in-liquefaction-zone endpoint")
+        return IsInLiquefactionZoneView(exists=False, last_updated=None)  # skip DB call
+
+    if lon is None or lat is None:
+        logger.warning("Missing coordinates in non-ping request")
+        raise HTTPException(
+            status_code=400,
+            detail="Both 'lon' and 'lat' must be provided unless ping=true",
+        )
+
     logger.info(f"Checking liquefaction zone for coordinates: lon={lon}, lat={lat}")
 
     try:

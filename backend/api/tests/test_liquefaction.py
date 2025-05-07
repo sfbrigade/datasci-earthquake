@@ -43,3 +43,31 @@ def test_is_in_liquefaction_zone(client, caplog):
         in caplog.text
     )
     assert "exists: False" in caplog.text
+
+
+def test_is_in_liquefaction_zone_ping(client, caplog):
+    response = client.get(f"api/liquefaction-zones/is-in-liquefaction-zone?ping=true")
+    response_dict = response.json()
+    assert response.status_code == 200
+    assert response_dict["exists"] is False
+    assert response_dict["last_updated"] is None
+    assert "Pinging the is-in-liquefaction-zone endpoint" in caplog.text
+
+
+def test_is_in_liquefaction_zone_missing_params(client, caplog):
+    caplog.set_level(logging.WARN)
+    response = client.get(
+        "api/liquefaction-zones/is-in-liquefaction-zone", params={"lon": -122.424968}
+    )
+    assert response.status_code == 400
+    assert "Missing coordinates in non-ping request" in caplog.text
+
+    response = client.get(
+        "api/liquefaction-zones/is-in-liquefaction-zone", params={"lat": 37.76293}
+    )
+    assert response.status_code == 400
+    assert "Missing coordinates in non-ping request" in caplog.text
+
+    response = client.get("api/liquefaction-zones/is-in-liquefaction-zone")
+    assert response.status_code == 400
+    assert "Missing coordinates in non-ping request" in caplog.text
