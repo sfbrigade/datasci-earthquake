@@ -21,7 +21,7 @@ const TermsOfService = () => {
           <Text textStyle="headerSmall" alignSelf="flex-start" color="blue">
             Acceptable Use
           </Text>
-          <VStack gap="2rem" justifyContent="left" alignItems="left">
+          <VStack gap="2rem" alignItems="flex-start">
             <Text textStyle="textMedium">
               You may view, use, and download information from this website for
               your informational, non-commercial use. The data is NOT suitable
