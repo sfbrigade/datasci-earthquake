@@ -36,6 +36,7 @@ const ComponentsTestLib = () => {
               onAddressSearch={() => {}}
               onCoordDataRetrieve={() => {}}
               onHazardDataLoading={() => {}}
+              onSearchComplete={() => {}}
             />
           </Box>
         </HStack>

@@ -2,6 +2,9 @@
 
 from fastapi import APIRouter, HTTPException, Depends
 from ..tags import Tags
+from sqlalchemy import and_, func
+from geoalchemy2.shape import from_shape
+from shapely.geometry import Point
 from sqlalchemy.orm import Session
 from backend.database.session import get_db
 from geoalchemy2 import functions as geo_func
@@ -23,12 +26,15 @@ router = APIRouter(
     tags=[Tags.SOFT_STORY],
 )
 
+STATUS_WORK_COMPLETE_LOWERCASE = "work complete, cfc issued"
+
 
 @router.get("", response_model=SoftStoryFeatureCollection)
 async def get_soft_stories(db: Session = Depends(get_db)):
     """
     Retrieves all soft story properties (of which coordinates are
-    known) from the database
+    known) from the database except the ones for which work is
+    complete
 
     Args:
         db (Session): The database session dependency
@@ -41,7 +47,12 @@ async def get_soft_stories(db: Session = Depends(get_db)):
         HTTPException: If no zones are found (404 error)
     """
     soft_stories = (
-        db.query(SoftStoryProperty).filter(SoftStoryProperty.point.isnot(None)).all()
+        db.query(SoftStoryProperty)
+        .filter(
+            and_(SoftStoryProperty.point.isnot(None)),
+            func.lower(SoftStoryProperty.status) != STATUS_WORK_COMPLETE_LOWERCASE,
+        )
+        .all()
     )
 
     # If no soft story properties are found, raise a 404 error
@@ -72,12 +83,10 @@ async def is_soft_story(lon: float, lat: float, db: Session = Depends(get_db)):
     logger.info(f"Checking soft story status for coordinates: lon={lon}, lat={lat}")
 
     try:
+        point = from_shape(Point(lon, lat), srid=4326)
         property = (
             db.query(SoftStoryProperty)
-            .filter(
-                SoftStoryProperty.point
-                == geo_func.ST_GeomFromText(f"POINT({lon} {lat})", 4326)
-            )
+            .filter(geo_func.ST_DWithin(SoftStoryProperty.point, point, 0.000001))
             .first()
         )
 

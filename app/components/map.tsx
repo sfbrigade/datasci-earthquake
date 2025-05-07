@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
+import { useToast } from "@chakra-ui/react";
 
 const defaultCoords = [-122.463733, 37.777448];
 
@@ -25,12 +26,29 @@ const Map: React.FC<MapProps> = ({
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>();
   const markerRef = useRef<mapboxgl.Marker>();
+  const toast = useToast();
+  const toastIdInvalidToken = "invalid-token";
+  const toastIdNoToken = "no-token";
 
   useEffect(() => {
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
-      // TODO: turn this into a toast with friendly error message
+      if (!toast.isActive(toastIdNoToken)) {
+        toast({
+          id: toastIdNoToken,
+          description: "Mapbox access token or container is not set!",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+          containerStyle: {
+            backgroundColor: "#b53d37",
+            opacity: 1,
+            borderRadius: "12px",
+          },
+        });
+      }
       console.error("Mapbox access token or container is not set!");
       return;
     }
@@ -103,6 +121,17 @@ const Map: React.FC<MapProps> = ({
           data: softStoryData,
         });
 
+        map.addLayer({
+          id: "tsunamiLayer",
+          source: "tsunami",
+          type: "fill",
+          slot: "middle",
+          paint: {
+            "fill-color": "#63B3ED", // blue/300
+            "fill-opacity": 0.25, // 50% opacity
+          },
+        });
+
         // Add layers
         map.addLayer({
           id: "seismicLayer",
@@ -112,17 +141,6 @@ const Map: React.FC<MapProps> = ({
           paint: {
             "fill-color": "#F6AD55", // orange/300
             "fill-opacity": 0.5, // 50% opacity
-          },
-        });
-
-        map.addLayer({
-          id: "tsunamiLayer",
-          source: "tsunami",
-          type: "fill",
-          slot: "middle",
-          paint: {
-            "fill-color": "#63B3ED", // blue/300
-            "fill-opacity": 0.25, // 50% opacity
           },
         });
 
@@ -138,6 +156,27 @@ const Map: React.FC<MapProps> = ({
             "circle-color": "#A0AEC0", // gray/400
           },
         });
+
+        map.on("error", (e) => {
+          if (e.error && e.error.message.includes("access token")) {
+            if (!toast.isActive(toastIdInvalidToken)) {
+              toast({
+                id: toastIdInvalidToken,
+                description: "Invalid Mapbox access token!",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "top",
+                containerStyle: {
+                  backgroundColor: "#b53d37",
+                  opacity: 1,
+                  borderRadius: "12px",
+                },
+              });
+            }
+            console.error("Invalid Mapbox token:", e.error);
+          }
+        });
       });
     } else {
       // subsequent passes: update map
@@ -147,7 +186,7 @@ const Map: React.FC<MapProps> = ({
       markerRef.current?.setLngLat(addressLngLat);
       return;
     }
-  }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
+  }, [coordinates, liquefactionData, softStoryData, tsunamiData, toast]);
 
   return (
     <>

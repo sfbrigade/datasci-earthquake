@@ -31,18 +31,31 @@ const options = {
   streets: false,
 };
 
+const safeJsonFetch = async (url) => {
+  const res = await fetch(url);
+  if (!res.ok) {
+    const text = await res.text(); // capture any error response
+    throw new Error(
+      `HTTP ${res.status} - ${res.statusText} | ${text} | URL: ${url}`
+    );
+  }
+  return res.json();
+};
+
 const SearchBar = ({
   coordinates,
   onSearchChange,
   onAddressSearch,
   onCoordDataRetrieve,
   onHazardDataLoading,
+  onSearchComplete,
 }) => {
   const [inputAddress, setInputAddress] = useState("");
   const debug = useSearchParams().get("debug");
   const router = useRouter();
   const searchParams = useSearchParams();
   const toast = useToast();
+  const toastIdFailedHazardData = "failed-hazard-data";
 
   const handleClearClick = () => {
     setInputAddress("");
@@ -117,16 +130,40 @@ const SearchBar = ({
     try {
       const [softStory, tsunamiZone, liquefactionZone] =
         await Promise.allSettled([
-          fetch(buildUrl(API_ENDPOINTS.isSoftStory)).then((res) => res.json()),
-          fetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)).then((res) =>
-            res.json()
-          ),
-          fetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)).then((res) =>
-            res.json()
-          ),
+          safeJsonFetch(buildUrl(API_ENDPOINTS.isSoftStory)),
+          safeJsonFetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)),
+          safeJsonFetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)),
         ]);
 
       onHazardDataLoading(false);
+      onSearchComplete(true);
+
+      const failed = [
+        { name: "Soft Story", result: softStory },
+        { name: "Tsunami", result: tsunamiZone },
+        { name: "Liquefaction", result: liquefactionZone },
+      ].filter(({ result }) => result.status === "rejected");
+
+      if (failed.length > 0) {
+        if (!toast.isActive(toastIdFailedHazardData)) {
+          toast({
+            id: "failed-hazard-data",
+            title: "Hazard data warning",
+            description: `Failed to fetch: ${failed
+              .map((f) => f.name)
+              .join(", ")}`,
+            status: "warning",
+            duration: 5000,
+            isClosable: true,
+            position: "top",
+            containerStyle: {
+              backgroundColor: "#b53d37",
+              opacity: 1,
+              borderRadius: "12px",
+            },
+          });
+        }
+      }
 
       return {
         softStory: softStory.status === "fulfilled" ? softStory.value : null,
@@ -138,8 +175,9 @@ const SearchBar = ({
       };
     } catch (error) {
       console.error("Error fetching hazard data:", error);
-      onHazardDataLoading(false);
       throw error;
+    } finally {
+      onHazardDataLoading(false);
     }
   };
 
@@ -213,8 +251,9 @@ const SearchBar = ({
         onRetrieve={handleRetrieve}
       >
         <InputGroup
-          maxW={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
+          w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
           size={{ base: "md", md: "lg", xl: "lg" }}
+          mb={"24px"}
           data-testid="search-bar"
         >
           <InputLeftElement>
@@ -226,7 +265,8 @@ const SearchBar = ({
           </InputLeftElement>
           <Input
             placeholder="Search San Francisco address"
-            fontSize={{ base: "md", sm: "md", md: "md", lg: "lg" }}
+            fontFamily="Inter, sans-serif"
+            fontSize={{ base: "md", sm: "md", md: "md", lg: "md" }}
             p={{
               base: "0 10px 0 35px",
               sm: "0 10px 0 35px",
@@ -234,6 +274,7 @@ const SearchBar = ({
               lg: "0 10px 0 48px",
             }}
             borderRadius="50"
+            border="1px solid #4A5568"
             bgColor="white"
             focusBorderColor="yellow"
             boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
