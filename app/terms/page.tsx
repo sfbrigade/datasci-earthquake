@@ -8,25 +8,20 @@ const TermsOfService = () => {
       <Flex
         w={{ base: "base", xl: "xl" }}
         p={{
-          base: "50px 100px 35px 100px",
-          // md: "57px 47px 36px 47px",
-          // xl: "50px 128px 16px 127px",
+          base: "23px 24px 50px 24px",
+          md: "37px 27px 50px 26px",
+          xl: "50px 128px 50px 127px",
         }}
         m="auto"
-        // gap="46px"
       >
-        <VStack
-          direction="column"
-          alignItems="flex-start"
-          //  gap="50px"
-        >
+        <VStack direction="column" alignItems="flex-start">
           <Heading color="blue" fontWeight="300" marginBottom="2rem">
             Terms of Service
           </Heading>
           <Text textStyle="headerSmall" alignSelf="flex-start" color="blue">
             Acceptable Use
           </Text>
-          <VStack gap="2rem">
+          <VStack gap="2rem" justifyContent="left" alignItems="left">
             <Text textStyle="textMedium">
               You may view, use, and download information from this website for
               your informational, non-commercial use. The data is NOT suitable
