@@ -1,14 +1,11 @@
 import { Highlight, Text } from "@chakra-ui/react";
+import { SystemStyleObject } from "@chakra-ui/styled-system";
 
 export interface HeadingProps {
   text: string;
   highlight: string;
-  style?: {
-    [key: string]: string | object;
-  };
-  highlightStyle?: {
-    [key: string]: string;
-  };
+  style?: SystemStyleObject;
+  highlightStyle?: SystemStyleObject;
   maxWidth?: {
     [key: string]: string;
   };
