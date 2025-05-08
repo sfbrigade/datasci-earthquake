@@ -1,6 +1,14 @@
 "use client";
 
-import { Box, HStack, Link, Text, VStack, Image, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  Link,
+  Text,
+  VStack,
+  Image,
+  Stack,
+} from "@chakra-ui/react";
 import { mockDisclaimers } from "./__mocks__/mock-data";
 import NextLink from "next/link";
 
@@ -40,7 +48,7 @@ const Footer = () => {
           </Text>
           {buildDisclaimers()}
         </VStack>
-        <VStack alignItems={{ base:"flex-start", lg:"flex-end" }} gap="24px">
+        <VStack alignItems={{ base: "flex-start", lg: "flex-end" }} gap="24px">
           <Stack
             gap="10px"
             align="flex-end"
