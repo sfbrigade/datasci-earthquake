@@ -25,6 +25,7 @@ const Footer = () => {
           xl: "72px 128px 72px 128px",
         }}
         justify="space-between"
+        alignItems="flex-start"
         m="auto"
       >
         <VStack alignItems="flex-start" maxW="672px" gap="24px">
@@ -33,7 +34,7 @@ const Footer = () => {
           </Text>
           {buildDisclaimers()}
         </VStack>
-        <VStack w="max-content" align="flex-end" gap="80px">
+        <VStack w="max-content" align="flex-end" gap="24px">
           <VStack gap="10px" align="flex-end">
             <Link as={NextLink} color="white" href="/about">
               <Text textStyle="textMedium" color="white">
