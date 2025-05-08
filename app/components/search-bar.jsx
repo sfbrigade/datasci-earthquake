@@ -245,7 +245,7 @@ const SearchBar = ({
           </NumberInput>
         </HStack>
       )}
-      <DynamicAddressAutofill
+      {/* <DynamicAddressAutofill
         accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
         options={options}
         onRetrieve={handleRetrieve}
@@ -300,7 +300,7 @@ const SearchBar = ({
             </InputRightElement>
           )}
         </InputGroup>
-      </DynamicAddressAutofill>
+      </DynamicAddressAutofill> */}
     </form>
   );
 };
