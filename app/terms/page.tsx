@@ -1,4 +1,4 @@
-import { Flex, Heading, Text, Link, VStack, Box } from "@chakra-ui/react";
+import { Flex, Text, Link, VStack, Box } from "@chakra-ui/react";
 import NextLink from "next/link";
 import Image from "next/image";
 
@@ -15,20 +15,25 @@ const TermsOfService = () => {
         m="auto"
       >
         <VStack direction="column" alignItems="flex-start">
-          <Heading color="blue" fontWeight="300" marginBottom="2rem">
+          <Text
+            textStyle="headerBig"
+            color="blue"
+            fontWeight="300"
+            marginBottom="2rem"
+          >
             Terms of Service
-          </Heading>
-          <Text textStyle="headerSmall" alignSelf="flex-start" color="blue">
+          </Text>
+          <Text textStyle="headerMedium" alignSelf="flex-start" color="blue">
             Acceptable Use
           </Text>
           <VStack gap="2rem" alignItems="flex-start">
             <Text textStyle="textMedium">
               You may view, use, and download information from this website for
               your informational, non-commercial use. The data is NOT suitable
-              commercial decision-making; financial or investment decisions; any
-              official documentation or verification. Users agree to
-              independently verify any information before replying on it for any
-              important decisions.
+              for: commercial decision-making; financial or investment
+              decisions; any official documentation or verification. Users agree
+              to independently verify any information before relying on it for
+              any important decisions.
             </Text>
             <Text textStyle="textMedium">
               The data presented on this website has been collected from
@@ -49,6 +54,7 @@ const TermsOfService = () => {
                 as={NextLink}
                 href="https://www.documentcloud.org/documents/23813850-draft-inventory-of-sf-non-ductile-concrete-buildings-march-2023/"
                 textDecoration="underline"
+                target="_blank"
               >
                 non-ductile concrete
               </Link>
