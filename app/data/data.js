@@ -113,7 +113,7 @@ export const Headings = {
     highlight: "How safe ",
     style: {
       whiteSpace: { base: "normal", md: "pre-line" },
-      paddingRight: { base: "10px", xl: "300" },
+      paddingRight: { base: "10px", xl: "300px" },
       marginBottom: "16px",
     },
     highlightStyle: { color: "yellow" },
