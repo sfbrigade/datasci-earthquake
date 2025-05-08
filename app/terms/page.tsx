@@ -12,6 +12,8 @@ const TermsOfService = () => {
           md: "37px 27px 50px 26px",
           xl: "50px 128px 50px 127px",
         }}
+        gap="44px"
+        direction={{ base: "column", lg: "row" }}
         m="auto"
       >
         <VStack direction="column" alignItems="flex-start">

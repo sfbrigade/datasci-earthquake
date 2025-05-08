@@ -18,6 +18,22 @@ export const Hazards = [
   },
   {
     id: 2,
+    name: "liquefaction",
+    title: "Liquefaction areas",
+    description:
+      "These areas are on less stable ground, which can result in shifting or sinking during an earthquake.",
+    info: [
+      "Liquefaction is a condition where soil turns into a liquid-like state under pressure.",
+      "Buildings in liquefaction zones are at risk of sinking, tilting, or collapsing in a major earthquake.",
+      "This risk can be lowered with seismic upgrades such as foundation reinforcement or drainage systems.",
+    ],
+    link: {
+      label: "Liquefaction dataset",
+      url: "https://data.sfgov.org/Geographic-Locations-and-Boundaries/Soil-Liquefaction-Hazard-Zone/i4t7-35u3/about_data",
+    },
+  },
+  {
+    id: 3,
     name: "tsunami",
     title: "Tsunami zones",
     description:
@@ -30,22 +46,6 @@ export const Hazards = [
     link: {
       label: "Tsunami dataset",
       url: "https://www.conservation.ca.gov/cgs/tsunami/maps",
-    },
-  },
-  {
-    id: 3,
-    name: "liquefaction",
-    title: "Liquefaction zones",
-    description:
-      "These areas are on less stable ground, which can result in shifting or sinking during an earthquake.",
-    info: [
-      "Liquefaction is a condition where soil turns into a liquid-like state under pressure.",
-      "Buildings in liquefaction zones are at risk of sinking, tilting, or collapsing in a major earthquake.",
-      "This risk can be lowered with seismic upgrades such as foundation reinforcement or drainage systems.",
-    ],
-    link: {
-      label: "Liquefaction dataset",
-      url: "https://data.sfgov.org/Geographic-Locations-and-Boundaries/Soil-Liquefaction-Hazard-Zone/i4t7-35u3/about_data",
     },
   },
 ];
@@ -113,7 +113,7 @@ export const Headings = {
     highlight: "How safe ",
     style: {
       whiteSpace: { base: "normal", md: "pre-line" },
-      paddingRight: { base: "10px", xl: "300" },
+      paddingRight: { base: "10px", xl: "300px" },
       marginBottom: "16px",
     },
     highlightStyle: { color: "yellow" },
