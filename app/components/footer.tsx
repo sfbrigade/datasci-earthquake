@@ -52,7 +52,7 @@ const Footer = () => {
                 About
               </Text>
             </Link>
-            <Link as={NextLink} color="white" href="/">
+            <Link color="white" href="mailto:sfcivictech.datascience@gmail.com">
               <Text textStyle="textMedium" color="white">
                 Contact
               </Text>
