@@ -243,7 +243,7 @@ export const TeamMembers = [
   {
     id: 18,
     role: "Back End Engineer",
-    name: "Neeraj",
+    name: "Neeraj Lad",
   },
   {
     id: 13,
