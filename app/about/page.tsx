@@ -118,7 +118,7 @@ const About = () => {
           <Text textStyle="headerMedium">Meet the team</Text>
           <Text textStyle="textMedium">
             SafeHome is run by a volunteer team at{" "}
-            {buildLink("https://www.sfcivictech.org/about/", "SF Civic Tech")} ,
+            {buildLink("https://www.sfcivictech.org/about/", "SF Civic Tech")},
             a diverse group of technologists, creatives, and data scientists
             building tools to help communities access important services and
             solve local challenges. 
