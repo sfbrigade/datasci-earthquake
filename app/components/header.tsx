@@ -54,8 +54,7 @@ const Header = () => {
             <Image
               src="/images/SFSafeHome-fulllogo.svg"
               alt="SafeHome logo"
-              role="img"
-              aria-label="SafeHome logo"
+              role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
               h="28px"
               w="142px"
             />
