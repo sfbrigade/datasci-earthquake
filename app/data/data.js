@@ -166,9 +166,19 @@ export const TeamMembers = [
     name: "Oscar Syu",
   },
   {
+    id: 15,
+    role: "Product Management",
+    name: "Julia Cordero",
+  },
+  {
     id: 3,
     role: "Product Design Lead",
     name: "Micah Johnson",
+  },
+  {
+    id: 6,
+    role: "Product Design Lead",
+    name: "Jocelyn Su",
   },
   {
     id: 12,
@@ -186,19 +196,14 @@ export const TeamMembers = [
     name: "Svetlana Eliseeva",
   },
   {
-    id: 6,
-    role: "Product Designer",
-    name: "Jocelyn Su",
+    id: 8,
+    role: "Engineering Lead",
+    name: "Nick Visutsithiwong",
   },
   {
     id: 7,
     role: "UX Writer",
     name: "Nikki Collister",
-  },
-  {
-    id: 8,
-    role: "Front End Engineer",
-    name: "Nick Visutsithiwong",
   },
   {
     id: 9,
@@ -211,9 +216,24 @@ export const TeamMembers = [
     name: "Diya Baliga",
   },
   {
+    id: 19,
+    role: "Front End Engineer",
+    name: "Leah Treidler",
+  },
+  {
+    id: 16,
+    role: "Front End Engineer",
+    name: "Josh van Eyken",
+  },
+  {
     id: 14,
     role: "Full Stack Engineer",
     name: "Raymond Yee",
+  },
+  {
+    id: 20,
+    role: "Full Stack Engineer",
+    name: "Vincent Shuali",
   },
   {
     id: 11,
@@ -221,8 +241,18 @@ export const TeamMembers = [
     name: "Adam Finkle",
   },
   {
+    id: 18,
+    role: "Back End Engineer",
+    name: "Neeraj",
+  },
+  {
     id: 13,
     role: "Data Science",
     name: "Peter Cuddihy",
+  },
+  {
+    id: 17,
+    role: "Data Science",
+    name: "Lola Jackson",
   },
 ];
