@@ -30,7 +30,7 @@ const customTheme = extendTheme({
       fontSize: ["2xl", "2xl", "3xl", "3xl", "3xl", "3xl"],
       fontWeight: "500",
       color: "blue",
-      fontFamily: "body",
+      fontFamily: "heading",
     },
     headerSmall: {
       fontSize: ["lg", "lg", "lg", "lg", "xl", "xl"],
