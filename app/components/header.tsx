@@ -46,7 +46,6 @@ const Header = () => {
             <Image
               src="/images/SFSafeHome-fulllogo.svg"
               alt="SafeHome logo"
-              color="white"
               h="28px"
               w="142px"
             />
