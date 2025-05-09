@@ -1,6 +1,14 @@
 "use client";
 
-import { Box, HStack, Text, Link, Image, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  Text,
+  Link,
+  Image,
+  Stack,
+  VisuallyHidden,
+} from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import NextLink from "next/link";
 import { useRef } from "react";
@@ -46,10 +54,12 @@ const Header = () => {
             <Image
               src="/images/SFSafeHome-fulllogo.svg"
               alt="SafeHome logo"
+              role="img"
+              aria-label="SafeHome logo"
               h="28px"
               w="142px"
             />
-            <Text textStyle="logo">SafeHome</Text>
+            <VisuallyHidden>SafeHome</VisuallyHidden>
           </HStack>
         </Link>
         {isHome && <Box ref={portalRef} id="searchbar-portal" />}

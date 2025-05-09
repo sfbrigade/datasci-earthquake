@@ -6,13 +6,6 @@ const customTheme = extendTheme({
     body: "Inter, sans-serif",
   },
   textStyles: {
-    logo: {
-      fontSize: "lg",
-      fontWeight: "300",
-      color: "white",
-      fontFamily: "heading",
-      textIndent: "-1000em",
-    },
     headerBig: {
       fontSize: ["4xl", "4xl", "5xl", "5xl", "6xl", "6xl"],
       fontWeight: "300",
