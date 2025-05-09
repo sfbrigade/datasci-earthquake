@@ -44,13 +44,11 @@ const Header = () => {
         >
           <HStack align="baseline">
             <Image
-              src="/images/SFSafeHome-logo.svg"
-              alt="Logo"
+              src="/images/SFSafeHome-fulllogo.svg"
+              alt="SafeHome logo"
               color="white"
-              boxSize={{
-                base: "24px",
-                md: "28px",
-              }}
+              h="28px"
+              w="142px"
             />
             <Text textStyle="logo">SafeHome</Text>
           </HStack>
