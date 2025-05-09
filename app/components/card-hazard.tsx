@@ -79,12 +79,12 @@ const CardHazard: React.FC<CardHazardProps> = ({
         <PopoverTrigger>
           <VStack cursor={"pointer"} alignItems={"flex-start"} h={"100%"}>
             <CardHeader p={0}>
-              <Text textStyle="textBig" fontWeight={"700"}>
+              <Text textStyle="cardTitle" fontWeight={"700"}>
                 {title}
               </Text>
             </CardHeader>
             <CardBody p={0} mb={"14px"}>
-              <Text>{description}</Text>
+              <Text textStyle="textMedium">{description}</Text>
             </CardBody>
             <CardFooter p={0} width={"100%"}>
               <HStack justifyContent="space-between" width="100%">

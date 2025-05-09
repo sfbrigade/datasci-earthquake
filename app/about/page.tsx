@@ -64,7 +64,7 @@ const About = () => {
     >
       <Flex direction="column" alignItems={"flex-start"} gap="48px">
         <Heading headingData={headingData} />
-        <Text textStyle="textBig" color="black">
+        <Text textStyle="textBig">
           Seismologists predict a 72% probability that the Bay Area will
           experience a magnitude 6.7 (or greater) earthquake in the next 30
           years. SafeHome was created to give San Franciscans the knowledge and

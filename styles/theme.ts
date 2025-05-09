@@ -38,10 +38,16 @@ const customTheme = extendTheme({
       color: "white",
       fontFamily: "body",
     },
-    textBig: {
+    cardTitle: {
       fontSize: "xl",
       fontWeight: "normal",
       color: "blue",
+      fontFamily: "body",
+    },
+    textBig: {
+      fontSize: "xl",
+      fontWeight: "normal",
+      color: "grey.900",
       fontFamily: "body",
     },
     textMedium: {
@@ -59,6 +65,8 @@ const customTheme = extendTheme({
     textSemibold: {
       fontWeight: "600",
     },
+  },
+  layerStyles: {
     list: {
       listStyleType: "disc",
       paddingLeft: "6",
