@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - develop
+      - master
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
       - develop
+      - master
 
 jobs:
   eslint:
@@ -112,6 +114,8 @@ jobs:
           docker ps -a
           echo "Logs for backend:"
           docker logs datasci-earthquake-backend-1 || echo "No logs found"
+          echo "Logs for db:"
+          docker logs my_postgis_db || echo "No logs found"
 
       - name: Run Backend Tests
         run: docker compose run backend pytest backend
