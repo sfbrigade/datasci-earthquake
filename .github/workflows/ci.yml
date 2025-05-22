@@ -100,13 +100,6 @@ jobs:
             cp .env.example .env
           fi
 
-      - name: Print .env content
-        run: |
-          echo "=== .env exists? ==="
-          ls -la .env || echo "No .env file found"
-          echo "=== .env content ==="
-          cat .env || echo "Cannot read .env"
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
