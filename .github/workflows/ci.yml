@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - develop
-      - master
+      - main
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
       - develop
-      - master
+      - main
 
 jobs:
   eslint:
@@ -52,14 +52,17 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Set default fork status
+        run: echo "is_fork=false" >> $GITHUB_ENV        
+
       - name: Check if pull request from fork
         id: check_fork
+        if: github.event_name == 'pull_request'
         run: |
-          if [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]]; then
-            echo "is_fork=true" >> $GITHUB_ENV
-          else
-            echo "is_fork=false" >> $GITHUB_ENV
-          fi
+          run: |
+            if [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]]; then
+              echo "is_fork=true" >> $GITHUB_ENV
+            fi
 
       - name: Use .env.example for forks
         if: env.is_fork == 'true'
@@ -89,6 +92,13 @@ jobs:
         run: |
           openssl aes-256-cbc -d -salt -pbkdf2 -k "${{ secrets.ARTIFACT_PASS }}" -in .env.enc -out .env
           echo "Decryption complete"
+
+      - name: Ensure .env exists
+        run: |
+          if [ ! -f .env ]; then
+            echo ".env not found. Falling back to .env.example"
+            cp .env.example .env
+          fi
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
