@@ -3,10 +3,12 @@ name: CI Pipeline
 on:
   push:
     branches:
+      - develop
       - master
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
+      - develop
       - master
 
 jobs:
@@ -50,15 +52,31 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Check if pull request from fork
+        id: check_fork
+        run: |
+          if [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]]; then
+            echo "is_fork=true" >> $GITHUB_ENV
+          else
+            echo "is_fork=false" >> $GITHUB_ENV
+          fi
+
+      - name: Use .env.example for forks
+        if: env.is_fork == 'true'
+        run: cp .env.example .env
+
       - name: Get Run ID of Most Recent Successful Run
         id: get_run_id
+        if: env.is_fork != 'true'
         run: |
           response=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/sfbrigade/datasci-earthquake/actions/workflows/env_vars.yml/runs?status=completed&conclusion=success")
           run_id=$(echo $response | jq '.workflow_runs[0].id')
           echo "Run ID: $run_id"
           echo "run_id=$run_id" >> $GITHUB_ENV
+
       - name: Download .env Artifact
+        if: env.is_fork != 'true'
         uses: actions/download-artifact@v4
         with:
           name: encrypted-env-file
@@ -67,6 +85,7 @@ jobs:
           run-id: ${{ env.run_id }}
 
       - name: Decrypt .env File
+        if: env.is_fork != 'true'
         run: |
           openssl aes-256-cbc -d -salt -pbkdf2 -k "${{ secrets.ARTIFACT_PASS }}" -in .env.enc -out .env
           echo "Decryption complete"
@@ -81,6 +100,7 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
+
       - name: Build Docker Containers
         run: docker compose build
 
@@ -94,6 +114,8 @@ jobs:
           docker ps -a
           echo "Logs for backend:"
           docker logs datasci-earthquake-backend-1 || echo "No logs found"
+          echo "Logs for db:"
+          docker logs my_postgis_db || echo "No logs found"
 
       - name: Run Backend Tests
         run: docker compose run backend pytest backend
