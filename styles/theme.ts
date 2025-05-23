@@ -59,6 +59,13 @@ const customTheme = extendTheme({
     textSemibold: {
       fontWeight: "600",
     },
+    textPrerelease: {
+      color: "#ccc",
+      fontSize: "12px",
+      lineHeight: "12px",
+      fontWeight: "bold",
+      textTransform: "uppercase",
+    },
   },
   layerStyles: {
     list: {
