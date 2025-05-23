@@ -50,15 +50,18 @@ const Header = () => {
             window.location.href = "/";
           }}
         >
-          <HStack align="baseline">
-            <Image
-              src="/images/SFSafeHome-fulllogo.svg"
-              alt="SafeHome logo"
-              role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
-              h="28px"
-              w="142px"
-            />
-            <VisuallyHidden>SafeHome</VisuallyHidden>
+          <HStack align="start" gap="1">
+            <HStack align="baseline">
+              <Image
+                src="/images/SFSafeHome-fulllogo.svg"
+                alt="SafeHome logo"
+                role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
+                h="28px"
+                w="142px"
+              />
+              <VisuallyHidden>SafeHome</VisuallyHidden>
+            </HStack>
+            <Text textStyle="textPrerelease">Beta</Text>
           </HStack>
         </Link>
         {isHome && <Box ref={portalRef} id="searchbar-portal" />}
