@@ -1,3 +1,4 @@
+import gzip
 import requests
 from requests import Response
 from pathlib import Path
@@ -137,7 +138,7 @@ class MapboxGeojsonManager:
         if not self._mapbox_config.soft_story_geojson_path.exists():
             return {}
 
-        with open(self._mapbox_config.soft_story_geojson_path, "r") as f:
+        with gzip.open(self._mapbox_config.soft_story_geojson_path, "rt") as f:
             soft_story_json = json.load(f)
 
         parsed_data: Dict[str, Optional[Tuple[float, float]]] = {}
@@ -198,17 +199,17 @@ class MapboxGeojsonManager:
         """
         # If file not found, create a new one
         if not self._mapbox_config.soft_story_geojson_path.exists():
-            with open(self._mapbox_config.soft_story_geojson_path, "w") as f:
+            with gzip.open(self._mapbox_config.soft_story_geojson_path, "wt") as f:
                 json.dump({"type": "FeatureCollection", "features": features}, f)
             return
 
         # Otherwise append
-        with open(self._mapbox_config.soft_story_geojson_path, "r") as f:
+        with gzip.open(self._mapbox_config.soft_story_geojson_path, "rt") as f:
             soft_story_json = json.load(f)
 
         soft_story_json["features"] += features
 
-        with open(self._mapbox_config.soft_story_geojson_path, "w") as f:
+        with gzip.open(self._mapbox_config.soft_story_geojson_path, "wt") as f:
             json.dump(soft_story_json, f)
 
     def batch_geocode_addresses(

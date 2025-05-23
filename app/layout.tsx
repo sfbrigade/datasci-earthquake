@@ -3,12 +3,20 @@ import { Providers } from "./providers";
 import Header from "./components/header";
 import Footer from "./components/footer";
 
-import "@fontsource/inter/400.css";
-import "@fontsource/inter/500.css";
-import "@fontsource/inter/700.css";
+import { Inter, Manrope } from "next/font/google";
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+});
 
 export const metadata = {
-  title: "SF Quake Safe",
+  title: "SafeHome",
   description: "Learn about your home's earthquake readiness",
 };
 
@@ -19,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${manrope.className} ${inter.className}`}>
         <Providers>
           <Flex direction="column" align="center" minH="100vh">
             <Header />

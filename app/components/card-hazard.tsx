@@ -1,12 +1,25 @@
 import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
   Text,
   HStack,
+  Button,
+  VStack,
+  Link,
+  CardFooter,
+  CardBody,
+  Card,
+  CardHeader,
+  useDisclosure,
+  Spinner,
 } from "@chakra-ui/react";
 import Pill from "./pill";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  PopoverArrow,
+  PopoverCloseButton,
+} from "@chakra-ui/react";
 
 interface CardHazardProps {
   hazard: {
@@ -14,58 +27,93 @@ interface CardHazardProps {
     name: string;
     title: string;
     description: string;
-    update: string;
-    color: string;
+    info: string[];
+    link: {
+      label: string;
+      url: string;
+    };
   };
+  hazardData?: {
+    exists?: boolean;
+    last_updated?: string;
+  };
+  showData: boolean;
+  isHazardDataLoading: boolean;
 }
 
 const CardHazard: React.FC<CardHazardProps> = ({
-  hazard: { title, name, description, update, color },
+  hazard,
+  hazardData,
+  showData,
+  isHazardDataLoading,
 }) => {
+  const { title, name, description } = hazard;
+  const { exists, last_updated: date } = hazardData || {};
+
+  const hazardPill = isHazardDataLoading ? (
+    <Spinner size="xs" />
+  ) : showData ? (
+    <Pill exists={exists} />
+  ) : (
+    ""
+  );
+
+  const buildHazardCardInfo = () => {
+    return (
+      <VStack gap={5} p={5}>
+        {hazard.info.map((infoItem, index) => (
+          <Text key={index}>{infoItem}</Text>
+        ))}
+      </VStack>
+    );
+  };
+
   return (
-    <Card flex={1} maxW={400}>
-      <CardHeader
-        p={{
-          base: "10px 23px 0px 23px",
-          md: "17px 16px 0px 16px",
-          xl: "22px 22px 0px 22px",
-        }}
+    <Card flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
+      <Popover
+        placement="bottom"
+        returnFocusOnClose={false}
+        closeOnBlur={true}
+        aria-label={`${hazard.title} information`}
       >
-        <HStack justifyContent="space-between">
-          <Text textStyle="textBig">{title}</Text>
-          <Pill name={name} />
-        </HStack>
-      </CardHeader>
-      <CardBody
-        p={{
-          base: "10px 23px 0px 23px",
-          md: "17px 16px 0px 16px",
-          xl: "14px 22px 0px 22px",
-        }}
-      >
-        <Text textStyle="textMedium">{description}</Text>
-      </CardBody>
-      <CardFooter
-        p={{
-          base: "10px 23px 10px 23px",
-          md: "17px 16px 17px 16px",
-          xl: "14px 22px 22px 22px",
-        }}
-      >
-        <HStack>
-          <svg width="19" height="18" viewBox="0 0 19 18" fill="none">
-            <circle
-              cx="9.5"
-              cy="9"
-              r="8.5"
-              fill={color}
-              stroke="white"
-              role="img"
-            />
-          </svg>
-          <Text textStyle="textSmall">{"Updated " + update}</Text>
-        </HStack>
-      </CardFooter>
+        <PopoverTrigger>
+          <VStack cursor={"pointer"} alignItems={"flex-start"} h={"100%"}>
+            <CardHeader p={0}>
+              <Text textStyle="cardTitle" fontWeight={"700"}>
+                {title}
+              </Text>
+            </CardHeader>
+            <CardBody p={0} mb={"14px"}>
+              <Text textStyle="textMedium">{description}</Text>
+            </CardBody>
+            <CardFooter p={0} width={"100%"}>
+              <HStack justifyContent="space-between" width="100%">
+                <Text cursor={"pointer"} textDecoration={"underline"}>
+                  More Info
+                </Text>
+                {hazardPill}
+              </HStack>
+            </CardFooter>
+          </VStack>
+        </PopoverTrigger>
+        <PopoverContent mt={5} width={"348px"}>
+          <PopoverArrow />
+          <PopoverCloseButton />
+          <PopoverBody>
+            {buildHazardCardInfo()}
+            <Link
+              display={"inline-block"}
+              pb={3}
+              pl={5}
+              href={hazard.link.url}
+              target="_blank"
+              textDecoration="underline"
+            >
+              {hazard.link.label}
+            </Link>
+          </PopoverBody>
+        </PopoverContent>
+      </Popover>
     </Card>
   );
 };

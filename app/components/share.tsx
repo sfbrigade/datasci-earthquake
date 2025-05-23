@@ -2,88 +2,74 @@
 import {
   Text,
   Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
+  useToast,
+  Box,
+  HStack,
+  CloseButton,
 } from "@chakra-ui/react";
 import ShareIcon from "../img/icon-share.svg";
-import FacebookIcon from "../img/icon-facebook.svg";
-import EmailIcon from "../img/icon-email.svg";
-import XIcon from "../img/icon-x.svg";
 import LinkIcon from "../img/icon-link.svg";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { AddressData } from "./__mocks__/address-data";
-import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 const Share = () => {
-  const copyReportToClipBoard = () => {
-    // copy the current url to the clipboard
-    navigator.clipboard.writeText(currentUrl);
-  };
-  const [currentUrl, setCurrentUrl] = useState("");
-  useEffect(() => {
-    // get the current url from the browser
-    if (window.location.href.includes("address-1")) {
-      // address does not need to be formated
-      setCurrentUrl(window.location.href);
-    } else {
-      // format the adress using addressData.address
-      const addressParts = AddressData.address.split("");
-      let joinedstring = addressParts.join("+");
+  const searchParams = useSearchParams();
+  const toast = useToast({
+    position: "top",
+  });
 
-      const urlString = `${window.location.href}/?address-1=${joinedstring}`;
-
-      setCurrentUrl(urlString);
+  const copyReportToClipBoard = async () => {
+    try {
+      const currentUrl = `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`;
+      await navigator.clipboard.writeText(currentUrl);
+      toast({
+        duration: 3000,
+        render: ({ onClose }) => (
+          <Box
+            bg="white"
+            color="black"
+            p={3}
+            borderRadius="md"
+            boxShadow="md"
+            position="relative"
+          >
+            <HStack>
+              <LinkIcon />
+              <Text>Link copied</Text>
+            </HStack>
+            <CloseButton
+              position="absolute"
+              right="8px"
+              top="8px"
+              onClick={onClose}
+            />
+          </Box>
+        ),
+      });
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+      toast({
+        title: "Error",
+        description: "Failed to copy link to clipboard.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
     }
-  }, []);
+  };
 
   return (
-    <Menu>
-      <MenuButton
-        as={Button}
-        aria-label="Share report"
-        variant="ghost"
-        rightIcon={<ShareIcon />}
-      >
-        <Text textStyle="textMedium">Share report</Text>
-      </MenuButton>
-      <MenuList p={"6px 16px 6px 16px"}>
-        <Link
-          href={
-            "mailto:placeholder@example.com?subject=Share Report&body=" +
-            currentUrl
-          }
-        >
-          <MenuItem gap="10px">
-            <EmailIcon />
-            <Text>Email</Text>
-          </MenuItem>
-        </Link>
-
-        <Link
-          href={`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`}
-        >
-          <MenuItem gap="10px">
-            <FacebookIcon />
-            <Text>Facebook</Text>
-          </MenuItem>
-        </Link>
-
-        <Link href={`https://twitter.com/intent/tweet?url=${currentUrl}`}>
-          <MenuItem gap="10px">
-            <XIcon />
-            <Text>X</Text>
-          </MenuItem>
-        </Link>
-
-        <MenuItem gap="10px" onClick={copyReportToClipBoard}>
-          <LinkIcon />
-          <Text>Copy Link</Text>
-        </MenuItem>
-      </MenuList>
-    </Menu>
+    <Button
+      aria-label="Share report"
+      variant="link"
+      rightIcon={<ShareIcon />}
+      onClick={copyReportToClipBoard}
+      background={"transparent"}
+    >
+      <Text textStyle="textMedium" color="white">
+        Share report
+      </Text>
+    </Button>
   );
 };
 

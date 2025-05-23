@@ -1,3 +1,4 @@
+import re
 import pytest
 from unittest.mock import patch, MagicMock
 from backend.etl.soft_story_properties_data_handler import (
@@ -104,8 +105,8 @@ def test_parse_data_address_in_mapbox(handler, mock_mapbox_manager):
     parsed = handler.parse_data(sf_data)
 
     # Assert
-    assert len(parsed) == 1
-    result = parsed[0]
+    assert len(parsed) == 2
+    result = parsed[0][0]
 
     # Because the address is found in Mapbox GeoJSON,
     # the parse_data method uses the coordinates from the manager
@@ -166,8 +167,8 @@ def test_parse_data_address_not_in_mapbox(handler, mock_mapbox_manager):
     parsed = handler.parse_data(sf_data)
 
     # Assert
-    assert len(parsed) == 1
-    result = parsed[0]
+    assert len(parsed) == 2
+    result = parsed[0][0]
 
     # The fill_in_missing_mapbox_points method should update
     # the point from the batch geocode.
@@ -226,8 +227,8 @@ def test_parse_data_address_not_in_mapbox_and_no_geometry(handler, mock_mapbox_m
     parsed = handler.parse_data(sf_data)
 
     # Assert
-    assert len(parsed) == 1
-    result = parsed[0]
+    assert len(parsed) == 2
+    result = parsed[0][0]
 
     # Because geometry was None and batch geocoding didn't resolve anything:
     #  - point remains None
@@ -292,8 +293,8 @@ def test_parse_data_address_not_in_mapbox_but_has_sf_geometry(
     parsed = handler.parse_data(sf_data)
 
     # Assert
-    assert len(parsed) == 1
-    result = parsed[0]
+    assert len(parsed) == 2
+    result = parsed[0][0]
 
     # SF geometry should remain because Mapbox doesn't have or return anything
     assert result["point"] == "Point(-122.4167 37.7833)"
@@ -363,8 +364,8 @@ def test_parse_data_address_in_mapbox_but_mapbox_has_none_coordinates(
     parsed = handler.parse_data(sf_data)
 
     # Assert
-    assert len(parsed) == 1
-    result = parsed[0]
+    assert len(parsed) == 2
+    result = parsed[0][0]
 
     # Because Mapbox's coordinates are None, we expect the SF geometry to be used
     assert (
@@ -385,3 +386,20 @@ def test_parse_data_address_in_mapbox_but_mapbox_has_none_coordinates(
     assert result["bos_district"] == "District 1"
     assert result["sfdata_as_of"] == "2025-01-01"
     assert result["sfdata_loaded_at"] == "2025-01-10"
+
+
+def test_addresses_from_range():
+    address_range = "1234-1237 Grove St."
+    pattern = re.compile(r"(\d+)-(\d+)\s+(.*)")
+    match_result = pattern.search(address_range)
+    start_range = int(match_result[1])  # Before the hyphen
+    end_range = int(match_result[2])  # After the hyphen
+    street_name = match_result[3]  # After the range of addreses
+    addresses = _SoftStoryPropertiesDataHandler._addresses_from_range(
+        start_range, end_range, street_name
+    )
+    assert len(addresses) == 4
+    assert addresses[0] == "1234 Grove St."
+    assert addresses[1] == "1235 Grove St."
+    assert addresses[2] == "1236 Grove St."
+    assert addresses[3] == "1237 Grove St."

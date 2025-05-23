@@ -14,6 +14,6 @@ describe("Footer Component", () => {
 
   it("renders the logo", () => {
     renderFooter();
-    expect(screen.getByText("© 2024 SF Civic Tech")).toBeInTheDocument();
+    expect(screen.getByText("© 2025 SF Civic Tech")).toBeInTheDocument();
   });
 });

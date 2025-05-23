@@ -1,14 +1,10 @@
-import { Highlight, Text } from "@chakra-ui/react";
+import { Highlight, SystemStyleObject, Text } from "@chakra-ui/react";
 
-interface HeadingProps {
+export interface HeadingProps {
   text: string;
   highlight: string;
-  style?: {
-    [key: string]: string;
-  };
-  highlightStyle?: {
-    [key: string]: string;
-  };
+  style?: SystemStyleObject;
+  highlightStyle?: SystemStyleObject;
   maxWidth?: {
     [key: string]: string;
   };
@@ -17,7 +13,7 @@ interface HeadingProps {
 const Heading: React.FC<{ headingData: HeadingProps }> = ({ headingData }) => {
   const { text, highlight, style, highlightStyle, maxWidth } = headingData;
   return (
-    <Text textStyle="headerBig" mb="43px" maxW={maxWidth} sx={style}>
+    <Text textStyle="headerBig" maxW={maxWidth} sx={style}>
       <Highlight query={highlight} styles={highlightStyle}>
         {text}
       </Highlight>

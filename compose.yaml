@@ -12,7 +12,14 @@ services:
     volumes:
       - .:/app:rw,delegated # Mount after dependencies are installed
       - /app/node_modules # This excludes the node_modules from being overwritten
-      - /app/.next/cache # Ensure the Next.js cache is properly mounted 
+      - nextjs_cache:/app/.next
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:3000 || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
   backend:
     build:
       context: .
@@ -21,6 +28,7 @@ services:
       - .env
     environment:
       - PYTHONPATH=/backend:/
+      - DATA_GEOJSON_PATH=/public/data/
     ports:
       - 8000:8000
     depends_on:
@@ -29,9 +37,19 @@ services:
     volumes:
       - ./backend:/backend
       - ./backend/etl/startup.sh:/startup.sh
+      - public_data:/public/data
     command: bash /startup.sh
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
   db_test:
-    image: postgis-custom
+    build:
+      context: ./backend/database
+      dockerfile: Dockerfile
     container_name: my_postgis_db_test
     restart: always
     env_file:
@@ -70,3 +88,6 @@ services:
 
 volumes:
   db-data:
+  nextjs_cache:
+  public_data:
+    

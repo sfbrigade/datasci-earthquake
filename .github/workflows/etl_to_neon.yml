@@ -22,24 +22,47 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+
       - name: Get Run ID of Most Recent Successful Run
         id: get_run_id
         run: |
-          response=$(curl -s -H "Authorization: token ${{ secrets.GH_PAT }}" \
+          response=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           "https://api.github.com/repos/sfbrigade/datasci-earthquake/actions/workflows/env_vars.yml/runs?status=completed&conclusion=success")
           run_id=$(echo $response | jq '.workflow_runs[0].id')
           echo "Run ID: $run_id"
-          echo "run_id=$run_id" >> $GITHUB_ENV        
+          echo "run_id=$run_id" >> $GITHUB_ENV     
+
       - name: Download .env Artifact 
         uses: actions/download-artifact@v4
         with:
-          name: env-file
-          github-token: ${{ secrets.GH_PAT }}
+          name: encrypted-env-file
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: sfbrigade/datasci-earthquake
-          run-id: ${{ env.run_id }}                  
+          run-id: ${{ env.run_id }}    
 
+      - name: Decrypt .env File
+        run: |
+          openssl aes-256-cbc -d -salt -pbkdf2 -k "${{ secrets.ARTIFACT_PASS }}" -in .env.enc -out .env
+          echo "Decryption complete"      
+
+      - name: Override an env variable
+        run: echo "ENVIRONMENT=ci" >> .env
+        
+      - name: Clear previous ETL data
+        run: |
+          rm -rf public/data/*
+          echo "Cleared old ETL data from public/data"        
+          
       - name: ETL data to Neon DB
         run: |
           python -m backend.etl.tsunami_data_handler
           python -m backend.etl.soft_story_properties_data_handler
           python -m backend.etl.liquefaction_data_handler
+
+      - name: Commit & Push Changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add public/data/*.geojson
+          git commit -m "Update datasets (ETL auto-update)" || echo "No changes to commit"
+          git push origin main || echo "No changes to push"          

@@ -1,9 +1,8 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from backend.api.models.soft_story_properties import SoftStoryProperty
 from geojson_pydantic import Feature, FeatureCollection, Point
 from geoalchemy2.shape import to_shape
-from typing import List
-import json
+from typing import List, Optional
 from datetime import datetime
 
 
@@ -17,6 +16,7 @@ class SoftStoryProperties(BaseModel):
 
     identifier: int
     update_timestamp: datetime
+    status: str
 
 
 class SoftStoryFeature(Feature):
@@ -58,6 +58,7 @@ class SoftStoryFeature(Feature):
             properties={
                 "identifier": soft_story.identifier,
                 "update_timestamp": soft_story.update_timestamp,
+                "status": soft_story.status,
             },
         )
 
@@ -73,3 +74,17 @@ class SoftStoryFeatureCollection(FeatureCollection):
 
     type: str = Field(default="FeatureCollection")  # type: ignore
     features: List[SoftStoryFeature]
+
+
+class IsSoftStoryPropertyView(BaseModel):
+    """Pydantic view model for soft story property check endpoint.
+
+    Attributes:
+        exists (bool): Whether the point is in a soft story property
+        last_updated (Optional[datetime]): Timestamp of last update if exists
+    """
+
+    exists: bool
+    last_updated: Optional[datetime]
+
+    model_config = ConfigDict(from_attributes=True)
