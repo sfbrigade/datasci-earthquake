@@ -17,6 +17,7 @@ app.include_router(health_api.router)
 
 origins = [
     "https://www.safehome.report",
+    "https://datasci-earthquake-omega.vercel.app",
     "http://localhost:3000",
 ]
 
