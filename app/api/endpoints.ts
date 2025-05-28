@@ -1,5 +1,20 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const CDN_URL = process.env.NEXT_PUBLIC_CDN_URL;
+const isClient = typeof window !== "undefined";
+
+const getBaseUrl = (type: "api" | "cdn") => {
+  if (isClient) {
+    const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+    if (isLocalhost) {
+      return type === "api" ? "http://localhost:8000/api" : "http://localhost:3000/data";
+    }
+    return `${window.location.protocol}//${window.location.host}/${type}`;
+  }
+  return type === "api"
+    ? process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api"
+    : process.env.NEXT_PUBLIC_CDN_URL || "http://localhost:3000/data";
+};
+
+const API_URL = getBaseUrl("api");
+const CDN_URL = getBaseUrl("cdn");
 
 export const API_ENDPOINTS = {
   softStories: `${API_URL}/soft-stories`,
