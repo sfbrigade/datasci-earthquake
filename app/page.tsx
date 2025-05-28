@@ -10,7 +10,7 @@ import {
 } from "./api/services";
 
 // Force server-side rendering
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 const Home = async () => {
   console.log("VERCEL_URL PAGE:", process.env.VERCEL_URL);
