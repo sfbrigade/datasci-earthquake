@@ -1,6 +1,8 @@
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
 export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
+  console.log('Fetching CDN:', cdnEndpoint);
+  console.log('Fetching API:', apiEndpoint);
   console.log('VERCEL_URL:', process.env.VERCEL_URL);
   try {
     // Try fetching from CDN first
