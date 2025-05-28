@@ -15,9 +15,14 @@ app.include_router(tsunami_api.router)
 app.include_router(soft_story_api.router)
 app.include_router(health_api.router)
 
-origins = [
+"""origins = [
     "https://www.safehome.report",
     "https://datasci-earthquake-omega.vercel.app",
+    "http://localhost"
+]"""
+
+origins = [
+    "http://localhost",
     "http://localhost:3000",
 ]
 

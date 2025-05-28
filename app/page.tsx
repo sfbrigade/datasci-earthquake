@@ -11,6 +11,7 @@ import {
 import { useToast } from "@chakra-ui/react";
 
 const Home = async () => {
+  console.log('VERCEL_URL PAGE:', process.env.VERCEL_URL);
   const headingData = Headings.home;
   let softStoryData: FeatureCollection<Geometry, GeoJsonProperties> = {
     type: "FeatureCollection",
