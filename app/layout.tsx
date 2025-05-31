@@ -1,4 +1,5 @@
 import { Box, Container, Flex } from "@chakra-ui/react";
+import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "./providers";
 import Header from "./components/header";
 import Footer from "./components/footer";
@@ -32,14 +33,10 @@ export default function RootLayout({
         <Providers>
           <Flex direction="column" align="center" minH="100vh">
             <Header />
-            {/* before */}
             <Box flex="1" as="main" width="100%">
               {children}
             </Box>
-            {/* after
-            <Box flex="1" width="100%" asChild>
-              <main>{children}</main>
-            </Box> */}
+            <Toaster />
             <Footer />
           </Flex>
         </Providers>

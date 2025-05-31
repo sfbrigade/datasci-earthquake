@@ -5,7 +5,8 @@ import { useSearchParams } from "next/navigation";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
-import { useToast } from "@chakra-ui/react";
+// import { useToast } from "@chakra-ui/react";
+import { toaster } from "@/components/ui/toaster";
 
 const defaultCoords = [-122.463733, 37.777448];
 
@@ -26,7 +27,7 @@ const Map: React.FC<MapProps> = ({
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>();
   const markerRef = useRef<mapboxgl.Marker>();
-  const toast = useToast();
+  // const toast = useToast();
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
 
@@ -34,8 +35,8 @@ const Map: React.FC<MapProps> = ({
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
-      if (!toast.isActive(toastIdNoToken)) {
-        toast({
+      if (!toaster.isActive(toastIdNoToken)) {
+        toaster.create({
           id: toastIdNoToken,
           description: "Mapbox access token or container is not set!",
           status: "error",
@@ -159,8 +160,8 @@ const Map: React.FC<MapProps> = ({
 
         map.on("error", (e) => {
           if (e.error && e.error.message.includes("access token")) {
-            if (!toast.isActive(toastIdInvalidToken)) {
-              toast({
+            if (!toaster.isActive(toastIdInvalidToken)) {
+              toaster.create({
                 id: toastIdInvalidToken,
                 description: "Invalid Mapbox access token!",
                 status: "error",
@@ -186,7 +187,7 @@ const Map: React.FC<MapProps> = ({
       markerRef.current?.setLngLat(addressLngLat);
       return;
     }
-  }, [coordinates, liquefactionData, softStoryData, tsunamiData, toast]);
+  }, [coordinates, liquefactionData, softStoryData, tsunamiData, toaster]);
 
   return (
     <>

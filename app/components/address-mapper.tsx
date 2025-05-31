@@ -11,8 +11,9 @@ import {
   Image,
   HStack,
   Link,
-  useToast,
+  // useToast,
 } from "@chakra-ui/react";
+import { toaster } from "@/components/ui/toaster";
 import NextLink from "next/link";
 import { HeadingProps } from "./heading";
 import Map from "./map";
@@ -55,7 +56,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const [searchedAddress, setSearchedAddress] = useState("");
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
-  const toast = useToast();
+  // const toast = useToast();
   const toastIdDataLoadFailed = "data-load-failed";
 
   const updateMap = (coords: number[]) => {
@@ -77,8 +78,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       );
 
     if (errors.length > 0) {
-      if (!toast.isActive(toastIdDataLoadFailed)) {
-        toast({
+      if (!toaster.isActive(toastIdDataLoadFailed)) {
+        toaster.create({
           id: "data-load-failed",
           title: "Data Load Error",
           description: errors.join(" | "),
@@ -93,7 +94,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         });
       }
     }
-  }, [softStoryData, tsunamiData, liquefactionData, toast]);
+  }, [softStoryData, tsunamiData, liquefactionData, toaster]);
 
   return (
     <Flex direction="column">

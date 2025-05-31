@@ -9,8 +9,9 @@ import {
   InputLeftElement,
   InputRightElement,
   NumberInput,
-  useToast,
+  // useToast,
 } from "@chakra-ui/react";
+import { toaster } from "@/components/ui/toaster";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
@@ -50,7 +51,7 @@ const SearchBar = ({
   const debug = useSearchParams().get("debug");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const toast = useToast();
+  // const toast = useToast();
   const toastIdFailedHazardData = "failed-hazard-data";
 
   const handleClearClick = () => {
@@ -88,7 +89,7 @@ const SearchBar = ({
         tsunami: null,
         liquefaction: null,
       });
-      toast({
+      toaster.create({
         description: "Could not retrieve hazard data",
         status: "error",
         duration: 5000,
@@ -141,8 +142,8 @@ const SearchBar = ({
       ].filter(({ result }) => result.status === "rejected");
 
       if (failed.length > 0) {
-        if (!toast.isActive(toastIdFailedHazardData)) {
-          toast({
+        if (!toaster.isActive(toastIdFailedHazardData)) {
+          toaster.create({
             id: "failed-hazard-data",
             title: "Hazard data warning",
             description: `Failed to fetch: ${failed
