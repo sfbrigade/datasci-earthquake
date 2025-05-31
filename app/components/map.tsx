@@ -38,7 +38,7 @@ const Map: React.FC<MapProps> = ({
           description: "Mapbox access token or container is not set!",
           status: "error",
           duration: 5000,
-          isClosable: true,
+          closable: true,
           position: "top",
           containerStyle: {
             backgroundColor: "#b53d37",
@@ -163,7 +163,7 @@ const Map: React.FC<MapProps> = ({
                 description: "Invalid Mapbox access token!",
                 status: "error",
                 duration: 5000,
-                isClosable: true,
+                closable: true,
                 position: "top",
                 containerStyle: {
                   backgroundColor: "#b53d37",

@@ -2,6 +2,7 @@ import { Box, Container, Flex } from "@chakra-ui/react";
 import { Providers } from "./providers";
 import Header from "./components/header";
 import Footer from "./components/footer";
+import { defaultSystem } from "@chakra-ui/react"; // TODO: is this necessary?
 
 import { Inter, Manrope } from "next/font/google";
 
@@ -31,9 +32,14 @@ export default function RootLayout({
         <Providers>
           <Flex direction="column" align="center" minH="100vh">
             <Header />
+            {/* before */}
             <Box flex="1" as="main" width="100%">
               {children}
             </Box>
+            {/* after
+            <Box flex="1" width="100%" asChild>
+              <main>{children}</main>
+            </Box> */}
             <Footer />
           </Flex>
         </Providers>

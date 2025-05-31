@@ -81,7 +81,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           description: errors.join(" | "),
           status: "error",
           duration: 5000,
-          isClosable: true,
+          closable: true,
           position: "top",
           containerStyle: { backgroundColor: "#b53d37", borderRadius: "12px" },
         });

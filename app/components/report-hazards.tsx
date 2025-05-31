@@ -1,12 +1,4 @@
-import {
-  Box,
-  Center,
-  Collapse,
-  Stack,
-  Text,
-  Icon,
-  Card,
-} from "@chakra-ui/react";
+import { Box, Center, Stack, Text, Icon, Card } from "@chakra-ui/react";
 import { FaCircle, FaSquareFull } from "react-icons/fa";
 import CardHazard from "./card-hazard";
 import { Hazards } from "../data/data";
@@ -49,7 +41,7 @@ const ReportHazards = ({
             md: "28px",
             xl: "128px",
           }}
-          spacing={{ base: 1, md: 5 }}
+          gap={{ base: 1, md: 5 }}
           direction={{ base: "column", md: "row" }}
           alignItems="center"
         >
