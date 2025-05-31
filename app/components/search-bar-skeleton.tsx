@@ -30,7 +30,6 @@ const SearchBarSkeleton = () => {
           borderRadius="50"
           border="1px solid #4A5568"
           bgColor="white"
-          focusBorderColor="yellow"
           boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
           type="text"
           name="address-1"
@@ -39,6 +38,7 @@ const SearchBarSkeleton = () => {
             borderColor: "yellow",
             _placeholder: { color: "grey.900" },
           }}
+          _focus={{ borderColor: "yellow" }}
           _invalid={{ borderColor: "red" }}
           autoComplete="address-line1"
           disabled={true}

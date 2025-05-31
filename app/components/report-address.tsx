@@ -8,7 +8,7 @@ const ReportAddress: React.FC<ReportAddressProps> = ({ searchedAddress }) => {
   return (
     <Stack
       pt={"24px"}
-      gap={"9px"}
+      // gap={"9px"}
       direction={{ base: "column", md: "row" }}
       alignItems={{ base: "flex-start", md: "center" }}
       gap={{ base: 0, md: 1 }}
