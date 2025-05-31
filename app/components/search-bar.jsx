@@ -9,10 +9,6 @@ import {
   InputLeftElement,
   InputRightElement,
   NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   useToast,
 } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
@@ -209,24 +205,24 @@ const SearchBar = ({
     <form onSubmit={onSubmit}>
       {debug === "true" && (
         <HStack>
-          <NumberInput
+          <NumberInput.Root
             bg="white"
             size="xs"
             width="auto"
             defaultValue={coordinates[0]}
             precision={9}
             step={0.005}
-            onChange={(valueString) =>
+            onValueChange={(valueString) =>
               onSearchChange([parseFloat(valueString), coordinates[1]])
             }
           >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-          <NumberInput
+            <NumberInput.Input />
+            <NumberInput.Control>
+              <NumberInput.IncrementTrigger />
+              <NumberInput.DecrementTrigger />
+            </NumberInput.Control>
+          </NumberInput.Root>
+          <NumberInput.Root
             bg="white"
             size="xs"
             width="auto"
@@ -237,12 +233,12 @@ const SearchBar = ({
               onSearchChange([coordinates[0], parseFloat(valueString)])
             }
           >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
+            <NumberInput.Input />
+            <NumberInput.Control>
+              <NumberInput.IncrementTrigger />
+              <NumberInput.DecrementTrigger />
+            </NumberInput.Control>
+          </NumberInput.Root>
         </HStack>
       )}
       <DynamicAddressAutofill
@@ -276,7 +272,6 @@ const SearchBar = ({
             borderRadius="50"
             border="1px solid #4A5568"
             bgColor="white"
-            focusBorderColor="yellow"
             boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
             type="text"
             name="address-1"

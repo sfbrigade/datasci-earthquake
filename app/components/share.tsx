@@ -52,7 +52,7 @@ const Share = () => {
         description: "Failed to copy link to clipboard.",
         status: "error",
         duration: 3000,
-        isClosable: true,
+        closable: true,
         position: "top",
       });
     }

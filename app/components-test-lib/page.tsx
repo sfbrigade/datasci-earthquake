@@ -1,6 +1,13 @@
 "use client";
 
-import { Box, Heading, VStack, Text, HStack, Divider } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  VStack,
+  Text,
+  HStack,
+  Separator,
+} from "@chakra-ui/react";
 import SearchBar from "../components/search-bar";
 import CardHazard from "../components/card-hazard";
 import { Hazards } from "../data/data";
@@ -34,7 +41,7 @@ const ComponentsTestLib = () => {
         Search Bar
       </Heading>
       <Text mb={6}>This section demonstrates the Search Bar component</Text>
-      <VStack spacing={6} align="start">
+      <VStack gap={6} align="start">
         <HStack w="100%">
           <Box w="400px">
             <SearchBar
@@ -47,29 +54,29 @@ const ComponentsTestLib = () => {
             />
           </Box>
         </HStack>
-        <Divider mb={3} />
+        <Separator mb={3} />
       </VStack>
       <Heading as="h2" size="md" mb={3}>
         Hazards Card
       </Heading>
       <Text mb={6}>This section demonstrates Hazard Card component</Text>
-      <VStack spacing={6} align="start">
+      <VStack gap={6} align="start">
         <HStack w="100%">{/* <CardHazard hazard={Hazards[0]} /> */}</HStack>
-        <Divider mb={3} />
+        <Separator mb={3} />
       </VStack>
       <Text mb={6}>This section demonstrates Info Card component</Text>
-      <VStack spacing={6} align="start">
+      <VStack gap={6} align="start">
         <HStack w="100%">
           <CardInfo info={Info[0]} />
         </HStack>
-        <Divider mb={3} />
+        <Separator mb={3} />
       </VStack>
       <Text mb={6}>This section demonstrates Share menu component</Text>
-      <VStack spacing={6} align="start">
+      <VStack gap={6} align="start">
         <HStack w="100%">
           <Share />
         </HStack>
-        <Divider mb={3} />
+        <Separator mb={3} />
       </VStack>
     </Box>
   );

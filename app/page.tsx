@@ -8,7 +8,6 @@ import {
   fetchTsunami,
   fetchLiquefaction,
 } from "./api/services";
-import { useToast } from "@chakra-ui/react";
 
 const Home = async () => {
   const headingData = Headings.home;

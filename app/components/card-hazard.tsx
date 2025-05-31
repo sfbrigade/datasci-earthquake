@@ -8,7 +8,6 @@ import {
   CardBody,
   Card,
   CardHeader,
-  useDisclosure,
   Spinner,
 } from "@chakra-ui/react";
 import Pill from "./pill";
