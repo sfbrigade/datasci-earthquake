@@ -6,8 +6,6 @@ import {
   HStack,
   Input,
   InputGroup,
-  InputLeftElement,
-  InputRightElement,
   NumberInput,
   // useToast,
 } from "@chakra-ui/react";
@@ -26,6 +24,7 @@ const options = {
   ],
   proximity: { lng: -122.4194, lat: 37.7749 },
   streets: false,
+  
 };
 
 const safeJsonFetch = async (url) => {
@@ -253,13 +252,13 @@ const SearchBar = ({
           mb={"24px"}
           data-testid="search-bar"
         >
-          <InputLeftElement>
+          <Input.LeftElement>
             <IoSearchSharp
               color="grey.900"
               fontSize="1.1em"
               data-testid="search-icon"
             />
-          </InputLeftElement>
+          </Input.LeftElement>
           <Input
             placeholder="Search San Francisco address"
             fontFamily="Inter, sans-serif"
@@ -286,14 +285,14 @@ const SearchBar = ({
             autoComplete="address-line1"
           />
           {inputAddress.length != 0 && (
-            <InputRightElement>
+            <Input.RightElement>
               <RxCross2
                 color="grey.900"
                 fontSize="1.1em"
                 data-testid="clear-icon"
                 onClick={handleClearClick}
               />
-            </InputRightElement>
+            </Input.RightElement>
           )}
         </InputGroup>
       </DynamicAddressAutofill>

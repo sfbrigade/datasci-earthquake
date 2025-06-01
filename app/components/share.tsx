@@ -67,13 +67,13 @@ const Share = () => {
   return (
     <Button
       aria-label="Share report"
-      variant="link"
-      rightIcon={<ShareIcon />}
+      variant="ghost"
+      // TODO: add missing link styling to button
       onClick={copyReportToClipBoard}
       background={"transparent"}
     >
       <Text textStyle="textMedium" color="white">
-        Share report
+        Share report <ShareIcon />
       </Text>
     </Button>
   );

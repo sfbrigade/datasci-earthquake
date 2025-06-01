@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Box,
-  HStack,
-  Link,
-  Text,
-  VStack,
-  Image,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, Link, Text, VStack, Image, Stack } from "@chakra-ui/react";
 import { mockDisclaimers } from "./__mocks__/mock-data";
 import NextLink from "next/link";
 
