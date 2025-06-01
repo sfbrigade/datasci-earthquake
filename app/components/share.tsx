@@ -69,12 +69,13 @@ const Share = () => {
   return (
     <Button
       aria-label="Share report"
+      // TODO: add missing link styling to button b/c `variant="link"` no longer exists
       variant="ghost"
-      // TODO: add missing link styling to button
       onClick={copyReportToClipBoard}
       background={"transparent"}
     >
       <Text textStyle="textMedium" color="white">
+        {/* TODO FIXME: does putting ShareIcon here replace putting in in Button's rightIcon prop? (going from v2 to v3)? */}
         Share report <ShareIcon />
       </Text>
     </Button>

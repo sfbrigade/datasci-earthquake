@@ -1,4 +1,4 @@
-import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import { Input, InputGroup } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
 
 const SearchBarSkeleton = () => {
@@ -6,17 +6,18 @@ const SearchBarSkeleton = () => {
     <form>
       <InputGroup
         w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
-        size={{ base: "md", md: "lg", xl: "lg" }}
+        // TODO FIXME: does boxSize replace size for InputGroup in Chakra v3?
+        boxSize={{ base: "md", md: "lg", xl: "lg" }}
         mb={"24px"}
         data-testid="search-bar"
-      >
-        <InputLeftElement>
+        startElement={
           <IoSearchSharp
             color="grey.900"
             fontSize="1.1em"
             data-testid="search-icon"
           />
-        </InputLeftElement>
+        }
+      >
         <Input
           placeholder="Search San Francisco address"
           fontFamily="Inter, sans-serif"
@@ -33,15 +34,14 @@ const SearchBarSkeleton = () => {
           boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
           type="text"
           name="address-1"
-          value=""
+          value={""}
+          _focus={{ borderColor: "yellow" }}
           _hover={{
             borderColor: "yellow",
             _placeholder: { color: "grey.900" },
           }}
-          _focus={{ borderColor: "yellow" }}
           _invalid={{ borderColor: "red" }}
           autoComplete="address-line1"
-          disabled={true}
         />
       </InputGroup>
     </form>

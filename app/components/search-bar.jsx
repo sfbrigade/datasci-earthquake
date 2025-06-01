@@ -211,14 +211,24 @@ const SearchBar = ({
           size={{ base: "md", md: "lg", xl: "lg" }}
           mb={"24px"}
           data-testid="search-bar"
-        >
-          <Input.LeftElement>
+          startElement={
             <IoSearchSharp
               color="grey.900"
               fontSize="1.1em"
               data-testid="search-icon"
             />
-          </Input.LeftElement>
+          }
+          endElement={
+            inputAddress.length !== 0 && (
+              <RxCross2
+                color="grey.900"
+                fontSize="1.1em"
+                data-testid="clear-icon"
+                onClick={handleClearClick}
+              />
+            )
+          }
+        >
           <Input
             placeholder="Search San Francisco address"
             fontFamily="Inter, sans-serif"
@@ -245,16 +255,6 @@ const SearchBar = ({
             _invalid={{ borderColor: "red" }}
             autoComplete="address-line1"
           />
-          {inputAddress.length != 0 && (
-            <Input.RightElement>
-              <RxCross2
-                color="grey.900"
-                fontSize="1.1em"
-                data-testid="clear-icon"
-                onClick={handleClearClick}
-              />
-            </Input.RightElement>
-          )}
         </InputGroup>
       </DynamicAddressAutofill>
     </form>
