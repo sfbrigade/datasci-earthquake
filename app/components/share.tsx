@@ -62,6 +62,7 @@ const Share = () => {
     <Button
       aria-label="Share report"
       variant="plain"
+      // variant="link" TODO: make this a link again? maybe "plain"? Uncomment if you want a link style button
       onClick={copyReportToClipBoard}
       background={"transparent"}
     >

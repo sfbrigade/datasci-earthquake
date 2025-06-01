@@ -42,7 +42,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
   const buildHazardCardInfo = () => {
     return (
       <VStack gap={5} p={5}>
-        {hazard.info.map((infoItem, index) => (
+        {hazard.info.map((infoItem: string, index: number) => (
           <Text key={index}>{infoItem}</Text>
         ))}
       </VStack>
@@ -50,11 +50,11 @@ const CardHazard: React.FC<CardHazardProps> = ({
   };
 
   return (
-    <Card.Root.Root flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
+    <Card.Root flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
       <Popover.Root
-        placement="bottom"
-        returnFocusOnClose={false}
-        closeOnBlur={true}
+        positioning={{ placement: "bottom" }}
+        closeOnEscape={true}
+        closeOnInteractOutside={true}
         aria-label={`${hazard.title} information`}
       >
         <Popover.Trigger>
@@ -95,7 +95,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
           </Popover.Body>
         </Popover.Content>
       </Popover.Root>
-    </Card.Root.Root>
+    </Card.Root>
   );
 };
 
