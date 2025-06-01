@@ -1,17 +1,13 @@
-import { Box, Center, Stack, Text, Icon, Card } from "@chakra-ui/react";
+"use client";
+
+import { Box, Center, Stack, Text } from "@chakra-ui/react";
 import { FaCircle, FaSquareFull } from "react-icons/fa";
 import CardHazard from "./card-hazard";
 import { Hazards } from "../data/data";
-import { AddressData } from "./__mocks__/address-data";
-import Share from "./share";
 import { CardContainer } from "./card-container";
 import { KeyElem } from "./key-elem";
 
-type HazardData = {
-  softStory?: any;
-  tsunami?: any;
-  liquefaction?: any;
-};
+type HazardData = { softStory?: any; tsunami?: any; liquefaction?: any };
 
 const ReportHazards = ({
   searchedAddress,
@@ -36,11 +32,7 @@ const ReportHazards = ({
       >
         <Stack
           w={{ base: "full", xl: "7xl" }}
-          px={{
-            base: "24px",
-            md: "28px",
-            xl: "128px",
-          }}
+          px={{ base: "24px", md: "28px", xl: "128px" }}
           gap={{ base: 1, md: 5 }}
           direction={{ base: "column", md: "row" }}
           alignItems="center"
