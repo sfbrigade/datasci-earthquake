@@ -1,3 +1,5 @@
+"use client";
+
 import { Stack, Text } from "@chakra-ui/react";
 
 interface ReportAddressProps {

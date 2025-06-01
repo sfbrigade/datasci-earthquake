@@ -1,4 +1,5 @@
-import { Box, Center, Stack, Text, Icon, Card } from "@chakra-ui/react";
+"use client";
+
 import { FaCircle, FaSquareFull } from "react-icons/fa";
 import CardHazard from "./card-hazard";
 import { Hazards } from "../data/data";
