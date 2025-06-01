@@ -1,10 +1,9 @@
 "use client";
 
+import { Box, Center, Stack, Text } from "@chakra-ui/react";
 import { FaCircle, FaSquareFull } from "react-icons/fa";
 import CardHazard from "./card-hazard";
 import { Hazards } from "../data/data";
-import { AddressData } from "./__mocks__/address-data";
-import Share from "./share";
 import { CardContainer } from "./card-container";
 import { KeyElem } from "./key-elem";
 
