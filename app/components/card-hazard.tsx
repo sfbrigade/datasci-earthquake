@@ -1,23 +1,14 @@
 import {
   Text,
   HStack,
-  Button,
   VStack,
   Link,
-  CardFooter,
-  CardBody,
   Card,
-  CardHeader,
   Spinner,
   Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  PopoverArrow,
-  PopoverCloseButton,
+  Button,
 } from "@chakra-ui/react";
 import Pill from "./pill";
-
 interface CardHazardProps {
   hazard: {
     id: number;
@@ -66,16 +57,17 @@ const CardHazard: React.FC<CardHazardProps> = ({
   };
 
   return (
-    <Card flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
-      <Popover
+    <Card.Root flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
+      <Popover.Root
         placement="bottom"
         returnFocusOnClose={false}
         closeOnBlur={true}
         aria-label={`${hazard.title} information`}
       >
-        <PopoverTrigger>
+        <Popover.Trigger>
+          {/* TODO FIXME: is below line correctly styled with `variant="plain"` (Chakra v3) instead of `variant="unstyled"` (Chakra v2)? */}
           <Button
-            variant="unstyled"
+            variant="plain"
             display="flex"
             flexDirection="column"
             alignItems="flex-start"
@@ -84,43 +76,49 @@ const CardHazard: React.FC<CardHazardProps> = ({
             whiteSpace="normal"
             textAlign="start"
           >
-            <CardHeader p={0} marginBottom={"0.5em"}>
+            <Card.Header p={0} marginBottom={"0.5em"}>
               <Text textStyle="cardTitle" fontWeight={"700"}>
                 {title}
               </Text>
-            </CardHeader>
-            <CardBody p={0} mb={"14px"}>
+            </Card.Header>
+            <Card.Body p={0} mb={"14px"}>
               <Text textStyle="textMedium">{description}</Text>
-            </CardBody>
-            <CardFooter p={0} width={"100%"}>
+            </Card.Body>
+            <Card.Footer p={0} width={"100%"}>
               <HStack justifyContent="space-between" width="100%">
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info
                 </Text>
                 {hazardPill}
               </HStack>
-            </CardFooter>
+            </Card.Footer>
           </Button>
-        </PopoverTrigger>
-        <PopoverContent mt={5} width={"348px"}>
-          <PopoverArrow />
-          <PopoverCloseButton />
-          <PopoverBody>
-            {buildHazardCardInfo()}
-            <Link
-              display={"inline-block"}
-              pb={3}
-              pl={5}
-              href={hazard.link.url}
-              target="_blank"
-              textDecoration="underline"
-            >
-              {hazard.link.label}
-            </Link>
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
-    </Card>
+        </Popover.Trigger>
+        <Popover.Positioner>
+          {/* TODO FIXME: can below line be styled with mt={5} width={"348px"} somehow still? how? should it go on `<Popover.Body>`? or elsewhere? */}
+          <Popover.Content>
+            <Popover.Arrow>
+              <Popover.ArrowTip />
+            </Popover.Arrow>
+            {/* TODO FIXME: can below line replace the <PopoverCloseButton />? */}
+            <Popover.CloseTrigger />
+            <Popover.Body>
+              {buildHazardCardInfo()}
+              <Link
+                display={"inline-block"}
+                pb={3}
+                pl={5}
+                href={hazard.link.url}
+                target="_blank"
+                textDecoration="underline"
+              >
+                {hazard.link.label}
+              </Link>
+            </Popover.Body>
+          </Popover.Content>
+        </Popover.Positioner>
+      </Popover.Root>
+    </Card.Root>
   );
 };
 

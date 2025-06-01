@@ -1,4 +1,4 @@
-import { Text, List, ListItem, Link, Box } from "@chakra-ui/react";
+import { Text, List, Link, Box } from "@chakra-ui/react";
 import { BaseCard } from "./base-card";
 
 interface CardInfoProps {
@@ -26,7 +26,7 @@ const CardInfo: React.FC<CardInfoProps> = ({
       <List styleType="disc" ml={6}>
         {list.map((item) => {
           return (
-            <ListItem key={item.id}>
+            <List.Item key={item.id}>
               <Box display="flex" flexDirection="row" flexWrap="wrap">
                 <Text {...textProps} wordBreak="break-word">
                   <Link href={item.url} target="_blank">
@@ -35,7 +35,7 @@ const CardInfo: React.FC<CardInfoProps> = ({
                 </Text>
                 {item.subtitle && <Text ml={1}>- {item.subtitle}</Text>}
               </Box>
-            </ListItem>
+            </List.Item>
           );
         })}
       </List>

@@ -5,8 +5,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import {
   Input,
   InputGroup,
-  InputLeftElement,
-  InputRightElement,
   // useToast,
 } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
@@ -214,13 +212,13 @@ const SearchBar = ({
           mb={"24px"}
           data-testid="search-bar"
         >
-          <InputLeftElement>
+          <Input.LeftElement>
             <IoSearchSharp
               color="grey.900"
               fontSize="1.1em"
               data-testid="search-icon"
             />
-          </InputLeftElement>
+          </Input.LeftElement>
           <Input
             placeholder="Search San Francisco address"
             fontFamily="Inter, sans-serif"
@@ -248,14 +246,14 @@ const SearchBar = ({
             autoComplete="address-line1"
           />
           {inputAddress.length != 0 && (
-            <InputRightElement>
+            <Input.RightElement>
               <RxCross2
                 color="grey.900"
                 fontSize="1.1em"
                 data-testid="clear-icon"
                 onClick={handleClearClick}
               />
-            </InputRightElement>
+            </Input.RightElement>
           )}
         </InputGroup>
       </DynamicAddressAutofill>
