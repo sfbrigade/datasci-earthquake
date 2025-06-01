@@ -12,7 +12,7 @@ export function Providers({
 }) {
   return (
     <ChakraProvider value={system}>
-      <ColorModeProvider {...props} />
+      <ColorModeProvider {...props}>{children}</ColorModeProvider>
     </ChakraProvider>
   );
 }

@@ -97,15 +97,15 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
   return (
     <Flex direction="column">
-      <HomeHeader
+      {/* <HomeHeader
         coordinates={coordinates}
         searchedAddress={searchedAddress}
         onSearchChange={updateMap}
         onAddressSearch={setSearchedAddress}
         onCoordDataRetrieve={setAddressHazardData}
         onHazardDataLoading={setHazardDataLoading}
-      />
-      <Box w="full" h={{ base: "1400px", md: "1000px" }} m="auto">
+      /> */}
+      {/* <Box w="full" h={{ base: "1400px", md: "1000px" }} m="auto">
         <Box h="100%" overflow="hidden" position="relative">
           <Box zIndex={10} top={0} position="absolute">
             <ReportHazards
@@ -121,8 +121,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             liquefactionData={liquefactionData}
           />
         </Box>
-      </Box>
-      <Flex
+      </Box> */}
+      {/* <Flex
         w={{ base: "full", xl: "7xl" }}
         p={{
           base: "24px 24px 24px 24px",
@@ -329,7 +329,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             />
           </Box>
         </HStack>
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 };
