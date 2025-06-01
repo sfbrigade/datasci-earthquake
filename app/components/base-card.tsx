@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, Text } from "@chakra-ui/react";
 import React, { type JSX } from "react";
 

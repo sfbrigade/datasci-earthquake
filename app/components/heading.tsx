@@ -1,3 +1,5 @@
+"use client";
+
 import { Highlight, SystemStyleObject, Text } from "@chakra-ui/react";
 
 export interface HeadingProps {
