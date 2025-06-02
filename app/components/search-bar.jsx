@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
-import DynamicAddressAutofill from "./address-autofill";
+import DynamicAddressAutofill from "@mapbox/search-js-react";
 import { API_ENDPOINTS } from "../api/endpoints";
 
 const options = {
