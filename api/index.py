@@ -16,6 +16,7 @@ app.include_router(soft_story_api.router)
 app.include_router(health_api.router)
 
 origins = [
+    "https://develop.safehome.report",
     "http://localhost",
     "http://localhost:3000",
 ]
