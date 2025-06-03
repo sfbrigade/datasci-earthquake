@@ -1,9 +1,7 @@
-"use client";
-
 import { Button, Heading, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
-const NotFound = () => {
+const NotFound = async () => {
   return (
     <>
       <Heading>404 - Page Not Found</Heading>

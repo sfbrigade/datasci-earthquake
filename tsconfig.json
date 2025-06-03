@@ -31,7 +31,8 @@
     ".next/types/**/*.ts",
     "app/components/search-bar.jsx",
     "app/components/__tests__/autofill.test.js",
-    "app/components/__tests__/search-bar.test.jsx"
+    "app/components/__tests__/search-bar.test.jsx",
+    "app/components/portal-search-bar.jsx"
   ],
   "exclude": ["node_modules"]
 }

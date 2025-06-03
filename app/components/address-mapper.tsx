@@ -15,10 +15,10 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { HeadingProps } from "./heading";
-import Map from "./map";
+import DynamicMap from "./dynamic-map";
 import ReportHazards from "./report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
-import HomeHeader from "./home-header";
+import DynamicHomeHeader from "./dynamic-home-header";
 
 const addressLookupCoordinates = {
   geometry: {
@@ -97,7 +97,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
   return (
     <Flex direction="column">
-      <HomeHeader
+      <DynamicHomeHeader
         coordinates={coordinates}
         searchedAddress={searchedAddress}
         onSearchChange={updateMap}
@@ -114,7 +114,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               isHazardDataLoading={isHazardDataLoading}
             />
           </Box>
-          <Map
+          <DynamicMap
             coordinates={coordinates}
             softStoryData={softStoryData}
             tsunamiData={tsunamiData}
