@@ -10,11 +10,6 @@ from backend.api.routers import (
 ### Create FastAPI instance with custom docs and openapi url
 app = FastAPI(docs_url="/docs", openapi_url="/openapi.json", redirect_slashes=False)
 
-app.include_router(liquefaction_api.router)
-app.include_router(tsunami_api.router)
-app.include_router(soft_story_api.router)
-app.include_router(health_api.router)
-
 origins = [
     "https://develop.safehome.report",
     "http://localhost",
@@ -31,3 +26,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(liquefaction_api.router)
+app.include_router(tsunami_api.router)
+app.include_router(soft_story_api.router)
+app.include_router(health_api.router)
