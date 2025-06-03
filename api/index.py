@@ -21,9 +21,12 @@ origins = [
     "http://localhost:3000",
 ]
 
+origins_regex = r"^(https://datasci-ear-git-.*\.vercel\.app|https://datasci-earthquake-.*\.vercel\.app)$"
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
+    allow_origin_regex=origins_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
