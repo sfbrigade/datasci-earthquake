@@ -111,40 +111,14 @@ const SearchBar = ({
     setInputAddress(event.target.value);
   };
 
+  /**
+   * TODO: capture and update address on submit OR use first autocomplete suggestion; see file://./../snippets.md#geocode-on-search for details.
+   */
   const onSubmit = async (event) => {
+    console.log("onSubmit", event.target.value);
     event.preventDefault();
-    if (!inputAddress.trim()) return;
 
-    try {
-      // Use the first suggestion from the autocomplete
-      const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-          inputAddress
-        )}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}&${new URLSearchParams(
-          options
-        )}`
-      );
-      const data = await response.json();
-
-      if (data.features && data.features.length > 0) {
-        const feature = data.features[0];
-        handleRetrieve({ features: [feature] });
-      }
-    } catch (error) {
-      console.error("Error submitting address:", error);
-      toast({
-        description: "Could not find address",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "top",
-        containerStyle: {
-          backgroundColor: "#b53d37",
-          opacity: 1,
-          borderRadius: "12px",
-        },
-      });
-    }
+    // TODO: capture and update address as described above
   };
 
   // gets metadata from Mapbox API for given coordinates
@@ -211,10 +185,7 @@ const SearchBar = ({
   // TODO: refactor how we are caching our calls
   const memoizedOnSearchChange = useCallback(onSearchChange, []);
   const memoizedOnAddressSearch = useCallback(onAddressSearch, []);
-  const memoizedUpdateHazardData = useCallback(
-    (coords) => updateHazardData(coords),
-    [coordinates] // Add coordinates as a dependency
-  );
+  const memoizedUpdateHazardData = useCallback(updateHazardData, []);
 
   useEffect(() => {
     const address = searchParams.get("address");
