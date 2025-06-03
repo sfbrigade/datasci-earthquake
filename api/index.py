@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from backend.api.routers import (
     liquefaction_api,
@@ -9,6 +9,15 @@ from backend.api.routers import (
 
 ### Create FastAPI instance with custom docs and openapi url
 app = FastAPI(docs_url="/docs", openapi_url="/openapi.json", redirect_slashes=False)
+
+
+@app.middleware("http")
+async def log_origin_header(request: Request, call_next):
+    origin = request.headers.get("origin")
+    print(f"Incoming request from origin: {origin}")
+    response = await call_next(request)
+    return response
+
 
 origins = [
     "https://develop.safehome.report",
