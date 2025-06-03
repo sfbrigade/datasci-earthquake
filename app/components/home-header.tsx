@@ -1,13 +1,13 @@
 "use client";
 
+import ReactDOM from "react-dom";
 import { Box, Stack, Text } from "@chakra-ui/react";
 import SearchBar from "./search-bar";
 import Heading from "./heading";
 import { Headings } from "../data/data";
 import { useState } from "react";
-import ReactDOM from "react-dom";
 import ReportAddress from "./report-address";
-import Share from "./share";
+import DynamicShare from "./dynamic-share";
 
 interface HomeHeaderProps {
   coordinates: number[];
@@ -52,7 +52,7 @@ const HomeHeader = ({
             justifyContent="space-between"
           >
             <ReportAddress searchedAddress={searchedAddress} />
-            <Share />
+            <DynamicShare />
           </Stack>
         )}
         {!isSearchComplete && (

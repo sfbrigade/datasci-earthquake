@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Flex,
   Link,
@@ -15,7 +13,7 @@ import { Headings, DataInfoLinks, TeamMembers } from "../data/data";
 import NextLink from "next/link";
 import Image from "next/image";
 
-const About = () => {
+const About = async () => {
   const headingData = Headings.about;
 
   const buildInfoLinks = () => {
