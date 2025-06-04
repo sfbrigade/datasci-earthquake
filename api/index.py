@@ -30,7 +30,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# app.add_middleware(SentryAsgiMiddleware)
+app.add_middleware(SentryAsgiMiddleware)
 
 app.include_router(liquefaction_api.router)
 app.include_router(tsunami_api.router)
@@ -44,11 +44,11 @@ async def trigger_error():
 
 
 # Global exception handler (ensures flush before serverless exit)
-@app.exception_handler(Exception)
+"""@app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     sentry_sdk.capture_exception(exc)
     sentry_sdk.flush(timeout=2.0)
     return JSONResponse(
         status_code=500,
         content={"detail": "Internal server error"},
-    )
+    )"""
