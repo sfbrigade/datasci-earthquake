@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-import asyncio
 import sentry_sdk
 from fastapi.middleware.cors import CORSMiddleware
 from backend.api.routers import (
@@ -30,30 +29,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+sentry_sdk.init(
+    dsn="https://3f10d5d496e27bbed3d3f2d0c7128e63@o4507340843384832.ingest.us.sentry.io/4509358454669312"
+)
 
-async def main():
-    """
-    Initialize Sentry
-
-    Per instructions at https://docs.sentry.io/platforms/python/
-    """
-    sentry_sdk.init(
-        dsn="https://82c136a8209d345cd67d1d52dca576a7@o4507340843384832.ingest.us.sentry.io/4507858393366528",
-    )
-
-
-async def run_main():
-    await main()
-
-    # Flush Sentry events before closing the event loop
-    await sentry_sdk.flush()
-
-    # Close the event loop
-    loop = asyncio.get_event_loop()
-    loop.stop()
-
-
-# Run the run_main coroutine
-if __name__ == "__main__":
-    asyncio.run(run_main())
-
+@app.get("/sentry-debug")
+async def trigger_error():
+    division_by_zero = 1 / 0
