@@ -51,6 +51,3 @@ app.include_router(health_api.router)
 @app.get("/api/hello")
 async def hello():
     return {"message": "Hello from FastAPI on Vercel!"}
-
-
-handler = app
