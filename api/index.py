@@ -30,7 +30,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.add_middleware(SentryAsgiMiddleware)
+# app.add_middleware(SentryAsgiMiddleware)
 
 app.include_router(liquefaction_api.router)
 app.include_router(tsunami_api.router)
