@@ -33,6 +33,7 @@ sentry_sdk.init(
     dsn="https://3f10d5d496e27bbed3d3f2d0c7128e63@o4507340843384832.ingest.us.sentry.io/4509358454669312"
 )
 
-@app.get("/sentry-debug")
+
+@app.get("/api/sentry-debug")
 async def trigger_error():
     division_by_zero = 1 / 0
