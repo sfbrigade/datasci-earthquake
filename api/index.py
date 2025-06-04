@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 import sentry_sdk
 from fastapi.middleware.cors import CORSMiddleware
 from backend.api.routers import (
@@ -33,6 +34,18 @@ sentry_sdk.init(
     dsn="https://3f10d5d496e27bbed3d3f2d0c7128e63@o4507340843384832.ingest.us.sentry.io/4509358454669312"
 )
 
-@app.get("/sentry-debug")
+
+@app.get("/api/sentry-debug")
 async def trigger_error():
-    division_by_zero = 1 / 0
+    1 / 0
+
+
+# Global exception handler (ensures flush before serverless exit)
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    sentry_sdk.capture_exception(exc)
+    sentry_sdk.flush(timeout=2.0)
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal server error"},
+    )
