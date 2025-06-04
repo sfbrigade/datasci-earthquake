@@ -21,8 +21,7 @@ origins_regex = r"^(https://datasci-ear-git-.*\.vercel\.app|https://datasci-eart
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_origin_regex=False,
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
