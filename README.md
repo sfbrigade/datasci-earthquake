@@ -228,10 +228,17 @@ The former command generates a migration script in `backend/alembic/versions`, a
 
 ---
 
-# Pull Requests
+# Git Workflow
+
+## General
+
+Developers should only branch from `develop`, pull updates to `develop`, and ensure their work is merged into `develop` via Pull Requests. `main` is the safe production branch.
+
+## Pull Requests
 
 When opening a pull request, please:
 
+- aim the pull request at the `develop` branch rather than `main`
 - add reviewers
 - use draft/WIP if it turns out to be not ready for review
 
