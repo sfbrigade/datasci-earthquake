@@ -232,7 +232,7 @@ The former command generates a migration script in `backend/alembic/versions`, a
 
 ## General
 
-Developers should only branch from, pull from, and push to `develop` because `main` is the safe production branch.
+Developers should only branch from `develop`, pull updates to `develop`, and ensure their work is merged into `develop` via Pull Requests. `main` is the safe production branch.
 
 ## Pull Requests
 
