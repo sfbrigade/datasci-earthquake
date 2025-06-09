@@ -10,4 +10,5 @@ pydantic-settings==2.5.2
 pydantic_core==2.23.2
 GeoAlchemy2==0.15.2
 psycopg2-binary==2.9.9
+sentry-sdk==2.29.1
 shapely==2.0.6
