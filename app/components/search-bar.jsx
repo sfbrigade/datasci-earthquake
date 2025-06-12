@@ -211,26 +211,26 @@ const SearchBar = ({
     router.push(newUrl, { scroll: false });
   };
 
-  useEffect(() => {
-    const address = searchParams.get("address");
-    const lat = searchParams.get("lat");
-    const lon = searchParams.get("lon");
+  // useEffect(() => {
+  //   const address = searchParams.get("address");
+  //   const lat = searchParams.get("lat");
+  //   const lon = searchParams.get("lon");
 
-    console.log("running useEffect for:", searchParams);
+  //   console.log("running useEffect for:", searchParams);
 
-    if (address && lat && lon) {
-      const coords = [parseFloat(lon), parseFloat(lat)];
-      memoizedOnAddressSearch(address);
-      // FIXME: commenting out the lines below seems to prevent the infinite loop; further debugging reveals that two functions keep changing (determined via the individual `useEffect` debugging hooks further below), which repeatedly triggers the useEffect
-      // memoizedOnSearchChange(coords);
-      // updateHazardData(coords);
-    }
-  }, [
-    searchParams,
-    memoizedOnAddressSearch,
-    memoizedOnSearchChange,
-    updateHazardData,
-  ]);
+  //   if (address && lat && lon) {
+  //     const coords = [parseFloat(lon), parseFloat(lat)];
+  //     memoizedOnAddressSearch(address);
+  //     // FIXME: commenting out the lines below seems to prevent the infinite loop; further debugging reveals that two functions keep changing (determined via the individual `useEffect` debugging hooks further below), which repeatedly triggers the useEffect
+  //     // memoizedOnSearchChange(coords);
+  //     // updateHazardData(coords);
+  //   }
+  // }, [
+  //   searchParams,
+  //   memoizedOnAddressSearch,
+  //   memoizedOnSearchChange,
+  //   updateHazardData,
+  // ]);
 
   // NOTE: these are individual `useEffect` hooks for debugging purposes (to see when each variable changes); they're meant to debug the larger `useEffect` above
   useEffect(() => {

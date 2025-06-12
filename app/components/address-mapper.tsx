@@ -19,6 +19,7 @@ import DynamicMap from "./dynamic-map";
 import ReportHazards from "./report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import DynamicHomeHeader from "./dynamic-home-header";
+import { useSearchParams } from "next/navigation";
 
 const addressLookupCoordinates = {
   geometry: {
@@ -57,6 +58,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
   const toast = useToast();
   const toastIdDataLoadFailed = "data-load-failed";
+  const searchParams = useSearchParams();
 
   const updateMap = (coords: number[]) => {
     setCoordinates(coords);
@@ -94,6 +96,20 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       }
     }
   }, [softStoryData, tsunamiData, liquefactionData, toast]);
+
+  useEffect(() => {
+    const address = searchParams.get("address");
+    const lat = searchParams.get("lat");
+    const lon = searchParams.get("lon");
+
+    console.log("running useEffect for:", searchParams);
+
+    if (address && lat && lon) {
+      const coords = [parseFloat(lon), parseFloat(lat)];
+      setSearchedAddress(address);
+      setCoordinates(coords);
+    }
+  }, [searchParams]);
 
   return (
     <Flex direction="column">
