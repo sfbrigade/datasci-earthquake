@@ -19,7 +19,7 @@ import DynamicMap from "./dynamic-map";
 import ReportHazards from "./report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import DynamicHomeHeader from "./dynamic-home-header";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 
 const addressLookupCoordinates = {
   geometry: {
@@ -34,6 +34,7 @@ interface AddressMapperProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
 type ErrorResult = { error: true; message: string };
@@ -51,14 +52,25 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   softStoryData,
   tsunamiData,
   liquefactionData,
+  searchParams,
 }) => {
-  const [coordinates, setCoordinates] = useState(defaultCoords);
-  const [searchedAddress, setSearchedAddress] = useState("");
+  const addressParam = searchParams?.address;
+  const latParam = searchParams?.lat;
+  const lonParam = searchParams?.lon;
+  const address = Array.isArray(addressParam) ? addressParam[0] : addressParam;
+  const lat = Array.isArray(latParam) ? latParam[0] : latParam;
+  const lon = Array.isArray(lonParam) ? lonParam[0] : lonParam;
+
+  const coordsFromParams =
+    lat && lon ? [Number(lat), Number(lon)] : defaultCoords;
+  const addressFromParams = address ? address : "";
+  const [coordinates, setCoordinates] = useState(coordsFromParams);
+  const [searchedAddress, setSearchedAddress] = useState(addressFromParams);
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
   const toast = useToast();
   const toastIdDataLoadFailed = "data-load-failed";
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
 
   const updateMap = (coords: number[]) => {
     setCoordinates(coords);
@@ -97,19 +109,19 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     }
   }, [softStoryData, tsunamiData, liquefactionData, toast]);
 
-  useEffect(() => {
-    const address = searchParams.get("address");
-    const lat = searchParams.get("lat");
-    const lon = searchParams.get("lon");
+  // useEffect(() => {
+  //   const address = searchParams.get("address");
+  //   const lat = searchParams.get("lat");
+  //   const lon = searchParams.get("lon");
 
-    console.log("running useEffect for:", searchParams);
+  //   console.log("running useEffect for:", searchParams);
 
-    if (address && lat && lon) {
-      const coords = [parseFloat(lon), parseFloat(lat)];
-      setSearchedAddress(address);
-      setCoordinates(coords);
-    }
-  }, [searchParams]);
+  //   if (address && lat && lon) {
+  //     const coords = [parseFloat(lon), parseFloat(lat)];
+  //     setSearchedAddress(address);
+  //     setCoordinates(coords);
+  //   }
+  // }, [searchParams]);
 
   return (
     <Flex direction="column">

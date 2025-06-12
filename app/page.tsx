@@ -8,9 +8,12 @@ import {
   fetchTsunami,
   fetchLiquefaction,
 } from "./api/services";
-import { useToast } from "@chakra-ui/react";
 
-const Home = async () => {
+const Home = async ({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) => {
   const headingData = Headings.home;
   let softStoryData: FeatureCollection<Geometry, GeoJsonProperties> = {
     type: "FeatureCollection",
@@ -40,6 +43,7 @@ const Home = async () => {
       softStoryData={softStoryData}
       tsunamiData={tsunamiData}
       liquefactionData={liquefactionData}
+      searchParams={searchParams}
     />
   );
 };
