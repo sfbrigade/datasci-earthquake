@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   HStack,
@@ -54,6 +54,10 @@ const SearchBar = ({
   const debug = useSearchParams().get("debug");
   const router = useRouter();
   const searchParams = useSearchParams();
+  // const address = useMemo(() => searchParams.get("address"), [searchParams]);
+  // const lat = useMemo(() => searchParams.get("lat"), [searchParams]);
+  // const lon = useMemo(() => searchParams.get("lon"), [searchParams]);
+
   const toast = useToast();
   const toastIdFailedHazardData = "failed-hazard-data";
 
@@ -62,50 +66,116 @@ const SearchBar = ({
     router.push("/", { scroll: false });
   };
 
-  // extract feature data (address, coordinates) from response and:
-  // - update full address
-  // - retrieve additional data about coordinates from our API
-  // - retrieve associated coordinates from our API
-  //
-  // fired when the user has selected suggestion, before the form is autofilled (from https://docs.mapbox.com/mapbox-search-js/api/react/autofill/)
-  const handleRetrieve = (event) => {
-    const addressData = event.features[0];
-    const addressLine = event.features[0].properties.feature_name;
-    const coords = addressData.geometry.coordinates;
+  // gets metadata from Mapbox API for given coordinates
+  // NOTE: `useCallback()` is temporary (?) memoization fix for updating the address in the search bar.
+  // TODO: refactor how we are caching our calls
+  const getHazardData = useCallback(
+    async (coords = coordinates) => {
+      onHazardDataLoading(true);
+      const buildUrl = (endpoint) =>
+        `${endpoint}?lon=${coords[0]}&lat=${coords[1]}`;
 
-    onAddressSearch(addressLine);
-    onSearchChange(coords);
-    updateHazardData(coords);
+      try {
+        // const [softStory, tsunamiZone, liquefactionZone] =
+        //   await Promise.allSettled([
+        //     safeJsonFetch(buildUrl(API_ENDPOINTS.isSoftStory)),
+        //     safeJsonFetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)),
+        //     safeJsonFetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)),
+        //   ]);
 
-    const newUrl = `?address=${encodeURIComponent(addressLine)}&lat=${coords[1]}&lon=${coords[0]}`;
-    router.push(newUrl, { scroll: false });
-  };
+        onHazardDataLoading(false);
+        onSearchComplete(true);
 
-  const updateHazardData = async (coords) => {
-    try {
-      const values = await memoizedGetHazardData(coords);
-      onCoordDataRetrieve(values);
-    } catch (error) {
-      // console.error("Error while retrieving data: ", error?.message || error);
-      // onCoordDataRetrieve({
-      //   softStory: null,
-      //   tsunami: null,
-      //   liquefaction: null,
-      // });
-      // toast({
-      //   description: "Could not retrieve hazard data",
-      //   status: "error",
-      //   duration: 5000,
-      //   isClosable: true,
-      //   position: "top",
-      //   containerStyle: {
-      //     backgroundColor: "#b53d37",
-      //     opacity: 1,
-      //     borderRadius: "12px",
-      //   },
-      // });
-    }
-  };
+        const failed = [
+          { name: "Soft Story", result: softStory },
+          { name: "Tsunami", result: tsunamiZone },
+          { name: "Liquefaction", result: liquefactionZone },
+        ].filter(({ result }) => result.status === "rejected");
+
+        if (failed.length > 0) {
+          if (!toast.isActive(toastIdFailedHazardData)) {
+            toast({
+              id: "failed-hazard-data",
+              title: "Hazard data warning",
+              description: `Failed to fetch: ${failed
+                .map((f) => f.name)
+                .join(", ")}`,
+              status: "warning",
+              duration: 5000,
+              isClosable: true,
+              position: "top",
+              containerStyle: {
+                backgroundColor: "#b53d37",
+                opacity: 1,
+                borderRadius: "12px",
+              },
+            });
+          }
+        }
+
+        return {
+          softStory: softStory.status === "fulfilled" ? softStory.value : null,
+          tsunami:
+            tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
+          liquefaction:
+            liquefactionZone.status === "fulfilled"
+              ? liquefactionZone.value
+              : null,
+        };
+      } catch (error) {
+        console.error("Error fetching hazard data:", error);
+        throw error;
+      } finally {
+        onHazardDataLoading(false);
+      }
+    },
+    [coordinates, onHazardDataLoading, onSearchComplete, toast]
+  );
+
+  // NOTE: `useCallback()` is temporary (?) memoization fix for updating the address in the search bar.
+  // TODO: refactor how we are caching our calls
+  const updateHazardData = useCallback(
+    async (coords) => {
+      try {
+        const values = await getHazardData(coords);
+        onCoordDataRetrieve(values);
+      } catch (error) {
+        console.error("Error while retrieving data: ", error?.message || error);
+        onCoordDataRetrieve({
+          softStory: null,
+          tsunami: null,
+          liquefaction: null,
+        });
+        toast({
+          description: "Could not retrieve hazard data",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+          containerStyle: {
+            backgroundColor: "#b53d37",
+            opacity: 1,
+            borderRadius: "12px",
+          },
+        });
+      }
+    },
+    [getHazardData, onCoordDataRetrieve, toast]
+  );
+
+  const memoizedOnAddressSearch = useCallback(
+    (address) => {
+      onAddressSearch(address);
+    },
+    [onAddressSearch]
+  );
+
+  const memoizedOnSearchChange = useCallback(
+    (coords) => {
+      onSearchChange(coords);
+    },
+    [onSearchChange]
+  );
 
   const handleAddressChange = (event) => {
     setInputAddress(event.target.value);
@@ -121,103 +191,62 @@ const SearchBar = ({
     // TODO: capture and update address as described above
   };
 
-  // gets metadata from Mapbox API for given coordinates
-  const getHazardData = async (coords = coordinates) => {
-    onHazardDataLoading(true);
-    const buildUrl = (endpoint) =>
-      `${endpoint}?lon=${coords[0]}&lat=${coords[1]}`;
+  // extract feature data (address, coordinates) from response and:
+  // - update full address
+  // - retrieve additional data about coordinates from our API
+  // - retrieve associated coordinates from our API
+  //
+  // fired when the user has selected suggestion, before the form is autofilled (from https://docs.mapbox.com/mapbox-search-js/api/react/autofill/)
+  const handleRetrieve = (event) => {
+    console.log("retrieve");
+    const addressData = event.features[0];
+    const addressLine = event.features[0].properties.feature_name;
+    const coords = addressData.geometry.coordinates;
 
-    try {
-      // const [softStory, tsunamiZone, liquefactionZone] =
-      //   await Promise.allSettled([
-      //     safeJsonFetch(buildUrl(API_ENDPOINTS.isSoftStory)),
-      //     safeJsonFetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)),
-      //     safeJsonFetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)),
-      //   ]);
-      console.log("fake fetch");
+    memoizedOnAddressSearch(addressLine);
+    memoizedOnSearchChange(coords);
+    updateHazardData(coords);
 
-      onHazardDataLoading(false);
-      onSearchComplete(true);
-
-      const failed = [
-        { name: "Soft Story", result: softStory },
-        { name: "Tsunami", result: tsunamiZone },
-        { name: "Liquefaction", result: liquefactionZone },
-      ].filter(({ result }) => result.status === "rejected");
-
-      if (failed.length > 0) {
-        if (!toast.isActive(toastIdFailedHazardData)) {
-          toast({
-            id: "failed-hazard-data",
-            title: "Hazard data warning",
-            description: `Failed to fetch: ${failed
-              .map((f) => f.name)
-              .join(", ")}`,
-            status: "warning",
-            duration: 5000,
-            isClosable: true,
-            position: "top",
-            containerStyle: {
-              backgroundColor: "#b53d37",
-              opacity: 1,
-              borderRadius: "12px",
-            },
-          });
-        }
-      }
-
-      return {
-        softStory: softStory.status === "fulfilled" ? softStory.value : null,
-        tsunami: tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
-        liquefaction:
-          liquefactionZone.status === "fulfilled"
-            ? liquefactionZone.value
-            : null,
-      };
-    } catch (error) {
-      console.error("Error fetching hazard data:", error);
-      throw error;
-    } finally {
-      onHazardDataLoading(false);
-    }
+    const newUrl = `?address=${encodeURIComponent(addressLine)}&lat=${coords[1]}&lon=${coords[0]}`;
+    router.push(newUrl, { scroll: false });
   };
-
-  // temporary memoization fix for updating the address in the search bar.
-  // TODO: refactor how we are caching our calls
-  const memoizedOnSearchChange = useCallback(onSearchChange, [onSearchChange]);
-  const memoizedOnAddressSearch = useCallback(onAddressSearch, [
-    onAddressSearch,
-  ]);
-  const memoizedGetHazardData = useCallback(getHazardData, [
-    coordinates,
-    onHazardDataLoading,
-    onSearchComplete,
-    toast,
-    getHazardData,
-  ]);
-  const memoizedUpdateHazardData = useCallback(updateHazardData, [
-    memoizedGetHazardData,
-    onCoordDataRetrieve,
-    updateHazardData,
-  ]);
 
   useEffect(() => {
     const address = searchParams.get("address");
     const lat = searchParams.get("lat");
     const lon = searchParams.get("lon");
 
+    console.log("running useEffect for:", searchParams);
+
     if (address && lat && lon) {
       const coords = [parseFloat(lon), parseFloat(lat)];
       memoizedOnAddressSearch(address);
-      memoizedOnSearchChange(coords);
-      memoizedUpdateHazardData(coords);
+      // FIXME: commenting out the lines below seems to prevent the infinite loop; further debugging reveals that two functions keep changing (determined via the individual `useEffect` debugging hooks further below), which repeatedly triggers the useEffect
+      // memoizedOnSearchChange(coords);
+      // updateHazardData(coords);
     }
   }, [
     searchParams,
     memoizedOnAddressSearch,
     memoizedOnSearchChange,
-    memoizedUpdateHazardData,
+    updateHazardData,
   ]);
+
+  // NOTE: these are individual `useEffect` hooks for debugging purposes (to see when each variable changes); they're meant to debug the larger `useEffect` above
+  useEffect(() => {
+    console.log("searchParams changed");
+  }, [searchParams]);
+  useEffect(() => {
+    console.log("memoizedOnAddressSearch changed");
+  }, [memoizedOnAddressSearch]);
+
+  // FIXME: the two functions referenced below keep changing, which causes the infinite loop (read the other FIXME above for more context); this may be due to the fact that they are being recreated on each render
+  useEffect(() => {
+    console.log("updateHazardData changed");
+  }, [updateHazardData]);
+  useEffect(() => {
+    console.log("memoizedOnSearchChange changed");
+  }, [memoizedOnSearchChange]);
 
   return (
     <form onSubmit={onSubmit}>
