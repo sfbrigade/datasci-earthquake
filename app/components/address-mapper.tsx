@@ -21,10 +21,7 @@ import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 
 const addressLookupCoordinates = {
-  geometry: {
-    type: "Point",
-    coordinates: [-122.408020683, 37.801698301],
-  },
+  geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
 };
 const defaultCoords = addressLookupCoordinates.geometry.coordinates ?? [];
 
@@ -86,10 +83,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           duration: 5000,
           isClosable: true,
           position: "top",
-          containerStyle: {
-            backgroundColor: "#b53d37",
-            borderRadius: "12px",
-          },
+          containerStyle: { backgroundColor: "#b53d37", borderRadius: "12px" },
         });
       }
     }
