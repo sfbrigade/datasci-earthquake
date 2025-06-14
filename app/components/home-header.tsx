@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { Suspense, useState } from "react";
 import ReactDOM from "react-dom";
 import { Headings } from "../data/data";
 import { Box, Stack, Text } from "@chakra-ui/react";
