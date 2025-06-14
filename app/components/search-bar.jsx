@@ -2,19 +2,7 @@
 
 import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import {
-  HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  useToast,
-} from "@chakra-ui/react";
+import { HStack, Input, InputGroup, NumberInput } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import AddressAutofill from "./address-autofill";
@@ -54,7 +42,6 @@ const SearchBar = ({
   const debug = useSearchParams().get("debug");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const toast = useToast();
   const toastIdFailedHazardData = "failed-hazard-data";
 
   const handleClearClick = () => {
@@ -92,18 +79,18 @@ const SearchBar = ({
         tsunami: null,
         liquefaction: null,
       });
-      toast({
-        description: "Could not retrieve hazard data",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "top",
-        containerStyle: {
-          backgroundColor: "#b53d37",
-          opacity: 1,
-          borderRadius: "12px",
-        },
-      });
+      // toast({
+      //   description: "Could not retrieve hazard data",
+      //   status: "error",
+      //   duration: 5000,
+      //   isClosable: true,
+      //   position: "top",
+      //   containerStyle: {
+      //     backgroundColor: "#b53d37",
+      //     opacity: 1,
+      //     borderRadius: "12px",
+      //   },
+      // });
     }
   };
 
@@ -145,24 +132,24 @@ const SearchBar = ({
       ].filter(({ result }) => result.status === "rejected");
 
       if (failed.length > 0) {
-        if (!toast.isActive(toastIdFailedHazardData)) {
-          toast({
-            id: "failed-hazard-data",
-            title: "Hazard data warning",
-            description: `Failed to fetch: ${failed
-              .map((f) => f.name)
-              .join(", ")}`,
-            status: "warning",
-            duration: 5000,
-            isClosable: true,
-            position: "top",
-            containerStyle: {
-              backgroundColor: "#b53d37",
-              opacity: 1,
-              borderRadius: "12px",
-            },
-          });
-        }
+        // if (!toast.isActive(toastIdFailedHazardData)) {
+        //   toast({
+        //     id: "failed-hazard-data",
+        //     title: "Hazard data warning",
+        //     description: `Failed to fetch: ${failed
+        //       .map((f) => f.name)
+        //       .join(", ")}`,
+        //     status: "warning",
+        //     duration: 5000,
+        //     isClosable: true,
+        //     position: "top",
+        //     containerStyle: {
+        //       backgroundColor: "#b53d37",
+        //       opacity: 1,
+        //       borderRadius: "12px",
+        //     },
+        //   });
+        // }
       }
 
       return {
@@ -210,24 +197,24 @@ const SearchBar = ({
     <form onSubmit={onSubmit}>
       {debug === "true" && (
         <HStack>
-          <NumberInput
+          <NumberInput.Root
             bg="white"
             size="xs"
             width="auto"
             defaultValue={coordinates[0]}
             precision={9}
             step={0.005}
-            onChange={(valueString) =>
+            onValueChange={(valueString) =>
               onSearchChange([parseFloat(valueString), coordinates[1]])
             }
           >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-          <NumberInput
+            <NumberInput.Input />
+            <NumberInput.Control>
+              <NumberInput.IncrementTrigger />
+              <NumberInput.DecrementTrigger />
+            </NumberInput.Control>
+          </NumberInput.Root>
+          <NumberInput.Root
             bg="white"
             size="xs"
             width="auto"
@@ -238,12 +225,12 @@ const SearchBar = ({
               onSearchChange([coordinates[0], parseFloat(valueString)])
             }
           >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
+            <NumberInput.Input />
+            <NumberInput.Control>
+              <NumberInput.IncrementTrigger />
+              <NumberInput.DecrementTrigger />
+            </NumberInput.Control>
+          </NumberInput.Root>
         </HStack>
       )}
       <Suspense>
@@ -257,14 +244,24 @@ const SearchBar = ({
             size={{ base: "md", md: "lg", xl: "lg" }}
             mb={"24px"}
             data-testid="search-bar"
-          >
-            <InputLeftElement>
+            startElement={
               <IoSearchSharp
                 color="grey.900"
                 fontSize="1.1em"
                 data-testid="search-icon"
               />
-            </InputLeftElement>
+            }
+            endElement={
+              inputAddress.length != 0 && (
+                <RxCross2
+                  color="grey.900"
+                  fontSize="1.1em"
+                  data-testid="clear-icon"
+                  onClick={handleClearClick}
+                />
+              )
+            }
+          >
             <Input
               placeholder="Search San Francisco address"
               fontFamily="Inter, sans-serif"
@@ -278,7 +275,6 @@ const SearchBar = ({
               borderRadius="50"
               border="1px solid #4A5568"
               bgColor="white"
-              focusBorderColor="yellow"
               boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
               type="text"
               name="address-1"
@@ -291,16 +287,6 @@ const SearchBar = ({
               _invalid={{ borderColor: "red" }}
               autoComplete="address-line1"
             />
-            {inputAddress.length != 0 && (
-              <InputRightElement>
-                <RxCross2
-                  color="grey.900"
-                  fontSize="1.1em"
-                  data-testid="clear-icon"
-                  onClick={handleClearClick}
-                />
-              </InputRightElement>
-            )}
           </InputGroup>
         </AddressAutofill>
       </Suspense>

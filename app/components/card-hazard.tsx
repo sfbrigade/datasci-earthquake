@@ -1,25 +1,6 @@
-import {
-  Text,
-  HStack,
-  Button,
-  VStack,
-  Link,
-  CardFooter,
-  CardBody,
-  Card,
-  CardHeader,
-  useDisclosure,
-  Spinner,
-} from "@chakra-ui/react";
+import { Text, HStack, VStack, Link, Card, Spinner } from "@chakra-ui/react";
 import Pill from "./pill";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  PopoverArrow,
-  PopoverCloseButton,
-} from "@chakra-ui/react";
+import { Popover, PopoverCloseTrigger } from "@chakra-ui/react";
 
 interface CardHazardProps {
   hazard: {
@@ -69,37 +50,37 @@ const CardHazard: React.FC<CardHazardProps> = ({
   };
 
   return (
-    <Card flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
-      <Popover
+    <Card.Root.Root flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
+      <Popover.Root
         placement="bottom"
         returnFocusOnClose={false}
         closeOnBlur={true}
         aria-label={`${hazard.title} information`}
       >
-        <PopoverTrigger>
+        <Popover.Trigger>
           <VStack cursor={"pointer"} alignItems={"flex-start"} h={"100%"}>
-            <CardHeader p={0}>
+            <Card.Header p={0}>
               <Text textStyle="cardTitle" fontWeight={"700"}>
                 {title}
               </Text>
-            </CardHeader>
-            <CardBody p={0} mb={"14px"}>
+            </Card.Header>
+            <Card.Body p={0} mb={"14px"}>
               <Text textStyle="textMedium">{description}</Text>
-            </CardBody>
-            <CardFooter p={0} width={"100%"}>
+            </Card.Body>
+            <Card.Footer p={0} width={"100%"}>
               <HStack justifyContent="space-between" width="100%">
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info
                 </Text>
                 {hazardPill}
               </HStack>
-            </CardFooter>
+            </Card.Footer>
           </VStack>
-        </PopoverTrigger>
-        <PopoverContent mt={5} width={"348px"}>
-          <PopoverArrow />
-          <PopoverCloseButton />
-          <PopoverBody>
+        </Popover.Trigger>
+        <Popover.Content mt={5} width={"348px"}>
+          <Popover.Arrow />
+          <PopoverCloseTrigger />
+          <Popover.Body>
             {buildHazardCardInfo()}
             <Link
               display={"inline-block"}
@@ -111,10 +92,10 @@ const CardHazard: React.FC<CardHazardProps> = ({
             >
               {hazard.link.label}
             </Link>
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
-    </Card>
+          </Popover.Body>
+        </Popover.Content>
+      </Popover.Root>
+    </Card.Root.Root>
   );
 };
 

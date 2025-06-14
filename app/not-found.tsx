@@ -7,9 +7,7 @@ const NotFound = async () => {
       <Heading>404 - Page Not Found</Heading>
       <Text>Sorry, but the page you are looking for does not exist.</Text>
       <Link href="/">
-        <Button size="sm" colorScheme="teal">
-          Go Back to Home
-        </Button>
+        <Button size="sm">Go Back to Home</Button>
       </Link>
     </>
   );

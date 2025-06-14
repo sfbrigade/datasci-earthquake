@@ -1,13 +1,4 @@
-import {
-  Flex,
-  Link,
-  Text,
-  Box,
-  VStack,
-  HStack,
-  UnorderedList,
-  ListItem,
-} from "@chakra-ui/react";
+import { Flex, Link, Text, Box, VStack, List } from "@chakra-ui/react";
 import Heading from "../components/heading";
 import { Headings, DataInfoLinks, TeamMembers } from "../data/data";
 import NextLink from "next/link";
@@ -19,9 +10,9 @@ const About = async () => {
   const buildInfoLinks = () => {
     return DataInfoLinks.map((dataInfolink) => {
       return (
-        <ListItem key={dataInfolink.id}>
+        <List.Item key={dataInfolink.id}>
           {buildLink(dataInfolink.url, dataInfolink.label)}
-        </ListItem>
+        </List.Item>
       );
     });
   };
@@ -37,7 +28,7 @@ const About = async () => {
   const buildTeamMembers = () => {
     return TeamMembers.map((teamMember) => {
       return (
-        <ListItem key={teamMember.id} mb="4px">
+        <List.Item key={teamMember.id} mb="4px">
           <Text>
             <Text as="span" fontWeight={800}>
               {teamMember.name}
@@ -45,7 +36,7 @@ const About = async () => {
             </Text>
             {teamMember.role}
           </Text>
-        </ListItem>
+        </List.Item>
       );
     });
   };
@@ -103,7 +94,7 @@ const About = async () => {
           <Text textStyle="textMedium">
             For more information on the data, please visit:
           </Text>
-          <UnorderedList>{buildInfoLinks()}</UnorderedList>
+          <List.Root>{buildInfoLinks()}</List.Root>
           <Text textStyle="textMedium">
             For details on the City of San Francisco’s seismic compliance
             requirements, see{" "}
@@ -123,9 +114,9 @@ const About = async () => {
             building tools to help communities access important services and
             solve local challenges. 
           </Text>
-          <UnorderedList listStyleType="none" mb="40px">
+          <List.Root listStyleType="none" mb="40px">
             {buildTeamMembers()}
-          </UnorderedList>
+          </List.Root>
           <Text>
             <Text as="span" fontWeight={800}>
               Interested in joining SF Civic Tech?

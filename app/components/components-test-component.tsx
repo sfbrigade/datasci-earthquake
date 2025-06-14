@@ -1,13 +1,20 @@
 "use client";
 
-import { Box, Heading, VStack, Text, HStack, Divider } from "@chakra-ui/react";
 import { Suspense } from "react";
-import SearchBar from "../components/search-bar";
-import CardHazard from "../components/card-hazard";
+import {
+  Box,
+  Heading,
+  VStack,
+  Text,
+  HStack,
+  Separator,
+} from "@chakra-ui/react";
+import SearchBar from "./search-bar";
+import CardHazard from "./card-hazard";
 import { Hazards } from "../data/data";
 import { Info } from "../data/data";
-import CardInfo from "../components/card-info";
-import Share from "../components/share";
+import CardInfo from "./card-info";
+import Share from "./share";
 
 const ComponentsTestComponent = ({}) => {
   return (
@@ -35,7 +42,7 @@ const ComponentsTestComponent = ({}) => {
         Search Bar
       </Heading>
       <Text mb={6}>This section demonstrates the Search Bar component</Text>
-      <VStack spacing={6} align="start">
+      <VStack gap={6} align="start">
         <HStack w="100%">
           <Box w="400px">
             <Suspense>
@@ -50,13 +57,13 @@ const ComponentsTestComponent = ({}) => {
             </Suspense>
           </Box>
         </HStack>
-        <Divider mb={3} />
+        <Separator mb={3} />
       </VStack>
       <Heading as="h2" size="md" mb={3}>
         Hazards Card
       </Heading>
       <Text mb={6}>This section demonstrates Hazard Card component</Text>
-      <VStack spacing={6} align="start">
+      <VStack gap={6} align="start">
         <HStack w="100%">
           {Hazards.map((hazard) => {
             return (
@@ -70,23 +77,23 @@ const ComponentsTestComponent = ({}) => {
             );
           })}
         </HStack>
-        <Divider mb={3} />
+        <Separator mb={3} />
       </VStack>
       <Text mb={6}>This section demonstrates Info Card component</Text>
-      <VStack spacing={6} align="start">
+      <VStack gap={6} align="start">
         <HStack w="100%">
           <CardInfo info={Info[0]} />
         </HStack>
-        <Divider mb={3} />
+        <Separator mb={3} />
       </VStack>
       <Text mb={6}>This section demonstrates Share menu component</Text>
-      <VStack spacing={6} align="start">
+      <VStack gap={6} align="start">
         <HStack w="100%">
           <Suspense>
             <Share />
           </Suspense>
         </HStack>
-        <Divider mb={3} />
+        <Separator mb={3} />
       </VStack>
     </Box>
   );
