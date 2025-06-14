@@ -86,24 +86,24 @@ const SearchBar = ({
       const values = await memoizedGetHazardData(coords);
       onCoordDataRetrieve(values);
     } catch (error) {
-      // console.error("Error while retrieving data: ", error?.message || error);
-      // onCoordDataRetrieve({
-      //   softStory: null,
-      //   tsunami: null,
-      //   liquefaction: null,
-      // });
-      // toast({
-      //   description: "Could not retrieve hazard data",
-      //   status: "error",
-      //   duration: 5000,
-      //   isClosable: true,
-      //   position: "top",
-      //   containerStyle: {
-      //     backgroundColor: "#b53d37",
-      //     opacity: 1,
-      //     borderRadius: "12px",
-      //   },
-      // });
+      console.error("Error while retrieving data: ", error?.message || error);
+      onCoordDataRetrieve({
+        softStory: null,
+        tsunami: null,
+        liquefaction: null,
+      });
+      toast({
+        description: "Could not retrieve hazard data",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+        containerStyle: {
+          backgroundColor: "#b53d37",
+          opacity: 1,
+          borderRadius: "12px",
+        },
+      });
     }
   };
 
@@ -128,13 +128,12 @@ const SearchBar = ({
       `${endpoint}?lon=${coords[0]}&lat=${coords[1]}`;
 
     try {
-      // const [softStory, tsunamiZone, liquefactionZone] =
-      //   await Promise.allSettled([
-      //     safeJsonFetch(buildUrl(API_ENDPOINTS.isSoftStory)),
-      //     safeJsonFetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)),
-      //     safeJsonFetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)),
-      //   ]);
-      console.log("fake fetch");
+      const [softStory, tsunamiZone, liquefactionZone] =
+        await Promise.allSettled([
+          safeJsonFetch(buildUrl(API_ENDPOINTS.isSoftStory)),
+          safeJsonFetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)),
+          safeJsonFetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)),
+        ]);
 
       onHazardDataLoading(false);
       onSearchComplete(true);
@@ -184,22 +183,10 @@ const SearchBar = ({
 
   // temporary memoization fix for updating the address in the search bar.
   // TODO: refactor how we are caching our calls
-  const memoizedOnSearchChange = useCallback(onSearchChange, [onSearchChange]);
-  const memoizedOnAddressSearch = useCallback(onAddressSearch, [
-    onAddressSearch,
-  ]);
-  const memoizedGetHazardData = useCallback(getHazardData, [
-    coordinates,
-    onHazardDataLoading,
-    onSearchComplete,
-    toast,
-    getHazardData,
-  ]);
-  const memoizedUpdateHazardData = useCallback(updateHazardData, [
-    memoizedGetHazardData,
-    onCoordDataRetrieve,
-    updateHazardData,
-  ]);
+  const memoizedOnSearchChange = useCallback(onSearchChange, []);
+  const memoizedOnAddressSearch = useCallback(onAddressSearch, []);
+  const memoizedGetHazardData = useCallback(getHazardData, []);
+  const memoizedUpdateHazardData = useCallback(updateHazardData, []);
 
   useEffect(() => {
     const address = searchParams.get("address");
