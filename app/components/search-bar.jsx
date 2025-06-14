@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   HStack,
@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
-import DynamicAddressAutofill from "./address-autofill";
+import AddressAutofill from "./address-autofill";
 import { API_ENDPOINTS } from "../api/endpoints";
 
 const options = {
@@ -246,62 +246,64 @@ const SearchBar = ({
           </NumberInput>
         </HStack>
       )}
-      <DynamicAddressAutofill
-        accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-        options={options}
-        onRetrieve={handleRetrieve}
-      >
-        <InputGroup
-          w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
-          size={{ base: "md", md: "lg", xl: "lg" }}
-          mb={"24px"}
-          data-testid="search-bar"
+      <Suspense>
+        <AddressAutofill
+          accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+          options={options}
+          onRetrieve={handleRetrieve}
         >
-          <InputLeftElement>
-            <IoSearchSharp
-              color="grey.900"
-              fontSize="1.1em"
-              data-testid="search-icon"
-            />
-          </InputLeftElement>
-          <Input
-            placeholder="Search San Francisco address"
-            fontFamily="Inter, sans-serif"
-            fontSize={{ base: "md", sm: "md", md: "md", lg: "md" }}
-            p={{
-              base: "0 10px 0 35px",
-              sm: "0 10px 0 35px",
-              md: "0 10px 0 48px",
-              lg: "0 10px 0 48px",
-            }}
-            borderRadius="50"
-            border="1px solid #4A5568"
-            bgColor="white"
-            focusBorderColor="yellow"
-            boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
-            type="text"
-            name="address-1"
-            value={inputAddress}
-            onChange={handleAddressChange}
-            _hover={{
-              borderColor: "yellow",
-              _placeholder: { color: "grey.900" },
-            }}
-            _invalid={{ borderColor: "red" }}
-            autoComplete="address-line1"
-          />
-          {inputAddress.length != 0 && (
-            <InputRightElement>
-              <RxCross2
+          <InputGroup
+            w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
+            size={{ base: "md", md: "lg", xl: "lg" }}
+            mb={"24px"}
+            data-testid="search-bar"
+          >
+            <InputLeftElement>
+              <IoSearchSharp
                 color="grey.900"
                 fontSize="1.1em"
-                data-testid="clear-icon"
-                onClick={handleClearClick}
+                data-testid="search-icon"
               />
-            </InputRightElement>
-          )}
-        </InputGroup>
-      </DynamicAddressAutofill>
+            </InputLeftElement>
+            <Input
+              placeholder="Search San Francisco address"
+              fontFamily="Inter, sans-serif"
+              fontSize={{ base: "md", sm: "md", md: "md", lg: "md" }}
+              p={{
+                base: "0 10px 0 35px",
+                sm: "0 10px 0 35px",
+                md: "0 10px 0 48px",
+                lg: "0 10px 0 48px",
+              }}
+              borderRadius="50"
+              border="1px solid #4A5568"
+              bgColor="white"
+              focusBorderColor="yellow"
+              boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
+              type="text"
+              name="address-1"
+              value={inputAddress}
+              onChange={handleAddressChange}
+              _hover={{
+                borderColor: "yellow",
+                _placeholder: { color: "grey.900" },
+              }}
+              _invalid={{ borderColor: "red" }}
+              autoComplete="address-line1"
+            />
+            {inputAddress.length != 0 && (
+              <InputRightElement>
+                <RxCross2
+                  color="grey.900"
+                  fontSize="1.1em"
+                  data-testid="clear-icon"
+                  onClick={handleClearClick}
+                />
+              </InputRightElement>
+            )}
+          </InputGroup>
+        </AddressAutofill>
+      </Suspense>
     </form>
   );
 };
