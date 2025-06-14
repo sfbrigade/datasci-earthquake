@@ -7,7 +7,7 @@ import CardHazard from "../components/card-hazard";
 import { Hazards } from "../data/data";
 import { Info } from "../data/data";
 import CardInfo from "../components/card-info";
-import DynamicShare from "../components/dynamic-share";
+import Share from "../components/share";
 
 const ComponentsTestComponent = ({}) => {
   return (
@@ -70,7 +70,10 @@ const ComponentsTestComponent = ({}) => {
       <Text mb={6}>This section demonstrates Share menu component</Text>
       <VStack spacing={6} align="start">
         <HStack w="100%">
-          <DynamicShare />
+          l
+          <Suspense>
+            <Share />
+          </Suspense>
         </HStack>
         <Divider mb={3} />
       </VStack>
