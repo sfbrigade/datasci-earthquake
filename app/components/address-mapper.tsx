@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -15,16 +15,13 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { HeadingProps } from "./heading";
-import DynamicMap from "./dynamic-map";
+import Map from "./map";
 import ReportHazards from "./report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
-import DynamicHomeHeader from "./dynamic-home-header";
+import HomeHeader from "./home-header";
 
 const addressLookupCoordinates = {
-  geometry: {
-    type: "Point",
-    coordinates: [-122.408020683, 37.801698301],
-  },
+  geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
 };
 const defaultCoords = addressLookupCoordinates.geometry.coordinates ?? [];
 
@@ -86,10 +83,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           duration: 5000,
           isClosable: true,
           position: "top",
-          containerStyle: {
-            backgroundColor: "#b53d37",
-            borderRadius: "12px",
-          },
+          containerStyle: { backgroundColor: "#b53d37", borderRadius: "12px" },
         });
       }
     }
@@ -97,14 +91,16 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
   return (
     <Flex direction="column">
-      <DynamicHomeHeader
-        coordinates={coordinates}
-        searchedAddress={searchedAddress}
-        onSearchChange={updateMap}
-        onAddressSearch={setSearchedAddress}
-        onCoordDataRetrieve={setAddressHazardData}
-        onHazardDataLoading={setHazardDataLoading}
-      />
+      <Suspense>
+        <HomeHeader
+          coordinates={coordinates}
+          searchedAddress={searchedAddress}
+          onSearchChange={updateMap}
+          onAddressSearch={setSearchedAddress}
+          onCoordDataRetrieve={setAddressHazardData}
+          onHazardDataLoading={setHazardDataLoading}
+        />
+      </Suspense>
       <Box w="full" h={{ base: "1400px", md: "1000px" }} m="auto">
         <Box h="100%" overflow="hidden" position="relative">
           <Box zIndex={10} top={0} position="absolute">
@@ -114,12 +110,14 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               isHazardDataLoading={isHazardDataLoading}
             />
           </Box>
-          <DynamicMap
-            coordinates={coordinates}
-            softStoryData={softStoryData}
-            tsunamiData={tsunamiData}
-            liquefactionData={liquefactionData}
-          />
+          <Suspense>
+            <Map
+              coordinates={coordinates}
+              softStoryData={softStoryData}
+              tsunamiData={tsunamiData}
+              liquefactionData={liquefactionData}
+            />
+          </Suspense>
         </Box>
       </Box>
       <Flex
