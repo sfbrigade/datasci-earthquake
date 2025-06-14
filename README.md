@@ -116,7 +116,7 @@ If you will be working exclusively on the front end or back end, you can run the
 
 ### Prerequisites
 
-- **Docker**: Make sure Docker is installed on your machine. [Get Docker](https://docs.docker.com/get-docker/).
+- **Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).
 - **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
 - **PostgreSQL** (optional for back end development): Ensure PostgreSQL is installed if you want to run the database locally (instead of in a Docker container).
 

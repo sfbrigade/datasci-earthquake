@@ -1,11 +1,11 @@
 "use client";
 
+import ReactDOM from "react-dom";
 import { Box, Stack, Text } from "@chakra-ui/react";
 import SearchBar from "./search-bar";
 import Heading from "./heading";
 import { Headings } from "../data/data";
-import { useState } from "react";
-import ReactDOM from "react-dom";
+import { Suspense, useState } from "react";
 import ReportAddress from "./report-address";
 import Share from "./share";
 
@@ -52,7 +52,9 @@ const HomeHeader = ({
             justifyContent="space-between"
           >
             <ReportAddress searchedAddress={searchedAddress} />
-            <Share />
+            <Suspense>
+              <Share />
+            </Suspense>
           </Stack>
         )}
         {!isSearchComplete && (
@@ -69,6 +71,20 @@ const HomeHeader = ({
         )}
         {isSearchComplete && typeof window !== "undefined" ? (
           ReactDOM.createPortal(
+            <Suspense>
+              <SearchBar
+                coordinates={coordinates}
+                onSearchChange={onSearchChange}
+                onAddressSearch={onAddressSearch}
+                onCoordDataRetrieve={onCoordDataRetrieve}
+                onHazardDataLoading={onHazardDataLoading}
+                onSearchComplete={setSearchComplete}
+              />
+            </Suspense>,
+            document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
+          )
+        ) : (
+          <Suspense>
             <SearchBar
               coordinates={coordinates}
               onSearchChange={onSearchChange}
@@ -76,18 +92,8 @@ const HomeHeader = ({
               onCoordDataRetrieve={onCoordDataRetrieve}
               onHazardDataLoading={onHazardDataLoading}
               onSearchComplete={setSearchComplete}
-            />,
-            document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
-          )
-        ) : (
-          <SearchBar
-            coordinates={coordinates}
-            onSearchChange={onSearchChange}
-            onAddressSearch={onAddressSearch}
-            onCoordDataRetrieve={onCoordDataRetrieve}
-            onHazardDataLoading={onHazardDataLoading}
-            onSearchComplete={setSearchComplete}
-          />
+            />
+          </Suspense>
         )}
       </Box>
     </Box>
