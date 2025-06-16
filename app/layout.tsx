@@ -3,7 +3,7 @@ import { Providers } from "./providers";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import { Toaster } from "@/components/ui/toaster";
-import { defaultSystem } from "@chakra-ui/react";
+// TODO: do we need import { defaultSystem } from "@chakra-ui/react"; here?
 
 import { Inter, Manrope } from "next/font/google";
 

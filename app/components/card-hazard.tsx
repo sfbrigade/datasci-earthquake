@@ -1,6 +1,6 @@
 import { Text, HStack, VStack, Link, Card, Spinner } from "@chakra-ui/react";
 import Pill from "./pill";
-import { Popover, PopoverCloseTrigger } from "@chakra-ui/react";
+import { Popover } from "@chakra-ui/react";
 
 interface CardHazardProps {
   hazard: {
@@ -9,15 +9,9 @@ interface CardHazardProps {
     title: string;
     description: string;
     info: string[];
-    link: {
-      label: string;
-      url: string;
-    };
+    link: { label: string; url: string };
   };
-  hazardData?: {
-    exists?: boolean;
-    last_updated?: string;
-  };
+  hazardData?: { exists?: boolean; last_updated?: string };
   showData: boolean;
   isHazardDataLoading: boolean;
 }
@@ -53,6 +47,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
     <Card.Root flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
       <Popover.Root
         positioning={{ placement: "bottom" }}
+        // returnFocusOnClose={false} TODO: does this still exist in Chakra v3?
         closeOnEscape={true}
         closeOnInteractOutside={true}
         aria-label={`${hazard.title} information`}
@@ -78,8 +73,9 @@ const CardHazard: React.FC<CardHazardProps> = ({
           </VStack>
         </Popover.Trigger>
         <Popover.Content mt={5} width={"348px"}>
+          {/* TODO: should mt={5} width={"348px"} go on Popover.Content? or Poppover.Body? or elsewhere? */}
           <Popover.Arrow />
-          <PopoverCloseTrigger />
+          <Popover.CloseTrigger />
           <Popover.Body>
             {buildHazardCardInfo()}
             <Link

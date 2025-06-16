@@ -10,10 +10,7 @@ export const BaseCard = ({
   children: React.ReactNode;
   footer?: JSX.Element;
 }) => {
-  const sectionProps = {
-    p: 0,
-    pt: "10px",
-  };
+  const sectionProps = { p: 0, pt: "10px" };
 
   return (
     <Card.Root flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>

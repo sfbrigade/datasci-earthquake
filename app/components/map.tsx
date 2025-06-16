@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
-// import { useToast } from "@chakra-ui/react";
 
 const defaultCoords = [-122.463733, 37.777448];
 
@@ -26,7 +25,6 @@ const Map: React.FC<MapProps> = ({
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>(undefined);
   const markerRef = useRef<mapboxgl.Marker>(undefined);
-  // const toast = useToast();
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
 
@@ -106,20 +104,11 @@ const Map: React.FC<MapProps> = ({
         markerRef.current = addressMarker;
 
         // Add sources
-        map.addSource("seismic", {
-          type: "geojson",
-          data: liquefactionData,
-        });
+        map.addSource("seismic", { type: "geojson", data: liquefactionData });
 
-        map.addSource("tsunami", {
-          type: "geojson",
-          data: tsunamiData,
-        });
+        map.addSource("tsunami", { type: "geojson", data: tsunamiData });
 
-        map.addSource("soft-stories", {
-          type: "geojson",
-          data: softStoryData,
-        });
+        map.addSource("soft-stories", { type: "geojson", data: softStoryData });
 
         map.addLayer({
           id: "tsunamiLayer",
@@ -186,7 +175,7 @@ const Map: React.FC<MapProps> = ({
       markerRef.current?.setLngLat(addressLngLat);
       return;
     }
-  }, [coordinates, liquefactionData, softStoryData, tsunamiData]); // TODO: do we need toast as a dep?
+  }, [coordinates, liquefactionData, softStoryData, tsunamiData]); // TODO: add back in if needed: , toast]);
 
   return (
     <>
