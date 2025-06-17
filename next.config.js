@@ -27,7 +27,10 @@ const nextConfig = {
       },
     ];
   },
-
+  // TODO FIXME:
+  // ⚠ Webpack is configured while Turbopack is not, which may cause problems.
+  // ⚠ See instructions if you need to configure Turbopack:
+  // https://nextjs.org/docs/app/api-reference/next-config-js/turbopack#configuration
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
