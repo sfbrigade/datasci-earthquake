@@ -2,12 +2,12 @@ import { render, screen } from "@testing-library/react";
 import { ChakraProvider } from "@chakra-ui/react";
 import "@testing-library/jest-dom";
 import Footer from "../footer";
-import theme from "../../../styles/theme";
+import { system } from "../../../styles/theme";
 
 describe("Footer Component", () => {
   const renderFooter = () =>
     render(
-      <ChakraProvider theme={theme}>
+      <ChakraProvider value={system}>
         <Footer />
       </ChakraProvider>
     );

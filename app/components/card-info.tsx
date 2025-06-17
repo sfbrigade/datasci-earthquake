@@ -9,12 +9,7 @@ interface CardInfoProps {
     name: string;
     title: string;
     textStyle?: string;
-    list: {
-      id: number;
-      title: string;
-      subtitle?: string;
-      url: string;
-    }[];
+    list: { id: number; title: string; subtitle?: string; url: string }[];
   };
 }
 
@@ -25,7 +20,7 @@ const CardInfo: React.FC<CardInfoProps> = ({
 
   return (
     <BaseCard header={title}>
-      <List styleType="disc" ml={6}>
+      <List.Root ml={6}>
         {list.map((item) => {
           return (
             <List.Item key={item.id}>
@@ -40,7 +35,7 @@ const CardInfo: React.FC<CardInfoProps> = ({
             </List.Item>
           );
         })}
-      </List>
+      </List.Root>
     </BaseCard>
   );
 };

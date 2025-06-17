@@ -10,11 +10,9 @@ import {
   Image,
   HStack,
   Link,
-  // useToast,
 } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import NextLink from "next/link";
-import { HeadingProps } from "./heading";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
@@ -26,7 +24,6 @@ const addressLookupCoordinates = {
 const defaultCoords = addressLookupCoordinates.geometry.coordinates ?? [];
 
 interface AddressMapperProps {
-  headingData: HeadingProps;
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
@@ -52,7 +49,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const [searchedAddress, setSearchedAddress] = useState("");
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
-  // const toast = useToast();
   const toastIdDataLoadFailed = "data-load-failed";
 
   const updateMap = (coords: number[]) => {
@@ -74,20 +70,21 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       );
 
     if (errors.length > 0) {
-      if (!toaster.isActive(toastIdDataLoadFailed)) {
+      if (toaster.isDismissed(toastIdDataLoadFailed)) {
+        // TODO: or use `!toaster.isVisible`? trying to replace `!toast.isActive` from Chakra v2
         toaster.create({
           id: "data-load-failed",
           title: "Data Load Error",
           description: errors.join(" | "),
-          status: "error",
+          type: "error",
           duration: 5000,
           closable: true,
-          position: "top",
-          containerStyle: { backgroundColor: "#b53d37", borderRadius: "12px" },
+          // TODO FIXME: where does the below style now go? attempted to put it in toaster.tsx; test it!
+          // containerStyle: { backgroundColor: "#b53d37", borderRadius: "12px" },
         });
       }
     }
-  }, [softStoryData, tsunamiData, liquefactionData, toaster]);
+  }, [softStoryData, tsunamiData, liquefactionData]);
 
   return (
     <Flex direction="column">
@@ -155,7 +152,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               around, but what do they actually mean?
             </Text>
 
-            <List textStyle="textMedium" layerStyle="list" mt="2">
+            <List.Root textStyle="textMedium" layerStyle="list" mt="2">
               <List.Item layerStyle="listItem">
                 A{" "}
                 <Text as="span" textStyle="textSemibold">
@@ -184,7 +181,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 are still vulnerable to earthquake damage, even though the
                 ordinance does not legally require them to be retrofitted.
               </List.Item>
-            </List>
+            </List.Root>
 
             <Heading as="h3" mt="4">
               <Text as="span" textStyle="headerMedium">
@@ -196,7 +193,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               earthquakes.
             </Text>
 
-            <List textStyle="textMedium" layerStyle="list" mt="2">
+            <List.Root textStyle="textMedium" layerStyle="list" mt="2">
               <List.Item layerStyle="listItem">
                 <Link
                   as={NextLink}
@@ -227,7 +224,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 </Link>{" "}
                 to get early warnings when an earthquake is detected.
               </List.Item>
-            </List>
+            </List.Root>
 
             <Heading as="h3" mt="4">
               <Text as="span" textStyle="headerMedium">
@@ -239,7 +236,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               resources can help you get started.
             </Text>
 
-            <List textStyle="textMedium" layerStyle="list" mt="2">
+            <List.Root textStyle="textMedium" layerStyle="list" mt="2">
               <List.Item layerStyle="listItem">
                 <Link
                   as={NextLink}
@@ -279,7 +276,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 </Link>{" "}
                 retrofit grant.
               </List.Item>
-            </List>
+            </List.Root>
 
             <Heading as="h3" mt="4">
               <Text as="span" textStyle="headerMedium">
@@ -291,7 +288,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               or tsunami zone, you may want to look into these additional
               resources.
             </Text>
-            <List textStyle="textMedium" layerStyle="list" mt="2">
+            <List.Root textStyle="textMedium" layerStyle="list" mt="2">
               <List.Item layerStyle="listItem">
                 <Link
                   as={NextLink}
@@ -312,7 +309,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 </Link>{" "}
                 to report unsafe living conditions.
               </List.Item>
-            </List>
+            </List.Root>
           </div>
           <Box flexShrink={0} display={{ base: "none", lg: "block" }}>
             <Image

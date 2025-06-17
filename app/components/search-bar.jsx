@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   Input,
@@ -48,7 +48,6 @@ const SearchBar = ({
   const [inputAddress, setInputAddress] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
-  // const toast = useToast();
   const toastIdFailedHazardData = "failed-hazard-data";
 
   const handleClearClick = () => {
@@ -88,15 +87,10 @@ const SearchBar = ({
       });
       toaster.create({
         description: "Could not retrieve hazard data",
-        status: "error",
+        state: "error",
         duration: 5000,
-        isClosable: true,
+        closable: true,
         position: "top",
-        containerStyle: {
-          backgroundColor: "#b53d37",
-          opacity: 1,
-          borderRadius: "12px",
-        },
       });
     }
   };
@@ -139,22 +133,17 @@ const SearchBar = ({
       ].filter(({ result }) => result.status === "rejected");
 
       if (failed.length > 0) {
-        if (!toaster.isActive(toastIdFailedHazardData)) {
+        if (toaster.isDismissed(toastIdFailedHazardData)) {
+          // TODO: or use `!toaster.isVisible`? trying to replace `!toast.isActive` from Chakra v2
           toaster.create({
             id: "failed-hazard-data",
             title: "Hazard data warning",
             description: `Failed to fetch: ${failed
               .map((f) => f.name)
               .join(", ")}`,
-            status: "warning",
+            type: "warning",
             duration: 5000,
-            isClosable: true,
-            position: "top",
-            containerStyle: {
-              backgroundColor: "#b53d37",
-              opacity: 1,
-              borderRadius: "12px",
-            },
+            closable: true,
           });
         }
       }
@@ -201,62 +190,66 @@ const SearchBar = ({
 
   return (
     <form onSubmit={onSubmit}>
-      <DynamicAddressAutofill
-        accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-        options={options}
-        onRetrieve={handleRetrieve}
-      >
-        <InputGroup
-          w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
-          size={{ base: "md", md: "lg", xl: "lg" }}
-          mb={"24px"}
-          data-testid="search-bar"
-          startElement={
-            <IoSearchSharp
-              color="grey.900"
-              fontSize="1.1em"
-              data-testid="search-icon"
-            />
-          }
-          endElement={
-            inputAddress.length !== 0 && (
-              <RxCross2
+      <Suspense>
+        <DynamicAddressAutofill
+          accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+          options={options}
+          onRetrieve={handleRetrieve}
+        >
+          <InputGroup
+            w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
+            size={{ base: "md", md: "lg", xl: "lg" }}
+            mb={"24px"}
+            data-testid="search-bar"
+            startElement={
+              //TODO FIXME: make sure this works to replace `InputLeftElement` visually/behaviorally
+              <IoSearchSharp
                 color="grey.900"
                 fontSize="1.1em"
-                data-testid="clear-icon"
-                onClick={handleClearClick}
+                data-testid="search-icon"
               />
-            )
-          }
-        >
-          <Input
-            placeholder="Search San Francisco address"
-            fontFamily="Inter, sans-serif"
-            fontSize={{ base: "md", sm: "md", md: "md", lg: "md" }}
-            p={{
-              base: "0 10px 0 35px",
-              sm: "0 10px 0 35px",
-              md: "0 10px 0 48px",
-              lg: "0 10px 0 48px",
-            }}
-            borderRadius="50"
-            border="1px solid #4A5568"
-            bgColor="white"
-            boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
-            type="text"
-            name="address-1"
-            value={inputAddress}
-            onChange={handleAddressChange}
-            _focus={{ borderColor: "yellow" }}
-            _hover={{
-              borderColor: "yellow",
-              _placeholder: { color: "grey.900" },
-            }}
-            _invalid={{ borderColor: "red" }}
-            autoComplete="address-line1"
-          />
-        </InputGroup>
-      </DynamicAddressAutofill>
+            }
+            endElement={
+              //TODO FIXME: make sure this works to replace `InputRightElement` visually/behaviorally
+              inputAddress.length !== 0 && (
+                <RxCross2
+                  color="grey.900"
+                  fontSize="1.1em"
+                  data-testid="clear-icon"
+                  onClick={handleClearClick}
+                />
+              )
+            }
+          >
+            <Input
+              placeholder="Search San Francisco address"
+              fontFamily="Inter, sans-serif"
+              fontSize={{ base: "md", sm: "md", md: "md", lg: "md" }}
+              p={{
+                base: "0 10px 0 35px",
+                sm: "0 10px 0 35px",
+                md: "0 10px 0 48px",
+                lg: "0 10px 0 48px",
+              }}
+              borderRadius="50"
+              border="1px solid #4A5568"
+              bgColor="white"
+              boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
+              type="text"
+              name="address-1"
+              value={inputAddress}
+              onChange={handleAddressChange}
+              _focus={{ borderColor: "yellow" }} // TODO FIXME: make sure this works to replace `focusBorderColor` and doesn't need _placeholder
+              _hover={{
+                borderColor: "yellow",
+                _placeholder: { color: "grey.900" },
+              }}
+              _invalid={{ borderColor: "red" }}
+              autoComplete="address-line1"
+            />
+          </InputGroup>
+        </DynamicAddressAutofill>
+      </Suspense>
     </form>
   );
 };

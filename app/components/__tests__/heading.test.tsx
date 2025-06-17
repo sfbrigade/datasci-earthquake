@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Heading from "../heading";
 import { ChakraProvider } from "@chakra-ui/react";
+import { system } from "../../../styles/theme";
 
 describe("Heading component", () => {
   const headingData = {
@@ -14,7 +15,7 @@ describe("Heading component", () => {
 
   const renderComponent = () =>
     render(
-      <ChakraProvider>
+      <ChakraProvider value={system}>
         <Heading headingData={headingData} />
       </ChakraProvider>
     );

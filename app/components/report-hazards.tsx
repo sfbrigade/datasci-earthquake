@@ -7,14 +7,9 @@ import { Hazards } from "../data/data";
 import { CardContainer } from "./card-container";
 import { KeyElem } from "./key-elem";
 
-type HazardData = {
-  softStory?: any;
-  tsunami?: any;
-  liquefaction?: any;
-};
+type HazardData = { softStory?: any; tsunami?: any; liquefaction?: any };
 
 const ReportHazards = ({
-  searchedAddress,
   addressHazardData,
   isHazardDataLoading,
 }: {
@@ -22,8 +17,6 @@ const ReportHazards = ({
   addressHazardData: HazardData;
   isHazardDataLoading: boolean;
 }) => {
-  const hazardData = "";
-
   return (
     <Center flexDirection="column">
       <Box
@@ -36,11 +29,7 @@ const ReportHazards = ({
       >
         <Stack
           w={{ base: "full", xl: "7xl" }}
-          px={{
-            base: "24px",
-            md: "28px",
-            xl: "128px",
-          }}
+          px={{ base: "24px", md: "28px", xl: "128px" }}
           gap={{ base: 1, md: 5 }}
           direction={{ base: "column", md: "row" }}
           alignItems="center"

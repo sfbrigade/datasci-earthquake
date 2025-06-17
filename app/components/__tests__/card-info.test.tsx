@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import CardInfo from "../card-info";
 import { ChakraProvider } from "@chakra-ui/react";
+import { system } from "../../../styles/theme";
 import "@testing-library/jest-dom";
 
 const mockInfo = {
@@ -20,7 +21,7 @@ const mockInfo = {
 
 describe("CardInfo Component", () => {
   const renderWithChakra = (ui: React.ReactElement<any>) =>
-    render(<ChakraProvider>{ui}</ChakraProvider>);
+    render(<ChakraProvider value={system}>{ui}</ChakraProvider>);
 
   it("renders the card title", () => {
     renderWithChakra(<CardInfo info={mockInfo} />);
