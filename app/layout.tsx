@@ -3,24 +3,24 @@ import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "./providers";
 import Header from "./components/header";
 import Footer from "./components/footer";
-// import { defaultSystem } from "@chakra-ui/react";
+import { defaultSystem } from "@chakra-ui/react";
 
-// import { Inter, Manrope } from "next/font/google";
+import { Inter, Manrope } from "next/font/google";
 
-// const manrope = Manrope({
-//   subsets: ["latin"],
-//   weight: ["300", "400", "500", "600", "700", "800"],
-// });
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+});
 
-// const inter = Inter({
-//   subsets: ["latin"],
-//   weight: ["300", "400", "500", "600", "700", "800"],
-// });
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+});
 
-// export const metadata = {
-//   title: "SafeHome",
-//   description: "Learn about your home's earthquake readiness",
-// };
+export const metadata = {
+  title: "SafeHome",
+  description: "Learn about your home's earthquake readiness",
+};
 
 export default function RootLayout({
   children,
@@ -29,17 +29,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        {/* <body> className={`${manrope.className} ${inter.className}`}> */}
+      <body className={`${manrope.className} ${inter.className}`}>
         <Providers>
-          {/* <Flex direction="column" align="center" minH="100vh">
+          <Flex direction="column" align="center" minH="100vh">
             <Header />
-            <Box flex="1" as="main" width="100%"> */}
-          {children}
-          {/* </Box>
-            <Toaster />
+            {/* before */}
+            <Box flex="1" as="main" width="100%">
+              {children}
+            </Box>
+            {/* after
+            <Box flex="1" width="100%" asChild>
+              <main>{children}</main>
+            </Box> */}
             <Footer />
-          </Flex> */}
+          </Flex>
         </Providers>
       </body>
     </html>

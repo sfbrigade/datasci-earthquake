@@ -17,15 +17,9 @@ interface CardHazardProps {
     title: string;
     description: string;
     info: string[];
-    link: {
-      label: string;
-      url: string;
-    };
+    link: { label: string; url: string };
   };
-  hazardData?: {
-    exists?: boolean;
-    last_updated?: string;
-  };
+  hazardData?: { exists?: boolean; last_updated?: string };
   showData: boolean;
   isHazardDataLoading: boolean;
 }
@@ -60,9 +54,9 @@ const CardHazard: React.FC<CardHazardProps> = ({
   return (
     <Card.Root flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
       <Popover.Root
-        placement="bottom"
-        returnFocusOnClose={false}
-        closeOnBlur={true}
+        positioning={{ placement: "bottom" }}
+        closeOnEscape={true}
+        closeOnInteractOutside={true}
         aria-label={`${hazard.title} information`}
       >
         <Popover.Trigger>

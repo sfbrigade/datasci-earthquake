@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
-// import { useToast } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 
 const defaultCoords = [-122.463733, 37.777448];
@@ -27,7 +26,6 @@ const Map: React.FC<MapProps> = ({
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>(undefined);
   const markerRef = useRef<mapboxgl.Marker>(undefined);
-  // const toast = useToast();
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
 
@@ -35,19 +33,14 @@ const Map: React.FC<MapProps> = ({
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
-      if (!toaster.isActive(toastIdNoToken)) {
+      if (toaster.isDismissed(toastIdNoToken)) {
+        // TODO: or use `!toaster.isVisible`? trying to replace `!toast.isActive` from Chakra v2
         toaster.create({
           id: toastIdNoToken,
           description: "Mapbox access token or container is not set!",
-          status: "error",
+          type: "error",
           duration: 5000,
           closable: true,
-          position: "top",
-          containerStyle: {
-            backgroundColor: "#b53d37",
-            opacity: 1,
-            borderRadius: "12px",
-          },
         });
       }
       console.error("Mapbox access token or container is not set!");
@@ -107,20 +100,11 @@ const Map: React.FC<MapProps> = ({
         markerRef.current = addressMarker;
 
         // Add sources
-        map.addSource("seismic", {
-          type: "geojson",
-          data: liquefactionData,
-        });
+        map.addSource("seismic", { type: "geojson", data: liquefactionData });
 
-        map.addSource("tsunami", {
-          type: "geojson",
-          data: tsunamiData,
-        });
+        map.addSource("tsunami", { type: "geojson", data: tsunamiData });
 
-        map.addSource("soft-stories", {
-          type: "geojson",
-          data: softStoryData,
-        });
+        map.addSource("soft-stories", { type: "geojson", data: softStoryData });
 
         map.addLayer({
           id: "tsunamiLayer",
@@ -160,19 +144,14 @@ const Map: React.FC<MapProps> = ({
 
         map.on("error", (e) => {
           if (e.error && e.error.message.includes("access token")) {
-            if (!toaster.isActive(toastIdInvalidToken)) {
+            if (toaster.isDismissed(toastIdNoToken)) {
+              // TODO: or use `!toaster.isVisible`? trying to replace `!toast.isActive` from Chakra v2
               toaster.create({
-                id: toastIdInvalidToken,
+                id: toastIdNoToken,
                 description: "Invalid Mapbox access token!",
-                status: "error",
+                type: "error",
                 duration: 5000,
                 closable: true,
-                position: "top",
-                containerStyle: {
-                  backgroundColor: "#b53d37",
-                  opacity: 1,
-                  borderRadius: "12px",
-                },
               });
             }
             console.error("Invalid Mapbox token:", e.error);
@@ -187,7 +166,7 @@ const Map: React.FC<MapProps> = ({
       markerRef.current?.setLngLat(addressLngLat);
       return;
     }
-  }, [coordinates, liquefactionData, softStoryData, tsunamiData, toaster]);
+  }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
 
   return (
     <>

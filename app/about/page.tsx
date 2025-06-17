@@ -1,14 +1,11 @@
 "use client";
 
 import { Flex, Link, Text, Box, VStack, List } from "@chakra-ui/react";
-import Heading from "../components/heading";
-import { Headings, DataInfoLinks, TeamMembers } from "../data/data";
+import { DataInfoLinks, TeamMembers } from "../data/data";
 import NextLink from "next/link";
 import Image from "next/image";
 
 const About = () => {
-  const headingData = Headings.about;
-
   const buildInfoLinks = () => {
     return DataInfoLinks.map((dataInfolink) => {
       return (
@@ -56,7 +53,6 @@ const About = () => {
       gap="44px"
     >
       <Flex direction="column" alignItems={"flex-start"} gap="48px">
-        <Heading headingData={headingData} />
         <Text textStyle="textBig">
           Seismologists predict a 72% probability that the Bay Area will
           experience a magnitude 6.7 (or greater) earthquake in the next 30
@@ -96,7 +92,7 @@ const About = () => {
           <Text textStyle="textMedium">
             For more information on the data, please visit:
           </Text>
-          <List>{buildInfoLinks()}</List>
+          <List.Root>{buildInfoLinks()}</List.Root>
           <Text textStyle="textMedium">
             For details on the City of San Francisco’s seismic compliance
             requirements, see{" "}
@@ -116,9 +112,9 @@ const About = () => {
             building tools to help communities access important services and
             solve local challenges. 
           </Text>
-          <List listStyleType="none" mb="40px">
+          <List.Root listStyleType="none" mb="40px">
             {buildTeamMembers()}
-          </List>
+          </List.Root>
           <Text>
             <Text as="span" fontWeight={800}>
               Interested in joining SF Civic Tech?

@@ -1,32 +1,22 @@
 "use client";
-import {
-  Text,
-  Button,
-  // useToast,
-  Box,
-  HStack,
-  CloseButton,
-} from "@chakra-ui/react";
+import { Text, Button, Box, HStack, CloseButton } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import ShareIcon from "../img/icon-share.svg";
-import LinkIcon from "../img/icon-link.svg";
 import { useSearchParams } from "next/navigation";
 
 const Share = () => {
   const searchParams = useSearchParams();
-  // const toast = useToast({
-  //   position: "top",
-  // });
 
   const copyReportToClipBoard = async () => {
     try {
       const currentUrl = `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`;
       await navigator.clipboard.writeText(currentUrl);
       toaster.create({
-        description: "File saved successfully",
-        type: "loading",
+        description: "Link copied",
+        type: "link",
         duration: 3000,
       });
+      // TODO: do we need to have this custom render? is it good enough to add the icon as is done in `components/ui/toaster.tsx`?
       // toast({
       //   duration: 3000,
       //   render: ({ onClose }) => (
@@ -56,10 +46,9 @@ const Share = () => {
       toaster.create({
         title: "Error",
         description: "Failed to copy link to clipboard.",
-        status: "error",
+        type: "error",
         duration: 3000,
         closable: true,
-        position: "top",
       });
     }
   };

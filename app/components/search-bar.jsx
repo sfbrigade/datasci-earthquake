@@ -1,14 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import {
-  HStack,
-  Input,
-  InputGroup,
-  NumberInput,
-  // useToast,
-} from "@chakra-ui/react";
+import { HStack, Input, InputGroup, NumberInput } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
@@ -24,7 +18,6 @@ const options = {
   ],
   proximity: { lng: -122.4194, lat: 37.7749 },
   streets: false,
-  
 };
 
 const safeJsonFetch = async (url) => {
@@ -50,7 +43,6 @@ const SearchBar = ({
   const debug = useSearchParams().get("debug");
   const router = useRouter();
   const searchParams = useSearchParams();
-  // const toast = useToast();
   const toastIdFailedHazardData = "failed-hazard-data";
 
   const handleClearClick = () => {
@@ -90,15 +82,10 @@ const SearchBar = ({
       });
       toaster.create({
         description: "Could not retrieve hazard data",
-        status: "error",
+        state: "error",
         duration: 5000,
-        isClosable: true,
+        closable: true,
         position: "top",
-        containerStyle: {
-          backgroundColor: "#b53d37",
-          opacity: 1,
-          borderRadius: "12px",
-        },
       });
     }
   };
@@ -141,22 +128,17 @@ const SearchBar = ({
       ].filter(({ result }) => result.status === "rejected");
 
       if (failed.length > 0) {
-        if (!toaster.isActive(toastIdFailedHazardData)) {
+        if (toaster.isDismissed(toastIdFailedHazardData)) {
+          // TODO: or use `!toaster.isVisible`? trying to replace `!toast.isActive` from Chakra v2
           toaster.create({
             id: "failed-hazard-data",
             title: "Hazard data warning",
             description: `Failed to fetch: ${failed
               .map((f) => f.name)
               .join(", ")}`,
-            status: "warning",
+            type: "warning",
             duration: 5000,
-            isClosable: true,
-            position: "top",
-            containerStyle: {
-              backgroundColor: "#b53d37",
-              opacity: 1,
-              borderRadius: "12px",
-            },
+            closable: true,
           });
         }
       }
@@ -241,61 +223,63 @@ const SearchBar = ({
           </NumberInput.Root>
         </HStack>
       )}
-      <DynamicAddressAutofill
-        accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-        options={options}
-        onRetrieve={handleRetrieve}
-      >
-        <InputGroup
-          w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
-          size={{ base: "md", md: "lg", xl: "lg" }}
-          mb={"24px"}
-          data-testid="search-bar"
+      <Suspense>
+        <DynamicAddressAutofill
+          accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+          options={options}
+          onRetrieve={handleRetrieve}
         >
-          <Input.LeftElement>
-            <IoSearchSharp
-              color="grey.900"
-              fontSize="1.1em"
-              data-testid="search-icon"
-            />
-          </Input.LeftElement>
-          <Input
-            placeholder="Search San Francisco address"
-            fontFamily="Inter, sans-serif"
-            fontSize={{ base: "md", sm: "md", md: "md", lg: "md" }}
-            p={{
-              base: "0 10px 0 35px",
-              sm: "0 10px 0 35px",
-              md: "0 10px 0 48px",
-              lg: "0 10px 0 48px",
-            }}
-            borderRadius="50"
-            border="1px solid #4A5568"
-            bgColor="white"
-            boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
-            type="text"
-            name="address-1"
-            value={inputAddress}
-            onChange={handleAddressChange}
-            _hover={{
-              borderColor: "yellow",
-              _placeholder: { color: "grey.900" },
-            }}
-            _invalid={{ borderColor: "red" }}
-            autoComplete="address-line1"
-          />
-          {inputAddress.length != 0 && (
-            <Input.RightElement>
-              <RxCross2
+          <InputGroup
+            w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
+            size={{ base: "md", md: "lg", xl: "lg" }}
+            mb={"24px"}
+            data-testid="search-bar"
+          >
+            <Input.LeftElement>
+              <IoSearchSharp
                 color="grey.900"
                 fontSize="1.1em"
-                data-testid="clear-icon"
-                onClick={handleClearClick}
+                data-testid="search-icon"
               />
-            </Input.RightElement>
-          )}
-        </InputGroup>
-      </DynamicAddressAutofill>
+            </Input.LeftElement>
+            <Input
+              placeholder="Search San Francisco address"
+              fontFamily="Inter, sans-serif"
+              fontSize={{ base: "md", sm: "md", md: "md", lg: "md" }}
+              p={{
+                base: "0 10px 0 35px",
+                sm: "0 10px 0 35px",
+                md: "0 10px 0 48px",
+                lg: "0 10px 0 48px",
+              }}
+              borderRadius="50"
+              border="1px solid #4A5568"
+              bgColor="white"
+              boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
+              type="text"
+              name="address-1"
+              value={inputAddress}
+              onChange={handleAddressChange}
+              _hover={{
+                borderColor: "yellow",
+                _placeholder: { color: "grey.900" },
+              }}
+              _invalid={{ borderColor: "red" }}
+              autoComplete="address-line1"
+            />
+            {inputAddress.length != 0 && (
+              <Input.RightElement>
+                <RxCross2
+                  color="grey.900"
+                  fontSize="1.1em"
+                  data-testid="clear-icon"
+                  onClick={handleClearClick}
+                />
+              </Input.RightElement>
+            )}
+          </InputGroup>
+        </DynamicAddressAutofill>
+      </Suspense>
     </form>
   );
 };
