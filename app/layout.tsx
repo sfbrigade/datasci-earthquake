@@ -22,6 +22,10 @@ export const metadata = {
   description: "Learn about your home's earthquake readiness",
 };
 
+// Since this is the root layout, all fetch requests in the app
+// that don't set their own cache option will be cached.
+export const fetchCache = "default-cache";
+
 export default function RootLayout({
   children,
 }: {
