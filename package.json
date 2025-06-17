@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "fastapi-dev": "pip3 install -r requirements.txt && fastapi dev api/index.py",
-    "dev": "next dev --turbopack",
-    "develop": "concurrently \"npm run dev\" \"npm run fastapi-dev\"",
+    "next-dev": "next dev --turbopack",
+    "dev": "concurrently \"npm run dev\" \"npm run fastapi-dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
