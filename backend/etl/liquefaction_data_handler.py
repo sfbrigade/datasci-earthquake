@@ -27,7 +27,7 @@ class _LiquefactionDataHandler(DataHandler):
         To avoid API timeout errors, this method reduces the complexity of the satabase-stored multipolygons by collapsing points that are closer than 0.0001 degrees into a single point.
         Note that the dataset contains the length and area of the original multipoygons.
         """
-        tolerance = 0.0  # 0.0001
+        tolerance = 0.0001
         features = data["features"]
         parsed_data = []
         geojson_features = []
