@@ -16,7 +16,6 @@ const DynamicAddressAutofill = dynamic(
     }),
   {
     ssr: false,
-    loading: () => <div>Loading address search...</div>,
   }
 );
 
