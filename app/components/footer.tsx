@@ -8,7 +8,13 @@ const Footer = () => {
   const buildDisclaimers = () => {
     return mockDisclaimers.map((disclaimer, index) => {
       return (
-        <Text key={index} textStyle="textSmall" lineHeight={4} color="white">
+        <Text
+          key={index}
+          textStyle="textSmall"
+          layerStyle="text"
+          lineHeight={4}
+          color="white"
+        >
           {disclaimer}
         </Text>
       );
@@ -35,7 +41,7 @@ const Footer = () => {
           maxW={{ base: "100%", lg: "672px" }}
           gap="24px"
         >
-          <Text textStyle="textSmall" color="white">
+          <Text textStyle="textSmall" layerStyle="text" color="white">
             © 2025 SF Civic Tech
           </Text>
           {buildDisclaimers()}
@@ -48,17 +54,17 @@ const Footer = () => {
             width="100%"
           >
             <Link as={NextLink} color="white" href="/about">
-              <Text textStyle="textMedium" color="white">
+              <Text textStyle="textMedium" layerStyle="text" color="white">
                 About
               </Text>
             </Link>
             <Link color="white" href="mailto:sfcivictech.datascience@gmail.com">
-              <Text textStyle="textMedium" color="white">
+              <Text textStyle="textMedium" layerStyle="text" color="white">
                 Contact
               </Text>
             </Link>
             <Link as={NextLink} color="white" href="/terms">
-              <Text textStyle="textMedium" color="white">
+              <Text textStyle="textMedium" layerStyle="text" color="white">
                 Terms of Service
               </Text>
             </Link>

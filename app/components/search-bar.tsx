@@ -8,14 +8,16 @@ import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
 import { API_ENDPOINTS } from "../api/endpoints";
+import { LngLat, LngLatBounds } from "mapbox-gl";
+
+const upperLeft = new LngLat(-122.55, 37.69);
+const bottomRight = new LngLat(-122.35, 37.83);
+const bbox = new LngLatBounds(upperLeft, bottomRight);
 
 const options = {
   country: "US",
   limit: 10,
-  bbox: [
-    [-122.55, 37.69],
-    [-122.35, 37.83],
-  ],
+  // bbox: bbox,
   proximity: { lng: -122.4194, lat: 37.7749 },
   streets: false,
 };
@@ -40,7 +42,6 @@ const SearchBar = ({
   onSearchComplete,
 }) => {
   const [inputAddress, setInputAddress] = useState("");
-  const debug = useSearchParams().get("debug");
   const router = useRouter();
   const searchParams = useSearchParams();
   const toastIdFailedHazardData = "failed-hazard-data";
@@ -185,67 +186,39 @@ const SearchBar = ({
 
   return (
     <form onSubmit={onSubmit}>
-      {debug === "true" && (
-        <HStack>
-          <NumberInput.Root
-            bg="white"
-            size="xs"
-            width="auto"
-            defaultValue={coordinates[0]}
-            precision={9}
-            step={0.005}
-            onValueChange={(valueString) =>
-              onSearchChange([parseFloat(valueString), coordinates[1]])
-            }
-          >
-            <NumberInput.Input />
-            <NumberInput.Control>
-              <NumberInput.IncrementTrigger />
-              <NumberInput.DecrementTrigger />
-            </NumberInput.Control>
-          </NumberInput.Root>
-          <NumberInput.Root
-            bg="white"
-            size="xs"
-            width="auto"
-            defaultValue={coordinates[1]}
-            precision={9}
-            step={0.005}
-            onChange={(valueString) =>
-              onSearchChange([coordinates[0], parseFloat(valueString)])
-            }
-          >
-            <NumberInput.Input />
-            <NumberInput.Control>
-              <NumberInput.IncrementTrigger />
-              <NumberInput.DecrementTrigger />
-            </NumberInput.Control>
-          </NumberInput.Root>
-        </HStack>
-      )}
       <Suspense>
-        <DynamicAddressAutofill
-          accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-          options={options}
-          onRetrieve={handleRetrieve}
-        >
-          <InputGroup
-            w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
-            size={{ base: "md", md: "lg", xl: "lg" }}
-            mb={"24px"}
-            data-testid="search-bar"
-          >
-            <Input.LeftElement>
-              <IoSearchSharp
+        <InputGroup
+          w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
+          mb={"24px"}
+          data-testid="search-bar"
+          startElement={
+            <IoSearchSharp
+              color="grey.900"
+              fontSize="1.1em"
+              data-testid="search-icon"
+            />
+          }
+          endElement={
+            inputAddress.length != 0 && (
+              <RxCross2
                 color="grey.900"
                 fontSize="1.1em"
-                data-testid="search-icon"
+                data-testid="clear-icon"
+                onClick={handleClearClick}
               />
-            </Input.LeftElement>
+            )
+          }
+        >
+          <DynamicAddressAutofill
+            accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ""}
+            options={options ?? {}}
+            onRetrieve={handleRetrieve}
+          >
             <Input
               placeholder="Search San Francisco address"
               fontFamily="Inter, sans-serif"
               fontSize={{ base: "md", sm: "md", md: "md", lg: "md" }}
+              size={{ base: "md", md: "lg", xl: "lg" }}
               p={{
                 base: "0 10px 0 35px",
                 sm: "0 10px 0 35px",
@@ -267,18 +240,8 @@ const SearchBar = ({
               _invalid={{ borderColor: "red" }}
               autoComplete="address-line1"
             />
-            {inputAddress.length != 0 && (
-              <Input.RightElement>
-                <RxCross2
-                  color="grey.900"
-                  fontSize="1.1em"
-                  data-testid="clear-icon"
-                  onClick={handleClearClick}
-                />
-              </Input.RightElement>
-            )}
-          </InputGroup>
-        </DynamicAddressAutofill>
+          </DynamicAddressAutofill>
+        </InputGroup>
       </Suspense>
     </form>
   );

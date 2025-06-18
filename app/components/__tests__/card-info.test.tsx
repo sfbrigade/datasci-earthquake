@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import CardInfo from "../card-info";
 import { ChakraProvider } from "@chakra-ui/react";
-import { system } from "../../../styles/theme";
+import system from "../../../styles/theme";
 import "@testing-library/jest-dom";
 
 const mockInfo = {
