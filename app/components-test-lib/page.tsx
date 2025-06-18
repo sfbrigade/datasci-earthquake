@@ -1,6 +1,6 @@
 import ComponentsTestComponent from "../components/components-test-component";
 
-const ComponentsTestLib = () => {
+const ComponentsTestLib = async () => {
   return <ComponentsTestComponent />;
 };
 
