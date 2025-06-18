@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
@@ -22,7 +21,6 @@ const Map: React.FC<MapProps> = ({
   tsunamiData,
   liquefactionData,
 }: MapProps) => {
-  const debug = useSearchParams().get("debug");
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>(undefined);
   const markerRef = useRef<mapboxgl.Marker>(undefined);
@@ -144,10 +142,10 @@ const Map: React.FC<MapProps> = ({
 
         map.on("error", (e) => {
           if (e.error && e.error.message.includes("access token")) {
-            if (toaster.isDismissed(toastIdNoToken)) {
+            if (toaster.isDismissed(toastIdInvalidToken)) {
               // TODO: or use `!toaster.isVisible`? trying to replace `!toast.isActive` from Chakra v2
               toaster.create({
-                id: toastIdNoToken,
+                id: toastIdInvalidToken,
                 description: "Invalid Mapbox access token!",
                 type: "error",
                 duration: 5000,
@@ -169,23 +167,7 @@ const Map: React.FC<MapProps> = ({
   }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
 
   return (
-    <>
-      <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
-      {debug === "true" && (
-        <span
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            zIndex: 99,
-            fontSize: 24,
-            padding: "4px",
-          }}
-        >
-          {`${coordinates[0]}, ${coordinates[1]}`}
-        </span>
-      )}
-    </>
+    <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
   );
 };
 

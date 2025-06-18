@@ -14,7 +14,11 @@ interface HomeHeaderProps {
   searchedAddress: string;
   onSearchChange: (coords: number[]) => void;
   onAddressSearch: (address: string) => void;
-  onCoordDataRetrieve: (data: any[]) => void;
+  onCoordDataRetrieve: (data: {
+    softStory: any[] | null;
+    tsunami: any[] | null;
+    liquefaction: any[] | null;
+  }) => void;
   onHazardDataLoading: (isLoading: boolean) => void;
 }
 
@@ -52,7 +56,9 @@ const HomeHeader = ({
             justifyContent="space-between"
           >
             <ReportAddress searchedAddress={searchedAddress} />
-            <Share />
+            <Suspense>
+              <Share />
+            </Suspense>
           </Stack>
         )}
         {!isSearchComplete && (

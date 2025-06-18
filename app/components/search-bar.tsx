@@ -1,28 +1,34 @@
 "use client";
 
-import { useState, useEffect, useCallback, Suspense } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  Suspense,
+  FormEvent,
+  ChangeEventHandler,
+} from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { HStack, Input, InputGroup, NumberInput } from "@chakra-ui/react";
+import { Input, InputGroup } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill from "./address-autofill";
+import {
+  AddressAutofillRetrieveResponse,
+  LngLatBounds,
+} from "@mapbox/search-js-core";
 import { API_ENDPOINTS } from "../api/endpoints";
-import { LngLat, LngLatBounds } from "mapbox-gl";
 
-const upperLeft = new LngLat(-122.55, 37.69);
-const bottomRight = new LngLat(-122.35, 37.83);
-const bbox = new LngLatBounds(upperLeft, bottomRight);
-
-const options = {
+const autofillOptions = {
   country: "US",
   limit: 10,
-  // bbox: bbox,
+  bbox: new LngLatBounds([-122.55, 37.69], [-122.35, 37.83]),
   proximity: { lng: -122.4194, lat: 37.7749 },
   streets: false,
 };
 
-const safeJsonFetch = async (url) => {
+const safeJsonFetch = async (url: string) => {
   const res = await fetch(url);
   if (!res.ok) {
     const text = await res.text(); // capture any error response
@@ -33,6 +39,19 @@ const safeJsonFetch = async (url) => {
   return res.json();
 };
 
+interface SearchBarProps {
+  coordinates: number[];
+  onSearchChange: (coords: number[]) => void;
+  onAddressSearch: (address: string) => void;
+  onCoordDataRetrieve: (data: {
+    softStory: any[] | null;
+    tsunami: any[] | null;
+    liquefaction: any[] | null;
+  }) => void;
+  onHazardDataLoading: (isLoading: boolean) => void;
+  onSearchComplete: (searchComplete: boolean) => void;
+}
+
 const SearchBar = ({
   coordinates,
   onSearchChange,
@@ -40,7 +59,7 @@ const SearchBar = ({
   onCoordDataRetrieve,
   onHazardDataLoading,
   onSearchComplete,
-}) => {
+}: SearchBarProps) => {
   const [inputAddress, setInputAddress] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -57,9 +76,9 @@ const SearchBar = ({
   // - retrieve associated coordinates from our API
   //
   // fired when the user has selected suggestion, before the form is autofilled (from https://docs.mapbox.com/mapbox-search-js/api/react/autofill/)
-  const handleRetrieve = (event) => {
-    const addressData = event.features[0];
-    const addressLine = event.features[0].properties.feature_name;
+  const handleRetrieve = (res: AddressAutofillRetrieveResponse) => {
+    const addressData = res.features[0];
+    const addressLine = res.features[0].properties.feature_name;
     const coords = addressData.geometry.coordinates;
 
     onAddressSearch(addressLine);
@@ -70,12 +89,15 @@ const SearchBar = ({
     router.push(newUrl, { scroll: false });
   };
 
-  const updateHazardData = async (coords) => {
+  const updateHazardData = async (coords: number[]) => {
     try {
       const values = await getHazardData(coords);
       onCoordDataRetrieve(values);
     } catch (error) {
-      console.error("Error while retrieving data: ", error?.message || error);
+      console.error(
+        "Error while retrieving data: ",
+        error instanceof Error ? error.message : error?.toString()
+      );
       onCoordDataRetrieve({
         softStory: null,
         tsunami: null,
@@ -83,23 +105,22 @@ const SearchBar = ({
       });
       toaster.create({
         description: "Could not retrieve hazard data",
-        state: "error",
+        type: "error",
         duration: 5000,
         closable: true,
-        position: "top",
       });
     }
   };
 
-  const handleAddressChange = (event) => {
-    setInputAddress(event.target.value);
+  const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputAddress(event.currentTarget.value);
   };
 
   /**
    * TODO: capture and update address on submit OR use first autocomplete suggestion; see file://./../snippets.md#geocode-on-search for details.
    */
-  const onSubmit = async (event) => {
-    console.log("onSubmit", event.target.value);
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    console.log("onSubmit", event.currentTarget.value);
     event.preventDefault();
 
     // TODO: capture and update address as described above
@@ -108,7 +129,7 @@ const SearchBar = ({
   // gets metadata from Mapbox API for given coordinates
   const getHazardData = async (coords = coordinates) => {
     onHazardDataLoading(true);
-    const buildUrl = (endpoint) =>
+    const buildUrl = (endpoint: string) =>
       `${endpoint}?lon=${coords[0]}&lat=${coords[1]}`;
 
     try {
@@ -211,7 +232,7 @@ const SearchBar = ({
         >
           <DynamicAddressAutofill
             accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ""}
-            options={options ?? {}}
+            options={autofillOptions}
             onRetrieve={handleRetrieve}
           >
             <Input
