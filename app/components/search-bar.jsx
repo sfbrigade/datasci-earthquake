@@ -83,7 +83,7 @@ const SearchBar = ({
 
   const updateHazardData = async (coords) => {
     try {
-      const values = await memoizedGetHazardData(coords);
+      const values = await getHazardData(coords);
       onCoordDataRetrieve(values);
     } catch (error) {
       console.error("Error while retrieving data: ", error?.message || error);
@@ -185,7 +185,6 @@ const SearchBar = ({
   // TODO: refactor how we are caching our calls
   const memoizedOnSearchChange = useCallback(onSearchChange, []);
   const memoizedOnAddressSearch = useCallback(onAddressSearch, []);
-  const memoizedGetHazardData = useCallback(getHazardData, []);
   const memoizedUpdateHazardData = useCallback(updateHazardData, []);
 
   useEffect(() => {
