@@ -81,22 +81,21 @@ jobs:
       - name: Push to develop
         if: steps.detect_changes.outputs.changes == 'true'
         run: git push origin HEAD:develop
-    
-  push-main:
-    needs: run-etl
-    if: needs.run-etl.outputs.changes == 'true'
-    runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code from develop
-        uses: actions/checkout@v4
-        with:
-          ref: develop
-          fetch-depth: 0
-          ssh-key: ${{ secrets.DEPLOY_KEY }}     
-
-      - name: Push latest commit to main
+      - name: Push to new branch for PR into main
+        if: steps.detect_changes.outputs.changes == 'true'
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git push origin HEAD:main
+          BRANCH="etl/update-${{ github.run_id }}"
+          git checkout -b $BRANCH
+          git push origin $BRANCH
+
+      - name: Create Pull Request to main
+        if: steps.detect_changes.outputs.changes == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "ETL: update GeoJSONs"
+          branch: etl/update-${{ github.run_id }}
+          title: "ETL auto-update (GeoJSONs)"
+          body: "This PR updates `public/data/*.geojson` files based on the latest ETL run. Please review and merge."
+          base: main
