@@ -30,12 +30,24 @@ describe("CardHazard Component", () => {
   });
 
   it("renders without crashing", () => {
-    render(<CardHazard hazard={Hazards[0]} />);
+    render(
+      <CardHazard
+        hazard={Hazards[0]}
+        showData={true}
+        isHazardDataLoading={true}
+      />
+    );
     expect(screen.getByText("Earthquake")).toBeInTheDocument();
   });
 
   it("displays the hazard title and description", () => {
-    render(<CardHazard hazard={Hazards[0]} />);
+    render(
+      <CardHazard
+        hazard={Hazards[0]}
+        showData={true}
+        isHazardDataLoading={true}
+      />
+    );
     expect(screen.getByText("Earthquake")).toBeInTheDocument();
     expect(
       screen.getByText("Potential hazard in the area.")
