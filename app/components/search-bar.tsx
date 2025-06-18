@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  useState,
-  useEffect,
-  useCallback,
-  Suspense,
-  FormEvent,
-  ChangeEventHandler,
-} from "react";
+import { useState, useEffect, useCallback, Suspense, FormEvent } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Input, InputGroup } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
@@ -207,29 +200,29 @@ const SearchBar = ({
 
   return (
     <form onSubmit={onSubmit}>
-      <Suspense>
-        <InputGroup
-          w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
-          mb={"24px"}
-          data-testid="search-bar"
-          startElement={
-            <IoSearchSharp
+      <InputGroup
+        w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
+        mb={"24px"}
+        data-testid="search-bar"
+        startElement={
+          <IoSearchSharp
+            color="grey.900"
+            fontSize="1.1em"
+            data-testid="search-icon"
+          />
+        }
+        endElement={
+          inputAddress.length != 0 && (
+            <RxCross2
               color="grey.900"
               fontSize="1.1em"
-              data-testid="search-icon"
+              data-testid="clear-icon"
+              onClick={handleClearClick}
             />
-          }
-          endElement={
-            inputAddress.length != 0 && (
-              <RxCross2
-                color="grey.900"
-                fontSize="1.1em"
-                data-testid="clear-icon"
-                onClick={handleClearClick}
-              />
-            )
-          }
-        >
+          )
+        }
+      >
+        <Suspense>
           <DynamicAddressAutofill
             accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ""}
             options={autofillOptions}
@@ -262,8 +255,8 @@ const SearchBar = ({
               autoComplete="address-line1"
             />
           </DynamicAddressAutofill>
-        </InputGroup>
-      </Suspense>
+        </Suspense>
+      </InputGroup>
     </form>
   );
 };
