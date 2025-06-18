@@ -67,7 +67,7 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           git add public/data/*.geojson
-          if git diff --cached --quiet; then
+          if git diff --cached --quiet; then 
             echo "No changes to commit"
             echo "changes=false" >> $GITHUB_OUTPUT
           else
@@ -97,19 +97,25 @@ jobs:
           ssh-key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Create PR branch and cherry-pick ETL commit
+        id: pr_branch
         run: |
           BRANCH="etl/update-${{ github.run_id }}"
           git fetch origin develop
           git checkout -b $BRANCH origin/main
-          git cherry-pick ${{ needs.run-etl.outputs.etl_commit }} || {
-            echo "Cherry-pick failed"
-            exit 0 
-          }
+          
+          if git cherry-pick ${{ needs.run-etl.outputs.etl_commit }}; then 
+            echo "Cherry-pick successful"
+          else
+            echo "::warning::Cherry-pick failed — committing with conflict markers for manual resolution"
+            # Stage conflicted files (geojsons)
+            git add public/data/*.geojson || true
+            git commit -m "ETL: update GeoJSONs with conflict markers for manual resolution" || true
+          fi
+
           git push origin $BRANCH
-          echo "branch_name=$BRANCH" >> $GITHUB_ENV
+          echo "branch_name=$BRANCH" >> $GITHUB_ENV      
 
       - name: Create PR to main
-        if: steps.detect_changes.outputs.changes == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
