@@ -5,7 +5,7 @@
   "scripts": {
     "fastapi-dev": "pip3 install -r requirements.txt && fastapi dev api/index.py",
     "next-dev": "next dev",
-    "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\"",
+    "dev": "concurrently \"npm run dev\" \"npm run fastapi-dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -21,28 +21,23 @@
     "rebuild-front": "npm run clean-front && npm install && npm run build"
   },
   "dependencies": {
-    "@chakra-ui/next-js": "^2.2.0",
-    "@chakra-ui/react": "^2.8.2",
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
+    "@chakra-ui/react": "^3.19.1",
+    "@emotion/react": "^11.14.0",
     "@fontsource/inter": "^5.1.0",
     "@mapbox/search-js-react": "^1.0.0-beta.22",
-    "@next/font": "^14.2.15",
     "@types/geojson": "^7946.0.14",
     "@types/node": "^20.2.4",
-    "@types/react": "^18.2.7",
-    "@types/react-dom": "^18.2.4",
+    "@types/react": "19.1.6",
+    "@types/react-dom": "19.1.5",
     "autoprefixer": "^10.4.14",
     "concurrently": "^8.0.1",
-    "eslint": "^8.41.0",
-    "eslint-config-next": "^15.0.3",
-    "framer-motion": "^11.5.6",
     "mapbox-gl": "^3.7.0",
-    "next": "13.4.4",
+    "next": "15.3.3",
+    "next-themes": "^0.4.6",
     "postcss": "^8.4.23",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-icons": "^5.3.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-icons": "^5.5.0",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.4"
   },
@@ -53,6 +48,8 @@
     "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.13",
     "@types/testing-library__user-event": "^4.1.1",
+    "eslint": "^8.41.0",
+    "eslint-config-next": "15.3.3",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "jest": "^29.7.0",
@@ -60,5 +57,9 @@
     "node-fetch": "^3.3.2",
     "prettier": "^3.3.3",
     "ts-node": "^10.9.2"
+  },
+  "overrides": {
+    "@types/react": "19.1.6",
+    "@types/react-dom": "19.1.5"
   }
 }

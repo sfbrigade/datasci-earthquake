@@ -1,3 +1,5 @@
+"use client";
+
 import { Stack, Text, Icon } from "@chakra-ui/react";
 
 export const KeyElem = ({
@@ -14,7 +16,9 @@ export const KeyElem = ({
       <Icon fontSize="16px" color={color} viewBox="0 0 16 16">
         {icon}
       </Icon>
-      <Text textStyle="textMedium">{name}</Text>
+      <Text textStyle="textMedium" layerStyle="text">
+        {name}
+      </Text>
     </Stack>
   );
 };

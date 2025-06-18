@@ -1,13 +1,28 @@
 "use client";
 
-import { CacheProvider } from "@chakra-ui/next-js";
+import { ColorModeProvider } from "@/components/ui/color-mode";
 import { ChakraProvider } from "@chakra-ui/react";
-import customTheme from "../styles/theme";
+import system from "../styles/theme";
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({
+  children,
+  ...props
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <CacheProvider>
-      <ChakraProvider theme={customTheme}>{children}</ChakraProvider>
-    </CacheProvider>
+    <ChakraProvider value={system}>
+      <ColorModeProvider {...props}>{children}</ColorModeProvider>
+    </ChakraProvider>
   );
 }
+
+// // TODO: This works, but then we don't have ColorModeProvider
+// <ChakraProvider value={system} {...props}>
+//   {children}
+// </ChakraProvider>
+
+// // TODO: ColorModeProvider is causing "https://nextjs.org/docs/messages/react-hydration-error
+// <ChakraProvider value={system}>
+//   <ColorModeProvider {...props}>{children}</ColorModeProvider>
+// </ChakraProvider>

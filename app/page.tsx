@@ -2,16 +2,13 @@ import "./globals.css";
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
 import AddressMapper from "./components/address-mapper";
-import { Headings } from "./data/data";
 import {
   fetchSoftStories,
   fetchTsunami,
   fetchLiquefaction,
 } from "./api/services";
-import { useToast } from "@chakra-ui/react";
 
 const Home = async () => {
-  const headingData = Headings.home;
   let softStoryData: FeatureCollection<Geometry, GeoJsonProperties> = {
     type: "FeatureCollection",
     features: [],
@@ -36,7 +33,6 @@ const Home = async () => {
   }
   return (
     <AddressMapper
-      headingData={headingData}
       softStoryData={softStoryData}
       tsunamiData={tsunamiData}
       liquefactionData={liquefactionData}

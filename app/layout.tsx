@@ -1,9 +1,11 @@
-import { Box, Container, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
+import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "./providers";
 import Header from "./components/header";
 import Footer from "./components/footer";
 
 import { Inter, Manrope } from "next/font/google";
+import { Suspense } from "react";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -20,6 +22,10 @@ export const metadata = {
   description: "Learn about your home's earthquake readiness",
 };
 
+// Since this is the root layout, all fetch requests in the app
+// that don't set their own cache option will be cached.
+export const fetchCache = "default-cache";
+
 export default function RootLayout({
   children,
 }: {
@@ -30,12 +36,15 @@ export default function RootLayout({
       <body className={`${manrope.className} ${inter.className}`}>
         <Providers>
           <Flex direction="column" align="center" minH="100vh">
-            <Header />
+            <Suspense>
+              <Header />
+            </Suspense>
             <Box flex="1" as="main" width="100%">
               {children}
             </Box>
             <Footer />
           </Flex>
+          <Toaster />
         </Providers>
       </body>
     </html>
