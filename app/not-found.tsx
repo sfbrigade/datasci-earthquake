@@ -1,7 +1,7 @@
 import { Button, Heading, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
-const NotFound = async () => {
+const NotFound = () => {
   return (
     <>
       <Heading>404 - Page Not Found</Heading>
