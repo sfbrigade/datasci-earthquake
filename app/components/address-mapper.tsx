@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -105,12 +105,14 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               isHazardDataLoading={isHazardDataLoading}
             />
           </Box>
-          <Map
-            coordinates={coordinates}
-            softStoryData={softStoryData}
-            tsunamiData={tsunamiData}
-            liquefactionData={liquefactionData}
-          />
+          <Suspense>
+            <Map
+              coordinates={coordinates}
+              softStoryData={softStoryData}
+              tsunamiData={tsunamiData}
+              liquefactionData={liquefactionData}
+            />
+          </Suspense>
         </Box>
       </Box>
       <Flex

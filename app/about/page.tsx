@@ -1,5 +1,3 @@
-"use client";
-
 import { Flex, Link, Text, Box, VStack, List } from "@chakra-ui/react";
 import { DataInfoLinks, TeamMembers } from "../data/data";
 import NextLink from "next/link";

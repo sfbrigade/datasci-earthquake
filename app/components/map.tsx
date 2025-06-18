@@ -142,10 +142,10 @@ const Map: React.FC<MapProps> = ({
 
         map.on("error", (e) => {
           if (e.error && e.error.message.includes("access token")) {
-            if (toaster.isDismissed(toastIdNoToken)) {
+            if (toaster.isDismissed(toastIdInvalidToken)) {
               // TODO: or use `!toaster.isVisible`? trying to replace `!toast.isActive` from Chakra v2
               toaster.create({
-                id: toastIdNoToken,
+                id: toastIdInvalidToken,
                 description: "Invalid Mapbox access token!",
                 type: "error",
                 duration: 5000,

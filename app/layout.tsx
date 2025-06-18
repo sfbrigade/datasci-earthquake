@@ -6,6 +6,7 @@ import Footer from "./components/footer";
 import { defaultSystem } from "@chakra-ui/react"; // TODO: is this necessary?
 
 import { Inter, Manrope } from "next/font/google";
+import { Suspense } from "react";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -36,7 +37,9 @@ export default function RootLayout({
       <body className={`${manrope.className} ${inter.className}`}>
         <Providers>
           <Flex direction="column" align="center" minH="100vh">
-            <Header />
+            <Suspense>
+              <Header />
+            </Suspense>
             <Box flex="1" as="main" width="100%">
               {children}
             </Box>

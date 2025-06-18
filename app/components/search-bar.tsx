@@ -9,30 +9,23 @@ import {
   useCallback,
 } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import {
-  Input,
-  InputGroup,
-  // useToast,
-} from "@chakra-ui/react";
+import { Input, InputGroup } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill, {
+  AddressAutofillOptions,
   AddressAutofillRetrieveResponse,
 } from "./address-autofill";
 import { API_ENDPOINTS } from "../api/endpoints";
-import { LngLat, LngLatBounds } from "mapbox-gl";
 
-const upperLeft = new LngLat(-122.55, 37.69);
-const bottomRight = new LngLat(-122.35, 37.83);
-const bbox = new LngLatBounds(upperLeft, bottomRight);
-
-const options = {
+const autofillOptions: AddressAutofillOptions = {
   country: "US",
   limit: 10,
-  // bbox: bbox, // TODO FIXME: fix bbox type, which works directly in DynamicAddressAutofill, but not when passed as options to it
+  bbox: [-122.55, 37.69, -122.35, 37.83],
   proximity: { lng: -122.4194, lat: 37.7749 },
   streets: false,
+  language: "en",
 };
 
 const safeJsonFetch = async (url: string) => {
@@ -48,6 +41,19 @@ const safeJsonFetch = async (url: string) => {
 
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `search-bar-skeleton.tsx` and vice versa
 // TODO: isolate the usage of `useSearchParams()` so that the Suspense boundary can be even more narrow if possible
+interface SearchBarProps {
+  coordinates: number[];
+  onSearchChange: (coords: number[]) => void;
+  onAddressSearch: (address: string) => void;
+  onCoordDataRetrieve: (data: {
+    softStory: any[] | null;
+    tsunami: any[] | null;
+    liquefaction: any[] | null;
+  }) => void;
+  onHazardDataLoading: (hazardDataLoading: boolean) => void;
+  onSearchComplete: (searchComplete: boolean) => void;
+}
+
 const SearchBar = ({
   coordinates,
   onSearchChange,
@@ -55,14 +61,7 @@ const SearchBar = ({
   onCoordDataRetrieve,
   onHazardDataLoading,
   onSearchComplete,
-}: {
-  coordinates: number[];
-  onSearchChange: (coords: number[]) => void;
-  onAddressSearch: (address: string) => void;
-  onCoordDataRetrieve: (data: any) => void;
-  onHazardDataLoading: (hazardDataLoading: boolean) => void;
-  onSearchComplete: (searchComplete: boolean) => void;
-}) => {
+}: SearchBarProps) => {
   const [inputAddress, setInputAddress] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -99,7 +98,7 @@ const SearchBar = ({
     } catch (error) {
       console.error(
         "Error while retrieving data: ",
-        error instanceof Error ? error.message : error
+        error instanceof Error ? error.message : error?.toString()
       );
       onCoordDataRetrieve({
         softStory: null,
@@ -115,15 +114,15 @@ const SearchBar = ({
     }
   };
 
-  const handleAddressChange = (event: ChangeEvent) => {
-    setInputAddress(event.currentTarget?.nodeValue ?? "");
+  const handleAddressChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputAddress(event.currentTarget.value);
   };
 
   /**
    * TODO: capture and update address on submit OR use first autocomplete suggestion; see file://./../snippets.md#geocode-on-search for details.
    */
-  const onSubmit = async (event: FormEvent) => {
-    console.log("onSubmit", event.currentTarget?.nodeValue ?? "");
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    console.log("onSubmit", event.currentTarget.value);
     event.preventDefault();
 
     // TODO: capture and update address as described above
@@ -214,7 +213,7 @@ const SearchBar = ({
       <Suspense>
         <DynamicAddressAutofill
           accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ""}
-          options={options ?? {}}
+          options={autofillOptions}
           onRetrieve={handleRetrieve}
         >
           <InputGroup

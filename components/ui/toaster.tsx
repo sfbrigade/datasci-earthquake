@@ -17,7 +17,7 @@ export const toaster = createToaster({
   pauseOnPageIdle: true,
 });
 
-const ToasterIcon = ({ type = "info" }: { type?: String }) => {
+const ToasterIcon = ({ type = "info" }: { type?: string }) => {
   switch (type) {
     case "loading":
       return <Spinner size="sm" color="blue.solid" />;
