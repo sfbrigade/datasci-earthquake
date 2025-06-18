@@ -1,5 +1,6 @@
 import "./globals.css";
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
+import { Suspense } from "react";
 
 import AddressMapper from "./components/address-mapper";
 import { Headings } from "./data/data";
@@ -8,7 +9,6 @@ import {
   fetchTsunami,
   fetchLiquefaction,
 } from "./api/services";
-import { useToast } from "@chakra-ui/react";
 
 const Home = async () => {
   const headingData = Headings.home;
@@ -35,12 +35,14 @@ const Home = async () => {
     console.error("Error: ", error);
   }
   return (
-    <AddressMapper
-      headingData={headingData}
-      softStoryData={softStoryData}
-      tsunamiData={tsunamiData}
-      liquefactionData={liquefactionData}
-    />
+    <Suspense>
+      <AddressMapper
+        headingData={headingData}
+        softStoryData={softStoryData}
+        tsunamiData={tsunamiData}
+        liquefactionData={liquefactionData}
+      />
+    </Suspense>
   );
 };
 

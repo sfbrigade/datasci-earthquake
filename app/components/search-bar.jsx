@@ -1,23 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import {
-  HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  useToast,
-} from "@chakra-ui/react";
+import { HStack, Input, InputGroup, NumberInput } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
-import DynamicAddressAutofill from "./address-autofill";
+import AddressAutofill from "./address-autofill";
 import { API_ENDPOINTS } from "../api/endpoints";
 
 const options = {
@@ -54,7 +42,6 @@ const SearchBar = ({
   const debug = useSearchParams().get("debug");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const toast = useToast();
   const toastIdFailedHazardData = "failed-hazard-data";
 
   const handleClearClick = () => {
@@ -83,7 +70,7 @@ const SearchBar = ({
 
   const updateHazardData = async (coords) => {
     try {
-      const values = await getHazardData(coords);
+      const values = await memoizedGetHazardData(coords);
       onCoordDataRetrieve(values);
     } catch (error) {
       console.error("Error while retrieving data: ", error?.message || error);
@@ -92,18 +79,18 @@ const SearchBar = ({
         tsunami: null,
         liquefaction: null,
       });
-      toast({
-        description: "Could not retrieve hazard data",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "top",
-        containerStyle: {
-          backgroundColor: "#b53d37",
-          opacity: 1,
-          borderRadius: "12px",
-        },
-      });
+      // toast({
+      //   description: "Could not retrieve hazard data",
+      //   status: "error",
+      //   duration: 5000,
+      //   isClosable: true,
+      //   position: "top",
+      //   containerStyle: {
+      //     backgroundColor: "#b53d37",
+      //     opacity: 1,
+      //     borderRadius: "12px",
+      //   },
+      // });
     }
   };
 
@@ -145,24 +132,24 @@ const SearchBar = ({
       ].filter(({ result }) => result.status === "rejected");
 
       if (failed.length > 0) {
-        if (!toast.isActive(toastIdFailedHazardData)) {
-          toast({
-            id: "failed-hazard-data",
-            title: "Hazard data warning",
-            description: `Failed to fetch: ${failed
-              .map((f) => f.name)
-              .join(", ")}`,
-            status: "warning",
-            duration: 5000,
-            isClosable: true,
-            position: "top",
-            containerStyle: {
-              backgroundColor: "#b53d37",
-              opacity: 1,
-              borderRadius: "12px",
-            },
-          });
-        }
+        // if (!toast.isActive(toastIdFailedHazardData)) {
+        //   toast({
+        //     id: "failed-hazard-data",
+        //     title: "Hazard data warning",
+        //     description: `Failed to fetch: ${failed
+        //       .map((f) => f.name)
+        //       .join(", ")}`,
+        //     status: "warning",
+        //     duration: 5000,
+        //     isClosable: true,
+        //     position: "top",
+        //     containerStyle: {
+        //       backgroundColor: "#b53d37",
+        //       opacity: 1,
+        //       borderRadius: "12px",
+        //     },
+        //   });
+        // }
       }
 
       return {
@@ -185,6 +172,7 @@ const SearchBar = ({
   // TODO: refactor how we are caching our calls
   const memoizedOnSearchChange = useCallback(onSearchChange, []);
   const memoizedOnAddressSearch = useCallback(onAddressSearch, []);
+  const memoizedGetHazardData = useCallback(getHazardData, []);
   const memoizedUpdateHazardData = useCallback(updateHazardData, []);
 
   useEffect(() => {
@@ -194,9 +182,9 @@ const SearchBar = ({
 
     if (address && lat && lon) {
       const coords = [parseFloat(lon), parseFloat(lat)];
-      onAddressSearch(address);
-      onSearchChange(coords);
-      updateHazardData(coords);
+      memoizedOnAddressSearch(address);
+      memoizedOnSearchChange(coords);
+      memoizedUpdateHazardData(coords);
     }
   }, [
     searchParams,
@@ -209,24 +197,24 @@ const SearchBar = ({
     <form onSubmit={onSubmit}>
       {debug === "true" && (
         <HStack>
-          <NumberInput
+          <NumberInput.Root
             bg="white"
             size="xs"
             width="auto"
             defaultValue={coordinates[0]}
             precision={9}
             step={0.005}
-            onChange={(valueString) =>
+            onValueChange={(valueString) =>
               onSearchChange([parseFloat(valueString), coordinates[1]])
             }
           >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-          <NumberInput
+            <NumberInput.Input />
+            <NumberInput.Control>
+              <NumberInput.IncrementTrigger />
+              <NumberInput.DecrementTrigger />
+            </NumberInput.Control>
+          </NumberInput.Root>
+          <NumberInput.Root
             bg="white"
             size="xs"
             width="auto"
@@ -237,70 +225,71 @@ const SearchBar = ({
               onSearchChange([coordinates[0], parseFloat(valueString)])
             }
           >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
+            <NumberInput.Input />
+            <NumberInput.Control>
+              <NumberInput.IncrementTrigger />
+              <NumberInput.DecrementTrigger />
+            </NumberInput.Control>
+          </NumberInput.Root>
         </HStack>
       )}
-      <DynamicAddressAutofill
-        accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-        options={options}
-        onRetrieve={handleRetrieve}
-      >
-        <InputGroup
-          w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
-          size={{ base: "md", md: "lg", xl: "lg" }}
-          mb={"24px"}
-          data-testid="search-bar"
+      <Suspense>
+        <AddressAutofill
+          accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+          options={options}
+          onRetrieve={handleRetrieve}
         >
-          <InputLeftElement>
-            <IoSearchSharp
-              color="grey.900"
-              fontSize="1.1em"
-              data-testid="search-icon"
-            />
-          </InputLeftElement>
-          <Input
-            placeholder="Search San Francisco address"
-            fontFamily="Inter, sans-serif"
-            fontSize={{ base: "md", sm: "md", md: "md", lg: "md" }}
-            p={{
-              base: "0 10px 0 35px",
-              sm: "0 10px 0 35px",
-              md: "0 10px 0 48px",
-              lg: "0 10px 0 48px",
-            }}
-            borderRadius="50"
-            border="1px solid #4A5568"
-            bgColor="white"
-            focusBorderColor="yellow"
-            boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
-            type="text"
-            name="address-1"
-            value={inputAddress}
-            onChange={handleAddressChange}
-            _hover={{
-              borderColor: "yellow",
-              _placeholder: { color: "grey.900" },
-            }}
-            _invalid={{ borderColor: "red" }}
-            autoComplete="address-line1"
-          />
-          {inputAddress.length != 0 && (
-            <InputRightElement>
-              <RxCross2
+          <InputGroup
+            w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
+            size={{ base: "md", md: "lg", xl: "lg" }}
+            mb={"24px"}
+            data-testid="search-bar"
+            startElement={
+              <IoSearchSharp
                 color="grey.900"
                 fontSize="1.1em"
-                data-testid="clear-icon"
-                onClick={handleClearClick}
+                data-testid="search-icon"
               />
-            </InputRightElement>
-          )}
-        </InputGroup>
-      </DynamicAddressAutofill>
+            }
+            endElement={
+              inputAddress.length != 0 && (
+                <RxCross2
+                  color="grey.900"
+                  fontSize="1.1em"
+                  data-testid="clear-icon"
+                  onClick={handleClearClick}
+                />
+              )
+            }
+          >
+            <Input
+              placeholder="Search San Francisco address"
+              fontFamily="Inter, sans-serif"
+              fontSize={{ base: "md", sm: "md", md: "md", lg: "md" }}
+              p={{
+                base: "0 10px 0 35px",
+                sm: "0 10px 0 35px",
+                md: "0 10px 0 48px",
+                lg: "0 10px 0 48px",
+              }}
+              borderRadius="50"
+              border="1px solid #4A5568"
+              bgColor="white"
+              boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
+              type="text"
+              name="address-1"
+              value={inputAddress}
+              onChange={handleAddressChange}
+              _hover={{
+                borderColor: "yellow",
+                _placeholder: { color: "grey.900" },
+              }}
+              _invalid={{ borderColor: "red" }}
+              autoComplete="address-line1"
+            />
+          </InputGroup>
+        </AddressAutofill>
+      </Suspense>
     </form>
   );
 };

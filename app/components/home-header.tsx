@@ -1,11 +1,11 @@
 "use client";
 
+import ReactDOM from "react-dom";
 import { Box, Stack, Text } from "@chakra-ui/react";
 import SearchBar from "./search-bar";
 import Heading from "./heading";
 import { Headings } from "../data/data";
-import { useState } from "react";
-import ReactDOM from "react-dom";
+import { Suspense, useState } from "react";
 import ReportAddress from "./report-address";
 import Share from "./share";
 
@@ -14,7 +14,11 @@ interface HomeHeaderProps {
   searchedAddress: string;
   onSearchChange: (coords: number[]) => void;
   onAddressSearch: (address: string) => void;
-  onCoordDataRetrieve: (data: any[]) => void;
+  onCoordDataRetrieve: (data: {
+    softStory: any[] | null;
+    tsunami: any[] | null;
+    liquefaction: any[] | null;
+  }) => void;
   onHazardDataLoading: (isLoading: boolean) => void;
 }
 
@@ -52,7 +56,9 @@ const HomeHeader = ({
             justifyContent="space-between"
           >
             <ReportAddress searchedAddress={searchedAddress} />
-            <Share />
+            <Suspense>
+              <Share />
+            </Suspense>
           </Stack>
         )}
         {!isSearchComplete && (
@@ -66,9 +72,21 @@ const HomeHeader = ({
               This project was built using data from DataSF.
             </Text>
           </>
-        )}
-        {isSearchComplete && typeof window !== "undefined" ? (
-          ReactDOM.createPortal(
+        )}{" "}
+        <Suspense>
+          {isSearchComplete && typeof window !== "undefined" ? (
+            ReactDOM.createPortal(
+              <SearchBar
+                coordinates={coordinates}
+                onSearchChange={onSearchChange}
+                onAddressSearch={onAddressSearch}
+                onCoordDataRetrieve={onCoordDataRetrieve}
+                onHazardDataLoading={onHazardDataLoading}
+                onSearchComplete={setSearchComplete}
+              />,
+              document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
+            )
+          ) : (
             <SearchBar
               coordinates={coordinates}
               onSearchChange={onSearchChange}
@@ -76,19 +94,9 @@ const HomeHeader = ({
               onCoordDataRetrieve={onCoordDataRetrieve}
               onHazardDataLoading={onHazardDataLoading}
               onSearchComplete={setSearchComplete}
-            />,
-            document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
-          )
-        ) : (
-          <SearchBar
-            coordinates={coordinates}
-            onSearchChange={onSearchChange}
-            onAddressSearch={onAddressSearch}
-            onCoordDataRetrieve={onCoordDataRetrieve}
-            onHazardDataLoading={onHazardDataLoading}
-            onSearchComplete={setSearchComplete}
-          />
-        )}
+            />
+          )}
+        </Suspense>
       </Box>
     </Box>
   );

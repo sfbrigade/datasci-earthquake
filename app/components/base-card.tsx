@@ -1,5 +1,5 @@
-import { Card, CardBody, CardFooter, CardHeader, Text } from "@chakra-ui/react";
-import React from "react";
+import { Card, Text } from "@chakra-ui/react";
+import React, { type JSX } from "react";
 
 export const BaseCard = ({
   header: title,
@@ -10,22 +10,19 @@ export const BaseCard = ({
   children: React.ReactNode;
   footer?: JSX.Element;
 }) => {
-  const sectionProps = {
-    p: 0,
-    pt: "10px",
-  };
+  const sectionProps = { p: 0, pt: "10px" };
 
   return (
-    <Card flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
-      <CardHeader p={0}>
+    <Card.Root flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
+      <Card.Header p={0}>
         {typeof title === "string" ? (
           <Text textStyle="cardTitle">{title}</Text>
         ) : (
           <>{title}</>
         )}
-      </CardHeader>
-      <CardBody {...sectionProps}>{children}</CardBody>
-      {footer && <CardFooter {...sectionProps}>{footer}</CardFooter>}
-    </Card>
+      </Card.Header>
+      <Card.Body {...sectionProps}>{children}</Card.Body>
+      {footer && <Card.Footer {...sectionProps}>{footer}</Card.Footer>}
+    </Card.Root>
   );
 };
