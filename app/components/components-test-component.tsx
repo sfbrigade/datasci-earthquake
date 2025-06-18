@@ -57,7 +57,19 @@ const ComponentsTestComponent = ({}) => {
       </Heading>
       <Text mb={6}>This section demonstrates Hazard Card component</Text>
       <VStack spacing={6} align="start">
-        <HStack w="100%">{/* <CardHazard hazard={Hazards[0]} /> */}</HStack>
+        <HStack w="100%">
+          {Hazards.map((hazard) => {
+            return (
+              <CardHazard
+                key={hazard.id}
+                hazard={hazard}
+                hazardData={{ exists: true, last_updated: "whenver" }}
+                showData={true}
+                isHazardDataLoading={true}
+              />
+            );
+          })}
+        </HStack>
         <Divider mb={3} />
       </VStack>
       <Text mb={6}>This section demonstrates Info Card component</Text>
