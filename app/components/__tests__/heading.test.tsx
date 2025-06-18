@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Heading from "../heading";
 import { ChakraProvider } from "@chakra-ui/react";
-import { system } from "../../../styles/theme";
+import system from "../../../styles/theme";
 
 describe("Heading component", () => {
   const headingData = {

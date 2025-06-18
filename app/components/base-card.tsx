@@ -21,7 +21,9 @@ export const BaseCard = ({
     <Card.Root flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
       <Card.Header p={0}>
         {typeof title === "string" ? (
-          <Text textStyle="cardTitle">{title}</Text>
+          <Text textStyle="cardTitle" layerStyle="headerAlt">
+            {title}
+          </Text>
         ) : (
           <>{title}</>
         )}

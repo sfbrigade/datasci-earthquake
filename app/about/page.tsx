@@ -53,7 +53,7 @@ const About = () => {
       gap="44px"
     >
       <Flex direction="column" alignItems={"flex-start"} gap="48px">
-        <Text textStyle="textBig">
+        <Text textStyle="textBig" layerStyle="text">
           Seismologists predict a 72% probability that the Bay Area will
           experience a magnitude 6.7 (or greater) earthquake in the next 30
           years. SafeHome was created to give San Franciscans the knowledge and
@@ -63,10 +63,14 @@ const About = () => {
           stay prepared.
         </Text>
         <VStack>
-          <Text textStyle="headerMedium" alignSelf="flex-start">
+          <Text
+            textStyle="headerMedium"
+            layerStyle="headerAlt"
+            alignSelf="flex-start"
+          >
             Supporting a citywide mission
           </Text>
-          <Text textStyle="textMedium">
+          <Text textStyle="textMedium" layerStyle="text">
             We’re working with city leaders to support San Francisco&apos;s
             efforts efforts to make buildings safer and more resilient against
             earthquakes. In particular, our goal is to help raise awareness
@@ -77,8 +81,10 @@ const About = () => {
           </Text>
         </VStack>
         <VStack alignItems="flex-start">
-          <Text textStyle="headerMedium">Methodology and data sources</Text>
-          <Text textStyle="textMedium">
+          <Text textStyle="headerMedium" layerStyle="headerAlt">
+            Methodology and data sources
+          </Text>
+          <Text textStyle="textMedium" layerStyle="text">
             SafeHome uses up-to-date official public datasets to power the maps
             and information displayed to users. Our technologists and data
             scientists have rigorously analyzed the Soft Story Properties
@@ -89,11 +95,11 @@ const About = () => {
             publicly available data to visualize other earthquake-related
             hazards, such as liquefaction and tsunami zones.
           </Text>
-          <Text textStyle="textMedium">
+          <Text textStyle="textMedium" layerStyle="text">
             For more information on the data, please visit:
           </Text>
           <List.Root>{buildInfoLinks()}</List.Root>
-          <Text textStyle="textMedium">
+          <Text textStyle="textMedium" layerStyle="text">
             For details on the City of San Francisco’s seismic compliance
             requirements, see{" "}
             {buildLink(
@@ -104,8 +110,10 @@ const About = () => {
           </Text>
         </VStack>
         <VStack alignItems="flex-start">
-          <Text textStyle="headerMedium">Meet the team</Text>
-          <Text textStyle="textMedium">
+          <Text textStyle="headerMedium" layerStyle="headerAlt">
+            Meet the team
+          </Text>
+          <Text textStyle="textMedium" layerStyle="text">
             SafeHome is run by a volunteer team at{" "}
             {buildLink("https://www.sfcivictech.org/about/", "SF Civic Tech")},
             a diverse group of technologists, creatives, and data scientists

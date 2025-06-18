@@ -73,12 +73,18 @@ const CardHazard: React.FC<CardHazardProps> = ({
             textAlign="start"
           >
             <Card.Header p={0} marginBottom={"0.5em"}>
-              <Text textStyle="cardTitle" fontWeight={"700"}>
+              <Text
+                textStyle="cardTitle"
+                layerStyle="headerAlt"
+                fontWeight={"700"}
+              >
                 {title}
               </Text>
             </Card.Header>
             <Card.Body p={0} mb={"14px"}>
-              <Text textStyle="textMedium">{description}</Text>
+              <Text textStyle="textMedium" layerStyle="text">
+                {description}
+              </Text>
             </Card.Body>
             <Card.Footer p={0} width={"100%"}>
               <HStack justifyContent="space-between" width="100%">

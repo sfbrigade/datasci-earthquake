@@ -34,7 +34,7 @@ const ReportHazards = ({
           direction={{ base: "column", md: "row" }}
           alignItems="center"
         >
-          <Text textStyle="textMedium" fontWeight="700">
+          <Text textStyle="textMedium" layerStyle="text" fontWeight="700">
             Legend:
           </Text>
           <KeyElem name="Soft story" color="grey.400" icon={<FaCircle />} />

@@ -16,7 +16,9 @@ export const KeyElem = ({
       <Icon fontSize="16px" color={color} viewBox="0 0 16 16">
         {icon}
       </Icon>
-      <Text textStyle="textMedium">{name}</Text>
+      <Text textStyle="textMedium" layerStyle="text">
+        {name}
+      </Text>
     </Stack>
   );
 };

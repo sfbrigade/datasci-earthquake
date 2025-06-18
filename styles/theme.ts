@@ -1,75 +1,110 @@
-import { createSystem, defaultConfig } from "@chakra-ui/react";
+import {
+  createSystem,
+  defaultConfig,
+  defineConfig,
+  defineTextStyles,
+  defineLayerStyles,
+} from "@chakra-ui/react";
 
-export const system = createSystem(defaultConfig, {
+const textStyles = defineTextStyles({
+  headerBig: {
+    description: "header big",
+    value: {
+      fontFamily: "heading",
+      fontSize: ["4xl", "4xl", "5xl", "5xl", "6xl", "6xl"],
+      fontWeight: "300",
+      lineHeight: ["40px", "40px", "48px", "48px", "60px", "60px"],
+    },
+  },
+  headerReport: {
+    description: "header report",
+    value: {
+      fontFamily: "heading",
+      fontSize: ["3xl", "3xl", "4xl", "4xl", "4xl", "4xl"],
+      fontWeight: "300",
+      lineHeight: ["40px", "40px", "48px", "48px", "60px", "60px"],
+    },
+  },
+  headerMedium: {
+    description: "header medium",
+    value: {
+      fontFamily: "heading",
+      fontSize: ["2xl", "2xl", "3xl", "3xl", "3xl", "3xl"],
+      fontWeight: "500",
+    },
+  },
+  headerSmall: {
+    description: "header small",
+    value: {
+      fontFamily: "body",
+      fontSize: ["lg", "lg", "lg", "lg", "xl", "xl"],
+      fontWeight: "normal",
+    },
+  },
+  cardTitle: {
+    description: "card title",
+    value: {
+      fontFamily: "body",
+      fontSize: "xl",
+      fontWeight: "normal",
+    },
+  },
+  textBig: {
+    description: "text big",
+    value: {
+      fontFamily: "body",
+      fontSize: "xl",
+      fontWeight: "normal",
+    },
+  },
+  textMedium: {
+    description: "text medium",
+    value: {
+      fontFamily: "body",
+      fontSize: "md",
+      fontWeight: "normal",
+    },
+  },
+  textSmall: {
+    description: "text small",
+    value: {
+      fontFamily: "body",
+      fontSize: "xs",
+      fontWeight: "normal",
+    },
+  },
+  textSemibold: {
+    description: "text semibold",
+    value: {
+      fontWeight: "600",
+    },
+  },
+});
+
+const layerStyles = defineLayerStyles({
+  // TODO: try to combine text styles and layer styles if possible (e.g.,using Chakra v3  component) (post-migration from v2 to v3)
+  // for textStyles: headerBig, headerReport, headerSmall
+  headerMain: {
+    description: "header main",
+    value: { color: "white" },
+  },
+  // for textStyles: headerMedium, cardTitle
+  headerAlt: {
+    description: "header alt",
+    value: { color: "blue" },
+  },
+  // for textStyles: textSmall, textMedium, textBig
+  text: {
+    description: "text",
+    value: { color: "grey.900" },
+  },
+});
+
+const config = defineConfig({
+  strictTokens: false,
   theme: {
-    textStyles: {
-      headerBig: {
-        fontSize: { value: ["4xl", "4xl", "5xl", "5xl", "6xl", "6xl"] },
-        fontWeight: { value: "300" },
-        lineHeight: {
-          value: ["40px", "40px", "48px", "48px", "60px", "60px"],
-        },
-        color: { value: "white" },
-        fontFamily: { value: "heading" },
-      },
-      headerReport: {
-        fontSize: { value: ["3xl", "3xl", "4xl", "4xl", "4xl", "4xl"] },
-        fontWeight: { value: "300" },
-        lineHeight: {
-          value: ["40px", "40px", "48px", "48px", "60px", "60px"],
-        },
-        color: { value: "white" },
-        fontFamily: { value: "heading" },
-      },
-      headerMedium: {
-        fontSize: { value: ["2xl", "2xl", "3xl", "3xl", "3xl", "3xl"] },
-        fontWeight: { value: "500" },
-        color: { value: "blue" },
-        fontFamily: { value: "heading" },
-      },
-      headerSmall: {
-        fontSize: { value: ["lg", "lg", "lg", "lg", "xl", "xl"] },
-        fontWeight: { value: "normal" },
-        color: { value: "white" },
-        fontFamily: { value: "body" },
-      },
-      cardTitle: {
-        fontSize: { value: "xl" },
-        fontWeight: { value: "normal" },
-        color: { value: "blue" },
-        fontFamily: { value: "body" },
-      },
-      textBig: {
-        fontSize: { value: "xl" },
-        fontWeight: { value: "normal" },
-        color: { value: "grey.900" },
-        fontFamily: { value: "body" },
-      },
-      textMedium: {
-        fontSize: { value: "md" },
-        fontWeight: { value: "normal" },
-        color: { value: "grey.900" },
-        fontFamily: { value: "body" },
-      },
-      textSmall: {
-        fontSize: { value: "xs" },
-        fontWeight: { value: "normal" },
-        color: { value: "grey.900" },
-        fontFamily: { value: "body" },
-      },
-      textSemibold: {
-        fontWeight: { value: "600" },
-      },
-    },
-    layerStyles: {
-      list: {
-        listStyleType: { value: "disc" },
-        paddingLeft: { value: "6" },
-      },
-      listItem: {
-        listStyleType: { value: "disc" },
-      },
-    },
+    textStyles,
+    layerStyles,
     tokens: {
       fonts: {
         heading: { value: "Manrope, sans-serif" },
@@ -131,3 +166,5 @@ export const system = createSystem(defaultConfig, {
     },
   },
 });
+
+export default createSystem(defaultConfig, config);

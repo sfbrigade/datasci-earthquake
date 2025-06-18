@@ -40,10 +40,10 @@ export default function RootLayout({
             <Box flex="1" as="main" width="100%">
               {children}
             </Box>
-            {/* TODO FIXME: is this Toaster component declared in the right place? */}
-            <Toaster />
             <Footer />
           </Flex>
+          {/* TODO FIXME: is this Toaster component declared in the right place? */}
+          <Toaster />
         </Providers>
       </body>
     </html>

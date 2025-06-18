@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { ChakraProvider } from "@chakra-ui/react";
 import "@testing-library/jest-dom";
 import Footer from "../footer";
-import { system } from "../../../styles/theme";
+import system from "../../../styles/theme";
 
 describe("Footer Component", () => {
   const renderFooter = () =>
