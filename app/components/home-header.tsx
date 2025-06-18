@@ -14,7 +14,11 @@ interface HomeHeaderProps {
   searchedAddress: string;
   onSearchChange: (coords: number[]) => void;
   onAddressSearch: (address: string) => void;
-  onCoordDataRetrieve: (data: any[]) => void;
+  onCoordDataRetrieve: (data: {
+    softStory: any[] | null;
+    tsunami: any[] | null;
+    liquefaction: any[] | null;
+  }) => void;
   onHazardDataLoading: (isLoading: boolean) => void;
 }
 
@@ -68,10 +72,10 @@ const HomeHeader = ({
               This project was built using data from DataSF.
             </Text>
           </>
-        )}
-        {isSearchComplete && typeof window !== "undefined" ? (
-          ReactDOM.createPortal(
-            <Suspense>
+        )}{" "}
+        <Suspense>
+          {isSearchComplete && typeof window !== "undefined" ? (
+            ReactDOM.createPortal(
               <SearchBar
                 coordinates={coordinates}
                 onSearchChange={onSearchChange}
@@ -79,12 +83,10 @@ const HomeHeader = ({
                 onCoordDataRetrieve={onCoordDataRetrieve}
                 onHazardDataLoading={onHazardDataLoading}
                 onSearchComplete={setSearchComplete}
-              />
-            </Suspense>,
-            document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
-          )
-        ) : (
-          <Suspense>
+              />,
+              document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
+            )
+          ) : (
             <SearchBar
               coordinates={coordinates}
               onSearchChange={onSearchChange}
@@ -93,8 +95,8 @@ const HomeHeader = ({
               onHazardDataLoading={onHazardDataLoading}
               onSearchComplete={setSearchComplete}
             />
-          </Suspense>
-        )}
+          )}
+        </Suspense>
       </Box>
     </Box>
   );
