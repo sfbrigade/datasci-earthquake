@@ -16,6 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: develop 
           fetch-depth: 0
           ssh-key: ${{ secrets.DEPLOY_KEY }}          
 
@@ -52,11 +53,6 @@ jobs:
 
       - name: Override an env variable
         run: echo "ENVIRONMENT=ci" >> .env
-        
-      - name: Clear previous ETL data
-        run: |
-          rm -rf public/data/*
-          echo "Cleared old ETL data from public/data"        
           
       - name: ETL data to Neon DB
         run: |
@@ -80,7 +76,9 @@ jobs:
 
       - name: Push to develop
         if: steps.detect_changes.outputs.changes == 'true'
-        run: git push origin HEAD:develop
+        run: |
+          git pull --rebase origin develop
+          git push origin HEAD:develop
 
       - name: Push to new branch for PR into main
         if: steps.detect_changes.outputs.changes == 'true'
@@ -89,7 +87,7 @@ jobs:
           git checkout -b $BRANCH
           git push origin $BRANCH
 
-      - name: Create Pull Request to main
+      - name: Create Pull Request to Main
         if: steps.detect_changes.outputs.changes == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
