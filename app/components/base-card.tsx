@@ -1,5 +1,5 @@
 import { Card, CardBody, CardFooter, CardHeader, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { type JSX } from "react";
 
 export const BaseCard = ({
   header: title,
