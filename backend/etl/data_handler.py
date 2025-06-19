@@ -45,7 +45,6 @@ class DataHandler(ABC):
         session: Optional[requests.Session] = None,
         logger: Optional[logging.Logger] = None,
     ):
-        self.db = next(get_db())
         self.url = url
         self.table = table
         self.page_size = page_size
@@ -183,7 +182,7 @@ class DataHandler(ABC):
             self.logger.warning(f"{self.table.__name__}: No data to insert")
             return
         try:
-            with self.db as db:
+            with next(get_db()) as db:
                 stmt = pg_insert(self.table).values(data_dicts)
 
                 update_fields = self.insert_policy()
