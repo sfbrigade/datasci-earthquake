@@ -5,6 +5,7 @@ from pathlib import Path
 import json
 from shapely.geometry import shape
 from sqlalchemy.dialects.postgresql import insert as pg_insert
+from sqlalchemy.dialects.postgresql import Insert
 from backend.database.session import get_db
 from backend.api.models.base import ModelType
 from shapely.ops import transform
@@ -14,6 +15,7 @@ import time
 import logging
 from backend.etl.session_manager import SessionManager
 from backend.etl.request_handler import RequestHandler
+from sqlalchemy.exc import SQLAlchemyError, ProgrammingError, IntegrityError
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -43,6 +45,7 @@ class DataHandler(ABC):
         session: Optional[requests.Session] = None,
         logger: Optional[logging.Logger] = None,
     ):
+        self.db = next(get_db())
         self.url = url
         self.table = table
         self.page_size = page_size
@@ -176,21 +179,78 @@ class DataHandler(ABC):
         pass
 
     def bulk_insert_data(self, data_dicts: list[dict], id_field: str):
-        """
-        Inserts the list of dictionaries into the database table as
-        SQLAlchemy objects.
+        if not data_dicts:
+            self.logger.warning(f"{self.table.__name__}: No data to insert")
+            return
+        try:
+            with self.db as db:
+                stmt = pg_insert(self.table).values(data_dicts)
+                
+                update_fields = self.insert_policy()
+                if update_fields:
+                    stmt = stmt.on_conflict_do_update(
+                        index_elements=[id_field],
+                        set_=update_fields
+                    )
+                else:
+                    stmt = stmt.on_conflict_do_nothing(
+                        index_elements=[id_field]
+                    )
 
-        Rows that cause conflicts based on the `id_field` are skipped
+                db.execute(stmt)
+                db.commit()
+                self.logger.info(
+                    f"{self.table.__name__}: Inserted {len(data_dicts)} rows with "
+                    f"{'update' if update_fields else 'do nothing'} conflict policy."
+                )
+
+        except ProgrammingError as e:
+            self.logger.error(f"Schema error in {self.table.__name__}: {str(e)}")
+            raise
+        except IntegrityError as e:
+            self.logger.error(f"Data integrity error in {self.table.__name__}: {str(e)}")
+            raise
+        except SQLAlchemyError as e:
+            self.logger.error(f"Database error in {self.table.__name__}: {str(e)}")
+            raise
+
+
+    def insert_policy() -> dict:
         """
-        # TODO: Implement logic to upsert only changed data
-        with next(get_db()) as db:
-            stmt = pg_insert(self.table).values(data_dicts)
-            stmt = stmt.on_conflict_do_nothing(index_elements=[id_field])
-            db.execute(stmt)
-            db.commit()
-            self.logger.info(
-                f"{self.table.__name__}: Inserted {len(data_dicts)} rows into {self.table.__name__}."
-            )
+
+        Defines conflict handling for bulk_insert_data() method.
+
+        Returns a dictionary containing SQL SET clauses for ON CONFLICT DO UPDATE.
+        SQLAlchemy validates clause syntax before execution, however business logic must be validated through testing.
+
+        Returns:
+            dict: 
+              - Empty means ON CONFLICT DO NOTHING, and is default behavior
+              - Non empty is used as SET clause for ON CONFLICT DO UPDATE
+
+        Example:
+        Given a table defined as:
+        class DummyModel(Base):
+            __tablename__ = "test_table"
+            id = Column(Integer, primary_key=True)
+            name = Column(String)
+            value = Column(Integer)
+            data_changed_at = Column(DateTime)
+        
+        An update policy that only updates if new data is newer:
+        def insert_policy(self):
+            return {
+                "name": text("CASE WHEN test_table.data_changed_at < EXCLUDED.data_changed_at "
+                           "THEN EXCLUDED.name ELSE test_table.name END"),
+                "value": text("CASE WHEN test_table.data_changed_at < EXCLUDED.data_changed_at "
+                            "THEN EXCLUDED.value ELSE test_table.value END"),
+                "data_changed_at": text("CASE WHEN test_table.data_changed_at < EXCLUDED.data_changed_at "
+                            "THEN EXCLUDED.data_changed_at ELSE test_table.data_changed_at END")
+            }
+        """
+
+        """Default behavior: Do nothing on conflict. Override in subclasses."""
+        return {}
 
     def save_geojson(self, features) -> None:
         """
