@@ -6,7 +6,7 @@ This is a hybrid Next.js + Python app that uses Next.js as the frontend and Fast
 
 # Getting Started
 
-You can work on this app [locally](#local-development), [using Docker](#development-with-docker), or a [combination of the two](#hybrid-development).
+You can work on this app [locally](#local-development), [using Docker](#development-with-docker), or a [combination of the two](#hybrid-development). Choose whichever works best for you.
 
 ---
 
