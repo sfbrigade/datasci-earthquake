@@ -47,7 +47,7 @@ class DataHandler(ABC):
     ):
         self.url = url
         self.table = table
-        db_getter: get_db
+        self.db_getter = get_db
         self.page_size = page_size
         self.logger = logger or logging.getLogger(f"{self.__class__.__name__}")
         self.session = session or SessionManager.create_session(self.logger)
