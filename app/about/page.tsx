@@ -79,7 +79,7 @@ const About = () => {
           </Text>
           <Text textStyle="textMedium">
             We’re working with city leaders to support San Francisco&apos;s
-            efforts efforts to make buildings safer and more resilient against
+            efforts to make buildings safer and more resilient against
             earthquakes. In particular, our goal is to help raise awareness
             around high-risk residential buildings—such as soft story buildings
             that haven’t been retrofitted, and older concrete structures—and to
