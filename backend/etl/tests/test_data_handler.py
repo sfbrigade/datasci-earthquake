@@ -18,6 +18,7 @@ from sqlalchemy.dialects.postgresql import insert as pg_insert
 from datetime import datetime
 from sqlalchemy import DateTime
 from sqlalchemy import text
+from backend.database.session import _get_database_url
 
 
 class DummyModel(Base):
@@ -67,7 +68,7 @@ class TimestampDataHandler(DataHandler):
 
 @pytest.fixture(scope="function")
 def test_db():
-    engine = create_engine(settings.localhost_database_url_sqlalchemy)
+    engine = create_engine(_get_database_url())
     connection = engine.connect()
 
     # We own this code, so we can create our tables!
@@ -89,9 +90,24 @@ def test_db():
     connection.close()
 
 
+def create_test_db_context_manager(test_db):
+    def test_db_context():
+        try:
+            yield test_db
+        except Exception:
+            test_db.rollback()
+            raise
+
+    return test_db_context
+
+
 @pytest.fixture
 def data_handler():
-    return DummyDataHandler(url="https://api.test.com", table=DummyModel, page_size=3)
+    return DummyDataHandler(
+        url="https://api.test.com",
+        table=DummyModel,
+        page_size=3,
+    )
 
 
 @pytest.fixture
@@ -311,61 +327,8 @@ def test_fetch_data_session_cleanup(data_handler, caplog):
     assert "Closed session" in caplog.text
 
 
-def test_bulk_insert_data_with_basic_policy(test_db, data_handler):
-    """
-    As implemented in DummyModel, bulk_insert_data should insert into the database, and shouldn't update existing fields on conflict (upsert)
-
-    Implementation tested:
-    def insert_policy(self, insert: Insert, id_field):
-        return insert.values(data_dicts).on_conflict_do_nothing(index_elements=[id_field])
-    """
-    # by default, data_handler.db is the production db.
-    # maybe this should be changed depending on the environment?
-    data_handler.db = test_db
-    # Setup initial data
-    existing = DummyModel(
-        id=1, name="old name", value=100, data_changed_at=datetime(2024, 1, 1, 12, 0)
-    )
-    test_db.add(existing)
-    test_db.commit()
-
-    # Attempt upsert with new data
-    new_data_1 = {
-        "id": 1,
-        "name": "new name",
-        "value": 200,
-        "data_changed_at": datetime(2024, 1, 1, 12, 0),
-    }
-    new_data_2 = {
-        "id": 2,
-        "name": "new name",
-        "value": 200,
-        "data_changed_at": datetime(2024, 1, 1, 12, 0),
-    }
-    data_handler.bulk_insert_data([new_data_1, new_data_2], "id")
-
-    print("All records in table:")
-    all_records = test_db.query(DummyModel).all()
-    for record in all_records:
-        print(f"ID: {record.id}, Name: {record.name}, Value: {record.value}")
-
-    # Verify no fields were updated
-    result = test_db.query(DummyModel).filter_by(id=1).first()
-    assert result.name == "old name"
-    assert result.value == 100
-
-    # Verify New Data 2 was added
-    result = test_db.query(DummyModel).filter_by(id=2).first()
-    assert result.name == "new name"
-    assert result.value == 200
-
-
 def test_bulk_insert_data_with_timestamp_upsert_policy(test_db):
     """Test timestamp-based upsert policy"""
-    timestamp_handler = TimestampDataHandler(
-        url="https://api.test.com", table=DummyModel, page_size=3
-    )
-    timestamp_handler.db = test_db
 
     # Setup initial data with older timestamp
     existing = DummyModel(
@@ -373,6 +336,13 @@ def test_bulk_insert_data_with_timestamp_upsert_policy(test_db):
     )
     test_db.add(existing)
     test_db.commit()
+
+    timestamp_handler = TimestampDataHandler(
+        url="https://api.test.com",
+        table=DummyModel,
+        page_size=3,
+    )
+    timestamp_handler.db_getter = create_test_db_context_manager(test_db)
 
     # Test data with newer timestamp - should update
     data_to_insert = [
@@ -396,14 +366,14 @@ def test_bulk_insert_data_with_basic_policy(test_db, data_handler):
     """
     Test that basic policy (empty dict) does nothing on conflict
     """
-    data_handler.db = test_db
-
     # Setup initial data
     existing = DummyModel(
         id=1, name="old name", value=100, data_changed_at=datetime(2024, 1, 1, 12, 0)
     )
     test_db.add(existing)
     test_db.commit()
+
+    data_handler.db_getter = create_test_db_context_manager(test_db)
 
     # Attempt upsert with new data
     new_data_1 = {

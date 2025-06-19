@@ -47,6 +47,7 @@ class DataHandler(ABC):
     ):
         self.url = url
         self.table = table
+        db_getter: get_db
         self.page_size = page_size
         self.logger = logger or logging.getLogger(f"{self.__class__.__name__}")
         self.session = session or SessionManager.create_session(self.logger)
@@ -182,7 +183,7 @@ class DataHandler(ABC):
             self.logger.warning(f"{self.table.__name__}: No data to insert")
             return
         try:
-            with next(get_db()) as db:
+            with next(self.db_getter()) as db:
                 stmt = pg_insert(self.table).values(data_dicts)
 
                 update_fields = self.insert_policy()
@@ -212,7 +213,7 @@ class DataHandler(ABC):
             self.logger.error(f"Database error in {self.table.__name__}: {str(e)}")
             raise
 
-    def insert_policy() -> dict:
+    def insert_policy(self) -> dict:
         """
 
         Defines conflict handling for bulk_insert_data() method.
