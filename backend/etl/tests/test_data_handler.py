@@ -23,7 +23,9 @@ from backend.api.models.tsunami import TsunamiZone
 from backend.api.models.soft_story_properties import SoftStoryProperty
 from backend.api.models.liquefaction_zones import LiquefactionZone
 from backend.etl.tsunami_data_handler import TsunamiDataHandler
-from backend.etl.soft_story_properties_data_handler import _SoftStoryPropertiesDataHandler
+from backend.etl.soft_story_properties_data_handler import (
+    _SoftStoryPropertiesDataHandler,
+)
 
 
 class DummyModel(Base):

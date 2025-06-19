@@ -16,7 +16,6 @@ class LandslideDataHandler(DataHandler):
     landslides
     """
 
-
     def parse_data(self, data: dict) -> tuple[list[dict], dict]:
         """
         Parses fetched GeoJSON data and returns:

@@ -14,7 +14,6 @@ from shapely.wkt import loads
 from sqlalchemy import text, func
 
 
-
 _SOFT_STORY_PROPERTIES_URL = "https://data.sfgov.org/resource/beah-shgi.geojson"
 _MAPBOX_GEOCODE_API_ENDPOINT_URL = "https://api.mapbox.com/search/geocode/v6/batch"
 _MAPBOX_SOFT_STORY_GEOJSON_PATH = "backend/etl/data/mapbox_soft_story.geojson.gz"
@@ -222,6 +221,7 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
         geojson = self._convert_to_geojson(parsed_data_complete)
 
         return parsed_data_complete, geojson
+
     def insert_policy(self) -> dict:
         """Define merge behavior for soft story property records.
 
@@ -241,16 +241,33 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
         - update_timestamp is set to current time whenever we modify the record
         """
         return {
-        # Update all fields if data is newer (based on sfdata_as_of)
-        **{field: text(f"CASE WHEN EXCLUDED.sfdata_as_of > soft_story_properties.sfdata_as_of THEN EXCLUDED.{field} ELSE soft_story_properties.{field} END")
-           for field in ['block', 'lot', 'parcel_number', 'property_address',
-                       'address', 'tier', 'status', 'bos_district', 'point',
-                       'point_source', 'sfdata_as_of']},
-        # Always take the newer sfdata_loaded_at
-        'sfdata_loaded_at': text("GREATEST(EXCLUDED.sfdata_loaded_at, soft_story_properties.sfdata_loaded_at)"),
-        # Track when we made changes
-        'update_timestamp': func.now()
-    }
+            # Update all fields if data is newer (based on sfdata_as_of)
+            **{
+                field: text(
+                    f"CASE WHEN EXCLUDED.sfdata_as_of > soft_story_properties.sfdata_as_of THEN EXCLUDED.{field} ELSE soft_story_properties.{field} END"
+                )
+                for field in [
+                    "block",
+                    "lot",
+                    "parcel_number",
+                    "property_address",
+                    "address",
+                    "tier",
+                    "status",
+                    "bos_district",
+                    "point",
+                    "point_source",
+                    "sfdata_as_of",
+                ]
+            },
+            # Always take the newer sfdata_loaded_at
+            "sfdata_loaded_at": text(
+                "GREATEST(EXCLUDED.sfdata_loaded_at, soft_story_properties.sfdata_loaded_at)"
+            ),
+            # Track when we made changes
+            "update_timestamp": func.now(),
+        }
+
 
 if __name__ == "__main__":
     load_dotenv()
