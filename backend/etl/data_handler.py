@@ -223,8 +223,10 @@ class DataHandler(ABC):
 
         Returns:
             dict:
-              - Empty means ON CONFLICT DO NOTHING, and is default behavior
-              - Non empty is used as SET clause for ON CONFLICT DO UPDATE
+              - Empty: ON CONFLICT DO NOTHING, and is default behavior
+              - Non empty: Used as SET clause for ON CONFLICT DO UPDATE
+              - Keys: Strings matching model column names
+              - Values: Any valid SQLAlchemy expression or Python literal (eg text(), func.*())
 
         Example:
         Given a table defined as:

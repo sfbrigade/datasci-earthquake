@@ -15,10 +15,15 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from backend.api.config import settings
 from sqlalchemy.dialects.postgresql import Insert
 from sqlalchemy.dialects.postgresql import insert as pg_insert
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import DateTime
 from sqlalchemy import text
 from backend.database.session import _get_database_url
+from backend.api.models.tsunami import TsunamiZone
+from backend.api.models.soft_story_properties import SoftStoryProperty
+from backend.api.models.liquefaction_zones import LiquefactionZone
+from backend.etl.tsunami_data_handler import TsunamiDataHandler
+from backend.etl.soft_story_properties_data_handler import _SoftStoryPropertiesDataHandler
 
 
 class DummyModel(Base):
@@ -103,11 +108,7 @@ def create_test_db_context_manager(test_db):
 
 @pytest.fixture
 def data_handler():
-    return DummyDataHandler(
-        url="https://api.test.com",
-        table=DummyModel,
-        page_size=3,
-    )
+    return DummyDataHandler(url="https://api.test.com", table=DummyModel, page_size=3)
 
 
 @pytest.fixture

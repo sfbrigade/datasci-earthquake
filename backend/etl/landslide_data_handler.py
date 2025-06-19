@@ -4,7 +4,6 @@ from backend.api.models.landslide_zones import LandslideZone
 from shapely.geometry import shape
 from geoalchemy2.shape import from_shape
 
-
 # This API has a default limit of providing 1,000 rows
 LANDSLIDE_URL = "https://data.sfgov.org/resource/bna4-itif.geojson"
 
@@ -16,6 +15,7 @@ class LandslideDataHandler(DataHandler):
     If gridcode is 8,9,10 then area is High Susceptibility for
     landslides
     """
+
 
     def parse_data(self, data: dict) -> tuple[list[dict], dict]:
         """

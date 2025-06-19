@@ -13,6 +13,7 @@ class TsunamiDataHandler(DataHandler):
     conservation.ca.gov
     """
 
+
     def parse_data(self, data: dict) -> tuple[list[dict], dict]:
         """
         Extracts feature attributes and geometry data to construct:
@@ -74,8 +75,18 @@ class TsunamiDataHandler(DataHandler):
             geojson = {"type": "FeatureCollection", "features": geojson_features}
 
         return parsed_data, geojson
+    def insert_policy(self) -> dict:
+        """
+        Define merge behavior for tsunami zone records.
 
+        Tsunami zone data comes from CA Department of Conservation as complete
+        dataset releases. Since this data updates very infrequently (last update
+        Oct 2022), we use a conservative approach: new records are inserted,
+        but existing records are left unchanged.
 
+        Returning {} causes bulk_insert_data to follow ON CONFLICT DO NOTHING, which is the behavior we want.
+        """
+        return {}
 if __name__ == "__main__":
     handler = TsunamiDataHandler(TSUNAMI_URL, TsunamiZone)
     try:
