@@ -8,6 +8,7 @@ from backend.api.routers import (
     soft_story_api,
     health_api,
 )
+from backend.api.config import settings
 
 ### Create FastAPI instance with custom docs and openapi url
 app = FastAPI(docs_url="/docs", openapi_url="/openapi.json", redirect_slashes=False)
@@ -30,9 +31,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-sentry_sdk.init(
-    dsn="https://3f10d5d496e27bbed3d3f2d0c7128e63@o4507340843384832.ingest.us.sentry.io/4509358454669312"
-)
+sentry_sdk.init(dsn=settings.sentry_dsn)
 
 
 @app.get("/api/sentry-debug")
