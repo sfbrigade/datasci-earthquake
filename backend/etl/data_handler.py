@@ -185,17 +185,14 @@ class DataHandler(ABC):
         try:
             with self.db as db:
                 stmt = pg_insert(self.table).values(data_dicts)
-                
+
                 update_fields = self.insert_policy()
                 if update_fields:
                     stmt = stmt.on_conflict_do_update(
-                        index_elements=[id_field],
-                        set_=update_fields
+                        index_elements=[id_field], set_=update_fields
                     )
                 else:
-                    stmt = stmt.on_conflict_do_nothing(
-                        index_elements=[id_field]
-                    )
+                    stmt = stmt.on_conflict_do_nothing(index_elements=[id_field])
 
                 db.execute(stmt)
                 db.commit()
@@ -208,12 +205,13 @@ class DataHandler(ABC):
             self.logger.error(f"Schema error in {self.table.__name__}: {str(e)}")
             raise
         except IntegrityError as e:
-            self.logger.error(f"Data integrity error in {self.table.__name__}: {str(e)}")
+            self.logger.error(
+                f"Data integrity error in {self.table.__name__}: {str(e)}"
+            )
             raise
         except SQLAlchemyError as e:
             self.logger.error(f"Database error in {self.table.__name__}: {str(e)}")
             raise
-
 
     def insert_policy() -> dict:
         """
@@ -224,7 +222,7 @@ class DataHandler(ABC):
         SQLAlchemy validates clause syntax before execution, however business logic must be validated through testing.
 
         Returns:
-            dict: 
+            dict:
               - Empty means ON CONFLICT DO NOTHING, and is default behavior
               - Non empty is used as SET clause for ON CONFLICT DO UPDATE
 
@@ -236,7 +234,7 @@ class DataHandler(ABC):
             name = Column(String)
             value = Column(Integer)
             data_changed_at = Column(DateTime)
-        
+
         An update policy that only updates if new data is newer:
         def insert_policy(self):
             return {
