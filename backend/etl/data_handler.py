@@ -182,11 +182,18 @@ class DataHandler(ABC):
         if not data_dicts:
             self.logger.warning(f"{self.table.__name__}: No data to insert")
             return
+
+        update_fields = self.insert_policy()
+        if update_fields:
+            seen = {}
+            for item in data_dicts:
+                seen[item[id_field]] = item
+            data_dicts = list(seen.values())
+
         try:
             with next(self.db_getter()) as db:
                 stmt = pg_insert(self.table).values(data_dicts)
 
-                update_fields = self.insert_policy()
                 if update_fields:
                     stmt = stmt.on_conflict_do_update(
                         index_elements=[id_field], set_=update_fields
