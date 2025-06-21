@@ -1,11 +1,11 @@
 "use client";
 
+import { useState, Suspense } from "react";
+import ReactDOM from "react-dom";
+import { Headings } from "../data/data";
 import { Box, Stack, Text } from "@chakra-ui/react";
 import SearchBar from "./search-bar";
 import Heading from "./heading";
-import { Headings } from "../data/data";
-import { useState } from "react";
-import ReactDOM from "react-dom";
 import ReportAddress from "./report-address";
 import Share from "./share";
 
@@ -52,7 +52,9 @@ const HomeHeader = ({
             justifyContent="space-between"
           >
             <ReportAddress searchedAddress={searchedAddress} />
-            <Share />
+            <Suspense>
+              <Share />
+            </Suspense>
           </Stack>
         )}
         {!isSearchComplete && (
@@ -67,8 +69,20 @@ const HomeHeader = ({
             </Text>
           </>
         )}
-        {isSearchComplete && typeof window !== "undefined" ? (
-          ReactDOM.createPortal(
+        <Suspense>
+          {isSearchComplete && typeof window !== "undefined" ? (
+            ReactDOM.createPortal(
+              <SearchBar
+                coordinates={coordinates}
+                onSearchChange={onSearchChange}
+                onAddressSearch={onAddressSearch}
+                onCoordDataRetrieve={onCoordDataRetrieve}
+                onHazardDataLoading={onHazardDataLoading}
+                onSearchComplete={setSearchComplete}
+              />,
+              document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
+            )
+          ) : (
             <SearchBar
               coordinates={coordinates}
               onSearchChange={onSearchChange}
@@ -76,19 +90,9 @@ const HomeHeader = ({
               onCoordDataRetrieve={onCoordDataRetrieve}
               onHazardDataLoading={onHazardDataLoading}
               onSearchComplete={setSearchComplete}
-            />,
-            document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
-          )
-        ) : (
-          <SearchBar
-            coordinates={coordinates}
-            onSearchChange={onSearchChange}
-            onAddressSearch={onAddressSearch}
-            onCoordDataRetrieve={onCoordDataRetrieve}
-            onHazardDataLoading={onHazardDataLoading}
-            onSearchComplete={setSearchComplete}
-          />
-        )}
+            />
+          )}
+        </Suspense>
       </Box>
     </Box>
   );
