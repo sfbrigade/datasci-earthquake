@@ -52,7 +52,7 @@ This project uses Docker and Docker Compose to run the application, which includ
 
 ### Prerequisites
 
-- **Docker**: Make sure Docker is installed on your machine. [Get Docker](https://docs.docker.com/get-docker/).
+- **Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).
 - **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
 
 ### Starting the Application
