@@ -92,9 +92,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
               </Text>
             </CardHeader>
             <CardBody p={0} mb={"14px"}>
-              <Text textStyle="textMedium" alignSelf="flex-start">
-                {description}
-              </Text>
+              <Text textStyle="textMedium">{description}</Text>
             </CardBody>
             <CardFooter p={0} width={"100%"}>
               <HStack justifyContent="space-between" width="100%">
