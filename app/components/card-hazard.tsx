@@ -8,11 +8,7 @@ import {
   CardBody,
   Card,
   CardHeader,
-  useDisclosure,
   Spinner,
-} from "@chakra-ui/react";
-import Pill from "./pill";
-import {
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -20,6 +16,7 @@ import {
   PopoverArrow,
   PopoverCloseButton,
 } from "@chakra-ui/react";
+import Pill from "./pill";
 
 interface CardHazardProps {
   hazard: {
@@ -77,14 +74,27 @@ const CardHazard: React.FC<CardHazardProps> = ({
         aria-label={`${hazard.title} information`}
       >
         <PopoverTrigger>
-          <VStack cursor={"pointer"} alignItems={"flex-start"} h={"100%"}>
-            <CardHeader p={0}>
+          <Button
+            variant="unstyled"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              height: "100%",
+              textWrap: "wrap",
+              textAlign: "start",
+              width: "100%",
+            }}
+          >
+            <CardHeader p={0} marginBottom={"0.5em"}>
               <Text textStyle="cardTitle" fontWeight={"700"}>
                 {title}
               </Text>
             </CardHeader>
             <CardBody p={0} mb={"14px"}>
-              <Text textStyle="textMedium">{description}</Text>
+              <Text textStyle="textMedium" alignSelf="flex-start">
+                {description}
+              </Text>
             </CardBody>
             <CardFooter p={0} width={"100%"}>
               <HStack justifyContent="space-between" width="100%">
@@ -94,7 +104,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
                 {hazardPill}
               </HStack>
             </CardFooter>
-          </VStack>
+          </Button>
         </PopoverTrigger>
         <PopoverContent mt={5} width={"348px"}>
           <PopoverArrow />
