@@ -1,11 +1,11 @@
 "use client";
 
+import { useState, Suspense } from "react";
+import ReactDOM from "react-dom";
+import { Headings } from "../data/data";
 import { Box, Stack, Text } from "@chakra-ui/react";
 import SearchBar from "./search-bar";
 import Heading from "./heading";
-import { Headings } from "../data/data";
-import { useState } from "react";
-import ReactDOM from "react-dom";
 import ReportAddress from "./report-address";
 import Share from "./share";
 import { AnimatePresence, motion } from "framer-motion";
@@ -46,7 +46,9 @@ const HomeHeader = ({
         justifyContent="space-between"
       >
         <ReportAddress searchedAddress={searchedAddress} />
-        <Share />
+        <Suspense>
+          <Share />
+        </Suspense>
       </Stack>
     </motion.div>
   ) : (
@@ -76,14 +78,16 @@ const HomeHeader = ({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <SearchBar
-        coordinates={coordinates}
-        onSearchChange={onSearchChange}
-        onAddressSearch={onAddressSearch}
-        onCoordDataRetrieve={onCoordDataRetrieve}
-        onHazardDataLoading={onHazardDataLoading}
-        onSearchComplete={setSearchComplete}
-      />
+      <Suspense>
+        <SearchBar
+          coordinates={coordinates}
+          onSearchChange={onSearchChange}
+          onAddressSearch={onAddressSearch}
+          onCoordDataRetrieve={onCoordDataRetrieve}
+          onHazardDataLoading={onHazardDataLoading}
+          onSearchComplete={setSearchComplete}
+        />
+      </Suspense>
     </motion.div>
   );
 
@@ -108,9 +112,7 @@ const HomeHeader = ({
         {isSearchComplete &&
           typeof window !== "undefined" &&
           ReactDOM.createPortal(
-            <AnimatePresence mode="wait">
-              <>{searchBarComponent}</>
-            </AnimatePresence>,
+            <AnimatePresence mode="wait">{searchBarComponent}</AnimatePresence>,
             document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
           )}
       </Box>
