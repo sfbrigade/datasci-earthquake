@@ -3,8 +3,6 @@ Provides the environment variables that are read by the application
 """
 
 from pydantic_settings import BaseSettings
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from functools import lru_cache
 
 
@@ -23,6 +21,7 @@ class Settings(BaseSettings):
     node_env: str
     environment: str = "local"
     next_public_cdn_url: str
+    sentry_dsn: str
 
     class Config:
         env_file = ".env"
