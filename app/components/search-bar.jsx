@@ -245,26 +245,25 @@ const SearchBar = ({
           </NumberInput>
         </HStack>
       )}
-
-      <InputGroup
-        w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
-        size={{ base: "md", md: "lg", xl: "lg" }}
-        mb={"24px"}
-        data-testid="search-bar"
-      >
-        <InputLeftElement>
-          <IoSearchSharp
-            color="grey.900"
-            fontSize="1.1em"
-            data-testid="search-icon"
-          />
-        </InputLeftElement>
-        <Suspense>
-          <DynamicAddressAutofill
-            accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-            options={options}
-            onRetrieve={handleRetrieve}
+      <Suspense>
+        <DynamicAddressAutofill
+          accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+          options={options}
+          onRetrieve={handleRetrieve}
+        >
+          <InputGroup
+            w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
+            size={{ base: "md", md: "lg", xl: "lg" }}
+            mb={"24px"}
+            data-testid="search-bar"
           >
+            <InputLeftElement>
+              <IoSearchSharp
+                color="grey.900"
+                fontSize="1.1em"
+                data-testid="search-icon"
+              />
+            </InputLeftElement>
             <Input
               placeholder="Search San Francisco address"
               fontFamily="Inter, sans-serif"
@@ -301,9 +300,9 @@ const SearchBar = ({
                 />
               </InputRightElement>
             )}
-          </DynamicAddressAutofill>
-        </Suspense>
-      </InputGroup>
+          </InputGroup>
+        </DynamicAddressAutofill>
+      </Suspense>
     </form>
   );
 };
