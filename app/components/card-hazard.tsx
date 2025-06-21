@@ -76,15 +76,13 @@ const CardHazard: React.FC<CardHazardProps> = ({
         <PopoverTrigger>
           <Button
             variant="unstyled"
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              height: "100%",
-              textWrap: "wrap",
-              textAlign: "start",
-              width: "100%",
-            }}
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-start"
+            height="100%"
+            width="100%"
+            whiteSpace="normal"
+            textAlign="start"
           >
             <CardHeader p={0} marginBottom={"0.5em"}>
               <Text textStyle="cardTitle" fontWeight={"700"}>
