@@ -35,9 +35,7 @@ const ComponentsTestLib = () => {
       <VStack spacing={6} align="start">
         <HStack w="100%">
           <Box w="400px">
-            <Suspense>
-              <SearchBarClientWrapper />
-            </Suspense>
+            <SearchBarClientWrapper />
           </Box>
         </HStack>
         <Divider mb={3} />
