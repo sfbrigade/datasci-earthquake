@@ -36,6 +36,8 @@ const safeJsonFetch = async (url) => {
   return res.json();
 };
 
+// NOTE: UI changes to this page ought to be reflected in its suspense skeleton `search-bar-skeleton.tsx` and vice versa
+// TODO: isolate the usage of `useSearchParams()` so that the Suspense boundary can be even more narrow if possible
 const SearchBar = ({
   coordinates,
   onSearchChange,

@@ -5,6 +5,7 @@ import SearchBarClientWrapper from "./search-bar-client-wrapper";
 import CardHazard from "../components/card-hazard";
 import CardInfo from "../components/card-info";
 import Share from "../components/share";
+import ShareSkeleton from "../components/share-skeleton";
 
 const ComponentsTestLib = () => {
   return (
@@ -70,7 +71,7 @@ const ComponentsTestLib = () => {
       <Text mb={6}>This section demonstrates Share menu component</Text>
       <VStack spacing={6} align="start">
         <HStack w="100%">
-          <Suspense>
+          <Suspense fallback={<ShareSkeleton />}>
             <Share />
           </Suspense>
         </HStack>

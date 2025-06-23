@@ -8,7 +8,9 @@ import SearchBar from "./search-bar";
 import Heading from "./heading";
 import ReportAddress from "./report-address";
 import Share from "./share";
+import ShareSkeleton from "./share-skeleton";
 import { AnimatePresence, motion } from "framer-motion";
+import SearchBarSkeleton from "./search-bar-skeleton";
 
 interface HomeHeaderProps {
   coordinates: number[];
@@ -50,7 +52,7 @@ const HomeHeader = ({
         justifyContent="space-between"
       >
         <ReportAddress searchedAddress={searchedAddress} />
-        <Suspense>
+        <Suspense fallback={<ShareSkeleton />}>
           <Share />
         </Suspense>
       </Stack>
@@ -82,7 +84,7 @@ const HomeHeader = ({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Suspense>
+      <Suspense fallback={<SearchBarSkeleton />}>
         <SearchBar
           coordinates={coordinates}
           onSearchChange={onSearchChange}
