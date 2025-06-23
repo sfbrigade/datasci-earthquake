@@ -129,6 +129,22 @@ For front end development, first run `npm install`, and then you can run `npm ru
 
 If you need to rebuild the containers, run `npm run docker-back`.
 
+### ⚠️ Please do NOT delete `package-lock.json`
+
+The `package-lock.json` file plays a crucial role in ensuring that the exact versions of dependencies installed in `node_modules` remain consistent across different environments.
+
+Deleting this file can lead to unintended side effects, especially when both `package-lock.json` and the `node_modules` folder are removed and then `npm install` is run. In such cases, a new `package-lock.json` will be generated based solely on `package.json`, which might diverge significantly from the committed lock file and cause unexpected behavior or bugs.
+
+In the event of merge conflicts involving `package-lock.json`, please **do not manually fix or delete the file**. Instead, run `npm install` to automatically resolve and repair the lock file.
+
+If you are experimenting locally, you may delete `package-lock.json`, but **make sure not to commit the regenerated file to the repository** to avoid affecting others.
+
+Because `package-lock.json` changes are sometimes overlooked during code reviews, it’s important to pay close attention and avoid accidentally committing problematic versions.
+
+If you face any issues related to `package-lock.json`, please raise them with the team before making changes.
+
+Thank you for helping keep the project stable!
+
 #### Troubleshooting polygon rendering
 
 If there are issues with layers showing data, you can add the following snippet in `map.tsx` under the other `addLayer()` calls to see outlines of each MultiPolygon:
