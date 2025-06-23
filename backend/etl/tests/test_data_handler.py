@@ -212,8 +212,8 @@ def test_fetch_data_retry_exhausted(fast_retry_session, caplog):
 
     fake_url = "https://fake.test/504"
 
-    # Simulate 5 consecutive 504 responses
-    for _ in range(5):
+    # Simulate 6 (1 initial attempt and 5 retries) consecutive 504 responses
+    for _ in range(6):
         responses.add(
             responses.GET,
             fake_url,
