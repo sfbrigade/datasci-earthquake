@@ -53,7 +53,7 @@ const ComponentsTestLib = () => {
               <CardHazard
                 key={hazard.id}
                 hazard={hazard}
-                hazardData={{ exists: true, last_updated: "whenver" }}
+                hazardData={{ exists: true, last_updated: "" }}
                 showData={true}
                 isHazardDataLoading={true}
               />
