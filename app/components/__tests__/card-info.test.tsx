@@ -19,7 +19,7 @@ const mockInfo = {
 };
 
 describe("CardInfo Component", () => {
-  const renderWithChakra = (ui: React.ReactElement) =>
+  const renderWithChakra = (ui: React.ReactElement<any>) =>
     render(<ChakraProvider>{ui}</ChakraProvider>);
 
   it("renders the card title", () => {

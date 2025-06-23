@@ -22,8 +22,8 @@ const Map: React.FC<MapProps> = ({
   liquefactionData,
 }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<mapboxgl.Map>();
-  const markerRef = useRef<mapboxgl.Marker>();
+  const mapRef = useRef<mapboxgl.Map>(undefined);
+  const markerRef = useRef<mapboxgl.Marker>(undefined);
   const toast = useToast();
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
