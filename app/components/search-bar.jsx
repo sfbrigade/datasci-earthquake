@@ -51,7 +51,6 @@ const SearchBar = ({
   onSearchComplete,
 }) => {
   const [inputAddress, setInputAddress] = useState("");
-  const debug = useSearchParams().get("debug");
   const router = useRouter();
   const searchParams = useSearchParams();
   const toast = useToast();
@@ -207,44 +206,6 @@ const SearchBar = ({
 
   return (
     <form onSubmit={onSubmit}>
-      {debug === "true" && (
-        <HStack>
-          <NumberInput
-            bg="white"
-            size="xs"
-            width="auto"
-            defaultValue={coordinates[0]}
-            precision={9}
-            step={0.005}
-            onChange={(valueString) =>
-              onSearchChange([parseFloat(valueString), coordinates[1]])
-            }
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-          <NumberInput
-            bg="white"
-            size="xs"
-            width="auto"
-            defaultValue={coordinates[1]}
-            precision={9}
-            step={0.005}
-            onChange={(valueString) =>
-              onSearchChange([coordinates[0], parseFloat(valueString)])
-            }
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-        </HStack>
-      )}
       <Suspense>
         <DynamicAddressAutofill
           accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
