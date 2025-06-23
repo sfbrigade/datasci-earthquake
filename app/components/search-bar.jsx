@@ -3,16 +3,10 @@
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
-  HStack,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   useToast,
 } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
