@@ -1,6 +1,5 @@
 import "./globals.css";
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
-import { Suspense } from "react";
 
 import AddressMapper from "./components/address-mapper";
 import { Headings } from "./data/data";
@@ -35,14 +34,12 @@ const Home = async () => {
     console.error("Error: ", error);
   }
   return (
-    <Suspense>
-      <AddressMapper
-        headingData={headingData}
-        softStoryData={softStoryData}
-        tsunamiData={tsunamiData}
-        liquefactionData={liquefactionData}
-      />
-    </Suspense>
+    <AddressMapper
+      headingData={headingData}
+      softStoryData={softStoryData}
+      tsunamiData={tsunamiData}
+      liquefactionData={liquefactionData}
+    />
   );
 };
 
