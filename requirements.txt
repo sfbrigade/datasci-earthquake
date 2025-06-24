@@ -51,6 +51,7 @@ python-dotenv==1.0.1
 python-multipart==0.0.9
 pytz==2024.2
 PyYAML==6.0.2
+responses==0.25.7
 requests==2.32.3
 rich==13.8.0
 shapely==2.0.6
