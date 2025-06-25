@@ -1,5 +1,6 @@
 "use client";
 
+import { ColorModeProvider } from "@/components/ui/color-mode";
 import { ChakraProvider } from "@chakra-ui/react";
 import system from "../styles/theme";
 
@@ -9,9 +10,10 @@ export function Providers({
 }: {
   children: React.ReactNode;
 }) {
+  // TODO: ColorModeProvider is causing "https://nextjs.org/docs/messages/react-hydration-error
   return (
-    <ChakraProvider value={system} {...props}>
-      {children}
+    <ChakraProvider value={system}>
+      <ColorModeProvider {...props}>{children}</ColorModeProvider>
     </ChakraProvider>
   );
 }

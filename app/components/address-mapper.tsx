@@ -11,7 +11,7 @@ import {
   HStack,
   Link,
 } from "@chakra-ui/react";
-import { toaster } from "@/app/components/ui/toaster";
+import { toaster } from "@/components/ui/toaster";
 import NextLink from "next/link";
 import Map from "./map";
 import ReportHazards from "./report-hazards";

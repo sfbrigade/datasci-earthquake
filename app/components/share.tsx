@@ -1,6 +1,6 @@
 "use client";
 import { Text, Button, Box, HStack, CloseButton } from "@chakra-ui/react";
-import { toaster } from "@/app/components/ui/toaster";
+import { toaster } from "@/components/ui/toaster";
 import ShareIcon from "../img/icon-share.svg";
 import { useSearchParams } from "next/navigation";
 
@@ -18,7 +18,7 @@ const Share = () => {
         type: "link",
         duration: 3000,
       });
-      // TODO: do we need to have this custom render? is it good enough to add the icon as is done in `components/ui/toaster.tsx`?
+      // TODO FIXME: do we need to have this custom render? is it good enough to add the icon as is done in `components/ui/toaster.tsx`?
       // toast({
       //   duration: 3000,
       //   render: ({ onClose }) => (

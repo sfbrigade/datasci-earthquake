@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { Toaster } from "@/app/components/ui/toaster";
-import { Providers } from "./providers";
+import { Toaster } from "@/components/ui/toaster";
+import { Provider } from "@/components/ui/provider";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import { defaultSystem } from "@chakra-ui/react"; // TODO: is this necessary?
@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${manrope.className} ${inter.className}`}>
-        <Providers>
+        <Provider>
           <Flex direction="column" align="center" minH="100vh">
             <Header />
             <Box flex="1" as="main" width="100%">
@@ -44,7 +44,7 @@ export default function RootLayout({
           </Flex>
           {/* TODO FIXME: is this Toaster component declared in the right place? */}
           <Toaster />
-        </Providers>
+        </Provider>
       </body>
     </html>
   );
