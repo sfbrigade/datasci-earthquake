@@ -10,7 +10,7 @@ import {
 } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Input, InputGroup } from "@chakra-ui/react";
-import { toaster } from "@/components/ui/toaster";
+import { toaster } from "@/app/components/ui/toaster";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill, {

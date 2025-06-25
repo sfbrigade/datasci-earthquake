@@ -4,7 +4,7 @@ import React, { useRef, useEffect } from "react";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
-import { toaster } from "@/components/ui/toaster";
+import { toaster } from "@/app/components/ui/toaster";
 
 const defaultCoords = [-122.463733, 37.777448];
 

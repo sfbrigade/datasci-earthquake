@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/app/components/ui/toaster";
 import { Providers } from "./providers";
 import Header from "./components/header";
 import Footer from "./components/footer";
