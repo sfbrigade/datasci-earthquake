@@ -9,7 +9,7 @@ import {
   createToaster,
 } from "@chakra-ui/react";
 import * as toast from "@zag-js/toast"; // TODO: remove this if not needed (`toast` can likely use type inference instead)
-import LinkIcon from "../../app/img/icon-link.svg";
+import LinkIcon from "../../img/icon-link.svg";
 import { ReactNode } from "react";
 
 export const toaster = createToaster({

@@ -31,8 +31,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // NOTE: toggle off `suppressHydrationWarning` if you want to see hydration warnings in the console.
+  // This can help identify issues with server-side rendering and client-side hydration.
+  // However, it may also lead to a lot of warnings if your app is not fully optimized for hydration;
+  // case in point: Chakra's Color Mode / ThemeProvider will cause this warning, which is the reason
+  // this flag is toggled on.
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${manrope.className} ${inter.className}`}>
         <Provider>
           <Flex direction="column" align="center" minH="100vh">
