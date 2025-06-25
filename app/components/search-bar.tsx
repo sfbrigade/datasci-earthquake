@@ -209,7 +209,7 @@ const SearchBar = ({
 
   return (
     <form onSubmit={onSubmit}>
-      {/* TODO FIXME: move Suspense and DynamicAddressAutofill inside of InputGroup to satisfy's DynamicAddressAutofill's requirement for a child type that is an <input> */}
+      {/* TODO: do we still need to move Suspense and DynamicAddressAutofill inside of InputGroup to satisfy's DynamicAddressAutofill's requirement for a child type that is an <input>? or does the newer version of AddressAutofill allow for other child types? */}
       <Suspense>
         <DynamicAddressAutofill
           accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ""}
