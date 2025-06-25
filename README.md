@@ -6,7 +6,7 @@ This is a hybrid Next.js + Python app that uses Next.js as the frontend and Fast
 
 # Getting Started
 
-You can work on this app [locally](#local-development), [using Docker](#development-with-docker), or a [combination of the two](#hybrid-development).
+You can work on this app entirely [locally](#local-development), entirely [using Docker](#development-with-docker), or--if you prefer to focus on front end or back end--a [combination of the two](#hybrid-development).
 
 ---
 
@@ -44,6 +44,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 The FastAPI server will be running on [http://127.0.0.1:8000](http://127.0.0.1:8000) – feel free to change the port in `package.json` (you'll also need to update it in `next.config.js`).
 
+### Troubleshooting
+
+Please refer to [Troubleshooting front end](#troubleshooting-front-end).
+
 ---
 
 ## Development with Docker
@@ -52,7 +56,7 @@ This project uses Docker and Docker Compose to run the application, which includ
 
 ### Prerequisites
 
-- **Docker**: Make sure Docker is installed on your machine. [Get Docker](https://docs.docker.com/get-docker/).
+- **Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).
 - **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
 
 ### Starting the Application
@@ -112,24 +116,60 @@ To stop and shut down the application:
 
 ## Hybrid development
 
-If you will be working exclusively on the front end or back end, you can run the Docker containers for the part of the stack you won't be doing development on. A handful of NPM scripts have been provided to make this a bit easier.
+If you will be working exclusively on the front end or back end, you can run the Docker containers for the part of the stack you won't be doing development on, and then run the rest of the stack locally. A handful of NPM scripts have been provided to make this a bit easier (`npm run dev-*` and `npm run docker-*`, described below).
 
-### Prerequisites
+### Accessing the application and API servers
 
-- **Docker**: Make sure Docker is installed on your machine. [Get Docker](https://docs.docker.com/get-docker/).
+After going through the steps below for either front end-focused or back end-focused development, you should be able to access the servers at the following URLs:
+
+- The app is running at http://localhost:3000, which you can open in your browser.
+- The API is accessible at http://localhost:8000.
+
+### Front end-focused development
+
+#### Prerequisites
+
+- **Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).
 - **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
-- **PostgreSQL** (optional for back end development): Ensure PostgreSQL is installed if you want to run the database locally (instead of in a Docker container).
 
-### Front end
+#### Starting the app
 
-For front end development, first run `npm install`, and then you can run `npm run dev-front`, which will:
+For front end-focused development, first run `npm install`, and then you can run `npm run dev-front`, which will:
 
 - install dependencies and start up your Next.js development server locally
 - build and restart your backend (and database) Docker containers
 
 If you need to rebuild the containers, run `npm run docker-back`.
 
-#### Troubleshooting polygon rendering
+#### Troubleshooting front end
+
+##### Suspense boundary missing around `useSearchParams()`, causing entire page to deopt into client-side rendering (CSR)
+
+You may run into the following NextJS error when you run `npm run build`[^1]:
+
+```shell
+useSearchParams() should be wrapped in a suspense boundary at page "/<PAGE_NAME>". Read more: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+```
+
+> [!INFORMATION] > `<PAGE_NAME>` refers to a `page.tsx` file in the app, either the root page at `app/page.tsx` or a non-root page at, for example, `app/<PAGE_NAME>/page.tsx`.
+
+The fix is to wrap any component that references `useSearchParams()` with React's `<Suspense>`. Read further to understand why.
+
+This error message can be highly misleading because it refers directly to `<PAGE_NAME>` even though it's more likely that its `page.tsx` file contains zero usages of `useSearchParams()`[^2]. This can make debugging difficult.
+
+The error doesn't make a distinction between `<PAGE_NAME>` and its descendant components, unfortunately, which is what causes the confusion. If you can't find usages of `useSearchParams()` directly in `page.tsx`, then you can search for usages in its descendant components instead. Once you find a component with a usage, you can [fix the error](https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout) by wrapping any references to the component with `<Suspense>` (and, ideally, providing a fallback) and `npm run build` again. More details can be found at https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout.
+
+There may be some instances where a usage of `useSearchParams()` does not appear even in a descendant component, but rather in, say, a provider. And, anecdotally, there may be other hooks that trigger a similar error message. Extensive discussion about several variants of this error message and workarounds can be found in this Github Issue: https://github.com/vercel/next.js/discussions/61654.
+
+[^1]: Note that this error message may be accompanied by the more generic error:
+
+```shell
+Error occurred prerendering page "/<PAGE_NAME>". Read more: https://nextjs.org/docs/messages/prerender-error"
+```
+
+[^2]: Since most pages will be Server Components, which do not contain a `"use client"` directive, `useSearchParams()` usages are not even allowed
+
+##### MapBox polygon rendering
 
 If there are issues with layers showing data, you can add the following snippet in `map.tsx` under the other `addLayer()` calls to see outlines of each MultiPolygon:
 
@@ -145,25 +185,27 @@ map.addLayer({
 });
 ```
 
-#### Debugging map movement
+### Back end-focused development (WIP)
 
-There is currently a debug flag that can be turned on via query parameter. For now, this flag allows you to play around with map movement. To enable it, simply add `?debug=true` after the URL. This pattern can be used elsewhere too. We could also possibly filter the code out of production builds or use Storybook to get similar functionality in a more methodical way.
+> [!CAUTION]
+> This section is currently undergoing review and correction. Do not use this method. Instead, please either [develop locally](#local-development), or [develop using Docker](#development-with-docker).
 
-### Back end
+#### ~~Prerequisites~~
 
-For back end development, you can run `npm run dev-back`, which will:
+- ~~**Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).~~
+- ~~**Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).~~
+- ~~**PostgreSQL**: Ensure PostgreSQL is installed to run the database locally (instead of in a Docker container).~~
 
-- install dependencies and start up your FastAPI server locally
-- build and restart your frontend Docker containers
+#### ~~Starting the app~~
 
-If you need to rebuild the container, run `npm run docker-front`.
+~~For back end-focused development, you can run `npm run dev-back`, which will:~~
 
-NOTE: You will need to run PostgreSQL locally or in a Docker container as well.
+- ~~install dependencies and start up your FastAPI server locally~~
+- ~~build and restart your frontend Docker containers~~
 
-### Servers
+~~If you need to rebuild the container, run `npm run docker-front`.~~
 
-- The app is running at http://localhost:3000.
-- The API is accessible at http://localhost:8000.
+~~NOTE: You will need to run PostgreSQL locally or in a Docker container as well.~~
 
 ---
 
