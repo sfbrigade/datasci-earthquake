@@ -1,4 +1,5 @@
 "use client";
+
 import { Text, Button, Box, HStack, CloseButton } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import ShareIcon from "../img/icon-share.svg";

@@ -1,5 +1,3 @@
-"use client";
-
 import { Stack, Text, Icon } from "@chakra-ui/react";
 
 export const KeyElem = ({

@@ -1,5 +1,3 @@
-"use client";
-
 import { Text, List, Link, Box } from "@chakra-ui/react";
 import { BaseCard } from "./base-card";
 

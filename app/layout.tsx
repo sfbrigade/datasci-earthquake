@@ -1,11 +1,9 @@
+import { Inter, Manrope } from "next/font/google";
 import { Box, Flex } from "@chakra-ui/react";
-import { Toaster } from "@/components/ui/toaster";
 import { Provider } from "@/components/ui/provider";
 import Header from "./components/header";
 import Footer from "./components/footer";
-import { defaultSystem } from "@chakra-ui/react"; // TODO: is this necessary?
-
-import { Inter, Manrope } from "next/font/google";
+import { Toaster } from "@/components/ui/toaster";
 
 const manrope = Manrope({
   subsets: ["latin"],

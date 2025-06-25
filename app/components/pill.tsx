@@ -1,5 +1,3 @@
-"use client";
-
 import { Box, Text } from "@chakra-ui/react";
 
 interface PillProps {

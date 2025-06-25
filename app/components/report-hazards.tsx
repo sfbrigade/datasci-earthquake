@@ -1,5 +1,3 @@
-"use client";
-
 import { Box, Center, Stack, Text } from "@chakra-ui/react";
 import { FaCircle, FaSquareFull } from "react-icons/fa";
 import CardHazard from "./card-hazard";
