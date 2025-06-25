@@ -1,6 +1,7 @@
 import pytest
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock
 import requests
+import responses
 from sqlalchemy import Column, Integer, String
 from backend.etl.data_handler import DataHandler
 from backend.api.models.base import Base
@@ -287,11 +288,24 @@ def test_fetch_data_request_exception(data_handler, caplog):
     assert "API Error" in caplog.text
 
 
+@responses.activate
 def test_fetch_data_retry_exhausted(fast_retry_session, caplog):
     """Test that retry mechanism works and eventually exhausts"""
+
+    fake_url = "https://fake.test/504"
+
+    # Simulate 6 (1 initial attempt and 5 retries) consecutive 504 responses
+    for _ in range(6):
+        responses.add(
+            responses.GET,
+            fake_url,
+            status=504,
+            json={},
+        )
+
     # Create handler with fast retry session
     data_handler = DummyDataHandler(
-        url="https://httpstat.us/504",
+        url=fake_url,
         table=DummyModel,
         page_size=3,
         session=fast_retry_session,
