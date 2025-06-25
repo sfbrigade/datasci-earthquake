@@ -145,7 +145,7 @@ If you need to rebuild the containers, run `npm run docker-back`.
 
 ##### Suspense boundary missing around `useSearchParams()`, causing entire page to deopt into client-side rendering (CSR)
 
-You may run into the following NextJS error when you run `npm run build`:
+You may run into the following NextJS error when you run `npm run build`[^1]:
 
 ```shell
 useSearchParams() should be wrapped in a suspense boundary at page "/<PAGE_NAME>". Read more: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
@@ -185,24 +185,27 @@ map.addLayer({
 });
 ```
 
-### Back end-focused development
+### Back end-focused development (WIP)
 
-#### Prerequisites
+> [!CAUTION]
+> This section is currently undergoing review and correction. Do not use this method. Instead, please either [develop locally](#local-development), or [develop using Docker](#development-with-docker).
 
-- **Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).
-- **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
-- **PostgreSQL**: Ensure PostgreSQL is installed to run the database locally (instead of in a Docker container).
+#### ~~Prerequisites~~
 
-#### Starting the app
+- ~~**Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).~~
+- ~~**Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).~~
+- ~~**PostgreSQL**: Ensure PostgreSQL is installed to run the database locally (instead of in a Docker container).~~
 
-For back end-focused development, you can run `npm run dev-back`, which will:
+#### ~~Starting the app~~
 
-- install dependencies and start up your FastAPI server locally
-- build and restart your frontend Docker containers
+~~For back end-focused development, you can run `npm run dev-back`, which will:~~
 
-If you need to rebuild the container, run `npm run docker-front`.
+- ~~install dependencies and start up your FastAPI server locally~~
+- ~~build and restart your frontend Docker containers~~
 
-NOTE: You will need to run PostgreSQL locally or in a Docker container as well.
+~~If you need to rebuild the container, run `npm run docker-front`.~~
+
+~~NOTE: You will need to run PostgreSQL locally or in a Docker container as well.~~
 
 ---
 
