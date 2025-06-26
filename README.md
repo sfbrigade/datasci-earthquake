@@ -129,7 +129,7 @@ For front end development, first run `npm install`, and then you can run `npm ru
 
 If you need to rebuild the containers, run `npm run docker-back`.
 
-### ⚠️ Please do NOT delete `package-lock.json`
+#### ⚠️ Please do NOT delete `package-lock.json`
 
 The `package-lock.json` file plays a crucial role in ensuring that the exact versions of dependencies installed in `node_modules` remain consistent across different environments.
 
