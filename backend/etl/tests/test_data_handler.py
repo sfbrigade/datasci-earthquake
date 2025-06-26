@@ -1,7 +1,8 @@
 import pytest
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock
 import requests
-from sqlalchemy import Column, Integer
+import responses
+from sqlalchemy import Column, Integer, String
 from backend.etl.data_handler import DataHandler
 from backend.api.models.base import Base
 from requests.adapters import HTTPAdapter
@@ -10,6 +11,22 @@ import logging
 from unittest.mock import call
 from backend.etl.retry import LoggingRetry
 from backend.etl.request_handler import RequestHandler
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
+from backend.api.config import settings
+from sqlalchemy.dialects.postgresql import Insert
+from sqlalchemy.dialects.postgresql import insert as pg_insert
+from datetime import datetime, timezone
+from sqlalchemy import DateTime
+from sqlalchemy import text
+from backend.database.session import _get_database_url
+from backend.api.models.tsunami import TsunamiZone
+from backend.api.models.soft_story_properties import SoftStoryProperty
+from backend.api.models.liquefaction_zones import LiquefactionZone
+from backend.etl.tsunami_data_handler import TsunamiDataHandler
+from backend.etl.soft_story_properties_data_handler import (
+    _SoftStoryPropertiesDataHandler,
+)
 
 
 class DummyModel(Base):
@@ -17,6 +34,9 @@ class DummyModel(Base):
 
     __tablename__ = "test_table"
     id = Column(Integer, primary_key=True)
+    name = Column(String)
+    value = Column(Integer)
+    data_changed_at = Column(DateTime)
 
 
 class DummyDataHandler(DataHandler):
@@ -24,6 +44,69 @@ class DummyDataHandler(DataHandler):
 
     def parse_data(self, data: dict) -> tuple[list[dict], dict]:
         return [data], {"type": "FeatureCollection", "features": data}
+
+    def insert_policy(self) -> dict:
+        """Default behavior: Do nothing on conflict"""
+        return {}
+
+
+class TimestampDataHandler(DataHandler):
+    """Handler that updates based on timestamp"""
+
+    def parse_data(self, data: dict) -> tuple[list[dict], dict]:
+        return [data], {"type": "FeatureCollection", "features": data}
+
+    def insert_policy(self) -> dict:
+        """Update only if new data is newer"""
+        return {
+            "name": text(
+                "CASE WHEN test_table.data_changed_at < EXCLUDED.data_changed_at "
+                "THEN EXCLUDED.name ELSE test_table.name END"
+            ),
+            "value": text(
+                "CASE WHEN test_table.data_changed_at < EXCLUDED.data_changed_at "
+                "THEN EXCLUDED.value ELSE test_table.value END"
+            ),
+            "data_changed_at": text(
+                "CASE WHEN test_table.data_changed_at < EXCLUDED.data_changed_at "
+                "THEN EXCLUDED.data_changed_at ELSE test_table.data_changed_at END"
+            ),
+        }
+
+
+@pytest.fixture(scope="function")
+def test_db():
+    engine = create_engine(_get_database_url())
+    connection = engine.connect()
+
+    # We own this code, so we can create our tables!
+    Base.metadata.drop_all(engine)
+    Base.metadata.create_all(engine)
+
+    transaction = connection.begin()
+    Session = scoped_session(sessionmaker(bind=connection))
+    session = Session()
+    session.begin_nested()
+
+    yield session
+
+    session.rollback()
+    for table in reversed(Base.metadata.sorted_tables):
+        session.execute(table.delete())
+    session.commit()
+    session.close()
+    connection.close()
+
+
+def create_test_db_context_manager(test_db):
+    def test_db_context():
+        try:
+            yield test_db
+        except Exception:
+            test_db.rollback()
+            raise
+
+    return test_db_context
 
 
 @pytest.fixture
@@ -205,11 +288,24 @@ def test_fetch_data_request_exception(data_handler, caplog):
     assert "API Error" in caplog.text
 
 
+@responses.activate
 def test_fetch_data_retry_exhausted(fast_retry_session, caplog):
     """Test that retry mechanism works and eventually exhausts"""
+
+    fake_url = "https://fake.test/504"
+
+    # Simulate 6 (1 initial attempt and 5 retries) consecutive 504 responses
+    for _ in range(6):
+        responses.add(
+            responses.GET,
+            fake_url,
+            status=504,
+            json={},
+        )
+
     # Create handler with fast retry session
     data_handler = DummyDataHandler(
-        url="https://httpstat.us/504",
+        url=fake_url,
         table=DummyModel,
         page_size=3,
         session=fast_retry_session,
@@ -246,3 +342,82 @@ def test_fetch_data_session_cleanup(data_handler, caplog):
     # Assert
     assert data_handler.session.close.call_count == 1
     assert "Closed session" in caplog.text
+
+
+def test_bulk_insert_data_with_timestamp_upsert_policy(test_db):
+    """Test timestamp-based upsert policy"""
+
+    # Setup initial data with older timestamp
+    existing = DummyModel(
+        id=1, name="old name", value=100, data_changed_at=datetime(2024, 1, 1, 12, 0)
+    )
+    test_db.add(existing)
+    test_db.commit()
+
+    timestamp_handler = TimestampDataHandler(
+        url="https://api.test.com",
+        table=DummyModel,
+        page_size=3,
+    )
+    timestamp_handler.db_getter = create_test_db_context_manager(test_db)
+
+    # Test data with newer timestamp - should update
+    data_to_insert = [
+        {
+            "id": 1,
+            "name": "new name",
+            "value": 200,
+            "data_changed_at": datetime(2024, 1, 2, 12, 0),
+        }
+    ]
+
+    timestamp_handler.bulk_insert_data(data_to_insert, "id")
+
+    # Verify update happened
+    result = test_db.query(DummyModel).filter_by(id=1).first()
+    assert result.name == "new name"
+    assert result.value == 200
+
+
+def test_bulk_insert_data_with_basic_policy(test_db, data_handler):
+    """
+    Test that basic policy (empty dict) does nothing on conflict
+    """
+    # Setup initial data
+    existing = DummyModel(
+        id=1, name="old name", value=100, data_changed_at=datetime(2024, 1, 1, 12, 0)
+    )
+    test_db.add(existing)
+    test_db.commit()
+
+    data_handler.db_getter = create_test_db_context_manager(test_db)
+
+    # Attempt upsert with new data
+    new_data_1 = {
+        "id": 1,
+        "name": "new name",
+        "value": 200,
+        "data_changed_at": datetime(2024, 1, 1, 12, 0),
+    }
+    new_data_2 = {
+        "id": 2,
+        "name": "new name",
+        "value": 200,
+        "data_changed_at": datetime(2024, 1, 1, 12, 0),
+    }
+    data_handler.bulk_insert_data([new_data_1, new_data_2], "id")
+
+    print("All records in table:")
+    all_records = test_db.query(DummyModel).all()
+    for record in all_records:
+        print(f"ID: {record.id}, Name: {record.name}, Value: {record.value}")
+
+    # Verify no fields were updated (conflict ignored)
+    result = test_db.query(DummyModel).filter_by(id=1).first()
+    assert result.name == "old name"
+    assert result.value == 100
+
+    # Verify New Data 2 was added
+    result = test_db.query(DummyModel).filter_by(id=2).first()
+    assert result.name == "new name"
+    assert result.value == 200

@@ -11,6 +11,8 @@ import ShareIcon from "../img/icon-share.svg";
 import LinkIcon from "../img/icon-link.svg";
 import { useSearchParams } from "next/navigation";
 
+// NOTE: UI changes to this page ought to be reflected in its suspense skeleton `share-skeleton.tsx` and vice versa
+// TODO: isolate the usage of `useSearchParams()` so that the Suspense boundary can be even more narrow if possible
 const Share = () => {
   const searchParams = useSearchParams();
   const toast = useToast({

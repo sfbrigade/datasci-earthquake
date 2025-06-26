@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
@@ -22,7 +21,6 @@ const Map: React.FC<MapProps> = ({
   tsunamiData,
   liquefactionData,
 }: MapProps) => {
-  const debug = useSearchParams().get("debug");
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>();
   const markerRef = useRef<mapboxgl.Marker>();
@@ -189,23 +187,7 @@ const Map: React.FC<MapProps> = ({
   }, [coordinates, liquefactionData, softStoryData, tsunamiData, toast]);
 
   return (
-    <>
-      <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
-      {debug === "true" && (
-        <span
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            zIndex: 99,
-            fontSize: 24,
-            padding: "4px",
-          }}
-        >
-          {`${coordinates[0]}, ${coordinates[1]}`}
-        </span>
-      )}
-    </>
+    <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
   );
 };
 

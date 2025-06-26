@@ -1,12 +1,11 @@
-"use client";
-
-import { Box, Heading, VStack, Text, HStack, Divider } from "@chakra-ui/react";
-import SearchBar from "../components/search-bar";
+import { Suspense } from "react";
+import { Box, Divider, Heading, HStack, VStack, Text } from "@chakra-ui/react";
+import { Hazards, Info } from "../data/data";
+import SearchBarClientWrapper from "./search-bar-client-wrapper";
 import CardHazard from "../components/card-hazard";
-import { Hazards } from "../data/data";
-import { Info } from "../data/data";
 import CardInfo from "../components/card-info";
 import Share from "../components/share";
+import ShareSkeleton from "../components/share-skeleton";
 
 const ComponentsTestLib = () => {
   return (
@@ -37,14 +36,7 @@ const ComponentsTestLib = () => {
       <VStack spacing={6} align="start">
         <HStack w="100%">
           <Box w="400px">
-            <SearchBar
-              coordinates={[0, 0]}
-              onSearchChange={() => {}}
-              onAddressSearch={() => {}}
-              onCoordDataRetrieve={() => {}}
-              onHazardDataLoading={() => {}}
-              onSearchComplete={() => {}}
-            />
+            <SearchBarClientWrapper />
           </Box>
         </HStack>
         <Divider mb={3} />
@@ -54,7 +46,19 @@ const ComponentsTestLib = () => {
       </Heading>
       <Text mb={6}>This section demonstrates Hazard Card component</Text>
       <VStack spacing={6} align="start">
-        <HStack w="100%">{/* <CardHazard hazard={Hazards[0]} /> */}</HStack>
+        <HStack w="100%">
+          {Hazards.map((hazard) => {
+            return (
+              <CardHazard
+                key={hazard.id}
+                hazard={hazard}
+                hazardData={{ exists: true, last_updated: "" }}
+                showData={true}
+                isHazardDataLoading={true}
+              />
+            );
+          })}
+        </HStack>
         <Divider mb={3} />
       </VStack>
       <Text mb={6}>This section demonstrates Info Card component</Text>
@@ -67,7 +71,10 @@ const ComponentsTestLib = () => {
       <Text mb={6}>This section demonstrates Share menu component</Text>
       <VStack spacing={6} align="start">
         <HStack w="100%">
-          <Share />
+          {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
+          <Suspense fallback={<ShareSkeleton />}>
+            <Share />
+          </Suspense>
         </HStack>
         <Divider mb={3} />
       </VStack>
