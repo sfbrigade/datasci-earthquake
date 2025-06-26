@@ -7,14 +7,12 @@ import {
   Heading,
   Text,
   List,
-  ListItem,
   Image,
   HStack,
   Link,
-  useToast,
 } from "@chakra-ui/react";
+import { toaster } from "@/components/ui/toaster";
 import NextLink from "next/link";
-import { HeadingProps } from "./heading";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
@@ -26,7 +24,6 @@ const addressLookupCoordinates = {
 const defaultCoords = addressLookupCoordinates.geometry.coordinates ?? [];
 
 interface AddressMapperProps {
-  headingData: HeadingProps;
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
@@ -52,7 +49,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const [searchedAddress, setSearchedAddress] = useState("");
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
-  const toast = useToast();
   const toastIdDataLoadFailed = "data-load-failed";
 
   const updateMap = (coords: number[]) => {
@@ -74,20 +70,21 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       );
 
     if (errors.length > 0) {
-      if (!toast.isActive(toastIdDataLoadFailed)) {
-        toast({
+      if (toaster.isDismissed(toastIdDataLoadFailed)) {
+        // TODO: or use `!toaster.isVisible`? trying to replace `!toast.isActive` from Chakra v2
+        toaster.create({
           id: "data-load-failed",
           title: "Data Load Error",
           description: errors.join(" | "),
-          status: "error",
+          type: "error",
           duration: 5000,
-          isClosable: true,
-          position: "top",
-          containerStyle: { backgroundColor: "#b53d37", borderRadius: "12px" },
+          closable: true,
+          // TODO FIXME: where does the below style now go? attempted to put it in toaster.tsx; test it!
+          // containerStyle: { backgroundColor: "#b53d37", borderRadius: "12px" },
         });
       }
     }
-  }, [softStoryData, tsunamiData, liquefactionData, toast]);
+  }, [softStoryData, tsunamiData, liquefactionData]);
 
   return (
     <Flex direction="column">
@@ -132,6 +129,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               <Text
                 as="span"
                 textStyle="headerBig"
+                layerStyle="headerMain"
                 color="blue"
                 fontWeight="300"
               >
@@ -140,13 +138,13 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 earthquake-ready
               </Text>
             </Heading>
-            <Text as="p" mt="2" textStyle="textBig">
+            <Text as="p" mt="2" textStyle="textBig" layerStyle="text">
               Whether you’re a renter, homeowner, or property manager, these
               resources can help you make confident, informed decisions around
               earthquake safety.
             </Text>
             <Heading as="h3" mt="4">
-              <Text as="span" textStyle="headerMedium">
+              <Text as="span" textStyle="headerMedium" layerStyle="headerAlt">
                 Know the lingo
               </Text>
             </Heading>
@@ -155,8 +153,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               around, but what do they actually mean?
             </Text>
 
-            <List textStyle="textMedium" layerStyle="list" mt="2">
-              <ListItem layerStyle="listItem">
+            <List.Root textStyle="textMedium" layerStyle="text" mt="2">
+              <List.Item>
                 A{" "}
                 <Text as="span" textStyle="textSemibold">
                   soft story
@@ -164,16 +162,16 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 building is a structure that contains an open-floor (or “soft”)
                 level, such as a garage or retail space, below one or more
                 living spaces.
-              </ListItem>
-              <ListItem layerStyle="listItem">
+              </List.Item>
+              <List.Item>
                 <Text as="span" textStyle="textSemibold">
                   Earthquake retrofitting
                 </Text>{" "}
                 is the process of strengthening a building to make it safer in
                 an earthquake, such as adding structural reinforcements or
                 upgrading the foundation to better withstand shaking.
-              </ListItem>
-              <ListItem layerStyle="listItem">
+              </List.Item>
+              <List.Item>
                 San Francisco’s{" "}
                 <Text as="span" textStyle="textSemibold">
                   Mandatory Soft Story Retrofit Ordinance
@@ -183,11 +181,11 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 risk of earthquake damage. Soft-story homes with 1 to 4 units
                 are still vulnerable to earthquake damage, even though the
                 ordinance does not legally require them to be retrofitted.
-              </ListItem>
-            </List>
+              </List.Item>
+            </List.Root>
 
             <Heading as="h3" mt="4">
-              <Text as="span" textStyle="headerMedium">
+              <Text as="span" textStyle="headerMedium" layerStyle="headerAlt">
                 Plan ahead
               </Text>
             </Heading>
@@ -196,8 +194,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               earthquakes.
             </Text>
 
-            <List textStyle="textMedium" layerStyle="list" mt="2">
-              <ListItem layerStyle="listItem">
+            <List.Root textStyle="textMedium" layerStyle="text" mt="2">
+              <List.Item>
                 <Link
                   as={NextLink}
                   href="https://www.ready.gov/earthquakes"
@@ -206,8 +204,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   Learn how to protect yourself
                 </Link>{" "}
                 in an earthquake.
-              </ListItem>
-              <ListItem layerStyle="listItem">
+              </List.Item>
+              <List.Item>
                 <Link
                   as={NextLink}
                   href="https://www.ready.gov/kit"
@@ -216,8 +214,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   Prep your emergency kit
                 </Link>{" "}
                 with first aid supplies, batteries, and other essentials.
-              </ListItem>
-              <ListItem layerStyle="listItem">
+              </List.Item>
+              <List.Item>
                 <Link
                   as={NextLink}
                   href="https://myshake.berkeley.edu/"
@@ -226,11 +224,11 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   Download the MyShake app
                 </Link>{" "}
                 to get early warnings when an earthquake is detected.
-              </ListItem>
-            </List>
+              </List.Item>
+            </List.Root>
 
             <Heading as="h3" mt="4">
-              <Text as="span" textStyle="headerMedium">
+              <Text as="span" textStyle="headerMedium" layerStyle="headerAlt">
                 Find retrofitting services (if applicable)
               </Text>
             </Heading>
@@ -239,8 +237,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               resources can help you get started.
             </Text>
 
-            <List textStyle="textMedium" layerStyle="list" mt="2">
-              <ListItem layerStyle="listItem">
+            <List.Root textStyle="textMedium" layerStyle="text" mt="2">
+              <List.Item>
                 <Link
                   as={NextLink}
                   href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
@@ -249,8 +247,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   Learn more
                 </Link>{" "}
                 about what’s involved in a seismic retrofit.
-              </ListItem>
-              <ListItem layerStyle="listItem">
+              </List.Item>
+              <List.Item>
                 <Link
                   as={NextLink}
                   href="https://www.californiaresidentialmitigationprogram.com/resources/find-a-contractor/"
@@ -259,8 +257,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   Find a licensed contractor
                 </Link>{" "}
                 who can perform the right updates to your home.
-              </ListItem>
-              <ListItem layerStyle="listItem">
+              </List.Item>
+              <List.Item>
                 Check your eligibility for an{" "}
                 <Link
                   as={NextLink}
@@ -278,11 +276,11 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   Earthquake Soft-Story
                 </Link>{" "}
                 retrofit grant.
-              </ListItem>
-            </List>
+              </List.Item>
+            </List.Root>
 
             <Heading as="h3" mt="4">
-              <Text as="span" textStyle="headerMedium">
+              <Text as="span" textStyle="headerMedium" layerStyle="headerAlt">
                 Know your renters’ rights
               </Text>
             </Heading>
@@ -291,8 +289,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               or tsunami zone, you may want to look into these additional
               resources.
             </Text>
-            <List textStyle="textMedium" layerStyle="list" mt="2">
-              <ListItem layerStyle="listItem">
+            <List.Root textStyle="textMedium" layerStyle="text" mt="2">
+              <List.Item>
                 <Link
                   as={NextLink}
                   href="https://www.earthquakeauthority.com/california-earthquake-insurance-policies/renters"
@@ -301,8 +299,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   Search for renters earthquake insurance
                 </Link>{" "}
                 to cover your personal belongings.
-              </ListItem>
-              <ListItem layerStyle="listItem">
+              </List.Item>
+              <List.Item>
                 <Link
                   as={NextLink}
                   href="https://sftu.org/repairs/"
@@ -311,8 +309,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   Learn about your right
                 </Link>{" "}
                 to report unsafe living conditions.
-              </ListItem>
-            </List>
+              </List.Item>
+            </List.Root>
           </div>
           <Box flexShrink={0} display={{ base: "none", lg: "block" }}>
             <Image

@@ -4,13 +4,13 @@ import { Suspense, useState } from "react";
 import ReactDOM from "react-dom";
 import { Headings } from "../data/data";
 import { Box, Stack, Text } from "@chakra-ui/react";
-import SearchBar from "./search-bar";
+import { AnimatePresence, motion } from "framer-motion";
 import Heading from "./heading";
 import ReportAddress from "./report-address";
+import SearchBar from "./search-bar";
+import SearchBarSkeleton from "./search-bar-skeleton";
 import Share from "./share";
 import ShareSkeleton from "./share-skeleton";
-import { AnimatePresence, motion } from "framer-motion";
-import SearchBarSkeleton from "./search-bar-skeleton";
 
 interface HomeHeaderProps {
   coordinates: number[];
@@ -69,6 +69,7 @@ const HomeHeader = ({
       <Heading headingData={headingData} />
       <Text
         textStyle="headerSmall"
+        layerStyle="headerMain"
         mb="30px"
         pr={{ base: "10px", xl: "300px" }}
       >

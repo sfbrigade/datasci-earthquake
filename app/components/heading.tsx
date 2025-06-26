@@ -13,7 +13,12 @@ export interface HeadingProps {
 const Heading: React.FC<{ headingData: HeadingProps }> = ({ headingData }) => {
   const { text, highlight, style, highlightStyle, maxWidth } = headingData;
   return (
-    <Text textStyle="headerBig" maxW={maxWidth} sx={style}>
+    <Text
+      textStyle="headerBig"
+      layerStyle="headerMain"
+      maxW={maxWidth}
+      css={style}
+    >
       <Highlight query={highlight} styles={highlightStyle}>
         {text}
       </Highlight>

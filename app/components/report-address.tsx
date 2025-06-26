@@ -8,13 +8,17 @@ const ReportAddress: React.FC<ReportAddressProps> = ({ searchedAddress }) => {
   return (
     <Stack
       pt={"24px"}
-      gap={"9px"}
+      // gap={"9px"}
       direction={{ base: "column", md: "row" }}
       alignItems={{ base: "flex-start", md: "center" }}
-      spacing={{ base: 0, md: 1 }}
+      gap={{ base: 0, md: 1 }} // TODO FIXME: double check if this should be "9px", as commented out above
     >
-      <Text textStyle="headerReport">Report for</Text>
-      <Text textStyle="headerReport">{searchedAddress}</Text>
+      <Text textStyle="headerReport" layerStyle="headerMain">
+        Report for
+      </Text>
+      <Text textStyle="headerReport" layerStyle="headerMain">
+        {searchedAddress}
+      </Text>
     </Stack>
   );
 };

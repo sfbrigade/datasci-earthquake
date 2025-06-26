@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -9,19 +9,13 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": ["./*"]
-    },
+    "plugins": [{ "name": "next" }],
+    "paths": { "@/*": ["./app/*"] },
     "types": ["@testing-library/jest-dom", "@testing-library/user-event"]
   },
   "include": [
@@ -29,8 +23,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/components/search-bar.jsx",
-    "app/components/__tests__/autofill.test.js",
     "app/components/__tests__/search-bar.test.jsx"
   ],
   "exclude": ["node_modules"]
