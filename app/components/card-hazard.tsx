@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Text,
   HStack,
@@ -8,7 +6,6 @@ import {
   Card,
   Spinner,
   Popover,
-  Button,
 } from "@chakra-ui/react";
 import Pill from "./pill";
 interface CardHazardProps {
@@ -61,17 +58,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
         aria-label={`${hazard.title} information`}
       >
         <Popover.Trigger>
-          {/* TODO FIXME: is below line correctly styled with `variant="plain"` (Chakra v3) instead of `variant="unstyled"` (Chakra v2)? */}
-          <Button
-            variant="plain"
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            height="100%"
-            width="100%"
-            whiteSpace="normal"
-            textAlign="start"
-          >
+          <VStack cursor={"pointer"} alignItems={"flex-start"} h={"100%"}>
             <Card.Header p={0} marginBottom={"0.5em"}>
               <Text
                 textStyle="cardTitle"
@@ -94,7 +81,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
                 {hazardPill}
               </HStack>
             </Card.Footer>
-          </Button>
+          </VStack>
         </Popover.Trigger>
         <Popover.Positioner>
           {/* TODO FIXME: can below line be styled with mt={5} width={"348px"} somehow still? how? should it go on `<Popover.Body>`? or elsewhere? */}
