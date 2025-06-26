@@ -5,7 +5,7 @@
   "scripts": {
     "fastapi-dev": "pip3 install -r requirements.txt && fastapi dev api/index.py",
     "next-dev": "next dev",
-    "dev": "concurrently \"npm run dev\" \"npm run fastapi-dev\"",
+    "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
