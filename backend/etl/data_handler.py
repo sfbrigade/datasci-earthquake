@@ -192,9 +192,9 @@ class DataHandler(ABC):
                 f"{self.table.__name__}: Inserted {len(data_dicts)} rows into {self.table.__name__}."
             )
 
-    def save_geojson(self, features) -> None:
+    def save_geojson(self, features: list[dict]) -> None:
         """
-        Write the geojson file to the public/data folder
+        Write the geojson file to the public/data folder. The geojson is a static asset that is displayed on the map in the app.
         """
         geojson_path = Path(f"{_PREFIX_DATA_GEOJSON_PATH}{self.table.__name__}.geojson")
         try:
