@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import { Hazards, Info } from "../data/data";
 import CardHazard from "../components/card-hazard";
-import CardInfo from "../components/card-info";
 import SearchBarClientWrapper from "./search-bar-client-wrapper";
 import Share from "../components/share";
 import ShareSkeleton from "../components/share-skeleton";
@@ -65,13 +64,6 @@ const ComponentsTestLib = () => {
               />
             );
           })}
-        </HStack>
-        <Separator mb={3} />
-      </VStack>
-      <Text mb={6}>This section demonstrates Info Card component</Text>
-      <VStack gap={6} align="start">
-        <HStack w="100%">
-          <CardInfo info={Info[0]} />
         </HStack>
         <Separator mb={3} />
       </VStack>
