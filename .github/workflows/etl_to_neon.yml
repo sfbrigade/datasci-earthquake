@@ -53,7 +53,7 @@ jobs:
           echo "Decryption complete"      
 
       - name: Override an env variable
-        run: echo "ENVIRONMENT=ci" >> .env
+        run: echo "ENVIRONMENT=prod" >> .env
           
       - name: ETL data to Neon DB
         run: |

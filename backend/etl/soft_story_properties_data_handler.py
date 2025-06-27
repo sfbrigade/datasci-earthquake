@@ -282,7 +282,7 @@ if __name__ == "__main__":
         soft_story_property_objects, soft_story_property_geojson = handler.parse_data(
             soft_story_properties
         )
-        handler.save_geojson(soft_story_property_geojson)
+        handler.export_geojson_if_changed(soft_story_property_geojson)
         handler.bulk_insert_data(soft_story_property_objects, "address")
     except HTTPException as e:
         print(f"Failed after retries: {e}")
