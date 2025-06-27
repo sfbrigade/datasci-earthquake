@@ -68,7 +68,8 @@ const CardHazard: React.FC<CardHazardProps> = ({
                 {title}
               </Text>
             </Card.Header>
-            <Card.Body p={0} mb={"14px"}>
+            {/* TODO: shouldn't need text align left (temporary fix); something else is causing the text to be centered */}
+            <Card.Body textAlign="left" p={0} mb={"14px"}>
               <Text textStyle="textMedium" layerStyle="text">
                 {description}
               </Text>
