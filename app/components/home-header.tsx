@@ -11,12 +11,7 @@ import Share from "./share";
 import ShareSkeleton from "./share-skeleton";
 import { AnimatePresence, motion } from "framer-motion";
 import SearchBarSkeleton from "./search-bar-skeleton";
-
-type CoordinateData = {
-  liquefaction: {exists: boolean, last_updated: string | null} | null;
-  softStory: {exists: boolean, last_updated: string | null} | null;
-  tsunami: {exists: boolean, last_updated: string | null} | null;
-}
+import { CoordinateData } from "../types/index";
 
 interface HomeHeaderProps {
   coordinates: number[];
