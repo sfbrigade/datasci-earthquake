@@ -11,17 +11,14 @@ import Share from "./share";
 import ShareSkeleton from "./share-skeleton";
 import { AnimatePresence, motion } from "framer-motion";
 import SearchBarSkeleton from "./search-bar-skeleton";
+import { CoordinateData } from "../types/index";
 
 interface HomeHeaderProps {
   coordinates: number[];
   searchedAddress: string;
   onSearchChange: (coords: number[]) => void;
   onAddressSearch: (address: string) => void;
-  onCoordDataRetrieve: (data: {
-    softStory: any[] | null;
-    tsunami: any[] | null;
-    liquefaction: any[] | null;
-  }) => void;
+  onCoordDataRetrieve: (data: CoordinateData) => void;
   onHazardDataLoading: (isLoading: boolean) => void;
 }
 
