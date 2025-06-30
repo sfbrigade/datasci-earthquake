@@ -10,12 +10,18 @@ import ReportAddress from "./report-address";
 import Share from "./share";
 import { AnimatePresence, motion } from "framer-motion";
 
+type CoordinateData = {
+  liquefaction: {exists: boolean, last_updated: string | null} | null;
+  softStory: {exists: boolean, last_updated: string | null} | null;
+  tsunami: {exists: boolean, last_updated: string | null} | null;
+}
+
 interface HomeHeaderProps {
   coordinates: number[];
   searchedAddress: string;
   onSearchChange: (coords: number[]) => void;
   onAddressSearch: (address: string) => void;
-  onCoordDataRetrieve: (data: any[]) => void;
+  onCoordDataRetrieve: (data: CoordinateData) => void;
   onHazardDataLoading: (isLoading: boolean) => void;
 }
 
