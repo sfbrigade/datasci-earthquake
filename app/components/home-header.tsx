@@ -1,14 +1,16 @@
 "use client";
 
+import { Suspense, useState } from "react";
+import ReactDOM from "react-dom";
+import { Headings } from "../data/data";
 import { Box, Stack, Text } from "@chakra-ui/react";
 import SearchBar from "./search-bar";
 import Heading from "./heading";
-import { Headings } from "../data/data";
-import { useState } from "react";
-import ReactDOM from "react-dom";
 import ReportAddress from "./report-address";
 import Share from "./share";
+import ShareSkeleton from "./share-skeleton";
 import { AnimatePresence, motion } from "framer-motion";
+import SearchBarSkeleton from "./search-bar-skeleton";
 
 type CoordinateData = {
   liquefaction: {exists: boolean, last_updated: string | null} | null;
@@ -52,7 +54,10 @@ const HomeHeader = ({
         justifyContent="space-between"
       >
         <ReportAddress searchedAddress={searchedAddress} />
-        <Share />
+        {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
+        <Suspense fallback={<ShareSkeleton />}>
+          <Share />
+        </Suspense>
       </Stack>
     </motion.div>
   ) : (
@@ -82,14 +87,17 @@ const HomeHeader = ({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <SearchBar
-        coordinates={coordinates}
-        onSearchChange={onSearchChange}
-        onAddressSearch={onAddressSearch}
-        onCoordDataRetrieve={onCoordDataRetrieve}
-        onHazardDataLoading={onHazardDataLoading}
-        onSearchComplete={setSearchComplete}
-      />
+      {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
+      <Suspense fallback={<SearchBarSkeleton />}>
+        <SearchBar
+          coordinates={coordinates}
+          onSearchChange={onSearchChange}
+          onAddressSearch={onAddressSearch}
+          onCoordDataRetrieve={onCoordDataRetrieve}
+          onHazardDataLoading={onHazardDataLoading}
+          onSearchComplete={setSearchComplete}
+        />
+      </Suspense>
     </motion.div>
   );
 
@@ -114,9 +122,7 @@ const HomeHeader = ({
         {isSearchComplete &&
           typeof window !== "undefined" &&
           ReactDOM.createPortal(
-            <AnimatePresence mode="wait">
-              <>{searchBarComponent}</>
-            </AnimatePresence>,
+            <AnimatePresence mode="wait">{searchBarComponent}</AnimatePresence>,
             document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
           )}
       </Box>
