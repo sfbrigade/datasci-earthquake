@@ -271,10 +271,13 @@ class DataHandler(ABC):
                     .filter_by(dataset_name=self.table.__name__)
                     .first()
                 )
-                self.logger.info(
-                    f"The {row.dataset_name} dataset was last exported at {row.last_exported_at}"
-                )
-                return row.last_exported_at
+                if row:
+                    self.logger.info(
+                        f"The {row.dataset_name} dataset was last exported at {row.last_exported_at}"
+                    )
+                    return row.last_exported_at
+                else:
+                    return datetime.min
         except Exception as e:
             self.logger.warning(f"Failed to get last export time: {e}")
             return datetime.min
