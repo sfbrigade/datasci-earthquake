@@ -8,7 +8,7 @@ from backend.api.models.base import Base
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import logging
-from unittest.mock import call
+from unittest.mock import call, patch, MagicMock
 from backend.etl.retry import LoggingRetry
 from backend.etl.request_handler import RequestHandler
 from sqlalchemy import create_engine
@@ -24,9 +24,13 @@ from backend.api.models.tsunami import TsunamiZone
 from backend.api.models.soft_story_properties import SoftStoryProperty
 from backend.api.models.liquefaction_zones import LiquefactionZone
 from backend.etl.tsunami_data_handler import TsunamiDataHandler
+from backend.api.models.export_metadata import ExportMetadata
 from backend.etl.soft_story_properties_data_handler import (
     _SoftStoryPropertiesDataHandler,
 )
+import os
+import json
+from pathlib import Path
 
 
 class DummyModel(Base):
@@ -37,6 +41,7 @@ class DummyModel(Base):
     name = Column(String)
     value = Column(Integer)
     data_changed_at = Column(DateTime)
+    update_timestamp = Column(DateTime(timezone=True))
 
 
 class DummyDataHandler(DataHandler):
@@ -407,11 +412,6 @@ def test_bulk_insert_data_with_basic_policy(test_db, data_handler):
     }
     data_handler.bulk_insert_data([new_data_1, new_data_2], "id")
 
-    print("All records in table:")
-    all_records = test_db.query(DummyModel).all()
-    for record in all_records:
-        print(f"ID: {record.id}, Name: {record.name}, Value: {record.value}")
-
     # Verify no fields were updated (conflict ignored)
     result = test_db.query(DummyModel).filter_by(id=1).first()
     assert result.name == "old name"
@@ -421,3 +421,152 @@ def test_bulk_insert_data_with_basic_policy(test_db, data_handler):
     result = test_db.query(DummyModel).filter_by(id=2).first()
     assert result.name == "new name"
     assert result.value == 200
+
+
+def test_get_last_export_time_from_db(test_db):
+    """Test the last export time lookup"""
+    data_handler = DummyDataHandler(url="", table=DummyModel)
+    data_handler.db_getter = create_test_db_context_manager(test_db)
+
+    # Add new metadata row with timestamp (use timezone-aware datetime)
+    now = datetime(2025, 1, 1, 12, 0, tzinfo=timezone.utc)
+    row = ExportMetadata(dataset_name="DummyModel", last_exported_at=now)
+    test_db.add(row)
+    test_db.commit()
+
+    # Assert that the latest timestamp is returned
+    result = data_handler._get_last_export_time_from_db()
+    assert result == now
+
+
+def test_get_last_export_time_from_db_not_found(test_db):
+    """Test the last export time lookup when the data is unavailable. The method should return the earliest date possible"""
+    data_handler = DummyDataHandler(url="", table=DummyModel)
+    data_handler.db_getter = create_test_db_context_manager(test_db)
+
+    # No row exists
+    result = data_handler._get_last_export_time_from_db()
+    assert result == datetime.min
+
+
+def test_data_changed_since_last_export_true(test_db):
+    """Test when data in db is newer than last export (should return True)"""
+    data_handler = DummyDataHandler(url="", table=DummyModel)
+    data_handler.db_getter = create_test_db_context_manager(test_db)
+
+    # New data in db: 2025-01-01 12:00
+    row = DummyModel(
+        id=1,
+        name="old name",
+        value=100,
+        update_timestamp=datetime(2025, 1, 1, 12, 0, tzinfo=timezone.utc),
+    )
+    test_db.add(row)
+    test_db.commit()
+
+    # Last export time: 2024-01-01 12:00 (older)
+    assert (
+        data_handler._data_changed_since_last_export(
+            datetime(2024, 1, 1, 12, 0, tzinfo=timezone.utc)
+        )
+        is True
+    )
+
+
+def test_data_changed_since_last_export_false(test_db):
+    """Test when data in db is older than last export (should return False)"""
+    data_handler = DummyDataHandler(url="", table=DummyModel)
+    data_handler.db_getter = create_test_db_context_manager(test_db)
+
+    # New data in db: 2024-01-01 12:00
+    row = DummyModel(
+        id=1,
+        name="old name",
+        value=100,
+        update_timestamp=datetime(2024, 1, 1, 12, 0, tzinfo=timezone.utc),
+    )
+    test_db.add(row)
+    test_db.commit()
+
+    # Last export time: 2025-01-01 12:00 (newer)
+    assert (
+        data_handler._data_changed_since_last_export(
+            datetime(2025, 1, 1, 12, 0, tzinfo=timezone.utc)
+        )
+        is False
+    )
+
+
+def test_update_last_export_time_in_db(test_db):
+    """Test creation and updates of a row in the ExportMetadata table"""
+    data_handler = DummyDataHandler(url="", table=DummyModel)
+    data_handler.db_getter = create_test_db_context_manager(test_db)
+
+    # Populate the ExportMetadata data with the datetime.utcnow() timestamp
+    data_handler._update_last_export_time_in_db()
+    row = test_db.query(ExportMetadata).filter_by(dataset_name="DummyModel").first()
+    assert row is not None
+    first_time = row.last_exported_at
+
+    # Update the timestamp of the existing row
+    data_handler._update_last_export_time_in_db()
+    row2 = test_db.query(ExportMetadata).filter_by(dataset_name="DummyModel").first()
+    second_time = row2.last_exported_at
+
+    assert second_time >= first_time
+
+
+def test_save_geojson_file(tmp_path):
+    """Test that geojsons are saved"""
+    data_handler = DummyDataHandler(url="", table=DummyModel)
+    features = {"type": "FeatureCollection", "features": [{"id": 1}]}
+
+    # Create a path where the geojson is going to be saved
+    geojson_path = tmp_path / "test.geojson"
+
+    data_handler._save_geojson_file(features, geojson_path)
+    with open(geojson_path) as f:
+        data = json.load(f)
+    assert data == features
+
+
+def test_export_geojson_if_changed_on_prod_data_changed(tmp_path, monkeypatch):
+    data_handler = DummyDataHandler(url="", table=DummyModel)
+    features = {"type": "FeatureCollection", "features": [{"id": 1}]}
+    monkeypatch.setenv("ENVIRONMENT", "prod")
+
+    # Patch methods to simulate data changed
+    with patch.object(
+        data_handler, "_get_last_export_time_from_db", return_value=datetime(2024, 1, 1)
+    ):
+        with patch.object(
+            data_handler, "_data_changed_since_last_export", return_value=True
+        ):
+            with patch.object(data_handler, "_save_geojson_file") as mock_save:
+                with patch.object(
+                    data_handler, "_update_last_export_time_in_db"
+                ) as mock_update:
+                    data_handler.export_geojson_if_changed(features)
+                    mock_save.assert_called_once()
+                    mock_update.assert_called_once()
+
+
+def test_export_geojson_if_changed_on_prod_data_not_changed(tmp_path, monkeypatch):
+    data_handler = DummyDataHandler(url="", table=DummyModel)
+    features = {"type": "FeatureCollection", "features": [{"id": 1}]}
+    monkeypatch.setenv("ENVIRONMENT", "prod")
+
+    # Patch methods to simulate data did not change
+    with patch.object(
+        data_handler, "_get_last_export_time_from_db", return_value=datetime(2024, 1, 1)
+    ):
+        with patch.object(
+            data_handler, "_data_changed_since_last_export", return_value=False
+        ):
+            with patch.object(data_handler, "_save_geojson_file") as mock_save:
+                with patch.object(
+                    data_handler, "_update_last_export_time_in_db"
+                ) as mock_update:
+                    data_handler.export_geojson_if_changed(features)
+                    mock_save.assert_not_called()
+                    mock_update.assert_not_called()

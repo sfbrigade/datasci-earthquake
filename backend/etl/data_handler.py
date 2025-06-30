@@ -274,19 +274,19 @@ class DataHandler(ABC):
                 self.logger.info(
                     f"The {row.dataset_name} dataset was last exported at {row.last_exported_at}"
                 )
-                return row.last_exported_at if row else datetime.min
+                return row.last_exported_at
         except Exception as e:
             self.logger.warning(f"Failed to get last export time: {e}")
             return datetime.min
 
     def _data_changed_since_last_export(self, last_export_time: datetime) -> bool:
-        """Check if data changed since last export"""
+        """Check if data in the database has changed since last export"""
         try:
             with next(self.db_getter()) as db:
                 latest_update = db.query(
                     func.max(getattr(self.table, "update_timestamp"))
                 ).scalar()
-                return latest_update and latest_update > last_export_time
+                return latest_update is not None and latest_update > last_export_time
         except Exception as e:
             self.logger.warning(
                 f"Failed to check if {self.table.__name__} data has changed since last export: {e}"
