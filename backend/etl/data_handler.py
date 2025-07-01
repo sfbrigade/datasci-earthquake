@@ -20,6 +20,7 @@ import logging
 from backend.etl.session_manager import SessionManager
 from backend.etl.request_handler import RequestHandler
 from sqlalchemy.exc import SQLAlchemyError, ProgrammingError, IntegrityError
+from backend.api.config import settings
 
 load_dotenv()
 
@@ -361,19 +362,19 @@ class DataHandler(ABC):
         self.logger.info(
             f"DEBUG: export_geojson_if_changed called for {self.table.__name__}"
         )
-        self.logger.info(f"DEBUG: ENVIRONMENT = {os.getenv('ENVIRONMENT')}")
+        self.logger.info(f"DEBUG: ENVIRONMENT = {settings.environment}")
 
         try:
             self.logger.info(
                 f"DEBUG: export_geojson_if_changed called for {self.table.__name__}"
             )
-            self.logger.info(f"DEBUG: ENVIRONMENT = {os.getenv('ENVIRONMENT')}")
+            self.logger.info(f"DEBUG: ENVIRONMENT = {settings.environment}")
 
             geojson_path = Path(f"{get_geojson_prefix()}{self.table.__name__}.geojson")
             self.logger.info(f"DEBUG: geojson_path = {geojson_path}")
             geojson_path.parent.mkdir(parents=True, exist_ok=True)
 
-            if os.getenv("ENVIRONMENT") != "prod":
+            if settings.environment != "prod":
                 # Local behavior: only save if file doesn't exist
                 self.logger.info("DEBUG: Entering local environment branch")
                 if geojson_path.exists():
