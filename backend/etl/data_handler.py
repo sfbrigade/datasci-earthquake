@@ -359,9 +359,6 @@ class DataHandler(ABC):
         geojson_path = Path(f"{get_geojson_prefix()}{self.table.__name__}.geojson")
         geojson_path.parent.mkdir(parents=True, exist_ok=True)
 
-        print("DEBUG: geojson_path in method:", geojson_path)
-        print("DEBUG: geojson_path.exists() in method:", geojson_path.exists())
-
         if os.getenv("ENVIRONMENT") != "prod":
             # Local behavior: only save if file doesn't exist
             if geojson_path.exists():
