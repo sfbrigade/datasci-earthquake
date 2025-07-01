@@ -286,7 +286,7 @@ class DataHandler(ABC):
                     return row.last_exported_at
                 else:
                     return datetime.min
-        except Exception as e:
+        except SQLAlchemyError as e:
             self.logger.warning(f"Failed to get last export time: {e}")
             return datetime.min
 
@@ -306,7 +306,7 @@ class DataHandler(ABC):
                         last_export_time = last_export_time.replace(tzinfo=timezone.utc)
 
                 return latest_update is not None and latest_update > last_export_time
-        except Exception as e:
+        except (SQLAlchemyError, AttributeError) as e:
             self.logger.warning(
                 f"Failed to check if {self.table.__name__} data has changed since last export: {e}"
             )
@@ -333,7 +333,7 @@ class DataHandler(ABC):
                     db.add(row)
                 db.commit()
             self.logger.info(f"Updated export metadata for {self.table.__name__}")
-        except Exception as e:
+        except SQLAlchemyError as e:
             self.logger.warning(
                 f"Failed to update export metadata for {self.table.__name__}: {e}"
             )
@@ -388,5 +388,5 @@ class DataHandler(ABC):
                     f"GeoJSON {geojson_path.name} unchanged, skipping write"
                 )
         except Exception as e:
-            print(f"Exception in export_geojson_if_changed: {e}")
+            self.logger.info(f"Exception in export_geojson_if_changed: {e}")
             raise
