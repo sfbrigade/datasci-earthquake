@@ -52,10 +52,9 @@ jobs:
           openssl aes-256-cbc -d -salt -pbkdf2 -k "${{ secrets.ARTIFACT_PASS }}" -in .env.enc -out .env
           echo "Decryption complete"      
 
-      - name: Override an env variable
-        run: echo "ENVIRONMENT=prod" >> .env
-          
       - name: ETL data to Neon DB
+        env:
+          ENVIRONMENT: prod
         run: |
           python -m backend.etl.tsunami_data_handler
           python -m backend.etl.soft_story_properties_data_handler

@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import requests
 from datetime import datetime
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 import json
 from shapely.geometry import shape
@@ -20,12 +21,17 @@ from backend.etl.session_manager import SessionManager
 from backend.etl.request_handler import RequestHandler
 from sqlalchemy.exc import SQLAlchemyError, ProgrammingError, IntegrityError
 
+load_dotenv()
+
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 
-_PREFIX_DATA_GEOJSON_PATH = os.getenv("DATA_GEOJSON_PATH", "public/data/")
 _SF_BOUNDARY_PATH = "backend/etl/data/sf_boundary.geojson"
+
+
+def get_geojson_prefix():
+    return os.getenv("DATA_GEOJSON_PATH", "public/data/")
 
 
 class DataHandler(ABC):
@@ -298,6 +304,9 @@ class DataHandler(ABC):
 
     def _update_last_export_time_in_db(self) -> None:
         """Update last export time in database"""
+        self.logger.info(
+            f"DEBUG: Starting _update_last_export_time_in_db for {self.table.__name__}"
+        )
         try:
             with next(self.db_getter()) as db:
                 row = (
@@ -307,13 +316,20 @@ class DataHandler(ABC):
                 )
                 now = datetime.utcnow()
                 if row:
+                    self.logger.info(
+                        f"DEBUG: Updating existing row for {self.table.__name__}"
+                    )
                     row.last_exported_at = now
                 else:
+                    self.logger.info(
+                        f"DEBUG: Creating new row for {self.table.__name__}"
+                    )
                     row = ExportMetadata(
                         dataset_name=self.table.__name__, last_exported_at=now
                     )
                     db.add(row)
                 db.commit()
+            self.logger.info(f"Updated export metadata for {self.table.__name__}")
         except Exception as e:
             self.logger.warning(
                 f"Failed to update export metadata for {self.table.__name__}: {e}"
@@ -328,7 +344,7 @@ class DataHandler(ABC):
                 json.dump(features, f)
 
             self.logger.info(
-                f"Generated {_PREFIX_DATA_GEOJSON_PATH}{self.table.__name__}.geojson"
+                f"Generated {get_geojson_prefix()}{self.table.__name__}.geojson"
             )
         except Exception as e:
             self.logger.error(f"Failed to write GeoJSON: {e}")
@@ -337,16 +353,31 @@ class DataHandler(ABC):
     def export_geojson_if_changed(self, features: dict) -> None:
         """
         Write the geojson file to the public/data folder. The geojson is a static asset that is displayed on the map in the app.
-        - Locally: No change detection; always rewrite data to the docker volume
+        - Locally: Only save if file doesn't exist
         - ETL (production): Check if data changed since last export
         """
-        geojson_path = Path(f"{_PREFIX_DATA_GEOJSON_PATH}{self.table.__name__}.geojson")
+        geojson_path = Path(f"{get_geojson_prefix()}{self.table.__name__}.geojson")
         geojson_path.parent.mkdir(parents=True, exist_ok=True)
 
-        if os.getenv("ENVIRONMENT") != "prod":
-            self._save_geojson_file(features, geojson_path)
-            return
+        print("DEBUG: geojson_path in method:", geojson_path)
+        print("DEBUG: geojson_path.exists() in method:", geojson_path.exists())
 
+        if os.getenv("ENVIRONMENT") != "prod":
+            # Local behavior: only save if file doesn't exist
+            if geojson_path.exists():
+                self.logger.info(
+                    f"GeoJSON {geojson_path.name} already exists locally, skipping write"
+                )
+                return
+            else:
+                self.logger.info(
+                    f"GeoJSON {geojson_path.name} doesn't exist, creating it"
+                )
+                self._save_geojson_file(features, geojson_path)
+                return
+
+        # Production behavior: check if data changed since last export
+        self.logger.info("Check if geojsons should be updated in production")
         last_export_time = self._get_last_export_time_from_db()
         if self._data_changed_since_last_export(last_export_time):
             self._save_geojson_file(features, geojson_path)

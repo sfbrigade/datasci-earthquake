@@ -3,7 +3,7 @@ from unittest.mock import Mock
 import requests
 import responses
 from sqlalchemy import Column, Integer, String
-from backend.etl.data_handler import DataHandler
+from backend.etl.data_handler import DataHandler, get_geojson_prefix
 from backend.api.models.base import Base
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -464,7 +464,7 @@ def test_data_changed_since_last_export_true(test_db):
     test_db.add(row)
     test_db.commit()
 
-    # Last export time: 2024-01-01 12:00 (older)
+    # Last export time: 2024-01-01 12:00 (older than new data)
     assert (
         data_handler._data_changed_since_last_export(
             datetime(2024, 1, 1, 12, 0, tzinfo=timezone.utc)
@@ -488,7 +488,7 @@ def test_data_changed_since_last_export_false(test_db):
     test_db.add(row)
     test_db.commit()
 
-    # Last export time: 2025-01-01 12:00 (newer)
+    # Last export time: 2025-01-01 12:00 (newer than data in the db)
     assert (
         data_handler._data_changed_since_last_export(
             datetime(2025, 1, 1, 12, 0, tzinfo=timezone.utc)
@@ -513,6 +513,7 @@ def test_update_last_export_time_in_db(test_db):
     row2 = test_db.query(ExportMetadata).filter_by(dataset_name="DummyModel").first()
     second_time = row2.last_exported_at
 
+    # Assert that "last_exported_at" was updated
     assert second_time >= first_time
 
 
@@ -530,7 +531,43 @@ def test_save_geojson_file(tmp_path):
     assert data == features
 
 
+def test_export_geojson_if_changed_local_file_exists(tmp_path, monkeypatch):
+    """Test local environment when a file already exists (should not save)"""
+    monkeypatch.setenv("ENVIRONMENT", "local")
+    monkeypatch.setenv("DATA_GEOJSON_PATH", str(tmp_path) + "/")
+    data_handler = DummyDataHandler(url="", table=DummyModel)
+    features = {"type": "FeatureCollection", "features": [{"id": 1}]}
+
+    # Create a file to simulate the scenario when it already exists
+    geojson_path = tmp_path / "DummyModel.geojson"
+    geojson_path.write_text('{"existing": "data"}')
+
+    # Assert that the new file is not saved
+    with patch.object(data_handler, "_save_geojson_file") as mock_save:
+        data_handler.export_geojson_if_changed(features)
+        mock_save.assert_not_called()
+
+
+def test_export_geojson_if_changed_local_file_not_exists(tmp_path, monkeypatch):
+    """Test local environment when file doesn't exist (should save)"""
+    monkeypatch.setenv("ENVIRONMENT", "local")
+    monkeypatch.setenv("DATA_GEOJSON_PATH", str(tmp_path) + "/")
+
+    data_handler = DummyDataHandler(url="", table=DummyModel)
+    features = {"type": "FeatureCollection", "features": [{"id": 1}]}
+
+    # Ensure file doesn't exist
+    geojson_path = tmp_path / "DummyModel.geojson"
+    assert not geojson_path.exists()
+
+    # Assert that the file is saved
+    with patch.object(data_handler, "_save_geojson_file") as mock_save:
+        data_handler.export_geojson_if_changed(features)
+        mock_save.assert_called_once()
+
+
 def test_export_geojson_if_changed_on_prod_data_changed(tmp_path, monkeypatch):
+    """Test production environment when geojson data is stale and needs to be updated"""
     data_handler = DummyDataHandler(url="", table=DummyModel)
     features = {"type": "FeatureCollection", "features": [{"id": 1}]}
     monkeypatch.setenv("ENVIRONMENT", "prod")
@@ -552,6 +589,7 @@ def test_export_geojson_if_changed_on_prod_data_changed(tmp_path, monkeypatch):
 
 
 def test_export_geojson_if_changed_on_prod_data_not_changed(tmp_path, monkeypatch):
+    """Test production environment when geojson data is up-to-date"""
     data_handler = DummyDataHandler(url="", table=DummyModel)
     features = {"type": "FeatureCollection", "features": [{"id": 1}]}
     monkeypatch.setenv("ENVIRONMENT", "prod")
