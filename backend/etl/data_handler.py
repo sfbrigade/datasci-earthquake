@@ -292,18 +292,6 @@ class DataHandler(ABC):
 
     def _data_changed_since_last_export(self, last_export_time: datetime) -> bool:
         """Check if data in the database has changed since last export"""
-
-        """with next(self.db_getter()) as db:
-            latest_update = db.query(
-                func.max(getattr(self.table, "update_timestamp"))
-            ).scalar()
-            # Ensure both datetimes are timezone-aware (UTC)
-            if latest_update is not None:
-                if latest_update.tzinfo is None:
-                    latest_update = latest_update.replace(tzinfo=timezone.utc)
-                if last_export_time.tzinfo is None:
-                    last_export_time = last_export_time.replace(tzinfo=timezone.utc)
-                return latest_update > last_export_time"""
         try:
             with next(self.db_getter()) as db:
                 latest_update = db.query(
@@ -322,7 +310,7 @@ class DataHandler(ABC):
             self.logger.warning(
                 f"Failed to check if {self.table.__name__} data has changed since last export: {e}"
             )
-            return True  # assume that data has changed if we can't check the changes
+            return True  # assume that data has changed if we can't track the changes
 
     def _update_last_export_time_in_db(self) -> None:
         """Update last export time in database"""
@@ -335,14 +323,10 @@ class DataHandler(ABC):
                 )
                 now = datetime.utcnow()
                 if row:
-                    self.logger.info(
-                        f"DEBUG: Updating existing row for {self.table.__name__}"
-                    )
+                    self.logger.info(f"Updating existing row for {self.table.__name__}")
                     row.last_exported_at = now
                 else:
-                    self.logger.info(
-                        f"DEBUG: Creating new row for {self.table.__name__}"
-                    )
+                    self.logger.info(f"Creating new row for {self.table.__name__}")
                     row = ExportMetadata(
                         dataset_name=self.table.__name__, last_exported_at=now
                     )
@@ -375,15 +359,12 @@ class DataHandler(ABC):
         - Locally: Only save if file doesn't exist
         - ETL (production): Check if data changed since last export
         """
-
         try:
             geojson_path = Path(f"{get_geojson_prefix()}{self.table.__name__}.geojson")
-            self.logger.info(f"DEBUG: geojson_path = {geojson_path}")
             geojson_path.parent.mkdir(parents=True, exist_ok=True)
 
             if os.getenv("ENVIRONMENT") != "prod":
                 # Local behavior: only save if file doesn't exist
-                self.logger.info("DEBUG: Entering local environment branch")
                 if geojson_path.exists():
                     self.logger.info(
                         f"GeoJSON {geojson_path.name} already exists locally, skipping write"
@@ -397,22 +378,15 @@ class DataHandler(ABC):
                     return
 
             # Production behavior: check if data changed since last export
-            self.logger.info("DEBUG: Entering production environment branch")
-            self.logger.info("Check if geojsons should be updated in production")
             self.logger.info("Check if geojsons should be updated in production")
             last_export_time = self._get_last_export_time_from_db()
             if self._data_changed_since_last_export(last_export_time):
-                print("DEBUG: Data changed branch taken")
                 self._save_geojson_file(features, geojson_path)
                 self._update_last_export_time_in_db()
             else:
-                print("DEBUG: Data unchanged branch taken")
                 self.logger.info(
                     f"GeoJSON {geojson_path.name} unchanged, skipping write"
                 )
         except Exception as e:
-            print(f"DEBUG: Exception in export_geojson_if_changed: {e}")
-            import traceback
-
-            traceback.print_exc()
+            print(f"Exception in export_geojson_if_changed: {e}")
             raise
