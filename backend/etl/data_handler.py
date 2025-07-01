@@ -24,7 +24,9 @@ from sqlalchemy.exc import SQLAlchemyError, ProgrammingError, IntegrityError
 load_dotenv()
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    force=True,
 )
 
 _SF_BOUNDARY_PATH = "backend/etl/data/sf_boundary.geojson"
