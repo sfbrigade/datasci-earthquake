@@ -22,7 +22,7 @@ from backend.etl.request_handler import RequestHandler
 from sqlalchemy.exc import SQLAlchemyError, ProgrammingError, IntegrityError
 from backend.api.config import settings
 
-load_dotenv()
+load_dotenv(override=False)
 
 logging.basicConfig(
     level=logging.INFO,
