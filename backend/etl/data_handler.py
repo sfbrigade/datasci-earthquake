@@ -363,6 +363,11 @@ class DataHandler(ABC):
             f"DEBUG: export_geojson_if_changed called for {self.table.__name__}"
         )
         self.logger.info(f"DEBUG: ENVIRONMENT = {settings.environment}")
+        """
+        self.logger.info(
+            f"DEBUG: export_geojson_if_changed called for {self.table.__name__}"
+        )
+        self.logger.info(f"DEBUG: ENVIRONMENT = {settings.environment}")
 
         try:
             self.logger.info(
@@ -407,3 +412,4 @@ class DataHandler(ABC):
 
             traceback.print_exc()
             raise
+        """
