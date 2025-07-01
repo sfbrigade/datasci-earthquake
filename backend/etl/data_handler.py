@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 import os
 from dotenv import load_dotenv
 from pathlib import Path
@@ -292,11 +292,31 @@ class DataHandler(ABC):
 
     def _data_changed_since_last_export(self, last_export_time: datetime) -> bool:
         """Check if data in the database has changed since last export"""
+
+        """with next(self.db_getter()) as db:
+            latest_update = db.query(
+                func.max(getattr(self.table, "update_timestamp"))
+            ).scalar()
+            # Ensure both datetimes are timezone-aware (UTC)
+            if latest_update is not None:
+                if latest_update.tzinfo is None:
+                    latest_update = latest_update.replace(tzinfo=timezone.utc)
+                if last_export_time.tzinfo is None:
+                    last_export_time = last_export_time.replace(tzinfo=timezone.utc)
+                return latest_update > last_export_time"""
         try:
             with next(self.db_getter()) as db:
                 latest_update = db.query(
                     func.max(getattr(self.table, "update_timestamp"))
                 ).scalar()
+
+                # Ensure both datetimes are timezone-aware (UTC)
+                if latest_update is not None:
+                    if latest_update.tzinfo is None:
+                        latest_update = latest_update.replace(tzinfo=timezone.utc)
+                    if last_export_time.tzinfo is None:
+                        last_export_time = last_export_time.replace(tzinfo=timezone.utc)
+
                 return latest_update is not None and latest_update > last_export_time
         except Exception as e:
             self.logger.warning(
@@ -306,9 +326,6 @@ class DataHandler(ABC):
 
     def _update_last_export_time_in_db(self) -> None:
         """Update last export time in database"""
-        self.logger.info(
-            f"DEBUG: Starting _update_last_export_time_in_db for {self.table.__name__}"
-        )
         try:
             with next(self.db_getter()) as db:
                 row = (

@@ -574,7 +574,9 @@ def test_export_geojson_if_changed_on_prod_data_changed(tmp_path, monkeypatch):
 
     # Patch methods to simulate data changed
     with patch.object(
-        data_handler, "_get_last_export_time_from_db", return_value=datetime(2024, 1, 1)
+        data_handler,
+        "_get_last_export_time_from_db",
+        return_value=datetime(2024, 1, 1, tzinfo=timezone.utc),
     ):
         with patch.object(
             data_handler, "_data_changed_since_last_export", return_value=True
@@ -596,7 +598,9 @@ def test_export_geojson_if_changed_on_prod_data_not_changed(tmp_path, monkeypatc
 
     # Patch methods to simulate data did not change
     with patch.object(
-        data_handler, "_get_last_export_time_from_db", return_value=datetime(2024, 1, 1)
+        data_handler,
+        "_get_last_export_time_from_db",
+        return_value=datetime(2024, 1, 1, tzinfo=timezone.utc),
     ):
         with patch.object(
             data_handler, "_data_changed_since_last_export", return_value=False
