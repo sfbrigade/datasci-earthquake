@@ -356,11 +356,18 @@ class DataHandler(ABC):
         - Locally: Only save if file doesn't exist
         - ETL (production): Check if data changed since last export
         """
+        self.logger.info(
+            f"DEBUG: export_geojson_if_changed called for {self.table.__name__}"
+        )
+        self.logger.info(f"DEBUG: ENVIRONMENT = {os.getenv('ENVIRONMENT')}")
+
         geojson_path = Path(f"{get_geojson_prefix()}{self.table.__name__}.geojson")
+        self.logger.info(f"DEBUG: geojson_path = {geojson_path}")
         geojson_path.parent.mkdir(parents=True, exist_ok=True)
 
         if os.getenv("ENVIRONMENT") != "prod":
             # Local behavior: only save if file doesn't exist
+            self.logger.info("DEBUG: Entering local environment branch")
             if geojson_path.exists():
                 self.logger.info(
                     f"GeoJSON {geojson_path.name} already exists locally, skipping write"
@@ -374,6 +381,8 @@ class DataHandler(ABC):
                 return
 
         # Production behavior: check if data changed since last export
+        self.logger.info("DEBUG: Entering production environment branch")
+        self.logger.info("Check if geojsons should be updated in production")
         self.logger.info("Check if geojsons should be updated in production")
         last_export_time = self._get_last_export_time_from_db()
         if self._data_changed_since_last_export(last_export_time):
