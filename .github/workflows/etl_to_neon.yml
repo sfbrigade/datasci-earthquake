@@ -8,9 +8,7 @@ on:
 
 jobs:
   run-etl:
-    runs-on: ubuntu-latest
-    env:
-      ENVIRONMENT: prod    
+    runs-on: ubuntu-latest  
     outputs:
       changes: ${{ steps.detect_changes.outputs.changes }}    
       etl_commit: ${{ steps.detect_changes.outputs.commit_sha }}
@@ -56,9 +54,9 @@ jobs:
 
       - name: ETL data to Neon DB
         run: |
-          python -m backend.etl.tsunami_data_handler
-          python -m backend.etl.soft_story_properties_data_handler
-          python -m backend.etl.liquefaction_data_handler
+          ENVIRONMENT=prod python -m backend.etl.tsunami_data_handler
+          ENVIRONMENT=prod python -m backend.etl.soft_story_properties_data_handler
+          ENVIRONMENT=prod python -m backend.etl.liquefaction_data_handler
 
   #     - name: Commit & Push Changes
   #       id: detect_changes 

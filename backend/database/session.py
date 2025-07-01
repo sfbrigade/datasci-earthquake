@@ -26,6 +26,8 @@ engine = create_engine(
     pool_recycle=3600,
 )
 
+logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
+
 # Create a session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
