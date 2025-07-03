@@ -12,6 +12,7 @@ jobs:
     outputs:
       changes: ${{ steps.detect_changes.outputs.changes }}    
       etl_commit: ${{ steps.detect_changes.outputs.commit_sha }}
+      metadata_table: ${{ steps.export_metadata.outputs.metadata_table }}
 
     steps:
       - name: Checkout repository
@@ -58,6 +59,36 @@ jobs:
           ENVIRONMENT=prod python -m backend.etl.soft_story_properties_data_handler
           ENVIRONMENT=prod python -m backend.etl.liquefaction_data_handler
 
+      - name: Query export metadata
+        id: export_metadata
+        run: |
+          cat > query_metadata.py << 'EOF'
+          import os
+          from sqlalchemy import create_engine
+          from backend.api.models.export_metadata import ExportMetadata
+          from sqlalchemy.orm import sessionmaker
+
+          engine = create_engine(os.getenv('DATABASE_URL'))
+          Session = sessionmaker(bind=engine)
+          
+          with Session() as session:
+              metadata_records = session.query(ExportMetadata).order_by(ExportMetadata.last_exported_at.desc()).all()
+              
+              if metadata_records:
+                  print("| Dataset | Last Exported |")
+                  print("|---------|---------------|")
+                  for record in metadata_records:
+                      formatted_time = record.last_exported_at.strftime('%Y-%m-%d %H:%M:%S UTC')
+                      print(f"| {record.dataset_name} | {formatted_time} |")
+              else:
+                  print("No export metadata found")
+          EOF
+          
+          # Capture the output
+          echo "metadata_table<<EOF" >> $GITHUB_OUTPUT
+          ENVIRONMENT=prod python query_metadata.py >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Commit & Push Changes
         id: detect_changes 
         run: |
@@ -95,14 +126,16 @@ jobs:
   
       - name: Get updated files from develop
         run: |
-          # Fetch the latest develop branch
           git fetch origin develop
-          
-          # Copy the updated geojson files from develop to main
           git checkout origin/develop -- public/data/*.geojson
           
-          # Verify we got the changes
-          git status
+          if ! git diff --quiet; then
+            echo "Changes detected:"
+            git status --porcelain
+          else
+            echo "No changes found - this shouldn't happen"
+            exit 1
+          fi
   
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
@@ -116,18 +149,13 @@ jobs:
             This PR contains updated GeoJSON files from the latest ETL run.
   
             **Source ETL Commit:** ${{ needs.run-etl.outputs.etl_commit }}
+            **Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            
+            ### Export Metadata
+            
+            ${{ needs.run-etl.outputs.metadata_table }}
             
             Please review and merge if the data looks correct.
           base: main
           delete-branch: true
-          commit-message: "ETL: update GeoJSON files"   
-
-      - name: Create PR to main
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "ETL: update GeoJSONs"
-          branch: ${{ env.branch_name }}
-          title: "ETL auto-update (GeoJSONs)"
-          body: "This PR updates `public/data/*.geojson` files based on the latest ETL run. Please review and merge."
-          base: main
+          commit-message: "ETL: update GeoJSON files"
