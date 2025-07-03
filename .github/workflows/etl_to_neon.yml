@@ -84,33 +84,43 @@ jobs:
     needs: run-etl
     if: needs.run-etl.outputs.changes == 'true'
     runs-on: ubuntu-latest
-
+  
     steps:
-      - name: Checkout repo to main
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
-          ssh-key: ${{ secrets.DEPLOY_KEY }}
-
-      - name: Create PR branch and cherry-pick ETL commit
-        id: pr_branch
+          token: ${{ secrets.GITHUB_TOKEN }}
+  
+      - name: Get updated files from develop
         run: |
-          BRANCH="etl/update-${{ github.run_id }}"
+          # Fetch the latest develop branch
           git fetch origin develop
-          git checkout -b $BRANCH origin/main
           
-          if git cherry-pick ${{ needs.run-etl.outputs.etl_commit }}; then 
-            echo "Cherry-pick successful"
-          else
-            echo "::warning::Cherry-pick failed — committing with conflict markers for manual resolution"
-            # Stage conflicted files (geojsons)
-            git add public/data/*.geojson || true
-            git commit -m "ETL: update GeoJSONs with conflict markers for manual resolution" || true
-          fi
-
-          git push origin $BRANCH
-          echo "branch_name=$BRANCH" >> $GITHUB_ENV      
+          # Copy the updated geojson files from develop to main
+          git checkout origin/develop -- public/data/*.geojson
+          
+          # Verify we got the changes
+          git status
+  
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: etl/update-${{ github.run_id }}
+          title: "ETL auto-update - GeoJSON files"
+          body: |
+            ## ETL Auto-Update
+            
+            This PR contains updated GeoJSON files from the latest ETL run.
+  
+            **Source ETL Commit:** ${{ needs.run-etl.outputs.etl_commit }}
+            
+            Please review and merge if the data looks correct.
+          base: main
+          delete-branch: true
+          commit-message: "ETL: update GeoJSON files"   
 
       - name: Create PR to main
         uses: peter-evans/create-pull-request@v6
