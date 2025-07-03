@@ -11,14 +11,19 @@ import Share from "./share";
 import ShareSkeleton from "./share-skeleton";
 import { AnimatePresence, motion } from "framer-motion";
 import SearchBarSkeleton from "./search-bar-skeleton";
-import { CoordinateData } from "../types/index";
+
+type HazardData = {
+  liquefaction: { exists: boolean; last_updated: string | null } | null;
+  softStory: { exists: boolean; last_updated: string | null } | null;
+  tsunami: { exists: boolean; last_updated: string | null } | null;
+};
 
 interface HomeHeaderProps {
   coordinates: number[];
   searchedAddress: string;
   onSearchChange: (coords: number[]) => void;
   onAddressSearch: (address: string) => void;
-  onCoordDataRetrieve: (data: CoordinateData) => void;
+  onCoordDataRetrieve: (data: HazardData) => void;
   onHazardDataLoading: (isLoading: boolean) => void;
 }
 
