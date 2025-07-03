@@ -12,16 +12,18 @@ import ShareSkeleton from "./share-skeleton";
 import { AnimatePresence, motion } from "framer-motion";
 import SearchBarSkeleton from "./search-bar-skeleton";
 
+type HazardData = {
+  liquefaction: { exists: boolean; last_updated: string | null } | null;
+  softStory: { exists: boolean; last_updated: string | null } | null;
+  tsunami: { exists: boolean; last_updated: string | null } | null;
+};
+
 interface HomeHeaderProps {
   coordinates: number[];
   searchedAddress: string;
   onSearchChange: (coords: number[]) => void;
   onAddressSearch: (address: string) => void;
-  onCoordDataRetrieve: (data: {
-    softStory: any[] | null;
-    tsunami: any[] | null;
-    liquefaction: any[] | null;
-  }) => void;
+  onCoordDataRetrieve: (data: HazardData) => void;
   onHazardDataLoading: (isLoading: boolean) => void;
 }
 
