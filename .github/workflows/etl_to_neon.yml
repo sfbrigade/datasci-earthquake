@@ -93,9 +93,15 @@ jobs:
           fetch-depth: 0
           ssh-key: ${{ secrets.DEPLOY_KEY }}
 
+      - name: Set up GitHub CLI
+        uses: cli/cli-action@v2          
+
       - name: Create PR branch and cherry-pick ETL commit
         id: pr_branch
         run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
           BRANCH="etl/update-${{ github.run_id }}"
           git fetch origin develop
           git checkout -b $BRANCH origin/main
@@ -113,11 +119,18 @@ jobs:
           echo "branch_name=$BRANCH" >> $GITHUB_ENV      
 
       - name: Create PR to main
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "ETL: update GeoJSONs"
-          branch: ${{ env.branch_name }}
-          title: "ETL auto-update (GeoJSONs)"
-          body: "This PR updates `public/data/*.geojson` files based on the latest ETL run. Please review and merge."
-          base: main
+        run: |
+          gh pr create \
+            --repo ${{ github.repository }} \
+            --base main \
+            --head ${{ env.branch_name }} \
+            --title "ETL auto-update (GeoJSONs)" \
+            --body "## ETL Auto-Update
+
+          This PR contains updated GeoJSON files from the latest ETL run.
+
+          **Source ETL Commit:** ${{ needs.run-etl.outputs.etl_commit }}
+
+          Please review and merge if the data looks correct."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
