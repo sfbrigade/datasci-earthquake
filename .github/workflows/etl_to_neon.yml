@@ -17,7 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: develop
+          ref: github.ref_name
           fetch-depth: 0
           ssh-key: ${{ secrets.DEPLOY_KEY }}          
 
@@ -91,10 +91,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-          ssh-key: ${{ secrets.DEPLOY_KEY }}
-
-      - name: Set up GitHub CLI
-        uses: cli/cli-action@v2          
+          ssh-key: ${{ secrets.DEPLOY_KEY }}   
 
       - name: Create PR branch and cherry-pick ETL commit
         id: pr_branch
