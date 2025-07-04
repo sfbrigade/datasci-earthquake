@@ -12,13 +12,12 @@ jobs:
     outputs:
       changes: ${{ steps.detect_changes.outputs.changes }}    
       etl_commit: ${{ steps.detect_changes.outputs.commit_sha }}
-      metadata_table: ${{ steps.export_metadata.outputs.metadata_table }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          ref: develop
           fetch-depth: 0
           ssh-key: ${{ secrets.DEPLOY_KEY }}          
 
@@ -59,36 +58,6 @@ jobs:
           ENVIRONMENT=prod python -m backend.etl.soft_story_properties_data_handler
           ENVIRONMENT=prod python -m backend.etl.liquefaction_data_handler
 
-      - name: Query export metadata
-        id: export_metadata
-        run: |
-          cat > query_metadata.py << 'EOF'
-          import os
-          from sqlalchemy import create_engine
-          from backend.api.models.export_metadata import ExportMetadata
-          from sqlalchemy.orm import sessionmaker
-
-          engine = create_engine(os.getenv('DATABASE_URL'))
-          Session = sessionmaker(bind=engine)
-          
-          with Session() as session:
-              metadata_records = session.query(ExportMetadata).order_by(ExportMetadata.last_exported_at.desc()).all()
-              
-              if metadata_records:
-                  print("| Dataset | Last Exported |")
-                  print("|---------|---------------|")
-                  for record in metadata_records:
-                      formatted_time = record.last_exported_at.strftime('%Y-%m-%d %H:%M:%S UTC')
-                      print(f"| {record.dataset_name} | {formatted_time} |")
-              else:
-                  print("No export metadata found")
-          EOF
-          
-          # Capture the output
-          echo "metadata_table<<EOF" >> $GITHUB_OUTPUT
-          ENVIRONMENT=prod python query_metadata.py >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
       - name: Commit & Push Changes
         id: detect_changes 
         run: |
@@ -115,47 +84,40 @@ jobs:
     needs: run-etl
     if: needs.run-etl.outputs.changes == 'true'
     runs-on: ubuntu-latest
-  
+
     steps:
-      - name: Checkout main branch
+      - name: Checkout repo to main
         uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-  
-      - name: Get updated files from develop
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Create PR branch and cherry-pick ETL commit
+        id: pr_branch
         run: |
+          BRANCH="etl/update-${{ github.run_id }}"
           git fetch origin develop
-          git checkout origin/develop -- public/data/*.geojson
+          git checkout -b $BRANCH origin/main
           
-          if ! git diff --quiet; then
-            echo "Changes detected:"
-            git status --porcelain
+          if git cherry-pick ${{ needs.run-etl.outputs.etl_commit }}; then 
+            echo "Cherry-pick successful"
           else
-            echo "No changes found - this shouldn't happen"
-            exit 1
+            echo "::warning::Cherry-pick failed — committing with conflict markers for manual resolution"
+            # Stage conflicted files (geojsons)
+            git add public/data/*.geojson || true
+            git commit -m "ETL: update GeoJSONs with conflict markers for manual resolution" || true
           fi
-  
-      - name: Create Pull Request
+
+          git push origin $BRANCH
+          echo "branch_name=$BRANCH" >> $GITHUB_ENV      
+
+      - name: Create PR to main
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: etl/update-${{ github.run_id }}
-          title: "ETL auto-update - GeoJSON files"
-          body: |
-            ## ETL Auto-Update
-            
-            This PR contains updated GeoJSON files from the latest ETL run.
-  
-            **Source ETL Commit:** ${{ needs.run-etl.outputs.etl_commit }}
-            **Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            
-            ### Export Metadata
-            
-            ${{ needs.run-etl.outputs.metadata_table }}
-            
-            Please review and merge if the data looks correct.
+          commit-message: "ETL: update GeoJSONs"
+          branch: ${{ env.branch_name }}
+          title: "ETL auto-update (GeoJSONs)"
+          body: "This PR updates `public/data/*.geojson` files based on the latest ETL run. Please review and merge."
           base: main
-          delete-branch: true
-          commit-message: "ETL: update GeoJSON files"
