@@ -16,8 +16,6 @@ def _get_database_url() -> str:
             raise ValueError(f"Unknown environment: {settings.environment}")
 
 
-logging.getLogger("sqlalchemy.pool").setLevel(logging.DEBUG)
-
 # Set up the database engine using settings
 engine = create_engine(
     _get_database_url(),
@@ -27,6 +25,8 @@ engine = create_engine(
     pool_pre_ping=True,
     pool_recycle=3600,
 )
+
+logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
 
 # Create a session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

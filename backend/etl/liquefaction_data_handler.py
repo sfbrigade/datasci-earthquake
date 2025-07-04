@@ -79,7 +79,7 @@ if __name__ == "__main__":
         liquefaction_zones_objects, liquefaction_zones_geojson = handler.parse_data(
             liquefaction_zones
         )
-        handler.save_geojson(liquefaction_zones_geojson)
+        handler.export_geojson_if_changed(liquefaction_zones_geojson)
         handler.bulk_insert_data(liquefaction_zones_objects, "identifier")
     except HTTPException as e:
         print(f"Failed after retries: {e}")

@@ -204,7 +204,7 @@ map.addLayer({
 ### Back end-focused development (WIP)
 
 > [!CAUTION]
-> This section is currently undergoing review and correction. Do not use this method. Instead, please either [develop locally](#local-development), or [develop using Docker](#development-with-docker).
+> This section is currently undergoing review and correction. Do not use this method. Instead, please [develop using Docker](#development-with-docker).
 
 #### ~~Prerequisites~~
 
