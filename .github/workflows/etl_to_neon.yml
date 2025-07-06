@@ -100,41 +100,31 @@ jobs:
           fetch-depth: 0
           ssh-key: ${{ secrets.DEPLOY_KEY }}   
 
-      - name: Create PR branch and cherry-pick ETL commit
-        id: pr_branch
+      - name: Get updated files from develop
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
-
-          BRANCH="etl/update-${{ github.run_id }}"
+          # Fetch the latest develop branch
           git fetch origin develop
-          git checkout -b $BRANCH origin/main
           
-          if git cherry-pick ${{ needs.run-etl.outputs.etl_commit }}; then 
-            echo "Cherry-pick successful"
-          else
-            echo "::warning::Cherry-pick failed — committing with conflict markers for manual resolution"
-            # Stage conflicted files (geojsons)
-            git add public/data/*.geojson || true
-            git commit -m "ETL: update GeoJSONs with conflict markers for manual resolution" || true
-          fi
+          # Copy the updated geojson files from develop to main
+          git checkout origin/develop -- public/data/*.geojson || echo "No changes found to copy"
+          
+          # Verify we got the changes
+          git status          
 
-          git push origin $BRANCH
-          echo "branch_name=$BRANCH" >> $GITHUB_ENV      
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: etl/update-${{ github.run_id }}
+          title: "ETL auto-update - GeoJSON files"
+          body: |
+            ## ETL Auto-Update
+            
+            This PR contains updated GeoJSON files from the latest ETL run.
 
-      - name: Create PR to main
-        run: |
-          gh pr create \
-            --repo ${{ github.repository }} \
-            --base main \
-            --head ${{ env.branch_name }} \
-            --title "ETL auto-update (GeoJSONs)" \
-            --body "## ETL Auto-Update
-
-          This PR contains updated GeoJSON files from the latest ETL run.
-
-          **Source ETL Commit:** ${{ needs.run-etl.outputs.etl_commit }}
-
-          Please review and merge if the data looks correct."
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            **Source ETL Commit:** ${{ needs.run-etl.outputs.etl_commit }}
+            
+            Please review and merge if the data looks correct.
+          base: main
+          delete-branch: true
+          commit-message: "ETL: update GeoJSON files"
