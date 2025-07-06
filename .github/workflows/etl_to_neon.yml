@@ -39,6 +39,11 @@ jobs:
           echo "Run ID: $run_id"
           echo "run_id=$run_id" >> $GITHUB_ENV     
 
+      - name: Clean and verify .env.enc
+        run: |
+          rm -f .env.enc
+          echo "Removed old .env.enc if present"          
+
       - name: Download .env Artifact 
         uses: actions/download-artifact@v4
         with:
@@ -76,9 +81,11 @@ jobs:
       - name: Push to develop
         if: steps.detect_changes.outputs.changes == 'true'
         run: |
+          git fetch origin develop
+          git checkout develop
           git pull --rebase origin develop
-          git push origin HEAD:develop
-
+          git cherry-pick ${{ steps.detect_changes.outputs.commit_sha }}
+          git push origin develop
 
   create-pr:
     needs: run-etl
