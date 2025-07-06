@@ -83,9 +83,15 @@ jobs:
         run: |
           git fetch origin develop
           git checkout develop
-          git pull --rebase origin develop
-          git cherry-pick ${{ steps.detect_changes.outputs.commit_sha }}
-          git push origin develop
+          git pull origin develop
+
+          git add public/data/*.geojson
+          if git diff --cached --quiet; then
+            echo "No changes to commit on develop"
+          else
+            git commit -m "Update datasets (ETL auto-update)"
+            git push origin develop
+          fi
 
   create-pr:
     needs: run-etl
