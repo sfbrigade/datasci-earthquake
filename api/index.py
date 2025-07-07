@@ -6,6 +6,17 @@ from backend.api.routers import (
     soft_story_api,
     health_api,
 )
+from backend.api.config import settings
+import sentry_sdk
+
+
+# Initialize Sentry
+sentry_sdk.init(
+    dsn=settings.sentry_dsn,
+    # Add request headers and IP for users,
+    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+    send_default_pii=True,
+)
 
 ### Create FastAPI instance with custom docs and openapi url
 app = FastAPI(docs_url="/docs", openapi_url="/openapi.json", redirect_slashes=False)
@@ -27,3 +38,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/error")
+async def trigger_error():
+    # This will trigger an error and be captured by Sentry
+    return 1 / 0
