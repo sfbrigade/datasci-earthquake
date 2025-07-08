@@ -3,24 +3,17 @@
 import {
   Text,
   HStack,
-  Button,
   VStack,
   Link,
-  CardFooter,
-  CardBody,
   Card,
-  CardHeader,
   Spinner,
   Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  PopoverArrow,
-  PopoverCloseButton,
+  Portal,
+  Button,
 } from "@chakra-ui/react";
 import posthog from "posthog-js";
 import Pill from "./pill";
-
+import { RxCross2 } from "react-icons/rx";
 interface CardHazardProps {
   hazard: {
     id: number;
@@ -65,66 +58,89 @@ const CardHazard: React.FC<CardHazardProps> = ({
   };
 
   return (
-    <Card flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
-      <Popover
-        placement="bottom"
-        returnFocusOnClose={false}
-        closeOnBlur={true}
+    <Card.Root flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
+      <Popover.Root
+        positioning={{
+          placement: "bottom",
+          offset: { crossAxis: 0, mainAxis: 0 },
+        }}
+        closeOnEscape={true}
+        closeOnInteractOutside={true}
         aria-label={`${hazard.title} information`}
       >
-        <PopoverTrigger>
-          <Button
-            variant="unstyled"
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            height="100%"
-            width="100%"
-            whiteSpace="normal"
-            textAlign="start"
-          >
-            <CardHeader p={0} marginBottom={"0.5em"}>
-              <Text textStyle="cardTitle" fontWeight={"700"}>
+        <Popover.Trigger css={{ backgroundColor: "white" }}>
+          <VStack cursor={"pointer"} alignItems={"flex-start"} h={"100%"}>
+            <Card.Header p={0} marginBottom={"0.5em"}>
+              <Text
+                textStyle="cardTitle"
+                layerStyle="headerAlt"
+                fontWeight={"700"}
+              >
                 {title}
               </Text>
-            </CardHeader>
-            <CardBody p={0} mb={"14px"}>
-              <Text textStyle="textMedium">{description}</Text>
-            </CardBody>
-            <CardFooter p={0} width={"100%"}>
+            </Card.Header>
+            {/* TODO: shouldn't need text align left (temporary fix) ... something else is causing the text to be centered; looking into it further, there's a text align center somewhere, possibly as part of an enclosing button element, so we may need this after all */}
+            <Card.Body textAlign="left" p={0} mb={"14px"}>
+              <Text textStyle="textMedium" layerStyle="text">
+                {description}
+              </Text>
+            </Card.Body>
+            <Card.Footer p={0} width={"100%"}>
               <HStack justifyContent="space-between" width="100%">
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info
                 </Text>
                 {hazardPill}
               </HStack>
-            </CardFooter>
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent mt={5} width={"348px"}>
-          <PopoverArrow />
-          <PopoverCloseButton />
-          <PopoverBody>
-            {buildHazardCardInfo()}
-            <Link
-              display={"inline-block"}
-              pb={3}
-              pl={5}
-              href={hazard.link.url}
-              target="_blank"
-              textDecoration="underline"
-              onClick={() =>
-                posthog.capture("dataset-link-clicked", {
-                  link_name: hazard.link.label,
-                })
-              }
-            >
-              {hazard.link.label}
-            </Link>
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
-    </Card>
+            </Card.Footer>
+          </VStack>
+        </Popover.Trigger>
+        <Portal>
+          <Popover.Positioner>
+            {/* TODO FIXME: can below line be styled with mt={5} width={"348px"} somehow still? how? should it go on `<Popover.Body>`? or elsewhere? */}
+            <Popover.Content>
+              {/* TODO FIXME: can below line replace the <PopoverCloseButton />? */}
+              <Popover.CloseTrigger
+                display={"flex"}
+                justifyContent="end"
+                paddingRight="3"
+                paddingTop="3"
+              >
+                <RxCross2
+                  color="grey.900"
+                  fontSize="1.1em"
+                  size="20"
+                  data-testid="clear-icon"
+                />
+              </Popover.CloseTrigger>
+              <Popover.Arrow>
+                <Popover.ArrowTip />
+              </Popover.Arrow>
+              <Popover.Body
+                css={{ backgroundColor: "white", borderRadius: "6px" }}
+              >
+                {buildHazardCardInfo()}
+                <Link
+                  display={"inline-block"}
+                  pb={3}
+                  pl={5}
+                  href={hazard.link.url}
+                  target="_blank"
+                  textDecoration="underline"
+                  onClick={() =>
+                    posthog.capture("dataset-link-clicked", {
+                      link_name: hazard.link.label,
+                    })
+                  }
+                >
+                  {hazard.link.label}
+                </Link>
+              </Popover.Body>
+            </Popover.Content>
+          </Popover.Positioner>
+        </Portal>
+      </Popover.Root>
+    </Card.Root>
   );
 };
 

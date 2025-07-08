@@ -62,13 +62,15 @@ const Header = () => {
               <VisuallyHidden>SafeHome</VisuallyHidden>
             </HStack>{" "}
           </Link>
-          <Text textStyle="textPrerelease">Beta</Text>
+          <Text textStyle="textPrerelease" layerStyle="prerelease">
+            Beta
+          </Text>
         </HStack>
 
         {isHome && <Box ref={portalRef} id="searchbar-portal" />}
         {isAbout && (
           <Link as={NextLink} color="white" href="/">
-            <Text textStyle="textMedium" color="white">
+            <Text textStyle="textMedium" layerStyle="text" color="white">
               Back To Home
             </Text>
           </Link>

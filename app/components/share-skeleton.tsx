@@ -1,18 +1,17 @@
-import { Text, Button } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import ShareIcon from "../img/icon-share.svg";
 
 const ShareSkeleton = () => {
   return (
     <Button
       aria-label="Share report"
-      variant="link"
-      rightIcon={<ShareIcon />}
+      variant="ghost"
       disabled={true}
       background={"transparent"}
+      textStyle="textMedium"
+      color="white"
     >
-      <Text textStyle="textMedium" color="white">
-        Share report
-      </Text>
+      Share report <ShareIcon />
     </Button>
   );
 };

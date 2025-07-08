@@ -1,61 +1,33 @@
 "use client";
-import {
-  Text,
-  Button,
-  useToast,
-  Box,
-  HStack,
-  CloseButton,
-} from "@chakra-ui/react";
+
+import { Button } from "@chakra-ui/react";
+import { toaster } from "@/components/ui/toaster";
 import ShareIcon from "../img/icon-share.svg";
-import LinkIcon from "../img/icon-link.svg";
 import { useSearchParams } from "next/navigation";
 
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `share-skeleton.tsx` and vice versa
 // TODO: isolate the usage of `useSearchParams()` so that the Suspense boundary can be even more narrow if possible
 const Share = () => {
   const searchParams = useSearchParams();
-  const toast = useToast({
-    position: "top",
-  });
 
   const copyReportToClipBoard = async () => {
     try {
       const currentUrl = `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`;
       await navigator.clipboard.writeText(currentUrl);
-      toast({
-        duration: 3000,
-        render: ({ onClose }) => (
-          <Box
-            bg="white"
-            color="black"
-            p={3}
-            borderRadius="md"
-            boxShadow="md"
-            position="relative"
-          >
-            <HStack>
-              <LinkIcon />
-              <Text>Link copied</Text>
-            </HStack>
-            <CloseButton
-              position="absolute"
-              right="8px"
-              top="8px"
-              onClick={onClose}
-            />
-          </Box>
-        ),
+      toaster.create({
+        description: "Link copied",
+        type: "link",
+        duration: 5000,
+        closable: true,
       });
     } catch (err) {
       console.error("Failed to copy: ", err);
-      toast({
+      toaster.create({
         title: "Error",
         description: "Failed to copy link to clipboard.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-        position: "top",
+        type: "error",
+        duration: 5000,
+        closable: true,
       });
     }
   };
@@ -63,14 +35,13 @@ const Share = () => {
   return (
     <Button
       aria-label="Share report"
-      variant="link"
-      rightIcon={<ShareIcon />}
+      variant="ghost"
       onClick={copyReportToClipBoard}
       background={"transparent"}
+      textStyle="textMedium"
+      color="white"
     >
-      <Text textStyle="textMedium" color="white">
-        Share report
-      </Text>
+      Share report <ShareIcon />
     </Button>
   );
 };
