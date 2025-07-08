@@ -19,7 +19,7 @@ const mockInfo = {
 };
 
 describe("CardInfo Component", () => {
-  const renderWithChakra = (ui: React.ReactElement<any>) =>
+  const renderWithChakra = <Props extends object>(ui: React.ReactElement<Props>) =>
     render(<ChakraProvider>{ui}</ChakraProvider>);
 
   it("renders the card title", () => {
