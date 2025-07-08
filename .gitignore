@@ -31,4 +31,6 @@ node_modules
 .env.enc
 
 # IDEs
-.vscode/
+.vscode/**
+!.vscode/extensions.json
+!.vscode/settings.json
