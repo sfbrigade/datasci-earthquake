@@ -15,7 +15,7 @@ sentry_sdk.init(
     dsn=settings.sentry_dsn,
     # Add request headers and IP for users,
     # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
-    send_default_pii=True,
+    send_default_pii=False,
 )
 
 ### Create FastAPI instance with custom docs and openapi url
