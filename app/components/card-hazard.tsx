@@ -20,6 +20,7 @@ import {
   PopoverArrow,
   PopoverCloseButton,
 } from "@chakra-ui/react";
+import { usePostHog } from "posthog-js/react";
 
 interface CardHazardProps {
   hazard: {
@@ -47,6 +48,8 @@ const CardHazard: React.FC<CardHazardProps> = ({
   showData,
   isHazardDataLoading,
 }) => {
+  const posthog = usePostHog();
+
   const { title, name, description } = hazard;
   const { exists, last_updated: date } = hazardData || {};
 
@@ -108,6 +111,11 @@ const CardHazard: React.FC<CardHazardProps> = ({
               href={hazard.link.url}
               target="_blank"
               textDecoration="underline"
+              onClick={() =>
+                posthog.capture("dataset-link-clicked", {
+                  "link-name": hazard.link.label,
+                })
+              }
             >
               {hazard.link.label}
             </Link>
