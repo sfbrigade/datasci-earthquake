@@ -321,7 +321,7 @@ class DataHandler(ABC):
                     .filter_by(dataset_name=self.table.__name__)
                     .first()
                 )
-                now = datetime.utcnow()
+                now = datetime.now(timezone.utc)
                 if row:
                     self.logger.info(f"Updating existing row for {self.table.__name__}")
                     row.last_exported_at = now
@@ -388,5 +388,5 @@ class DataHandler(ABC):
                     f"GeoJSON {geojson_path.name} unchanged, skipping write"
                 )
         except Exception as e:
-            self.logger.info(f"Exception in export_geojson_if_changed: {e}")
+            self.logger.warning(f"Exception in export_geojson_if_changed: {e}")
             raise
