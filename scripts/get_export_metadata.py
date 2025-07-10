@@ -54,7 +54,7 @@ def get_metadata_table():
             return "No export metadata found"
             
         # Create simple list format
-        lines = ["### Dataset Export Status"]
+        lines = ["### Dataset Export Status:"]
         lines.append("")
         
         for record in records:
