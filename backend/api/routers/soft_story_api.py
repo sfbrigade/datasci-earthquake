@@ -27,7 +27,9 @@ router = APIRouter(
     tags=[Tags.SOFT_STORY],
 )
 
-STATUS_WORK_COMPLETE_LOWERCASE = "work complete, cfc issued"
+STATUS_WORK_COMPLETE_LOWERCASE = (
+    "work complete, cfc issued"  # Work Complete, CFC Issued
+)
 
 
 @router.get("", response_model=SoftStoryFeatureCollection)
@@ -50,8 +52,10 @@ async def get_soft_stories(db: Session = Depends(get_db)):
     soft_stories = (
         db.query(SoftStoryProperty)
         .filter(
-            and_(SoftStoryProperty.point.isnot(None)),
-            func.lower(SoftStoryProperty.status) != STATUS_WORK_COMPLETE_LOWERCASE,
+            and_(
+                SoftStoryProperty.point.isnot(None),
+                func.lower(SoftStoryProperty.status) != STATUS_WORK_COMPLETE_LOWERCASE,
+            )
         )
         .all()
     )
@@ -106,7 +110,13 @@ async def is_soft_story(
         point = from_shape(Point(lon, lat), srid=4326)
         property = (
             db.query(SoftStoryProperty)
-            .filter(geo_func.ST_DWithin(SoftStoryProperty.point, point, 0.000001))
+            .filter(
+                and_(
+                    geo_func.ST_DWithin(SoftStoryProperty.point, point, 0.000001),
+                    func.lower(SoftStoryProperty.status)
+                    != STATUS_WORK_COMPLETE_LOWERCASE,
+                )
+            )
             .first()
         )
 

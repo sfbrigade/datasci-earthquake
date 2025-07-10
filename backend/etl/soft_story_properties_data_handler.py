@@ -237,7 +237,7 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
 
         Update behavior:
         - When sfdata_as_of is newer, all fields are updated from the new data
-        - sfdata_loaded_at always takes the most recent timestamp
+        - sfdata_loaded_at takes the most recent timestamp if incoming in newer
         - update_timestamp is set to current time whenever we modify the record
         """
         return {
@@ -260,12 +260,18 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
                     "sfdata_as_of",
                 ]
             },
-            # Always take the newer sfdata_loaded_at
+            # Only update sfdata_loaded_at if incoming is newer
             "sfdata_loaded_at": text(
-                "GREATEST(EXCLUDED.sfdata_loaded_at, soft_story_properties.sfdata_loaded_at)"
+                "CASE WHEN EXCLUDED.sfdata_loaded_at > soft_story_properties.sfdata_loaded_at "
+                "THEN EXCLUDED.sfdata_loaded_at ELSE soft_story_properties.sfdata_loaded_at END"
             ),
-            # Track when we made changes
-            "update_timestamp": func.now(),
+            # Only update update_timestamp if any other field is updated
+            "update_timestamp": text(
+                "CASE WHEN ("
+                "EXCLUDED.sfdata_as_of > soft_story_properties.sfdata_as_of OR "
+                "EXCLUDED.sfdata_loaded_at > soft_story_properties.sfdata_loaded_at"
+                ") THEN NOW() ELSE soft_story_properties.update_timestamp END"
+            ),
         }
 
 
@@ -282,7 +288,7 @@ if __name__ == "__main__":
         soft_story_property_objects, soft_story_property_geojson = handler.parse_data(
             soft_story_properties
         )
-        handler.save_geojson(soft_story_property_geojson)
+        handler.export_geojson_if_changed(soft_story_property_geojson)
         handler.bulk_insert_data(soft_story_property_objects, "address")
     except HTTPException as e:
         print(f"Failed after retries: {e}")

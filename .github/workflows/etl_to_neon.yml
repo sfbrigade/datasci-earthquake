@@ -7,12 +7,19 @@ on:
   workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
-  neon-etl:
-    runs-on: ubuntu-latest
+  run-etl:
+    runs-on: ubuntu-latest  
+    outputs:
+      changes: ${{ steps.detect_changes.outputs.changes }}    
+      etl_commit: ${{ steps.detect_changes.outputs.commit_sha }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+          ssh-key: ${{ secrets.DEPLOY_KEY }}          
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -32,6 +39,11 @@ jobs:
           echo "Run ID: $run_id"
           echo "run_id=$run_id" >> $GITHUB_ENV     
 
+      - name: Clean and verify .env.enc
+        run: |
+          rm -f .env.enc
+          echo "Removed old .env.enc if present"          
+
       - name: Download .env Artifact 
         uses: actions/download-artifact@v4
         with:
@@ -45,24 +57,80 @@ jobs:
           openssl aes-256-cbc -d -salt -pbkdf2 -k "${{ secrets.ARTIFACT_PASS }}" -in .env.enc -out .env
           echo "Decryption complete"      
 
-      - name: Override an env variable
-        run: echo "ENVIRONMENT=ci" >> .env
-        
-      - name: Clear previous ETL data
-        run: |
-          rm -rf public/data/*
-          echo "Cleared old ETL data from public/data"        
-          
       - name: ETL data to Neon DB
         run: |
-          python -m backend.etl.tsunami_data_handler
-          python -m backend.etl.soft_story_properties_data_handler
-          python -m backend.etl.liquefaction_data_handler
+          ENVIRONMENT=prod python -m backend.etl.tsunami_data_handler
+          ENVIRONMENT=prod python -m backend.etl.soft_story_properties_data_handler
+          ENVIRONMENT=prod python -m backend.etl.liquefaction_data_handler
 
       - name: Commit & Push Changes
+        id: detect_changes 
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           git add public/data/*.geojson
-          git commit -m "Update datasets (ETL auto-update)" || echo "No changes to commit"
-          git push origin main || echo "No changes to push"          
+          if git diff --cached --quiet; then 
+            echo "No changes to commit"
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            git commit -m "Update datasets (ETL auto-update)"
+            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "commit_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Push to develop
+        if: steps.detect_changes.outputs.changes == 'true'
+        run: |
+          git fetch origin develop
+          git checkout develop
+          git pull origin develop
+
+          git add public/data/*.geojson
+          if git diff --cached --quiet; then
+            echo "No changes to commit on develop"
+          else
+            git commit -m "Update datasets (ETL auto-update)"
+            git push origin develop
+          fi
+
+  create-pr:
+    needs: run-etl
+    if: needs.run-etl.outputs.changes == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo to main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          ssh-key: ${{ secrets.DEPLOY_KEY }}   
+
+      - name: Get updated files from develop
+        run: |
+          # Fetch the latest develop branch
+          git fetch origin develop
+          
+          # Copy the updated geojson files from develop to main
+          git checkout origin/develop -- public/data/*.geojson || echo "No changes found to copy"
+          
+          # Verify we got the changes
+          git status          
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: etl/update-${{ github.run_id }}
+          title: "ETL auto-update - GeoJSON files"
+          body: |
+            ## ETL Auto-Update
+            
+            This PR contains updated GeoJSON files from the latest ETL run.
+
+            **Source ETL Commit:** ${{ needs.run-etl.outputs.etl_commit }}
+            
+            Please review and merge if the data looks correct.
+          base: main
+          delete-branch: true
+          commit-message: "ETL: update GeoJSON files"
