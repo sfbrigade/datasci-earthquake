@@ -28,6 +28,7 @@ jobs:
         envkey_NEXT_PUBLIC_MAPBOX_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN }}
         envkey_NODE_ENV: ${{ secrets.NODE_ENV }}
         envkey_NEXT_PUBLIC_CDN_URL: http://localhost:3000/data
+        envkey_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
         file_name: .env
         directory: './'
