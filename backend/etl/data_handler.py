@@ -216,7 +216,7 @@ class DataHandler(ABC):
                 db.commit()
 
                 self._update_last_export_time_in_db()
-                
+
                 self.logger.info(
                     f"{self.table.__name__}: Inserted {len(data_dicts)} rows with "
                     f"{'update' if update_fields else 'do nothing'} conflict policy."
