@@ -25,22 +25,22 @@ def format_time_ago(past_time):
     total_seconds = int(diff.total_seconds())
     
     if total_seconds < 60:
-        return f"{total_seconds} seconds ago"
+        return f"{total_seconds} second{'s' if total_seconds != 1 else ''} ago"
     elif total_seconds < 3600:
         minutes = total_seconds // 60
-        return f"{minutes} minutes ago"
+        return f"{minutes} minute{'s' if minutes != 1 else ''} ago"
     elif total_seconds < 86400:
         hours = total_seconds // 3600
-        return f"{hours} hours ago"
+        return f"{hours} hour{'s' if hours != 1 else ''} ago"
     elif total_seconds < 604800:  # 7 days
         days = total_seconds // 86400
-        return f"{days} days ago"
+        return f"{days} day{'s' if days != 1 else ''} ago"
     elif total_seconds < 2592000:  # 30 days
         weeks = total_seconds // 604800
-        return f"{weeks} weeks ago"
+        return f"{weeks} week{'s' if weeks != 1 else ''} ago"
     else:
         months = total_seconds // 2592000
-        return f"{months} months ago"
+        return f"{months} month{'s' if months != 1 else ''} ago"
 
 def get_metadata_table():
     """Query export metadata and return formatted markdown table"""
