@@ -222,7 +222,7 @@ const SearchBar = ({
           </InputLeftElement>
           <Input
             placeholder="Search San Francisco address"
-            fontFamily="Inter, sans-serif"
+            fontFamily="body"
             fontSize={{ base: "md", sm: "md", md: "md", lg: "md" }}
             p={{
               base: "0 10px 0 35px",

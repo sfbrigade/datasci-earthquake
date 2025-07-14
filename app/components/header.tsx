@@ -16,7 +16,7 @@ import { useRef } from "react";
 const Header = () => {
   const pathname = usePathname();
   const isHome = pathname === "/";
-  const isAbout = pathname === "/About";
+  const isAbout = pathname === "/about";
   const portalRef = useRef<HTMLDivElement | null>(null);
 
   return (

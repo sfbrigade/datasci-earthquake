@@ -50,7 +50,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
   const hazardPill = isHazardDataLoading ? (
     <Spinner size="xs" />
   ) : showData ? (
-    <Pill exists={exists} />
+    <Pill exists={exists} hazardType={hazard.name} />
   ) : (
     ""
   );

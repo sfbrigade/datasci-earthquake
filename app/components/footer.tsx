@@ -55,7 +55,7 @@ const Footer = () => {
             direction={{ base: "row", lg: "column" }}
             width="100%"
           >
-            <Link as={NextLink} color="white" href="/about">
+            <Link as={NextLink} color="white" href="/about" target="_blank">
               <Text textStyle="textMedium" color="white">
                 About
               </Text>
@@ -65,7 +65,7 @@ const Footer = () => {
                 Contact
               </Text>
             </Link>
-            <Link as={NextLink} color="white" href="/terms">
+            <Link as={NextLink} color="white" href="/terms" target="_blank">
               <Text textStyle="textMedium" color="white">
                 Terms of Service
               </Text>

@@ -201,6 +201,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 <Link
                   as={NextLink}
                   href="https://www.ready.gov/earthquakes"
+                  target="_blank"
                   textDecoration="underline"
                 >
                   Learn how to protect yourself
@@ -211,6 +212,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 <Link
                   as={NextLink}
                   href="https://www.ready.gov/kit"
+                  target="_blank"
                   textDecoration="underline"
                 >
                   Prep your emergency kit
@@ -221,6 +223,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 <Link
                   as={NextLink}
                   href="https://myshake.berkeley.edu/"
+                  target="_blank"
                   textDecoration="underline"
                 >
                   Download the MyShake app
@@ -244,6 +247,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 <Link
                   as={NextLink}
                   href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
+                  target="_blank"
                   textDecoration="underline"
                 >
                   Learn more
@@ -254,6 +258,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 <Link
                   as={NextLink}
                   href="https://www.californiaresidentialmitigationprogram.com/resources/find-a-contractor/"
+                  target="_blank"
                   textDecoration="underline"
                 >
                   Find a licensed contractor
@@ -265,6 +270,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 <Link
                   as={NextLink}
                   href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ebb-retrofit"
+                  target="_blank"
                   textDecoration="underline"
                 >
                   Earthquake Brace and Bolt
@@ -273,6 +279,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 <Link
                   as={NextLink}
                   href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
+                  target="_blank"
                   textDecoration="underline"
                 >
                   Earthquake Soft-Story
@@ -296,6 +303,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 <Link
                   as={NextLink}
                   href="https://www.earthquakeauthority.com/california-earthquake-insurance-policies/renters"
+                  target="_blank"
                   textDecoration="underline"
                 >
                   Search for renters earthquake insurance
@@ -306,6 +314,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 <Link
                   as={NextLink}
                   href="https://sftu.org/repairs/"
+                  target="_blank"
                   textDecoration="underline"
                 >
                   Learn about your right
