@@ -66,13 +66,13 @@ const Header = () => {
         </HStack>
 
         {isHome && <Box ref={portalRef} id="searchbar-portal" />}
-        {isAbout && (
+        {/* {isAbout && (
           <Link as={NextLink} color="white" href="/">
             <Text textStyle="textMedium" color="white">
               Back To Home
             </Text>
           </Link>
-        )}
+        )} */}
       </Stack>
     </Box>
   );

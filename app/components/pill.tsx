@@ -2,10 +2,12 @@ import { Box, Text } from "@chakra-ui/react";
 
 interface PillProps {
   exists: boolean | undefined;
-  hazardType: string | undefined;
+  trueData: string | undefined;
+  falseData: string | undefined;
+  noData: string | undefined;
 }
 
-const Pill: React.FC<PillProps> = ({ exists, hazardType }) => {
+const Pill: React.FC<PillProps> = ({ exists, trueData, falseData, noData }) => {
   const getColor = () => {
     switch (exists) {
       case true:
@@ -18,35 +20,13 @@ const Pill: React.FC<PillProps> = ({ exists, hazardType }) => {
   };
 
   const getLabel = () => {
-    if (hazardType === "softStory") {
-      switch (exists) {
-        case true:
-          return "Non-Compliant";
-        case false:
-          return "Compliant";
-        default:
-          return "No Data";
-      }
-    }
-    if (hazardType === "liquefaction") {
-      switch (exists) {
-        case true:
-          return "High Hazard";
-        case false:
-          return "low Hazard";
-        default:
-          return "No Data";
-      }
-    }
-    if (hazardType === "tsunami") {
-      switch (exists) {
-        case true:
-          return "In Zone";
-        case false:
-          return "Out of Zone";
-        default:
-          return "No Data";
-      }
+    switch (exists) {
+      case true:
+        return trueData;
+      case false:
+        return falseData;
+      default:
+        return noData;
     }
   };
 

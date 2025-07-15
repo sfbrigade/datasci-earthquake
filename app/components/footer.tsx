@@ -55,7 +55,13 @@ const Footer = () => {
             direction={{ base: "row", lg: "column" }}
             width="100%"
           >
-            <Link as={NextLink} color="white" href="/about" target="_blank">
+            <Link
+              as={NextLink}
+              color="white"
+              href="/about"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Text textStyle="textMedium" color="white">
                 About
               </Text>
@@ -65,7 +71,13 @@ const Footer = () => {
                 Contact
               </Text>
             </Link>
-            <Link as={NextLink} color="white" href="/terms" target="_blank">
+            <Link
+              as={NextLink}
+              color="white"
+              href="/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Text textStyle="textMedium" color="white">
                 Terms of Service
               </Text>
@@ -75,6 +87,7 @@ const Footer = () => {
             as={NextLink}
             href="https://www.sfcivictech.org/"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <Image
               src="/images/SFCivicTech-logo.svg"

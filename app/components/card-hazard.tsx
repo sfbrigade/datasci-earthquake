@@ -17,6 +17,7 @@ import {
   PopoverCloseButton,
 } from "@chakra-ui/react";
 import Pill from "./pill";
+import { PillLabels } from "../data/data";
 
 interface CardHazardProps {
   hazard: {
@@ -46,11 +47,17 @@ const CardHazard: React.FC<CardHazardProps> = ({
 }) => {
   const { title, name, description } = hazard;
   const { exists, last_updated: date } = hazardData || {};
+  const labelInfo = PillLabels.find((label) => label.name === hazard.name);
 
   const hazardPill = isHazardDataLoading ? (
     <Spinner size="xs" />
   ) : showData ? (
-    <Pill exists={exists} hazardType={hazard.name} />
+    <Pill
+      exists={exists}
+      trueData={labelInfo?.trueData}
+      falseData={labelInfo?.falseData}
+      noData={labelInfo?.noData}
+    />
   ) : (
     ""
   );

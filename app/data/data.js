@@ -256,3 +256,24 @@ export const TeamMembers = [
     name: "Lola Jackson",
   },
 ];
+
+export const PillLabels = [
+  {
+    name: "softStory",
+    trueData: "Non-Compliant",
+    falseData: "Compliant",
+    noData: "No Data",
+  },
+  {
+    name: "liquefaction",
+    trueData: "High Hazard",
+    falseData: "Low Hazard",
+    noData: "No Data",
+  },
+  {
+    name: "tsunami",
+    trueData: "In Zone",
+    falseData: "Out of Zone",
+    noData: "No Data",
+  },
+];
