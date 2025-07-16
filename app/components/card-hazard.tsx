@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Text,
   HStack,
@@ -16,6 +18,7 @@ import {
   PopoverArrow,
   PopoverCloseButton,
 } from "@chakra-ui/react";
+import posthog from "posthog-js";
 import Pill from "./pill";
 
 interface CardHazardProps {
@@ -25,15 +28,9 @@ interface CardHazardProps {
     title: string;
     description: string;
     info: string[];
-    link: {
-      label: string;
-      url: string;
-    };
+    link: { label: string; url: string };
   };
-  hazardData?: {
-    exists?: boolean;
-    last_updated?: string;
-  };
+  hazardData?: { exists?: boolean; last_updated?: string };
   showData: boolean;
   isHazardDataLoading: boolean;
 }
@@ -44,6 +41,8 @@ const CardHazard: React.FC<CardHazardProps> = ({
   showData,
   isHazardDataLoading,
 }) => {
+  // const posthog = usePostHog();
+
   const { title, name, description } = hazard;
   const { exists, last_updated: date } = hazardData || {};
 
@@ -114,6 +113,11 @@ const CardHazard: React.FC<CardHazardProps> = ({
               href={hazard.link.url}
               target="_blank"
               textDecoration="underline"
+              onClick={() =>
+                posthog.capture("dataset-link-clicked", {
+                  link_name: hazard.link.label,
+                })
+              }
             >
               {hazard.link.label}
             </Link>

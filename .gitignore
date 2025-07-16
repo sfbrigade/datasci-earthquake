@@ -28,6 +28,7 @@ node_modules
 .env.development.local
 .env
 .env.local
+.env.enc
 
 # IDEs
 .vscode/
