@@ -4,7 +4,7 @@ Provides the environment variables that are read by the application
 
 from pydantic_settings import BaseSettings
 from functools import lru_cache
-
+from pydantic import ConfigDict
 
 class Settings(BaseSettings):
     postgres_user: str
@@ -23,15 +23,15 @@ class Settings(BaseSettings):
     next_public_cdn_url: str
     sentry_dsn: str
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-
+    model_config = ConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8"
+    )
 
 settings = Settings()
-
 
 # Cache the settings to avoid multiple calls to load the same settings
 @lru_cache()
 def get_settings() -> Settings:
     return Settings()
+
