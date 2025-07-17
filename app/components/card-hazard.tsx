@@ -47,9 +47,9 @@ const CardHazard: React.FC<CardHazardProps> = ({
   ) : showData ? (
     <Pill
       exists={exists}
-      trueData={labelInfo?.trueData}
-      falseData={labelInfo?.falseData}
-      noData={labelInfo?.noData}
+      trueData={labelInfo.trueData}
+      falseData={labelInfo.falseData}
+      noData={labelInfo.noData}
     />
   ) : (
     ""

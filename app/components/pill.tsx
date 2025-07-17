@@ -2,9 +2,9 @@ import { Box, Text } from "@chakra-ui/react";
 
 interface PillProps {
   exists: boolean | undefined;
-  trueData: string | undefined;
-  falseData: string | undefined;
-  noData: string | undefined;
+  trueData: string;
+  falseData: string;
+  noData: string;
 }
 
 const Pill: React.FC<PillProps> = ({ exists, trueData, falseData, noData }) => {
