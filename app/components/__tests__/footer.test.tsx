@@ -1,15 +1,15 @@
 import { render, screen } from "@testing-library/react";
-import { ChakraProvider } from "@chakra-ui/react";
+import { Provider } from "../ui/provider";
 import "@testing-library/jest-dom";
 import Footer from "../footer";
-import theme from "../../../styles/theme";
+import "../__mocks__/match-media";
 
 describe("Footer Component", () => {
   const renderFooter = () =>
     render(
-      <ChakraProvider theme={theme}>
+      <Provider>
         <Footer />
-      </ChakraProvider>
+      </Provider>
     );
 
   it("renders the logo", () => {

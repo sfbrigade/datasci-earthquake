@@ -69,7 +69,6 @@ This project uses Docker and Docker Compose to run the application, which includ
 - Start all services defined in the docker-compose.yml file (e.g., frontend, backend, database).
 
 2.  **Access the Application**:
-
     - The app is running at http://localhost:3000. Note that this may conflict with your local dev server. If so, one will be running on port 3000 and the other on port 3001.
     - The API is accessible at http://localhost:8000.
     - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
@@ -88,7 +87,6 @@ To stop and shut down the application:
 2.  **Bring Down the Containers**: If you want to stop and remove the containers completely, run:
     `docker compose down`
     This will:
-
     - Stop all services.
     - Remove the containers, but it will **not** delete volumes (so the database data will persist).
 
@@ -140,6 +138,10 @@ For front end-focused development, first run `npm install`, and then you can run
 - build and restart your backend (and database) Docker containers
 
 If you need to rebuild the containers, run `npm run docker-back`.
+
+#### Working with Chakra UI
+
+For UI components, styling, and theming, most initial setup is done via Chakra UI v3 within `theme.ts`. Docs are located at https://chakra-ui.com/. For default theme values, which are automatically used by Chakra along with the overrides in `theme.ts`, you can refer to https://github.com/chakra-ui/chakra-ui/tree/main/packages/react/src/theme (note that `sizing` is a **superset** of `spacing`).
 
 #### Troubleshooting front end
 

@@ -1,6 +1,8 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import SearchBar from "../search-bar";
 import "@testing-library/jest-dom";
+import { Provider } from "../ui/provider";
+import "../__mocks__/match-media";
 
 // FIXME: to be able to re-enable this test suite, modify the mock etc to handle the usage
 // of Next's `dynamic()` in `address-autofill.tsx` to get the tests running again
@@ -16,7 +18,11 @@ jest.mock("@mapbox/search-js-react", () => ({
 
 describe.skip("SearchBar Component", () => {
   it("renders search input and icons correctly", () => {
-    render(<SearchBar />);
+    render(
+      <Provider>
+        <SearchBar />
+      </Provider>
+    );
 
     const input = screen.getByPlaceholderText("Search San Francisco address");
     const searchIcon = screen.getByTestId("search-icon");
@@ -29,7 +35,11 @@ describe.skip("SearchBar Component", () => {
   });
 
   it("updates address state when typing", () => {
-    render(<SearchBar />);
+    render(
+      <Provider>
+        <SearchBar />
+      </Provider>
+    );
     const input = screen.getByPlaceholderText("Search San Francisco address");
 
     fireEvent.change(input, { target: { value: "123 Main St" } });
@@ -47,7 +57,11 @@ describe.skip("SearchBar Component", () => {
   });
 
   it("calls handleRetrieve and updates fullAddress on retrieve event", () => {
-    render(<SearchBar />);
+    render(
+      <Provider>
+        <SearchBar />
+      </Provider>
+    );
     const input = screen.getByPlaceholderText("Search San Francisco address");
 
     fireEvent.click(input);
