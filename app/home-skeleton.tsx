@@ -121,6 +121,8 @@ const HomeSkeleton = () => {
                   as={NextLink}
                   href="https://www.ready.gov/earthquakes"
                   textDecoration="underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Learn how to protect yourself
                 </Link>{" "}
@@ -131,6 +133,8 @@ const HomeSkeleton = () => {
                   as={NextLink}
                   href="https://www.ready.gov/kit"
                   textDecoration="underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Prep your emergency kit
                 </Link>{" "}
@@ -141,6 +145,8 @@ const HomeSkeleton = () => {
                   as={NextLink}
                   href="https://myshake.berkeley.edu/"
                   textDecoration="underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Download the MyShake app
                 </Link>{" "}
@@ -164,6 +170,8 @@ const HomeSkeleton = () => {
                   as={NextLink}
                   href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
                   textDecoration="underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Learn more
                 </Link>{" "}
@@ -174,6 +182,8 @@ const HomeSkeleton = () => {
                   as={NextLink}
                   href="https://www.californiaresidentialmitigationprogram.com/resources/find-a-contractor/"
                   textDecoration="underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Find a licensed contractor
                 </Link>{" "}
@@ -185,6 +195,8 @@ const HomeSkeleton = () => {
                   as={NextLink}
                   href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ebb-retrofit"
                   textDecoration="underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Earthquake Brace and Bolt
                 </Link>{" "}
@@ -193,6 +205,8 @@ const HomeSkeleton = () => {
                   as={NextLink}
                   href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
                   textDecoration="underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Earthquake Soft-Story
                 </Link>{" "}
@@ -216,6 +230,8 @@ const HomeSkeleton = () => {
                   as={NextLink}
                   href="https://www.earthquakeauthority.com/california-earthquake-insurance-policies/renters"
                   textDecoration="underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Search for renters earthquake insurance
                 </Link>{" "}
@@ -226,6 +242,8 @@ const HomeSkeleton = () => {
                   as={NextLink}
                   href="https://sftu.org/repairs/"
                   textDecoration="underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Learn about your right
                 </Link>{" "}
