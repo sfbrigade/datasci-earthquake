@@ -9,7 +9,6 @@ import {
   Spinner,
   Popover,
   Portal,
-  Button,
 } from "@chakra-ui/react";
 import posthog from "posthog-js";
 import Pill from "./pill";
@@ -36,8 +35,6 @@ const CardHazard: React.FC<CardHazardProps> = ({
   showData,
   isHazardDataLoading,
 }) => {
-  // const posthog = usePostHog();
-
   const { title, name, description } = hazard;
   const { exists, last_updated: date } = hazardData || {};
   const labelInfo = PillLabels.find((label) => label.name === hazard.name);
@@ -56,13 +53,11 @@ const CardHazard: React.FC<CardHazardProps> = ({
   );
 
   const buildHazardCardInfo = () => {
-    return (
-      <VStack gap={5} p={5}>
-        {hazard.info.map((infoItem, index) => (
-          <Text key={index}>{infoItem}</Text>
-        ))}
-      </VStack>
-    );
+    return hazard.info.map((infoItem, index) => (
+      <Text as="p" mt="4" key={index}>
+        {infoItem}
+      </Text>
+    ));
   };
 
   return (
@@ -70,15 +65,16 @@ const CardHazard: React.FC<CardHazardProps> = ({
       <Popover.Root
         positioning={{
           placement: "bottom",
-          offset: { crossAxis: 0, mainAxis: 0 },
+          flip: false,
+          offset: { crossAxis: 0, mainAxis: 24 },
         }}
         closeOnEscape={true}
         closeOnInteractOutside={true}
         aria-label={`${hazard.title} information`}
       >
-        <Popover.Trigger css={{ backgroundColor: "white" }}>
-          <VStack cursor={"pointer"} alignItems={"flex-start"} h={"100%"}>
-            <Card.Header p={0} marginBottom={"0.5em"}>
+        <Popover.Trigger h="full">
+          <VStack cursor={"pointer"} alignItems={"flex-start"} h="full">
+            <Card.Header p={0} marginBottom={"0.5em"} textAlign="left">
               <Text
                 textStyle="cardTitle"
                 layerStyle="headerAlt"
@@ -87,7 +83,6 @@ const CardHazard: React.FC<CardHazardProps> = ({
                 {title}
               </Text>
             </Card.Header>
-            {/* TODO: shouldn't need text align left (temporary fix) ... something else is causing the text to be centered; looking into it further, there's a text align center somewhere, possibly as part of an enclosing button element, so we may need this after all */}
             <Card.Body textAlign="left" p={0} mb={"14px"}>
               <Text textStyle="textMedium" layerStyle="text">
                 {description}
@@ -105,34 +100,24 @@ const CardHazard: React.FC<CardHazardProps> = ({
         </Popover.Trigger>
         <Portal>
           <Popover.Positioner>
-            {/* TODO FIXME: can below line be styled with mt={5} width={"348px"} somehow still? how? should it go on `<Popover.Body>`? or elsewhere? */}
-            <Popover.Content>
-              {/* TODO FIXME: can below line replace the <PopoverCloseButton />? */}
+            <Popover.Content maxHeight="unset">
               <Popover.CloseTrigger
-                display={"flex"}
-                justifyContent="end"
-                paddingRight="3"
-                paddingTop="3"
+                cursor="pointer"
+                position="absolute"
+                top="2"
+                right="2"
               >
-                <RxCross2
-                  color="grey.900"
-                  fontSize="1.1em"
-                  size="20"
-                  data-testid="clear-icon"
-                />
+                <RxCross2 color="grey.900" size="20" data-testid="clear-icon" />
               </Popover.CloseTrigger>
               <Popover.Arrow>
                 <Popover.ArrowTip />
               </Popover.Arrow>
-              <Popover.Body
-                css={{ backgroundColor: "white", borderRadius: "6px" }}
-              >
+              <Popover.Body>
                 {buildHazardCardInfo()}
                 <Link
                   display={"inline-block"}
-                  pb={3}
-                  pl={5}
                   href={hazard.link.url}
+                  mt="4"
                   target="_blank"
                   textDecoration="underline"
                   onClick={() =>
