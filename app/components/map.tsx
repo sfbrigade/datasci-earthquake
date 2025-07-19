@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
-import { useToast } from "@chakra-ui/react";
+import { toaster } from "@/components/ui/toaster";
 
 const defaultCoords = [-122.463733, 37.777448];
 
@@ -22,11 +21,9 @@ const Map: React.FC<MapProps> = ({
   tsunamiData,
   liquefactionData,
 }: MapProps) => {
-  const debug = useSearchParams().get("debug");
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<mapboxgl.Map>();
-  const markerRef = useRef<mapboxgl.Marker>();
-  const toast = useToast();
+  const mapRef = useRef<mapboxgl.Map>(undefined);
+  const markerRef = useRef<mapboxgl.Marker>(undefined);
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
 
@@ -34,19 +31,13 @@ const Map: React.FC<MapProps> = ({
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
-      if (!toast.isActive(toastIdNoToken)) {
-        toast({
+      if (!toaster.isVisible(toastIdNoToken)) {
+        toaster.create({
           id: toastIdNoToken,
           description: "Mapbox access token or container is not set!",
-          status: "error",
+          type: "error",
           duration: 5000,
-          isClosable: true,
-          position: "top",
-          containerStyle: {
-            backgroundColor: "#b53d37",
-            opacity: 1,
-            borderRadius: "12px",
-          },
+          closable: true,
         });
       }
       console.error("Mapbox access token or container is not set!");
@@ -106,20 +97,11 @@ const Map: React.FC<MapProps> = ({
         markerRef.current = addressMarker;
 
         // Add sources
-        map.addSource("seismic", {
-          type: "geojson",
-          data: liquefactionData,
-        });
+        map.addSource("seismic", { type: "geojson", data: liquefactionData });
 
-        map.addSource("tsunami", {
-          type: "geojson",
-          data: tsunamiData,
-        });
+        map.addSource("tsunami", { type: "geojson", data: tsunamiData });
 
-        map.addSource("soft-stories", {
-          type: "geojson",
-          data: softStoryData,
-        });
+        map.addSource("soft-stories", { type: "geojson", data: softStoryData });
 
         map.addLayer({
           id: "tsunamiLayer",
@@ -159,19 +141,13 @@ const Map: React.FC<MapProps> = ({
 
         map.on("error", (e) => {
           if (e.error && e.error.message.includes("access token")) {
-            if (!toast.isActive(toastIdInvalidToken)) {
-              toast({
+            if (!toaster.isVisible(toastIdInvalidToken)) {
+              toaster.create({
                 id: toastIdInvalidToken,
                 description: "Invalid Mapbox access token!",
-                status: "error",
+                type: "error",
                 duration: 5000,
-                isClosable: true,
-                position: "top",
-                containerStyle: {
-                  backgroundColor: "#b53d37",
-                  opacity: 1,
-                  borderRadius: "12px",
-                },
+                closable: true,
               });
             }
             console.error("Invalid Mapbox token:", e.error);
@@ -186,26 +162,10 @@ const Map: React.FC<MapProps> = ({
       markerRef.current?.setLngLat(addressLngLat);
       return;
     }
-  }, [coordinates, liquefactionData, softStoryData, tsunamiData, toast]);
+  }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
 
   return (
-    <>
-      <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
-      {debug === "true" && (
-        <span
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            zIndex: 99,
-            fontSize: 24,
-            padding: "4px",
-          }}
-        >
-          {`${coordinates[0]}, ${coordinates[1]}`}
-        </span>
-      )}
-    </>
+    <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
   );
 };
 

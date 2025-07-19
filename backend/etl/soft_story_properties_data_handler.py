@@ -11,6 +11,7 @@ from typing import Dict, Tuple
 from backend.etl.mapbox_geojson_manager import MapboxConfig, MapboxGeojsonManager
 from backend.api.models.base import ModelType
 from shapely.wkt import loads
+from sqlalchemy import text, func
 
 
 _SOFT_STORY_PROPERTIES_URL = "https://data.sfgov.org/resource/beah-shgi.geojson"
@@ -221,6 +222,58 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
 
         return parsed_data_complete, geojson
 
+    def insert_policy(self) -> dict:
+        """Define merge behavior for soft story property records.
+
+        This implementation handles the complex timestamp relationships in SF civic data:
+        - sfdata_as_of: Tracks when the source system's metadata was last updated.
+          This is our "source of truth" for determining which data is newer.
+
+        - sfdata_loaded_at: Tracks DataSF's daily drop-and-replace refresh schedule.
+          Updates daily even when no data has changed, representing DataSF's
+          verification that the data is current.
+
+        - update_timestamp: Tracks when our database last modified this record.
+
+        Update behavior:
+        - When sfdata_as_of is newer, all fields are updated from the new data
+        - sfdata_loaded_at takes the most recent timestamp if incoming in newer
+        - update_timestamp is set to current time whenever we modify the record
+        """
+        return {
+            # Update all fields if data is newer (based on sfdata_as_of)
+            **{
+                field: text(
+                    f"CASE WHEN EXCLUDED.sfdata_as_of > soft_story_properties.sfdata_as_of THEN EXCLUDED.{field} ELSE soft_story_properties.{field} END"
+                )
+                for field in [
+                    "block",
+                    "lot",
+                    "parcel_number",
+                    "property_address",
+                    "address",
+                    "tier",
+                    "status",
+                    "bos_district",
+                    "point",
+                    "point_source",
+                    "sfdata_as_of",
+                ]
+            },
+            # Only update sfdata_loaded_at if incoming is newer
+            "sfdata_loaded_at": text(
+                "CASE WHEN EXCLUDED.sfdata_loaded_at > soft_story_properties.sfdata_loaded_at "
+                "THEN EXCLUDED.sfdata_loaded_at ELSE soft_story_properties.sfdata_loaded_at END"
+            ),
+            # Only update update_timestamp if any other field is updated
+            "update_timestamp": text(
+                "CASE WHEN ("
+                "EXCLUDED.sfdata_as_of > soft_story_properties.sfdata_as_of OR "
+                "EXCLUDED.sfdata_loaded_at > soft_story_properties.sfdata_loaded_at"
+                ") THEN NOW() ELSE soft_story_properties.update_timestamp END"
+            ),
+        }
+
 
 if __name__ == "__main__":
     load_dotenv()
@@ -235,7 +288,7 @@ if __name__ == "__main__":
         soft_story_property_objects, soft_story_property_geojson = handler.parse_data(
             soft_story_properties
         )
-        handler.save_geojson(soft_story_property_geojson)
+        handler.export_geojson_if_changed(soft_story_property_geojson)
         handler.bulk_insert_data(soft_story_property_objects, "address")
     except HTTPException as e:
         print(f"Failed after retries: {e}")

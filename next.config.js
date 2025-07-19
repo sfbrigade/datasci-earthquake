@@ -1,5 +1,10 @@
+// @ts-check
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    optimizePackageImports: ["@chakra-ui/react"],
+  },
   rewrites: async () => {
     return [
       {
@@ -25,7 +30,6 @@ const nextConfig = {
       },
     ];
   },
-
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

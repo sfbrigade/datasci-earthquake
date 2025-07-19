@@ -1,26 +1,18 @@
+"use client";
+
 import {
   Text,
   HStack,
-  Button,
   VStack,
   Link,
-  CardFooter,
-  CardBody,
   Card,
-  CardHeader,
-  useDisclosure,
   Spinner,
-} from "@chakra-ui/react";
-import Pill from "./pill";
-import {
   Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  PopoverArrow,
-  PopoverCloseButton,
+  Portal,
 } from "@chakra-ui/react";
-
+import posthog from "posthog-js";
+import Pill from "./pill";
+import { RxCross2 } from "react-icons/rx";
 interface CardHazardProps {
   hazard: {
     id: number;
@@ -28,15 +20,9 @@ interface CardHazardProps {
     title: string;
     description: string;
     info: string[];
-    link: {
-      label: string;
-      url: string;
-    };
+    link: { label: string; url: string };
   };
-  hazardData?: {
-    exists?: boolean;
-    last_updated?: string;
-  };
+  hazardData?: { exists?: boolean; last_updated?: string };
   showData: boolean;
   isHazardDataLoading: boolean;
 }
@@ -59,62 +45,87 @@ const CardHazard: React.FC<CardHazardProps> = ({
   );
 
   const buildHazardCardInfo = () => {
-    return (
-      <VStack gap={5} p={5}>
-        {hazard.info.map((infoItem, index) => (
-          <Text key={index}>{infoItem}</Text>
-        ))}
-      </VStack>
-    );
+    return hazard.info.map((infoItem, index) => (
+      <Text as="p" mt="4" key={index}>
+        {infoItem}
+      </Text>
+    ));
   };
 
   return (
-    <Card flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
-      <Popover
-        placement="bottom"
-        returnFocusOnClose={false}
-        closeOnBlur={true}
+    <Card.Root flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
+      <Popover.Root
+        positioning={{
+          placement: "bottom",
+          flip: false,
+          offset: { crossAxis: 0, mainAxis: 24 },
+        }}
+        closeOnEscape={true}
+        closeOnInteractOutside={true}
         aria-label={`${hazard.title} information`}
       >
-        <PopoverTrigger>
-          <VStack cursor={"pointer"} alignItems={"flex-start"} h={"100%"}>
-            <CardHeader p={0}>
-              <Text textStyle="cardTitle" fontWeight={"700"}>
+        <Popover.Trigger h="full">
+          <VStack cursor={"pointer"} alignItems={"flex-start"} h="full">
+            <Card.Header p={0} marginBottom={"0.5em"} textAlign="left">
+              <Text
+                textStyle="cardTitle"
+                layerStyle="headerAlt"
+                fontWeight={"700"}
+              >
                 {title}
               </Text>
-            </CardHeader>
-            <CardBody p={0} mb={"14px"}>
-              <Text textStyle="textMedium">{description}</Text>
-            </CardBody>
-            <CardFooter p={0} width={"100%"}>
+            </Card.Header>
+            <Card.Body textAlign="left" p={0} mb={"14px"}>
+              <Text textStyle="textMedium" layerStyle="text">
+                {description}
+              </Text>
+            </Card.Body>
+            <Card.Footer p={0} width={"100%"}>
               <HStack justifyContent="space-between" width="100%">
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info
                 </Text>
                 {hazardPill}
               </HStack>
-            </CardFooter>
+            </Card.Footer>
           </VStack>
-        </PopoverTrigger>
-        <PopoverContent mt={5} width={"348px"}>
-          <PopoverArrow />
-          <PopoverCloseButton />
-          <PopoverBody>
-            {buildHazardCardInfo()}
-            <Link
-              display={"inline-block"}
-              pb={3}
-              pl={5}
-              href={hazard.link.url}
-              target="_blank"
-              textDecoration="underline"
-            >
-              {hazard.link.label}
-            </Link>
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
-    </Card>
+        </Popover.Trigger>
+        <Portal>
+          <Popover.Positioner>
+            <Popover.Content maxHeight="unset">
+              <Popover.CloseTrigger
+                cursor="pointer"
+                position="absolute"
+                top="2"
+                right="2"
+              >
+                <RxCross2 color="grey.900" size="20" data-testid="clear-icon" />
+              </Popover.CloseTrigger>
+              <Popover.Arrow>
+                <Popover.ArrowTip />
+              </Popover.Arrow>
+              <Popover.Body>
+                {buildHazardCardInfo()}
+                <Link
+                  display={"inline-block"}
+                  href={hazard.link.url}
+                  mt="4"
+                  target="_blank"
+                  textDecoration="underline"
+                  onClick={() =>
+                    posthog.capture("dataset-link-clicked", {
+                      link_name: hazard.link.label,
+                    })
+                  }
+                >
+                  {hazard.link.label}
+                </Link>
+              </Popover.Body>
+            </Popover.Content>
+          </Popover.Positioner>
+        </Portal>
+      </Popover.Root>
+    </Card.Root>
   );
 };
 

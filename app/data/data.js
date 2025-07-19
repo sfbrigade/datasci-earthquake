@@ -112,6 +112,7 @@ export const Headings = {
     text: "How safe is your home\nin an earthquake?",
     highlight: "How safe ",
     style: {
+      color: "white",
       whiteSpace: { base: "normal", md: "pre-line" },
       paddingRight: { base: "10px", xl: "300px" },
       marginBottom: "16px",

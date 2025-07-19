@@ -75,6 +75,19 @@ class TsunamiDataHandler(DataHandler):
 
         return parsed_data, geojson
 
+    def insert_policy(self) -> dict:
+        """
+        Define merge behavior for tsunami zone records.
+
+        Tsunami zone data comes from CA Department of Conservation as complete
+        dataset releases. Since this data updates very infrequently (last update
+        Oct 2022), we use a conservative approach: new records are inserted,
+        but existing records are left unchanged.
+
+        Returning {} causes bulk_insert_data to follow ON CONFLICT DO NOTHING, which is the behavior we want.
+        """
+        return {}
+
 
 if __name__ == "__main__":
     handler = TsunamiDataHandler(TSUNAMI_URL, TsunamiZone)
@@ -86,7 +99,7 @@ if __name__ == "__main__":
         }
         tsunami_zones = handler.fetch_data(params)
         tsunami_zones_objects, tsunami_zones_geojson = handler.parse_data(tsunami_zones)
-        handler.save_geojson(tsunami_zones_geojson)
+        handler.export_geojson_if_changed(tsunami_zones_geojson)
         handler.bulk_insert_data(tsunami_zones_objects, "identifier")
     except HTTPException as e:
         print(f"Failed after retries: {e}")
