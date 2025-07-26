@@ -16,7 +16,7 @@ import { useRef } from "react";
 const Header = () => {
   const pathname = usePathname();
   const isHome = pathname === "/";
-  const isAbout = pathname === "/About";
+  const isAbout = pathname === "/about";
   const portalRef = useRef<HTMLDivElement | null>(null);
 
   return (
@@ -68,13 +68,13 @@ const Header = () => {
         </HStack>
 
         {isHome && <Box ref={portalRef} id="searchbar-portal" />}
-        {isAbout && (
+        {/* {isAbout && (
           <Link as={NextLink} color="white" href="/">
             <Text textStyle="textMedium" layerStyle="text" color="white">
               Back To Home
             </Text>
           </Link>
-        )}
+        )} */}
       </Stack>
     </Box>
   );

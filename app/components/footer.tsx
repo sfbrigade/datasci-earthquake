@@ -71,6 +71,7 @@ const Footer = () => {
             as={NextLink}
             href="https://www.sfcivictech.org/"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <Image
               src="/images/SFCivicTech-logo.svg"
