@@ -32,9 +32,7 @@ class SoftStoryFeature(Feature):
     geometry: Point
     properties: SoftStoryProperties
 
-    model_config = ConfigDict(
-        from_attributes = True
-    )
+    model_config = ConfigDict(from_attributes=True)
 
     @staticmethod
     def from_sqlalchemy_model(soft_story: SoftStoryProperty):

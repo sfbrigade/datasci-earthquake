@@ -34,9 +34,7 @@ class TsunamiFeature(Feature):
     geometry: MultiPolygon
     properties: TsunamiProperties
 
-    model_config = ConfigDict(
-        from_attributes = True
-    )
+    model_config = ConfigDict(from_attributes=True)
 
     @staticmethod
     def from_sqlalchemy_model(tsunami_zone: TsunamiZone):

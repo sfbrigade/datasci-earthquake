@@ -36,9 +36,7 @@ class LandslideFeature(Feature):
     geometry: MultiPolygon
     properties: LandslideProperties
 
-    schema_config: SettingsConfigDict = SettingsConfigDict(
-        from_attributes=True
-    )
+    schema_config: SettingsConfigDict = SettingsConfigDict(from_attributes=True)
 
     @staticmethod
     def from_sqlalchemy_model(landslide_zone: LandslideZone):
