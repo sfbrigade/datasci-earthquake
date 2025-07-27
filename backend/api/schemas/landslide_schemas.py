@@ -1,5 +1,4 @@
-from pydantic import BaseModel, Field
-from pydantic_settings import SettingsConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from backend.api.models.landslide_zones import LandslideZone
 from geojson_pydantic import Feature, FeatureCollection, MultiPolygon
 from geoalchemy2.shape import to_shape
@@ -36,7 +35,7 @@ class LandslideFeature(Feature):
     geometry: MultiPolygon
     properties: LandslideProperties
 
-    schema_config: SettingsConfigDict = SettingsConfigDict(from_attributes=True)
+    model_: ConfigDict = ConfigDict(from_attributes=True)
 
     @staticmethod
     def from_sqlalchemy_model(landslide_zone: LandslideZone):
