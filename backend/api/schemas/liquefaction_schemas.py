@@ -1,7 +1,6 @@
 from pydantic import BaseModel, ConfigDict, Field
 from backend.api.models.liquefaction_zones import LiquefactionZone
 from geojson_pydantic import Feature, FeatureCollection, MultiPolygon
-from geoalchemy2.shape import to_shape
 from typing import List, Optional
 import json
 from datetime import datetime
@@ -35,8 +34,9 @@ class LiquefactionFeature(Feature):
     geometry: MultiPolygon
     properties: LiquefactionProperties
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(
+        from_attributes=True
+    )
 
     @staticmethod
     def from_sqlalchemy_model(liquefaction_zone: LiquefactionZone):
