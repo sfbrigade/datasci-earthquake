@@ -65,15 +65,15 @@ async def lookup_all_hazards(
 ):
     try:
         # checks each hazard
-        landslide_exists, landslide_updated = check_hazard_exists
-        (LandslideZone, lon, lat, db)
+        # landslide_exists, landslide_updated = check_hazard_exists
+        # (LandslideZone, lon, lat, db)
         soft_story_exists, soft_story_updated = check_hazard_exists(SoftStoryProperty, lon, lat, db)
         liquefaction_exists, liquefaction_updated = check_hazard_exists(LiquefactionZone, lon, lat, db)
         tsunami_exists, tsunami_updated = check_hazard_exists(TsunamiZone, lon, lat, db)
 
         return CompositeHazardResponse(
-            landslide = HazardStatus(exists = landslide_exists, 
-            last_updated = landslide_updated),
+            # landslide = HazardStatus(exists = landslide_exists, 
+            # last_updated = landslide_updated),
             soft_story = HazardStatus(exists = soft_story_exists, last_updated=soft_story_updated),
             liquefaction = HazardStatus(exists = liquefaction_exists, last_updated = liquefaction_updated),
             tsunami = HazardStatus(exists = tsunami_exists, last_updated = tsunami_updated),

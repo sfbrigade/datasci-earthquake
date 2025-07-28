@@ -5,6 +5,7 @@ from backend.api.routers import (
     tsunami_api,
     soft_story_api,
     health_api,
+    composite_api
 )
 
 ### Create FastAPI instance with custom docs and openapi url
@@ -14,6 +15,7 @@ app.include_router(liquefaction_api.router)
 app.include_router(tsunami_api.router)
 app.include_router(soft_story_api.router)
 app.include_router(health_api.router)
+app.include_router(composite_api.router)
 
 origins = [
     "http://localhost",
