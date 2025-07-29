@@ -54,7 +54,7 @@ def check_hazard_exists(model, lon, lat, db):
             - last_updated (datetime or None): The update timestamp of the record if found, else None.
     """
     geom = geo_func.ST_GeomFromText(f"POINT({lon} {lat})", 4326)
-    record = db.query(model).filter(model.point == geom).first()
+    record = db.query(model).filter(model.geometry, geom).first()
     return record is not None, getattr(record, "update_timestamp", None) if record else None
 
 @router.get("/lookup", response_model=CompositeHazardResponse)
