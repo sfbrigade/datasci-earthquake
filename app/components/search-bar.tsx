@@ -9,7 +9,7 @@ import {
   useCallback,
 } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Input, InputGroup } from "@chakra-ui/react";
+import { Input, InputGroup, Text } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
@@ -19,6 +19,7 @@ import DynamicAddressAutofill, {
 } from "./address-autofill";
 import type { HazardData } from "./home-header";
 import { API_ENDPOINTS } from "../api/endpoints";
+import { AddressAutofillSuggestionResponse } from "@mapbox/search-js-core/dist/autofill/AddressAutofillCore";
 
 const autofillOptions: AddressAutofillOptions = {
   country: "US",
@@ -60,6 +61,8 @@ const SearchBar = ({
   onSearchComplete,
 }: SearchBarProps) => {
   const [inputAddress, setInputAddress] = useState("");
+  const [suggestionSelected, setSuggestSelected] = useState(false);
+  const [suggestionsAvailable, setSuggestsAvailable] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const toastIdFailedHazardData = "failed-hazard-data";
@@ -86,6 +89,7 @@ const SearchBar = ({
 
     const newUrl = `?address=${encodeURIComponent(addressLine)}&lat=${coords[1]}&lon=${coords[0]}`;
     router.push(newUrl, { scroll: false });
+    setSuggestSelected(true);
   };
 
   const updateHazardData = async (coords: number[]) => {
@@ -113,6 +117,9 @@ const SearchBar = ({
 
   const handleAddressChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputAddress(event.currentTarget.value);
+    if (!suggestionSelected) {
+      setSuggestsAvailable(false);
+    }
   };
 
   /**
@@ -179,6 +186,10 @@ const SearchBar = ({
     }
   };
 
+  function handleSuggest(res: AddressAutofillSuggestionResponse) {
+    setSuggestsAvailable(res.suggestions.length > 0);
+  }
+
   // temporary memoization fix for updating the address in the search bar.
   // TODO: refactor how we are caching our calls
   const memoizedOnSearchChange = useCallback(onSearchChange, []);
@@ -204,12 +215,13 @@ const SearchBar = ({
   ]);
 
   return (
-    <form onSubmit={onSubmit}>
+    <form className="search-bar-form" onSubmit={onSubmit}>
       <Suspense>
         <DynamicAddressAutofill
           accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ""}
           options={autofillOptions}
           onRetrieve={handleRetrieve}
+          onSuggest={(res) => handleSuggest(res)}
         >
           <InputGroup
             w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
@@ -265,6 +277,17 @@ const SearchBar = ({
           </InputGroup>
         </DynamicAddressAutofill>
       </Suspense>
+      {inputAddress.length && !suggestionSelected && !suggestionsAvailable ? (
+        <Text
+          position="absolute"
+          bottom={0}
+          ml="45px"
+          textStyle="textSmall"
+          color="white"
+        >
+          {inputAddress.length < 5 ? "Keep typing…" : "Try Refining Search…"}
+        </Text>
+      ) : null}
     </form>
   );
 };

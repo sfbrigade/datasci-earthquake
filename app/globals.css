@@ -7,3 +7,7 @@
   background-size: cover;
   border-radius: 0;
 }
+
+.search-bar-form {
+  position: relative;
+}
