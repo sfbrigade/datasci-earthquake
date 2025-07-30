@@ -1,12 +1,29 @@
 from backend.api.tests.test_session_config import test_engine, test_session, client
 import logging
 
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 def test_get_liquefaction_zones(client):
-    response = client.get("api/liquefaction-zones")
+    response = client.get("/api/liquefaction-zones")
     response_dict = response.json()
-    assert response.status_code == 200
-    assert len(response_dict["features"]) == 3
+    logger.info(f"Response: {response_dict}")
+
+    assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
+    assert "high_susceptibility" in response_dict, "Expected 'high_susceptibility' in response"
+    assert "very_high_susceptibility" in response_dict, "Expected 'very_high_susceptibility' in response"
+
+    # Check the number of features in each collection
+    high_susceptibility_features = response_dict["high_susceptibility"]["features"]
+    very_high_susceptibility_features = response_dict["very_high_susceptibility"]["features"]
+
+    logger.info(f"High Susceptibility Features: {high_susceptibility_features}")
+    logger.info(f"Very High Susceptibility Features: {very_high_susceptibility_features}")
+
+    assert len(high_susceptibility_features) == 2, "Expected 2 features with 'H'"
+    assert len(very_high_susceptibility_features) == 1, "Expected 1 feature with 'VH'"
 
 
 def test_is_in_liquefaction_zone(client, caplog):

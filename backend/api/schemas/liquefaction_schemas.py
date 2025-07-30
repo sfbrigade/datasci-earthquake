@@ -73,6 +73,21 @@ class LiquefactionFeatureCollection(FeatureCollection):
     features: List[LiquefactionFeature]
 
 
+class LiquefactionFeatureCollectionResponse(BaseModel):
+    """
+    Pydantic model for a collection of liquefaction feature collections,
+    one of high and the other of very high susceptibility
+
+    Attributes:
+        high_susceptibility: points bounding a zone of high susceptibility 
+                             to soil liquefaction
+        very_high_susceptibility: points bounding a zone of very high susceptibility 
+                                  to soil liquefaction
+    """
+    high_susceptibility: LiquefactionFeatureCollection
+    very_high_susceptibility: LiquefactionFeatureCollection
+
+
 class IsInLiquefactionZoneView(BaseModel):
     """
     Pydantic View model for liquefaction zone check endpoint.
@@ -86,3 +101,4 @@ class IsInLiquefactionZoneView(BaseModel):
     last_updated: Optional[datetime] = None
 
     model_config = ConfigDict(from_attributes=True)
+

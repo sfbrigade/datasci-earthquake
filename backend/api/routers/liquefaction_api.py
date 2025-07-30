@@ -1,7 +1,7 @@
 """Router to handle liquefaction-related API endpoints"""
 
 from fastapi import Depends, HTTPException, APIRouter, Query
-from typing import Optional
+from typing import Optional, Dict
 from ..tags import Tags
 from sqlalchemy.orm import Session
 from geoalchemy2.shape import from_shape
@@ -9,10 +9,11 @@ from shapely.geometry import Point
 from backend.database.session import get_db
 from ..schemas.liquefaction_schemas import (
     LiquefactionFeature,
-    LiquefactionFeatureCollection,
     IsInLiquefactionZoneView,
+    LiquefactionFeatureCollection,
 )
 from backend.api.models.liquefaction_zones import LiquefactionZone
+from backend.api.schemas.liquefaction_schemas import LiquefactionFeatureCollectionResponse
 import logging
 
 logging.basicConfig(
@@ -26,7 +27,7 @@ router = APIRouter(
 )
 
 
-@router.get("", response_model=LiquefactionFeatureCollection)
+@router.get("", response_model=LiquefactionFeatureCollectionResponse)
 async def get_liquefaction_zones(db: Session = Depends(get_db)):
     """
     Retrieve all liquefaction zones from the database.
@@ -47,10 +48,27 @@ async def get_liquefaction_zones(db: Session = Depends(get_db)):
     if not liquefaction_zones:
         raise HTTPException(status_code=404, detail="No liquefaction zones found")
 
-    features = [
-        LiquefactionFeature.from_sqlalchemy_model(zone) for zone in liquefaction_zones
+    # Filter zones by susceptibility level
+    high_susceptibility_zones = [zone for zone in liquefaction_zones if zone.liq == 'H']
+    very_high_susceptibility_zones = [zone for zone in liquefaction_zones if zone.liq == 'VH']
+
+    # Create features for each susceptibility level
+    high_susceptibility_features = [
+        LiquefactionFeature.from_sqlalchemy_model(zone) for zone in high_susceptibility_zones
     ]
-    return LiquefactionFeatureCollection(type="FeatureCollection", features=features)
+    very_high_susceptibility_features = [
+        LiquefactionFeature.from_sqlalchemy_model(zone) for zone in very_high_susceptibility_zones
+    ]
+
+    # Create feature collections
+    high_susceptibility_collection = LiquefactionFeatureCollection(features=high_susceptibility_features)
+    very_high_susceptibility_collection = LiquefactionFeatureCollection(features=very_high_susceptibility_features)
+
+    # Return the response
+    return LiquefactionFeatureCollectionResponse(
+        high_susceptibility=high_susceptibility_collection,
+        very_high_susceptibility=very_high_susceptibility_collection
+    )
 
 
 @router.get("/is-in-liquefaction-zone", response_model=IsInLiquefactionZoneView)
