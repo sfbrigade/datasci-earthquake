@@ -19,7 +19,7 @@ import DynamicAddressAutofill, {
 } from "./address-autofill";
 import type { HazardData } from "./home-header";
 import { API_ENDPOINTS } from "../api/endpoints";
-import { AddressAutofillSuggestionResponse } from "@mapbox/search-js-core/dist/autofill/AddressAutofillCore";
+import { AddressAutofillSuggestionResponse } from "@mapbox/search-js-core";
 
 const autofillOptions: AddressAutofillOptions = {
   country: "US",
@@ -66,9 +66,11 @@ const SearchBar = ({
   const router = useRouter();
   const searchParams = useSearchParams();
   const toastIdFailedHazardData = "failed-hazard-data";
+  const characterCap = 5;
 
   const handleClearClick = () => {
     setInputAddress("");
+    setSuggestSelected(false);
     router.push("/", { scroll: false });
   };
 
@@ -89,6 +91,7 @@ const SearchBar = ({
 
     const newUrl = `?address=${encodeURIComponent(addressLine)}&lat=${coords[1]}&lon=${coords[0]}`;
     router.push(newUrl, { scroll: false });
+    // "locks in" choice, to prevent re-appearing of hint
     setSuggestSelected(true);
   };
 
@@ -117,6 +120,7 @@ const SearchBar = ({
 
   const handleAddressChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputAddress(event.currentTarget.value);
+    // shows hint again upon further search param changes without selection of suggestion
     if (!suggestionSelected) {
       setSuggestsAvailable(false);
     }
@@ -186,9 +190,9 @@ const SearchBar = ({
     }
   };
 
-  function handleSuggest(res: AddressAutofillSuggestionResponse) {
+  const handleSuggest = (res: AddressAutofillSuggestionResponse) => {
     setSuggestsAvailable(res.suggestions.length > 0);
-  }
+  };
 
   // temporary memoization fix for updating the address in the search bar.
   // TODO: refactor how we are caching our calls
@@ -221,7 +225,8 @@ const SearchBar = ({
           accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ""}
           options={autofillOptions}
           onRetrieve={handleRetrieve}
-          onSuggest={(res) => handleSuggest(res)}
+          // hides hint when suggestions are provided
+          onSuggest={handleSuggest}
         >
           <InputGroup
             w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
@@ -285,7 +290,9 @@ const SearchBar = ({
           textStyle="textSmall"
           color="white"
         >
-          {inputAddress.length < 5 ? "Keep typing…" : "Try Refining Search…"}
+          {inputAddress.length < characterCap
+            ? "Keep typing…"
+            : "Try Refining Search…"}
         </Text>
       ) : null}
     </form>
