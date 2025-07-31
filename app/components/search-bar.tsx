@@ -213,8 +213,7 @@ const SearchBar = ({
         >
           <InputGroup
             w={{
-              base: "303px",
-              smDown: "100%",
+              base: "100%",
               sm: "303px",
               md: "371px",
               lg: "417px",
@@ -245,8 +244,7 @@ const SearchBar = ({
               placeholder="Search San Francisco address"
               fontFamily="Inter, sans-serif"
               fontSize={{
-                base: "md",
-                smDown: "sm",
+                base: "sm",
                 sm: "md",
                 md: "md",
                 lg: "md",
