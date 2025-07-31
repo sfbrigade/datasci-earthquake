@@ -52,11 +52,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Fix permissions for container user
-        run: |
-          sudo chown -R 10001:10001 $GITHUB_WORKSPACE/backend/public/data
-          chmod -R u+rwX $GITHUB_WORKSPACE/backend/public/data        
-
       - name: Set default fork status
         run: echo "is_fork=false" >> $GITHUB_ENV        
 
