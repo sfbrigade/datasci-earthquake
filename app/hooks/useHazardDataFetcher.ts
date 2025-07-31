@@ -13,12 +13,6 @@ const safeJsonFetch = async (url: string) => {
   return res.json();
 };
 
-interface HazardData {
-  liquefaction: { exists: boolean; last_updated: string | null } | null;
-  softStory: { exists: boolean; last_updated: string | null } | null;
-  tsunami: { exists: boolean; last_updated: string | null } | null;
-}
-
 interface UseHazardDataFetcherProps {
   onSearchComplete: (success: boolean) => void;
   onHazardDataLoading: (loading: boolean) => void;
