@@ -15,7 +15,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /
 
 # Create a non-privileged user that the app will run under.
-ARG UID=10001
+ARG UID=1001
 RUN adduser \
     --disabled-password \
     --gecos "" \
