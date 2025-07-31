@@ -26,7 +26,6 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
     """
 
     def __init__(self, url: str, table: Type[ModelType], mapbox_api_key: str):
-        print("test")
         mapbox_config = MapboxConfig(
             # These values are for San Francisco
             min_longitude=-122.51436038,
