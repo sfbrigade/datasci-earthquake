@@ -244,7 +244,13 @@ const SearchBar = ({
             <Input
               placeholder="Search San Francisco address"
               fontFamily="Inter, sans-serif"
-              fontSize={{ base: "md", sm: "md", md: "md", lg: "md" }}
+              fontSize={{
+                base: "md",
+                smDown: "sm",
+                sm: "md",
+                md: "md",
+                lg: "md",
+              }}
               size={{ base: "lg", md: "xl", xl: "xl" }}
               p={{
                 base: "0 10px 0 35px",
