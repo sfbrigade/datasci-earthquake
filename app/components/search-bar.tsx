@@ -212,7 +212,13 @@ const SearchBar = ({
           onRetrieve={handleRetrieve}
         >
           <InputGroup
-            w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
+            w={{
+              base: "303px",
+              smDown: "100%",
+              sm: "303px",
+              md: "371px",
+              lg: "417px",
+            }}
             mb={"24px"}
             data-testid="search-bar"
             startElement={
