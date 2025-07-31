@@ -123,7 +123,10 @@ const SearchBar = ({
   // TODO: refactor how we are caching our calls
   const memoizedOnSearchChange = useCallback(onSearchChange, []);
   const memoizedOnAddressSearch = useCallback(onAddressSearch, []);
-  const memoizedUpdateHazardData = useCallback(updateHazardData, [fetchHazardData, onCoordDataRetrieve]);
+  const memoizedUpdateHazardData = useCallback(updateHazardData, [
+    fetchHazardData, 
+    onCoordDataRetrieve
+  ]);
 
   useEffect(() => {
     const address = searchParams.get("address");
