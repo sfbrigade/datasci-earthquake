@@ -29,6 +29,8 @@ const Home = async () => {
     features: [],
   };
 
+  await new Promise((r) => setTimeout(r, 2000));
+
   try {
     [softStoryData, tsunamiData, liquefactionData] = await Promise.all([
       fetchSoftStories(),
