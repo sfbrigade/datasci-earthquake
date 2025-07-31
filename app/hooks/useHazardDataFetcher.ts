@@ -71,7 +71,8 @@ export function useHazardDataFetcher({
 
         return {
           softStory: softStory.status === "fulfilled" ? softStory.value : null,
-          tsunami: tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
+          tsunami:
+            tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
           liquefaction:
             liquefactionZone.status === "fulfilled"
               ? liquefactionZone.value

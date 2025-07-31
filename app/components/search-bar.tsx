@@ -124,8 +124,8 @@ const SearchBar = ({
   const memoizedOnSearchChange = useCallback(onSearchChange, []);
   const memoizedOnAddressSearch = useCallback(onAddressSearch, []);
   const memoizedUpdateHazardData = useCallback(updateHazardData, [
-    fetchHazardData, 
-    onCoordDataRetrieve
+    fetchHazardData,
+    onCoordDataRetrieve,
   ]);
 
   useEffect(() => {
