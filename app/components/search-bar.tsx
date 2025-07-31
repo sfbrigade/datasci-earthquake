@@ -18,7 +18,7 @@ import DynamicAddressAutofill, {
   AddressAutofillRetrieveResponse,
 } from "./address-autofill";
 import type { HazardData } from "./home-header";
-import { useHazardDataFetcher } from '../hooks/useHazardDataFetcher';
+import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 
 const autofillOptions: AddressAutofillOptions = {
   country: "US",
@@ -53,11 +53,9 @@ const SearchBar = ({
   const searchParams = useSearchParams();
   const toastIdFailedHazardData = "failed-hazard-data";
 
-  const {
-    fetchHazardData,
-  } = useHazardDataFetcher({
-    onSearchComplete: onSearchComplete,
-    onHazardDataLoading: onHazardDataLoading,
+  const { fetchHazardData } = useHazardDataFetcher({
+    onSearchComplete,
+    onHazardDataLoading,
   });
 
   const handleClearClick = () => {
@@ -125,7 +123,7 @@ const SearchBar = ({
   // TODO: refactor how we are caching our calls
   const memoizedOnSearchChange = useCallback(onSearchChange, []);
   const memoizedOnAddressSearch = useCallback(onAddressSearch, []);
-  const memoizedUpdateHazardData = useCallback(updateHazardData, []);
+  const memoizedUpdateHazardData = useCallback(updateHazardData, [fetchHazardData, onCoordDataRetrieve]);
 
   useEffect(() => {
     const address = searchParams.get("address");

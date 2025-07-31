@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback } from "react";
 import { toaster } from "@/components/ui/toaster";
 import { API_ENDPOINTS } from "../api/endpoints";
 
@@ -28,16 +28,15 @@ export function useHazardDataFetcher({
   onSearchComplete,
   onHazardDataLoading,
 }: UseHazardDataFetcherProps) {
-  console.log("useHazardDataFetcher");
   const toastIdFailedHazardData = "failed-hazard-data";
 
   // gets metadata from Mapbox API for given coordinates
-  const getHazardData = useCallback(
+  const fetchHazardData = useCallback(
     async (coords: number[]) => {
       onHazardDataLoading(true);
 
       const buildUrl = (endpoint: string) =>
-      `${endpoint}?lon=${coords[0]}&lat=${coords[1]}`;
+        `${endpoint}?lon=${coords[0]}&lat=${coords[1]}`;
 
       try {
         const [softStory, tsunamiZone, liquefactionZone] =
@@ -47,7 +46,6 @@ export function useHazardDataFetcher({
             safeJsonFetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)),
           ]);
 
-        onHazardDataLoading(false);
         onSearchComplete(true);
 
         const failed = [
@@ -73,7 +71,10 @@ export function useHazardDataFetcher({
 
         return {
           softStory: softStory.status === "fulfilled" ? softStory.value : null,
-          tsunami: tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
+          tsunami: 
+            tsunamiZone.status === "fulfilled" 
+            ? tsunamiZone.value 
+            : null,
           liquefaction:
             liquefactionZone.status === "fulfilled"
               ? liquefactionZone.value
@@ -86,17 +87,10 @@ export function useHazardDataFetcher({
         onHazardDataLoading(false);
       }
     },
-    [onHazardDataLoading, onSearchComplete, toaster, toastIdFailedHazardData]
-  );
-
-  const fetchHazardData = useCallback(
-    async (coords: number[]) => {
-      return getHazardData(coords);
-    },
-    [getHazardData]
+    [onHazardDataLoading, onSearchComplete]
   );
 
   return {
     fetchHazardData,
-  }
+  };
 }
