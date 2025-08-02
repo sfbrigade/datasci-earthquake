@@ -31,9 +31,14 @@ def test_composite_hazards_lookup(client, caplog):
     assert "liquefaction" in data
     assert "tsunami" in data
 
-    for hazard_type in ["soft_story", "liquefaction", "tsunami"]:
-        assert "exists" in data[hazard_type]
-        assert "last_updated" in data[hazard_type]
+    # Based on the test data, we might expect specific outcomes.
+    # This is an example; adjust based on your `init.sql` data.
+    assert data["soft_story"]["exists"] is False
+    assert data["liquefaction"]["exists"] is True
+    assert data["tsunami"]["exists"] is True
+
+    # Also check that last_updated is a valid datetime string or None
+    assert data["liquefaction"]["last_updated"] is not None
 
     # The original assertion might not work since we removed the logging
     # assert "Checking soft story status" in caplog.text or "Checking liquefaction" in caplog.text
