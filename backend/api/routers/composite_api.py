@@ -89,8 +89,8 @@ def lookup_all_hazards(
         return response
 
     except Exception as e:
-        # Add more detailed error information
+        # Log the full error for debugging, but don't expose it to the client.
         import traceback
         error_detail = f"Error in lookup_all_hazards: {str(e)}\nTraceback: {traceback.format_exc()}"
-        print(error_detail)
-        raise HTTPException(status_code=500, detail=error_detail)
+        print(error_detail) # Replace with proper logging
+        raise HTTPException(status_code=500, detail="An internal server error occurred.")
