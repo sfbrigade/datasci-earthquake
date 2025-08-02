@@ -55,7 +55,7 @@ def check_hazard_exists(model, geom_column_name, lon, lat, db):
         return False, None
 
 @router.get("/lookup", response_model=CompositeHazardResponse)
-async def lookup_all_hazards(
+def lookup_all_hazards(
     lon: float = Query(...),
     lat: float = Query(...),
     db: Session = Depends(get_db),
