@@ -73,9 +73,7 @@ class _LiquefactionDataHandler(DataHandler):
 
 
 def main():
-    """
-    
-    """
+    """ """
     handler = _LiquefactionDataHandler(_LIQUEFACTION_URL, LiquefactionZone)
     try:
         liquefaction_zones = handler.fetch_data()
@@ -88,5 +86,5 @@ def main():
         print(f"Failed after retries: {e}")
 
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
     main()

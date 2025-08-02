@@ -13,7 +13,9 @@ from ..schemas.liquefaction_schemas import (
     LiquefactionFeatureCollection,
 )
 from backend.api.models.liquefaction_zones import LiquefactionZone
-from backend.api.schemas.liquefaction_schemas import LiquefactionFeatureCollectionResponse
+from backend.api.schemas.liquefaction_schemas import (
+    LiquefactionFeatureCollectionResponse,
+)
 import logging
 
 logging.basicConfig(
@@ -49,29 +51,39 @@ async def get_liquefaction_zones(db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="No liquefaction zones found")
 
     # Filter zones by susceptibility level
-    high_susceptibility_zones = [zone for zone in liquefaction_zones if zone.liq == 'H']
-    very_high_susceptibility_zones = [zone for zone in liquefaction_zones if zone.liq == 'VH']
+    high_susceptibility_zones = [zone for zone in liquefaction_zones if zone.liq == "H"]
+    very_high_susceptibility_zones = [
+        zone for zone in liquefaction_zones if zone.liq == "VH"
+    ]
 
     # Create features for each susceptibility level
     high_susceptibility_features = [
-        LiquefactionFeature.from_sqlalchemy_model(zone) for zone in high_susceptibility_zones
+        LiquefactionFeature.from_sqlalchemy_model(zone)
+        for zone in high_susceptibility_zones
     ]
     very_high_susceptibility_features = [
-        LiquefactionFeature.from_sqlalchemy_model(zone) for zone in very_high_susceptibility_zones
+        LiquefactionFeature.from_sqlalchemy_model(zone)
+        for zone in very_high_susceptibility_zones
     ]
 
     # Create feature collections
-    high_susceptibility_collection = LiquefactionFeatureCollection(features=high_susceptibility_features)
-    very_high_susceptibility_collection = LiquefactionFeatureCollection(features=very_high_susceptibility_features)
+    high_susceptibility_collection = LiquefactionFeatureCollection(
+        features=high_susceptibility_features
+    )
+    very_high_susceptibility_collection = LiquefactionFeatureCollection(
+        features=very_high_susceptibility_features
+    )
 
     # Return the response
     return LiquefactionFeatureCollectionResponse(
         high_susceptibility=high_susceptibility_collection,
-        very_high_susceptibility=very_high_susceptibility_collection
+        very_high_susceptibility=very_high_susceptibility_collection,
     )
 
 
-@router.get("/in-high-susceptibility-liquefaction-zone", response_model=InLiquefactionZoneView)
+@router.get(
+    "/in-high-susceptibility-liquefaction-zone", response_model=InLiquefactionZoneView
+)
 async def in_high_susceptibility_liquefaction_zone(
     lon: Optional[float] = Query(None),
     lat: Optional[float] = Query(None),
@@ -105,13 +117,15 @@ async def in_high_susceptibility_liquefaction_zone(
             detail="Both 'lon' and 'lat' must be provided unless ping=true",
         )
 
-    logger.info(f"Checking high-susceptibility liquefaction zone for coordinates: lon={lon}, lat={lat}")
+    logger.info(
+        f"Checking high-susceptibility liquefaction zone for coordinates: lon={lon}, lat={lat}"
+    )
 
     try:
         point = from_shape(Point(lon, lat), srid=4326)
         zone = (
             db.query(LiquefactionZone)
-            .filter(LiquefactionZone.liq == 'H')
+            .filter(LiquefactionZone.liq == "H")
             .filter(LiquefactionZone.geometry.ST_Intersects(point))
             .first()
         )
@@ -137,9 +151,12 @@ async def in_high_susceptibility_liquefaction_zone(
             detail=f"Error checking high-susceptibility liquefaction zone status for coordinates: lon={lon}, lat={lat}, "
             f"error: {str(e)}",
         )
-    
 
-@router.get("/in-very-high-susceptibility-liquefaction-zone", response_model=InLiquefactionZoneView)
+
+@router.get(
+    "/in-very-high-susceptibility-liquefaction-zone",
+    response_model=InLiquefactionZoneView,
+)
 async def in_very_high_susceptibility_liquefaction_zone(
     lon: Optional[float] = Query(None),
     lat: Optional[float] = Query(None),
@@ -163,7 +180,9 @@ async def in_very_high_susceptibility_liquefaction_zone(
          If `ping=true` is passed, skips DB call and returns a dummy InLiquefactionZoneView(exists=False, last_updated=None) instance.
     """
     if ping:
-        logger.info(f"Pinging the in-very-high-susceptibility-liquefaction-zone endpoint")
+        logger.info(
+            f"Pinging the in-very-high-susceptibility-liquefaction-zone endpoint"
+        )
         return InLiquefactionZoneView(exists=False, last_updated=None)  # skip DB call
 
     if lon is None or lat is None:
@@ -173,13 +192,15 @@ async def in_very_high_susceptibility_liquefaction_zone(
             detail="Both 'lon' and 'lat' must be provided unless ping=true",
         )
 
-    logger.info(f"Checking very-high-susceptibility liquefaction zone for coordinates: lon={lon}, lat={lat}")
+    logger.info(
+        f"Checking very-high-susceptibility liquefaction zone for coordinates: lon={lon}, lat={lat}"
+    )
 
     try:
         point = from_shape(Point(lon, lat), srid=4326)
         zone = (
             db.query(LiquefactionZone)
-            .filter(LiquefactionZone.liq == 'VH')
+            .filter(LiquefactionZone.liq == "VH")
             .filter(LiquefactionZone.geometry.ST_Intersects(point))
             .first()
         )

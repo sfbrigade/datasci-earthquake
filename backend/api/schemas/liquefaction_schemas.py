@@ -79,11 +79,12 @@ class LiquefactionFeatureCollectionResponse(BaseModel):
     one of high and the other of very high susceptibility
 
     Attributes:
-        high_susceptibility: points bounding a zone of high susceptibility 
+        high_susceptibility: points bounding a zone of high susceptibility
                              to soil liquefaction
-        very_high_susceptibility: points bounding a zone of very high susceptibility 
+        very_high_susceptibility: points bounding a zone of very high susceptibility
                                   to soil liquefaction
     """
+
     high_susceptibility: LiquefactionFeatureCollection
     very_high_susceptibility: LiquefactionFeatureCollection
 
@@ -101,4 +102,3 @@ class InLiquefactionZoneView(BaseModel):
     last_updated: Optional[datetime] = None
 
     model_config = ConfigDict(from_attributes=True)
-
