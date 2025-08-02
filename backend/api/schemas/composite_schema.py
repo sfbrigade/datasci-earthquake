@@ -9,7 +9,7 @@ class HazardStatus(BaseModel):
     """Pydantic view model for composite hazard API check endpoint.
 
     Attributes:
-        exists (bool): Whether the point is in a liquefation, soft story, or tsunami zone
+        exists (bool): Whether the point is in a liquefaction, soft story, or tsunami zone
         last_updated (Optional[datetime]): Timestamp of last update if exists
     """
     exists: bool
