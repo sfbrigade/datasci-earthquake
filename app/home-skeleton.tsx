@@ -35,12 +35,12 @@ const HeaderSkeleton = () => {
           <Link
             as={"a"}
             color="white"
-            href="/"
+            // href="/"
             textDecoration={"none"}
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = "/";
-            }}
+            // onClick={(e) => {
+            //   e.preventDefault();
+            //   window.location.href = "/";
+            // }}
           >
             <HStack align="baseline">
               <Image

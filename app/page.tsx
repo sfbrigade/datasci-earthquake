@@ -11,6 +11,7 @@ import {
   fetchTsunami,
   fetchLiquefaction,
 } from "./api/services";
+import { Suspense } from "react";
 
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `home-skeleton.tsx` and vice versa
 // TODO: look into if we can use narrow Suspense boundaries instead of `loading.tsx` and achieve the same (or better) perceived loading time effect
@@ -47,6 +48,13 @@ const Home = async () => {
         tsunamiData={tsunamiData}
         liquefactionData={liquefactionData}
       />
+      {/* <Suspense fallback={<Skeleton height="200px" width="200px" />}>
+        <AddressMapper
+          softStoryData={softStoryData}
+          tsunamiData={tsunamiData}
+          liquefactionData={liquefactionData}
+        />
+      </Suspense> */}
       <Flex
         w={{ base: "full", xl: "7xl" }}
         p={{
