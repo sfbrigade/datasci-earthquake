@@ -48,11 +48,9 @@ def check_hazard_exists(model, geom_column_name, lon, lat, db):
         return exists, last_updated
         
     except Exception as e:
+        # Re-raise the exception to be caught by the main endpoint handler
         print(f"Error in check_hazard_exists for model {model.__name__}: {str(e)}")
-        import traceback
-        traceback.print_exc()
-        # Return False on error rather than crashing
-        return False, None
+        raise
 
 @router.get("/lookup", response_model=CompositeHazardResponse)
 def lookup_all_hazards(
