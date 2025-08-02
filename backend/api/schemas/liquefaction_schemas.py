@@ -88,7 +88,7 @@ class LiquefactionFeatureCollectionResponse(BaseModel):
     very_high_susceptibility: LiquefactionFeatureCollection
 
 
-class IsInLiquefactionZoneView(BaseModel):
+class InLiquefactionZoneView(BaseModel):
     """
     Pydantic View model for liquefaction zone check endpoint.
 
