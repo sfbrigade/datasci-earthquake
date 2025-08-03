@@ -32,7 +32,7 @@ def test_in_high_susceptibility_liquefaction_zone(client, caplog):
     json = response.json()
     assert json["exists"]
     assert json["last_updated"] is not None
-    assert json["liq"] == 'H'
+    assert json["liq"] == "H"
     assert (
         f"Checking liquefaction zone for coordinates: lon={lon}, lat={lat}"
         in caplog.text
@@ -76,7 +76,7 @@ def test_in_very_high_susceptibility_liquefaction_zone(client, caplog):
     json = response.json()
     assert json["exists"]
     assert json["last_updated"] is not None
-    assert json["liq"] == 'VH'
+    assert json["liq"] == "VH"
     assert (
         f"Checking liquefaction zone for coordinates: lon={lon}, lat={lat}"
         in caplog.text

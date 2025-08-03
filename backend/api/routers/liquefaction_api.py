@@ -29,8 +29,8 @@ router = APIRouter(
 @router.get("", response_model=LiquefactionFeatureCollection)
 async def get_liquefaction_zones(db: Session = Depends(get_db)):
     """
-    Retrieve all liquefaction zones from the database 
-    
+    Retrieve all liquefaction zones from the database
+
     Included for backward compatibility
 
     Args:
@@ -70,11 +70,15 @@ async def get_high_susceptibility_zones(db: Session = Depends(get_db)):
         HTTPException: If no zones are found (404 error).
     """
     # Query the database for all high-susceptibility liquefaction zones
-    high_susceptibility_zones = db.query(LiquefactionZone).filter(LiquefactionZone.liq == "H").all()
+    high_susceptibility_zones = (
+        db.query(LiquefactionZone).filter(LiquefactionZone.liq == "H").all()
+    )
 
     # If no zones are found, raise a 404 error
     if not high_susceptibility_zones:
-        raise HTTPException(status_code=404, detail="No high-susceptibility liquefaction zones found")
+        raise HTTPException(
+            status_code=404, detail="No high-susceptibility liquefaction zones found"
+        )
 
     # Create features for high-susceptibility zones
     high_susceptibility_features = [
@@ -106,11 +110,16 @@ async def get_very_high_susceptibility_zones(db: Session = Depends(get_db)):
         HTTPException: If no zones are found (404 error).
     """
     # Query the database for all very-high-susceptibility liquefaction zones
-    very_high_susceptibility_zones = db.query(LiquefactionZone).filter(LiquefactionZone.liq == "VH").all()
+    very_high_susceptibility_zones = (
+        db.query(LiquefactionZone).filter(LiquefactionZone.liq == "VH").all()
+    )
 
     # If no zones are found, raise a 404 error
     if not very_high_susceptibility_zones:
-        raise HTTPException(status_code=404, detail="No very-high-susceptibility liquefaction zones found")
+        raise HTTPException(
+            status_code=404,
+            detail="No very-high-susceptibility liquefaction zones found",
+        )
 
     # Create features for very-high-susceptibility zones
     very_high_susceptibility_features = [
@@ -152,7 +161,9 @@ async def is_in_liquefaction_zone(
     """
     if ping:
         logger.info(f"Pinging the is-in-liquefaction-zone endpoint")
-        return InLiquefactionZoneView(exists=False, last_updated=None, liq=None)  # skip DB call
+        return InLiquefactionZoneView(
+            exists=False, last_updated=None, liq=None
+        )  # skip DB call
 
     if lon is None or lat is None:
         logger.warning("Missing coordinates in non-ping request")
