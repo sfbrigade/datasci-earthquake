@@ -1,7 +1,7 @@
 """Router to handle liquefaction-related API endpoints"""
 
 from fastapi import Depends, HTTPException, APIRouter, Query
-from typing import Optional, Dict
+from typing import Optional
 from ..tags import Tags
 from sqlalchemy.orm import Session
 from geoalchemy2.shape import from_shape
@@ -136,7 +136,7 @@ async def get_very_high_susceptibility_zones(db: Session = Depends(get_db)):
     return very_high_susceptibility_collection
 
 
-@router.get("/in-liquefaction-zone", response_model=InLiquefactionZoneView)
+@router.get("/is-in-liquefaction-zone", response_model=InLiquefactionZoneView)
 async def is_in_liquefaction_zone(
     lon: Optional[float] = Query(None),
     lat: Optional[float] = Query(None),
