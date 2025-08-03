@@ -40,6 +40,11 @@ def test_in_high_susceptibility_liquefaction_zone(client, caplog):
     assert "Liquefaction zone check result" in caplog.text
     assert f"exists: {json['exists']}" in caplog.text
 
+
+def test_outside_liquefaction_zones(client, caplog):
+    """Test outside all liquefaction zones with logging verification"""
+    caplog.set_level(logging.INFO)
+
     # Test point not in any liquefaction zone
     wrong_lon, wrong_lat = [0.0, 0.0]
     response = client.get(
@@ -79,24 +84,8 @@ def test_in_very_high_susceptibility_liquefaction_zone(client, caplog):
     assert "Liquefaction zone check result" in caplog.text
     assert f"exists: {json['exists']}" in caplog.text
 
-    # Test point not in any liquefaction zone
-    wrong_lon, wrong_lat = [0.0, 0.0]
-    response = client.get(
-        f"api/liquefaction-zones/in-liquefaction-zone?lon={wrong_lon}&lat={wrong_lat}"
-    )
 
-    assert response.status_code == 200
-    json = response.json()
-    assert not json["exists"]
-    assert json["last_updated"] is None
-    assert (
-        f"Checking liquefaction zone for coordinates: lon={wrong_lon}, lat={wrong_lat}"
-        in caplog.text
-    )
-    assert "exists: False" in caplog.text
-
-
-def test_is_in_liquefaction_zone(client, caplog):
+def test_in_liquefaction_zone(client, caplog):
     """Test liquefaction zone check with logging verification"""
     caplog.set_level(logging.INFO)
 
@@ -116,23 +105,8 @@ def test_is_in_liquefaction_zone(client, caplog):
     assert "Liquefaction zone check result" in caplog.text
     assert f"exists: {response.json()['exists']}" in caplog.text
 
-    # Test point not in liquefaction zone
-    wrong_lon, wrong_lat = [0.0, 0.0]
-    response = client.get(
-        f"api/liquefaction-zones/in-liquefaction-zone?lon={wrong_lon}&lat={wrong_lat}"
-    )
 
-    assert response.status_code == 200
-    assert not response.json()["exists"]
-    assert response.json()["last_updated"] is None
-    assert (
-        f"Checking liquefaction zone for coordinates: lon={wrong_lon}, lat={wrong_lat}"
-        in caplog.text
-    )
-    assert "exists: False" in caplog.text
-
-
-def test_is_in_liquefaction_zone_missing_params(client, caplog):
+def test_in_liquefaction_zone_missing_params(client, caplog):
     caplog.set_level(logging.WARN)
     response = client.get(
         "api/liquefaction-zones/in-liquefaction-zone", params={"lon": -122.424968}
