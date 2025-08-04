@@ -13,6 +13,7 @@ import {
 import posthog from "posthog-js";
 import Pill from "./pill";
 import { RxCross2 } from "react-icons/rx";
+import { PillData } from "../data/data";
 interface CardHazardProps {
   hazard: {
     id: number;
@@ -35,11 +36,17 @@ const CardHazard: React.FC<CardHazardProps> = ({
 }) => {
   const { title, name, description } = hazard;
   const { exists, last_updated: date } = hazardData || {};
+  const pillTextOptions = PillData.filter((object) => object.name === name)[0];
 
   const hazardPill = isHazardDataLoading ? (
     <Spinner size="xs" />
   ) : showData ? (
-    <Pill exists={exists} />
+    <Pill
+      exists={exists}
+      trueData={pillTextOptions.trueData}
+      falseData={pillTextOptions.falseData}
+      noData={pillTextOptions.noData}
+    />
   ) : (
     ""
   );
