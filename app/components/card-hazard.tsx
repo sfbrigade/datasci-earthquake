@@ -36,7 +36,11 @@ const CardHazard: React.FC<CardHazardProps> = ({
 }) => {
   const { title, name, description } = hazard;
   const { exists, last_updated: date } = hazardData || {};
-  const pillTextOptions = PillData.filter((object) => object.name === name)[0];
+  const pillTextOptions = PillData.find((object) => object.name === name) ?? {
+    trueData: "No Data",
+    falseData: "No Data",
+    noData: "No Data",
+  };
 
   const hazardPill = isHazardDataLoading ? (
     <Spinner size="xs" />
