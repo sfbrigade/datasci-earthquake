@@ -155,7 +155,12 @@ const SearchBar = ({
           onRetrieve={handleRetrieve}
         >
           <InputGroup
-            w={{ base: "303px", sm: "303px", md: "371px", lg: "417px" }}
+            w={{
+              base: "100%",
+              sm: "303px",
+              md: "371px",
+              lg: "417px",
+            }}
             mb={"24px"}
             data-testid="search-bar"
             startElement={
@@ -181,7 +186,12 @@ const SearchBar = ({
             <Input
               placeholder="Search San Francisco address"
               fontFamily="Inter, sans-serif"
-              fontSize={{ base: "md", sm: "md", md: "md", lg: "md" }}
+              fontSize={{
+                base: "sm",
+                sm: "md",
+                md: "md",
+                lg: "md",
+              }}
               size={{ base: "lg", md: "xl", xl: "xl" }}
               p={{
                 base: "0 10px 0 35px",
