@@ -1,13 +1,4 @@
-import {
-  Flex,
-  Link,
-  Text,
-  Box,
-  VStack,
-  HStack,
-  UnorderedList,
-  ListItem,
-} from "@chakra-ui/react";
+import { Flex, Link, Text, Box, VStack, List } from "@chakra-ui/react";
 import Heading from "../components/heading";
 import { Headings, DataInfoLinks, TeamMembers } from "../data/data";
 import NextLink from "next/link";
@@ -19,9 +10,9 @@ const About = () => {
   const buildInfoLinks = () => {
     return DataInfoLinks.map((dataInfolink) => {
       return (
-        <ListItem key={dataInfolink.id}>
+        <List.Item key={dataInfolink.id}>
           {buildLink(dataInfolink.url, dataInfolink.label)}
-        </ListItem>
+        </List.Item>
       );
     });
   };
@@ -37,7 +28,7 @@ const About = () => {
   const buildTeamMembers = () => {
     return TeamMembers.map((teamMember) => {
       return (
-        <ListItem key={teamMember.id} mb="5px">
+        <List.Item key={teamMember.id} mb="4px">
           <Text>
             <Text as="span" fontWeight={800}>
               {teamMember.name}
@@ -45,25 +36,26 @@ const About = () => {
             </Text>
             {teamMember.role}
           </Text>
-        </ListItem>
+        </List.Item>
       );
     });
   };
 
   return (
     <Flex
-      w={{ base: "base", xl: "xl" }}
+      w={{ base: "full", xl: "7xl" }}
       p={{
-        base: "23px 24px 16px 24px",
-        md: "37px 27px 16px 26px",
-        xl: "50px 128px 16px 127px",
+        base: "24px 24px 24px 24px",
+        md: "36px 28px 36px 28px",
+        xl: "80px 128px 80px 128px",
       }}
+      direction={{ base: "column", lg: "row" }}
       m="auto"
-      gap="46px"
+      gap="44px"
     >
-      <Flex direction="column" alignItems={"flex-start"} gap="50px">
+      <Flex direction="column" alignItems={"flex-start"} gap="48px">
         <Heading headingData={headingData} />
-        <Text textStyle="textBig" color="black">
+        <Text textStyle="textBig" layerStyle="text">
           Seismologists predict a 72% probability that the Bay Area will
           experience a magnitude 6.7 (or greater) earthquake in the next 30
           years. SafeHome was created to give San Franciscans the knowledge and
@@ -73,10 +65,14 @@ const About = () => {
           stay prepared.
         </Text>
         <VStack>
-          <Text textStyle="headerMedium" alignSelf="flex-start">
+          <Text
+            textStyle="headerMedium"
+            layerStyle="headerAlt"
+            alignSelf="flex-start"
+          >
             Supporting a citywide mission
           </Text>
-          <Text textStyle="textMedium">
+          <Text textStyle="textMedium" layerStyle="text">
             We’re working with city leaders to support San Francisco&apos;s
             efforts efforts to make buildings safer and more resilient against
             earthquakes. In particular, our goal is to help raise awareness
@@ -87,8 +83,10 @@ const About = () => {
           </Text>
         </VStack>
         <VStack alignItems="flex-start">
-          <Text textStyle="headerMedium">Methodology and data sources</Text>
-          <Text textStyle="textMedium">
+          <Text textStyle="headerMedium" layerStyle="headerAlt">
+            Methodology and data sources
+          </Text>
+          <Text textStyle="textMedium" layerStyle="text">
             SafeHome uses up-to-date official public datasets to power the maps
             and information displayed to users. Our technologists and data
             scientists have rigorously analyzed the Soft Story Properties
@@ -99,11 +97,11 @@ const About = () => {
             publicly available data to visualize other earthquake-related
             hazards, such as liquefaction and tsunami zones.
           </Text>
-          <Text textStyle="textMedium">
+          <Text textStyle="textMedium" layerStyle="text">
             For more information on the data, please visit:
           </Text>
-          <UnorderedList>{buildInfoLinks()}</UnorderedList>
-          <Text textStyle="textMedium">
+          <List.Root>{buildInfoLinks()}</List.Root>
+          <Text textStyle="textMedium" layerStyle="text">
             For details on the City of San Francisco’s seismic compliance
             requirements, see{" "}
             {buildLink(
@@ -114,17 +112,19 @@ const About = () => {
           </Text>
         </VStack>
         <VStack alignItems="flex-start">
-          <Text textStyle="headerMedium">Meet the team</Text>
-          <Text textStyle="textMedium">
+          <Text textStyle="headerMedium" layerStyle="headerAlt">
+            Meet the team
+          </Text>
+          <Text textStyle="textMedium" layerStyle="text">
             SafeHome is run by a volunteer team at{" "}
-            {buildLink("https://www.sfcivictech.org/about/", "SF Civic Tech")} ,
+            {buildLink("https://www.sfcivictech.org/about/", "SF Civic Tech")},
             a diverse group of technologists, creatives, and data scientists
             building tools to help communities access important services and
             solve local challenges. 
           </Text>
-          <UnorderedList listStyleType="none" mb="40px">
+          <List.Root listStyleType="none" mb="40px">
             {buildTeamMembers()}
-          </UnorderedList>
+          </List.Root>
           <Text>
             <Text as="span" fontWeight={800}>
               Interested in joining SF Civic Tech?

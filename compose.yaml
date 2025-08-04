@@ -15,7 +15,8 @@ services:
       - nextjs_cache:/app/.next
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:3000 || exit 1" ]
-      interval: 10s
+      start_interval: 10s
+      interval: 500s
       timeout: 5s
       retries: 3
       start_period: 60s
@@ -28,6 +29,7 @@ services:
       - .env
     environment:
       - PYTHONPATH=/backend:/
+      - DATA_GEOJSON_PATH=/public/data/
     ports:
       - 8000:8000
     depends_on:
@@ -36,14 +38,15 @@ services:
     volumes:
       - ./backend:/backend
       - ./backend/etl/startup.sh:/startup.sh
-      - ./public:/public
+      - public_data:/public/data
     command: bash /startup.sh
-    # healthcheck:
-    #   test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1" ]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 10
-    #   start_period: 70s
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1" ]
+      start_interval: 10s
+      interval: 500s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   db_test:
     build:
@@ -59,7 +62,8 @@ services:
       - 5433:5432
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
-      interval: 10s
+      start_interval: 10s
+      interval: 500s
       timeout: 5s
       retries: 5
       start_period: 30s
@@ -80,7 +84,8 @@ services:
       - 5432:5432
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
-      interval: 10s
+      start_interval: 10s
+      interval: 500s
       timeout: 5s
       retries: 5
       start_period: 30s
@@ -88,3 +93,5 @@ services:
 volumes:
   db-data:
   nextjs_cache:
+  public_data:
+    

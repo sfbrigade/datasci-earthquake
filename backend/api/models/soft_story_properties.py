@@ -29,10 +29,14 @@ class SoftStoryProperty(Base):
     block: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
     lot: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
     parcel_number: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
+    # number and street only
     property_address: Mapped[str] = mapped_column(
         String(_STRING_LENGTH), nullable=True, unique=True
     )
-    address: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=False)
+    # number, street, city, and state
+    address: Mapped[str] = mapped_column(
+        String(_STRING_LENGTH), unique=True, nullable=False
+    )
     tier: Mapped[int] = mapped_column(Integer, nullable=True)
     status: Mapped[str] = mapped_column(String(_STRING_LENGTH), nullable=True)
     bos_district: Mapped[int] = mapped_column(Integer, nullable=True)

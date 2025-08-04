@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
+import { toaster } from "@/components/ui/toaster";
 
 const defaultCoords = [-122.463733, 37.777448];
 
@@ -21,17 +21,25 @@ const Map: React.FC<MapProps> = ({
   tsunamiData,
   liquefactionData,
 }: MapProps) => {
-  const debug = useSearchParams().get("debug");
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<mapboxgl.Map>();
-  const markerRef = useRef<mapboxgl.Marker>();
+  const mapRef = useRef<mapboxgl.Map>(undefined);
+  const markerRef = useRef<mapboxgl.Marker>(undefined);
+  const toastIdInvalidToken = "invalid-token";
+  const toastIdNoToken = "no-token";
 
   useEffect(() => {
-    console.log(softStoryData);
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
     if (!mapContainerRef.current || !mapboxToken) {
-      // TODO: turn this into a toast with friendly error message
+      if (!toaster.isVisible(toastIdNoToken)) {
+        toaster.create({
+          id: toastIdNoToken,
+          description: "Mapbox access token or container is not set!",
+          type: "error",
+          duration: 5000,
+          closable: true,
+        });
+      }
       console.error("Mapbox access token or container is not set!");
       return;
     }
@@ -55,6 +63,7 @@ const Map: React.FC<MapProps> = ({
         touchPitch: false, // turn off pitch change w/touch
         touchZoomRotate: true, // turn on zoom/rotate w/touch
         keyboard: true, // turn on keyboard shortcuts
+        cooperativeGestures: true, // scroll-to-zoom requires using the control or command key while scrolling to zoom the map
         config: {
           // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
           basemap: {
@@ -88,19 +97,21 @@ const Map: React.FC<MapProps> = ({
         markerRef.current = addressMarker;
 
         // Add sources
-        map.addSource("seismic", {
-          type: "geojson",
-          data: liquefactionData,
-        });
+        map.addSource("seismic", { type: "geojson", data: liquefactionData });
 
-        map.addSource("tsunami", {
-          type: "geojson",
-          data: tsunamiData,
-        });
+        map.addSource("tsunami", { type: "geojson", data: tsunamiData });
 
-        map.addSource("soft-stories", {
-          type: "geojson",
-          data: softStoryData,
+        map.addSource("soft-stories", { type: "geojson", data: softStoryData });
+
+        map.addLayer({
+          id: "tsunamiLayer",
+          source: "tsunami",
+          type: "fill",
+          slot: "middle",
+          paint: {
+            "fill-color": "#63B3ED", // blue/300
+            "fill-opacity": 0.25, // 50% opacity
+          },
         });
 
         // Add layers
@@ -116,17 +127,6 @@ const Map: React.FC<MapProps> = ({
         });
 
         map.addLayer({
-          id: "tsunamiLayer",
-          source: "tsunami",
-          type: "fill",
-          slot: "middle",
-          paint: {
-            "fill-color": "#63B3ED", // blue/300
-            "fill-opacity": 0.25, // 50% opacity
-          },
-        });
-
-        map.addLayer({
           id: "softStoriesLayer",
           source: "soft-stories",
           type: "circle",
@@ -137,6 +137,21 @@ const Map: React.FC<MapProps> = ({
             "circle-stroke-color": "#FFFFFF",
             "circle-color": "#A0AEC0", // gray/400
           },
+        });
+
+        map.on("error", (e) => {
+          if (e.error && e.error.message.includes("access token")) {
+            if (!toaster.isVisible(toastIdInvalidToken)) {
+              toaster.create({
+                id: toastIdInvalidToken,
+                description: "Invalid Mapbox access token!",
+                type: "error",
+                duration: 5000,
+                closable: true,
+              });
+            }
+            console.error("Invalid Mapbox token:", e.error);
+          }
         });
       });
     } else {
@@ -150,24 +165,7 @@ const Map: React.FC<MapProps> = ({
   }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
 
   return (
-    <>
-      <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
-      {debug === "true" && (
-        <span
-          style={{
-            backgroundColor: "pink",
-            position: "absolute",
-            top: 0,
-            right: 0,
-            zIndex: 99,
-            fontSize: 24,
-            padding: "4px",
-          }}
-        >
-          {`${coordinates[0]}, ${coordinates[1]}`}
-        </span>
-      )}
-    </>
+    <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
   );
 };
 

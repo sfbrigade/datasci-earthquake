@@ -11,10 +11,12 @@ export const KeyElem = ({
 }) => {
   return (
     <Stack direction="row" alignItems="center">
-      <Icon fontSize="16px" color={color} viewBox="0 0 16 16">
+      <Icon size="sm" color={color}>
         {icon}
       </Icon>
-      <Text textStyle="textMedium">{name}</Text>
+      <Text textStyle="textMedium" layerStyle="text">
+        {name}
+      </Text>
     </Stack>
   );
 };

@@ -1,66 +1,81 @@
-"use client";
-
-import { Box, Heading, VStack, Text, HStack, Divider } from "@chakra-ui/react";
-import SearchBar from "../components/search-bar";
+import { Suspense } from "react";
+import {
+  Box,
+  Heading,
+  VStack,
+  Text,
+  HStack,
+  Separator,
+} from "@chakra-ui/react";
+import { Hazards, Info } from "../data/data";
 import CardHazard from "../components/card-hazard";
-import { Hazards } from "../data/data";
-import { Info } from "../data/data";
-import CardInfo from "../components/card-info";
+import SearchBarClientWrapper from "./search-bar-client-wrapper";
 import Share from "../components/share";
+import ShareSkeleton from "../components/share-skeleton";
 
 const ComponentsTestLib = () => {
   return (
     <Box
       as="section"
-      w={{ base: "base", xl: "xl" }}
+      w={{ base: "full", xl: "7xl" }}
       p={{
-        base: "10px 23px 10px 23px",
-        md: "8px 27px 8px 26px",
-        xl: "5px 127px 5px 127px",
+        base: "10px 24px 10px 24px",
+        md: "8px 28px 8px 28px",
+        xl: "6px 128px 6px 128px",
       }}
       m="auto"
     >
-      <Heading as="h1" size="xl" mb={4} bgColor="blue" color="white" p="10px">
+      <Heading
+        as="h1"
+        size="xl"
+        mb={6}
+        bgColor="blueBackground"
+        color="white"
+        p="10px"
+      >
         Components Test Library
       </Heading>
-      <Heading as="h2" size="md" mb={2}>
+      <Heading as="h2" size="md" mb={3}>
         Search Bar
       </Heading>
-      <Text mb={4}>This section demonstrates the Search Bar component</Text>
-      <VStack spacing={4} align="start">
+      <Text mb={6}>This section demonstrates the Search Bar component</Text>
+      <VStack gap={6} align="start">
         <HStack w="100%">
           <Box w="400px">
-            <SearchBar
-              coordinates={[0, 0]}
-              onSearchChange={() => {}}
-              onAddressSearch={() => {}}
-              onCoordDataRetrieve={() => {}}
-            />
+            <SearchBarClientWrapper />
           </Box>
         </HStack>
-        <Divider mb={2} />
+        <Separator mb={3} />
       </VStack>
-      <Heading as="h2" size="md" mb={2}>
+      <Heading as="h2" size="md" mb={3}>
         Hazards Card
       </Heading>
-      <Text mb={4}>This section demonstrates Hazard Card component</Text>
-      <VStack spacing={4} align="start">
-        <HStack w="100%">{/* <CardHazard hazard={Hazards[0]} /> */}</HStack>
-        <Divider mb={2} />
-      </VStack>
-      <Text mb={4}>This section demonstrates Info Card component</Text>
-      <VStack spacing={4} align="start">
+      <Text mb={6}>This section demonstrates Hazard Card component</Text>
+      <VStack gap={6} align="start">
         <HStack w="100%">
-          <CardInfo info={Info[0]} />
+          {Hazards.map((hazard) => {
+            return (
+              <CardHazard
+                key={hazard.id}
+                hazard={hazard}
+                hazardData={{ exists: true, last_updated: "" }}
+                showData={true}
+                isHazardDataLoading={true}
+              />
+            );
+          })}
         </HStack>
-        <Divider mb={2} />
+        <Separator mb={3} />
       </VStack>
-      <Text mb={4}>This section demonstrates Share menu component</Text>
-      <VStack spacing={4} align="start">
+      <Text mb={6}>This section demonstrates Share menu component</Text>
+      <VStack gap={6} align="start">
         <HStack w="100%">
-          <Share />
+          {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
+          <Suspense fallback={<ShareSkeleton />}>
+            <Share />
+          </Suspense>
         </HStack>
-        <Divider mb={2} />
+        <Separator mb={3} />
       </VStack>
     </Box>
   );

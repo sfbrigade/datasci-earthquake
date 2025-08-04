@@ -3,6 +3,8 @@ import { render, screen } from "@testing-library/react";
 import CardHazard from "../card-hazard";
 import { Hazards } from "../../data/data";
 import "@testing-library/jest-dom";
+import { Provider } from "../ui/provider";
+import "../__mocks__/match-media";
 
 // eslint-disable-next-line react/display-name
 jest.mock("../pill.tsx", () => () => (
@@ -30,12 +32,28 @@ describe("CardHazard Component", () => {
   });
 
   it("renders without crashing", () => {
-    render(<CardHazard hazard={Hazards[0]} />);
+    render(
+      <Provider>
+        <CardHazard
+          hazard={Hazards[0]}
+          showData={true}
+          isHazardDataLoading={true}
+        />
+      </Provider>
+    );
     expect(screen.getByText("Earthquake")).toBeInTheDocument();
   });
 
   it("displays the hazard title and description", () => {
-    render(<CardHazard hazard={Hazards[0]} />);
+    render(
+      <Provider>
+        <CardHazard
+          hazard={Hazards[0]}
+          showData={true}
+          isHazardDataLoading={true}
+        />
+      </Provider>
+    );
     expect(screen.getByText("Earthquake")).toBeInTheDocument();
     expect(
       screen.getByText("Potential hazard in the area.")

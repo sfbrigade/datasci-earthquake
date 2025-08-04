@@ -4,12 +4,12 @@ export const Hazards = [
     name: "softStory",
     title: "Structural safety",
     description:
-      "Soft story buildings may need reinforcement to stay safe in an earthquake.",
+      "Soft story buildings that haven't been reinforced may be at risk in an earthquake.",
     info: [
       "A soft story building is a structure built before 1978 that contains an open-floor level, such as a garage or retail space, below one or more living spaces.",
       "According to DataSF, there are 4,943 soft story buildings in SF. But not all are at risk!",
       "Some have been retrofitted to reinforce their lower levels and are generally considered earthquake-safe.",
-      "Those that haven't made the required upgrades may face a greater risk of damage in an earthquake.",
+      "Our data doesn't currently include permit history, so some buildings flagged as at risk may have already been upgraded.",
     ],
     link: {
       label: "Soft story dataset",
@@ -18,6 +18,22 @@ export const Hazards = [
   },
   {
     id: 2,
+    name: "liquefaction",
+    title: "Liquefaction areas",
+    description:
+      "These areas are on less stable ground, which can result in shifting or sinking during an earthquake.",
+    info: [
+      "Liquefaction is a condition where soil turns into a liquid-like state under pressure.",
+      "Buildings in liquefaction zones are at risk of sinking, tilting, or collapsing in a major earthquake.",
+      "This risk can be lowered with seismic upgrades such as foundation reinforcement or drainage systems.",
+    ],
+    link: {
+      label: "Liquefaction dataset",
+      url: "https://data.sfgov.org/Geographic-Locations-and-Boundaries/Soil-Liquefaction-Hazard-Zone/i4t7-35u3/about_data",
+    },
+  },
+  {
+    id: 3,
     name: "tsunami",
     title: "Tsunami zones",
     description:
@@ -30,22 +46,6 @@ export const Hazards = [
     link: {
       label: "Tsunami dataset",
       url: "https://www.conservation.ca.gov/cgs/tsunami/maps",
-    },
-  },
-  {
-    id: 3,
-    name: "liquefaction",
-    title: "Liquefaction zones",
-    description:
-      "These areas are on less stable ground, which can result in shifting or sinking during an earthquake.",
-    info: [
-      "Liquefaction is a condition where soil turns into a liquid-like state under pressure.",
-      "Buildings in liquefaction zones are at risk of sinking, tilting, or collapsing in a major earthquake.",
-      "This risk can be lowered with seismic upgrades such as foundation reinforcement or drainage systems.",
-    ],
-    link: {
-      label: "Liquefaction dataset",
-      url: "https://data.sfgov.org/Geographic-Locations-and-Boundaries/Soil-Liquefaction-Hazard-Zone/i4t7-35u3/about_data",
     },
   },
 ];
@@ -109,9 +109,14 @@ export const Info = [
 
 export const Headings = {
   home: {
-    text: "Learn about your home’s earthquake readiness.",
-    highlight: "Learn about",
-    style: { paddingRight: "200", marginBottom: "30" },
+    text: "How safe is your home\nin an earthquake?",
+    highlight: "How safe ",
+    style: {
+      color: "white",
+      whiteSpace: { base: "normal", md: "pre-line" },
+      paddingRight: { base: "10px", xl: "300px" },
+      marginBottom: "16px",
+    },
     highlightStyle: { color: "yellow" },
   },
   about: {
@@ -162,9 +167,19 @@ export const TeamMembers = [
     name: "Oscar Syu",
   },
   {
+    id: 15,
+    role: "Product Management",
+    name: "Julia Cordero",
+  },
+  {
     id: 3,
     role: "Product Design Lead",
     name: "Micah Johnson",
+  },
+  {
+    id: 6,
+    role: "Product Design Lead",
+    name: "Jocelyn Su",
   },
   {
     id: 12,
@@ -182,19 +197,14 @@ export const TeamMembers = [
     name: "Svetlana Eliseeva",
   },
   {
-    id: 6,
-    role: "Product Designer",
-    name: "Jocelyn Su",
+    id: 8,
+    role: "Engineering Lead",
+    name: "Nick Visutsithiwong",
   },
   {
     id: 7,
     role: "UX Writer",
     name: "Nikki Collister",
-  },
-  {
-    id: 8,
-    role: "Front End Engineer",
-    name: "Nick Visutsithiwong",
   },
   {
     id: 9,
@@ -207,13 +217,43 @@ export const TeamMembers = [
     name: "Diya Baliga",
   },
   {
+    id: 19,
+    role: "Front End Engineer",
+    name: "Leah Treidler",
+  },
+  {
+    id: 16,
+    role: "Front End Engineer",
+    name: "Josh van Eyken",
+  },
+  {
+    id: 14,
+    role: "Full Stack Engineer",
+    name: "Raymond Yee",
+  },
+  {
+    id: 20,
+    role: "Full Stack Engineer",
+    name: "Vincent Shuali",
+  },
+  {
     id: 11,
     role: "Back End Engineer",
     name: "Adam Finkle",
   },
   {
+    id: 18,
+    role: "Back End Engineer",
+    name: "Neeraj Lad",
+  },
+  {
     id: 13,
     role: "Data Science",
     name: "Peter Cuddihy",
+  },
+  {
+    id: 17,
+    role: "Data Science",
+    name: "Lola Jackson",
   },
 ];

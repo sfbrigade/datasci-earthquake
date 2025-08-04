@@ -15,7 +15,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /
 
 # Create a non-privileged user that the app will run under.
-ARG UID=10001
+ARG UID=1001
 RUN adduser \
     --disabled-password \
     --gecos "" \
@@ -27,6 +27,11 @@ RUN adduser \
 
 # Install curl
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Ensure the public/data directory exists and has correct permissions
+RUN mkdir -p /public/data && \
+    chown -R appuser:appuser /public/data && \
+    chmod -R 775 /public/data
 
 COPY requirements.txt /backend/requirements.txt
 
