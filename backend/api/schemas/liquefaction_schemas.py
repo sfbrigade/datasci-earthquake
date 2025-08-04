@@ -80,6 +80,7 @@ class InLiquefactionZoneView(BaseModel):
     Attributes:
         exists (bool): Whether the point is in a liquefaction zone
         last_updated (Optional[datetime]): Timestamp of last update if exists
+        liq (Optional[str]): Susceptibility of the zone to liquefaction
     """
 
     exists: bool
