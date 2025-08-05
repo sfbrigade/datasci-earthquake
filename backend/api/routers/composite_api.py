@@ -2,6 +2,8 @@ from fastapi import APIRouter, HTTPException, Depends, Query
 from sqlalchemy.orm import Session
 from datetime import datetime
 from backend.database.session import get_db
+import traceback
+import logging 
 
 from backend.api.models.soft_story_properties import SoftStoryProperty
 from backend.api.models.liquefaction_zones import LiquefactionZone
@@ -15,14 +17,14 @@ router = APIRouter(
     tags=[Tags.HAZARDS],
 )
 
-def check_hazard_exists(model, geom_column_name, lon, lat, db):
+def check_hazard_exists(model: str, geom_column_name: str, lon: float, lat: float, db: dict):
     """
     Checks whether a hazard record exists at the given coordinates 
-    for the specified SQLAlchemy model and returns its status and update timestamp.
+    for the specified SQLAlchemy model and returns its status and update timestamp. 
 
     Args:
-        model: The SQLAlchemy ORM model representing a hazard dataset.
-        geom_column_name: Name of the geometry column in the model.
+        model (str): The SQLAlchemy ORM model representing a hazard dataset.
+        geom_column_name (str): Name of the geometry column in the model.
         lon (float): Longitude of the point to check.
         lat (float): Latitude of the point to check.
         db (Session): Active SQLAlchemy database session.
@@ -59,23 +61,23 @@ def lookup_all_hazards(
     db: Session = Depends(get_db),
 ):
     try:
-        print(f"Looking up hazards for coordinates: lon={lon}, lat={lat}")
+        logging.info(f"Looking up hazards for coordinates: lon={lon}, lat={lat}")
         
         # Check each hazard with the correct geometry column name
         soft_story_exists, soft_story_updated = check_hazard_exists(
             SoftStoryProperty, "point", lon, lat, db
         )
-        print(f"Soft story check complete: exists={soft_story_exists}, updated={soft_story_updated}")
+        logging.info(f"Soft story check complete: exists={soft_story_exists}, updated={soft_story_updated}")
         
         liquefaction_exists, liquefaction_updated = check_hazard_exists(
             LiquefactionZone, "geometry", lon, lat, db
         )
-        print(f"Liquefaction check complete: exists={liquefaction_exists}, updated={liquefaction_updated}")
+        logging.info(f"Liquefaction check complete: exists={liquefaction_exists}, updated={liquefaction_updated}")
         
         tsunami_exists, tsunami_updated = check_hazard_exists(
             TsunamiZone, "geometry", lon, lat, db
         )
-        print(f"Tsunami check complete: exists={tsunami_exists}, updated={tsunami_updated}")
+        logging.info(f"Tsunami check complete: exists={tsunami_exists}, updated={tsunami_updated}")
 
         response = CompositeHazardResponse(
             soft_story = HazardStatus(exists=soft_story_exists, last_updated=soft_story_updated),
@@ -83,12 +85,11 @@ def lookup_all_hazards(
             tsunami = HazardStatus(exists=tsunami_exists, last_updated=tsunami_updated),
         )
         
-        print(f"Returning response: {response}")
+        logging.info(f"Returning response: {response}")
         return response
 
     except Exception as e:
         # Log the full error for debugging, but don't expose it to the client.
-        import traceback
         error_detail = f"Error in lookup_all_hazards: {str(e)}\nTraceback: {traceback.format_exc()}"
         print(error_detail) # Replace with proper logging
         raise HTTPException(status_code=500, detail="An internal server error occurred.")

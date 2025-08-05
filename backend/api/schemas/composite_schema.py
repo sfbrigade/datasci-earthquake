@@ -1,8 +1,5 @@
-from pydantic import BaseModel, ConfigDict, Field
-from geojson_pydantic import Feature, FeatureCollection, MultiPolygon, Point
-from geoalchemy2.shape import to_shape
-from typing import List, Optional
-import json
+from pydantic import BaseModel
+from typing import Optional
 from datetime import datetime
 
 class HazardStatus(BaseModel):

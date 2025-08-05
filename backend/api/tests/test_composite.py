@@ -1,4 +1,4 @@
-from backend.api.tests.test_session_config import test_engine, test_session, client
+from backend.api.tests.test_session_config import client
 import logging
 
 def test_composite_hazards_lookup(client, caplog):
@@ -13,16 +13,6 @@ def test_composite_hazards_lookup(client, caplog):
     lat = 37.8
 
     response = client.get(f"/api/hazards/lookup?lon={lon}&lat={lat}")
-    
-    # Debug: Print the actual error response if not 200
-    if response.status_code != 200:
-        print(f"Error status: {response.status_code}")
-        print(f"Error response: {response.text}")
-        try:
-            error_json = response.json()
-            print(f"Error JSON: {error_json}")
-        except:
-            print("Could not parse error as JSON")
     
     assert response.status_code == 200
 
