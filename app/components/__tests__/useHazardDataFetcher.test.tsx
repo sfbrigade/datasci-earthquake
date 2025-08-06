@@ -46,9 +46,9 @@ test("should fetch all hazard data successfully", async () => {
       return mockSuccessResponse({ exists: false, last_updated: null });
     }
     if (url.includes("liquefaction")) {
-      return mockSuccessResponse({ 
+      return mockSuccessResponse({
         exists: true,
-        last_updated: "2025-08-05T17:03:03.555976Z"
+        last_updated: "2025-08-05T17:03:03.555976Z",
       });
     }
     return mockSuccessResponse({ exists: false, last_updated: null });
