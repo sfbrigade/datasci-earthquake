@@ -6,16 +6,18 @@ export const KeyElem = ({
   name,
   color,
   icon,
+  toggleValue,
 }: {
   name: string;
   color: string;
   icon: React.ReactNode;
+  toggleValue: string;
 }) => {
   const { updateLegendClicked } = useContext(LegendClickedContext);
   const [isClicked, setIsClicked] = useState(false);
 
   function handleClick() {
-    updateLegendClicked(name);
+    updateLegendClicked(toggleValue);
     setIsClicked(!isClicked);
   }
 

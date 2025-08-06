@@ -34,16 +34,23 @@ const ReportHazards = ({
           <Text textStyle="textMedium" layerStyle="text" fontWeight="700">
             Legend:
           </Text>
-          <KeyElem name="Soft story" color="grey.400" icon={<FaCircle />} />
+          <KeyElem
+            name="Soft story"
+            color="grey.400"
+            icon={<FaCircle />}
+            toggleValue="SoftStory"
+          />
           <KeyElem
             name="Liquefaction areas"
             color="orange"
             icon={<FaSquareFull />}
+            toggleValue="Liquefaction"
           />
           <KeyElem
             name="Tsunami zone"
             color="tsunamiBlue"
             icon={<FaSquareFull />}
+            toggleValue="Tsunami"
           />
         </Stack>
       </Box>

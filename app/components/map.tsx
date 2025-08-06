@@ -35,9 +35,9 @@ const Map: React.FC<MapProps> = ({
     const map = mapRef.current;
 
     const layerMapping: Record<string, string> = {
-      "Soft story": "softStoriesLayer",
-      "Liquefaction areas": "seismicLayer",
-      "Tsunami zone": "tsunamiLayer",
+      SoftStory: "softStoriesLayer",
+      Liquefaction: "seismicLayer",
+      Tsunami: "tsunamiLayer",
     };
 
     const layerId = layerMapping[legendClicked.name];
