@@ -5,6 +5,8 @@ import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
+import { useContext } from "react";
+import { LegendClickedContext } from "./legend-clicked-context";
 
 const defaultCoords = [-122.463733, 37.777448];
 
@@ -26,6 +28,64 @@ const Map: React.FC<MapProps> = ({
   const markerRef = useRef<mapboxgl.Marker>(undefined);
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
+  const { legendClicked } = useContext(LegendClickedContext);
+
+  const handleLegendClick = () => {
+    if (mapRef.current && legendClicked != "") {
+      const map = mapRef.current;
+      if (legendClicked.includes("Tsunami zone")) {
+        if (map.getLayer("tsunamiLayer") === undefined) {
+          map.addLayer({
+            id: "tsunamiLayer",
+            source: "tsunami",
+            type: "fill",
+            slot: "middle",
+            paint: {
+              "fill-color": "#63B3ED", // blue/300
+              "fill-opacity": 0.25, // 50% opacity
+            },
+          });
+        } else {
+          map.removeLayer("tsunamiLayer");
+        }
+      }
+      if (legendClicked.includes("Liquefaction areas")) {
+        if (map.getLayer("seismicLayer") === undefined) {
+          map.addLayer({
+            id: "seismicLayer",
+            source: "seismic",
+            type: "fill",
+            slot: "middle",
+            paint: {
+              "fill-color": "#F6AD55", // orange/300
+              "fill-opacity": 0.5, // 50% opacity
+            },
+          });
+        } else {
+          map.removeLayer("seismicLayer");
+        }
+      }
+      if (legendClicked.includes("Soft story")) {
+        if (map.getLayer("softStoriesLayer") === undefined) {
+          map.addLayer({
+            id: "softStoriesLayer",
+            source: "soft-stories",
+            type: "circle",
+            slot: "middle",
+            paint: {
+              "circle-radius": 4.5,
+              "circle-stroke-width": 1,
+              "circle-stroke-color": "#FFFFFF",
+              "circle-color": "#A0AEC0", // gray/400
+            },
+          });
+        } else {
+          map.removeLayer("softStoriesLayer");
+        }
+      }
+    }
+    return;
+  };
 
   useEffect(() => {
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
@@ -163,6 +223,10 @@ const Map: React.FC<MapProps> = ({
       return;
     }
   }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
+
+  useEffect(() => {
+    handleLegendClick();
+  }, [legendClicked]);
 
   return (
     <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />

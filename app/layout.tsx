@@ -4,6 +4,7 @@ import { Provider } from "@/components/ui/provider";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import { Toaster } from "@/components/ui/toaster";
+import { LegendClickedContextProvider } from "./components/legend-clicked-context";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -40,9 +41,11 @@ export default function RootLayout({
         <Provider>
           <Flex direction="column" align="center" minH="100vh">
             <Header />
-            <Box flex="1" as="main" width="100%">
-              {children}
-            </Box>
+            <LegendClickedContextProvider>
+              <Box flex="1" as="main" width="100%">
+                {children}
+              </Box>
+            </LegendClickedContextProvider>
             <Footer />
           </Flex>
           {/* TODO FIXME: is this Toaster component declared in the right place? */}
