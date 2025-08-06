@@ -30,61 +30,34 @@ const Map: React.FC<MapProps> = ({
   const toastIdNoToken = "no-token";
   const { legendClicked } = useContext(LegendClickedContext);
 
+  type layerMappingType = {
+    name: string[];
+    id: string[];
+  };
+
   const handleLegendClick = () => {
-    if (mapRef.current && legendClicked != "") {
-      const map = mapRef.current;
-      if (legendClicked.includes("Tsunami zone")) {
-        if (map.getLayer("tsunamiLayer") === undefined) {
-          map.addLayer({
-            id: "tsunamiLayer",
-            source: "tsunami",
-            type: "fill",
-            slot: "middle",
-            paint: {
-              "fill-color": "#63B3ED", // blue/300
-              "fill-opacity": 0.25, // 50% opacity
-            },
-          });
-        } else {
-          map.removeLayer("tsunamiLayer");
-        }
-      }
-      if (legendClicked.includes("Liquefaction areas")) {
-        if (map.getLayer("seismicLayer") === undefined) {
-          map.addLayer({
-            id: "seismicLayer",
-            source: "seismic",
-            type: "fill",
-            slot: "middle",
-            paint: {
-              "fill-color": "#F6AD55", // orange/300
-              "fill-opacity": 0.5, // 50% opacity
-            },
-          });
-        } else {
-          map.removeLayer("seismicLayer");
-        }
-      }
-      if (legendClicked.includes("Soft story")) {
-        if (map.getLayer("softStoriesLayer") === undefined) {
-          map.addLayer({
-            id: "softStoriesLayer",
-            source: "soft-stories",
-            type: "circle",
-            slot: "middle",
-            paint: {
-              "circle-radius": 4.5,
-              "circle-stroke-width": 1,
-              "circle-stroke-color": "#FFFFFF",
-              "circle-color": "#A0AEC0", // gray/400
-            },
-          });
-        } else {
-          map.removeLayer("softStoriesLayer");
-        }
+    if (!mapRef.current || legendClicked === "") return;
+    const map = mapRef.current;
+
+    const layerMapping: layerMappingType = {
+      name: ["Soft story", "Liquefaction areas", "Tsunami zone"],
+      id: ["softStoriesLayer", "seismicLayer", "tsunamiLayer"],
+    };
+
+    const clickedLayerIndex = layerMapping.name.findIndex((hazardName) =>
+      legendClicked.includes(hazardName)
+    );
+
+    if (clickedLayerIndex >= 0) {
+      const layerId = layerMapping.id[clickedLayerIndex];
+      if (map.getLayer(layerId)) {
+        const currentVisibility =
+          map.getLayoutProperty(layerId, "visibility") ?? "visible";
+        const newVisibility =
+          currentVisibility === "visible" ? "none" : "visible";
+        map.setLayoutProperty(layerId, "visibility", newVisibility);
       }
     }
-    return;
   };
 
   useEffect(() => {
