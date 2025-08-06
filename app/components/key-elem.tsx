@@ -11,8 +11,7 @@ export const KeyElem = ({
   color: string;
   icon: React.ReactNode;
 }) => {
-  const { legendClicked, updateLegendClicked } =
-    useContext(LegendClickedContext);
+  const { updateLegendClicked } = useContext(LegendClickedContext);
   const [isClicked, setIsClicked] = useState(false);
 
   function handleClick() {
