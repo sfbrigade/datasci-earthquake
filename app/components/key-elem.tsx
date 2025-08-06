@@ -16,11 +16,7 @@ export const KeyElem = ({
   const [isClicked, setIsClicked] = useState(false);
 
   function handleClick() {
-    if (legendClicked != name) {
-      updateLegendClicked(name);
-    } else {
-      updateLegendClicked(`${name} toggled`);
-    }
+    updateLegendClicked(name);
     setIsClicked(!isClicked);
   }
 
@@ -30,7 +26,7 @@ export const KeyElem = ({
       alignItems="center"
       cursor={"pointer"}
       userSelect={"none"}
-      onClick={() => handleClick()}
+      onClick={handleClick}
     >
       <Icon size="sm" color={color} opacity={isClicked ? 0.5 : 1}>
         {icon}

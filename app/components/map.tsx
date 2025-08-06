@@ -30,33 +30,24 @@ const Map: React.FC<MapProps> = ({
   const toastIdNoToken = "no-token";
   const { legendClicked } = useContext(LegendClickedContext);
 
-  type layerMappingType = {
-    name: string[];
-    id: string[];
-  };
-
   const handleLegendClick = () => {
-    if (!mapRef.current || legendClicked === "") return;
+    if (!mapRef.current || legendClicked.name === "") return;
     const map = mapRef.current;
 
-    const layerMapping: layerMappingType = {
-      name: ["Soft story", "Liquefaction areas", "Tsunami zone"],
-      id: ["softStoriesLayer", "seismicLayer", "tsunamiLayer"],
+    const layerMapping: Record<string, string> = {
+      "Soft story": "softStoriesLayer",
+      "Liquefaction areas": "seismicLayer",
+      "Tsunami zone": "tsunamiLayer",
     };
 
-    const clickedLayerIndex = layerMapping.name.findIndex((hazardName) =>
-      legendClicked.includes(hazardName)
-    );
+    const layerId = layerMapping[legendClicked.name];
 
-    if (clickedLayerIndex >= 0) {
-      const layerId = layerMapping.id[clickedLayerIndex];
-      if (map.getLayer(layerId)) {
-        const currentVisibility =
-          map.getLayoutProperty(layerId, "visibility") ?? "visible";
-        const newVisibility =
-          currentVisibility === "visible" ? "none" : "visible";
-        map.setLayoutProperty(layerId, "visibility", newVisibility);
-      }
+    if (layerId && map.getLayer(layerId)) {
+      const currentVisibility =
+        map.getLayoutProperty(layerId, "visibility") ?? "visible";
+      const newVisibility =
+        currentVisibility === "visible" ? "none" : "visible";
+      map.setLayoutProperty(layerId, "visibility", newVisibility);
     }
   };
 
