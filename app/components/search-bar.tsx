@@ -51,7 +51,6 @@ const SearchBar = ({
   const [inputAddress, setInputAddress] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const toastIdFailedHazardData = "failed-hazard-data";
 
   const { fetchHazardData } = useHazardDataFetcher({
     onSearchComplete,
