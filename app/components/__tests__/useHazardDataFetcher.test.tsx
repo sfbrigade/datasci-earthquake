@@ -3,10 +3,13 @@ import { useHazardDataFetcher } from "../../hooks/useHazardDataFetcher";
 import { toaster } from "@/components/ui/toaster";
 
 const fetchMock = jest.fn();
-global.fetch = fetchMock;  
+global.fetch = fetchMock;
 
 // mock for a successful fetch response
-const mockSuccessResponse = (data: {exists: boolean; last_updated: string | null}) =>
+const mockSuccessResponse = (data: {
+  exists: boolean;
+  last_updated: string | null;
+}) =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve(data),
@@ -17,12 +20,12 @@ const mockFailedResponse = () =>
   Promise.resolve({
     ok: false,
     status: 500,
-    statusText: 'Internal Server Error',
-    text: () => Promise.resolve('Internal Server Error'),
+    statusText: "Internal Server Error",
+    text: () => Promise.resolve("Internal Server Error"),
   });
 
 // Mock the toaster component
-jest.mock('@/components/ui/toaster', () => ({
+jest.mock("@/components/ui/toaster", () => ({
   toaster: {
     create: jest.fn(),
     isVisible: jest.fn(() => false),
@@ -36,14 +39,17 @@ beforeEach(() => {
 test("should fetch all hazard data successfully", async () => {
   // Setup
   fetchMock.mockImplementation((url) => {
-    if (url.includes('soft-story')) {
+    if (url.includes("soft-story")) {
       return mockSuccessResponse({ exists: false, last_updated: null });
     }
-    if (url.includes('tsunami')) {
+    if (url.includes("tsunami")) {
       return mockSuccessResponse({ exists: false, last_updated: null });
     }
-    if (url.includes('liquefaction')) {
-      return mockSuccessResponse({ exists: true, last_updated: "2025-08-05T17:03:03.555976Z" });
+    if (url.includes("liquefaction")) {
+      return mockSuccessResponse({ 
+        exists: true,
+        last_updated: "2025-08-05T17:03:03.555976Z"
+      });
     }
     return mockSuccessResponse({ exists: false, last_updated: null });
   });
@@ -79,8 +85,12 @@ test("should show a warning toast when one API call fails", async () => {
   // Setup
   // Mock fetch to succeed for first two calls and fail for the third(Liquefaction)
   fetchMock
-    .mockResolvedValueOnce(mockSuccessResponse({ exists: false, last_updated: null }))
-    .mockResolvedValueOnce(mockSuccessResponse({ exists: false, last_updated: null }))
+    .mockResolvedValueOnce(
+      mockSuccessResponse({ exists: false, last_updated: null })
+    )
+    .mockResolvedValueOnce(
+      mockSuccessResponse({ exists: false, last_updated: null })
+    )
     .mockResolvedValueOnce(mockFailedResponse());
 
   const onSearchComplete = jest.fn();
