@@ -292,7 +292,7 @@ const SearchBar = ({
         >
           {inputAddress.length < characterCap
             ? "Keep typing…"
-            : "Try Refining Search…"}
+            : "Try refining search…"}
         </Text>
       ) : null}
     </form>
