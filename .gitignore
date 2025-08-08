@@ -1,7 +1,7 @@
 # Next
 .next
 out
-
+chatbot/
 # Python
 __pycache__/
 pytest_cache/

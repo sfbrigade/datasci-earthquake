@@ -1,6 +1,11 @@
 import posthog from "posthog-js";
 
-posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-  api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-  defaults: "2025-05-24",
-});
+if (typeof window !== "undefined") {
+  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://app.posthog.com",
+    person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well
+    capture_pageview: false, // Disable automatic pageview capture, as we capture manually
+  });
+}
+
+export default posthog;

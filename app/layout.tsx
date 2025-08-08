@@ -4,6 +4,8 @@ import { Provider } from "@/components/ui/provider";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import { Toaster } from "@/components/ui/toaster";
+import { PostHogProvider } from "./components/posthog-provider";
+import { Suspense } from "react";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -38,13 +40,17 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${manrope.className} ${inter.className}`}>
         <Provider>
-          <Flex direction="column" align="center" minH="100vh">
-            <Header />
-            <Box flex="1" as="main" width="100%">
-              {children}
-            </Box>
-            <Footer />
-          </Flex>
+          <Suspense>
+            <PostHogProvider>
+              <Flex direction="column" align="center" minH="100vh">
+                <Header />
+                <Box flex="1" as="main" width="100%">
+                  {children}
+                </Box>
+                <Footer />
+              </Flex>
+            </PostHogProvider>
+          </Suspense>
           {/* TODO FIXME: is this Toaster component declared in the right place? */}
           <Toaster />
         </Provider>
