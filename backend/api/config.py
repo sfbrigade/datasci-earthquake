@@ -22,6 +22,8 @@ class Settings(BaseSettings):
     environment: str = "local"
     next_public_cdn_url: str
     sentry_dsn: str
+    next_public_posthog_host: str
+    next_public_posthog_key: str
 
     class Config:
         env_file = ".env"
