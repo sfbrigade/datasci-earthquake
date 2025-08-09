@@ -77,6 +77,7 @@ const Footer = () => {
               alt="SF Civic Tech Logo"
             />
           </Link>
+          {process.env.npm_package_version}
         </VStack>
       </Stack>
     </Box>
