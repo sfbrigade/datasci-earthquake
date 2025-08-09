@@ -1,10 +1,10 @@
 import posthog from "posthog-js";
 
 if (typeof window !== "undefined") {
-  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://app.posthog.com",
+  posthog.init("phc_i31362DEdeHty6QpUfc5kdpAkwgxTLu5dppb2eALWQ7", {
+    api_host: "https://us.posthog.com",
     person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well
-    capture_pageview: false, // Disable automatic pageview capture, as we capture manually
+    capture_pageview: true, // enable automatic pageview capture, as we capture manually
   });
 }
 
