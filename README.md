@@ -301,6 +301,7 @@ When opening a pull request, please:
 - aim the pull request at the `develop` branch rather than `main`
 - add reviewers
 - use draft/WIP if it turns out to be not ready for review
+- link the relevant issue so it is automatically closed when the PR is merged
 
 Ideally, we maintain a readable, clean, and linear commit history. To that end, when merging a pull request, please use `Squash and Merge`¹.
 
@@ -314,6 +315,16 @@ Ideally, we maintain a readable, clean, and linear commit history. To that end, 
 > NOTE: An interactive rebase (e.g., `git rebase -i`) can help you rewrite your branch's _local_ history to meet the criteria above
 
 # Other resources
+
+## Issues
+
+New issues can be created in the Issues tab using the `New issue` button.
+
+When creating an issue, please:
+
+- use the correct template(default, feature request, bug, etc...)
+- add the `SafeHome Project` as a project to the issue. If this is your first issue you will likely need to request access to be added to the project and have write access. You can ask in Slack.
+- add the relevant label(front end, back end, etc...) so it can easily be filtered by team
 
 ## Learn More
 
