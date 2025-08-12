@@ -16,11 +16,15 @@ We use GitHub Secrets to store sensitive environment variables. To be able to ru
 
 **Note**: Before starting work on the project, make sure to:
 
-1. Get **write** access to the repository.
+1. Get **write** access to the repository.  Accept invitation after you have been invited.
 2. Get the **decryption passphrase** from other devs or in the Slack Engineering channel.
-3. Trigger the `Generate .env File` workflow [on the repository's Actions page](https://github.com/sfbrigade/datasci-earthquake/actions) download the artifact. You can trigger the workflow with the `Run workflow` button, navigate to the workflow run page, and find the artifact at the bottom.
-4. Decrypt the env file using OpenSSL. In the folder with the artifact, run `openssl aes-256-cbc -d -salt -pbkdf2 -k <YOUR_PASSPHRASE> -in .env.enc -out env` in the terminal. This creates a decrypted file named `env`.
-5. Place the decrypted file in the root folder of the project and rename it to `.env`.
+3. Navigate to workflow [on the repository's Actions page](https://github.com/sfbrigade/datasci-earthquake/actions)
+4. Click on `Generate .env File` workflow
+5. Trigger the workflow with the `Run workflow` button.
+6. Click on the job to navigate to the workflow run page.
+7. Download the artifact at the bottom of the page and unzip.
+8. Decrypt the env file using OpenSSL. In the folder with the artifact, run `openssl aes-256-cbc -d -salt -pbkdf2 -k <YOUR_PASSPHRASE> -in .env.enc -out env` in the terminal. This creates a decrypted file named `env`.
+9. Place the decrypted file in the root folder of the project and rename it to `.env`.
 
 The file is organized into three main sections:
 
@@ -41,8 +45,22 @@ The file is organized into three main sections:
 
 If you choose to work locally, do the following:
 
-First, install the dependencies:
+1. Set up a python environment
+```bash
+python3 -m venv backend/venv
+```
 
+2. Activate the python environment (NOTE: `npm run dev` will install the dependencies)
+```bash
+source backend/venv/bin/activate
+```
+
+3. Set nvm version
+```bash
+nvm use 22
+```
+
+3. Install the front end dependencies:
 ```bash
 npm install
 # or
@@ -51,7 +69,7 @@ yarn
 pnpm install
 ```
 
-Then, run the development server:
+4. Run the development server:
 
 ```bash
 npm run dev
