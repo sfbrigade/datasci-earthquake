@@ -1,4 +1,4 @@
-### This is a project of SF Civic Tech [https://www.sfcivictech.org/](https://www.sfcivictech.org/)
+npm r### This is a project of SF Civic Tech [https://www.sfcivictech.org/](https://www.sfcivictech.org/)
 
 # Introduction
 
@@ -9,6 +9,27 @@ This is a hybrid Next.js + Python app that uses Next.js as the frontend and Fast
 You can work on this app entirely [locally](#local-development), entirely [using Docker](#development-with-docker), or--if you prefer to focus on front end or back end--a [combination of the two](#hybrid-development).
 
 ---
+# All development
+## Configuration of environment variables
+
+We use GitHub Secrets to store sensitive environment variables. To be able to run the app, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
+
+**Note**: Before starting work on the project, make sure to:
+
+1. Get **write** access to the repository.
+2. Get the **decryption passphrase** from other devs or in the Slack Engineering channel.
+3. Trigger the `Generate .env File` workflow [on the repository's Actions page](https://github.com/sfbrigade/datasci-earthquake/actions) download the artifact. You can trigger the workflow with the `Run workflow` button, navigate to the workflow run page, and find the artifact at the bottom.
+4. Decrypt the env file using OpenSSL. In the folder with the artifact, run `openssl aes-256-cbc -d -salt -pbkdf2 -k <YOUR_PASSPHRASE> -in .env.enc -out env` in the terminal. This creates a decrypted file named `env`.
+5. Place the decrypted file in the root folder of the project and rename it to `.env`.
+
+The file is organized into three main sections:
+
+- **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.
+- **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
+- **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
+
+---
+
 
 ## Local development
 
@@ -227,11 +248,11 @@ map.addLayer({
 
 ---
 
-# Formatting with a Pre-Commit Hook
+## Formatting with a Pre-Commit Hook
 
 This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project. It works for _only_ the staged files. If you have edited unstaged files in your repository and want to make them comply with the CI pipeline, then run `black .` `mypy .` for Python code and `npm run lint .` for Javascript code.
 
-## Prerequisites
+### Prerequisites
 
 - If you haven't already, install pre-commit:
   `pip install pre-commit`
@@ -239,7 +260,7 @@ This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code s
   `pre-commit install`
   This command sets up pre-commit to automatically run ESLint, Black, and MyPy before each commit.
 
-## Usage
+### Usage
 
 - **Running Black Automatically**: After setup, every time you attempt to commit code, Black will check the staged files and apply formatting if necessary. If files are reformatted, the commit will be stopped, and you’ll need to review the changes before committing again.
 - **Bypassing the Hook**: If you want to skip the pre-commit hook for a specific commit, use the --no-verify flag with your commit command:
@@ -252,27 +273,7 @@ This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code s
 
 ---
 
-# Configuration of environment variables
-
-We use GitHub Secrets to store sensitive environment variables. To be able to run the app, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
-
-**Note**: Before starting work on the project, make sure to:
-
-1. Get **write** access to the repository.
-2. Get the **decryption passphrase** from other devs or in the Slack Engineering channel.
-3. Trigger the `Generate .env File` workflow [on the repository's Actions page](https://github.com/sfbrigade/datasci-earthquake/actions) download the artifact. You can trigger the workflow with the `Run workflow` button, navigate to the workflow run page, and find the artifact at the bottom.
-4. Decrypt the env file using OpenSSL. In the folder with the artifact, run `openssl aes-256-cbc -d -salt -pbkdf2 -k <YOUR_PASSPHRASE> -in .env.enc -out env` in the terminal. This creates a decrypted file named `env`.
-5. Place the decrypted file in the root folder of the project and rename it to `.env`.
-
-The file is organized into three main sections:
-
-- **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.
-- **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
-- **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
-
----
-
-# Migrating the Database
+## Migrating the Database
 
 If you have changed the models in backend/api/models, then you must migrate the database from its current models to the new ones with the following two commands:
 
