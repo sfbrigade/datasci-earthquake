@@ -39,7 +39,10 @@ The file is organized into three main sections:
 
 ### Prerequisites
 
-- **PostgreSQL**: Ensure PostgreSQL is installed if you want to run the database locally (instead of in a Docker container).
+**PostgreSQL**: 
+1. [Install](https://www.java.com) Java 1.8 or later because PostgreSQL requires it.
+2. [Install](https://www.postgresql.org/download/) PostgreSQL locally, electing to install the PostGIS extension when prompted by the installer
+3. Before running the app, run PostgreSQL
 
 ### Starting the Application
 
