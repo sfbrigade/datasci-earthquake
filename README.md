@@ -63,7 +63,7 @@ source backend/venv/bin/activate
 nvm use 22
 ```
 
-3. Install the front end dependencies:
+4. Install the front end dependencies:
 ```bash
 npm install
 # or
@@ -72,7 +72,7 @@ yarn
 pnpm install
 ```
 
-4. Run the development server:
+5. Run the development server:
 
 ```bash
 npm run dev
