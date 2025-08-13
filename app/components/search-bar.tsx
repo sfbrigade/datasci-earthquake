@@ -19,6 +19,7 @@ import DynamicAddressAutofill, {
 } from "./address-autofill";
 import type { HazardData } from "./home-header";
 import { API_ENDPOINTS } from "../api/endpoints";
+//import { usePostHog } from '@/hooks/use-posthog'
 
 const autofillOptions: AddressAutofillOptions = {
   country: "US",
@@ -83,6 +84,11 @@ const SearchBar = ({
     onAddressSearch(addressLine);
     onSearchChange(coords);
     updateHazardData(coords);
+    // const { capture } = usePostHog();
+    // capture("address_search", {
+    //   address: addressLine,
+    //   coordinates: coords,
+    // });
 
     const newUrl = `?address=${encodeURIComponent(addressLine)}&lat=${coords[1]}&lon=${coords[0]}`;
     router.push(newUrl, { scroll: false });
