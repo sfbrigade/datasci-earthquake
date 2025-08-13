@@ -47,7 +47,7 @@ If you choose to work locally, do the following:
 
 1. Set up a python environment
 ```bash
-python3 -m venv backend/venv
+python3.12 -m venv backend/venv
 ```
 
 2. Activate the python environment (NOTE: `npm run dev` will install the dependencies)
