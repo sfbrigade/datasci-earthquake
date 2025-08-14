@@ -49,7 +49,6 @@ RUN sh /uv-installer.sh && rm /uv-installer.sh
 # Ensure the installed uv binary is on the `PATH`
 ENV PATH="/root/.local/bin/:$PATH"
 
-
 # Install dependencies using uv with --system flag since we're in a container
 RUN uv pip install --system -r /backend/requirements.txt
 
