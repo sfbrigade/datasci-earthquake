@@ -7,7 +7,6 @@ from api.index import app
 from backend.database.session import get_db
 
 
-# Set up a test database engine
 @pytest.fixture(scope="session")
 def test_engine():
     engine = create_engine(settings.database_url_sqlalchemy_test)
@@ -33,7 +32,7 @@ def client(test_session):
         try:
             yield test_session
         finally:
-            test_session.close()
+            pass
 
     app.dependency_overrides[get_db] = override_get_db  # Override dependency
     client = TestClient(app)

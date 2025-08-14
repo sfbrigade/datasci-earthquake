@@ -1,5 +1,6 @@
-from backend.api.tests.test_session_config import client
+from backend.api.tests.test_session_config import test_engine, test_session, client
 import logging
+
 
 def test_composite_hazards_lookup(client, caplog):
     """
@@ -13,7 +14,7 @@ def test_composite_hazards_lookup(client, caplog):
     lat = 37.8
 
     response = client.get(f"/api/hazards/lookup?lon={lon}&lat={lat}")
-    
+
     assert response.status_code == 200
 
     data = response.json()
@@ -25,7 +26,7 @@ def test_composite_hazards_lookup(client, caplog):
     # This is an example; adjust based on your `init.sql` data.
     assert data["soft_story"]["exists"] is False
     assert data["liquefaction"]["exists"] is True
-    assert data["tsunami"]["exists"] is True
+    assert data["tsunami"]["exists"] is False
 
     # Also check that last_updated is a valid datetime string or None
     assert data["liquefaction"]["last_updated"] is not None

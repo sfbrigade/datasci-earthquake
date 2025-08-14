@@ -5,7 +5,15 @@ configfile: pytest.ini
 plugins: anyio-4.4.0, cov-6.0.0
 collected 47 items
 
-backend/api/tests/test_composite.py::test_composite_hazards_lookup ERROR [  2%]
+backend/api/tests/test_composite.py::test_composite_hazards_lookup 
+-------------------------------- live log call ---------------------------------
+INFO     root:composite_api.py:64 Looking up hazards for coordinates: lon=-125.9, lat=37.8
+INFO     root:composite_api.py:70 Soft story check complete: exists=False, updated=None
+INFO     root:composite_api.py:75 Liquefaction check complete: exists=True, updated=2024-12-19 13:15:00
+INFO     root:composite_api.py:80 Tsunami check complete: exists=False, updated=None
+INFO     root:composite_api.py:88 Returning response: soft_story=HazardStatus(exists=False, last_updated=None) liquefaction=HazardStatus(exists=True, last_updated=datetime.datetime(2024, 12, 19, 13, 15)) tsunami=HazardStatus(exists=False, last_updated=None)
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/hazards/lookup?lon=-125.9&lat=37.8 "HTTP/1.1 200 OK"
+PASSED                                                                   [  2%]
 backend/api/tests/test_liquefaction.py::test_get_liquefaction_zones 
 -------------------------------- live log call ---------------------------------
 INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/liquefaction-zones "HTTP/1.1 200 OK"
@@ -94,14 +102,14 @@ INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel 
 -------------------------------- live log call ---------------------------------
 INFO     DummyDataHandler:data_handler.py:137 Starting data fetch for DummyModel with params: None
 INFO     DummyDataHandler:request_handler.py:28 Making request to https://api.test.com with params {'$offset': 0, '$limit': 3}
-INFO     DummyDataHandler:request_handler.py:31 Got response with status: <Mock name='mock.get().status_code' id='140416493200144'>
+INFO     DummyDataHandler:request_handler.py:31 Got response with status: <Mock name='mock.get().status_code' id='140329158095952'>
 INFO     DummyDataHandler:request_handler.py:40 Request completed successfully:
 URL: https://api.test.com
 Params: {'$offset': 0, '$limit': 3}
 Time: 0.00s
 INFO     DummyDataHandler:data_handler.py:121 DummyModel: Retrieved 3 features on page 1. Offset: 0, Request time: 0.00s
 INFO     DummyDataHandler:request_handler.py:28 Making request to https://api.test.com with params {'$offset': 3, '$limit': 3}
-INFO     DummyDataHandler:request_handler.py:31 Got response with status: <Mock name='mock.get().status_code' id='140416493200144'>
+INFO     DummyDataHandler:request_handler.py:31 Got response with status: <Mock name='mock.get().status_code' id='140329158095952'>
 INFO     DummyDataHandler:request_handler.py:40 Request completed successfully:
 URL: https://api.test.com
 Params: {'$offset': 3, '$limit': 3}
@@ -191,7 +199,7 @@ INFO     DummyDataHandler:data_handler.py:156 Closed session
 PASSED                                                                   [ 34%]
 backend/etl/tests/test_data_handler.py::test_fetch_data_retry_exhausted 
 -------------------------------- live log call ---------------------------------
-INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: https://fake.test/504, page size: 3, session: <requests.sessions.Session object at 0x7fb54330cb90>
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: https://fake.test/504, page size: 3, session: <requests.sessions.Session object at 0x7fa105d9e350>
 INFO     DummyDataHandler:data_handler.py:137 Starting data fetch for DummyModel with params: None
 INFO     DummyDataHandler:request_handler.py:28 Making request to https://fake.test/504 with params {'$offset': 0, '$limit': 3}
 WARNING  RetryLogger:retry.py:42 
@@ -239,7 +247,7 @@ ERROR    DummyDataHandler:request_handler.py:50 Request failed:
 Error: None: Max retries exceeded with url: https://fake.test/504?%24offset=0&%24limit=3 (Caused by ResponseError('too many 504 error responses'))
 URL: https://fake.test/504
 Params: {'$offset': 0, '$limit': 3}
-Time: 3.02s
+Time: 3.04s
 urllib3.exceptions.ResponseError: too many 504 error responses
 
 The above exception was the direct cause of the following exception:
@@ -354,7 +362,7 @@ INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel 
 -------------------------------- live log call ---------------------------------
 INFO     DummyDataHandler:data_handler.py:137 Starting data fetch for DummyModel with params: None
 INFO     DummyDataHandler:request_handler.py:28 Making request to https://api.test.com with params {'$offset': 0, '$limit': 3}
-INFO     DummyDataHandler:request_handler.py:31 Got response with status: <Mock name='mock.get().status_code' id='140416494362704'>
+INFO     DummyDataHandler:request_handler.py:31 Got response with status: <Mock name='mock.get().status_code' id='140329158419984'>
 INFO     DummyDataHandler:request_handler.py:40 Request completed successfully:
 URL: https://api.test.com
 Params: {'$offset': 0, '$limit': 3}
@@ -579,18 +587,6 @@ INFO     _SoftStoryPropertiesDataHandler:soft_story_properties_data_handler.py:9
 PASSED                                                                   [ 97%]
 backend/etl/tests/test_soft_story_properties_data_handler.py::test_addresses_from_range PASSED [100%]
 
-==================================== ERRORS ====================================
-_______________ ERROR at setup of test_composite_hazards_lookup ________________
-file /backend/api/tests/test_composite.py, line 4
-  def test_composite_hazards_lookup(client, caplog):
-file /backend/api/tests/test_session_config.py, line 30
-  @pytest.fixture
-  def client(test_session):
-E       fixture 'test_session' not found
->       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, client, cov, doctest_namespace, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
->       use 'pytest --fixtures [testpath]' for help on them.
-
-/backend/api/tests/test_session_config.py:30
 =============================== warnings summary ===============================
 usr/local/lib/python3.11/site-packages/pydantic/_internal/_config.py:291
 usr/local/lib/python3.11/site-packages/pydantic/_internal/_config.py:291
@@ -600,18 +596,12 @@ usr/local/lib/python3.11/site-packages/pydantic/_internal/_config.py:291
     warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
 
 usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:475
-  /usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /.pytest_cache/v/cache/nodeids: [Errno 13] Permission denied: '/pytest-cache-files-40eddt2m'
+  /usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /.pytest_cache/v/cache/nodeids: [Errno 13] Permission denied: '/pytest-cache-files-jtw1e__d'
     config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
 
-usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:429
-  /usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /.pytest_cache/v/cache/lastfailed: [Errno 13] Permission denied: '/pytest-cache-files-1gwqsefr'
-    config.cache.set("cache/lastfailed", self.lastfailed)
-
 usr/local/lib/python3.11/site-packages/_pytest/stepwise.py:51
-  /usr/local/lib/python3.11/site-packages/_pytest/stepwise.py:51: PytestCacheWarning: could not create cache path /.pytest_cache/v/cache/stepwise: [Errno 13] Permission denied: '/pytest-cache-files-x01eq46f'
+  /usr/local/lib/python3.11/site-packages/_pytest/stepwise.py:51: PytestCacheWarning: could not create cache path /.pytest_cache/v/cache/stepwise: [Errno 13] Permission denied: '/pytest-cache-files-w6n0n9tb'
     session.config.cache.set(STEPWISE_CACHE_DIR, [])
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-=========================== short test summary info ============================
-ERROR backend/api/tests/test_composite.py::test_composite_hazards_lookup
-=================== 46 passed, 7 warnings, 1 error in 19.39s ===================
+======================= 47 passed, 6 warnings in 16.87s ========================
