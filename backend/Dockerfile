@@ -28,6 +28,18 @@ RUN adduser \
 # Install curl
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
+# The uv installer requires curl (and certificates) to download the release archive
+RUN apt-get install -y --no-install-recommends curl ca-certificates
+
+# Download the latest uv installer
+ADD https://astral.sh/uv/install.sh /uv-installer.sh
+
+# Run the uv installer then remove it
+RUN sh /uv-installer.sh && rm /uv-installer.sh
+
+# Ensure the installed uv binary is on the `PATH`
+ENV PATH="/root/.local/bin/:$PATH"
+
 # Ensure the public/data directory exists and has correct permissions
 RUN mkdir -p /public/data && \
     chown -R appuser:appuser /public/data && \
@@ -37,9 +49,9 @@ COPY requirements.txt /backend/requirements.txt
 
 COPY api /api
 
-# Install Python dependencies using a cache mount
-RUN --mount=type=cache,target=/root/.cache/pip \
-    python -m pip install --no-cache-dir -r /backend/requirements.txt
+# Install dependencies using uv with --system flag since we're in a container
+RUN uv pip install --system -r /backend/requirements.txt && \
+    uv pip list --system
 
 # Copy the source code into the container.
 COPY backend ./backend

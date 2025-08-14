@@ -1,5 +1,4 @@
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.ext.declarative import DeclarativeMeta
 from typing import TypeVar
 
 
