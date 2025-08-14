@@ -32,7 +32,6 @@ const autofillOptions: AddressAutofillOptions = {
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `search-bar-skeleton.tsx` and vice versa
 // TODO: isolate the usage of `useSearchParams()` so that the Suspense boundary can be even more narrow if possible
 interface SearchBarProps {
-  coordinates: number[];
   onSearchChange: (coords: number[]) => void;
   onAddressSearch: (address: string) => void;
   onCoordDataRetrieve: (data: HazardData) => void;
@@ -41,7 +40,6 @@ interface SearchBarProps {
 }
 
 const SearchBar = ({
-  coordinates,
   onSearchChange,
   onAddressSearch,
   onCoordDataRetrieve,
@@ -50,7 +48,6 @@ const SearchBar = ({
 }: SearchBarProps) => {
   const [inputAddress, setInputAddress] = useState("");
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const { fetchHazardData } = useHazardDataFetcher({
     onSearchComplete,
@@ -117,33 +114,6 @@ const SearchBar = ({
 
     // TODO: capture and update address as described above
   };
-
-  // temporary memoization fix for updating the address in the search bar.
-  // TODO: refactor how we are caching our calls
-  const memoizedOnSearchChange = useCallback(onSearchChange, []);
-  const memoizedOnAddressSearch = useCallback(onAddressSearch, []);
-  const memoizedUpdateHazardData = useCallback(updateHazardData, [
-    fetchHazardData,
-    onCoordDataRetrieve,
-  ]);
-
-  useEffect(() => {
-    const address = searchParams.get("address");
-    const lat = searchParams.get("lat");
-    const lon = searchParams.get("lon");
-
-    if (address && lat && lon) {
-      const coords = [parseFloat(lon), parseFloat(lat)];
-      memoizedOnAddressSearch(address);
-      memoizedOnSearchChange(coords);
-      memoizedUpdateHazardData(coords);
-    }
-  }, [
-    searchParams,
-    memoizedOnAddressSearch,
-    memoizedOnSearchChange,
-    memoizedUpdateHazardData,
-  ]);
 
   return (
     <form onSubmit={onSubmit}>

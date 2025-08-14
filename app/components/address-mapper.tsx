@@ -7,6 +7,7 @@ import Map from "./map";
 import ReportHazards from "./report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
+import { useSearchParams } from "next/navigation";
 
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
@@ -40,6 +41,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
   const toastIdDataLoadFailed = "data-load-failed";
+  const searchParams = useSearchParams();
 
   const updateMap = (coords: number[]) => {
     setCoordinates(coords);
@@ -71,12 +73,21 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         });
       }
     }
-  }, [softStoryData, tsunamiData, liquefactionData]);
+
+    const address = searchParams.get("address");
+    const lat = searchParams.get("lat");
+    const lon = searchParams.get("lon");
+
+    if (address && lat && lon) {
+      // Update the parent's state
+      setSearchedAddress(address);
+      setCoordinates([parseFloat(lon), parseFloat(lat)]);
+    }
+  }, [softStoryData, tsunamiData, liquefactionData, searchParams]);
 
   return (
     <>
       <HomeHeader
-        coordinates={coordinates}
         searchedAddress={searchedAddress}
         onSearchChange={updateMap}
         onAddressSearch={setSearchedAddress}
