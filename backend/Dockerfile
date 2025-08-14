@@ -49,8 +49,8 @@ ENV PATH="/root/.local/bin/:$PATH"
 # Copy dependency files first for caching
 COPY backend/pyproject.toml backend/uv.lock ./backend/
 
-# Install dependencies using uv with --system flag since we're in a container
-RUN uv sync --frozen --no-dev --system --project ./backend
+# Install dependencies using uv
+RUN uv sync --frozen --no-dev --project ./backend
 
 # Copy the source code into the container.
 COPY backend ./backend
