@@ -76,7 +76,7 @@ This project uses Docker and Docker Compose to run the application, which includ
       - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
       - To execute a python script, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
 
-    **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `requirements.txt`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
+    **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
 
 ### Shutting Down the Application
 
