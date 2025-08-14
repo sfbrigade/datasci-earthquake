@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
@@ -8,6 +8,7 @@ import ReportHazards from "./report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
+import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
@@ -36,16 +37,48 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   tsunamiData,
   liquefactionData,
 }) => {
-  const [coordinates, setCoordinates] = useState(defaultCoords);
-  const [searchedAddress, setSearchedAddress] = useState("");
+  const searchParams = useSearchParams();
+  const initialLat = searchParams.get("lat");
+  const initialLon = searchParams.get("lon");
+  const initialAddress = searchParams.get("address");
+
+  // Initialize state directly from searchParams or fall back to defaults
+  const [coordinates, setCoordinates] = useState<number[]>(
+    initialLat && initialLon ? [parseFloat(initialLon), parseFloat(initialLat)] : defaultCoords
+  );
+  const [searchedAddress, setSearchedAddress] = useState(initialAddress || "");
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
+  const [isSearchComplete, setSearchComplete] = useState(false);
   const toastIdDataLoadFailed = "data-load-failed";
-  const searchParams = useSearchParams();
 
-  const updateMap = (coords: number[]) => {
-    setCoordinates(coords);
-  };
+  const { fetchHazardData } = useHazardDataFetcher({
+    setSearchComplete,
+    setHazardDataLoading,
+  });
+
+  const updateHazardData = useCallback(async (coords: number[]) => {
+    try {
+      const values = await fetchHazardData(coords);
+      setAddressHazardData(values);
+    } catch (error) {
+      console.error(
+        "Error while retrieving data: ",
+        error instanceof Error ? error.message : error?.toString()
+      );
+      setAddressHazardData({
+        softStory: null,
+        tsunami: null,
+        liquefaction: null,
+      });
+      toaster.create({
+        description: "Could not retrieve hazard data",
+        type: "error",
+        duration: 5000,
+        closable: true,
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const sources = [
@@ -79,20 +112,20 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     const lon = searchParams.get("lon");
 
     if (address && lat && lon) {
-      // Update the parent's state
+      const coords = [parseFloat(lon), parseFloat(lat)];
       setSearchedAddress(address);
-      setCoordinates([parseFloat(lon), parseFloat(lat)]);
+      setCoordinates(coords);
+      updateHazardData(coords);
     }
-  }, [softStoryData, tsunamiData, liquefactionData, searchParams]);
+  }, [softStoryData, tsunamiData, liquefactionData, searchParams, updateHazardData]);
 
   return (
     <>
       <HomeHeader
         searchedAddress={searchedAddress}
-        onSearchChange={updateMap}
+        isSearchComplete={isSearchComplete}
+        onSearchChange={setCoordinates}
         onAddressSearch={setSearchedAddress}
-        onCoordDataRetrieve={setAddressHazardData}
-        onHazardDataLoading={setHazardDataLoading}
       />
       <Box w="full" h={{ base: "1400px", md: "1000px" }} m="auto">
         <Box h="100%" overflow="hidden" position="relative">

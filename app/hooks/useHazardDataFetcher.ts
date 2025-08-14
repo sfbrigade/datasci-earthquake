@@ -14,20 +14,20 @@ const safeJsonFetch = async (url: string) => {
 };
 
 interface UseHazardDataFetcherProps {
-  onSearchComplete: (success: boolean) => void;
-  onHazardDataLoading: (loading: boolean) => void;
+  setSearchComplete: (success: boolean) => void;
+  setHazardDataLoading: (loading: boolean) => void;
 }
 
 export function useHazardDataFetcher({
-  onSearchComplete,
-  onHazardDataLoading,
+  setSearchComplete,
+  setHazardDataLoading,
 }: UseHazardDataFetcherProps) {
   const toastIdFailedHazardData = "failed-hazard-data";
 
   // gets metadata from Mapbox API for given coordinates
   const fetchHazardData = useCallback(
     async (coords: number[]) => {
-      onHazardDataLoading(true);
+      setHazardDataLoading(true);
 
       const buildUrl = (endpoint: string) =>
         `${endpoint}?lon=${coords[0]}&lat=${coords[1]}`;
@@ -40,7 +40,7 @@ export function useHazardDataFetcher({
             safeJsonFetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)),
           ]);
 
-        onSearchComplete(true);
+        setSearchComplete(true);
 
         const failed = [
           { name: "Soft Story", result: softStory },
@@ -76,10 +76,10 @@ export function useHazardDataFetcher({
         console.error("Error fetching hazard data:", error);
         throw error;
       } finally {
-        onHazardDataLoading(false);
+        setHazardDataLoading(false);
       }
     },
-    [onHazardDataLoading, onSearchComplete]
+    [setHazardDataLoading, setSearchComplete]
   );
 
   return {

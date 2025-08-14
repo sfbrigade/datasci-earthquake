@@ -5,20 +5,15 @@ import {
   FormEvent,
   Suspense,
   useState,
-  useEffect,
-  useCallback,
 } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Input, InputGroup } from "@chakra-ui/react";
-import { toaster } from "@/components/ui/toaster";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill, {
   AddressAutofillOptions,
   AddressAutofillRetrieveResponse,
 } from "./address-autofill";
-import type { HazardData } from "./home-header";
-import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 
 const autofillOptions: AddressAutofillOptions = {
   country: "US",
@@ -34,25 +29,14 @@ const autofillOptions: AddressAutofillOptions = {
 interface SearchBarProps {
   onSearchChange: (coords: number[]) => void;
   onAddressSearch: (address: string) => void;
-  onCoordDataRetrieve: (data: HazardData) => void;
-  onHazardDataLoading: (hazardDataLoading: boolean) => void;
-  onSearchComplete: (searchComplete: boolean) => void;
 }
 
 const SearchBar = ({
   onSearchChange,
   onAddressSearch,
-  onCoordDataRetrieve,
-  onHazardDataLoading,
-  onSearchComplete,
 }: SearchBarProps) => {
   const [inputAddress, setInputAddress] = useState("");
   const router = useRouter();
-
-  const { fetchHazardData } = useHazardDataFetcher({
-    onSearchComplete,
-    onHazardDataLoading,
-  });
 
   const handleClearClick = () => {
     setInputAddress("");
@@ -72,33 +56,9 @@ const SearchBar = ({
 
     onAddressSearch(addressLine);
     onSearchChange(coords);
-    updateHazardData(coords);
 
     const newUrl = `?address=${encodeURIComponent(addressLine)}&lat=${coords[1]}&lon=${coords[0]}`;
     router.push(newUrl, { scroll: false });
-  };
-
-  const updateHazardData = async (coords: number[]) => {
-    try {
-      const values = await fetchHazardData(coords);
-      onCoordDataRetrieve(values);
-    } catch (error) {
-      console.error(
-        "Error while retrieving data: ",
-        error instanceof Error ? error.message : error?.toString()
-      );
-      onCoordDataRetrieve({
-        softStory: null,
-        tsunami: null,
-        liquefaction: null,
-      });
-      toaster.create({
-        description: "Could not retrieve hazard data",
-        type: "error",
-        duration: 5000,
-        closable: true,
-      });
-    }
   };
 
   const handleAddressChange = (event: ChangeEvent<HTMLInputElement>) => {
