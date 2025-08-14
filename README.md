@@ -1,4 +1,4 @@
-npm r### This is a project of SF Civic Tech [https://www.sfcivictech.org/](https://www.sfcivictech.org/)
+### This is a project of SF Civic Tech [https://www.sfcivictech.org/](https://www.sfcivictech.org/)
 
 # Introduction
 
