@@ -33,9 +33,9 @@ services:
     ports:
       - 8000:8000
     depends_on:
-      db-test:
-        condition: service_healthy
       db:
+        condition: service_healthy
+      db_test:
         condition: service_healthy
     volumes:
       - ./backend:/backend
