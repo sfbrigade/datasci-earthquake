@@ -7,4 +7,8 @@ python backend/etl/soft_story_properties_data_handler.py
 python backend/etl/tsunami_data_handler.py
 
 # Start FastAPI
-uvicorn api.index:app --host 0.0.0.0 --port 8000 --reload
+if [ "${ENVIRONMENT}" = "development" ]; then
+  uvicorn api.index:app --host 0.0.0.0 --port 8000 --reload
+else
+  uvicorn api.index:app --host 0.0.0.0 --port 8000
+fi
