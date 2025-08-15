@@ -18,7 +18,7 @@ import DynamicAddressAutofill, {
   AddressAutofillRetrieveResponse,
 } from "./address-autofill";
 import type { HazardData } from "./home-header";
-import { API_ENDPOINTS } from "../api/endpoints";
+import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 
 const autofillOptions: AddressAutofillOptions = {
   country: "US",
@@ -27,17 +27,6 @@ const autofillOptions: AddressAutofillOptions = {
   proximity: { lng: -122.4194, lat: 37.7749 },
   streets: false,
   language: "en",
-};
-
-const safeJsonFetch = async (url: string) => {
-  const res = await fetch(url);
-  if (!res.ok) {
-    const text = await res.text(); // capture any error response
-    throw new Error(
-      `HTTP ${res.status} - ${res.statusText} | ${text} | URL: ${url}`
-    );
-  }
-  return res.json();
 };
 
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `search-bar-skeleton.tsx` and vice versa
@@ -62,7 +51,11 @@ const SearchBar = ({
   const [inputAddress, setInputAddress] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const toastIdFailedHazardData = "failed-hazard-data";
+
+  const { fetchHazardData } = useHazardDataFetcher({
+    onSearchComplete,
+    onHazardDataLoading,
+  });
 
   const handleClearClick = () => {
     setInputAddress("");
@@ -90,7 +83,7 @@ const SearchBar = ({
 
   const updateHazardData = async (coords: number[]) => {
     try {
-      const values = await getHazardData(coords);
+      const values = await fetchHazardData(coords);
       onCoordDataRetrieve(values);
     } catch (error) {
       console.error(
@@ -125,65 +118,14 @@ const SearchBar = ({
     // TODO: capture and update address as described above
   };
 
-  // gets metadata from Mapbox API for given coordinates
-  const getHazardData = async (coords = coordinates) => {
-    onHazardDataLoading(true);
-    const buildUrl = (endpoint: string) =>
-      `${endpoint}?lon=${coords[0]}&lat=${coords[1]}`;
-
-    try {
-      const [softStory, tsunamiZone, liquefactionZone] =
-        await Promise.allSettled([
-          safeJsonFetch(buildUrl(API_ENDPOINTS.isSoftStory)),
-          safeJsonFetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)),
-          safeJsonFetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)),
-        ]);
-
-      onHazardDataLoading(false);
-      onSearchComplete(true);
-
-      const failed = [
-        { name: "Soft Story", result: softStory },
-        { name: "Tsunami", result: tsunamiZone },
-        { name: "Liquefaction", result: liquefactionZone },
-      ].filter(({ result }) => result.status === "rejected");
-
-      if (failed.length > 0) {
-        if (!toaster.isVisible(toastIdFailedHazardData)) {
-          toaster.create({
-            id: toastIdFailedHazardData,
-            title: "Hazard data warning",
-            description: `Failed to fetch: ${failed
-              .map((f) => f.name)
-              .join(", ")}`,
-            type: "warning",
-            duration: 5000,
-            closable: true,
-          });
-        }
-      }
-
-      return {
-        softStory: softStory.status === "fulfilled" ? softStory.value : null,
-        tsunami: tsunamiZone.status === "fulfilled" ? tsunamiZone.value : null,
-        liquefaction:
-          liquefactionZone.status === "fulfilled"
-            ? liquefactionZone.value
-            : null,
-      };
-    } catch (error) {
-      console.error("Error fetching hazard data:", error);
-      throw error;
-    } finally {
-      onHazardDataLoading(false);
-    }
-  };
-
   // temporary memoization fix for updating the address in the search bar.
   // TODO: refactor how we are caching our calls
   const memoizedOnSearchChange = useCallback(onSearchChange, []);
   const memoizedOnAddressSearch = useCallback(onAddressSearch, []);
-  const memoizedUpdateHazardData = useCallback(updateHazardData, []);
+  const memoizedUpdateHazardData = useCallback(updateHazardData, [
+    fetchHazardData,
+    onCoordDataRetrieve,
+  ]);
 
   useEffect(() => {
     const address = searchParams.get("address");
