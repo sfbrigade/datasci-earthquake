@@ -44,8 +44,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
   // Initialize state directly from searchParams or fall back to null
   const [coordinates, setCoordinates] = useState<number[] | null>(
-    initialLat && initialLon 
-      ? [parseFloat(initialLon), parseFloat(initialLat)] 
+    initialLat && initialLon
+      ? [parseFloat(initialLon), parseFloat(initialLat)]
       : null
   );
   const [searchedAddress, setSearchedAddress] = useState(initialAddress || "");
@@ -59,28 +59,31 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     setHazardDataLoading,
   });
 
-  const updateHazardData = useCallback(async (coords: number[]) => {
-    try {
-      const values = await fetchHazardData(coords);
-      setAddressHazardData(values);
-    } catch (error) {
-      console.error(
-        "Error while retrieving data: ",
-        error instanceof Error ? error.message : error?.toString()
-      );
-      setAddressHazardData({
-        softStory: null,
-        tsunami: null,
-        liquefaction: null,
-      });
-      toaster.create({
-        description: "Could not retrieve hazard data",
-        type: "error",
-        duration: 5000,
-        closable: true,
-      });
-    }
-  }, [fetchHazardData]);
+  const updateHazardData = useCallback(
+    async (coords: number[]) => {
+      try {
+        const values = await fetchHazardData(coords);
+        setAddressHazardData(values);
+      } catch (error) {
+        console.error(
+          "Error while retrieving data: ",
+          error instanceof Error ? error.message : error?.toString()
+        );
+        setAddressHazardData({
+          softStory: null,
+          tsunami: null,
+          liquefaction: null,
+        });
+        toaster.create({
+          description: "Could not retrieve hazard data",
+          type: "error",
+          duration: 5000,
+          closable: true,
+        });
+      }
+    }, 
+    [fetchHazardData]
+  );
 
   useEffect(() => {
     // This effect runs on mount and whenever searchParams change

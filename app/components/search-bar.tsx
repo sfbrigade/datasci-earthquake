@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  ChangeEvent,
-  FormEvent,
-  Suspense,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input, InputGroup } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
@@ -31,10 +26,7 @@ interface SearchBarProps {
   onAddressSearch: (address: string) => void;
 }
 
-const SearchBar = ({
-  onSearchChange,
-  onAddressSearch,
-}: SearchBarProps) => {
+const SearchBar = ({ onSearchChange, onAddressSearch }: SearchBarProps) => {
   const [inputAddress, setInputAddress] = useState("");
   const router = useRouter();
 
