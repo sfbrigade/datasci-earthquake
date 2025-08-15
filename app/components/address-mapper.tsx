@@ -81,7 +81,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           closable: true,
         });
       }
-    }, 
+    },
     [fetchHazardData]
   );
 
@@ -92,12 +92,10 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     const address = searchParams.get("address");
 
     if (lat && lon && address) {
-      const coords = [parseFloat(lon), parseFloat(lat)];
-      
+      const coords = [parseFloat(lon), parseFloat(lat)];  
       // Update state to reflect the new URL
       setCoordinates(coords);
       setSearchedAddress(address);
-      
       // Call the data fetch function
       updateHazardData(coords);
     }
