@@ -42,9 +42,11 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const initialLon = searchParams.get("lon");
   const initialAddress = searchParams.get("address");
 
-  // Initialize state directly from searchParams or fall back to defaults
-  const [coordinates, setCoordinates] = useState<number[]>(
-    initialLat && initialLon ? [parseFloat(initialLon), parseFloat(initialLat)] : defaultCoords
+  // Initialize state directly from searchParams or fall back to null
+  const [coordinates, setCoordinates] = useState<number[] | null>(
+    initialLat && initialLon 
+      ? [parseFloat(initialLon), parseFloat(initialLat)] 
+      : null
   );
   const [searchedAddress, setSearchedAddress] = useState(initialAddress || "");
   const [addressHazardData, setAddressHazardData] = useState<object>({});
@@ -78,7 +80,25 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         closable: true,
       });
     }
-  }, []);
+  }, [fetchHazardData]);
+
+  useEffect(() => {
+    // This effect runs on mount and whenever searchParams change
+    const lat = searchParams.get("lat");
+    const lon = searchParams.get("lon");
+    const address = searchParams.get("address");
+
+    if (lat && lon && address) {
+      const coords = [parseFloat(lon), parseFloat(lat)];
+      
+      // Update state to reflect the new URL
+      setCoordinates(coords);
+      setSearchedAddress(address);
+      
+      // Call the data fetch function
+      updateHazardData(coords);
+    }
+  }, [searchParams, updateHazardData, setCoordinates, setSearchedAddress]);
 
   useEffect(() => {
     const sources = [
@@ -106,18 +126,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         });
       }
     }
-
-    const address = searchParams.get("address");
-    const lat = searchParams.get("lat");
-    const lon = searchParams.get("lon");
-
-    if (address && lat && lon) {
-      const coords = [parseFloat(lon), parseFloat(lat)];
-      setSearchedAddress(address);
-      setCoordinates(coords);
-      updateHazardData(coords);
-    }
-  }, [softStoryData, tsunamiData, liquefactionData, searchParams, updateHazardData]);
+  }, [softStoryData, tsunamiData, liquefactionData]);
 
   return (
     <>
@@ -136,7 +145,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             />
           </Box>
           <Map
-            coordinates={coordinates}
+            coordinates={coordinates || defaultCoords}
             softStoryData={softStoryData}
             tsunamiData={tsunamiData}
             liquefactionData={liquefactionData}
