@@ -42,7 +42,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const initialLon = searchParams.get("lon");
   const initialAddress = searchParams.get("address");
 
-  // Initialize state directly from searchParams or fall back to null
+  // initialize state directly from searchParams or fall back to null
   const [coordinates, setCoordinates] = useState<number[] | null>(
     initialLat && initialLon
       ? [parseFloat(initialLon), parseFloat(initialLat)]
@@ -86,20 +86,36 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   );
 
   useEffect(() => {
-    // This effect runs on mount and whenever searchParams change
+    // check to prevent fetching data on the initial render when coordinates are null
+    if (coordinates) {
+      updateHazardData(coordinates);
+    }
+  }, [coordinates, updateHazardData]);
+
+  useEffect(() => {
     const lat = searchParams.get("lat");
     const lon = searchParams.get("lon");
     const address = searchParams.get("address");
 
     if (lat && lon && address) {
-      const coords = [parseFloat(lon), parseFloat(lat)];
-      // Update state to reflect the new URL
-      setCoordinates(coords);
-      setSearchedAddress(address);
-      // Call the data fetch function
-      updateHazardData(coords);
+      const newCoords = [parseFloat(lon), parseFloat(lat)];
+
+      // check to prevent redundant state updates
+      if (
+        coordinates === null ||
+        coordinates[0] !== newCoords[0] ||
+        coordinates[1] !== newCoords[1] ||
+        searchedAddress !== address
+      ) {
+        setCoordinates(newCoords);
+        setSearchedAddress(address || "");
+      }
+    } else if (coordinates) {
+      // clear state when navigating to a page without location params(ex. navigating back to main page)
+      setCoordinates(null);
+      setSearchedAddress("");
     }
-  }, [searchParams, updateHazardData, setCoordinates, setSearchedAddress]);
+  }, [searchParams, coordinates, searchedAddress]);
 
   useEffect(() => {
     const sources = [
