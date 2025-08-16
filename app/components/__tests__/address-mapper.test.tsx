@@ -18,10 +18,18 @@ jest.mock("next/navigation", () => ({
   })),
 }));
 
-jest.mock('@chakra-ui/react', () => ({
-  ...jest.requireActual('@chakra-ui/react'),
-  ChakraProvider: ({ children }) => children,
-}));
+jest.mock('@chakra-ui/react', () => {
+  const actualChakra = jest.requireActual('@chakra-ui/react');
+
+  return {
+    ...actualChakra,
+    ChakraProvider: ({ children }) => (
+      <actualChakra.ThemeProvider theme={{}}>
+        {children}
+      </actualChakra.ThemeProvider>
+    ),
+  };
+});
 
 jest.mock("../home-header", () => {
   const mockComponent = jest.fn((props) => (
