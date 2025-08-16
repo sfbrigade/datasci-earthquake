@@ -35,18 +35,104 @@ The file is organized into three main sections:
 ---
 
 
+## Development with Docker
+
+This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.  
+
+### Changing code
+Docker is configured so that any changes you make should trigger re-compiling by the appropriate service.  If the change is not taking, you may need to restart the server, but you do not have to rebuild everything.  
+
+### Changing configuration files
+This includes `pyproject.toml` and `.env`, and `package.json`.  You will need to restart the individual server, but should not have to rebuild everything.
+
+### Prerequisites
+
+- **Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).
+- **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
+
+### Starting the application
+
+1. **Create images if not yet created**: From the project root directory (where the docker-compose.yml file is located), run:
+   `docker build`
+
+1. **Run Docker Compose**: From the project root directory (where the docker-compose.yml file is located), run:
+   `docker compose up`
+
+   or
+
+   `docker compose up -d`
+
+   This will:
+
+- Start all services defined in the docker-compose.yml file (e.g., frontend, backend, database)
+
+2. **Start Postgres**
+
+3.  **Access the Application**:
+    - The app is running at http://localhost:3000. Note that this may conflict with your local dev server. If so, one will be running on port 3000 and the other on port 3001.
+    - The API is accessible at http://localhost:8000.
+    - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
+    - To interact with a running container, use `docker exec [OPTIONS] CONTAINER COMMAND [ARG...]`
+      - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
+      - To execute a python script, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
+
+### Shutting down the application
+
+To stop and shut down the application:
+
+1.  **Stop Docker Compose**: Type `docker compose stop`.
+
+2.  **Bring Down the Containers**: If you want to stop and remove the containers completely, run:
+    `docker compose down`
+    This will:
+    - Stop all services.
+    - Remove the containers, but it will **not** delete volumes (so the database data will persist).
+
+    **Note:** If you want to start with a clean slate and remove all data inside the containers, run `docker compose down -v`.
+
+### Rebuilding individual servers
+Replace <image name> with `datasci-earthquake-frontend`, `datasci-earthquake-backend`, `datasci-earthquake-db` or `datasci-earthquake-db_test`:
+
+`docker build -t <service_name>`
+
+### Starting/stopping individual servers
+Replace <service name> with frontend, backend, db, or db_test:
+
+`docker compose up -d <service_name>`
+`docker compose down -d <service_name>`
+
+### Troubleshooting
+
+1. You can find the list of running containers (their ids, names, status and ports) by running `docker ps -a`.
+2. If a container failed, start troublshooting by inspecting logs with `docker logs <container-id>`.
+3. Containers fail when their build contexts were modified but the containers weren't rebuilt. If logs show that some dependencies are missing, this can be likely solved by rebuilding the containers.
+4. Many problems are caused by disk usage issues. Run `docker system df` to show disk usage. Use pruning commands such as `docker system prune`to clean up unused resources.
+5. `Error response from daemon: network not found` occurs when Docker tries to use a network that has already been deleted or is dangling (not associated with any container). Prune unused networks to resolve this issue: `docker network prune -f`. If this doesn't help, run `docker system prune`.
+
+### Running unit tests with Docker
+
+#### Backend
+
+1. First update code and/or rebuild any containers as necessary. Otherwise you may get false results.
+2. Run the containers (`docker compose up -d)`
+3. Run pytest: `docker compose run backend pytest backend`
+   - Alternatively, run pytest with container cleanup: `docker compose run --remove-orphans backend pytest backend`
+4. To get code coverage, run `docker exec -w /backend datasci-earthquake-backend-1 pytest --cov=backend`
+
+---
+
+
 ## Local development
+Docker development is recommended as the configuration is more guaranteed.
 
 ### Prerequisites
 
 **PostgreSQL**: 
-1. [Install](https://www.java.com) Java 1.8 or later because PostgreSQL requires it.
-2. [Install](https://www.postgresql.org/download/) PostgreSQL locally, electing to install the PostGIS extension when prompted by the installer
-3. Before running the app, run PostgreSQL
+1. [Install](https://www.java.com) Java 1.8 or later because PostgreSQL installer requires it.
+2. [Install](https://www.postgresql.org/download/) PostgreSQL locally with the PostGIS extension, select the PostGIS extension when prompted by the installer.
+3. If PostgreSQL was already installed, add the PostGIS extension if not already included
 
 ### Starting the Application
-
-If you choose to work locally, do the following:
 
 1. Set up a python environment
 ```bash
@@ -89,68 +175,6 @@ The FastAPI server will be running on [http://127.0.0.1:8000](http://127.0.0.1:8
 ### Troubleshooting
 
 Please refer to [Troubleshooting front end](#troubleshooting-front-end).
-
----
-
-## Development with Docker
-
-This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.
-
-### Prerequisites
-
-- **Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).
-- **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
-
-### Starting the Application
-
-1. **Run Docker Compose**: From the project root directory (where the docker-compose.yml file is located), run:
-   `docker compose up -d`
-   This will:
-
-- Build the necessary Docker images (if not already built).
-- Start all services defined in the docker-compose.yml file (e.g., frontend, backend, database).
-
-2.  **Access the Application**:
-    - The app is running at http://localhost:3000. Note that this may conflict with your local dev server. If so, one will be running on port 3000 and the other on port 3001.
-    - The API is accessible at http://localhost:8000.
-    - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
-    - To interact with a running container, use `docker exec [OPTIONS] CONTAINER COMMAND [ARG...]`
-      - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
-      - To execute a python script, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
-
-    **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `requirements.txt`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
-
-### Shutting Down the Application
-
-To stop and shut down the application:
-
-1.  **Stop Docker Compose**: Type `docker compose stop`.
-
-2.  **Bring Down the Containers**: If you want to stop and remove the containers completely, run:
-    `docker compose down`
-    This will:
-    - Stop all services.
-    - Remove the containers, but it will **not** delete volumes (so the database data will persist).
-
-    **Note:** If you want to start with a clean slate and remove all data inside the containers, run `docker compose down -v`.
-
-### Troubleshooting
-
-1. You can find the list of running containers (their ids, names, status and ports) by running `docker ps -a`.
-2. If a container failed, start troublshooting by inspecting logs with `docker logs <container-id>`.
-3. Containers fail when their build contexts were modified but the containers weren't rebuilt. If logs show that some dependencies are missing, this can be likely solved by rebuilding the containers.
-4. Many problems are caused by disk usage issues. Run `docker system df` to show disk usage. Use pruning commands such as `docker system prune`to clean up unused resources.
-5. `Error response from daemon: network not found` occurs when Docker tries to use a network that has already been deleted or is dangling (not associated with any container). Prune unused networks to resolve this issue: `docker network prune -f`. If this doesn't help, run `docker system prune`.
-
-### Running unit tests with Docker
-
-#### Backend
-
-1. First update code and/or rebuild any containers as necessary. Otherwise you may get false results.
-2. Run the containers (`docker compose up -d)`
-3. Run pytest: `docker compose run backend pytest backend`
-   - Alternatively, run pytest with container cleanup: `docker compose run --remove-orphans backend pytest backend`
-4. To get code coverage, run `docker exec -w /backend datasci-earthquake-backend-1 pytest --cov=backend`
 
 ---
 
