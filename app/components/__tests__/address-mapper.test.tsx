@@ -1,7 +1,6 @@
 import React from "react";
 import { act, render, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { ChakraProvider } from "@chakra-ui/react";
 
 const fetchHazardDataMock = jest.fn();
 const mockGet = jest.fn();
@@ -17,6 +16,15 @@ jest.mock("next/navigation", () => ({
     get: mockGet,
   })),
 }));
+
+jest.mock('@chakra-ui/react', () => {
+  const actualChakra = jest.requireActual('@chakra-ui/react');
+
+  return {
+    ...actualChakra,
+    ChakraProvider: ({ children }) => <div>{children}</div>,
+  };
+});
 
 jest.mock("../home-header", () => {
   const mockComponent = jest.fn((props) => (
@@ -82,9 +90,7 @@ describe("AddressMapper", () => {
 
     // Act
     render(
-      <ChakraProvider>
-        <AddressMapper {...mockProps} />
-      </ChakraProvider>
+      <AddressMapper {...mockProps} />
     );
 
     // Assert
@@ -105,9 +111,7 @@ describe("AddressMapper", () => {
 
     // Act
     render(
-      <ChakraProvider>
-        <AddressMapper {...mockProps} />
-      </ChakraProvider>
+      <AddressMapper {...mockProps} />
     );
 
     // Assert
@@ -127,9 +131,7 @@ describe("AddressMapper", () => {
 
     // Act
     render(
-      <ChakraProvider>
-        <AddressMapper {...mockProps} />
-      </ChakraProvider>
+      <AddressMapper {...mockProps} />
     );
     await act(async () => {
       const homeHeaderProps = MockedHomeHeader.mock.calls[0][0];
