@@ -1,27 +1,25 @@
-import React from 'react';
-import { act, render, waitFor, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import React from "react";
+import { act, render, waitFor, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 
 const fetchHazardDataMock = jest.fn();
 const mockGet = jest.fn();
 
-jest.mock('../../hooks/useHazardDataFetcher', () => ({
+jest.mock("../../hooks/useHazardDataFetcher", () => ({
   useHazardDataFetcher: jest.fn(() => ({
     fetchHazardData: fetchHazardDataMock,
   })),
 }));
 
 jest.mock("next/navigation", () => ({
-  useSearchParams: jest.fn(() => ({ 
-    get: mockGet 
+  useSearchParams: jest.fn(() => ({
+    get: mockGet,
   })),
 }));
 
-jest.mock('../home-header', () => {
+jest.mock("../home-header", () => {
   const mockComponent = jest.fn((props) => (
-    <div data-testid="home-header">
-      Mock HomeHeader
-    </div>
+    <div data-testid="home-header">Mock HomeHeader</div>
   ));
 
   return {
@@ -30,7 +28,7 @@ jest.mock('../home-header', () => {
   };
 });
 
-jest.mock('../map', () => {
+jest.mock("../map", () => {
   return jest.fn((props) => (
     <div data-testid="map" data-coordinates={JSON.stringify(props.coordinates)}>
       Mocked Map
@@ -53,28 +51,31 @@ jest.mock("@/components/ui/toaster", () => ({
   },
 }));
 
-import * as HomeHeaderModule from '../home-header';
+import * as HomeHeaderModule from "../home-header";
 const MockedHomeHeader = jest.mocked(HomeHeaderModule).default;
-import AddressMapper from '../address-mapper';
+import AddressMapper from "../address-mapper";
 
 const mockSetSearchParams = (params: Record<string, string>) => {
   mockGet.mockImplementation((key) => params[key] || null);
 };
 
 const defaultCoords = [-122.408020683, 37.801698301];
-const mockFeatureCollection = { type: "FeatureCollection" as const, features: [] };
+const mockFeatureCollection = { 
+  type: "FeatureCollection" as const, 
+  features: [] 
+};
 const mockProps = {
   softStoryData: mockFeatureCollection,
   tsunamiData: mockFeatureCollection,
   liquefactionData: mockFeatureCollection,
 };
 
-describe('AddressMapper', () => {
+describe("AddressMapper", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should render with default state and not fetch data on initial load without URL params', async () => {
+  it("should render with default state and not fetch data on initial load without URL params", async () => {
     // Arrange
     mockSetSearchParams({});
 
@@ -82,32 +83,37 @@ describe('AddressMapper', () => {
     render(<AddressMapper {...mockProps} />);
 
     // Assert
-    expect(screen.getByTestId('map')).toHaveAttribute('data-coordinates', JSON.stringify(defaultCoords));
+    expect(screen.getByTestId("map")).toHaveAttribute(
+      "data-coordinates", 
+      JSON.stringify(defaultCoords)
+    );
     expect(fetchHazardDataMock).not.toHaveBeenCalled();
   });
 
-  it('should fetch data when loaded with URL parameters', async () => {
+  it("should fetch data when loaded with URL parameters", async () => {
     // Arrange
     const testCoords = [-122.4, 37.8];
-    const testAddress = '123 Main St';
-    const mockData = { softStory: 'data', tsunami: null, liquefaction: 'data' };
-    mockSetSearchParams({ lat: '37.8', lon: '-122.4', address: testAddress });
+    const testAddress = "123 Main St";
+    const mockData = { softStory: "data", tsunami: null, liquefaction: "data" };
+    mockSetSearchParams({ lat: "37.8", lon: "-122.4", address: testAddress });
     fetchHazardDataMock.mockResolvedValue(mockData);
-    
+
     // Act
     render(<AddressMapper {...mockProps} />);
 
     // Assert
     await waitFor(() => {
       expect(fetchHazardDataMock).toHaveBeenCalledWith(testCoords);
-      expect(screen.getByTestId('report-hazards')).toHaveTextContent(JSON.stringify(mockData));
+      expect(screen.getByTestId("report-hazards")).toHaveTextContent(
+        JSON.stringify(mockData)
+      );
     });
   });
 
-  it('should trigger a data fetch when setCoordinates is called from a user action', async () => {
+  it("should trigger a data fetch when setCoordinates is called from a user action", async () => {
     // Arrange
     const newCoords = [-120.0, 35.0];
-    const mockData = { softStory: 'data', tsunami: null, liquefaction: 'data' };
+    const mockData = { softStory: "data", tsunami: null, liquefaction: "data" };
     fetchHazardDataMock.mockResolvedValue(mockData);
 
     // Act
@@ -120,7 +126,9 @@ describe('AddressMapper', () => {
     // Assert
     await waitFor(() => {
       expect(fetchHazardDataMock).toHaveBeenCalledWith(newCoords);
-      expect(screen.getByTestId('report-hazards')).toHaveTextContent(JSON.stringify(mockData));
+      expect(screen.getByTestId("report-hazards")).toHaveTextContent(
+        JSON.stringify(mockData)
+      );
     });
   });
 });
