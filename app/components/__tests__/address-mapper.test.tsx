@@ -60,9 +60,9 @@ const mockSetSearchParams = (params: Record<string, string>) => {
 };
 
 const defaultCoords = [-122.408020683, 37.801698301];
-const mockFeatureCollection = { 
-  type: "FeatureCollection" as const, 
-  features: [] 
+const mockFeatureCollection = {
+  type: "FeatureCollection" as const,
+  features: [],
 };
 const mockProps = {
   softStoryData: mockFeatureCollection,
@@ -84,7 +84,7 @@ describe("AddressMapper", () => {
 
     // Assert
     expect(screen.getByTestId("map")).toHaveAttribute(
-      "data-coordinates", 
+      "data-coordinates",
       JSON.stringify(defaultCoords)
     );
     expect(fetchHazardDataMock).not.toHaveBeenCalled();
