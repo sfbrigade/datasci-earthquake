@@ -1,6 +1,7 @@
 import React from "react";
 import { act, render, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { ChakraProvider } from "@chakra-ui/react";
 
 const fetchHazardDataMock = jest.fn();
 const mockGet = jest.fn();
@@ -80,7 +81,11 @@ describe("AddressMapper", () => {
     mockSetSearchParams({});
 
     // Act
-    render(<AddressMapper {...mockProps} />);
+    render(
+      <ChakraProvider>
+        <AddressMapper {...mockProps} />
+      </ChakraProvider>
+    );
 
     // Assert
     expect(screen.getByTestId("map")).toHaveAttribute(
@@ -99,7 +104,11 @@ describe("AddressMapper", () => {
     fetchHazardDataMock.mockResolvedValue(mockData);
 
     // Act
-    render(<AddressMapper {...mockProps} />);
+    render(
+      <ChakraProvider>
+        <AddressMapper {...mockProps} />
+      </ChakraProvider>
+    );
 
     // Assert
     await waitFor(() => {
@@ -117,7 +126,11 @@ describe("AddressMapper", () => {
     fetchHazardDataMock.mockResolvedValue(mockData);
 
     // Act
-    render(<AddressMapper {...mockProps} />);
+    render(
+      <ChakraProvider>
+        <AddressMapper {...mockProps} />
+      </ChakraProvider>
+    );
     await act(async () => {
       const homeHeaderProps = MockedHomeHeader.mock.calls[0][0];
       homeHeaderProps.onSearchChange(newCoords);
