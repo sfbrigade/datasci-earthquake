@@ -119,28 +119,37 @@ describe("AddressMapper", () => {
     });
   });
 
-  it("should trigger a data fetch when setCoordinates is called from a user action", async () => {
+  it("should fetch data when URL parameters change from a user action", async () => {
     // Arrange
     const newCoords = [-120.0, 35.0];
+    const testAddress = "1 Lombard St";
     const mockData = { softStory: "data", tsunami: null, liquefaction: "data" };
     fetchHazardDataMock.mockResolvedValue(mockData);
 
-    // Act
-    render(
+    // Initial render: no URL params
+    mockSetSearchParams({});
+    const { rerender } = render(
       <ChakraProvider>
         <AddressMapper {...mockProps} />
       </ChakraProvider>
     );
-    await act(async () => {
-      const homeHeaderProps = MockedHomeHeader.mock.calls[0][0];
-      homeHeaderProps.onSearchChange(newCoords);
-    });
+
+    // Act
+    // Simulate updating the URL params to trigger the component's useEffect
+    mockSetSearchParams({ lat: newCoords[1].toString(), lon: newCoords[0].toString(), address: testAddress });
+    
+    // Re-render the component to trigger the effect with the new mock values
+    rerender(
+      <ChakraProvider>
+        <AddressMapper {...mockProps} />
+      </ChakraProvider>
+    );
 
     // Assert
     await waitFor(() => {
       expect(fetchHazardDataMock).toHaveBeenCalledWith(newCoords);
       expect(screen.getByTestId("report-hazards")).toHaveTextContent(
-        JSON.stringify(mockData)
+          JSON.stringify(mockData)
       );
     });
   });
