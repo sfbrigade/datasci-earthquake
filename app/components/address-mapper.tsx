@@ -86,39 +86,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     [fetchHazardData]
   );
 
-  // useEffect(() => {
-  //   // check to prevent fetching data on the initial render when coordinates are null
-  //   if (coordinates) {
-  //     console.log("updateHazardData")
-  //     updateHazardData(coordinates);
-  //   }
-  // }, [coordinates, updateHazardData]);
-
-  // useEffect(() => {
-  //   const lat = searchParams.get("lat");
-  //   const lon = searchParams.get("lon");
-  //   const address = searchParams.get("address");
-
-  //   if (lat && lon && address) {
-  //     const newCoords = [parseFloat(lon), parseFloat(lat)];
-
-  //     // check to prevent redundant state updates
-  //     if (
-  //       coordinates === null ||
-  //       coordinates[0] !== newCoords[0] ||
-  //       coordinates[1] !== newCoords[1] ||
-  //       searchedAddress !== address
-  //     ) {
-  //       setCoordinates(newCoords);
-  //       setSearchedAddress(address || "");
-  //     }
-  //   } else if (coordinates) {
-  //     // clear state when navigating to a page without location params(ex. navigating back to main page)
-  //     setCoordinates(null);
-  //     setSearchedAddress("");
-  //   }
-  // }, [searchParams]);
-
   useEffect(() => {
     const lat = searchParams.get("lat");
     const lon = searchParams.get("lon");
