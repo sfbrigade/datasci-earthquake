@@ -94,7 +94,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       router.push(newUrl, { scroll: false });
     },
     [router]
-);
+  );
 
   useEffect(() => {
     const lat = searchParams.get("lat");
@@ -122,7 +122,13 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       setSearchedAddress("");
       coordinatesRef.current = null;
     }
-  }, [searchParams, updateHazardData, coordinates, setCoordinates, setSearchedAddress]);
+  }, [
+      searchParams, 
+      updateHazardData, 
+      coordinates, 
+      setCoordinates, 
+      setSearchedAddress
+    ]);
 
   useEffect(() => {
     const sources = [
