@@ -123,12 +123,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       coordinatesRef.current = null;
     }
   }, [
-      searchParams, 
-      updateHazardData, 
-      coordinates, 
-      setCoordinates, 
-      setSearchedAddress
-    ]);
+    searchParams, 
+    updateHazardData, 
+    coordinates, 
+    setCoordinates, 
+    setSearchedAddress
+  ]);
 
   useEffect(() => {
     const sources = [
