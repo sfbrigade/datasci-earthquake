@@ -124,8 +124,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     }
   }, [
     searchParams,
-    updateHazardData,
     coordinates,
+    updateHazardData,
     setCoordinates,
     setSearchedAddress,
   ]);
