@@ -22,8 +22,7 @@ export type HazardData = {
 interface HomeHeaderProps {
   searchedAddress: string;
   isSearchComplete: boolean;
-  onSearchChange: (coords: number[]) => void;
-  onAddressSearch: (address: string) => void;
+  onSearchChange: (coords: number[], address: string) => void;
 }
 
 const SEARCHBAR_PORTAL_ID = "searchbar-portal";
@@ -32,7 +31,6 @@ const HomeHeader = ({
   searchedAddress,
   isSearchComplete,
   onSearchChange,
-  onAddressSearch,
 }: HomeHeaderProps) => {
   const headingData = Headings.home;
 
@@ -88,7 +86,6 @@ const HomeHeader = ({
       <Suspense fallback={<SearchBarSkeleton />}>
         <SearchBar
           onSearchChange={onSearchChange}
-          onAddressSearch={onAddressSearch}
         />
       </Suspense>
     </motion.div>

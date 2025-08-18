@@ -22,11 +22,10 @@ const autofillOptions: AddressAutofillOptions = {
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `search-bar-skeleton.tsx` and vice versa
 // TODO: isolate the usage of `useSearchParams()` so that the Suspense boundary can be even more narrow if possible
 interface SearchBarProps {
-  onSearchChange: (coords: number[]) => void;
-  onAddressSearch: (address: string) => void;
+  onSearchChange: (coords: number[], address: string) => void;
 }
 
-const SearchBar = ({ onSearchChange, onAddressSearch }: SearchBarProps) => {
+const SearchBar = ({ onSearchChange }: SearchBarProps) => {
   const [inputAddress, setInputAddress] = useState("");
   const router = useRouter();
 
@@ -45,12 +44,7 @@ const SearchBar = ({ onSearchChange, onAddressSearch }: SearchBarProps) => {
     const addressData = res.features[0];
     const addressLine = res.features[0].properties.feature_name;
     const coords = addressData.geometry.coordinates;
-
-    onAddressSearch(addressLine);
-    onSearchChange(coords);
-
-    const newUrl = `?address=${encodeURIComponent(addressLine)}&lat=${coords[1]}&lon=${coords[0]}`;
-    router.push(newUrl, { scroll: false });
+    onSearchChange(coords, addressLine);
   };
 
   const handleAddressChange = (event: ChangeEvent<HTMLInputElement>) => {

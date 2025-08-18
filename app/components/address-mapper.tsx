@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Box } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
@@ -54,6 +55,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const [isSearchComplete, setSearchComplete] = useState(false);
   const toastIdDataLoadFailed = "data-load-failed";
   const coordinatesRef = useRef<number[] | null>(null);
+  const router = useRouter();
 
   const { fetchHazardData } = useHazardDataFetcher({
     setSearchComplete,
@@ -86,6 +88,14 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     [fetchHazardData]
   );
 
+  const handleSearchChange = useCallback(
+    (coords: number[], address: string) => {
+      const newUrl = `?address=${encodeURIComponent(address)}&lat=${coords[1]}&lon=${coords[0]}`;
+      router.push(newUrl, { scroll: false });
+    },
+    [router]
+);
+
   useEffect(() => {
     const lat = searchParams.get("lat");
     const lon = searchParams.get("lon");
@@ -93,14 +103,13 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
     if (lat && lon && address) {
       const newCoords = [parseFloat(lon), parseFloat(lat)];
-      const currentCoords = coordinatesRef.current;
+      const lastCoords = coordinatesRef.current;
 
-      // check to prevent redundant state updates
+      // check if the coordinates have changed since the last fetch using a ref to prevent a dependency loop
       if (
-        currentCoords === null ||
-        currentCoords[0] !== newCoords[0] ||
-        currentCoords[1] !== newCoords[1] ||
-        searchedAddress !== address
+        !lastCoords ||
+        lastCoords[0] !== newCoords[0] ||
+        lastCoords[1] !== newCoords[1]
       ) {
         setCoordinates(newCoords);
         setSearchedAddress(address || "");
@@ -113,7 +122,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       setSearchedAddress("");
       coordinatesRef.current = null;
     }
-  }, [searchParams, updateHazardData]);
+  }, [searchParams, updateHazardData, coordinates, setCoordinates, setSearchedAddress]);
 
   useEffect(() => {
     const sources = [
@@ -148,8 +157,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       <HomeHeader
         searchedAddress={searchedAddress}
         isSearchComplete={isSearchComplete}
-        onSearchChange={setCoordinates}
-        onAddressSearch={setSearchedAddress}
+        onSearchChange={handleSearchChange}
       />
       <Box w="full" h={{ base: "1400px", md: "1000px" }} m="auto">
         <Box h="100%" overflow="hidden" position="relative">

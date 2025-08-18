@@ -5,6 +5,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 const fetchHazardDataMock = jest.fn();
 const mockGet = jest.fn();
+const mockRouterPush = jest.fn();
 
 jest.mock("../../hooks/useHazardDataFetcher", () => ({
   useHazardDataFetcher: jest.fn(() => ({
@@ -15,6 +16,9 @@ jest.mock("../../hooks/useHazardDataFetcher", () => ({
 jest.mock("next/navigation", () => ({
   useSearchParams: jest.fn(() => ({
     get: mockGet,
+  })),
+  useRouter: jest.fn(() => ({
+    push: mockRouterPush,
   })),
 }));
 
@@ -126,31 +130,23 @@ describe("AddressMapper", () => {
     const mockData = { softStory: "data", tsunami: null, liquefaction: "data" };
     fetchHazardDataMock.mockResolvedValue(mockData);
 
-    // Initial render: no URL params
+    // Initial render with no URL params
     mockSetSearchParams({});
-    const { rerender } = render(
+    render(
       <ChakraProvider>
         <AddressMapper {...mockProps} />
       </ChakraProvider>
     );
 
     // Act
-    // Simulate updating the URL params to trigger the component's useEffect
-    mockSetSearchParams({ lat: newCoords[1].toString(), lon: newCoords[0].toString(), address: testAddress });
-    
-    // Re-render the component to trigger the effect with the new mock values
-    rerender(
-      <ChakraProvider>
-        <AddressMapper {...mockProps} />
-      </ChakraProvider>
-    );
-
-    // Assert
-    await waitFor(() => {
-      expect(fetchHazardDataMock).toHaveBeenCalledWith(newCoords);
-      expect(screen.getByTestId("report-hazards")).toHaveTextContent(
-          JSON.stringify(mockData)
-      );
+    // Simulate a user action by directly calling the onSearchChange prop on the mocked component.
+    await act(async () => {
+      // The mock `HomeHeader` component is passed the `onSearchChange` prop. We can access it via the mock.
+      MockedHomeHeader.mock.calls[0][0].onSearchChange(newCoords, testAddress);
     });
+
+    // Assert that the router was called correctly
+    const expectedUrl = `?address=${encodeURIComponent(testAddress)}&lat=${newCoords[1]}&lon=${newCoords[0]}`;
+    expect(mockRouterPush).toHaveBeenCalledWith(expectedUrl, { scroll: false });
   });
 });
