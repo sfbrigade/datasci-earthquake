@@ -1,9 +1,15 @@
 import { Suspense } from "react";
-import { Box, Divider, Heading, HStack, VStack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  VStack,
+  Text,
+  HStack,
+  Separator,
+} from "@chakra-ui/react";
 import { Hazards, Info } from "../data/data";
-import SearchBarClientWrapper from "./search-bar-client-wrapper";
 import CardHazard from "../components/card-hazard";
-import CardInfo from "../components/card-info";
+import SearchBarClientWrapper from "./search-bar-client-wrapper";
 import Share from "../components/share";
 import ShareSkeleton from "../components/share-skeleton";
 
@@ -33,19 +39,19 @@ const ComponentsTestLib = () => {
         Search Bar
       </Heading>
       <Text mb={6}>This section demonstrates the Search Bar component</Text>
-      <VStack spacing={6} align="start">
+      <VStack gap={6} align="start">
         <HStack w="100%">
           <Box w="400px">
             <SearchBarClientWrapper />
           </Box>
         </HStack>
-        <Divider mb={3} />
+        <Separator mb={3} />
       </VStack>
       <Heading as="h2" size="md" mb={3}>
         Hazards Card
       </Heading>
       <Text mb={6}>This section demonstrates Hazard Card component</Text>
-      <VStack spacing={6} align="start">
+      <VStack gap={6} align="start">
         <HStack w="100%">
           {Hazards.map((hazard) => {
             return (
@@ -59,24 +65,17 @@ const ComponentsTestLib = () => {
             );
           })}
         </HStack>
-        <Divider mb={3} />
-      </VStack>
-      <Text mb={6}>This section demonstrates Info Card component</Text>
-      <VStack spacing={6} align="start">
-        <HStack w="100%">
-          <CardInfo info={Info[0]} />
-        </HStack>
-        <Divider mb={3} />
+        <Separator mb={3} />
       </VStack>
       <Text mb={6}>This section demonstrates Share menu component</Text>
-      <VStack spacing={6} align="start">
+      <VStack gap={6} align="start">
         <HStack w="100%">
           {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
           <Suspense fallback={<ShareSkeleton />}>
             <Share />
           </Suspense>
         </HStack>
-        <Divider mb={3} />
+        <Separator mb={3} />
       </VStack>
     </Box>
   );

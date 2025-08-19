@@ -2,16 +2,26 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Share from "../share";
 import "@testing-library/jest-dom";
+import { Provider } from "../ui/provider";
+import "../__mocks__/match-media";
 
 describe("Share Component", () => {
   it("renders the Share button", () => {
-    render(<Share />);
+    render(
+      <Provider>
+        <Share />
+      </Provider>
+    );
     const button = screen.getByText(/share report/i);
     expect(button).toBeInTheDocument();
   });
 
   // it("renders the menu options when the Share button is clicked", async () => {
-  //   render(<Share />);
+  // render(
+  //   <Provider>
+  //     <Share />
+  //   </Provider>
+  // );
   //   const user = userEvent.setup();
   //   const button = screen.getByText(/share report/i);
 
@@ -28,7 +38,11 @@ describe("Share Component", () => {
   // });
 
   // it("triggers a click on a menu item", async () => {
-  //   render(<Share />);
+  // render(
+  //   <Provider>
+  //     <Share />
+  //   </Provider>
+  // );
   //   const user = userEvent.setup();
 
   //   const button = screen.getByText(/share report/i);

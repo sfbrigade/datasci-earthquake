@@ -112,6 +112,7 @@ export const Headings = {
     text: "How safe is your home\nin an earthquake?",
     highlight: "How safe ",
     style: {
+      color: "white",
       whiteSpace: { base: "normal", md: "pre-line" },
       paddingRight: { base: "10px", xl: "300px" },
       marginBottom: "16px",
@@ -254,5 +255,26 @@ export const TeamMembers = [
     id: 17,
     role: "Data Science",
     name: "Lola Jackson",
+  },
+];
+
+export const PillData = [
+  {
+    name: "softStory",
+    trueData: "Non-Compliant",
+    falseData: "No Data",
+    noData: "No Data",
+  },
+  {
+    name: "liquefaction",
+    trueData: "Susceptible",
+    falseData: "Not in Zone",
+    noData: "No Data",
+  },
+  {
+    name: "tsunami",
+    trueData: "In Zone",
+    falseData: "Not in Zone",
+    noData: "No Data",
   },
 ];
