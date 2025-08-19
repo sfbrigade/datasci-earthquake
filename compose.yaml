@@ -35,8 +35,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      db_test:
-        condition: service_healthy
     volumes:
       - ./backend:/backend
       - ./backend/etl/startup.sh:/startup.sh
