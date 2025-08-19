@@ -61,8 +61,8 @@ const SearchBar = ({
   onSearchComplete,
 }: SearchBarProps) => {
   const [inputAddress, setInputAddress] = useState("");
-  const [suggestionSelected, setSuggestSelected] = useState(false);
-  const [suggestionsAvailable, setSuggestsAvailable] = useState(false);
+  const [suggestionSelected, setSuggestionSelected] = useState(false);
+  const [suggestionsAvailable, setSuggestionsAvailable] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const toastIdFailedHazardData = "failed-hazard-data";
@@ -70,7 +70,7 @@ const SearchBar = ({
 
   const handleClearClick = () => {
     setInputAddress("");
-    setSuggestSelected(false);
+    setSuggestionSelected(false);
     router.push("/", { scroll: false });
   };
 
@@ -92,7 +92,7 @@ const SearchBar = ({
     const newUrl = `?address=${encodeURIComponent(addressLine)}&lat=${coords[1]}&lon=${coords[0]}`;
     router.push(newUrl, { scroll: false });
     // "locks in" choice, to prevent re-appearing of hint
-    setSuggestSelected(true);
+    setSuggestionSelected(true);
   };
 
   const updateHazardData = async (coords: number[]) => {
@@ -122,7 +122,7 @@ const SearchBar = ({
     setInputAddress(event.currentTarget.value);
     // shows hint again upon further search param changes without selection of suggestion
     if (!suggestionSelected) {
-      setSuggestsAvailable(false);
+      setSuggestionsAvailable(false);
     }
   };
 
@@ -191,7 +191,7 @@ const SearchBar = ({
   };
 
   const handleSuggest = (res: AddressAutofillSuggestionResponse) => {
-    setSuggestsAvailable(res.suggestions.length > 0);
+    setSuggestionsAvailable(res.suggestions.length > 0);
   };
 
   // temporary memoization fix for updating the address in the search bar.
@@ -296,7 +296,7 @@ const SearchBar = ({
         <Text
           position="absolute"
           bottom={0}
-          ml="45px"
+          ml={{ base: "35px", md: "40px" }}
           textStyle="textSmall"
           color="white"
         >
