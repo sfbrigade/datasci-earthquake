@@ -7,6 +7,12 @@ set -e
 # inside .venv
 VENV_PYTHON="/backend/.venv/bin/python"
 
+# Check if the python interpreter exists
+if [ ! -f "$VENV_PYTHON" ]; then
+    echo "Error: Python interpreter not found at $VENV_PYTHON. The virtual environment might not have been created correctly." >&2
+    exit 1
+fi
+
 # We then use this virtual environment python, rather than the system python
 $VENV_PYTHON backend/database/init_db.py
 $VENV_PYTHON backend/etl/liquefaction_data_handler.py
