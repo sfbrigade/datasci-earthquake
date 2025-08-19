@@ -38,7 +38,8 @@ services:
       db_test:
         condition: service_healthy
     volumes:
-      - ./backend:/backend
+      - ./backend:/backend:rw  # Mount the source code
+      - /backend/.venv  # Exclude .venv from being overwritten
       - ./backend/etl/startup.sh:/startup.sh
       - public_data:/public/data
     command: bash /startup.sh
