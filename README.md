@@ -146,7 +146,7 @@ source backend/venv/bin/activate
 
 3. Set nvm version
 ```bash
-nvm use 22
+nvm use 18
 ```
 
 4. Install the front end dependencies:
