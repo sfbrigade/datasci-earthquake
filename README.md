@@ -52,8 +52,8 @@ This includes `pyproject.toml` and `.env`, and `package.json`.  You will need to
 
 ### Starting the application
 
-1. **Create images if not yet created**: From the project root directory (where the docker-compose.yml file is located), run:
-   `docker build`
+1. **Build images if not yet created**: From the project root directory (where the docker-compose.yml file is located), run:
+   `docker compose build`
 
 1. **Run Docker Compose**: From the project root directory (where the docker-compose.yml file is located), run:
    `docker compose up`
@@ -93,13 +93,13 @@ To stop and shut down the application:
 ### Rebuilding individual servers
 Replace <image name> with `datasci-earthquake-frontend`, `datasci-earthquake-backend`, `datasci-earthquake-db` or `datasci-earthquake-db_test`:
 
-`docker build -t <service_name>`
+`docker compose build <service_name>`
 
 ### Starting/stopping individual servers
 Replace <service name> with frontend, backend, db, or db_test:
 
 `docker compose up -d <service_name>`
-`docker compose down -d <service_name>`
+`docker compose stop <service_name>`
 
 ### Troubleshooting
 
