@@ -3,7 +3,7 @@ name = "backend"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12.7"
 
 
 dependencies = [
@@ -46,7 +46,7 @@ dependencies = [
     "pathspec==0.12.1",
     "platformdirs==4.3.6",
     "pluggy==1.5.0",
-    "psycopg2-binary==2.9.9",
+    "psycopg2[binary]==2.9.9",
     "pydantic==2.9.0",
     "pydantic-settings==2.5.2",
     "pydantic_core==2.23.2",

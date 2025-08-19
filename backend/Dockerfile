@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1
 
-#Dockerfile for FastAPI
+# Dockerfile for FastAPI
 
-ARG PYTHON_VERSION=3.11.4
+ARG PYTHON_VERSION=3.12.7
 FROM python:${PYTHON_VERSION}-slim as python_base
 
 # Prevents Python from writing pyc files.
