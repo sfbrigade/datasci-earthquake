@@ -128,7 +128,7 @@ Docker development is recommended as the configuration is more guaranteed.
 ### Prerequisites
 
 **PostgreSQL**: 
-1. [Install](https://www.java.com) Java 1.8 or later because PostgreSQL installer requires it.
+1. [Install](https://adoptium.net/) Java 1.8 or later if your PostgreSQL installer requires it (e.g., the EDB installer).
 2. [Install](https://www.postgresql.org/download/) PostgreSQL locally with the PostGIS extension, select the PostGIS extension when prompted by the installer.
 3. If PostgreSQL was already installed, add the PostGIS extension if not already included
 
