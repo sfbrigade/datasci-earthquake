@@ -5,7 +5,7 @@ set -e
 # when we run uv sync there. In order to use .venv and all the packages we have installed
 # into it via this backend Dockerfile, we must specify the path to the python interpreter
 # inside .venv
-VENV_PYTHON="/backend/.venv/bin/python"
+VENV_PYTHON="/.venv/bin/python"
 
 # We then use this virtual environment python, rather than the system python
 $VENV_PYTHON backend/database/init_db.py
