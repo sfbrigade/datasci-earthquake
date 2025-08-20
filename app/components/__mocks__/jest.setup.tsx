@@ -2,7 +2,7 @@ import { jest } from "@jest/globals";
 import React from "react";
 
 // Mocking window.matchMedia
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: (query: string) => ({
     matches: false,
