@@ -47,11 +47,12 @@ RUN sh /uv-installer.sh && rm /uv-installer.sh
 ENV PATH="/root/.local/bin/:$PATH"
 
 # Copy dependency files first for caching
-COPY backend/pyproject.toml backend/uv.lock ./
+#  backend/uv.lock
+COPY backend/pyproject.toml ./
 
 # Install dependencies using uv
-# --no-dev
-RUN uv sync --frozen --project ./
+# --no-dev.  --frozen --project ./
+RUN uv sync
 
 # Copy the source code into the container.
 COPY backend ./backend
