@@ -2,7 +2,7 @@
 
 # Dockerfile for FastAPI
 
-ARG PYTHON_VERSION=3.12.7
+ARG PYTHON_VERSION=3.11.4
 FROM python:${PYTHON_VERSION}-slim as python_base
 
 # Prevents Python from writing pyc files.
