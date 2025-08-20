@@ -27,7 +27,12 @@ $VENV_PYTHON backend/etl/soft_story_properties_data_handler.py || { echo "soft_s
 echo "Running tsunami_data_handler.py"
 $VENV_PYTHON backend/etl/tsunami_data_handler.py || { echo "tsunami_data_handler.py failed"; exit 1; }
 
-echo "Starting FastAPI server"
-$VENV_PYTHON -m uvicorn api.index:app --host 0.0.0.0 --port 8000 || { echo "FastAPI failed to start"; exit 1; }
-
 echo "===== startup.sh finished ====="
+
+# Start FastAPI
+RELOAD_FLAG=""
+if [ "${ENVIRONMENT}" = "development" ]; then
+  RELOAD_FLAG="--reload"
+fi
+echo "Starting FastAPI server"
+$VENV_PYTHON -m uvicorn api.index:app --host 0.0.0.0 --port 8000 $RELOAD_FLAG || { echo "FastAPI failed to start"; exit 1; }
