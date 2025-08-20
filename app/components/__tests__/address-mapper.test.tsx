@@ -7,7 +7,17 @@ const fetchHazardDataMock = jest.fn();
 const mockGet = jest.fn();
 const mockRouterPush = jest.fn();
 
-const testTheme = extendTheme({}); // Extend an empty object for a basic theme
+// Create a simple, extendable theme for testing
+const testTheme = {};
+
+jest.mock("@chakra-ui/react", () => {
+  const originalModule = jest.requireActual("@chakra-ui/react");
+  return {
+    ...originalModule,
+    // Mock the extendTheme function and return return a simple mock object
+    extendTheme: jest.fn(() => ({})), // 
+  };
+});
 
 jest.mock("../../hooks/useHazardDataFetcher", () => ({
   useHazardDataFetcher: jest.fn(() => ({
