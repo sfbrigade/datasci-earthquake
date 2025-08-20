@@ -1,14 +1,11 @@
 import React from "react";
 import { act, render, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { Provider } from "../ui/provider";
 
 const fetchHazardDataMock = jest.fn();
 const mockGet = jest.fn();
 const mockRouterPush = jest.fn();
-
-// extend an empty object for a basic theme
-const testTheme = extendTheme({});
 
 jest.mock("../../hooks/useHazardDataFetcher", () => ({
   useHazardDataFetcher: jest.fn(() => ({
@@ -89,9 +86,9 @@ describe("AddressMapper", () => {
 
     // Act
     render(
-      <ChakraProvider theme={testTheme}>
+      <Provider>
         <AddressMapper {...mockProps} />
-      </ChakraProvider>
+      </Provider>
     );
 
     // Assert
@@ -112,9 +109,9 @@ describe("AddressMapper", () => {
 
     // Act
     render(
-      <ChakraProvider theme={testTheme}>
+      <Provider>
         <AddressMapper {...mockProps} />
-      </ChakraProvider>
+      </Provider>
     );
 
     // Assert
@@ -136,9 +133,9 @@ describe("AddressMapper", () => {
     // Initial render with no URL params
     mockSetSearchParams({});
     render(
-      <ChakraProvider theme={testTheme}>
+      <Provider>
         <AddressMapper {...mockProps} />
-      </ChakraProvider>
+      </Provider>
     );
 
     // Act
