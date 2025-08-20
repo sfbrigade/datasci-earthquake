@@ -133,10 +133,10 @@ jobs:
           docker logs my_postgis_db || echo "No logs found"
 
       - name: Run Backend Tests
-        run: docker compose run backend pytest backend
+        run: docker compose run --rm backend /.venv/bin/python -m pytest backend -v
 
       - name: Run Frontend Tests
-        run: docker compose run frontend npm test
+        run: docker compose run --rm frontend npm test
 
       - name: Clean Up
         run: docker compose down
