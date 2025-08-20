@@ -50,7 +50,8 @@ ENV PATH="/root/.local/bin/:$PATH"
 COPY backend/pyproject.toml backend/uv.lock ./
 
 # Install dependencies using uv
-RUN uv sync --frozen --no-dev --project ./
+# --no-dev
+RUN uv sync --frozen --project ./
 
 # Copy the source code into the container.
 COPY backend ./backend
