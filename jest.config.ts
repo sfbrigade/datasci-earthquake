@@ -16,9 +16,6 @@ const config: Config = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/app/$1",
   },
-  transformIgnorePatterns: [
-    "/node_modules/(?!@chakra-ui|@emotion)/",
-  ],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
