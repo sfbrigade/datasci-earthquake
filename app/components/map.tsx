@@ -28,25 +28,36 @@ const Map: React.FC<MapProps> = ({
   const markerRef = useRef<mapboxgl.Marker>(undefined);
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
-  const { legendClicked } = useContext(LegendClickedContext);
+  const { legendClicked, updateLegendClicked } =
+    useContext(LegendClickedContext);
 
   const handleLegendClick = () => {
-    if (!mapRef.current || legendClicked.name === "") return;
+    if (
+      !mapRef.current ||
+      legendClicked.name === "" ||
+      legendClicked.name === "loaded"
+    )
+      return;
     const map = mapRef.current;
 
+    // Record for storing the ids of layers. The keys of the Record correspond to values set to the context object legendClicked in it's "name" property
     const layerMapping: Record<string, string> = {
       SoftStory: "softStoriesLayer",
       Liquefaction: "seismicLayer",
       Tsunami: "tsunamiLayer",
     };
 
+    // finds id value for layer toggling by matching key of Record to name property of legendClicked object
     const layerId = layerMapping[legendClicked.name];
 
     if (layerId && map.getLayer(layerId)) {
+      //gets layer's current visibility property value using id
       const currentVisibility =
         map.getLayoutProperty(layerId, "visibility") ?? "visible";
+      //based on value of above property, swaps string values
       const newVisibility =
         currentVisibility === "visible" ? "none" : "visible";
+      // sets new visibility property value for layer, creating the "toggling" effect
       map.setLayoutProperty(layerId, "visibility", newVisibility);
     }
   };
@@ -178,6 +189,10 @@ const Map: React.FC<MapProps> = ({
           }
         });
       });
+
+      // helps prevent clicking of legends for layer toggling before required map component has completely rendered
+      // TODO: implement a better solution for the element clicked to handle toggling, to completely prevent this issue
+      updateLegendClicked("loaded");
     } else {
       // subsequent passes: update map
       const map = mapRef.current;

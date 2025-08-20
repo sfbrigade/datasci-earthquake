@@ -13,10 +13,12 @@ export const KeyElem = ({
   icon: React.ReactNode;
   toggleValue: string;
 }) => {
-  const { updateLegendClicked } = useContext(LegendClickedContext);
+  const { legendClicked, updateLegendClicked } =
+    useContext(LegendClickedContext);
   const [isClicked, setIsClicked] = useState(false);
 
   function handleClick() {
+    if (legendClicked.name === "") return;
     updateLegendClicked(toggleValue);
     setIsClicked(!isClicked);
   }

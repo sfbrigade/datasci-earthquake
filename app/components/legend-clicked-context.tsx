@@ -1,27 +1,29 @@
 "use client";
 
-import { useState, createContext } from "react";
+import { useState, createContext, PropsWithChildren } from "react";
 
-type LegendClickedType = {
+export type LegendClickedType = {
   name: string;
   time: number;
 };
 
-type LegendClickedContextType = {
+export type LegendClickedContextType = {
   legendClicked: LegendClickedType;
   updateLegendClicked: (newString: string) => void;
 };
 
 const legendClickedDefault = { name: "", time: Date.now() };
 
-export const LegendClickedContext = createContext<LegendClickedContextType>({
+const legendClickedContextDefault = {
   legendClicked: legendClickedDefault,
   updateLegendClicked: () => {},
-});
+} as LegendClickedContextType;
+
+export const LegendClickedContext = createContext(legendClickedContextDefault);
 
 export const LegendClickedContextProvider = ({
   children,
-}: React.PropsWithChildren) => {
+}: PropsWithChildren) => {
   const [legendClicked, setLegendClicked] =
     useState<LegendClickedType>(legendClickedDefault);
 
