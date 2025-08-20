@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "backend"
 version = "0.1.0"
 description = "Add your description here"
-requires-python = ">=3.11.4"
+requires-python = "==3.11.4"
 
 
 dependencies = [
@@ -95,12 +95,11 @@ dev = [
 [tool.hatch.build.targets.wheel]
 packages = [
     "api",
-    "backend", 
-    "database",
-    "etl"
+    "backend"
 ]
 
 # Correct syntax for exclusions
+[tool.hatch.build]
 exclude = [
     "*.pyc",
     "*.pyo", 

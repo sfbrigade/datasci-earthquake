@@ -38,21 +38,16 @@ RUN mkdir -p /public/data && \
 COPY api /api
 
 # Download the uv installer
-ADD https://astral.sh/uv/install.sh /uv-installer.sh
-
-# Run the uv installer then remove it
-RUN sh /uv-installer.sh && rm /uv-installer.sh
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Ensure the installed uv binary is on the `PATH`
 ENV PATH="/root/.local/bin/:$PATH"
 
 # Copy dependency files first for caching
-#  backend/uv.lock
-COPY backend/pyproject.toml ./
+COPY backend/pyproject.toml backend/uv.lock ./
 
 # Install dependencies using uv
-# --no-dev.  --frozen --project ./
-RUN uv sync
+RUN uv sync --frozen
 
 # Copy the source code into the container.
 COPY backend ./backend

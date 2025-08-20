@@ -14,18 +14,21 @@ if [ ! -f "$VENV_PYTHON" ]; then
     exit 1
 fi
 
+# Helper function to run a python script with logging and error handling
+run_python_script() {
+    local script_path="$1"
+    echo "Running ${script_path}..."
+    if ! "$VENV_PYTHON" "$script_path"; then
+        echo "Error: ${script_path} failed." >&2
+        exit 1
+    fi
+}
+
 # Run each Python script with diagnostics
-echo "Running init_db.py"
-$VENV_PYTHON backend/database/init_db.py || { echo "init_db.py failed"; exit 1; }
-
-echo "Running liquefaction_data_handler.py"
-$VENV_PYTHON backend/etl/liquefaction_data_handler.py || { echo "liquefaction_data_handler.py failed"; exit 1; }
-
-echo "Running soft_story_properties_data_handler.py"
-$VENV_PYTHON backend/etl/soft_story_properties_data_handler.py || { echo "soft_story_properties_data_handler.py failed"; exit 1; }
-
-echo "Running tsunami_data_handler.py"
-$VENV_PYTHON backend/etl/tsunami_data_handler.py || { echo "tsunami_data_handler.py failed"; exit 1; }
+run_python_script backend/database/init_db.py
+run_python_script backend/etl/liquefaction_data_handler.py
+run_python_script backend/etl/soft_story_properties_data_handler.py
+run_python_script backend/etl/tsunami_data_handler.py
 
 echo "===== startup.sh finished ====="
 
