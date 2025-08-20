@@ -1,11 +1,12 @@
 #!/bin/bash
 set -e
+set -x   # Trace each command as it executes
+
+echo "===== Starting startup.sh ====="
 
 # uv automatically creates a virtual environment called .venv in the backend Dockerfile
-# when we run uv sync there. In order to use .venv and all the packages we have installed
-# into it via this backend Dockerfile, we must specify the path to the python interpreter
-# inside .venv
 VENV_PYTHON="/.venv/bin/python"
+echo "Using virtual environment python at $VENV_PYTHON"
 
 # Check if the python interpreter exists
 if [ ! -f "$VENV_PYTHON" ]; then
@@ -13,11 +14,20 @@ if [ ! -f "$VENV_PYTHON" ]; then
     exit 1
 fi
 
-# We then use this virtual environment python, rather than the system python
-$VENV_PYTHON backend/database/init_db.py
-$VENV_PYTHON backend/etl/liquefaction_data_handler.py
-$VENV_PYTHON backend/etl/soft_story_properties_data_handler.py
-$VENV_PYTHON backend/etl/tsunami_data_handler.py
+# Run each Python script with diagnostics
+echo "Running init_db.py"
+$VENV_PYTHON backend/database/init_db.py || { echo "init_db.py failed"; exit 1; }
 
-# Start FastAPI
-$VENV_PYTHON -m uvicorn api.index:app --host 0.0.0.0 --port 8000
+echo "Running liquefaction_data_handler.py"
+$VENV_PYTHON backend/etl/liquefaction_data_handler.py || { echo "liquefaction_data_handler.py failed"; exit 1; }
+
+echo "Running soft_story_properties_data_handler.py"
+$VENV_PYTHON backend/etl/soft_story_properties_data_handler.py || { echo "soft_story_properties_data_handler.py failed"; exit 1; }
+
+echo "Running tsunami_data_handler.py"
+$VENV_PYTHON backend/etl/tsunami_data_handler.py || { echo "tsunami_data_handler.py failed"; exit 1; }
+
+echo "Starting FastAPI server"
+$VENV_PYTHON -m uvicorn api.index:app --host 0.0.0.0 --port 8000 || { echo "FastAPI failed to start"; exit 1; }
+
+echo "===== startup.sh finished ====="
