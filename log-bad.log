@@ -1,0 +1,198 @@
+Run echo "Checking running containers..."
+Checking running containers...
+CONTAINER ID   IMAGE                           COMMAND                  CREATED              STATUS                                 PORTS                                         NAMES
+bxaxxxxfxxxa   datasci-earthquake-frontend     "docker-entrypoint.s…"   About a minute ago   Up About a minute (healthy)            x.x.x.x:xxxx->xxxx/tcp, [::]:xxxx->xxxx/tcp   datasci-earthquake-frontend-x
+xxxxxxxxxeex   datasci-earthquake-backend      "bash /startup.sh"       About a minute ago   Up About a minute (health: starting)   x.x.x.x:xxxx->xxxx/tcp, [::]:xxxx->xxxx/tcp   datasci-earthquake-backend-x
+xaxxxbxxxxxx   datasci-earthquake-db_test      "docker-entrypoint.s…"   About a minute ago   Up About a minute (healthy)            x.x.x.x:xxxx->xxxx/tcp, [::]:xxxx->xxxx/tcp   my_postgis_db_test
+xcdxxxbxxxdx   postgis-custom                  "docker-entrypoint.s…"   About a minute ago   Up About a minute (healthy)            x.x.x.x:xxxx->xxxx/tcp, [::]:xxxx->xxxx/tcp   my_postgis_db
+xexabxcxfxxx   moby/buildkit:buildx-stable-x   "buildkitd --allow-i…"   x minutes ago        Up x minutes                                                                         buildx_buildkit_builder-xxxbxdbx-xdxd-xexx-bxed-cdbxxddabexcx
+Logs for backend:
+xxxx-xx-xx xx:xx:xx,xxx - _LiquefactionDataHandler - INFO - Created new session with retry configuration:
+Database tables dropped.
+Max retries: x
+Backoff factor: x
+Status codes: [xxx, xxx, xxx, xxx, xxx]
+Allowed methods: ['GET']
+Respect retry after header: True
+xxxx-xx-xx xx:xx:xx,xxx - _LiquefactionDataHandler - INFO - Initialized handler for LiquefactionZone with URL: https://data.sfgov.org/resource/ixtx-xxux.geojson, page size: xxxx, session: None
+xxxx-xx-xx xx:xx:xx,xxx - _LiquefactionDataHandler - INFO - Starting data fetch for LiquefactionZone with params: None
+xxxx-xx-xx xx:xx:xx,xxx - _LiquefactionDataHandler - INFO - Making request to https://data.sfgov.org/resource/ixtx-xxux.geojson with params {'$offset': x, '$limit': xxxx}
+xxxx-xx-xx xx:xx:xx,xxx - _LiquefactionDataHandler - INFO - Got response with status: xxx
+xxxx-xx-xx xx:xx:xx,xxx - _LiquefactionDataHandler - INFO - Request completed successfully:
+URL: https://data.sfgov.org/resource/ixtx-xxux.geojson
+Params: {'$offset': x, '$limit': xxxx}
+Time: x.xxs
+xxxx-xx-xx xx:xx:xx,xxx - _LiquefactionDataHandler - INFO - LiquefactionZone: Received fewer records (x) than page size (xxxx). Assuming final page and stopping fetch. Request time: x.xxs
+xxxx-xx-xx xx:xx:xx,xxx - _LiquefactionDataHandler - INFO - LiquefactionZone: Successfully fetched x total features.
+xxxx-xx-xx xx:xx:xx,xxx - _LiquefactionDataHandler - INFO - Closed session
+xxxx-xx-xx xx:xx:xx,xxx - _LiquefactionDataHandler - INFO - GeoJSON LiquefactionZone.geojson doesn't exist, creating it
+xxxx-xx-xx xx:xx:xx,xxx - _LiquefactionDataHandler - INFO - Generated /public/data/LiquefactionZone.geojson
+xxxx-xx-xx xx:xx:xx,xxx - _LiquefactionDataHandler - INFO - LiquefactionZone: Inserted x rows with do nothing conflict policy.
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Created new session with retry configuration:
+Max retries: x
+Backoff factor: x
+Status codes: [xxx, xxx, xxx, xxx, xxx]
+Allowed methods: ['GET']
+Respect retry after header: True
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Initialized handler for SoftStoryProperty with URL: https://data.sfgov.org/resource/beah-shgi.geojson, page size: xxxx, session: None
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Starting data fetch for SoftStoryProperty with params: None
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Making request to https://data.sfgov.org/resource/beah-shgi.geojson with params {'$offset': x, '$limit': xxxx}
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Got response with status: xxx
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Request completed successfully:
+URL: https://data.sfgov.org/resource/beah-shgi.geojson
+Params: {'$offset': x, '$limit': xxxx}
+Time: x.xxs
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - SoftStoryProperty: Retrieved xxxx features on page x. Offset: x, Request time: x.xxs
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Making request to https://data.sfgov.org/resource/beah-shgi.geojson with params {'$offset': xxxx, '$limit': xxxx}
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Got response with status: xxx
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Request completed successfully:
+URL: https://data.sfgov.org/resource/beah-shgi.geojson
+Params: {'$offset': xxxx, '$limit': xxxx}
+Time: xx.xxs
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - SoftStoryProperty: Retrieved xxxx features on page x. Offset: xxxx, Request time: xx.xxs
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Making request to https://data.sfgov.org/resource/beah-shgi.geojson with params {'$offset': xxxx, '$limit': xxxx}
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Got response with status: xxx
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Request completed successfully:
+URL: https://data.sfgov.org/resource/beah-shgi.geojson
+Params: {'$offset': xxxx, '$limit': xxxx}
+Time: xx.xxs
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - SoftStoryProperty: Retrieved xxxx features on page x. Offset: xxxx, Request time: xx.xxs
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Making request to https://data.sfgov.org/resource/beah-shgi.geojson with params {'$offset': xxxx, '$limit': xxxx}
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Got response with status: xxx
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Request completed successfully:
+URL: https://data.sfgov.org/resource/beah-shgi.geojson
+Params: {'$offset': xxxx, '$limit': xxxx}
+Time: x.xxs
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - SoftStoryProperty: Retrieved xxxx features on page x. Offset: xxxx, Request time: x.xxs
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Making request to https://data.sfgov.org/resource/beah-shgi.geojson with params {'$offset': xxxx, '$limit': xxxx}
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Got response with status: xxx
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Request completed successfully:
+URL: https://data.sfgov.org/resource/beah-shgi.geojson
+Params: {'$offset': xxxx, '$limit': xxxx}
+Time: x.xxs
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - SoftStoryProperty: Received fewer records (xxx) than page size (xxxx). Assuming final page and stopping fetch. Request time: x.xxs
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - SoftStoryProperty: Successfully fetched xxxx total features.
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Closed session
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - There are xxx non-retroffited soft stories
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - GeoJSON SoftStoryProperty.geojson doesn't exist, creating it
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - Generated /public/data/SoftStoryProperty.geojson
+xxxx-xx-xx xx:xx:xx,xxx - _SoftStoryPropertiesDataHandler - INFO - SoftStoryProperty: Inserted xxxx rows with update conflict policy.
+xxxx-xx-xx xx:xx:xx,xxx - TsunamiDataHandler - INFO - Created new session with retry configuration:
+Max retries: x
+Backoff factor: x
+Status codes: [xxx, xxx, xxx, xxx, xxx]
+Allowed methods: ['GET']
+Respect retry after header: True
+xxxx-xx-xx xx:xx:xx,xxx - TsunamiDataHandler - INFO - Initialized handler for TsunamiZone with URL: https://servicesx.arcgis.com/zrxKAIbsRSUyARHG/ArcGIS/rest/services/CA_Tsunami_Hazard_Area/FeatureServer/x/query, page size: xxxx, session: None
+xxxx-xx-xx xx:xx:xx,xxx - TsunamiDataHandler - INFO - Starting data fetch for TsunamiZone with params: {'where': "County='San Francisco' AND Evacuate='Yes, Tsunami Hazard Area'", 'outFields': '*', 'f': 'json'}
+xxxx-xx-xx xx:xx:xx,xxx - TsunamiDataHandler - INFO - Making request to https://servicesx.arcgis.com/zrxKAIbsRSUyARHG/ArcGIS/rest/services/CA_Tsunami_Hazard_Area/FeatureServer/x/query with params {'where': "County='San Francisco' AND Evacuate='Yes, Tsunami Hazard Area'", 'outFields': '*', 'f': 'json', '$offset': x, '$limit': xxxx}
+xxxx-xx-xx xx:xx:xx,xxx - TsunamiDataHandler - INFO - Got response with status: xxx
+xxxx-xx-xx xx:xx:xx,xxx - TsunamiDataHandler - INFO - Request completed successfully:
+URL: https://servicesx.arcgis.com/zrxKAIbsRSUyARHG/ArcGIS/rest/services/CA_Tsunami_Hazard_Area/FeatureServer/x/query
+Params: {'where': "County='San Francisco' AND Evacuate='Yes, Tsunami Hazard Area'", 'outFields': '*', 'f': 'json', '$offset': x, '$limit': xxxx}
+Time: x.xxs
+xxxx-xx-xx xx:xx:xx,xxx - TsunamiDataHandler - INFO - TsunamiZone: Received fewer records (x) than page size (xxxx). Assuming final page and stopping fetch. Request time: x.xxs
+xxxx-xx-xx xx:xx:xx,xxx - TsunamiDataHandler - INFO - TsunamiZone: Successfully fetched x total features.
+xxxx-xx-xx xx:xx:xx,xxx - TsunamiDataHandler - INFO - Closed session
+xxxx-xx-xx xx:xx:xx,xxx - TsunamiDataHandler - INFO - GeoJSON TsunamiZone.geojson doesn't exist, creating it
+xxxx-xx-xx xx:xx:xx,xxx - TsunamiDataHandler - INFO - Generated /public/data/TsunamiZone.geojson
+xxxx-xx-xx xx:xx:xx,xxx - TsunamiDataHandler - INFO - TsunamiZone: Inserted x rows with do nothing conflict policy.
+INFO:     Started server process [xx]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://x.x.x.x:xxxx (Press CTRL+C to quit)
+Database tables created.
+xxxxxx
+Logs for db:
+The files belonging to this database system will be owned by user "postgres".
+This user must also own the server process.
+initdb: warning: enabling "trust" authentication for local connections
+initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+NOTICE:  extension "postgis" already exists, skipping
+NOTICE:  version "x.x.x" of extension "postgis" is already installed
+NOTICE:  extension "postgis_topology" already exists, skipping
+NOTICE:  version "x.x.x" of extension "postgis_topology" is already installed
+NOTICE:  extension "fuzzystrmatch" already exists, skipping
+NOTICE:  extension "postgis_tiger_geocoder" already exists, skipping
+NOTICE:  version "x.x.x" of extension "postgis_tiger_geocoder" is already installed
+NOTICE:  extension "postgis" already exists, skipping
+NOTICE:  version "x.x.x" of extension "postgis" is already installed
+NOTICE:  extension "postgis_topology" already exists, skipping
+NOTICE:  version "x.x.x" of extension "postgis_topology" is already installed
+NOTICE:  extension "fuzzystrmatch" already exists, skipping
+NOTICE:  extension "postgis_tiger_geocoder" already exists, skipping
+NOTICE:  version "x.x.x" of extension "postgis_tiger_geocoder" is already installed
+xxxx-xx-xx xx:xx:xx.xxx UTC [x] LOG:  starting PostgreSQL xx.xx (Debian xx.xx-x.pgdgxx+x) on xxx_xx-pc-linux-gnu, compiled by gcc (Debian xx.x.x-xx) xx.x.x, xx-bit
+xxxx-xx-xx xx:xx:xx.xxx UTC [x] LOG:  listening on IPvx address "x.x.x.x", port xxxx
+xxxx-xx-xx xx:xx:xx.xxx UTC [x] LOG:  listening on IPvx address "::", port xxxx
+xxxx-xx-xx xx:xx:xx.xxx UTC [x] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.xxxx"
+xxxx-xx-xx xx:xx:xx.xxx UTC [xx] LOG:  database system was shut down at xxxx-xx-xx xx:xx:xx UTC
+xxxx-xx-xx xx:xx:xx.xxx UTC [x] LOG:  database system is ready to accept connections
+The database cluster will be initialized with locale "en_US.utfx".
+The default database encoding has accordingly been set to "UTFx".
+The default text search configuration will be set to "english".
+Data page checksums are disabled.
+fixing permissions on existing directory /var/lib/postgresql/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default max_connections ... xxx
+selecting default shared_buffers ... xxxMB
+selecting default time zone ... Etc/UTC
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+Success. You can now start the database server using:
+    pg_ctl -D /var/lib/postgresql/data -l logfile start
+waiting for server to start....xxxx-xx-xx xx:xx:xx.xxx UTC [xx] LOG:  starting PostgreSQL xx.xx (Debian xx.xx-x.pgdgxx+x) on xxx_xx-pc-linux-gnu, compiled by gcc (Debian xx.x.x-xx) xx.x.x, xx-bit
+xxxx-xx-xx xx:xx:xx.xxx UTC [xx] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.xxxx"
+xxxx-xx-xx xx:xx:xx.xxx UTC [xx] LOG:  database system was shut down at xxxx-xx-xx xx:xx:xx UTC
+xxxx-xx-xx xx:xx:xx.xxx UTC [xx] LOG:  database system is ready to accept connections
+ done
+server started
+CREATE DATABASE
+/usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/initdb-postgis.sh
+POSTGRES_USER: postgres
+PGUSER: postgres
+CREATE DATABASE
+Loading PostGIS extensions into template_postgis
+CREATE EXTENSION
+CREATE EXTENSION
+You are now connected to database "template_postgis" as user "postgres".
+CREATE EXTENSION
+CREATE EXTENSION
+Loading PostGIS extensions into qsdatabase
+CREATE EXTENSION
+CREATE EXTENSION
+You are now connected to database "qsdatabase" as user "postgres".
+CREATE EXTENSION
+CREATE EXTENSION
+/usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/update-postgis.sh
+Ensuring PostGIS extensions in 'template_postgis'
+CREATE EXTENSION
+ALTER EXTENSION
+CREATE EXTENSION
+ALTER EXTENSION
+CREATE EXTENSION
+CREATE EXTENSION
+ALTER EXTENSION
+Ensuring PostGIS extensions in 'qsdatabase'
+CREATE EXTENSION
+ALTER EXTENSION
+CREATE EXTENSION
+ALTER EXTENSION
+CREATE EXTENSION
+CREATE EXTENSION
+ALTER EXTENSION
+xxxx-xx-xx xx:xx:xx.xxx UTC [xx] LOG:  received fast shutdown request
+waiting for server to shut down....xxxx-xx-xx xx:xx:xx.xxx UTC [xx] LOG:  aborting any active transactions
+xxxx-xx-xx xx:xx:xx.xxx UTC [xx] LOG:  background worker "logical replication launcher" (PID xx) exited with exit code x
+xxxx-xx-xx xx:xx:xx.xxx UTC [xx] LOG:  shutting down
+xxxx-xx-xx xx:xx:xx.xxx UTC [xx] LOG:  checkpoint starting: shutdown immediate
+xxxx-xx-xx xx:xx:xx.xxx UTC [xx] LOG:  checkpoint complete: wrote xxxx buffers (xx.x%); x WAL file(s) added, x removed, x recycled; write=x.xxx s, sync=x.xxx s, total=x.xxx s; sync files=xxx, longest=x.xxx s, average=x.xxx s; distance=xxxxx kB, estimate=xxxxx kB
+xxxx-xx-xx xx:xx:xx.xxx UTC [xx] LOG:  database system is shut down
+ done
+server stopped
+PostgreSQL init process complete; ready for start up.
+xs
+xs
