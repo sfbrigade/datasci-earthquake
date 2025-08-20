@@ -9,8 +9,8 @@ This is a hybrid Next.js + Python app that uses Next.js as the frontend and Fast
 You can work on this app entirely [locally](#local-development), entirely [using Docker](#development-with-docker), or--if you prefer to focus on front end or back end--a [combination of the two](#hybrid-development).
 
 ---
-# All development
-## Configuration of environment variables
+# Setting Up and Using Environments
+## Configuration of environment variables for all environments
 
 We use GitHub Secrets to store sensitive environment variables. To be able to run the app, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
 
@@ -293,11 +293,11 @@ map.addLayer({
 
 ---
 
-## Formatting with a Pre-Commit Hook
+# Formatting with a Pre-Commit Hook
 
 This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project. It works for _only_ the staged files. If you have edited unstaged files in your repository and want to make them comply with the CI pipeline, then run `black .` `mypy .` for Python code and `npm run lint .` for Javascript code.
 
-### Prerequisites
+## Prerequisites
 
 - If you haven't already, install pre-commit:
   `pip install pre-commit`
@@ -305,7 +305,7 @@ This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code s
   `pre-commit install`
   This command sets up pre-commit to automatically run ESLint, Black, and MyPy before each commit.
 
-### Usage
+## Usage
 
 - **Running Black Automatically**: After setup, every time you attempt to commit code, Black will check the staged files and apply formatting if necessary. If files are reformatted, the commit will be stopped, and you’ll need to review the changes before committing again.
 - **Bypassing the Hook**: If you want to skip the pre-commit hook for a specific commit, use the --no-verify flag with your commit command:
@@ -318,7 +318,7 @@ This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code s
 
 ---
 
-## Migrating the Database
+# Migrating the Database
 
 If you have changed the models in backend/api/models, then you must migrate the database from its current models to the new ones with the following two commands:
 

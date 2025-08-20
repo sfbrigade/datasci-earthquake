@@ -11,4 +11,4 @@ RELOAD_FLAG=""
 if [ "${ENVIRONMENT}" = "development" ]; then
   RELOAD_FLAG="--reload"
 fi
-exec uvicorn api.index:app --host 0.0.0.0 --port 8000 $RELOAD_FLAG
+uvicorn api.index:app --host 0.0.0.0 --port 8000 $RELOAD_FLAG
