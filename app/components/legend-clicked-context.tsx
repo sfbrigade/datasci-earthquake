@@ -4,15 +4,22 @@ import { useState, createContext, PropsWithChildren } from "react";
 
 export type LegendClickedType = {
   name: string;
-  time: number;
+  softStoryToggled: boolean;
+  liquefactionToggled: boolean;
+  tsunamiToggled: boolean;
 };
 
 export type LegendClickedContextType = {
   legendClicked: LegendClickedType;
-  updateLegendClicked: (newString: string) => void;
+  updateLegendClicked: (hazardName: string, layerState?: string) => void;
 };
 
-const legendClickedDefault = { name: "", time: Date.now() };
+const legendClickedDefault = {
+  name: "",
+  softStoryToggled: false,
+  liquefactionToggled: false,
+  tsunamiToggled: false,
+};
 
 const legendClickedContextDefault = {
   legendClicked: legendClickedDefault,
@@ -27,8 +34,39 @@ export const LegendClickedContextProvider = ({
   const [legendClicked, setLegendClicked] =
     useState<LegendClickedType>(legendClickedDefault);
 
-  const updateLegendClicked = (newString: string) => {
-    setLegendClicked({ name: newString, time: Date.now() });
+  const updateLegendClicked = (hazardName: string, layerState?: string) => {
+    if (layerState === undefined) {
+      setLegendClicked({
+        name: hazardName,
+        softStoryToggled: legendClicked.softStoryToggled,
+        liquefactionToggled: legendClicked.liquefactionToggled,
+        tsunamiToggled: legendClicked.tsunamiToggled,
+      });
+    }
+    if (hazardName === "softStory" && layerState != undefined) {
+      setLegendClicked({
+        name: "",
+        softStoryToggled: !legendClicked.softStoryToggled,
+        liquefactionToggled: legendClicked.liquefactionToggled,
+        tsunamiToggled: legendClicked.tsunamiToggled,
+      });
+    }
+    if (hazardName === "liquefaction" && layerState != undefined) {
+      setLegendClicked({
+        name: "",
+        softStoryToggled: legendClicked.softStoryToggled,
+        liquefactionToggled: !legendClicked.liquefactionToggled,
+        tsunamiToggled: legendClicked.tsunamiToggled,
+      });
+    }
+    if (hazardName === "tsunami" && layerState != undefined) {
+      setLegendClicked({
+        name: "",
+        softStoryToggled: legendClicked.softStoryToggled,
+        liquefactionToggled: legendClicked.liquefactionToggled,
+        tsunamiToggled: !legendClicked.tsunamiToggled,
+      });
+    }
   };
 
   const contextValue: LegendClickedContextType = {

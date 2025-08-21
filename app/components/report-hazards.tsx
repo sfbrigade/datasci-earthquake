@@ -4,6 +4,8 @@ import CardHazard from "./card-hazard";
 import { Hazards } from "../data/data";
 import { CardContainer } from "./card-container";
 import { KeyElem } from "./key-elem";
+import { useContext } from "react";
+import { LegendClickedContext } from "./legend-clicked-context";
 
 type HazardData = { softStory?: any; tsunami?: any; liquefaction?: any };
 
@@ -14,6 +16,8 @@ const ReportHazards = ({
   addressHazardData: HazardData;
   isHazardDataLoading: boolean;
 }) => {
+  const { legendClicked } = useContext(LegendClickedContext);
+
   return (
     <Center flexDirection="column">
       <Box
@@ -38,19 +42,22 @@ const ReportHazards = ({
             name="Soft story"
             color="grey.400"
             icon={<FaCircle />}
-            toggleValue="SoftStory"
+            toggleKey="softStory"
+            toggleState={legendClicked.softStoryToggled}
           />
           <KeyElem
             name="Liquefaction areas"
             color="orange"
             icon={<FaSquareFull />}
-            toggleValue="Liquefaction"
+            toggleKey="liquefaction"
+            toggleState={legendClicked.liquefactionToggled}
           />
           <KeyElem
             name="Tsunami zone"
             color="tsunamiBlue"
             icon={<FaSquareFull />}
-            toggleValue="Tsunami"
+            toggleKey="tsunami"
+            toggleState={legendClicked.tsunamiToggled}
           />
         </Stack>
       </Box>

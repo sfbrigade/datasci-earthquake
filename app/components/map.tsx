@@ -32,19 +32,14 @@ const Map: React.FC<MapProps> = ({
     useContext(LegendClickedContext);
 
   const handleLegendClick = () => {
-    if (
-      !mapRef.current ||
-      legendClicked.name === "" ||
-      legendClicked.name === "loaded"
-    )
-      return;
+    if (!mapRef.current) return;
     const map = mapRef.current;
 
     // Record for storing the ids of layers. The keys of the Record correspond to values set to the context object legendClicked in it's "name" property
     const layerMapping: Record<string, string> = {
-      SoftStory: "softStoriesLayer",
-      Liquefaction: "seismicLayer",
-      Tsunami: "tsunamiLayer",
+      softStory: "softStoriesLayer",
+      liquefaction: "seismicLayer",
+      tsunami: "tsunamiLayer",
     };
 
     // finds id value for layer toggling by matching key of Record to name property of legendClicked object
@@ -59,6 +54,8 @@ const Map: React.FC<MapProps> = ({
         currentVisibility === "visible" ? "none" : "visible";
       // sets new visibility property value for layer, creating the "toggling" effect
       map.setLayoutProperty(layerId, "visibility", newVisibility);
+      // updates/sets context again, but using its second argument, which is optional. The logic within the context's updateLegendClicked() handles toggling of the boolean properties of legendClicked based on it's first argument (legendClicked.name) and the presence of the second argument (newVisibility) .
+      updateLegendClicked(legendClicked.name, newVisibility);
     }
   };
 
@@ -189,10 +186,6 @@ const Map: React.FC<MapProps> = ({
           }
         });
       });
-
-      // helps prevent clicking of legends for layer toggling before required map component has completely rendered
-      // TODO: implement a better solution for the element clicked to handle toggling, to completely prevent this issue
-      updateLegendClicked("loaded");
     } else {
       // subsequent passes: update map
       const map = mapRef.current;
@@ -204,8 +197,9 @@ const Map: React.FC<MapProps> = ({
   }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
 
   useEffect(() => {
-    handleLegendClick();
-  }, [legendClicked]);
+    // prevents function from running when map component is mounted and twice when context changes
+    if (legendClicked.name != "") handleLegendClick();
+  }, [legendClicked]); // re-runs every time context changes
 
   return (
     <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
