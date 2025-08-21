@@ -296,7 +296,6 @@ const SearchBar = ({
         <Text
           position="absolute"
           bottom={0}
-          ml={{ base: "35px", md: "40px" }}
           textStyle="textSmall"
           color="white"
         >
