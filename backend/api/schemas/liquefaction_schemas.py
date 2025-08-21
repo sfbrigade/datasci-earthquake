@@ -1,7 +1,6 @@
 from pydantic import BaseModel, ConfigDict, Field
 from backend.api.models.liquefaction_zones import LiquefactionZone
 from geojson_pydantic import Feature, FeatureCollection, MultiPolygon
-from geoalchemy2.shape import to_shape
 from typing import List, Optional
 import json
 from datetime import datetime
@@ -35,8 +34,7 @@ class LiquefactionFeature(Feature):
     geometry: MultiPolygon
     properties: LiquefactionProperties
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
     @staticmethod
     def from_sqlalchemy_model(liquefaction_zone: LiquefactionZone):
@@ -73,16 +71,18 @@ class LiquefactionFeatureCollection(FeatureCollection):
     features: List[LiquefactionFeature]
 
 
-class IsInLiquefactionZoneView(BaseModel):
+class InLiquefactionZoneView(BaseModel):
     """
     Pydantic View model for liquefaction zone check endpoint.
 
     Attributes:
         exists (bool): Whether the point is in a liquefaction zone
         last_updated (Optional[datetime]): Timestamp of last update if exists
+        liq (Optional[str]): Susceptibility of the zone to liquefaction
     """
 
     exists: bool
     last_updated: Optional[datetime] = None
+    liq: Optional[str]
 
     model_config = ConfigDict(from_attributes=True)

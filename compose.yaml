@@ -20,6 +20,7 @@ services:
       timeout: 5s
       retries: 3
       start_period: 60s
+    command: npm run next-dev
 
   backend:
     build:

@@ -72,7 +72,8 @@ class _LiquefactionDataHandler(DataHandler):
         return parsed_data, geojson
 
 
-if __name__ == "__main__":
+def main():
+    """ """
     handler = _LiquefactionDataHandler(_LIQUEFACTION_URL, LiquefactionZone)
     try:
         liquefaction_zones = handler.fetch_data()
@@ -83,3 +84,7 @@ if __name__ == "__main__":
         handler.bulk_insert_data(liquefaction_zones_objects, "identifier")
     except HTTPException as e:
         print(f"Failed after retries: {e}")
+
+
+if __name__ == "__main__":
+    main()

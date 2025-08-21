@@ -190,6 +190,65 @@ class DataHandler(ABC):
         pass
 
     def bulk_insert_data(self, data_dicts: list[dict], id_field: str):
+        """
+        Inserts a list of data dictionaries into the database table, handling
+        conflicts based on the defined policy.
+
+        This method is designed to efficiently insert multiple rows into the
+        database in a single operation. It supports conflict resolution by either
+        updating existing records or doing nothing if a conflict is detected.
+
+        Args:
+            data_dicts (list[dict]): A list of dictionaries, where each
+                dictionary represents a row to be inserted into the database.
+            id_field (str): The name of the field used to identify unique
+                records in the database.
+
+        Returns:
+            None
+
+        Raises:
+            ProgrammingError: If there is a schema error in the database.
+            IntegrityError: If there is a data integrity error.
+            SQLAlchemyError: For any other database-related errors.
+
+        Internal Workflow:
+            1. Check if the `data_dicts` list is empty. If so, log a warning and
+            return immediately.
+            2. Determine the conflict handling policy by calling the
+            `insert_policy` method.
+            3. If the conflict policy involves updating existing records,
+            deduplicate the data based on the `id_field`.
+            4. Open a database session using the `db_getter` function.
+            5. Create an SQL insert statement using SQLAlchemy's `pg_insert`
+            function.
+            6. Modify the insert statement to handle conflicts based on the
+            conflict policy.
+            7. Execute the insert statement and commit the transaction.
+            8. Catch and log any exceptions that occur during the process.
+
+        Usage Examples:
+            ```python
+            # Example usage of bulk_insert_data method
+            data_handler = DataHandler(url="http://api.example.com/data",
+                                    table=MyTableModel, page_size=1000)
+            data_to_insert = [
+                {"id": 1, "name": "Item 1", "value": 10},
+                {"id": 2, "name": "Item 2", "value": 20},
+                # ... more data
+            ]
+            data_handler.bulk_insert_data(data_to_insert, id_field="id")
+            ```
+
+        Notes:
+            - The method uses SQLAlchemy's `pg_insert` function to handle
+            PostgreSQL-specific insert operations.
+            - The conflict handling policy is defined in the `insert_policy`
+            method, which can be overridden in subclasses to customize the
+            behavior.
+            - The method ensures that the database session is properly closed
+            after the operation, even if an exception occurs.
+        """
         if not data_dicts:
             self.logger.warning(f"{self.table.__name__}: No data to insert")
             return
@@ -233,7 +292,6 @@ class DataHandler(ABC):
 
     def insert_policy(self) -> dict:
         """
-
         Defines conflict handling for bulk_insert_data() method.
 
         Returns a dictionary containing SQL SET clauses for ON CONFLICT DO UPDATE.

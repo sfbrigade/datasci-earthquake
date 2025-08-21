@@ -15,7 +15,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /
 
 # Create a non-privileged user that the app will run under.
-ARG UID=10001
+ARG UID=1001
 RUN adduser \
     --disabled-password \
     --gecos "" \
@@ -55,6 +55,3 @@ USER appuser
 
 # Expose the port that the application listens on.
 EXPOSE 8000
-
-# Run the FastAPI application
-CMD ["uvicorn", "api.index:app", "--host", "0.0.0.0", "--port", "8000"]

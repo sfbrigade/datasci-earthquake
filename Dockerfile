@@ -22,6 +22,3 @@ RUN mkdir -p .next && chmod -R 777 .next
 USER appuser
 
 EXPOSE 3000
-
-# Start the Next.js application in development mode
-CMD ["npm", "run", "next-dev"]
