@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { toaster } from "@/components/ui/toaster";
-import { API_ENDPOINTS } from "../api/endpoints";
+import { API_ENDPOINTS } from "../utilities/api/endpoints";
 
 const safeJsonFetch = async (url: string) => {
   const res = await fetch(url);

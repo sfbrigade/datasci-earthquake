@@ -1,0 +1,57 @@
+.main {
+  display: flex;
+  min-height: 75vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    sans-serif;
+}
+
+.h1 {
+  padding: 0px 4px;
+  border-radius: 4px;
+  background-color: rgba(24, 20, 35, 0.03);
+  font-family: monospace;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.p {
+  margin: 0;
+  font-size: 20px;
+}
+
+.a {
+  color: #6341f0;
+  text-decoration: underline;
+  cursor: pointer;
+
+  @media (prefers-color-scheme: dark) {
+    color: #b3a1ff;
+  }
+}
+
+.description {
+  text-align: center;
+  color: #6e6c75;
+  max-width: 500px;
+  line-height: 1.5;
+  font-size: 20px;
+
+  @media (prefers-color-scheme: dark) {
+    color: #a49fb5;
+  }
+}
+
+.flex-spacer {
+  flex: 1;
+}

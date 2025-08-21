@@ -25,6 +25,7 @@
     "@emotion/react": "^11.14.0",
     "@fontsource/inter": "^5.2.6",
     "@mapbox/search-js-react": "^1.1.0",
+    "@sentry/nextjs": "^10.2.0",
     "@types/geojson": "^7946.0.16",
     "@types/node": "^20.2.4",
     "@types/react": "19.1.8",
