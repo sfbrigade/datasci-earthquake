@@ -24,8 +24,9 @@ const Header = () => {
       as="header"
       bg={isHome ? undefined : "gradient.blue"}
       w="100%"
-      // position={isHome ? "absolute" : undefined}
+      position={isHome ? "absolute" : undefined}
       top={isHome ? "0" : undefined}
+      display={isHome ? "none" : undefined}
     >
       <Stack
         direction={{ base: "column", md: "row" }}

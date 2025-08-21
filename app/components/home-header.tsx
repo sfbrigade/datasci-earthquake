@@ -2,8 +2,17 @@
 
 import { Suspense, useState } from "react";
 import ReactDOM from "react-dom";
-import { Headings } from "../data/data";
-import { Box, Stack, Text } from "@chakra-ui/react";
+// import { Headings } from "../data/data";
+import {
+  Box,
+  Stack,
+  Text,
+  Highlight,
+  HStack,
+  Image,
+  VisuallyHidden,
+  Link,
+} from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import Heading from "./heading";
 import ReportAddress from "./report-address";
@@ -38,7 +47,7 @@ const HomeHeader = ({
   onCoordDataRetrieve,
   onHazardDataLoading,
 }: HomeHeaderProps) => {
-  const headingData = Headings.home;
+  // const headingData = Headings.home;
   const [isSearchComplete, setSearchComplete] = useState(false);
 
   const headerContent = isSearchComplete ? (
@@ -69,15 +78,46 @@ const HomeHeader = ({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Heading headingData={headingData} />
-      <Text
+      {/* <Heading headingData={headingData} /> */}
+      <HStack align="start" gap="1">
+        <Link
+          as={"a"}
+          color="white"
+          href="/"
+          textDecoration={"none"}
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = "/";
+          }}
+        >
+          <HStack align="baseline">
+            <Image
+              src="/images/SFSafeHome-fulllogo.svg"
+              alt="SafeHome logo"
+              role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
+              h="28px"
+              w="142px"
+            />
+            <VisuallyHidden>SafeHome</VisuallyHidden>
+          </HStack>{" "}
+        </Link>
+        <Text textStyle="textPrerelease" layerStyle="prerelease">
+          Beta
+        </Text>
+      </HStack>
+      <Text textStyle={"headerMedium"} color={"white"}>
+        <Highlight query="How safe" styles={{ color: "yellow" }}>
+          How safe is your home in an earthquake?
+        </Highlight>
+      </Text>
+      {/* <Text
         textStyle="headerSmall"
         layerStyle="headerMain"
         mb="30px"
         pr={{ base: "10px", xl: "300px" }}
       >
         This project was built using data from DataSF.
-      </Text>
+      </Text> */}
     </motion.div>
   );
 
@@ -106,16 +146,17 @@ const HomeHeader = ({
   return (
     <Box
       bg="gradient.blue"
-      paddingTop={{ base: "56px", md: "72px", xl: "80px" }}
+      // paddingTop={{ base: "56px", md: "72px", xl: "80px" }}
     >
       <Box
-        w={{ base: "full", xl: "7xl" }}
-        p={{
-          base: "36px 24px 40px 24px",
-          md: "44px 28px 44px 28px",
-          xl: "24px 128px 24px 128px",
-        }}
+        // w={{ base: "full", xl: "7xl" }}
+        // p={{
+        //   base: "36px 24px 40px 24px",
+        //   md: "44px 28px 44px 28px",
+        //   xl: "24px 128px 24px 128px",
+        // }}
         margin="auto"
+        border={"1px solid red"}
       >
         {/* <ColorModeButton /> */}
         <AnimatePresence mode="wait">{headerContent}</AnimatePresence>
