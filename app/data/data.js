@@ -257,3 +257,24 @@ export const TeamMembers = [
     name: "Lola Jackson",
   },
 ];
+
+export const PillData = [
+  {
+    name: "softStory",
+    trueData: "Non-Compliant",
+    falseData: "No Data",
+    noData: "No Data",
+  },
+  {
+    name: "liquefaction",
+    trueData: "Susceptible",
+    falseData: "Not in Zone",
+    noData: "No Data",
+  },
+  {
+    name: "tsunami",
+    trueData: "In Zone",
+    falseData: "Not in Zone",
+    noData: "No Data",
+  },
+];

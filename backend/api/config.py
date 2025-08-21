@@ -2,7 +2,7 @@
 Provides the environment variables that are read by the application
 """
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
 
 
@@ -22,10 +22,10 @@ class Settings(BaseSettings):
     environment: str = "local"
     next_public_cdn_url: str
     sentry_dsn: str
+    next_public_posthog_host: str
+    next_public_posthog_key: str
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
 
 settings = Settings()
