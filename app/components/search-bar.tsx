@@ -219,7 +219,7 @@ const SearchBar = ({
   ]);
 
   return (
-    <form className="search-bar-form" onSubmit={onSubmit}>
+    <form style={{ position: "relative" }} onSubmit={onSubmit}>
       <Suspense>
         <DynamicAddressAutofill
           accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ""}
