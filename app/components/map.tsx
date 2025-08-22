@@ -12,14 +12,16 @@ interface MapProps {
   coordinates: number[];
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
-  liquefactionData: FeatureCollection<Geometry>;
+  highSusceptibilityLiquefactionData: FeatureCollection<Geometry>;
+  veryHighSusceptibilityLiquefactionData: FeatureCollection<Geometry>;
 }
 
 const Map: React.FC<MapProps> = ({
   coordinates = defaultCoords,
   softStoryData,
   tsunamiData,
-  liquefactionData,
+  highSusceptibilityLiquefactionData,
+  veryHighSusceptibilityLiquefactionData
 }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>(undefined);
@@ -97,12 +99,17 @@ const Map: React.FC<MapProps> = ({
         markerRef.current = addressMarker;
 
         // Add sources
-        map.addSource("seismic", { type: "geojson", data: liquefactionData });
+        map.addSource("highSusceptibilityLiquefaction", 
+          { type: "geojson", data: highSusceptibilityLiquefactionData });
+
+        map.addSource("veryHighSusceptibilityLiquefaction", 
+          { type: "geojson", data: veryHighSusceptibilityLiquefactionData });
 
         map.addSource("tsunami", { type: "geojson", data: tsunamiData });
 
         map.addSource("soft-stories", { type: "geojson", data: softStoryData });
 
+        // Add layers
         map.addLayer({
           id: "tsunamiLayer",
           source: "tsunami",
@@ -114,10 +121,20 @@ const Map: React.FC<MapProps> = ({
           },
         });
 
-        // Add layers
         map.addLayer({
-          id: "seismicLayer",
-          source: "seismic",
+          id: "highSusceptibilityLiquefaction",
+          source: "highSusceptibilityLiquefaction",
+          type: "fill",
+          slot: "middle",
+          paint: {
+            "fill-color": "#FFCF66",
+            "fill-opacity": 0.5, // 50% opacity
+          },
+        });
+
+        map.addLayer({
+          id: "veryHighSusceptibilityLiquefaction",
+          source: "veryHighSusceptibilityLiquefaction",
           type: "fill",
           slot: "middle",
           paint: {
@@ -162,7 +179,13 @@ const Map: React.FC<MapProps> = ({
       markerRef.current?.setLngLat(addressLngLat);
       return;
     }
-  }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
+  }, [
+    coordinates, 
+    highSusceptibilityLiquefactionData, 
+    veryHighSusceptibilityLiquefactionData, 
+    softStoryData, 
+    tsunamiData
+  ]);
 
   return (
     <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />

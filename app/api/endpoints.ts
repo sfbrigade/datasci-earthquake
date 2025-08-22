@@ -5,6 +5,8 @@ export const API_ENDPOINTS = {
   softStories: `${API_URL}/soft-stories`,
   tsunami: `${API_URL}/tsunami-zones`,
   liquefaction: `${API_URL}/liquefaction-zones`,
+  highSusceptibilityLiquefaction: `${API_URL}/high-susceptibility`,
+  veryHighSusceptibilityLiquefaction: `${API_URL}/very-high-susceptibility`,
   isSoftStory: `${API_URL}/soft-stories/is-soft-story`,
   isInTsunamiZone: `${API_URL}/tsunami-zones/is-in-tsunami-zone`,
   isInLiquefactionZone: `${API_URL}/liquefaction-zones/is-in-liquefaction-zone`,

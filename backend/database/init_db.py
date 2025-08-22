@@ -1,21 +1,21 @@
 """
 Database Initialization Script
 
-This script provides functions to manage database tables using 
-SQLAlchemy. It includes functions to create, drop, and check the 
-existence of tables in the database. 
+This script provides functions to manage database tables using
+SQLAlchemy. It includes functions to create, drop, and check the
+existence of tables in the database.
 
 Functions:
-    init_db(): Creates all tables defined in the SQLAlchemy `Base` 
+    init_db(): Creates all tables defined in the SQLAlchemy `Base`
                metadata.  Drops existing tables if they already exist.
-    drop_db(): Drops all tables defined in the SQLAlchemy `Base` 
-               metadata. Use cautiously because this action is 
+    drop_db(): Drops all tables defined in the SQLAlchemy `Base`
+               metadata. Use cautiously because this action is
                irreversible.
     check_tables_exist(): Checks if any tables exist in the database.
 
 Usage:
-    Run this script in docker to initialize the database by creating 
-    all necessary tables.  If existing tables are detected, they will 
+    Run this script in docker to initialize the database by creating
+    all necessary tables.  If existing tables are detected, they will
     be dropped and recreated.
 
 Example:
@@ -23,11 +23,11 @@ Example:
     Database tables created.
 
 Note:
-    The `Base` object should be imported from your SQLAlchemy model 
+    The `Base` object should be imported from your SQLAlchemy model
     definitions.
 
 Caution:
-    The `drop_db()` function will irreversibly remove all tables from 
+    The `drop_db()` function will irreversibly remove all tables from
     the database. Ensure you have backups if necessary.
 """
 
