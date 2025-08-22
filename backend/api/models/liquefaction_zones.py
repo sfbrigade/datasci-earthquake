@@ -24,7 +24,9 @@ class LiquefactionZone(Base):
 
     identifier: Mapped[str] = mapped_column(String, primary_key=True)
     geometry: Mapped[Geometry] = mapped_column(Geometry("MULTIPOLYGON", srid=4326))
-    liq: Mapped[str] = mapped_column(String)
+    liq: Mapped[str] = mapped_column(
+        String
+    )  # liquefaction susceptibility, either H or VH
     shape_length: Mapped[float] = mapped_column(Float)
     shape_area: Mapped[float] = mapped_column(Float)
     update_timestamp: Mapped[datetime] = mapped_column(
