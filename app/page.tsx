@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Suspense } from "react";
 import { Box, Flex, Heading, Text, List, HStack, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import Image from "next/image";
@@ -40,11 +41,13 @@ const Home = async () => {
   }
   return (
     <Flex direction="column">
-      <AddressMapper
-        softStoryData={softStoryData}
-        tsunamiData={tsunamiData}
-        liquefactionData={liquefactionData}
-      />
+      <Suspense>
+        <AddressMapper
+          softStoryData={softStoryData}
+          tsunamiData={tsunamiData}
+          liquefactionData={liquefactionData}
+        />
+      </Suspense>
       <Flex
         w={{ base: "full", xl: "7xl" }}
         p={{
