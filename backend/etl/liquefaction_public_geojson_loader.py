@@ -7,6 +7,7 @@ import json
 import requests
 from pathlib import Path
 from typing import Dict
+import sys
 
 URLS: Dict[str, str] = {
     "base": "http://localhost:8000/api/liquefaction-zones/",
@@ -31,7 +32,7 @@ def fetch(zone_type: str) -> dict:
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
-        print(f"Error fetching data for {zone_type}: {e}")
+        print(f"Error fetching data for {zone_type}: {e}", file=sys.stderr)
         return {}
 
 
@@ -40,7 +41,7 @@ def load(data: dict, zone_type: str) -> None:
     file_path = Path(FILE_PATHS["base"]) / FILE_PATHS[zone_type]
     file_path.parent.mkdir(parents=True, exist_ok=True)
     with file_path.open("w") as file:
-        json.dump(data, file)
+        json.dump(data, file, indent=2)
 
 
 if __name__ == "__main__":
