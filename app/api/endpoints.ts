@@ -16,4 +16,6 @@ export const CDN_ENDPOINTS = {
   softStories: `${CDN_URL}/SoftStoryProperty.geojson`,
   tsunami: `${CDN_URL}/TsunamiZone.geojson`,
   liquefaction: `${CDN_URL}/LiquefactionZone.geojson`,
+  highSusceptibilityLiquefaction: `${CDN_URL}/HighSusceptibilityLiquefactionZone.geojson`,
+  veryHighSusceptibilityLiquefaction: `${CDN_URL}/VeryHighSusceptibilityLiquefactionZone.geojson`,
 };
