@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, Dispatch, SetStateAction } from "react";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
-import { useContext } from "react";
-import { LegendClickedContext } from "./legend-clicked-context";
+import { ToggledLayersProps } from "./address-mapper";
 
 const defaultCoords = [-122.463733, 37.777448];
 
@@ -15,6 +14,8 @@ interface MapProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
+  toggledLayers: ToggledLayersProps;
+  setToggledLayers: Dispatch<SetStateAction<ToggledLayersProps>>;
 }
 
 const Map: React.FC<MapProps> = ({
@@ -22,28 +23,55 @@ const Map: React.FC<MapProps> = ({
   softStoryData,
   tsunamiData,
   liquefactionData,
+  toggledLayers,
+  setToggledLayers,
 }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>(undefined);
   const markerRef = useRef<mapboxgl.Marker>(undefined);
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
-  const { legendClicked, updateLegendClicked } =
-    useContext(LegendClickedContext);
 
-  const handleLegendClick = () => {
+  const updateToggledLayers = (hazardName: string) => {
+    if (hazardName === "softStory") {
+      setToggledLayers({
+        name: "",
+        softStoryToggled: !toggledLayers.softStoryToggled,
+        liquefactionToggled: toggledLayers.liquefactionToggled,
+        tsunamiToggled: toggledLayers.tsunamiToggled,
+      });
+    }
+    if (hazardName === "liquefaction") {
+      setToggledLayers({
+        name: "",
+        softStoryToggled: toggledLayers.softStoryToggled,
+        liquefactionToggled: !toggledLayers.liquefactionToggled,
+        tsunamiToggled: toggledLayers.tsunamiToggled,
+      });
+    }
+    if (hazardName === "tsunami") {
+      setToggledLayers({
+        name: "",
+        softStoryToggled: toggledLayers.softStoryToggled,
+        liquefactionToggled: toggledLayers.liquefactionToggled,
+        tsunamiToggled: !toggledLayers.tsunamiToggled,
+      });
+    }
+  };
+
+  const handleToggleLayers = () => {
     if (!mapRef.current) return;
     const map = mapRef.current;
 
-    // Record for storing the ids of layers. The keys of the Record correspond to values set to the context object legendClicked in it's "name" property
+    // Record for storing the ids of layers. The keys of the Record correspond to values set to the state object toggledLayers in it's "name" property
     const layerMapping: Record<string, string> = {
       softStory: "softStoriesLayer",
       liquefaction: "seismicLayer",
       tsunami: "tsunamiLayer",
     };
 
-    // finds id value for layer toggling by matching key of Record to name property of legendClicked object
-    const layerId = layerMapping[legendClicked.name];
+    // finds id value for layer toggling by matching key of Record to name property of toggledLayers object
+    const layerId = layerMapping[toggledLayers.name];
 
     if (layerId && map.getLayer(layerId)) {
       //gets layer's current visibility property value using id
@@ -54,8 +82,8 @@ const Map: React.FC<MapProps> = ({
         currentVisibility === "visible" ? "none" : "visible";
       // sets new visibility property value for layer, creating the "toggling" effect
       map.setLayoutProperty(layerId, "visibility", newVisibility);
-      // updates/sets context again, but using its second argument, which is optional. The logic within the context's updateLegendClicked() handles toggling of the boolean properties of legendClicked based on it's first argument (legendClicked.name) and the presence of the second argument (newVisibility) .
-      updateLegendClicked(legendClicked.name, newVisibility);
+      // sets state of address-mapper again, but using function in map component. The logic within the function handles toggling of the boolean properties of toggledLayers based on it's argument (toggledLayers.name)
+      updateToggledLayers(toggledLayers.name);
     }
   };
 
@@ -197,9 +225,9 @@ const Map: React.FC<MapProps> = ({
   }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
 
   useEffect(() => {
-    // prevents function from running when map component is mounted and twice when context changes
-    if (legendClicked.name != "") handleLegendClick();
-  }, [legendClicked]); // re-runs every time context changes
+    // prevents function from running when map component is mounted and twice when state changes
+    if (toggledLayers.name != "") handleToggleLayers();
+  }, [toggledLayers]); // re-runs every time state changes
 
   return (
     <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />

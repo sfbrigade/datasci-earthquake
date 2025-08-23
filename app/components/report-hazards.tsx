@@ -4,20 +4,22 @@ import CardHazard from "./card-hazard";
 import { Hazards } from "../data/data";
 import { CardContainer } from "./card-container";
 import { KeyElem } from "./key-elem";
-import { useContext } from "react";
-import { LegendClickedContext } from "./legend-clicked-context";
+import { Dispatch, SetStateAction } from "react";
+import { ToggledLayersProps } from "./address-mapper";
 
 type HazardData = { softStory?: any; tsunami?: any; liquefaction?: any };
 
 const ReportHazards = ({
   addressHazardData,
   isHazardDataLoading,
+  toggledLayers,
+  setToggledLayers,
 }: {
   addressHazardData: HazardData;
   isHazardDataLoading: boolean;
+  toggledLayers: ToggledLayersProps;
+  setToggledLayers: Dispatch<SetStateAction<ToggledLayersProps>>;
 }) => {
-  const { legendClicked } = useContext(LegendClickedContext);
-
   return (
     <Center flexDirection="column">
       <Box
@@ -43,21 +45,27 @@ const ReportHazards = ({
             color="grey.400"
             icon={<FaCircle />}
             toggleKey="softStory"
-            toggleState={legendClicked.softStoryToggled}
+            toggleState={toggledLayers.softStoryToggled}
+            toggledLayers={toggledLayers}
+            setToggledLayers={setToggledLayers}
           />
           <KeyElem
             name="Liquefaction areas"
             color="orange"
             icon={<FaSquareFull />}
             toggleKey="liquefaction"
-            toggleState={legendClicked.liquefactionToggled}
+            toggleState={toggledLayers.liquefactionToggled}
+            toggledLayers={toggledLayers}
+            setToggledLayers={setToggledLayers}
           />
           <KeyElem
             name="Tsunami zone"
             color="tsunamiBlue"
             icon={<FaSquareFull />}
             toggleKey="tsunami"
-            toggleState={legendClicked.tsunamiToggled}
+            toggleState={toggledLayers.tsunamiToggled}
+            toggledLayers={toggledLayers}
+            setToggledLayers={setToggledLayers}
           />
         </Stack>
       </Box>

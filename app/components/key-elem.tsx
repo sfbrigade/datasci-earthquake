@@ -1,6 +1,16 @@
 import { Stack, Text, Icon } from "@chakra-ui/react";
-import { useContext } from "react";
-import { LegendClickedContext } from "./legend-clicked-context";
+import { Dispatch, SetStateAction } from "react";
+import { ToggledLayersProps } from "./address-mapper";
+
+type KeyElemProps = {
+  name: string;
+  color: string;
+  icon: React.ReactNode;
+  toggleKey: string;
+  toggleState: boolean;
+  toggledLayers: ToggledLayersProps;
+  setToggledLayers: Dispatch<SetStateAction<ToggledLayersProps>>;
+};
 
 export const KeyElem = ({
   name,
@@ -8,18 +18,17 @@ export const KeyElem = ({
   icon,
   toggleKey,
   toggleState,
-}: {
-  name: string;
-  color: string;
-  icon: React.ReactNode;
-  toggleKey: string;
-  toggleState: boolean;
-}) => {
-  const { updateLegendClicked } = useContext(LegendClickedContext);
-
+  toggledLayers,
+  setToggledLayers,
+}: KeyElemProps) => {
   function handleClick() {
-    // preforms first update/setter for context, only using first argument. Its purpose is to set toggleKey's value to the context's name property (legendClicked.name) and "pass it" to the map component. As the context changes, a useEffect hook runs a function handling the map layer toggling logic in the map component.
-    updateLegendClicked(toggleKey);
+    // preforms first update/setter for address-mapper's state. Its purpose is to set toggleKey's value to the state's name property (toggledLayers.name) and "pass it" to the map component. As the context changes, a useEffect hook runs a function handling the map layer toggling logic in the map component.
+    setToggledLayers({
+      name: toggleKey,
+      softStoryToggled: toggledLayers.softStoryToggled,
+      liquefactionToggled: toggledLayers.liquefactionToggled,
+      tsunamiToggled: toggledLayers.tsunamiToggled,
+    });
   }
 
   return (

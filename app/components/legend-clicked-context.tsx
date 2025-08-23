@@ -43,7 +43,7 @@ export const LegendClickedContextProvider = ({
         tsunamiToggled: legendClicked.tsunamiToggled,
       });
     }
-    if (hazardName === "softStory" && layerState != undefined) {
+    if (hazardName === "softStory" && layerState !== undefined) {
       setLegendClicked({
         name: "",
         softStoryToggled: !legendClicked.softStoryToggled,
@@ -51,7 +51,7 @@ export const LegendClickedContextProvider = ({
         tsunamiToggled: legendClicked.tsunamiToggled,
       });
     }
-    if (hazardName === "liquefaction" && layerState != undefined) {
+    if (hazardName === "liquefaction" && layerState !== undefined) {
       setLegendClicked({
         name: "",
         softStoryToggled: legendClicked.softStoryToggled,
@@ -59,7 +59,7 @@ export const LegendClickedContextProvider = ({
         tsunamiToggled: legendClicked.tsunamiToggled,
       });
     }
-    if (hazardName === "tsunami" && layerState != undefined) {
+    if (hazardName === "tsunami" && layerState !== undefined) {
       setLegendClicked({
         name: "",
         softStoryToggled: legendClicked.softStoryToggled,
