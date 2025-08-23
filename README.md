@@ -76,7 +76,9 @@ This includes `pyproject.toml` and `.env`, and `package.json`.  You will need to
       - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
       - To execute a python script, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
 
-### Shutting down the application
+    **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
+
+### Shutting Down the Application
 
 To stop and shut down the application:
 

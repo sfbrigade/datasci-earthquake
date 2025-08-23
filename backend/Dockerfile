@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-#Dockerfile for FastAPI
+# Dockerfile for FastAPI
 
 ARG PYTHON_VERSION=3.11.4
 FROM python:${PYTHON_VERSION}-slim as python_base
@@ -25,21 +25,29 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
-# Install curl
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+# Install curl and certificates
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
 # Ensure the public/data directory exists and has correct permissions
 RUN mkdir -p /public/data && \
     chown -R appuser:appuser /public/data && \
     chmod -R 775 /public/data
 
-COPY requirements.txt /backend/requirements.txt
-
 COPY api /api
 
-# Install Python dependencies using a cache mount
-RUN --mount=type=cache,target=/root/.cache/pip \
-    python -m pip install --no-cache-dir -r /backend/requirements.txt
+# Download the uv installer
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Ensure the installed uv binary is on the `PATH`
+ENV PATH="/root/.local/bin/:$PATH"
+
+# Copy dependency files first for caching
+COPY backend/pyproject.toml backend/uv.lock ./
+
+# Install dependencies using uv
+RUN uv sync --frozen
 
 # Copy the source code into the container.
 COPY backend ./backend
