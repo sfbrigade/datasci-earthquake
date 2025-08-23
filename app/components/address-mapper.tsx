@@ -35,7 +35,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   softStoryData,
   tsunamiData,
   highSusceptibilityLiquefactionData,
-  veryHighSusceptibilityLiquefactionData
+  veryHighSusceptibilityLiquefactionData,
 }) => {
   const [coordinates, setCoordinates] = useState(defaultCoords);
   const [searchedAddress, setSearchedAddress] = useState("");
@@ -51,10 +51,14 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     const sources = [
       { name: "Soft Story Buildings", data: softStoryData },
       { name: "Tsunami Zones", data: tsunamiData },
-      { name: "High Susceptibility Liquefaction Zones", 
-        data: highSusceptibilityLiquefactionData },
-      { name: "Very High Susceptibility Liquefaction Zones",
-        data: veryHighSusceptibilityLiquefactionData }
+      {
+        name: "High Susceptibility Liquefaction Zones",
+        data: highSusceptibilityLiquefactionData,
+      },
+      {
+        name: "Very High Susceptibility Liquefaction Zones",
+        data: veryHighSusceptibilityLiquefactionData,
+      },
     ];
 
     const errors = sources
@@ -77,10 +81,10 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       }
     }
   }, [
-    softStoryData, 
-    tsunamiData, 
-    highSusceptibilityLiquefactionData, 
-    veryHighSusceptibilityLiquefactionData
+    softStoryData,
+    tsunamiData,
+    highSusceptibilityLiquefactionData,
+    veryHighSusceptibilityLiquefactionData,
   ]);
 
   return (
@@ -105,8 +109,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             coordinates={coordinates}
             softStoryData={softStoryData}
             tsunamiData={tsunamiData}
-            highSusceptibilityLiquefactionData={highSusceptibilityLiquefactionData}
-            veryHighSusceptibilityLiquefactionData={veryHighSusceptibilityLiquefactionData}
+            highSusceptibilityLiquefactionData={
+              highSusceptibilityLiquefactionData
+            }
+            veryHighSusceptibilityLiquefactionData={
+              veryHighSusceptibilityLiquefactionData
+            }
           />
         </Box>
       </Box>

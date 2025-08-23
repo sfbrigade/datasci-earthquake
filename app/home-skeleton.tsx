@@ -22,11 +22,17 @@ const HomeSkeleton = () => {
     type: "FeatureCollection",
     features: [],
   };
-  let highSusceptibilityLiquefactionData: FeatureCollection<Geometry, GeoJsonProperties> = {
+  let highSusceptibilityLiquefactionData: FeatureCollection<
+    Geometry,
+    GeoJsonProperties
+  > = {
     type: "FeatureCollection",
     features: [],
   };
-  let veryHighSusceptibilityLiquefactionData: FeatureCollection<Geometry, GeoJsonProperties> = {
+  let veryHighSusceptibilityLiquefactionData: FeatureCollection<
+    Geometry,
+    GeoJsonProperties
+  > = {
     type: "FeatureCollection",
     features: [],
   };
@@ -37,7 +43,9 @@ const HomeSkeleton = () => {
         softStoryData={softStoryData}
         tsunamiData={tsunamiData}
         highSusceptibilityLiquefactionData={highSusceptibilityLiquefactionData}
-        veryHighSusceptibilityLiquefactionData={veryHighSusceptibilityLiquefactionData}
+        veryHighSusceptibilityLiquefactionData={
+          veryHighSusceptibilityLiquefactionData
+        }
       />
       <Flex
         w={{ base: "full", xl: "7xl" }}

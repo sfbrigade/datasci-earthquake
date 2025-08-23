@@ -21,7 +21,7 @@ const Map: React.FC<MapProps> = ({
   softStoryData,
   tsunamiData,
   highSusceptibilityLiquefactionData,
-  veryHighSusceptibilityLiquefactionData
+  veryHighSusceptibilityLiquefactionData,
 }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>(undefined);
@@ -99,11 +99,15 @@ const Map: React.FC<MapProps> = ({
         markerRef.current = addressMarker;
 
         // Add sources
-        map.addSource("highSusceptibilityLiquefaction", 
-          { type: "geojson", data: highSusceptibilityLiquefactionData });
+        map.addSource("highSusceptibilityLiquefaction", {
+          type: "geojson",
+          data: highSusceptibilityLiquefactionData,
+        });
 
-        map.addSource("veryHighSusceptibilityLiquefaction", 
-          { type: "geojson", data: veryHighSusceptibilityLiquefactionData });
+        map.addSource("veryHighSusceptibilityLiquefaction", {
+          type: "geojson",
+          data: veryHighSusceptibilityLiquefactionData,
+        });
 
         map.addSource("tsunami", { type: "geojson", data: tsunamiData });
 
@@ -180,11 +184,11 @@ const Map: React.FC<MapProps> = ({
       return;
     }
   }, [
-    coordinates, 
-    highSusceptibilityLiquefactionData, 
-    veryHighSusceptibilityLiquefactionData, 
-    softStoryData, 
-    tsunamiData
+    coordinates,
+    highSusceptibilityLiquefactionData,
+    veryHighSusceptibilityLiquefactionData,
+    softStoryData,
+    tsunamiData,
   ]);
 
   return (
