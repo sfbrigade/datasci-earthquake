@@ -5,6 +5,6 @@ export const fetchSoftStories = async () => fetchData(CDN_ENDPOINTS.softStories,
 
 export const fetchTsunami = async () => fetchData(CDN_ENDPOINTS.tsunami, API_ENDPOINTS.tsunami);
 
-export const fetchHighSusceptibilityLiquefaction = async () => fetchData(CDN_ENDPOINTS.liquefaction, API_ENDPOINTS.highSusceptibilityLiquefaction);
+export const fetchHighSusceptibilityLiquefaction = async () => fetchData(CDN_ENDPOINTS.highSusceptibility, API_ENDPOINTS.highSusceptibilityLiquefaction);
 
-export const fetchVeryHighSusceptibilityLiquefaction = async () => fetchData(CDN_ENDPOINTS.liquefaction, API_ENDPOINTS.veryHighSusceptibilityLiquefaction);
+export const fetchVeryHighSusceptibilityLiquefaction = async () => fetchData(CDN_ENDPOINTS.veryHighSusceptibility, API_ENDPOINTS.veryHighSusceptibilityLiquefaction);

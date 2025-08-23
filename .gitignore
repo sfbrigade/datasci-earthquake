@@ -1,7 +1,7 @@
 # Next
 .next
 out
-
+/chatbot
 # Python
 __pycache__/
 pytest_cache/
@@ -35,4 +35,3 @@ node_modules
 .vscode/**
 !.vscode/extensions.json
 !.vscode/settings.json
-!.vscode/launch.json
