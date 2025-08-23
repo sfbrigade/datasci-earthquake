@@ -2,13 +2,14 @@
 
 import { ChangeEvent, FormEvent, Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Input, InputGroup } from "@chakra-ui/react";
+import { chakra, Input, InputGroup, Text } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill, {
   AddressAutofillOptions,
   AddressAutofillRetrieveResponse,
 } from "./address-autofill";
+import { AddressAutofillSuggestionResponse } from "@mapbox/search-js-core";
 
 const autofillOptions: AddressAutofillOptions = {
   country: "US",
@@ -27,10 +28,14 @@ interface SearchBarProps {
 
 const SearchBar = ({ onSearchChange }: SearchBarProps) => {
   const [inputAddress, setInputAddress] = useState("");
+  const [suggestionSelected, setSuggestionSelected] = useState(false);
+  const [suggestionsAvailable, setSuggestionsAvailable] = useState(false);
   const router = useRouter();
+  const characterCap = 5;
 
   const handleClearClick = () => {
     setInputAddress("");
+    setSuggestionSelected(false);
     router.push("/", { scroll: false });
   };
 
@@ -45,10 +50,16 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
     const addressLine = res.features[0].properties.feature_name;
     const coords = addressData.geometry.coordinates;
     onSearchChange(coords, addressLine);
+    // "locks in" choice, to prevent re-appearing of hint
+    setSuggestionSelected(true);
   };
 
   const handleAddressChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputAddress(event.currentTarget.value);
+    // shows hint again upon further search param changes without selection of suggestion
+    if (!suggestionSelected) {
+      setSuggestionsAvailable(false);
+    }
   };
 
   /**
@@ -61,13 +72,19 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
     // TODO: capture and update address as described above
   };
 
+  const handleSuggest = (res: AddressAutofillSuggestionResponse) => {
+    setSuggestionsAvailable(res.suggestions.length > 0);
+  };
+
   return (
-    <form onSubmit={onSubmit}>
+    <chakra.form position={"relative"} onSubmit={onSubmit}>
       <Suspense>
         <DynamicAddressAutofill
           accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ""}
           options={autofillOptions}
           onRetrieve={handleRetrieve}
+          // hides hint when suggestions are provided
+          onSuggest={handleSuggest}
         >
           <InputGroup
             w={{
@@ -133,7 +150,19 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
           </InputGroup>
         </DynamicAddressAutofill>
       </Suspense>
-    </form>
+      {inputAddress.length && !suggestionSelected && !suggestionsAvailable ? (
+        <Text
+          position="absolute"
+          bottom={0}
+          textStyle="textSmall"
+          color="white"
+        >
+          {inputAddress.length < characterCap
+            ? "Keep typing…"
+            : "Try refining search…"}
+        </Text>
+      ) : null}
+    </chakra.form>
   );
 };
 

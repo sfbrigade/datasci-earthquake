@@ -9,66 +9,66 @@ This is a hybrid Next.js + Python app that uses Next.js as the frontend and Fast
 You can work on this app entirely [locally](#local-development), entirely [using Docker](#development-with-docker), or--if you prefer to focus on front end or back end--a [combination of the two](#hybrid-development).
 
 ---
+# Setting Up and Using Environments
+## Configuration of environment variables for all environments
 
-## Local development
+We use GitHub Secrets to store sensitive environment variables. To be able to run the app, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
 
-### Prerequisites
+**Note**: Before starting work on the project, make sure to:
 
-- **PostgreSQL**: Ensure PostgreSQL is installed if you want to run the database locally (instead of in a Docker container).
+1. Get **write** access to the repository.  Accept invitation after you have been invited.
+2. Get the **decryption passphrase** from other devs or in the Slack Engineering channel.
+3. Navigate to workflow [on the repository's Actions page](https://github.com/sfbrigade/datasci-earthquake/actions)
+4. Click on `Generate .env File` workflow
+5. Trigger the workflow with the `Run workflow` button.
+6. Click on the job to navigate to the workflow run page.
+7. Download the artifact at the bottom of the page and unzip.
+8. Decrypt the env file using OpenSSL. In the folder with the artifact, run `openssl aes-256-cbc -d -salt -pbkdf2 -k <YOUR_PASSPHRASE> -in .env.enc -out env` in the terminal. This creates a decrypted file named `env`.
+9. Place the decrypted file in the root folder of the project and rename it to `.env`.
 
-### Starting the Application
+The file is organized into three main sections:
 
-If you choose to work locally, do the following:
-
-First, install the dependencies:
-
-```bash
-npm install
-# or
-yarn
-# or
-pnpm install
-```
-
-Then, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-The FastAPI server will be running on [http://127.0.0.1:8000](http://127.0.0.1:8000) – feel free to change the port in `package.json` (you'll also need to update it in `next.config.js`).
-
-### Troubleshooting
-
-Please refer to [Troubleshooting front end](#troubleshooting-front-end).
+- **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.
+- **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
+- **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
 
 ---
 
+
 ## Development with Docker
 
-This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.
+This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.  
+
+### Changing code
+Docker is configured so that any changes you make should trigger re-compiling by the appropriate service.  If the change is not taking, you may need to restart the server, but you do not have to rebuild everything.  
+
+### Changing configuration files
+This includes `pyproject.toml` and `.env`, and `package.json`.  You will need to restart the individual server, but should not have to rebuild everything.
 
 ### Prerequisites
 
 - **Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).
 - **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
 
-### Starting the Application
+### Starting the application
+
+1. **Build images if not yet created**: From the project root directory (where the docker-compose.yml file is located), run:
+   `docker compose build`
 
 1. **Run Docker Compose**: From the project root directory (where the docker-compose.yml file is located), run:
+   `docker compose up`
+
+   or
+
    `docker compose up -d`
+
    This will:
 
-- Build the necessary Docker images (if not already built).
-- Start all services defined in the docker-compose.yml file (e.g., frontend, backend, database).
+- Start all services defined in the docker-compose.yml file (e.g., frontend, backend, database)
 
-2.  **Access the Application**:
+2. **Start Postgres**
+
+3.  **Access the Application**:
     - The app is running at http://localhost:3000. Note that this may conflict with your local dev server. If so, one will be running on port 3000 and the other on port 3001.
     - The API is accessible at http://localhost:8000.
     - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
@@ -76,9 +76,7 @@ This project uses Docker and Docker Compose to run the application, which includ
       - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
       - To execute a python script, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
 
-    **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `requirements.txt`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
-
-### Shutting Down the Application
+### Shutting down the application
 
 To stop and shut down the application:
 
@@ -91,6 +89,17 @@ To stop and shut down the application:
     - Remove the containers, but it will **not** delete volumes (so the database data will persist).
 
     **Note:** If you want to start with a clean slate and remove all data inside the containers, run `docker compose down -v`.
+
+### Rebuilding individual servers
+Replace <image name> with `datasci-earthquake-frontend`, `datasci-earthquake-backend`, `datasci-earthquake-db` or `datasci-earthquake-db_test`:
+
+`docker compose build <service_name>`
+
+### Starting/stopping individual servers
+Replace <service name> with frontend, backend, db, or db_test:
+
+`docker compose up -d <service_name>`
+`docker compose stop <service_name>`
 
 ### Troubleshooting
 
@@ -109,6 +118,63 @@ To stop and shut down the application:
 3. Run pytest: `docker compose run backend pytest backend`
    - Alternatively, run pytest with container cleanup: `docker compose run --remove-orphans backend pytest backend`
 4. To get code coverage, run `docker exec -w /backend datasci-earthquake-backend-1 pytest --cov=backend`
+
+---
+
+
+## Local development
+Docker development is recommended as the configuration is more guaranteed.
+
+### Prerequisites
+
+**PostgreSQL**: 
+1. [Install](https://adoptium.net/) Java 1.8 or later if your PostgreSQL installer requires it (e.g., the EDB installer).
+2. [Install](https://www.postgresql.org/download/) PostgreSQL locally with the PostGIS extension, select the PostGIS extension when prompted by the installer.
+3. If PostgreSQL was already installed, add the PostGIS extension if not already included
+
+### Starting the Application
+
+1. Set up a python environment
+```bash
+python3.12 -m venv backend/venv
+```
+
+2. Activate the python environment (NOTE: `npm run dev` will install the dependencies)
+```bash
+source backend/venv/bin/activate
+```
+
+3. Set nvm version
+```bash
+nvm use 18
+```
+
+4. Install the front end dependencies:
+```bash
+npm install
+# or
+yarn
+# or
+pnpm install
+```
+
+5. Run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+The FastAPI server will be running on [http://127.0.0.1:8000](http://127.0.0.1:8000) – feel free to change the port in `package.json` (you'll also need to update it in `next.config.js`).
+
+### Troubleshooting
+
+Please refer to [Troubleshooting front end](#troubleshooting-front-end).
 
 ---
 
@@ -249,26 +315,6 @@ This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code s
 
 - **Running Pre-commit on All Files**: If you want to format all files in the repository, use:
   `pre-commit run --all-files`
-
----
-
-# Configuration of environment variables
-
-We use GitHub Secrets to store sensitive environment variables. To be able to run the app, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
-
-**Note**: Before starting work on the project, make sure to:
-
-1. Get **write** access to the repository.
-2. Get the **decryption passphrase** from other devs or in the Slack Engineering channel.
-3. Trigger the `Generate .env File` workflow [on the repository's Actions page](https://github.com/sfbrigade/datasci-earthquake/actions) download the artifact. You can trigger the workflow with the `Run workflow` button, navigate to the workflow run page, and find the artifact at the bottom.
-4. Decrypt the env file using OpenSSL. In the folder with the artifact, run `openssl aes-256-cbc -d -salt -pbkdf2 -k <YOUR_PASSPHRASE> -in .env.enc -out env` in the terminal. This creates a decrypted file named `env`.
-5. Place the decrypted file in the root folder of the project and rename it to `.env`.
-
-The file is organized into three main sections:
-
-- **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.
-- **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
-- **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
 
 ---
 
