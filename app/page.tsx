@@ -32,7 +32,7 @@ const Home = async () => {
     type: "FeatureCollection",
     features: [],
   };
-  let veryHighSusceptbilityLiquefactionData: FeatureCollection<
+  let veryHighSusceptibilityLiquefactionData: FeatureCollection<
     Geometry,
     GeoJsonProperties
   > = {
@@ -45,7 +45,7 @@ const Home = async () => {
       softStoryData,
       tsunamiData,
       highSusceptibilityLiquefactionData,
-      veryHighSusceptbilityLiquefactionData,
+      veryHighSusceptibilityLiquefactionData,
     ] = await Promise.all([
       fetchSoftStories(),
       fetchTsunami(),
@@ -62,7 +62,7 @@ const Home = async () => {
         tsunamiData={tsunamiData}
         highSusceptibilityLiquefactionData={highSusceptibilityLiquefactionData}
         veryHighSusceptibilityLiquefactionData={
-          veryHighSusceptbilityLiquefactionData
+          veryHighSusceptibilityLiquefactionData
         }
       />
       <Flex

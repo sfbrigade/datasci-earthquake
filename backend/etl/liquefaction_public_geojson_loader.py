@@ -1,43 +1,46 @@
 """
-Loads the two liquefaction zone geojsons into the public/data folder
-from a running backend Docker container.
-
-Note that running this script from a local backend may not work.
+Saves geojsons from the api of a running backend Docker container
+to the public/data folder.
 """
 
-from http.client import HTTPException
+import json
 import requests
+from pathlib import Path
+from typing import Dict
 
-
-URLS = {
+URLS: Dict[str, str] = {
     "base": "http://localhost:8000/api/liquefaction-zones/",
     "high": "high-susceptibility",
     "very-high": "very-high-susceptibility",
 }
 
-FILE_PATHS = {
+FILE_PATHS: Dict[str, str] = {
     "base": "public/data",
     "high": "HighSusceptibilityLiquefactionZone.geojson",
     "very-high": "VeryHighSusceptibilityLiquefactionZone.geojson",
 }
 
 
-def fetch(type: str) -> str:
+def fetch(zone_type: str) -> dict:
     """
     Fetch the geojson of this liquefaction zone type from the backend
     Docker container
     """
-    response = requests.get(URLS["base"] + URLS[type])
-    if response.ok:
+    try:
+        response = requests.get(URLS["base"] + URLS[zone_type])
+        response.raise_for_status()
         return response.json()
-    else:
-        raise HTTPException(response)
+    except requests.RequestException as e:
+        print(f"Error fetching data for {zone_type}: {e}")
+        return {}
 
 
-def load(data: str, type: str) -> None:
+def load(data: dict, zone_type: str) -> None:
     """Save the geojson in the appropriate folder"""
-    with open(FILE_PATHS["base"] + "/" + FILE_PATHS[type], "w") as f:
-        f.write(str(data))
+    file_path = Path(FILE_PATHS["base"]) / FILE_PATHS[zone_type]
+    file_path.parent.mkdir(parents=True, exist_ok=True)
+    with file_path.open("w") as file:
+        json.dump(data, file)
 
 
 if __name__ == "__main__":
