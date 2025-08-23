@@ -9,7 +9,8 @@ import AddressMapper from "./components/address-mapper";
 import {
   fetchSoftStories,
   fetchTsunami,
-  fetchLiquefaction,
+  fetchHighSusceptibilityLiquefaction,
+  fetchVeryHighSusceptibilityLiquefaction,
 } from "./api/services";
 
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `home-skeleton.tsx` and vice versa
@@ -24,16 +25,32 @@ const Home = async () => {
     type: "FeatureCollection",
     features: [],
   };
-  let liquefactionData: FeatureCollection<Geometry, GeoJsonProperties> = {
+  let highSusceptibilityLiquefactionData: FeatureCollection<
+    Geometry,
+    GeoJsonProperties
+  > = {
+    type: "FeatureCollection",
+    features: [],
+  };
+  let veryHighSusceptibilityLiquefactionData: FeatureCollection<
+    Geometry,
+    GeoJsonProperties
+  > = {
     type: "FeatureCollection",
     features: [],
   };
 
   try {
-    [softStoryData, tsunamiData, liquefactionData] = await Promise.all([
+    [
+      softStoryData,
+      tsunamiData,
+      highSusceptibilityLiquefactionData,
+      veryHighSusceptibilityLiquefactionData,
+    ] = await Promise.all([
       fetchSoftStories(),
       fetchTsunami(),
-      fetchLiquefaction(),
+      fetchHighSusceptibilityLiquefaction(),
+      fetchVeryHighSusceptibilityLiquefaction(),
     ]);
   } catch (error: any) {
     console.error("Error: ", error);
@@ -43,7 +60,10 @@ const Home = async () => {
       <AddressMapper
         softStoryData={softStoryData}
         tsunamiData={tsunamiData}
-        liquefactionData={liquefactionData}
+        highSusceptibilityLiquefactionData={highSusceptibilityLiquefactionData}
+        veryHighSusceptibilityLiquefactionData={
+          veryHighSusceptibilityLiquefactionData
+        }
       />
       <Flex
         w={{ base: "full", xl: "7xl" }}

@@ -104,7 +104,8 @@ async def get_very_high_susceptibility_zones(db: Session = Depends(get_db)):
         db (Session): The database session dependency.
 
     Returns:
-        LiquefactionFeatureCollection: A collection of very-high-susceptibility liquefaction zones as GeoJSON Features.
+        LiquefactionFeatureCollection: A collection of very-high-susceptibility
+        liquefaction zones as GeoJSON Features.
 
     Raises:
         HTTPException: If no zones are found (404 error).

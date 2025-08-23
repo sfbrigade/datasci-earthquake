@@ -16,7 +16,8 @@ const defaultCoords = addressLookupCoordinates.geometry.coordinates ?? [];
 interface AddressMapperProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
-  liquefactionData: FeatureCollection<Geometry>;
+  highSusceptibilityLiquefactionData: FeatureCollection<Geometry>;
+  veryHighSusceptibilityLiquefactionData: FeatureCollection<Geometry>;
 }
 
 type ErrorResult = { error: true; message: string };
@@ -33,7 +34,8 @@ const isErrorResult = (data: unknown): data is ErrorResult => {
 const AddressMapper: React.FC<AddressMapperProps> = ({
   softStoryData,
   tsunamiData,
-  liquefactionData,
+  highSusceptibilityLiquefactionData,
+  veryHighSusceptibilityLiquefactionData,
 }) => {
   const [coordinates, setCoordinates] = useState(defaultCoords);
   const [searchedAddress, setSearchedAddress] = useState("");
@@ -49,7 +51,14 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     const sources = [
       { name: "Soft Story Buildings", data: softStoryData },
       { name: "Tsunami Zones", data: tsunamiData },
-      { name: "Liquefaction Zones", data: liquefactionData },
+      {
+        name: "High Susceptibility Liquefaction Zones",
+        data: highSusceptibilityLiquefactionData,
+      },
+      {
+        name: "Very High Susceptibility Liquefaction Zones",
+        data: veryHighSusceptibilityLiquefactionData,
+      },
     ];
 
     const errors = sources
@@ -71,7 +80,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         });
       }
     }
-  }, [softStoryData, tsunamiData, liquefactionData]);
+  }, [
+    softStoryData,
+    tsunamiData,
+    highSusceptibilityLiquefactionData,
+    veryHighSusceptibilityLiquefactionData,
+  ]);
 
   return (
     <>
@@ -95,7 +109,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             coordinates={coordinates}
             softStoryData={softStoryData}
             tsunamiData={tsunamiData}
-            liquefactionData={liquefactionData}
+            highSusceptibilityLiquefactionData={
+              highSusceptibilityLiquefactionData
+            }
+            veryHighSusceptibilityLiquefactionData={
+              veryHighSusceptibilityLiquefactionData
+            }
           />
         </Box>
       </Box>

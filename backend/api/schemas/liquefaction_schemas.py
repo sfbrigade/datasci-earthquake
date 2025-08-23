@@ -12,7 +12,8 @@ class LiquefactionProperties(BaseModel):
 
     Attributes:
         identifier (str): Unique identifier for the liquefaction zone.
-        liq (str): Represents the level of susceptibility (High (H) or Very High (VH)).
+        liq (str): Represents the level of susceptibility (High (H) or
+            Very High (VH)).
     """
 
     identifier: str
@@ -22,12 +23,15 @@ class LiquefactionProperties(BaseModel):
 
 class LiquefactionFeature(Feature):
     """
-    Pydantic model for a liquefaction feature, conforming to GeoJSON Feature structure.
+    Pydantic model for a liquefaction feature, conforming to GeoJSON
+    Feature structure.
 
     Attributes:
         type (str): The type of GeoJSON object. Always "Feature".
-        geometry (MultiPolygon): The geographical shape of the liquefaction zone.
-        properties (LiquefactionProperties): Additional properties of the liquefaction zone.
+        geometry (MultiPolygon): The geographical shape of the
+            liquefaction zone.
+        properties (LiquefactionProperties): Additional properties of
+            the liquefaction zone.
     """
 
     type: str = Field(default="Feature")  # type: ignore
@@ -42,10 +46,12 @@ class LiquefactionFeature(Feature):
         Convert SQLAlchemy model to Pydantic LiquefactionFeature.
 
         Args:
-            liquefaction_zone (LiquefactionZone): SQLAlchemy LiquefactionZone model instance.
+            liquefaction_zone (LiquefactionZone): SQLAlchemy
+            LiquefactionZone model instance.
 
         Returns:
-            LiquefactionFeature: Pydantic model instance representing the liquefaction zone as a GeoJSON Feature.
+            LiquefactionFeature: Pydantic model instance representing
+            the liquefaction zone as a GeoJSON Feature.
         """
         return LiquefactionFeature(
             type="Feature",
@@ -60,11 +66,14 @@ class LiquefactionFeature(Feature):
 
 class LiquefactionFeatureCollection(FeatureCollection):
     """
-    Pydantic model for a collection of liquefaction features, conforming to GeoJSON FeatureCollection structure.
+    Pydantic model for a collection of liquefaction features,
+    conforming to GeoJSON FeatureCollection structure.
 
     Attributes:
-        type (str): The type of GeoJSON object. Always "FeatureCollection".
-        features (List[LiquefactionFeature]): List of LiquefactionFeature objects.
+        type (str): The type of GeoJSON object.
+            Always "FeatureCollection".
+        features (List[LiquefactionFeature]): List of
+            LiquefactionFeature objects.
     """
 
     type: str = Field(default="FeatureCollection")  # type: ignore
@@ -77,7 +86,8 @@ class InLiquefactionZoneView(BaseModel):
 
     Attributes:
         exists (bool): Whether the point is in a liquefaction zone
-        last_updated (Optional[datetime]): Timestamp of last update if exists
+        last_updated (Optional[datetime]): Timestamp of the last update
+            if one exists
         liq (Optional[str]): Susceptibility of the zone to liquefaction
     """
 

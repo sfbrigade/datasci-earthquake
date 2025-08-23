@@ -9,14 +9,16 @@ This is a hybrid Next.js + Python app that uses Next.js as the frontend and Fast
 You can work on this app entirely [locally](#local-development), entirely [using Docker](#development-with-docker), or--if you prefer to focus on front end or back end--a [combination of the two](#hybrid-development).
 
 ---
+
 # Setting Up and Using Environments
+
 ## Configuration of environment variables for all environments
 
 We use GitHub Secrets to store sensitive environment variables. To be able to run the app, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
 
 **Note**: Before starting work on the project, make sure to:
 
-1. Get **write** access to the repository.  Accept invitation after you have been invited.
+1. Get **write** access to the repository. Accept invitation after you have been invited.
 2. Get the **decryption passphrase** from other devs or in the Slack Engineering channel.
 3. Navigate to workflow [on the repository's Actions page](https://github.com/sfbrigade/datasci-earthquake/actions)
 4. Click on `Generate .env File` workflow
@@ -34,16 +36,17 @@ The file is organized into three main sections:
 
 ---
 
-
 ## Development with Docker
 
-This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.  
+This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.
 
 ### Changing code
-Docker is configured so that any changes you make should trigger re-compiling by the appropriate service.  If the change is not taking, you may need to restart the server, but you do not have to rebuild everything.  
+
+Docker is configured so that any changes you make should trigger re-compiling by the appropriate service. If the change is not taking, you may need to restart the server, but you do not have to rebuild everything.
 
 ### Changing configuration files
-This includes `pyproject.toml` and `.env`, and `package.json`.  You will need to restart the individual server, but should not have to rebuild everything.
+
+This includes `pyproject.toml` and `.env`, and `package.json`. You will need to restart the individual server, but should not have to rebuild everything.
 
 ### Prerequisites
 
@@ -68,15 +71,15 @@ This includes `pyproject.toml` and `.env`, and `package.json`.  You will need to
 
 2. **Start Postgres**
 
-3.  **Access the Application**:
-    - The app is running at http://localhost:3000. Note that this may conflict with your local dev server. If so, one will be running on port 3000 and the other on port 3001.
-    - The API is accessible at http://localhost:8000.
-    - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
-    - To interact with a running container, use `docker exec [OPTIONS] CONTAINER COMMAND [ARG...]`
-      - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
-      - To execute a python script, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
+3. **Access the Application**:
+   - The app is running at http://localhost:3000. Note that this may conflict with your local dev server. If so, one will be running on port 3000 and the other on port 3001.
+   - The API is accessible at http://localhost:8000.
+   - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
+   - To interact with a running container, use `docker exec [OPTIONS] CONTAINER COMMAND [ARG...]`
+     - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
+     - To execute a python script, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
 
-    **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
+   **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
 
 ### Shutting Down the Application
 
@@ -93,11 +96,13 @@ To stop and shut down the application:
     **Note:** If you want to start with a clean slate and remove all data inside the containers, run `docker compose down -v`.
 
 ### Rebuilding individual servers
+
 Replace <image name> with `datasci-earthquake-frontend`, `datasci-earthquake-backend`, `datasci-earthquake-db` or `datasci-earthquake-db_test`:
 
 `docker compose build <service_name>`
 
 ### Starting/stopping individual servers
+
 Replace <service name> with frontend, backend, db, or db_test:
 
 `docker compose up -d <service_name>`
@@ -123,13 +128,14 @@ Replace <service name> with frontend, backend, db, or db_test:
 
 ---
 
-
 ## Local development
+
 Docker development is recommended as the configuration is more guaranteed.
 
 ### Prerequisites
 
-**PostgreSQL**: 
+**PostgreSQL**:
+
 1. [Install](https://adoptium.net/) Java 1.8 or later if your PostgreSQL installer requires it (e.g., the EDB installer).
 2. [Install](https://www.postgresql.org/download/) PostgreSQL locally with the PostGIS extension, select the PostGIS extension when prompted by the installer.
 3. If PostgreSQL was already installed, add the PostGIS extension if not already included
@@ -137,21 +143,25 @@ Docker development is recommended as the configuration is more guaranteed.
 ### Starting the Application
 
 1. Set up a python environment
+
 ```bash
 python3.12 -m venv backend/venv
 ```
 
 2. Activate the python environment (NOTE: `npm run dev` will install the dependencies)
+
 ```bash
 source backend/venv/bin/activate
 ```
 
 3. Set nvm version
+
 ```bash
 nvm use 18
 ```
 
 4. Install the front end dependencies:
+
 ```bash
 npm install
 # or
