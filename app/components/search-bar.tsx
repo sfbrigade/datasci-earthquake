@@ -9,7 +9,7 @@ import {
   useCallback,
 } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Input, InputGroup, Text } from "@chakra-ui/react";
+import { chakra, Input, InputGroup, Text } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
@@ -161,7 +161,7 @@ const SearchBar = ({
   ]);
 
   return (
-    <form style={{ position: "relative" }} onSubmit={onSubmit}>
+    <chakra.form position={"relative"} onSubmit={onSubmit}>
       <Suspense>
         <DynamicAddressAutofill
           accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ""}
@@ -246,7 +246,7 @@ const SearchBar = ({
             : "Try refining search…"}
         </Text>
       ) : null}
-    </form>
+    </chakra.form>
   );
 };
 
