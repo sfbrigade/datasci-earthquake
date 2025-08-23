@@ -138,7 +138,7 @@ const Map: React.FC<MapProps> = ({
       map.touchZoomRotate.disableRotation(); // turn off rotate w/touch
 
       const nav = new mapboxgl.NavigationControl({ showCompass: false });
-      map.addControl(nav, "right");
+      map.addControl(nav, "bottom-right");
 
       // wait for map to load before drawing marker
       map.on("load", () => {
