@@ -61,12 +61,12 @@ const ReportHazards = ({
           <Text textStyle="textMedium" layerStyle="text" fontWeight="700">
             Legend:
           </Text>
-          // TODO: in the event this section of code handling the legends isn't
+          <KeyElem name="Soft story" color="grey.400" icon={<FaCircle />} />
+          {/* TODO: in the event this section of code handling the legends isn't
           completely remove, it should be refactored by taking the values of
           each property from the KeyElems and placing them into an array,
           allowing the legends to be mapped out. The index argument could/should
-          be used during mapping.
-          <KeyElem name="Soft story" color="grey.400" icon={<FaCircle />} />
+          be used during mapping. */}
           <Switch.Root
             checked={toggledStates[0]}
             onCheckedChange={(e) => handleSwitchClick(0, e.checked)}
