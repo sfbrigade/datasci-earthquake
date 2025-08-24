@@ -288,3 +288,5 @@ export const PillData = [
     noData: "No Data",
   },
 ];
+
+export const LayerIds = ["softStoriesLayer", "seismicLayer", "tsunamiLayer"];

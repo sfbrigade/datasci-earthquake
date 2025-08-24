@@ -5,7 +5,7 @@ import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
-import { ToggledLayersProps } from "./address-mapper";
+import { LayerToggleObjProps } from "./address-mapper";
 
 const defaultCoords = [-122.463733, 37.777448];
 
@@ -14,8 +14,7 @@ interface MapProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
-  toggledLayers: ToggledLayersProps;
-  setToggledLayers: Dispatch<SetStateAction<ToggledLayersProps>>;
+  layerToggleObj: LayerToggleObjProps;
 }
 
 const Map: React.FC<MapProps> = ({
@@ -23,8 +22,7 @@ const Map: React.FC<MapProps> = ({
   softStoryData,
   tsunamiData,
   liquefactionData,
-  toggledLayers,
-  setToggledLayers,
+  layerToggleObj,
 }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>(undefined);
@@ -32,58 +30,16 @@ const Map: React.FC<MapProps> = ({
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
 
-  const updateToggledLayers = (hazardName: string) => {
-    if (hazardName === "softStory") {
-      setToggledLayers({
-        name: "",
-        softStoryToggled: !toggledLayers.softStoryToggled,
-        liquefactionToggled: toggledLayers.liquefactionToggled,
-        tsunamiToggled: toggledLayers.tsunamiToggled,
-      });
-    }
-    if (hazardName === "liquefaction") {
-      setToggledLayers({
-        name: "",
-        softStoryToggled: toggledLayers.softStoryToggled,
-        liquefactionToggled: !toggledLayers.liquefactionToggled,
-        tsunamiToggled: toggledLayers.tsunamiToggled,
-      });
-    }
-    if (hazardName === "tsunami") {
-      setToggledLayers({
-        name: "",
-        softStoryToggled: toggledLayers.softStoryToggled,
-        liquefactionToggled: toggledLayers.liquefactionToggled,
-        tsunamiToggled: !toggledLayers.tsunamiToggled,
-      });
-    }
-  };
-
   const handleToggleLayers = () => {
     if (!mapRef.current) return;
     const map = mapRef.current;
 
-    // Record for storing the ids of layers. The keys of the Record correspond to values set to the state object toggledLayers in it's "name" property
-    const layerMapping: Record<string, string> = {
-      softStory: "softStoriesLayer",
-      liquefaction: "seismicLayer",
-      tsunami: "tsunamiLayer",
-    };
-
-    // finds id value for layer toggling by matching key of Record to name property of toggledLayers object
-    const layerId = layerMapping[toggledLayers.name];
+    const layerId = layerToggleObj.layerId;
 
     if (layerId && map.getLayer(layerId)) {
-      //gets layer's current visibility property value using id
-      const currentVisibility =
-        map.getLayoutProperty(layerId, "visibility") ?? "visible";
-      //based on value of above property, swaps string values
-      const newVisibility =
-        currentVisibility === "visible" ? "none" : "visible";
+      const newVisibility = layerToggleObj.toggleState ? "visible" : "none";
       // sets new visibility property value for layer, creating the "toggling" effect
       map.setLayoutProperty(layerId, "visibility", newVisibility);
-      // sets state of address-mapper again, but using function in map component. The logic within the function handles toggling of the boolean properties of toggledLayers based on it's argument (toggledLayers.name)
-      updateToggledLayers(toggledLayers.name);
     }
   };
 
@@ -225,9 +181,8 @@ const Map: React.FC<MapProps> = ({
   }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
 
   useEffect(() => {
-    // prevents function from running when map component is mounted and twice when state changes
-    if (toggledLayers.name != "") handleToggleLayers();
-  }, [toggledLayers]); // re-runs every time state changes
+    if (layerToggleObj.layerId != "") handleToggleLayers();
+  }, [layerToggleObj]); // re-runs every time state changes
 
   return (
     <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />

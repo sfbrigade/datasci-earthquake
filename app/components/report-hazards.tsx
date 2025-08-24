@@ -1,25 +1,47 @@
-import { Box, Center, Stack, Text } from "@chakra-ui/react";
+import { Box, Center, Stack, Switch, Text } from "@chakra-ui/react";
 import { FaCircle, FaSquareFull } from "react-icons/fa";
 import CardHazard from "./card-hazard";
-import { Hazards } from "../data/data";
+import { Hazards, LayerIds } from "../data/data";
 import { CardContainer } from "./card-container";
 import { KeyElem } from "./key-elem";
-import { Dispatch, SetStateAction } from "react";
-import { ToggledLayersProps } from "./address-mapper";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { LayerToggleObjProps } from "./address-mapper";
 
 type HazardData = { softStory?: any; tsunami?: any; liquefaction?: any };
+type ToggledStatesProps = boolean[];
 
 const ReportHazards = ({
   addressHazardData,
   isHazardDataLoading,
-  toggledLayers,
-  setToggledLayers,
+  setLayerToggleObj,
 }: {
   addressHazardData: HazardData;
   isHazardDataLoading: boolean;
-  toggledLayers: ToggledLayersProps;
-  setToggledLayers: Dispatch<SetStateAction<ToggledLayersProps>>;
+  setLayerToggleObj: Dispatch<SetStateAction<LayerToggleObjProps>>;
 }) => {
+  const [toggledStates, setToggledStates] = useState<ToggledStatesProps>([]);
+
+  useEffect(() => {
+    const toggledStatesDefaults: boolean[] = [];
+    LayerIds.forEach(() => toggledStatesDefaults.push(true));
+    setToggledStates(toggledStatesDefaults);
+  }, []);
+
+  const handleSwitchClick = (num: number, checked: boolean) => {
+    const newArray = [];
+    const obj = {
+      layerId: LayerIds[num],
+      toggleState: checked,
+    };
+    for (let i = 0; i < toggledStates.length; i++) {
+      if (i === num) {
+        newArray.push(checked);
+      } else newArray.push(toggledStates[i]);
+    }
+    setToggledStates(newArray);
+    setLayerToggleObj(obj);
+  };
+
   return (
     <Center flexDirection="column">
       <Box
@@ -40,33 +62,41 @@ const ReportHazards = ({
           <Text textStyle="textMedium" layerStyle="text" fontWeight="700">
             Legend:
           </Text>
-          <KeyElem
-            name="Soft story"
-            color="grey.400"
-            icon={<FaCircle />}
-            toggleKey="softStory"
-            toggleState={toggledLayers.softStoryToggled}
-            toggledLayers={toggledLayers}
-            setToggledLayers={setToggledLayers}
-          />
+          <KeyElem name="Soft story" color="grey.400" icon={<FaCircle />} />
+          <Switch.Root
+            checked={toggledStates[0]}
+            onCheckedChange={(e) => handleSwitchClick(0, e.checked)}
+          >
+            <Switch.HiddenInput />
+            <Switch.Control />
+            <Switch.Label />
+          </Switch.Root>
           <KeyElem
             name="Liquefaction areas"
             color="orange"
             icon={<FaSquareFull />}
-            toggleKey="liquefaction"
-            toggleState={toggledLayers.liquefactionToggled}
-            toggledLayers={toggledLayers}
-            setToggledLayers={setToggledLayers}
           />
+          <Switch.Root
+            checked={toggledStates[1]}
+            onCheckedChange={(e) => handleSwitchClick(1, e.checked)}
+          >
+            <Switch.HiddenInput />
+            <Switch.Control />
+            <Switch.Label />
+          </Switch.Root>
           <KeyElem
             name="Tsunami zone"
             color="tsunamiBlue"
             icon={<FaSquareFull />}
-            toggleKey="tsunami"
-            toggleState={toggledLayers.tsunamiToggled}
-            toggledLayers={toggledLayers}
-            setToggledLayers={setToggledLayers}
           />
+          <Switch.Root
+            checked={toggledStates[2]}
+            onCheckedChange={(e) => handleSwitchClick(2, e.checked)}
+          >
+            <Switch.HiddenInput />
+            <Switch.Control />
+            <Switch.Label />
+          </Switch.Root>
         </Stack>
       </Box>
       <CardContainer>

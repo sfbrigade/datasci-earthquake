@@ -19,11 +19,9 @@ interface AddressMapperProps {
   liquefactionData: FeatureCollection<Geometry>;
 }
 
-export type ToggledLayersProps = {
-  name: string;
-  softStoryToggled: boolean;
-  liquefactionToggled: boolean;
-  tsunamiToggled: boolean;
+export type LayerToggleObjProps = {
+  layerId: string;
+  toggleState: boolean;
 };
 
 type ErrorResult = { error: true; message: string };
@@ -46,11 +44,9 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const [searchedAddress, setSearchedAddress] = useState("");
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
-  const [toggledLayers, setToggledLayers] = useState<ToggledLayersProps>({
-    name: "",
-    softStoryToggled: false,
-    liquefactionToggled: false,
-    tsunamiToggled: false,
+  const [layerToggleObj, setLayerToggleObj] = useState<LayerToggleObjProps>({
+    layerId: "",
+    toggleState: true,
   });
   const toastIdDataLoadFailed = "data-load-failed";
 
@@ -102,8 +98,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             <ReportHazards
               addressHazardData={addressHazardData}
               isHazardDataLoading={isHazardDataLoading}
-              toggledLayers={toggledLayers}
-              setToggledLayers={setToggledLayers}
+              setLayerToggleObj={setLayerToggleObj}
             />
           </Box>
           <Map
@@ -111,8 +106,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             softStoryData={softStoryData}
             tsunamiData={tsunamiData}
             liquefactionData={liquefactionData}
-            toggledLayers={toggledLayers}
-            setToggledLayers={setToggledLayers}
+            layerToggleObj={layerToggleObj}
           />
         </Box>
       </Box>
