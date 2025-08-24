@@ -26,9 +26,20 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install uv
+        run: |
+          # Download the latest uv installer
+          curl -sSL https://astral.sh/uv/install.sh -o /uv-installer.sh
+          
+          # Run the installer
+          sh /uv-installer.sh
+          
+          # Ensure uv is on PATH
+          export PATH="/root/.local/bin/:$PATH"
+
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          uv sync --frozen --system --project backend
 
       - name: Get Run ID of Most Recent Successful Run
         id: get_run_id
