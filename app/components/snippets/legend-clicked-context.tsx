@@ -1,3 +1,5 @@
+// this is a leftover, unused file made for the potential implementation of context within the project. This was specifically made to handle the "toggling" of the MapBox map layers, but will require refactoring. It may serve as an example of how to use context and most of code should be reusable if useContext is used in the future.
+
 "use client";
 
 import { useState, createContext, PropsWithChildren } from "react";
