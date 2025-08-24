@@ -34,9 +34,8 @@ const ReportHazards = ({
       toggleState: checked,
     };
     for (let i = 0; i < toggledStates.length; i++) {
-      if (i === num) {
-        newArray.push(checked);
-      } else newArray.push(toggledStates[i]);
+      if (i === num) newArray.push(checked);
+      else newArray.push(toggledStates[i]);
     }
     setToggledStates(newArray);
     setLayerToggleObj(obj);

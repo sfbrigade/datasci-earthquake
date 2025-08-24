@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, Dispatch, SetStateAction } from "react";
+import React, { useRef, useEffect } from "react";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
