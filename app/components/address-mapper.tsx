@@ -19,6 +19,11 @@ interface AddressMapperProps {
   liquefactionData: FeatureCollection<Geometry>;
 }
 
+export type LayerToggleObjProps = {
+  layerId: string;
+  toggleState: boolean;
+};
+
 type ErrorResult = { error: true; message: string };
 
 const isErrorResult = (data: unknown): data is ErrorResult => {
@@ -39,6 +44,10 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const [searchedAddress, setSearchedAddress] = useState("");
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
+  const [layerToggleObj, setLayerToggleObj] = useState<LayerToggleObjProps>({
+    layerId: "",
+    toggleState: true,
+  });
   const toastIdDataLoadFailed = "data-load-failed";
 
   const updateMap = (coords: number[]) => {
@@ -89,6 +98,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             <ReportHazards
               addressHazardData={addressHazardData}
               isHazardDataLoading={isHazardDataLoading}
+              setLayerToggleObj={setLayerToggleObj}
             />
           </Box>
           <Map
@@ -96,6 +106,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             softStoryData={softStoryData}
             tsunamiData={tsunamiData}
             liquefactionData={liquefactionData}
+            layerToggleObj={layerToggleObj}
           />
         </Box>
       </Box>

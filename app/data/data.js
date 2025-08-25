@@ -227,6 +227,16 @@ export const TeamMembers = [
     name: "Josh van Eyken",
   },
   {
+    id: 21,
+    role: "Front End Engineer",
+    name: "Jobe Abdellah",
+  },
+  {
+    id: 22,
+    role: "Front End Engineer",
+    name: "Jesse Mavi",
+  },
+  {
     id: 14,
     role: "Full Stack Engineer",
     name: "Raymond Yee",
@@ -278,3 +288,5 @@ export const PillData = [
     noData: "No Data",
   },
 ];
+
+export const LayerIds = ["softStoriesLayer", "seismicLayer", "tsunamiLayer"];

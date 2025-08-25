@@ -1,14 +1,12 @@
 import { Stack, Text, Icon } from "@chakra-ui/react";
 
-export const KeyElem = ({
-  name,
-  color,
-  icon,
-}: {
+type KeyElemProps = {
   name: string;
   color: string;
   icon: React.ReactNode;
-}) => {
+};
+
+export const KeyElem = ({ name, color, icon }: KeyElemProps) => {
   return (
     <Stack direction="row" alignItems="center">
       <Icon size="sm" color={color}>
