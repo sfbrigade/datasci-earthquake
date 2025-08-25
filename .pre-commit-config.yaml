@@ -40,5 +40,4 @@ repos:
       - id: prettier
         additional_dependencies:
           - "prettier"
-          - "prettier-plugin-tailwindcss"
         files: \.[jt]sx?$
