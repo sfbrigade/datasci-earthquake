@@ -12,9 +12,10 @@ import {
   Image,
   VisuallyHidden,
   Link,
+  Flex,
 } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
-import Heading from "./heading";
+// import Heading from "./heading";
 import ReportAddress from "./report-address";
 import SearchBar from "./search-bar";
 import SearchBarSkeleton from "./search-bar-skeleton";
@@ -79,37 +80,42 @@ const HomeHeader = ({
       transition={{ duration: 0.3 }}
     >
       {/* <Heading headingData={headingData} /> */}
-      <HStack align="start" gap="1">
-        <Link
-          as={"a"}
-          color="white"
-          href="/"
-          textDecoration={"none"}
-          onClick={(e) => {
-            e.preventDefault();
-            window.location.href = "/";
-          }}
-        >
-          <HStack align="baseline">
-            <Image
-              src="/images/SFSafeHome-fulllogo.svg"
-              alt="SafeHome logo"
-              role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
-              h="28px"
-              w="142px"
-            />
-            <VisuallyHidden>SafeHome</VisuallyHidden>
-          </HStack>{" "}
-        </Link>
-        <Text textStyle="textPrerelease" layerStyle="prerelease">
-          Beta
+      <Flex
+        direction={{ base: "column", lg: "row-reverse" }}
+        justifyContent={"space-between"}
+      >
+        <HStack align="start" gap="1">
+          <Link
+            as={"a"}
+            color="white"
+            href="/"
+            textDecoration={"none"}
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/";
+            }}
+          >
+            <HStack align="baseline">
+              <Image
+                src="/images/SFSafeHome-fulllogo.svg"
+                alt="SafeHome logo"
+                role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
+                h="28px"
+                w="142px"
+              />
+              <VisuallyHidden>SafeHome</VisuallyHidden>
+            </HStack>{" "}
+          </Link>
+          <Text textStyle="textPrerelease" layerStyle="prerelease">
+            Beta
+          </Text>
+        </HStack>
+        <Text textStyle={"headerMedium"} color={"white"}>
+          <Highlight query="How safe" styles={{ color: "yellow" }}>
+            How safe is your home in an earthquake?
+          </Highlight>
         </Text>
-      </HStack>
-      <Text textStyle={"headerMedium"} color={"white"}>
-        <Highlight query="How safe" styles={{ color: "yellow" }}>
-          How safe is your home in an earthquake?
-        </Highlight>
-      </Text>
+      </Flex>
       {/* <Text
         textStyle="headerSmall"
         layerStyle="headerMain"
@@ -156,19 +162,23 @@ const HomeHeader = ({
         //   xl: "24px 128px 24px 128px",
         // }}
         margin="auto"
-        border={"1px solid red"}
+        border={"5px solid red"}
       >
         {/* <ColorModeButton /> */}
         <AnimatePresence mode="wait">{headerContent}</AnimatePresence>
         <AnimatePresence mode="wait">
           {!isSearchComplete && searchBarComponent}
         </AnimatePresence>
-        {isSearchComplete &&
-          typeof window !== "undefined" &&
-          ReactDOM.createPortal(
-            <AnimatePresence mode="wait">{searchBarComponent}</AnimatePresence>,
+        {
+          isSearchComplete &&
+            typeof window !== "undefined" &&
+            ReactDOM.createPortal(
+            <AnimatePresence mode="wait">{
+            searchBarComponent
+          }</AnimatePresence>,
             document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
-          )}
+          )
+        }
       </Box>
     </Box>
   );
