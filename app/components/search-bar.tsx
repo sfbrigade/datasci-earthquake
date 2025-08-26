@@ -171,13 +171,18 @@ const SearchBar = ({
           onSuggest={handleSuggest}
         >
           <InputGroup
+
+
+            // border={"1px solid limegreen"}
+          
+          
             w={{
               base: "100%",
               sm: "303px",
               md: "371px",
               lg: "417px",
             }}
-            mb={"24px"}
+            // mb={"24px"}
             data-testid="search-bar"
             startElement={
               <IoSearchSharp

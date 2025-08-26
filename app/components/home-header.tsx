@@ -13,6 +13,7 @@ import {
   VisuallyHidden,
   Link,
   Flex,
+  Heading as ChakraHeading
 } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 // import Heading from "./heading";
@@ -81,8 +82,17 @@ const HomeHeader = ({
     >
       {/* <Heading headingData={headingData} /> */}
       <Flex
-        direction={{ base: "column", lg: "row-reverse" }}
+        direction={{
+          base: "column",
+          // sm: "column",
+          md: "column",
+          lg: "row-reverse",
+          // xl: "row-reverse",
+        }}
         justifyContent={"space-between"}
+        gap={1.5}
+        mb={5}
+        // border={"1px solid yellow"}
       >
         <HStack align="start" gap="1">
           <Link
@@ -110,11 +120,11 @@ const HomeHeader = ({
             Beta
           </Text>
         </HStack>
-        <Text textStyle={"headerMedium"} color={"white"}>
+        <ChakraHeading size={"3xl"} color={"white"}>
           <Highlight query="How safe" styles={{ color: "yellow" }}>
             How safe is your home in an earthquake?
           </Highlight>
-        </Text>
+        </ChakraHeading>
       </Flex>
       {/* <Text
         textStyle="headerSmall"
@@ -153,33 +163,37 @@ const HomeHeader = ({
     <Box
       bg="gradient.blue"
       // paddingTop={{ base: "56px", md: "72px", xl: "80px" }}
+      p={{
+        base: "30px 35px 20px 35px",
+        // md: "44px 28px 44px 28px",
+        xl: "40px 45px 30px 45px",
+      }}
+      // p={0}
+      // margin="auto"
+      // border={"1px solid red"}
     >
-      <Box
-        // w={{ base: "full", xl: "7xl" }}
-        // p={{
-        //   base: "36px 24px 40px 24px",
-        //   md: "44px 28px 44px 28px",
-        //   xl: "24px 128px 24px 128px",
-        // }}
+      {/* <Box
+        w={{ base: "full", xl: "8xl" }}
+        p={{
+          base: "36px 24px 40px 24px",
+          md: "44px 28px 44px 28px",
+          xl: "24px 128px 24px 128px",
+        }}
         margin="auto"
-        border={"5px solid red"}
-      >
-        {/* <ColorModeButton /> */}
-        <AnimatePresence mode="wait">{headerContent}</AnimatePresence>
-        <AnimatePresence mode="wait">
-          {!isSearchComplete && searchBarComponent}
-        </AnimatePresence>
-        {
-          isSearchComplete &&
-            typeof window !== "undefined" &&
-            ReactDOM.createPortal(
-            <AnimatePresence mode="wait">{
-            searchBarComponent
-          }</AnimatePresence>,
-            document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
-          )
-        }
-      </Box>
+        border={"1px solid red"}
+      > */}
+      {/* <ColorModeButton /> */}
+      <AnimatePresence mode="wait">{headerContent}</AnimatePresence>
+      <AnimatePresence mode="wait">
+        {!isSearchComplete && searchBarComponent}
+      </AnimatePresence>
+      {isSearchComplete &&
+        typeof window !== "undefined" &&
+        ReactDOM.createPortal(
+          <AnimatePresence mode="wait">{searchBarComponent}</AnimatePresence>,
+          document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
+        )}
+      {/* </Box> */}
     </Box>
   );
 };
