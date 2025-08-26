@@ -63,7 +63,7 @@ const ReportHazards = ({
           </Text>
           <KeyElem name="Soft story" color="grey.400" icon={<FaCircle />} />
           {/* TODO: in the event this section of code handling the legends isn't
-          completely remove, it should be refactored by taking the values of
+          completely removed, it should be refactored by taking the values of
           each property from the KeyElems and placing them into an array,
           allowing the legends to be mapped out. The index argument could/should
           be used during mapping. */}

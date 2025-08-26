@@ -134,7 +134,7 @@ const tokens = defineTokens({
     blueBackground: { value: "#2C5282" }, // blue/700
     blue: { value: "#2B6CB0" }, // blue/600 (TODO: all headings)
     lightBlue: { value: "#3182CE" }, // blue/500 (TODO: remove)
-    tsunamiBlue: { value: "#63B3ED" }, // blue/300
+    tsunamiBlue: { value: "#3385B8" }, // blue/300
     yellow: { value: "#ECC94B" },
     red: { value: "#C53030" },
     green: { value: "#25855A" },
