@@ -295,11 +295,13 @@ map.addLayer({
 
 ---
 
-# Formatting with a Pre-Commit Hook
+# Development Guidelines
+
+## Formatting with a Pre-Commit Hook
 
 This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project. It works for _only_ the staged files. If you have edited unstaged files in your repository and want to make them comply with the CI pipeline, then run `black .` `mypy .` for Python code and `npm run lint .` for Javascript code.
 
-## Prerequisites
+### Prerequisites
 
 - If you haven't already, install pre-commit:
   `pip install pre-commit`
@@ -307,7 +309,7 @@ This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code s
   `pre-commit install`
   This command sets up pre-commit to automatically run ESLint, Black, and MyPy before each commit.
 
-## Usage
+### Usage
 
 - **Running Black Automatically**: After setup, every time you attempt to commit code, Black will check the staged files and apply formatting if necessary. If files are reformatted, the commit will be stopped, and you’ll need to review the changes before committing again.
 - **Bypassing the Hook**: If you want to skip the pre-commit hook for a specific commit, use the --no-verify flag with your commit command:
@@ -320,7 +322,7 @@ This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code s
 
 ---
 
-# Migrating the Database
+## Migrating the Database
 
 If you have changed the models in backend/api/models, then you must migrate the database from its current models to the new ones with the following two commands:
 
@@ -336,13 +338,13 @@ The former command generates a migration script in `backend/alembic/versions`, a
 
 ---
 
-# Git Workflow
+## Git Workflow
 
-## General
+### General
 
 Developers should only branch from `develop`, pull updates to `develop`, and ensure their work is merged into `develop` via Pull Requests. `main` is the safe production branch.
 
-## Pull Requests
+### Pull Requests
 
 When opening a pull request, please:
 
@@ -362,9 +364,7 @@ Ideally, we maintain a readable, clean, and linear commit history. To that end, 
 >
 > NOTE: An interactive rebase (e.g., `git rebase -i`) can help you rewrite your branch's _local_ history to meet the criteria above
 
-# Other resources
-
-## Issues
+### Creating Issues
 
 New issues can be created in the Issues tab using the `New issue` button.
 
@@ -374,7 +374,7 @@ When creating an issue, please:
 - add the `SafeHome Project` as a project to the issue. If this is your first issue you will likely need to request access to be added to the project and have write access. You can ask in Slack.
 - add the relevant label(front end, back end, etc...) so it can easily be filtered by team
 
-## Learn More
+# Learn More
 
 To learn more about Next.js, take a look at the following resources:
 

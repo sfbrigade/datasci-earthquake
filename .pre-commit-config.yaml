@@ -24,7 +24,7 @@ repos:
           - "--cache"
           - "--ignore-pattern=node_modules/*"
           - "--ignore-pattern=dist/*"
-          - "--ignore-pattern=.next/*"       
+          - "--ignore-pattern=.next/*"
           - "--ignore-pattern=next.config.js"
         entry: npm run lint
         language: node
@@ -34,3 +34,10 @@ repos:
           - "eslint-plugin-prettier"
           - "eslint-config-prettier"
           - "prettier"
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: "v3.1.0"
+    hooks:
+      - id: prettier
+        additional_dependencies:
+          - "prettier"
+        files: \.[jt]sx?$
