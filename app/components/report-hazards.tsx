@@ -42,8 +42,8 @@ const ReportHazards = ({
   };
 
   return (
-    <Center flexDirection="column">
-      <Box
+    <Box>
+      {/* <Box
         w="100vw"
         py="2"
         bgColor="white"
@@ -62,17 +62,20 @@ const ReportHazards = ({
             Legend:
           </Text>
           <KeyElem name="Soft story" color="grey.400" icon={<FaCircle />} />
-          {/* TODO: in the event this section of code handling the legends isn't
+      TODO: in the event this section of code handling the legends isn't
           completely remove, it should be refactored by taking the values of
           each property from the KeyElems and placing them into an array,
           allowing the legends to be mapped out. The index argument could/should
-          be used during mapping. */}
-          <Switch.Root
+          be used during mapping.
+      <Switch.Root
+            colorPalette="blue"
             checked={toggledStates[0]}
             onCheckedChange={(e) => handleSwitchClick(0, e.checked)}
           >
             <Switch.HiddenInput />
-            <Switch.Control />
+            <Switch.Control
+            bgColor={toggledStates[0] ? "blueSwitch" : "grey.switch"}
+            />
             <Switch.Label />
           </Switch.Root>
           <KeyElem
@@ -81,8 +84,10 @@ const ReportHazards = ({
             icon={<FaSquareFull />}
           />
           <Switch.Root
+            colorPalette="blue"
             checked={toggledStates[1]}
             onCheckedChange={(e) => handleSwitchClick(1, e.checked)}
+            defaultChecked
           >
             <Switch.HiddenInput />
             <Switch.Control />
@@ -94,17 +99,19 @@ const ReportHazards = ({
             icon={<FaSquareFull />}
           />
           <Switch.Root
+            colorPalette="blue"
             checked={toggledStates[2]}
             onCheckedChange={(e) => handleSwitchClick(2, e.checked)}
+            defaultChecked
           >
             <Switch.HiddenInput />
             <Switch.Control />
             <Switch.Label />
           </Switch.Root>
         </Stack>
-      </Box>
+      </Box> */}
       <CardContainer>
-        {Hazards.map((hazard) => {
+        {Hazards.map((hazard, index) => {
           return (
             <CardHazard
               key={hazard.id}
@@ -115,11 +122,13 @@ const ReportHazards = ({
               }
               showData={hazard.name in addressHazardData ? true : false}
               isHazardDataLoading={isHazardDataLoading}
+              checkedState={toggledStates[index]}
+              handleSwitchClick={handleSwitchClick}
             />
           );
         })}
       </CardContainer>
-    </Center>
+    </Box>
   );
 };
 

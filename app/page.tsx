@@ -62,7 +62,7 @@ const Home = async () => {
                 as="span"
                 textStyle="headerBig"
                 layerStyle="headerMain"
-                color="blue"
+                color="blue.text"
                 fontWeight="300"
               >
                 How to be

@@ -9,11 +9,14 @@ import {
   Spinner,
   Popover,
   Portal,
+  Switch,
 } from "@chakra-ui/react";
 import posthog from "posthog-js";
 import Pill from "./pill";
 import { RxCross2 } from "react-icons/rx";
 import { PillData } from "../data/data";
+import { FaCircle, FaSquareFull } from "react-icons/fa";
+import { KeyElem } from "./key-elem";
 interface CardHazardProps {
   hazard: {
     id: number;
@@ -22,10 +25,14 @@ interface CardHazardProps {
     description: string;
     info: string[];
     link: { label: string; url: string };
+    icon: string;
+    iconColor: string;
   };
   hazardData?: { exists?: boolean; last_updated?: string };
   showData: boolean;
   isHazardDataLoading: boolean;
+  checkedState: boolean;
+  handleSwitchClick: (num: number, checked: boolean) => void;
 }
 
 const CardHazard: React.FC<CardHazardProps> = ({
@@ -33,8 +40,10 @@ const CardHazard: React.FC<CardHazardProps> = ({
   hazardData,
   showData,
   isHazardDataLoading,
+  checkedState,
+  handleSwitchClick,
 }) => {
-  const { title, name, description } = hazard;
+  const { id, title, name, description, icon, iconColor } = hazard;
   const { exists, last_updated: date } = hazardData || {};
   const pillTextOptions = PillData.find((object) => object.name === name) ?? {
     trueData: "No Data",
@@ -64,7 +73,13 @@ const CardHazard: React.FC<CardHazardProps> = ({
   };
 
   return (
-    <Card.Root flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
+    <Card.Root
+      flex={1}
+      maxW={{ base: 400 }}
+      p={{ base: "14px 16px", md: "18px 20px" }}
+      // boxShadow="0px 5px 6px #c8caceff"
+      variant="elevated"
+    >
       <Popover.Root
         positioning={{
           placement: "bottom",
@@ -77,16 +92,34 @@ const CardHazard: React.FC<CardHazardProps> = ({
       >
         <Popover.Trigger h="full">
           <VStack cursor={"pointer"} alignItems={"flex-start"} h="full">
-            <Card.Header p={0} marginBottom={"0.5em"} textAlign="left">
-              <Text
-                textStyle="cardTitle"
-                layerStyle="headerAlt"
-                fontWeight={"700"}
+            <Card.Header
+              w="103%"
+              p={0}
+              // mb was originally 0.5em
+              mb={"0.2em"}
+              textAlign="left"
+              flexDirection="row"
+              justifyContent="space-between"
+            >
+              <KeyElem
+                name={title}
+                color={iconColor}
+                icon={icon === "circle" ? <FaCircle /> : <FaSquareFull />}
+              />
+              <Switch.Root
+                size="lg"
+                colorPalette="blue"
+                checked={checkedState}
+                onCheckedChange={(e) => handleSwitchClick(id, e.checked)}
+                defaultChecked
               >
-                {title}
-              </Text>
+                <Switch.HiddenInput />
+                <Switch.Control />
+                <Switch.Label />
+              </Switch.Root>
             </Card.Header>
-            <Card.Body textAlign="left" p={0} mb={"14px"}>
+            {/* mb was originally 14px */}
+            <Card.Body textAlign="left" p={0} mb={"6px"}>
               <Text textStyle="textMedium" layerStyle="text">
                 {description}
               </Text>

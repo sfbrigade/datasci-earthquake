@@ -1,8 +1,9 @@
 export const Hazards = [
   {
-    id: 1,
+    id: 0,
     name: "softStory",
-    title: "Structural safety",
+    // title: "Structural safety",
+    title: "Soft Story",
     description:
       "Soft story buildings that haven't been reinforced may be at risk in an earthquake.",
     info: [
@@ -15,9 +16,11 @@ export const Hazards = [
       label: "Soft story dataset",
       url: "https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data",
     },
+    icon: "circle",
+    iconColor: "grey.400",
   },
   {
-    id: 2,
+    id: 1,
     name: "liquefaction",
     title: "Liquefaction areas",
     description:
@@ -31,9 +34,11 @@ export const Hazards = [
       label: "Liquefaction dataset",
       url: "https://data.sfgov.org/Geographic-Locations-and-Boundaries/Soil-Liquefaction-Hazard-Zone/i4t7-35u3/about_data",
     },
+    icon: "square",
+    iconColor: "orange",
   },
   {
-    id: 3,
+    id: 2,
     name: "tsunami",
     title: "Tsunami zones",
     description:
@@ -47,6 +52,8 @@ export const Hazards = [
       label: "Tsunami dataset",
       url: "https://www.conservation.ca.gov/cgs/tsunami/maps",
     },
+    icon: "square",
+    iconColor: "tsunamiBlue",
   },
 ];
 
@@ -122,7 +129,7 @@ export const Headings = {
   about: {
     text: "Earthquake safety starts with knowledge. We're here to help.",
     highlight: "",
-    style: { color: "blue", fontWeight: "300", paddingRight: "50" },
+    style: { color: "blue.text", fontWeight: "300", paddingRight: "50" },
     highlightStyle: {},
     maxWidth: { base: "100%", md: "100%", xl: "842px" },
   },
