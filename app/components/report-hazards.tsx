@@ -90,7 +90,7 @@ const ReportHazards = ({
           </Switch.Root>
           <KeyElem
             name="Tsunami zone"
-            color="tsunamiBlue"
+            color="tsunamiColor"
             icon={<FaSquareFull />}
           />
           <Switch.Root

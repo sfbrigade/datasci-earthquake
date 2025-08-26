@@ -6,6 +6,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
+import { mapColors } from "../../styles/mapColors";
 
 const defaultCoords = [-122.463733, 37.777448];
 
@@ -125,7 +126,7 @@ const Map: React.FC<MapProps> = ({
           type: "fill",
           slot: "middle",
           paint: {
-            "fill-color": "#3385B8", // blue/300
+            "fill-color": mapColors.tsunamiColor, // blue/300
             "fill-opacity": 0.25, // 50% opacity
           },
         });
