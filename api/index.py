@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
 from backend.api.routers import (
     liquefaction_api,
     tsunami_api,
@@ -26,20 +25,6 @@ app.include_router(liquefaction_api.router)
 app.include_router(tsunami_api.router)
 app.include_router(soft_story_api.router)
 app.include_router(health_api.router)
-
-origins = [
-    "http://localhost",
-    "http://localhost:3000",
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 
 # Global exception handler (ensures flush before serverless exit)
 @app.exception_handler(Exception)
