@@ -95,7 +95,6 @@ const CardHazard: React.FC<CardHazardProps> = ({
             <Card.Header
               w="103%"
               p={0}
-              // mb was originally 0.5em
               mb={"0.2em"}
               textAlign="left"
               flexDirection="row"
@@ -118,7 +117,6 @@ const CardHazard: React.FC<CardHazardProps> = ({
                 <Switch.Label />
               </Switch.Root>
             </Card.Header>
-            {/* mb was originally 14px */}
             <Card.Body textAlign="left" p={0} mb={"6px"}>
               <Text textStyle="textMedium" layerStyle="text">
                 {description}
