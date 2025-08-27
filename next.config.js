@@ -6,13 +6,22 @@ const nextConfig = {
     optimizePackageImports: ["@chakra-ui/react"],
   },
   rewrites: async () => {
+    const env = process.env.ENVIRONMENT;
+    let backendHost;
+
+    if (env === "local") {
+      backendHost = "http://127.0.0.1:8000";
+    } else if (env === "dev_docker") {
+      backendHost = "http://backend:8000";
+    } else {
+      backendHost = "";
+    }
+
     return [
       {
         source: "/api/:path*",
         destination:
-          process.env.NODE_ENV === "development"
-            ? "http://127.0.0.1:8000/api/:path*"
-            : "/api/",
+          backendHost === "" ? "/api/:path*" : `${backendHost}/api/:path*`,
       },
       {
         source: "/docs",
