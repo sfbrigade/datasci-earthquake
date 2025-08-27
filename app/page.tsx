@@ -2,7 +2,6 @@ import "./globals.css";
 import { Box, Flex, Heading, Text, List, HStack, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import Image from "next/image";
-// import AlertLinks from "./alert-links/page";
 
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 

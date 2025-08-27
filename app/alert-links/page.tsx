@@ -24,7 +24,8 @@ const AlertLinks = () => {
             rel="noopener noreferrer"
           >
             Download the MyShake app
-          </Link>
+          </Link>{" "}
+          to get early warnings when an earthquake is detected.
         </List.Item>
       </List.Root>
     </div>
