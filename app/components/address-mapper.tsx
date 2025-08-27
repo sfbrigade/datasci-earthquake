@@ -7,6 +7,7 @@ import Map from "./map";
 import ReportHazards from "./report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
+// import { LayerIds } from "@/data/data";
 
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
@@ -57,6 +58,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const updateMap = (coords: number[]) => {
     setCoordinates(coords);
   };
+
+  // useEffect(() => {
+  //   const toggledStatesDefaults: boolean[] = [];
+  //   LayerIds.forEach(() => toggledStatesDefaults.push(true));
+  //   setToggledStates(toggledStatesDefaults);
+  // }, []);
 
   useEffect(() => {
     const sources = [

@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import CardHazard from "./card-hazard";
 import { Hazards } from "../data/data";
 import { CardContainer } from "./card-container";
-import { useState, Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { LayerToggleObjProps } from "./address-mapper";
 
 type HazardData = { softStory?: any; tsunami?: any; liquefaction?: any };
