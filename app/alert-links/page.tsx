@@ -13,7 +13,7 @@ const AlertLinks = () => {
         xl: "96px 128px 96px 128px",
       }}
       m="auto"
-      gap="0px"
+      gap="50px"
     >
       <Heading as="h2">
         <Text
@@ -25,20 +25,20 @@ const AlertLinks = () => {
         >
           Earthquake alerts
         </Text>
+        <List.Root textStyle="textMedium" layerStyle="list">
+          <List.Item>
+            <Link
+              href="https://myshake.berkeley.edu/"
+              style={{ textDecoration: "underline" }}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Download the MyShake app
+            </Link>{" "}
+            to get early warnings when an earthquake is detected.
+          </List.Item>
+        </List.Root>
       </Heading>
-      <List.Root textStyle="textMedium" layerStyle="list">
-        <List.Item>
-          <Link
-            href="https://myshake.berkeley.edu/"
-            style={{ textDecoration: "underline" }}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Download the MyShake app
-          </Link>{" "}
-          to get early warnings when an earthquake is detected.
-        </List.Item>
-      </List.Root>
       <Heading as="h2">
         <Text
           as="span"
@@ -61,6 +61,28 @@ const AlertLinks = () => {
             </Link>{" "}
             for information during natural disasters and other significant
             events.
+          </List.Item>
+          <List.Item>
+            <span>
+              Download the FEMA app for emergency alerts and safety tips:{" "}
+              <Link
+                href="https://apps.apple.com/us/app/fema/id474270813"
+                style={{ textDecoration: "underline" }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Apple App Store
+              </Link>{" "}
+              or{" "}
+              <Link
+                href="https://play.google.com/store/apps/details?id=gov.fema.mobile.app"
+                style={{ textDecoration: "underline" }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Google Play Store
+              </Link>
+            </span>
           </List.Item>
         </List.Root>
       </Heading>
