@@ -12,9 +12,15 @@ You can work on this app entirely [locally](#local-development), entirely [using
 # Setting Up and Using Environments
 ## Configuration of environment variables for all environments
 
-We use GitHub Secrets to store sensitive environment variables. To be able to run the app, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
+We use GitHub Secrets to store sensitive environment variables. To be able to run the app with all features enabled, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
 
-**Note**: Before starting work on the project, make sure to:
+### Contributors working from forks
+- If you are contributing from a fork, you do not need to follow the workflow below.
+- The CI pipeline for forked PRs will automatically use the provided `.env.example`.
+- You may also copy `.env.example` and rename it to `.env` locally. This allows you to run the app, but with limited functionality (since the real secrets are not included).
+
+### Core contributors
+Before starting work on the project, make sure to:
 
 1. Get **write** access to the repository.  Accept invitation after you have been invited.
 2. Get the **decryption passphrase** from other devs or in the Slack Engineering channel.
@@ -26,11 +32,14 @@ We use GitHub Secrets to store sensitive environment variables. To be able to ru
 8. Decrypt the env file using OpenSSL. In the folder with the artifact, run `openssl aes-256-cbc -d -salt -pbkdf2 -k <YOUR_PASSPHRASE> -in .env.enc -out env` in the terminal. This creates a decrypted file named `env`.
 9. Place the decrypted file in the root folder of the project and rename it to `.env`.
 
-The file is organized into three main sections:
+The file is organized into four main sections:
 
 - **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.
 - **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
 - **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
+- **Monitoring and Analytics Variables**. This section contains variables for Sentry and Posthog. 
+
+#### ⚠️ If you add a new variable to the Settings class in the backend, you must also add a dummy value for it in .env.example. Otherwise, PRs from forks will fail, since the CI depends on .env.example when secrets are unavailable.`
 
 ---
 

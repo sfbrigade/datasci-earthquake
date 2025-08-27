@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
+    environment:
+      - ENVIRONMENT=dev_docker
     ports:
       - 3000:3000
     depends_on:
@@ -31,6 +33,7 @@ services:
     environment:
       - PYTHONPATH=/backend:/
       - DATA_GEOJSON_PATH=/public/data/
+      - ENVIRONMENT=dev_docker
     ports:
       - 8000:8000
     depends_on:
@@ -57,6 +60,8 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      - ENVIRONMENT=dev_docker
     volumes:
       - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
     ports:
@@ -79,6 +84,8 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      - ENVIRONMENT=dev_docker
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
