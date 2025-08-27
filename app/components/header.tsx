@@ -6,8 +6,9 @@ import {
   Text,
   Link,
   Image,
-  Stack,
+  // Stack,
   VisuallyHidden,
+  Flex,
 } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import NextLink from "next/link";
@@ -21,6 +22,7 @@ const Header = () => {
 
   return (
     <Box
+      // border={"5px solid yellow"}
       as="header"
       bg={isHome ? undefined : "gradient.blue"}
       w="100%"
@@ -28,20 +30,31 @@ const Header = () => {
       top={isHome ? "0" : undefined}
       display={isHome ? "none" : undefined}
     >
-      <Stack
-        direction={{ base: "column", md: "row" }}
-        w={{ base: "full", xl: "7xl" }}
-        h="112px"
-        justifyContent="flex-start"
-        columnGap="25px"
-        m="auto"
+      <Flex
+        // border={"5px solid red"}
+        direction="row"
+        // w={{ base: "full", xl: "7xl" }}
+        // h="112px"
+        justifyContent={{
+          base: "flex-start",
+          md: "flex-end",
+          lg: "flex-end",
+          xl: "flex-end",
+        }}
+        alignItems="center"
+        // columnGap="25px"
+        // m="auto"
+        // p={[10, 20, 30, 200]}
         p={{
-          base: "18px 24px 18px 24px",
-          md: "28px 28px 28px 28px",
-          xl: "28px 128px 28px 128px",
+          base: 6,
+          md: 7,
+          lg: [7, 8, 7, 8],
+          xl: [7, 9, 7, 9],
         }}
       >
-        <HStack align="start" gap="1">
+        <HStack align="start" gap="1" 
+        // border={"2px solid limegreen"}
+        >
           <Link
             as={"a"}
             color="white"
@@ -76,7 +89,7 @@ const Header = () => {
             </Text>
           </Link>
         )} */}
-      </Stack>
+      </Flex>
     </Box>
   );
 };
