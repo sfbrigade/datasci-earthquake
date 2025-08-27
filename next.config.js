@@ -75,6 +75,9 @@ module.exports = withSentryConfig(module.exports, {
   // For all available options, see:
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 
+  // Pass the auth token to allow for readable stack traces
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+
   // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
 

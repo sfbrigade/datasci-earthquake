@@ -36,12 +36,13 @@ class Settings(BaseSettings):
     database_url_sqlalchemy: str
     database_url_sqlalchemy_test: str
     localhost_database_url_sqlalchemy: str
-    next_public_api_url: str
-    next_public_mapbox_token: str
+    sentry_dsn: str
+    sentry_auth_token: str
     node_env: str
     environment: str = "local"
+    next_public_api_url: str
     next_public_cdn_url: str
-    sentry_dsn: str
+    next_public_mapbox_token: str
     next_public_posthog_host: str
     next_public_posthog_key: str
 
