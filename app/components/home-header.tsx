@@ -13,7 +13,7 @@ import {
   VisuallyHidden,
   Link,
   Flex,
-  Heading as ChakraHeading
+  Heading as ChakraHeading,
 } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 // import Heading from "./heading";
@@ -81,6 +81,7 @@ const HomeHeader = ({
       transition={{ duration: 0.3 }}
     >
       {/* <Heading headingData={headingData} /> */}
+
       <Flex
         direction={{
           base: "column",
@@ -161,6 +162,7 @@ const HomeHeader = ({
 
   return (
     <Box
+      as="header"
       bg="gradient.blue"
       // paddingTop={{ base: "56px", md: "72px", xl: "80px" }}
       p={{
