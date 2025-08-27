@@ -2,6 +2,7 @@ import "./globals.css";
 import { Box, Flex, Heading, Text, List, HStack, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import Image from "next/image";
+// import AlertLinks from "./alert-links/page";
 
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
@@ -154,14 +155,14 @@ const Home = async () => {
               <List.Item>
                 <Link
                   as={NextLink}
-                  href="https://myshake.berkeley.edu/"
+                  href="/alert-links"
                   textDecoration="underline"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Download the MyShake app
+                  Sign up
                 </Link>{" "}
-                to get early warnings when an earthquake is detected.
+                for earthquake and tsunami alerts.
               </List.Item>
             </List.Root>
 
