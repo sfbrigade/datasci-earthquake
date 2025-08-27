@@ -1,9 +1,20 @@
-import { Heading, Text, List } from "@chakra-ui/react";
+import "../globals.css";
+import { Heading, Text, List, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 
 const AlertLinks = () => {
   return (
-    <div>
+    <Flex
+      direction="column"
+      w={{ base: "full", xl: "7xl" }}
+      p={{
+        base: "24px 24px 24px 24px",
+        md: "36px 28px 16px 28px",
+        xl: "96px 128px 96px 128px",
+      }}
+      m="auto"
+      gap="0px"
+    >
       <Heading as="h2">
         <Text
           as="span"
@@ -12,7 +23,7 @@ const AlertLinks = () => {
           color="blue"
           fontWeight="300"
         >
-          Earthquake alerts to sign up for:
+          Earthquake alerts
         </Text>
       </Heading>
       <List.Root textStyle="textMedium" layerStyle="list">
@@ -28,7 +39,7 @@ const AlertLinks = () => {
           to get early warnings when an earthquake is detected.
         </List.Item>
       </List.Root>
-    </div>
+    </Flex>
   );
 };
 
