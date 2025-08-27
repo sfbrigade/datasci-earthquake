@@ -21,27 +21,33 @@ const nextConfig = {
 
     // Only add API rewrite if backendHost is defined
     if (backendHost) {
-      rewrites.push({
-        source: "/api/:path*",
-        destination: `${backendHost}/api/:path*`,
-      });
+      rewrites.push(
+        {
+          source: "/api/:path*",
+          destination: `${backendHost}/api/:path*`,
+        },
+        {
+          source: "/docs",
+          destination: `${backendHost}/docs`,
+        },
+        {
+          source: "/openapi.json",
+          destination: `${backendHost}/openapi.json`,
+        }
+      );
+    } else {
+      // For preview and production, only rewrite /docs and /openapi.json to their /api counterparts
+      rewrites.push(
+        {
+          source: "/docs",
+          destination: "/api/docs",
+        },
+        {
+          source: "/openapi.json",
+          destination: "/api/openapi.json",
+        }
+      );
     }
-
-    rewrites.push({
-      source: "/docs",
-      destination:
-        process.env.NODE_ENV === "development"
-          ? "http://127.0.0.1:8000/docs"
-          : "/api/docs",
-    });
-
-    rewrites.push({
-      source: "/openapi.json",
-      destination:
-        process.env.NODE_ENV === "development"
-          ? "http://127.0.0.1:8000/openapi.json"
-          : "/api/openapi.json",
-    });
 
     return rewrites;
   },
