@@ -14,9 +14,11 @@ import {
 import posthog from "posthog-js";
 import Pill from "./pill";
 import { RxCross2 } from "react-icons/rx";
-import { PillData } from "../data/data";
+import { PillData, LayerIds } from "../data/data";
 import { FaCircle, FaSquareFull } from "react-icons/fa";
 import { KeyElem } from "./key-elem";
+import { Dispatch, SetStateAction } from "react";
+import { LayerToggleObjProps } from "./address-mapper";
 interface CardHazardProps {
   hazard: {
     id: number;
@@ -31,8 +33,9 @@ interface CardHazardProps {
   hazardData?: { exists?: boolean; last_updated?: string };
   showData: boolean;
   isHazardDataLoading: boolean;
-  checkedState: boolean;
-  handleSwitchClick: (num: number, checked: boolean) => void;
+  toggledStates: boolean[];
+  setToggledStates: Dispatch<SetStateAction<boolean[]>>;
+  setLayerToggleObj: Dispatch<SetStateAction<LayerToggleObjProps>>;
 }
 
 const CardHazard: React.FC<CardHazardProps> = ({
@@ -40,8 +43,9 @@ const CardHazard: React.FC<CardHazardProps> = ({
   hazardData,
   showData,
   isHazardDataLoading,
-  checkedState,
-  handleSwitchClick,
+  toggledStates,
+  setToggledStates,
+  setLayerToggleObj,
 }) => {
   const { id, title, name, description, icon, iconColor } = hazard;
   const { exists, last_updated: date } = hazardData || {};
@@ -70,6 +74,20 @@ const CardHazard: React.FC<CardHazardProps> = ({
         {infoItem}
       </Text>
     ));
+  };
+
+  const handleSwitchClick = (num: number, checked: boolean) => {
+    const newArray = [];
+    const obj = {
+      layerId: LayerIds[num],
+      toggleState: checked,
+    };
+    for (let i = 0; i < toggledStates.length; i++) {
+      if (i === num) newArray.push(checked);
+      else newArray.push(toggledStates[i]);
+    }
+    setToggledStates(newArray);
+    setLayerToggleObj(obj);
   };
 
   return (
@@ -108,7 +126,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
               <Switch.Root
                 size="lg"
                 colorPalette="blue"
-                checked={checkedState}
+                checked={toggledStates[id]}
                 onCheckedChange={(e) => handleSwitchClick(id, e.checked)}
                 defaultChecked
               >
