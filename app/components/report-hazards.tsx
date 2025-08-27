@@ -8,6 +8,8 @@ import { LayerToggleObjProps } from "./address-mapper";
 type HazardData = { softStory?: any; tsunami?: any; liquefaction?: any };
 type ToggledStatesProps = boolean[];
 
+const toggledStatesDefaults = [true, true, true];
+
 const ReportHazards = ({
   addressHazardData,
   isHazardDataLoading,
@@ -17,13 +19,9 @@ const ReportHazards = ({
   isHazardDataLoading: boolean;
   setLayerToggleObj: Dispatch<SetStateAction<LayerToggleObjProps>>;
 }) => {
-  const [toggledStates, setToggledStates] = useState<ToggledStatesProps>([]);
-
-  useEffect(() => {
-    const toggledStatesDefaults: boolean[] = [];
-    LayerIds.forEach(() => toggledStatesDefaults.push(true));
-    setToggledStates(toggledStatesDefaults);
-  }, []);
+  const [toggledStates, setToggledStates] = useState<ToggledStatesProps>(
+    toggledStatesDefaults
+  );
 
   const handleSwitchClick = (num: number, checked: boolean) => {
     const newArray = [];
