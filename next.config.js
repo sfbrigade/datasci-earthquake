@@ -19,7 +19,7 @@ const nextConfig = {
 
     const rewrites = [];
 
-    // Only add API rewrite if backendHost is defined
+    // Only add API rewrite if backendHost is defined. Docs and openapi.json are available for devs only.
     if (backendHost) {
       rewrites.push(
         {
@@ -33,18 +33,6 @@ const nextConfig = {
         {
           source: "/openapi.json",
           destination: `${backendHost}/openapi.json`,
-        }
-      );
-    } else {
-      // For preview and production, only rewrite /docs and /openapi.json to their /api counterparts
-      rewrites.push(
-        {
-          source: "/docs",
-          destination: "/api/docs",
-        },
-        {
-          source: "/openapi.json",
-          destination: "/api/openapi.json",
         }
       );
     }
