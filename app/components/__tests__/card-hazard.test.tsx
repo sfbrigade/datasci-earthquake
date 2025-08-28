@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import CardHazard from "../card-hazard";
 import { Hazards } from "../../data/data";
 import "@testing-library/jest-dom";
 import { Provider } from "../ui/provider";
 import "../__mocks__/match-media";
-import { LayerToggleObjProps } from "../address-mapper";
 
 // eslint-disable-next-line react/display-name
 jest.mock("../pill.tsx", () => () => (
@@ -13,7 +12,7 @@ jest.mock("../pill.tsx", () => () => (
 ));
 
 describe("CardHazard Component", () => {
-  const toggledStates = [true, true, true];
+  const toggledStates = [true];
   const setToggledStates = () => {};
   const setLayerToggleObj = () => {};
   beforeEach(() => {

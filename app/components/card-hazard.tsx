@@ -93,7 +93,8 @@ const CardHazard: React.FC<CardHazardProps> = ({
   return (
     <Card.Root
       flex={1}
-      maxW={{ base: 400 }}
+      maxW={{ base: 340 }}
+      minH={{ base: 184 }}
       p={{ base: "14px 16px", md: "18px 20px" }}
       // boxShadow="0px 5px 6px #c8caceff"
       variant="elevated"
@@ -109,9 +110,9 @@ const CardHazard: React.FC<CardHazardProps> = ({
         aria-label={`${hazard.title} information`}
       >
         <Popover.Trigger h="full">
-          <VStack cursor={"pointer"} alignItems={"flex-start"} h="full">
+          <VStack alignItems={"flex-start"} flexGrow={1} h="full">
             <Card.Header
-              w="103%"
+              w="102%"
               p={0}
               mb={"0.2em"}
               textAlign="left"
