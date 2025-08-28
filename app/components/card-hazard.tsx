@@ -69,7 +69,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
         positioning={{
           placement: "bottom",
           flip: false,
-          offset: { crossAxis: -16, mainAxis: 24 },
+          offset: { crossAxis: 18, mainAxis: 24 },
           sameWidth: true,
         }}
         closeOnEscape={true}
