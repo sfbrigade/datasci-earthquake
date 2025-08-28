@@ -1,18 +1,15 @@
 import React from "react";
-import { Center, Stack } from "@chakra-ui/react";
+import { Box, Stack } from "@chakra-ui/react";
 
 export const CardContainer = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Center pb="36px" pt="16px" zIndex={10} w="100vw">
-      <Stack
-        justifyContent="space-between"
-        direction={{ base: "column", md: "row" }}
-        gap="16px"
-        w={{ base: "full", xl: "7xl" }}
-        px={{ base: "24px", md: "28px", xl: "128px" }}
-      >
-        {children}
-      </Stack>
-    </Center>
+    <Box
+      pt="16px"
+      px={{ base: "24px", md: "28px", xl: "32px" }}
+      zIndex={10}
+      w="full"
+    >
+      <Stack gap="14px">{children}</Stack>
+    </Box>
   );
 };
