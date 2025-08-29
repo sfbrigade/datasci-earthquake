@@ -1,5 +1,6 @@
 from http.client import HTTPException
-from backend.etl.data_handler import DataHandler
+from pathlib import Path
+from backend.etl.data_handler import DataHandler, get_geojson_prefix
 from backend.api.models.liquefaction_zones import LiquefactionZone
 from shapely.geometry import shape
 from geoalchemy2.shape import from_shape
@@ -104,8 +105,14 @@ def main():
             high_liquefaction_susceptibility_feature,
             very_high_liquefaction_susceptibility_feature,
         ) = handler.parse_data(liquefaction_zones)
-        handler.export_geojson_if_changed(high_liquefaction_susceptibility_feature)
-        handler.export_geojson_if_changed(very_high_liquefaction_susceptibility_feature)
+        handler.export_geojson_if_changed(
+            high_liquefaction_susceptibility_feature,
+            Path(f"{get_geojson_prefix()}HighSusceptibilityZone.geojson"),
+        )
+        handler.export_geojson_if_changed(
+            very_high_liquefaction_susceptibility_feature,
+            Path(f"{get_geojson_prefix()}VeryHighSusceptibilityZone.geojson"),
+        )
         handler.bulk_insert_data(liquefaction_zones_objects, "identifier")
     except HTTPException as e:
         print(f"Failed after retries: {e}")

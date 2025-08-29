@@ -413,7 +413,13 @@ class DataHandler(ABC):
             self.logger.error(f"Failed to write GeoJSON: {e}")
             raise
 
-    def export_geojson_if_changed(self, features: dict) -> None:
+    def get_geojson_path(self):
+
+        return Path(f"{get_geojson_prefix()}{self.table.__name__}.geojson")
+
+    def export_geojson_if_changed(
+        self, features: dict, geojson_path: Optional[Path] = None
+    ) -> None:
         """
         Write the geojson file to the public/data folder.
 
@@ -422,7 +428,8 @@ class DataHandler(ABC):
         - ETL (production): Check if data changed since last export
         """
         try:
-            geojson_path = Path(f"{get_geojson_prefix()}{self.table.__name__}.geojson")
+            if geojson_path is None:
+                geojson_path = self.get_geojson_path()
             geojson_path.parent.mkdir(parents=True, exist_ok=True)
 
             if os.getenv("ENVIRONMENT") != "prod":
