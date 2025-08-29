@@ -14,7 +14,7 @@ from backend.api.models.base import ModelType
 from backend.api.models.export_metadata import ExportMetadata
 from shapely.ops import transform
 from pyproj import Transformer
-from typing import Type, Generator, Optional
+from typing import Any, Type, Generator, Optional
 import time
 import logging
 from backend.etl.session_manager import SessionManager
@@ -178,7 +178,9 @@ class DataHandler(ABC):
         return transform(transformer.transform, geometry)
 
     @abstractmethod
-    def parse_data(self, data: dict) -> tuple[list[dict], dict]:
+    def parse_data(
+        self, data: dict
+    ) -> tuple[list[dict], dict] | tuple[Any, Any | None, Any | None]:
         """
         Abstract method to parse and transform the fetched data
 
@@ -413,7 +415,9 @@ class DataHandler(ABC):
 
     def export_geojson_if_changed(self, features: dict) -> None:
         """
-        Write the geojson file to the public/data folder. The geojson is a static asset that is displayed on the map in the app.
+        Write the geojson file to the public/data folder.
+
+        The geojson is a static asset that is displayed on the map in the app.
         - Locally: Only save if file doesn't exist
         - ETL (production): Check if data changed since last export
         """
