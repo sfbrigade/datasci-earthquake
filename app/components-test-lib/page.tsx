@@ -14,6 +14,10 @@ import Share from "../components/share";
 import ShareSkeleton from "../components/share-skeleton";
 
 const ComponentsTestLib = () => {
+  const toggledStates = [true, true, true];
+  const setToggledStates = () => {};
+  const setLayerToggleObj = () => {};
+
   return (
     <Box
       as="section"
@@ -61,6 +65,9 @@ const ComponentsTestLib = () => {
                 hazardData={{ exists: true, last_updated: "" }}
                 showData={true}
                 isHazardDataLoading={true}
+                toggledStates={toggledStates}
+                setToggledStates={setToggledStates}
+                setLayerToggleObj={setLayerToggleObj}
               />
             );
           })}

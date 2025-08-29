@@ -93,7 +93,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
   return (
     <Card.Root
       flex={1}
-      maxW={{ base: 340 }}
+      maxW={{ base: 336 }}
       minH={{ base: 184 }}
       p={{ base: "14px 16px", md: "18px 20px" }}
       // boxShadow="0px 5px 6px #c8caceff"

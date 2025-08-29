@@ -2,7 +2,6 @@ export const Hazards = [
   {
     id: 0,
     name: "softStory",
-    // title: "Structural safety",
     title: "Soft Story",
     description:
       "Soft story buildings that haven't been reinforced may be at risk in an earthquake.",
@@ -22,7 +21,7 @@ export const Hazards = [
   {
     id: 1,
     name: "liquefaction",
-    title: "Liquefaction areas",
+    title: "Liquefaction zones",
     description:
       "These areas are on less stable ground, which can result in shifting or sinking during an earthquake.",
     info: [
