@@ -110,39 +110,39 @@ const CardHazard: React.FC<CardHazardProps> = ({
         closeOnInteractOutside={true}
         aria-label={`${hazard.title} information`}
       >
-          <VStack alignItems={"flex-start"} flexGrow={1} h="full">
-            <Card.Header
-              w="102%"
-              p={0}
-              mb={"0.2em"}
-              textAlign="left"
-              flexDirection="row"
-              justifyContent="space-between"
+        <VStack alignItems={"flex-start"} flexGrow={1} h="full">
+          <Card.Header
+            w="102%"
+            p={0}
+            mb={"0.2em"}
+            textAlign="left"
+            flexDirection="row"
+            justifyContent="space-between"
+          >
+            <KeyElem
+              name={title}
+              color={iconColor}
+              icon={icon === "circle" ? <FaCircle /> : <FaSquareFull />}
+            />
+            <Switch.Root
+              size="lg"
+              colorPalette="blue"
+              checked={toggledStates[id]}
+              onCheckedChange={(e) => handleSwitchClick(id, e.checked)}
+              defaultChecked
             >
-              <KeyElem
-                name={title}
-                color={iconColor}
-                icon={icon === "circle" ? <FaCircle /> : <FaSquareFull />}
-              />
-              <Switch.Root
-                size="lg"
-                colorPalette="blue"
-                checked={toggledStates[id]}
-                onCheckedChange={(e) => handleSwitchClick(id, e.checked)}
-                defaultChecked
-              >
-                <Switch.HiddenInput />
-                <Switch.Control />
-                <Switch.Label />
-              </Switch.Root>
-            </Card.Header>
-            <Card.Body textAlign="left" p={0} mb={"6px"}>
-              <Text textStyle="textMedium" layerStyle="text">
-                {description}
-              </Text>
-            </Card.Body>
-            <Card.Footer p={0} width={"100%"}>
-              <HStack justifyContent="space-between" width="100%">
+              <Switch.HiddenInput />
+              <Switch.Control />
+              <Switch.Label />
+            </Switch.Root>
+          </Card.Header>
+          <Card.Body textAlign="left" p={0} mb={"6px"}>
+            <Text textStyle="textMedium" layerStyle="text">
+              {description}
+            </Text>
+          </Card.Body>
+          <Card.Footer p={0} width={"100%"}>
+            <HStack justifyContent="space-between" width="100%">
               <Popover.Trigger>
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info

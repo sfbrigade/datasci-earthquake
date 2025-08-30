@@ -1,3 +1,5 @@
+"use client";
+
 import { Suspense } from "react";
 import {
   Box,
@@ -7,11 +9,12 @@ import {
   HStack,
   Separator,
 } from "@chakra-ui/react";
-import { Hazards, Info } from "../data/data";
+import { Hazards } from "../data/data";
 import CardHazard from "../components/card-hazard";
-import SearchBarClientWrapper from "./search-bar-client-wrapper";
 import Share from "../components/share";
 import ShareSkeleton from "../components/share-skeleton";
+import SearchBarSkeleton from "@/components/search-bar-skeleton";
+import SearchBar from "@/components/search-bar";
 
 const ComponentsTestLib = () => {
   const toggledStates = [true, true, true];
@@ -46,7 +49,17 @@ const ComponentsTestLib = () => {
       <VStack gap={6} align="start">
         <HStack w="100%">
           <Box w="400px">
-            <SearchBarClientWrapper />
+            <Suspense fallback={<SearchBarSkeleton />}>
+              {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
+              <SearchBar
+                coordinates={[0, 0]}
+                onSearchChange={() => {}}
+                onAddressSearch={() => {}}
+                onCoordDataRetrieve={() => {}}
+                onHazardDataLoading={() => {}}
+                onSearchComplete={() => {}}
+              />
+            </Suspense>
           </Box>
         </HStack>
         <Separator mb={3} />
