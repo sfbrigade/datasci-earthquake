@@ -103,13 +103,13 @@ const CardHazard: React.FC<CardHazardProps> = ({
         positioning={{
           placement: "bottom",
           flip: false,
-          offset: { crossAxis: 0, mainAxis: 24 },
+          offset: { crossAxis: 18, mainAxis: 24 },
+          sameWidth: true,
         }}
         closeOnEscape={true}
         closeOnInteractOutside={true}
         aria-label={`${hazard.title} information`}
       >
-        <Popover.Trigger h="full">
           <VStack alignItems={"flex-start"} flexGrow={1} h="full">
             <Card.Header
               w="102%"
@@ -143,14 +143,15 @@ const CardHazard: React.FC<CardHazardProps> = ({
             </Card.Body>
             <Card.Footer p={0} width={"100%"}>
               <HStack justifyContent="space-between" width="100%">
+              <Popover.Trigger>
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info
                 </Text>
-                {hazardPill}
-              </HStack>
-            </Card.Footer>
-          </VStack>
-        </Popover.Trigger>
+              </Popover.Trigger>
+              {hazardPill}
+            </HStack>
+          </Card.Footer>
+        </VStack>
         <Portal>
           <Popover.Positioner>
             <Popover.Content maxHeight="unset">
