@@ -39,7 +39,7 @@ interface HomeHeaderProps {
   onHazardDataLoading: (isLoading: boolean) => void;
 }
 
-const SEARCHBAR_PORTAL_ID = "searchbar-portal";
+// const SEARCHBAR_PORTAL_ID = "searchbar-portal";
 
 const HomeHeader = ({
   coordinates,
@@ -60,10 +60,38 @@ const HomeHeader = ({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
+      <HStack align="start" gap="1">
+          <Link
+            as={"a"}
+            color="white"
+            href="/"
+            textDecoration={"none"}
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/";
+            }}
+          >
+            <HStack align="baseline">
+              <Image
+                src="/images/SFSafeHome-fulllogo.svg"
+                alt="SafeHome logo"
+                role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
+                h="28px"
+                w="142px"
+              />
+              <VisuallyHidden>SafeHome</VisuallyHidden>
+            </HStack>{" "}
+          </Link>
+          <Text textStyle="textPrerelease" layerStyle="prerelease">
+            Beta
+          </Text>
+        </HStack>
       <Stack
-        direction={{ base: "column", md: "row" }}
-        alignItems={{ base: "flex-start", md: "flex-end" }}
+        direction={{ base: "column", md: "row", xl: "row" }}
+        alignItems={{ base: "flex-start", md: "flex-end", xl: "center" }}
         justifyContent="space-between"
+        // border={"1px solid red"}
+        // p="0"
       >
         <ReportAddress searchedAddress={searchedAddress} />
         {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
@@ -100,6 +128,7 @@ const HomeHeader = ({
             as={"a"}
             color="white"
             href="/"
+            cursor="pointer"
             textDecoration={"none"}
             onClick={(e) => {
               e.preventDefault();
@@ -121,7 +150,7 @@ const HomeHeader = ({
             Beta
           </Text>
         </HStack>
-        <ChakraHeading size={"3xl"} color={"white"}>
+        <ChakraHeading size={"3xl"} color={"white"} fontWeight={{base: "thin", xl: "normal"}}>
           <Highlight query="How safe" styles={{ color: "yellow" }}>
             How safe is your home in an earthquake?
           </Highlight>
@@ -185,16 +214,21 @@ const HomeHeader = ({
         border={"1px solid red"}
       > */}
       {/* <ColorModeButton /> */}
-      <AnimatePresence mode="wait">{headerContent}</AnimatePresence>
-      <AnimatePresence mode="wait">
+      {/* <AnimatePresence mode="wait"> */}
+      {headerContent}
+      {/* </AnimatePresence> */}
+      {/* <AnimatePresence mode="wait">
         {!isSearchComplete && searchBarComponent}
-      </AnimatePresence>
-      {isSearchComplete &&
+      </AnimatePresence> */}
+      {/* {isSearchComplete &&
         typeof window !== "undefined" &&
-        ReactDOM.createPortal(
-          <AnimatePresence mode="wait">{searchBarComponent}</AnimatePresence>,
+        ReactDOM.createPortal( */}
+          {/* <AnimatePresence mode="wait"> */}
+            {searchBarComponent}
+            {/* </AnimatePresence> */}
+          {/* ,
           document.getElementById(SEARCHBAR_PORTAL_ID) as HTMLElement
-        )}
+        )} */}
       {/* </Box> */}
     </Box>
   );
