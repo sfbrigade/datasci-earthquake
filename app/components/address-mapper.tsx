@@ -54,7 +54,9 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       ? [parseFloat(initialLon), parseFloat(initialLat)]
       : null
   );
-  const [searchedAddress, setSearchedAddress] = useState(initialAddress || "");
+  const [searchedAddress, setSearchedAddress] = useState(
+    initialAddress || null
+  );
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
   const [isSearchComplete, setSearchComplete] = useState(false);
@@ -114,30 +116,25 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       const newCoords = [parseFloat(lon), parseFloat(lat)];
       const lastCoords = coordinatesRef.current;
 
-      // check if the coordinates have changed since the last fetch using a ref to prevent a dependency loop
+      // only update state and fetch data if coordinates have changed
       if (
         !lastCoords ||
         lastCoords[0] !== newCoords[0] ||
         lastCoords[1] !== newCoords[1]
       ) {
         setCoordinates(newCoords);
-        setSearchedAddress(address || "");
+        setSearchedAddress(address);
         coordinatesRef.current = newCoords;
         updateHazardData(newCoords);
       }
-    } else if (coordinates) {
-      // clear state and coordinatesRef when navigating to a page without location params(ex. navigating back to main page)
+    } else if (coordinatesRef.current) {
+      // clear state and coordinatesRef when navigating to a page without location params(ex. navigating back to main page after viewing a result)
       setCoordinates(null);
-      setSearchedAddress("");
+      setSearchedAddress(null);
+      setAddressHazardData({});
       coordinatesRef.current = null;
     }
-  }, [
-    searchParams,
-    coordinates,
-    updateHazardData,
-    setCoordinates,
-    setSearchedAddress,
-  ]);
+  }, [searchParams, updateHazardData]);
 
   useEffect(() => {
     const sources = [
