@@ -61,7 +61,6 @@ const ReportHazards = ({
           <Text textStyle="textMedium" layerStyle="text" fontWeight="700">
             Legend:
           </Text>
-          
           <KeyElem name="Soft story"
             color="softStoryColor"
             icon={<FaCircle />}
