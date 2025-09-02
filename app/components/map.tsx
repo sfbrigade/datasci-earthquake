@@ -128,7 +128,7 @@ const Map: React.FC<MapProps> = ({
           paint: {
             "fill-color": mapColors.tsunamiColor,
             "fill-opacity": 0.5,
-          }
+          },
         });
 
         // Add layers

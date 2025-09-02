@@ -61,7 +61,10 @@ const ReportHazards = ({
           <Text textStyle="textMedium" layerStyle="text" fontWeight="700">
             Legend:
           </Text>
-          <KeyElem name="Soft story" color="softStoryColor" icon={<FaCircle />} />
+          <KeyElem name="Soft story"
+            color="softStoryColor"
+            icon={<FaCircle />}
+          />
           {/* TODO: in the event this section of code handling the legends isn't
           completely removed, it should be refactored by taking the values of
           each property from the KeyElems and placing them into an array,
