@@ -69,38 +69,39 @@ const CardHazard: React.FC<CardHazardProps> = ({
         positioning={{
           placement: "bottom",
           flip: false,
-          offset: { crossAxis: 0, mainAxis: 24 },
+          offset: { crossAxis: 18, mainAxis: 24 },
+          sameWidth: true,
         }}
         closeOnEscape={true}
         closeOnInteractOutside={true}
         aria-label={`${hazard.title} information`}
       >
-        <Popover.Trigger h="full">
-          <VStack cursor={"pointer"} alignItems={"flex-start"} h="full">
-            <Card.Header p={0} marginBottom={"0.5em"} textAlign="left">
-              <Text
-                textStyle="cardTitle"
-                layerStyle="headerAlt"
-                fontWeight={"700"}
-              >
-                {title}
-              </Text>
-            </Card.Header>
-            <Card.Body textAlign="left" p={0} mb={"14px"}>
-              <Text textStyle="textMedium" layerStyle="text">
-                {description}
-              </Text>
-            </Card.Body>
-            <Card.Footer p={0} width={"100%"}>
-              <HStack justifyContent="space-between" width="100%">
+        <VStack alignItems={"flex-start"} h="full">
+          <Card.Header p={0} marginBottom={"0.5em"} textAlign="left">
+            <Text
+              textStyle="cardTitle"
+              layerStyle="headerAlt"
+              fontWeight={"700"}
+            >
+              {title}
+            </Text>
+          </Card.Header>
+          <Card.Body textAlign="left" p={0} mb={"14px"}>
+            <Text textStyle="textMedium" layerStyle="text">
+              {description}
+            </Text>
+          </Card.Body>
+          <Card.Footer p={0} width={"100%"}>
+            <HStack justifyContent="space-between" width="100%">
+              <Popover.Trigger>
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info
                 </Text>
-                {hazardPill}
-              </HStack>
-            </Card.Footer>
-          </VStack>
-        </Popover.Trigger>
+              </Popover.Trigger>
+              {hazardPill}
+            </HStack>
+          </Card.Footer>
+        </VStack>
         <Portal>
           <Popover.Positioner>
             <Popover.Content maxHeight="unset">
