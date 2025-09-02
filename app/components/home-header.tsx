@@ -60,7 +60,10 @@ const HomeHeader = ({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <HStack align="start" gap="1">
+      <HStack align="start" gap="1" 
+      // border={"1px solid yellow"}
+      mb={2}
+      >
           <Link
             as={"a"}
             color="white"
@@ -88,8 +91,10 @@ const HomeHeader = ({
         </HStack>
       <Stack
         direction={{ base: "column", md: "row", xl: "row" }}
-        alignItems={{ base: "flex-start", md: "flex-end", xl: "center" }}
+        alignItems={{ base: "flex-start", md: "center", xl: "center" }}
         justifyContent="space-between"
+        gap={1}
+        mb={2}
         // border={"1px solid red"}
         // p="0"
       >
@@ -123,7 +128,9 @@ const HomeHeader = ({
         mb={5}
         // border={"1px solid yellow"}
       >
-        <HStack align="start" gap="1">
+        <HStack align="start" gap="1" 
+        // border={"1px solid lightblue"}
+        >
           <Link
             as={"a"}
             color="white"
