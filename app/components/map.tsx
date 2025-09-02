@@ -126,9 +126,9 @@ const Map: React.FC<MapProps> = ({
           type: "fill",
           slot: "middle",
           paint: {
-            "fill-color": mapColors.tsunamiColor, // blue/300
-            "fill-opacity": 0.25, // 50% opacity
-          },
+            "fill-color": mapColors.tsunamiColor,
+            "fill-opacity": 0.5
+          }
         });
 
         // Add layers
@@ -138,7 +138,7 @@ const Map: React.FC<MapProps> = ({
           type: "fill",
           slot: "middle",
           paint: {
-            "fill-color": "#F6AD55", // orange/300
+            "fill-color": mapColors.liquefactionColor, 
             "fill-opacity": 0.5, // 50% opacity
           },
         });
