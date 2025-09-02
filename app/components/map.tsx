@@ -127,7 +127,7 @@ const Map: React.FC<MapProps> = ({
           slot: "middle",
           paint: {
             "fill-color": mapColors.tsunamiColor,
-            "fill-opacity": 0.5
+            "fill-opacity": 0.5,
           }
         });
 
@@ -138,7 +138,7 @@ const Map: React.FC<MapProps> = ({
           type: "fill",
           slot: "middle",
           paint: {
-            "fill-color": mapColors.liquefactionColor, 
+            "fill-color": mapColors.liquefactionColor,
             "fill-opacity": 0.5, // 50% opacity
           },
         });
