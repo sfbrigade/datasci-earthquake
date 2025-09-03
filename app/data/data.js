@@ -114,10 +114,9 @@ export const Headings = {
     style: {
       color: "white",
       whiteSpace: { base: "normal", md: "pre-line" },
-      // paddingRight: { base: "10px", xl: "300px" },
-      // marginBottom: "16px",
     },
     highlightStyle: { color: "yellow" },
+    themeTextStyle: "headerMedium"
   },
   about: {
     text: "Earthquake safety starts with knowledge. We're here to help.",
@@ -125,6 +124,7 @@ export const Headings = {
     style: { color: "blue", fontWeight: "300", paddingRight: "50" },
     highlightStyle: {},
     maxWidth: { base: "100%", md: "100%", xl: "842px" },
+    themeTextStyle: "headerBig"
   },
 };
 
