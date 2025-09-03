@@ -40,6 +40,7 @@ const Share = () => {
       background={"transparent"}
       textStyle="textMedium"
       color="white"
+      p="0"
       _hover={{ color: "grey.400" }}
     >
       <IoIosLink /> Copy Link

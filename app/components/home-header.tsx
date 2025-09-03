@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from "react";
 import ReactDOM from "react-dom";
-// import { Headings } from "../data/data";
+import { Headings } from "../data/data";
 import {
   Box,
   Stack,
@@ -16,7 +16,7 @@ import {
   Heading as ChakraHeading,
 } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
-// import Heading from "./heading";
+import Heading from "./heading";
 import ReportAddress from "./report-address";
 import SearchBar from "./search-bar";
 import SearchBarSkeleton from "./search-bar-skeleton";
@@ -47,7 +47,7 @@ const HomeHeader = ({
   onCoordDataRetrieve,
   onHazardDataLoading,
 }: HomeHeaderProps) => {
-  // const headingData = Headings.home;
+  const headingData = Headings.home;
   const [isSearchComplete, setSearchComplete] = useState(false);
 
   return (
@@ -71,7 +71,8 @@ const HomeHeader = ({
         justifyContent={"space-between"}
         alignItems={{ base: "flex-start", xl: "center" }}
         gap={1.5}
-        mb={5}
+        mb={{base: 1, xl: 5}}
+        // p={0}
         // border={"1px solid yellow"}
       >
         <HStack
@@ -108,15 +109,16 @@ const HomeHeader = ({
         {isSearchComplete ? (
           <ReportAddress searchedAddress={searchedAddress} />
         ) : (
-          <ChakraHeading
-            size={"3xl"}
-            color={"white"}
-            fontWeight={{ base: "thin", xl: "normal" }}
-          >
-            <Highlight query="How safe" styles={{ color: "yellow" }}>
-              How safe is your home in an earthquake?
-            </Highlight>
-          </ChakraHeading>
+          // <ChakraHeading
+          //   size={"4xl"}
+          //   color={"white"}
+          //   fontWeight={{ base: "thin", xl: "normal" }}
+          // >
+          //   <Highlight query="How safe" styles={{ color: "yellow" }}>
+          //     How safe is your home in an earthquake?
+          //   </Highlight>
+          // </ChakraHeading>
+          <Heading headingData={headingData} />
         )}
       </Flex>
 
@@ -124,10 +126,14 @@ const HomeHeader = ({
         direction={{ base: "column-reverse", xl: "row" }}
         justifyContent={"space-between"}
         alignItems={{ base: "flex-start", xl: "center" }}
-        flexGrow={{ base: "100%" }}
+        // flexGrow={{ base: "100%", xl: "inherit" }}
+        // border={"1px solid red"}
       >
         {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
-        <Box width="100%">
+        <Box
+          width={{ base: "100%", xl: "fit-content" }}
+          // border={"1px solid yellow"}
+        >
           <Suspense fallback={<SearchBarSkeleton />}>
             <SearchBar
               coordinates={coordinates}
