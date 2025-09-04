@@ -1,7 +1,7 @@
 import { Stack, Text } from "@chakra-ui/react";
 
 interface ReportAddressProps {
-  searchedAddress: string;
+  searchedAddress: string | null;
 }
 
 const ReportAddress: React.FC<ReportAddressProps> = ({ searchedAddress }) => {

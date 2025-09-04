@@ -54,11 +54,11 @@ test("should fetch all hazard data successfully", async () => {
     return mockSuccessResponse({ exists: false, last_updated: null });
   });
 
-  const onSearchComplete = jest.fn();
-  const onHazardDataLoading = jest.fn();
+  const setSearchComplete = jest.fn();
+  const setHazardDataLoading = jest.fn();
 
   const { result } = renderHook(() =>
-    useHazardDataFetcher({ onSearchComplete, onHazardDataLoading })
+    useHazardDataFetcher({ setSearchComplete, setHazardDataLoading })
   );
 
   // Act to run the hook's async function
@@ -68,10 +68,10 @@ test("should fetch all hazard data successfully", async () => {
   });
 
   // Assertions
-  expect(onHazardDataLoading).toHaveBeenNthCalledWith(1, true);
-  expect(onSearchComplete).toHaveBeenCalledWith(true);
+  expect(setHazardDataLoading).toHaveBeenNthCalledWith(1, true);
+  expect(setSearchComplete).toHaveBeenCalledWith(true);
   expect(toaster.create).not.toHaveBeenCalled();
-  expect(onHazardDataLoading).toHaveBeenNthCalledWith(2, false);
+  expect(setHazardDataLoading).toHaveBeenNthCalledWith(2, false);
   expect(fetchMock).toHaveBeenCalledTimes(3);
 
   expect(returnedValue).toEqual({
@@ -93,11 +93,11 @@ test("should show a warning toast when one API call fails", async () => {
     )
     .mockResolvedValueOnce(mockFailedResponse());
 
-  const onSearchComplete = jest.fn();
-  const onHazardDataLoading = jest.fn();
+  const setSearchComplete = jest.fn();
+  const setHazardDataLoading = jest.fn();
 
   const { result } = renderHook(() =>
-    useHazardDataFetcher({ onSearchComplete, onHazardDataLoading })
+    useHazardDataFetcher({ setSearchComplete, setHazardDataLoading })
   );
 
   // Act to run the hook's async function
@@ -107,14 +107,14 @@ test("should show a warning toast when one API call fails", async () => {
   });
 
   // Assertions
-  expect(onSearchComplete).toHaveBeenCalledWith(true);
+  expect(setSearchComplete).toHaveBeenCalledWith(true);
   expect(toaster.create).toHaveBeenCalledWith(
     expect.objectContaining({
       title: "Hazard data warning",
       description: "Failed to fetch: Liquefaction",
     })
   );
-  expect(onHazardDataLoading).toHaveBeenCalledTimes(2);
+  expect(setHazardDataLoading).toHaveBeenCalledTimes(2);
   expect(fetchMock).toHaveBeenCalledTimes(3);
 
   expect(returnedValue).toEqual({
