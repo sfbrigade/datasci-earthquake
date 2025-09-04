@@ -219,7 +219,7 @@ const Map: React.FC<MapProps> = ({
       >
         <chakra.form>
           <chakra.label display={"flex"} mb={3}>
-            <b style={{ color: "white", marginRight: "20px" }}>
+            <b style={{ color: "white", marginRight: "15px" }}>
               {LayerIds[0]}:
             </b>
             <input
@@ -234,7 +234,12 @@ const Map: React.FC<MapProps> = ({
               }
             />
             <div
-              style={{ color: "white", cursor: "pointer" }}
+              style={{
+                color: "white",
+                cursor: "pointer",
+                border: "2px solid white",
+                paddingInline: "4px",
+              }}
               onClick={() =>
                 handleColorChange(
                   LayerIds[0],
@@ -247,13 +252,13 @@ const Map: React.FC<MapProps> = ({
             </div>
           </chakra.label>
           <chakra.label display={"flex"} mb={3}>
-            <b style={{ color: "white", marginRight: "20px" }}>
+            <b style={{ color: "white", marginRight: "15px" }}>
               {LayerIds[1]}:
             </b>
             <input
               type="text"
               value={liquefactionColor.color}
-              style={{ width: "90px", marginRight: "20px" }}
+              style={{ width: "90px", marginRight: "15px" }}
               onChange={(e) =>
                 setLiquefactionColor({
                   color: e.target.value,
@@ -275,7 +280,12 @@ const Map: React.FC<MapProps> = ({
               }
             />
             <div
-              style={{ color: "white", cursor: "pointer" }}
+              style={{
+                color: "white",
+                cursor: "pointer",
+                border: "2px solid white",
+                paddingInline: "4px",
+              }}
               onClick={() =>
                 handleColorChange(
                   LayerIds[1],
@@ -288,13 +298,13 @@ const Map: React.FC<MapProps> = ({
             </div>
           </chakra.label>
           <chakra.label display={"flex"}>
-            <b style={{ color: "white", marginRight: "20px" }}>
+            <b style={{ color: "white", marginRight: "15px" }}>
               {LayerIds[2]}:
             </b>
             <input
               type="text"
               value={tsunamiColor.color}
-              style={{ width: "90px", marginRight: "20px" }}
+              style={{ width: "90px", marginRight: "15px" }}
               onChange={(e) =>
                 setTsunamiColor({
                   color: e.target.value,
@@ -315,7 +325,12 @@ const Map: React.FC<MapProps> = ({
               }
             />
             <div
-              style={{ color: "white", cursor: "pointer" }}
+              style={{
+                color: "white",
+                cursor: "pointer",
+                border: "2px solid white",
+                paddingInline: "4px",
+              }}
               onClick={() =>
                 handleColorChange(
                   LayerIds[2],
