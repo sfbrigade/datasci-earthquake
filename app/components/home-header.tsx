@@ -35,7 +35,7 @@ const HomeHeader = ({
   onSearchChange,
 }: HomeHeaderProps) => {
   const headingData = Headings.home;
-
+  
   return (
     <Box
       as="header"
