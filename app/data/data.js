@@ -290,3 +290,17 @@ export const PillData = [
 ];
 
 export const LayerIds = ["softStoriesLayer", "seismicLayer", "tsunamiLayer"];
+
+export const LayerDefaults = [
+  {
+    color: "#A0AEC0",
+  },
+  {
+    color: "#F6AD55",
+    opacity: 0.5,
+  },
+  {
+    color: "#63B3ED",
+    opacity: 0.25,
+  },
+];
