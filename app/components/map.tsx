@@ -67,9 +67,9 @@ const Map: React.FC<MapProps> = ({
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current!,
         style: "mapbox://styles/mapbox/standard",
-        center: [-122.437, 37.75],
-        zoom: 11, // Start with more zoomed-out view but not too far
-        minZoom: 10.5, // Allow users to zoom out more
+        center: [-122.437, 37.765],
+        zoom: 12.1, // Start with more zoomed-out view but not too far
+        minZoom: 11, // Allow users to zoom out more
         maxZoom: 15, // Increase max zoom to allow closer inspection
         maxBounds: [
           [-122.6, 37.65], // Southwest coordinates
@@ -78,8 +78,8 @@ const Map: React.FC<MapProps> = ({
         dragRotate: false, // turn off rotation on drag
         touchPitch: false, // turn off pitch change w/touch
         touchZoomRotate: true, // turn on zoom/rotate w/touch
-        keyboard: true, // turn on keyboard shortcuts
-        cooperativeGestures: true, // scroll-to-zoom requires using the control or command key while scrolling to zoom the map
+        // keyboard: true, // turn on keyboard shortcuts
+        // cooperativeGestures: true, // scroll-to-zoom requires using the control or command key while scrolling to zoom the map
         config: {
           // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
           basemap: {
@@ -111,6 +111,16 @@ const Map: React.FC<MapProps> = ({
           .addTo(map);
 
         markerRef.current = addressMarker;
+
+        // const navButtons = document.querySelectorAll(
+        //   ".mapboxgl-ctrl-group button"
+        // );
+
+        // // Loop through and apply inline styles to each button
+        // navButtons.forEach((button) => {
+        //   button.style.width = "40px";
+        //   button.style.height = "40px";
+        // });
 
         // Add sources
         map.addSource("seismic", { type: "geojson", data: liquefactionData });
