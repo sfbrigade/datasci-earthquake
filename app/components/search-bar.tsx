@@ -1,25 +1,15 @@
 "use client";
 
-import {
-  ChangeEvent,
-  FormEvent,
-  Suspense,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { ChangeEvent, FormEvent, Suspense, useState } from "react";
+import { useRouter } from "next/navigation";
 import { chakra, Input, InputGroup, Text } from "@chakra-ui/react";
-import { toaster } from "@/components/ui/toaster";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill, {
   AddressAutofillOptions,
   AddressAutofillRetrieveResponse,
 } from "./address-autofill";
-import type { HazardData } from "./home-header";
 import { AddressAutofillSuggestionResponse } from "@mapbox/search-js-core";
-import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 
 const autofillOptions: AddressAutofillOptions = {
   country: "US",
@@ -33,33 +23,15 @@ const autofillOptions: AddressAutofillOptions = {
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `search-bar-skeleton.tsx` and vice versa
 // TODO: isolate the usage of `useSearchParams()` so that the Suspense boundary can be even more narrow if possible
 interface SearchBarProps {
-  coordinates: number[];
-  onSearchChange: (coords: number[]) => void;
-  onAddressSearch: (address: string) => void;
-  onCoordDataRetrieve: (data: HazardData) => void;
-  onHazardDataLoading: (hazardDataLoading: boolean) => void;
-  onSearchComplete: (searchComplete: boolean) => void;
+  onSearchChange: (coords: number[], address: string) => void;
 }
 
-const SearchBar = ({
-  coordinates,
-  onSearchChange,
-  onAddressSearch,
-  onCoordDataRetrieve,
-  onHazardDataLoading,
-  onSearchComplete,
-}: SearchBarProps) => {
+const SearchBar = ({ onSearchChange }: SearchBarProps) => {
   const [inputAddress, setInputAddress] = useState("");
   const [suggestionSelected, setSuggestionSelected] = useState(false);
   const [suggestionsAvailable, setSuggestionsAvailable] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
   const characterCap = 5;
-
-  const { fetchHazardData } = useHazardDataFetcher({
-    onSearchComplete,
-    onHazardDataLoading,
-  });
 
   const handleClearClick = () => {
     setInputAddress("");
@@ -77,38 +49,9 @@ const SearchBar = ({
     const addressData = res.features[0];
     const addressLine = res.features[0].properties.feature_name;
     const coords = addressData.geometry.coordinates;
-
-    onAddressSearch(addressLine);
-    onSearchChange(coords);
-    updateHazardData(coords);
-
-    const newUrl = `?address=${encodeURIComponent(addressLine)}&lat=${coords[1]}&lon=${coords[0]}`;
-    router.push(newUrl, { scroll: false });
+    onSearchChange(coords, addressLine);
     // "locks in" choice, to prevent re-appearing of hint
     setSuggestionSelected(true);
-  };
-
-  const updateHazardData = async (coords: number[]) => {
-    try {
-      const values = await fetchHazardData(coords);
-      onCoordDataRetrieve(values);
-    } catch (error) {
-      console.error(
-        "Error while retrieving data: ",
-        error instanceof Error ? error.message : error?.toString()
-      );
-      onCoordDataRetrieve({
-        softStory: null,
-        tsunami: null,
-        liquefaction: null,
-      });
-      toaster.create({
-        description: "Could not retrieve hazard data",
-        type: "error",
-        duration: 5000,
-        closable: true,
-      });
-    }
   };
 
   const handleAddressChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -132,33 +75,6 @@ const SearchBar = ({
   const handleSuggest = (res: AddressAutofillSuggestionResponse) => {
     setSuggestionsAvailable(res.suggestions.length > 0);
   };
-
-  // temporary memoization fix for updating the address in the search bar.
-  // TODO: refactor how we are caching our calls
-  const memoizedOnSearchChange = useCallback(onSearchChange, []);
-  const memoizedOnAddressSearch = useCallback(onAddressSearch, []);
-  const memoizedUpdateHazardData = useCallback(updateHazardData, [
-    fetchHazardData,
-    onCoordDataRetrieve,
-  ]);
-
-  useEffect(() => {
-    const address = searchParams.get("address");
-    const lat = searchParams.get("lat");
-    const lon = searchParams.get("lon");
-
-    if (address && lat && lon) {
-      const coords = [parseFloat(lon), parseFloat(lat)];
-      memoizedOnAddressSearch(address);
-      memoizedOnSearchChange(coords);
-      memoizedUpdateHazardData(coords);
-    }
-  }, [
-    searchParams,
-    memoizedOnAddressSearch,
-    memoizedOnSearchChange,
-    memoizedUpdateHazardData,
-  ]);
 
   return (
     <chakra.form position={"relative"} onSubmit={onSubmit}>

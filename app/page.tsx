@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Suspense } from "react";
 import { Box, Flex, Heading, Text, List, HStack, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import Image from "next/image";
@@ -40,11 +41,14 @@ const Home = async () => {
   }
   return (
     <Flex direction="column">
-      <AddressMapper
-        softStoryData={softStoryData}
-        tsunamiData={tsunamiData}
-        liquefactionData={liquefactionData}
-      />
+      {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
+      <Suspense fallback={null}>
+        <AddressMapper
+          softStoryData={softStoryData}
+          tsunamiData={tsunamiData}
+          liquefactionData={liquefactionData}
+        />
+      </Suspense>
       <Flex
         w={{ base: "full", xl: "7xl" }}
         p={{
