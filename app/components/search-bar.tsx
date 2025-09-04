@@ -87,11 +87,6 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
           onSuggest={handleSuggest}
         >
           <InputGroup
-
-
-            // border={"1px solid limegreen"}
-          
-          
             w={{
               base: "100%",
               sm: "303px",

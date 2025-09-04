@@ -6,23 +6,19 @@ import {
   Text,
   Link,
   Image,
-  // Stack,
   VisuallyHidden,
   Flex,
 } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
-import NextLink from "next/link";
 import { useRef } from "react";
 
 const Header = () => {
   const pathname = usePathname();
   const isHome = pathname === "/";
-  const isAbout = pathname === "/about";
   const portalRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <Box
-      // border={"5px solid yellow"}
       as="header"
       bg={isHome ? undefined : "gradient.blue"}
       w="100%"
@@ -31,10 +27,7 @@ const Header = () => {
       display={isHome ? "none" : undefined}
     >
       <Flex
-        // border={"5px solid red"}
         direction="row"
-        // w={{ base: "full", xl: "7xl" }}
-        // h="112px"
         justifyContent={{
           base: "flex-start",
           md: "flex-end",
@@ -42,9 +35,6 @@ const Header = () => {
           xl: "flex-end",
         }}
         alignItems="center"
-        // columnGap="25px"
-        // m="auto"
-        // p={[10, 20, 30, 200]}
         p={{
           base: 6,
           md: 7,
@@ -52,9 +42,7 @@ const Header = () => {
           xl: [7, 9, 7, 9],
         }}
       >
-        <HStack align="start" gap="1" 
-        // border={"2px solid limegreen"}
-        >
+        <HStack align="start" gap="1">
           <Link
             as={"a"}
             color="white"
@@ -82,13 +70,6 @@ const Header = () => {
         </HStack>
 
         {isHome && <Box ref={portalRef} id="searchbar-portal" />}
-        {/* {isAbout && (
-          <Link as={NextLink} color="white" href="/">
-            <Text textStyle="textMedium" layerStyle="text" color="white">
-              Back To Home
-            </Text>
-          </Link>
-        )} */}
       </Flex>
     </Box>
   );
