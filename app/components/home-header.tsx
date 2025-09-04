@@ -55,25 +55,22 @@ const HomeHeader = ({
       as="header"
       bg="gradient.blue"
       p={{
-        base: "30px 35px 20px 35px",
-        xl: "40px 45px 30px 45px",
+        base: "24px 32px 26px 24px",
+        xl: "40px 48px 32px 48px",
       }}
-      // border={"1px solid red"}
     >
       <Flex
         direction={{
           base: "column",
-          // sm: "column",
           md: "column",
           lg: "row-reverse",
-          // xl: "row-reverse",
         }}
         justifyContent={"space-between"}
         alignItems={{ base: "flex-start", xl: "center" }}
         gap={1.5}
-        mb={{base: 1, xl: 5}}
-        // p={0}
-        // border={"1px solid yellow"}
+        mb={{ base: 2, xl: 6 }}
+        // border={"1px solid red"}
+
       >
         <HStack
           align="start"
@@ -109,15 +106,6 @@ const HomeHeader = ({
         {isSearchComplete ? (
           <ReportAddress searchedAddress={searchedAddress} />
         ) : (
-          // <ChakraHeading
-          //   size={"4xl"}
-          //   color={"white"}
-          //   fontWeight={{ base: "thin", xl: "normal" }}
-          // >
-          //   <Highlight query="How safe" styles={{ color: "yellow" }}>
-          //     How safe is your home in an earthquake?
-          //   </Highlight>
-          // </ChakraHeading>
           <Heading headingData={headingData} />
         )}
       </Flex>
@@ -126,14 +114,9 @@ const HomeHeader = ({
         direction={{ base: "column-reverse", xl: "row" }}
         justifyContent={"space-between"}
         alignItems={{ base: "flex-start", xl: "center" }}
-        // flexGrow={{ base: "100%", xl: "inherit" }}
-        // border={"1px solid red"}
       >
         {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
-        <Box
-          width={{ base: "100%", xl: "fit-content" }}
-          // border={"1px solid yellow"}
-        >
+        <Box width={{ base: "100%", xl: "fit-content" }}>
           <Suspense fallback={<SearchBarSkeleton />}>
             <SearchBar
               coordinates={coordinates}
