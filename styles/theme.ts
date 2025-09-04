@@ -130,15 +130,16 @@ const tokens = defineTokens({
       600: { value: "#4A5568" },
       900: { value: "#171923" },
     },
+    softStoryColor: { value: "#2D3748" },
     white: { value: "#FFF" },
     blueBackground: { value: "#2C5282" }, // blue/700
     blue: { value: "#2B6CB0" }, // blue/600 (TODO: all headings)
     lightBlue: { value: "#3182CE" }, // blue/500 (TODO: remove)
-    tsunamiBlue: { value: "#63B3ED" }, // blue/300
+    tsunamiColor: { value: "#1E40AF" }, // blue
     yellow: { value: "#ECC94B" },
     red: { value: "#C53030" },
     green: { value: "#25855A" },
-    orange: { value: "#F6AD55" },
+    liquefactionColor: { value: "#B91C1C" },
     pink: { value: "#ED64A6" },
     gradient: {
       blue: {

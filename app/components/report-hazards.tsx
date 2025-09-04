@@ -61,9 +61,12 @@ const ReportHazards = ({
           <Text textStyle="textMedium" layerStyle="text" fontWeight="700">
             Legend:
           </Text>
-          <KeyElem name="Soft story" color="grey.400" icon={<FaCircle />} />
+          <KeyElem name="Soft story"
+            color="softStoryColor"
+            icon={<FaCircle />}
+          />
           {/* TODO: in the event this section of code handling the legends isn't
-          completely remove, it should be refactored by taking the values of
+          completely removed, it should be refactored by taking the values of
           each property from the KeyElems and placing them into an array,
           allowing the legends to be mapped out. The index argument could/should
           be used during mapping. */}
@@ -77,7 +80,7 @@ const ReportHazards = ({
           </Switch.Root>
           <KeyElem
             name="Liquefaction areas"
-            color="orange"
+            color="liquefactionColor"
             icon={<FaSquareFull />}
           />
           <Switch.Root
@@ -90,7 +93,7 @@ const ReportHazards = ({
           </Switch.Root>
           <KeyElem
             name="Tsunami zone"
-            color="tsunamiBlue"
+            color="tsunamiColor"
             icon={<FaSquareFull />}
           />
           <Switch.Root
