@@ -112,16 +112,6 @@ const Map: React.FC<MapProps> = ({
 
         markerRef.current = addressMarker;
 
-        // const navButtons = document.querySelectorAll(
-        //   ".mapboxgl-ctrl-group button"
-        // );
-
-        // // Loop through and apply inline styles to each button
-        // navButtons.forEach((button) => {
-        //   button.style.width = "40px";
-        //   button.style.height = "40px";
-        // });
-
         // Add sources
         map.addSource("seismic", { type: "geojson", data: liquefactionData });
 
