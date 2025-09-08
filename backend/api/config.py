@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     next_public_posthog_host: str
     next_public_posthog_key: str
 
-    model_config = SettingsConfigDict(env_file="../.env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(env_file=__import__('pathlib').Path(__file__).resolve().parent.parent.parent / '.env', env_file_encoding="utf-8")
 
 
 settings = Settings()
