@@ -56,7 +56,7 @@ COPY backend ./backend
 # in the container to assert test results.
 COPY pytest.ini .
 
-RUN chmod +x ./backend/etl/startup.sh
+RUN chmod +x ./backend/etl/simple_startup.py
 
 # Switch to the non-privileged user to run the application.
 USER appuser

@@ -8,7 +8,9 @@ from backend.api.routers import (
     health_api,
 )
 from backend.api.config import settings
+from backend.etl.background_service import etl_service
 import sentry_sdk
+import logging
 
 
 # Initialize Sentry
@@ -19,8 +21,14 @@ sentry_sdk.init(
     send_default_pii=False,
 )
 
-### Create FastAPI instance with custom docs and openapi url
+# Create FastAPI instance with custom docs and openapi url
 app = FastAPI(docs_url="/docs", openapi_url="/openapi.json", redirect_slashes=False)
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 app.include_router(liquefaction_api.router)
 app.include_router(tsunami_api.router)
@@ -39,6 +47,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# Startup event - start ETL service in background
+@app.on_event("startup")
+async def startup_event():
+    """Start background ETL service when FastAPI starts"""
+    logger.info("Starting background ETL service")
+    etl_service.start()
+
+
+# Shutdown event - stop ETL service gracefully
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Stop background ETL service when FastAPI shuts down"""
+    logger.info("Stopping background ETL service")
+    etl_service.stop()
 
 
 # Global exception handler (ensures flush before serverless exit)
