@@ -53,6 +53,8 @@ jobs:
 
   nextjs_build_check:
     runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: ci    
     steps:
       - uses: actions/checkout@v4 
       - name: Set up Node.js

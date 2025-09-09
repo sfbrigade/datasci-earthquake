@@ -6,9 +6,9 @@ from backend.api.config import settings
 
 def _get_database_url() -> str:
     match settings.environment:
-        case "local":
+        case "local" | "ci":
             return settings.localhost_database_url_sqlalchemy
-        case "ci" | "prod":
+        case "prod":
             return settings.neon_url
         case "dev_docker":
             return settings.database_url_sqlalchemy
