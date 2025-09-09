@@ -5,6 +5,7 @@ export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
     // Try fetching from CDN first
     const cdnResponse = await fetch(cdnEndpoint, { next: { revalidate: SECONDS_PER_DAY } });
     if (cdnResponse.ok) {
+      console.warn(`CDN fetch successful from ${cdnEndpoint}`)
       return await cdnResponse.json();
     } else {
       console.warn(`CDN fetch failed with: ${cdnResponse.status} (${cdnResponse.statusText}). Falling back to API.`);
@@ -16,7 +17,7 @@ export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
   // TODO: prevent this fallback from running if the CDN call successfully returns valid data
   // Fallback to API
   try {
-    const apiResponse = await fetch(apiEndpoint, { next: { revalidate: SECONDS_PER_DAY } });
+    const apiResponse = await fetch(cdnEndpoint, { next: { revalidate: SECONDS_PER_DAY } });
     if (!apiResponse.ok) {
       switch (apiResponse.status) {
         case 404:
