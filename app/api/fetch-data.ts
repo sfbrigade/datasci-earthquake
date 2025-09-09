@@ -4,7 +4,6 @@ import path from 'path';
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
 export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
-  console.log(`Fetching data in the ${process.env.ENVIRONMENT} env`)
   if (process.env.ENVIRONMENT === "ci") {
     // Try reading local geojsons from public/data
     try {
@@ -32,7 +31,7 @@ export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
     // TODO: prevent this fallback from running if the CDN call successfully returns valid data
     // Fallback to API
     try {
-      const apiResponse = await fetch(cdnEndpoint, { next: { revalidate: SECONDS_PER_DAY } });
+      const apiResponse = await fetch(apiEndpoint, { next: { revalidate: SECONDS_PER_DAY } });
       if (!apiResponse.ok) {
         switch (apiResponse.status) {
           case 404:
