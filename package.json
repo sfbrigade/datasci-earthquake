@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "fastapi-dev": "uv sync --dev && uv run fastapi dev api/index.py",
+    "fastapi-dev": "cd backend && uv sync --dev && uv run fastapi dev ../api/index.py",
     "next-dev": "next dev",
     "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\"",
     "build": "next build",
