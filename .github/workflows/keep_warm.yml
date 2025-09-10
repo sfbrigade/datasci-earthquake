@@ -3,13 +3,19 @@ name: Keep Serverless Functions Warm
 on:
   schedule:
     - cron: '*/4 * * * *' # Every 4 minutes 24/7/365
-
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   ping-endpoints:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Ping health api
-        run: curl -s -o /dev/null "https://www.safehome.report/api/health"
+      - name: Ping health API
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" "https://www.safehome.report/api/health")
+          if [ "$response" -ne 200 ]; then
+            echo "Failed to ping health API. HTTP status code: $response"
+            exit 1
+          else
+            echo "Successfully pinged health API. HTTP status code: $response"
+          fi
