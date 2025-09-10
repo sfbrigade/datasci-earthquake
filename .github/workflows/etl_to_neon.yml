@@ -27,15 +27,9 @@ jobs:
           python-version: "3.12"
 
       - name: Install uv
-        run: |
-          # Download the latest uv installer
-          curl -sSL https://astral.sh/uv/install.sh -o /uv-installer.sh
-          
-          # Run the installer
-          sh /uv-installer.sh
-          
-          # Ensure uv is on PATH
-          export PATH="/root/.local/bin/:$PATH"
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
 
       - name: Install dependencies
         run: |
