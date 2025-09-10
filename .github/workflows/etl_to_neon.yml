@@ -64,9 +64,9 @@ jobs:
 
       - name: ETL data to Neon DB
         run: |
-          ENVIRONMENT=prod python -m backend.etl.tsunami_data_handler
-          ENVIRONMENT=prod python -m backend.etl.soft_story_properties_data_handler
-          ENVIRONMENT=prod python -m backend.etl.liquefaction_data_handler
+          ENVIRONMENT=prod uv run --project backend backend.etl.tsunami_data_handler
+          ENVIRONMENT=prod uv run --project backend backend.etl.soft_story_properties_data_handler
+          ENVIRONMENT=prod uv run --project backend backend.etl.liquefaction_data_handler
 
       - name: Commit & Push Changes
         id: detect_changes 
