@@ -33,7 +33,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv sync --frozen --system --project backend
+          uv sync --frozen --project backend
 
       - name: Get Run ID of Most Recent Successful Run
         id: get_run_id
