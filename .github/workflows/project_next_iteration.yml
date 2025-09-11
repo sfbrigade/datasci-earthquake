@@ -1,0 +1,23 @@
+name: Move to next iteration
+
+on:
+  schedule:
+    # Runs "at 09:00 UTC, only on Wednesday" (see https://crontab.guru)
+    - cron: '0 9 * * 3'
+
+jobs:
+  move-to-next-iteration:
+    name: Move to next iteration
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: blombard/move-to-next-iteration@v0.6.1
+      with:
+        owner: sfbrigade # account name of GitHub organization
+        number: 13 # project number
+        token: ${{ secrets.GITHUB_TOKEN }} # Personal access token or an OAuth token. the project scope is required.
+        iteration-field: Iteration # the name of your iteration field
+        iteration: last # Should be last or current
+        new-iteration: current # Should be current or next
+        # statuses: 'Blocked,Todo,In Progress,In Review,' # Statuses of the issues to move to the next iteration; ignored if excluded-statuses is provided.
+        excluded-statuses: 'Done,Ready for Requirements' # Statuses of the issues that should not be moved; takes precedence over statuses
