@@ -4,7 +4,28 @@ Provides the environment variables that are read by the application
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
+from sys import path
 from functools import lru_cache
+
+ROOT_DIR = Path(path[0])
+
+
+def find_env_file(start: Path, filename: str = ".env") -> Path | None:
+    """
+    Walk upwards from `start` until `filename` is found or the root directory is reached.
+    Returns the Path if found, otherwise None.
+    """
+    current = start.resolve()
+    for parent in [current, *current.parents]:
+        candidate = parent / filename
+        if candidate.is_file():
+            return candidate
+        if parent == ROOT_DIR:
+            break
+    return None
+
+
+ENV_FILE = find_env_file(Path(__file__))
 
 
 class Settings(BaseSettings):
@@ -27,7 +48,7 @@ class Settings(BaseSettings):
     next_public_posthog_key: str
 
     model_config = SettingsConfigDict(
-        env_file=Path(__file__).resolve().parent.parent.parent / ".env",
+        env_file=ENV_FILE,
         env_file_encoding="utf-8",
     )
 
