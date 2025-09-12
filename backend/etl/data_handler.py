@@ -347,23 +347,31 @@ class DataHandler(ABC):
         except SQLAlchemyError as e:
             self.logger.warning(f"Failed to get last export time: {e}")
             return datetime.min
+    
+    @staticmethod
+    def _as_utc(time: datetime) -> datetime:
+        """Return time in utc if timezone info available"""
+        if time.tzinfo is None:
+            return time.replace(tzinfo=timezone.utc)
+        return time       
+
+    def _latest_update(self) -> datetime:
+        """Return latest update timestamp from database, in utc"""
+        with next(self.db_getter()) as db:
+            return DataHandler._as_utc(db.query(
+                func.max(getattr(self.table, "update_timestamp"))
+            ).scalar())
 
     def _data_changed_since_last_export(self, last_export_time: datetime) -> bool:
         """Check if data in the database has changed since last export"""
         try:
-            with next(self.db_getter()) as db:
-                latest_update = db.query(
-                    func.max(getattr(self.table, "update_timestamp"))
-                ).scalar()
+            latest_update = self._latest_update()  
 
-                # Ensure both datetimes are timezone-aware (UTC)
-                if latest_update is not None:
-                    if latest_update.tzinfo is None:
-                        latest_update = latest_update.replace(tzinfo=timezone.utc)
-                    if last_export_time.tzinfo is None:
-                        last_export_time = last_export_time.replace(tzinfo=timezone.utc)
+            # Ensure both datetimes are timezone-aware (UTC)
+            if latest_update is not None:
+                last_export_time = DataHandler._as_utc(last_export_time)
 
-                return latest_update is not None and latest_update > last_export_time
+            return latest_update is not None and latest_update > last_export_time
         except (SQLAlchemyError, AttributeError) as e:
             self.logger.warning(
                 f"Failed to check if {self.table.__name__} data has changed since last export: {e}"
