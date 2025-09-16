@@ -12,7 +12,8 @@ export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
       console.log(`Successfully read local file ${filePath}`)
       return json;
     } catch (error: any) {
-      console.error(`Error reading local file: $(error.message)`)
+      console.error(`Error reading local file: ${error.message}`);
+      return { error: true, message: error.message };
     } 
   } else { 
     try {
