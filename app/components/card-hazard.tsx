@@ -77,17 +77,13 @@ const CardHazard: React.FC<CardHazardProps> = ({
   };
 
   const handleSwitchClick = (num: number, checked: boolean) => {
-    const newArray = [];
-    const obj = {
+    const newArray = [...toggledStates];
+    newArray[num] = checked;
+    setToggledStates(newArray);
+    setLayerToggleObj({
       layerId: LayerIds[num],
       toggleState: checked,
-    };
-    for (let i = 0; i < toggledStates.length; i++) {
-      if (i === num) newArray.push(checked);
-      else newArray.push(toggledStates[i]);
-    }
-    setToggledStates(newArray);
-    setLayerToggleObj(obj);
+    });
   };
 
   return (
