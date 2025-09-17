@@ -136,6 +136,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       setCoordinates(null);
       setSearchedAddress(null);
       setAddressHazardData({});
+      setSearchComplete(false);
       coordinatesRef.current = null;
     }
   }, [searchParams, updateHazardData]);

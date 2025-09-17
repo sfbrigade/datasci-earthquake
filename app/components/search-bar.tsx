@@ -93,7 +93,7 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
               md: "371px",
               lg: "417px",
             }}
-            mb={"24px"}
+            // mb={"24px"}
             data-testid="search-bar"
             startElement={
               <IoSearchSharp
