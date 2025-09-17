@@ -99,7 +99,8 @@ const CardHazard: React.FC<CardHazardProps> = ({
       // boxShadow="0px 5px 6px #c8caceff"
       variant="elevated"
     >
-      <Accordion.Item border="none"
+      <Accordion.Item
+        border="none"
         /*
         closeOnEscape={true}
         closeOnInteractOutside={true}

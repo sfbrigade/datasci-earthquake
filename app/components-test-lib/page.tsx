@@ -8,6 +8,7 @@ import {
   Text,
   HStack,
   Separator,
+  Accordion,
 } from "@chakra-ui/react";
 import { Hazards } from "../data/data";
 import CardHazard from "../components/card-hazard";
@@ -61,25 +62,27 @@ const ComponentsTestLib = () => {
         Hazards Card
       </Heading>
       <Text mb={6}>This section demonstrates Hazard Card component</Text>
-      <VStack gap={6} align="start">
-        <HStack w="100%">
-          {Hazards.map((hazard) => {
-            return (
-              <CardHazard
-                key={hazard.id}
-                hazard={hazard}
-                hazardData={{ exists: true, last_updated: "" }}
-                showData={true}
-                isHazardDataLoading={true}
-                toggledStates={toggledStates}
-                setToggledStates={setToggledStates}
-                setLayerToggleObj={setLayerToggleObj}
-              />
-            );
-          })}
-        </HStack>
-        <Separator mb={3} />
-      </VStack>
+      <Accordion.Root collapsible={true}>
+        <VStack gap={6} align="start">
+          <HStack w="100%">
+            {Hazards.map((hazard) => {
+              return (
+                <CardHazard
+                  key={hazard.id}
+                  hazard={hazard}
+                  hazardData={{ exists: true, last_updated: "" }}
+                  showData={true}
+                  isHazardDataLoading={true}
+                  toggledStates={toggledStates}
+                  setToggledStates={setToggledStates}
+                  setLayerToggleObj={setLayerToggleObj}
+                />
+              );
+            })}
+          </HStack>
+          <Separator mb={3} />
+        </VStack>
+      </Accordion.Root>
       <Text mb={6}>This section demonstrates Share menu component</Text>
       <VStack gap={6} align="start">
         <HStack w="100%">
