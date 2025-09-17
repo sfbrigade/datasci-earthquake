@@ -39,6 +39,11 @@ const isErrorResult = (data: unknown): data is ErrorResult => {
   );
 };
 
+// const testingMobile = () => {
+//   if (window.innerWidth <= 480) return true;
+//   else return false;
+// };
+
 const AddressMapper: React.FC<AddressMapperProps> = ({
   softStoryData,
   tsunamiData,
@@ -68,9 +73,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     toggleState: true,
   });
   const [isSearchComplete, setSearchComplete] = useState(false);
+  const [currentView, setCurrentView] = useState("");
   const toastIdDataLoadFailed = "data-load-failed";
   const coordinatesRef = useRef<number[] | null>(null);
   const router = useRouter();
+
+  console.log(currentView);
 
   const { fetchHazardData } = useHazardDataFetcher({
     setSearchComplete,
@@ -102,6 +110,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     },
     [fetchHazardData]
   );
+
+  const handleResize = () => {
+    if (window.innerWidth <= 480) {
+      setCurrentView("mobile");
+    } else setCurrentView("desktop");
+  };
 
   const handleSearchChange = useCallback(
     (coords: number[], address: string) => {
@@ -169,6 +183,15 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     }
   }, [softStoryData, tsunamiData, liquefactionData]);
 
+  useEffect(() => {
+    if (window.innerWidth <= 480) setCurrentView("mobile");
+    else setCurrentView("desktop");
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <>
       <HomeHeader
@@ -189,13 +212,15 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       >
         <Box h="100%" overflow="hidden">
           <Box zIndex={10} top={0} position="absolute">
-            <ReportHazards
-              addressHazardData={addressHazardData}
-              isHazardDataLoading={isHazardDataLoading}
-              toggledStates={toggledStates}
-              setToggledStates={setToggledStates}
-              setLayerToggleObj={setLayerToggleObj}
-            />
+            {currentView === "desktop" ? (
+              <ReportHazards
+                addressHazardData={addressHazardData}
+                isHazardDataLoading={isHazardDataLoading}
+                toggledStates={toggledStates}
+                setToggledStates={setToggledStates}
+                setLayerToggleObj={setLayerToggleObj}
+              />
+            ) : null}
           </Box>
           <Map
             coordinates={coordinates || defaultCoords}
