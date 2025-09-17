@@ -7,7 +7,7 @@ import {
   Link,
   Card,
   Spinner,
-  Popover,
+  Accordion,
   Portal,
   Switch,
 } from "@chakra-ui/react";
@@ -99,16 +99,13 @@ const CardHazard: React.FC<CardHazardProps> = ({
       // boxShadow="0px 5px 6px #c8caceff"
       variant="elevated"
     >
-      <Popover.Root
-        positioning={{
-          placement: "bottom",
-          flip: false,
-          offset: { crossAxis: -12, mainAxis: 24 },
-          sameWidth: true,
-        }}
+      <Accordion.Item border="none"
+        /*
         closeOnEscape={true}
         closeOnInteractOutside={true}
-        aria-label={`${hazard.title} information`}
+        aria-label={`${hazard.title} information`} 
+      */
+        value={hazard.name}
       >
         <VStack alignItems={"flex-start"} flexGrow={1} h="full">
           <Card.Header
@@ -143,50 +140,43 @@ const CardHazard: React.FC<CardHazardProps> = ({
           </Card.Body>
           <Card.Footer p={0} width={"100%"}>
             <HStack justifyContent="space-between" width="100%">
-              <Popover.Trigger>
+              <Accordion.ItemTrigger p={0}>
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info
                 </Text>
-              </Popover.Trigger>
+              </Accordion.ItemTrigger>
               {hazardPill}
             </HStack>
           </Card.Footer>
         </VStack>
-        <Portal>
-          <Popover.Positioner>
-            <Popover.Content maxHeight="unset">
-              <Popover.CloseTrigger
+        <Accordion.ItemContent maxHeight="unset">
+          {/* <Accordion.CloseTrigger
                 cursor="pointer"
                 position="absolute"
                 top="2"
                 right="2"
               >
                 <RxCross2 color="grey.900" size="20" data-testid="clear-icon" />
-              </Popover.CloseTrigger>
-              <Popover.Arrow>
-                <Popover.ArrowTip />
-              </Popover.Arrow>
-              <Popover.Body>
-                {buildHazardCardInfo()}
-                <Link
-                  display={"inline-block"}
-                  href={hazard.link.url}
-                  mt="4"
-                  target="_blank"
-                  textDecoration="underline"
-                  onClick={() =>
-                    posthog.capture("dataset-link-clicked", {
-                      link_name: hazard.link.label,
-                    })
-                  }
-                >
-                  {hazard.link.label}
-                </Link>
-              </Popover.Body>
-            </Popover.Content>
-          </Popover.Positioner>
-        </Portal>
-      </Popover.Root>
+              </Accordion.CloseTrigger> */}
+          <Accordion.ItemBody>
+            {buildHazardCardInfo()}
+            <Link
+              display={"inline-block"}
+              href={hazard.link.url}
+              mt="4"
+              target="_blank"
+              textDecoration="underline"
+              onClick={() =>
+                posthog.capture("dataset-link-clicked", {
+                  link_name: hazard.link.label,
+                })
+              }
+            >
+              {hazard.link.label}
+            </Link>
+          </Accordion.ItemBody>
+        </Accordion.ItemContent>
+      </Accordion.Item>
     </Card.Root>
   );
 };
