@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
+import { useRouter } from "next/navigation";
 import { Headings } from "../data/data";
 import {
   Box,
@@ -35,6 +36,7 @@ const HomeHeader = ({
   onSearchChange,
 }: HomeHeaderProps) => {
   const headingData = Headings.home;
+  const router = useRouter();
 
   return (
     <Box
@@ -65,7 +67,7 @@ const HomeHeader = ({
             textDecoration={"none"}
             onClick={(e) => {
               e.preventDefault();
-              window.location.href = "/";
+              router.push("/");
             }}
           >
             <HStack align="baseline">

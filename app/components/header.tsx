@@ -9,11 +9,12 @@ import {
   VisuallyHidden,
   Flex,
 } from "@chakra-ui/react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useRef } from "react";
 
 const Header = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const isHome = pathname === "/";
   const portalRef = useRef<HTMLDivElement | null>(null);
 
@@ -50,7 +51,7 @@ const Header = () => {
             textDecoration={"none"}
             onClick={(e) => {
               e.preventDefault();
-              window.location.href = "/";
+              router.push("/");
             }}
           >
             <HStack align="baseline">
