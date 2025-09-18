@@ -23,7 +23,8 @@ def find_env_file(start: Path, filename: str = ".env") -> Path | None:
     return None
 
 
-ENV_FILE = find_env_file(Path(__file__).parent)
+BACKEND_DIR = Path(__file__).parent
+ENV_FILE = find_env_file(BACKEND_DIR) or find_env_file(BACKEND_DIR, ".env.example")
 
 
 class Settings(BaseSettings):
