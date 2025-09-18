@@ -2,7 +2,7 @@
 
 import { Button } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
-import ShareIcon from "../img/icon-share.svg";
+import { IoIosLink } from "react-icons/io";
 import { useSearchParams } from "next/navigation";
 
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `share-skeleton.tsx` and vice versa
@@ -10,7 +10,7 @@ import { useSearchParams } from "next/navigation";
 const Share = () => {
   const searchParams = useSearchParams();
 
-  const copyReportToClipBoard = async () => {
+  const copyLinkToClipBoard = async () => {
     try {
       const currentUrl = `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`;
       await navigator.clipboard.writeText(currentUrl);
@@ -34,14 +34,16 @@ const Share = () => {
 
   return (
     <Button
-      aria-label="Share report"
+      aria-label="Copy link"
       variant="ghost"
-      onClick={copyReportToClipBoard}
+      onClick={copyLinkToClipBoard}
       background={"transparent"}
       textStyle="textMedium"
       color="white"
+      p="0"
+      _hover={{ color: "grey.400" }}
     >
-      Share report <ShareIcon />
+      <IoIosLink /> Copy Link
     </Button>
   );
 };
