@@ -7,8 +7,6 @@ from pathlib import Path
 from sys import path
 from functools import lru_cache
 
-ROOT_DIR = Path(path[0])
-
 
 def find_env_file(start: Path, filename: str = ".env") -> Path | None:
     """
@@ -20,12 +18,12 @@ def find_env_file(start: Path, filename: str = ".env") -> Path | None:
         candidate = parent / filename
         if candidate.is_file():
             return candidate
-        if parent == ROOT_DIR:
+        if (parent / "compose.yaml").is_file():
             break
     return None
 
 
-ENV_FILE = find_env_file(Path(__file__))
+ENV_FILE = find_env_file(Path(__file__).parent)
 
 
 class Settings(BaseSettings):
