@@ -4,7 +4,6 @@ Provides the environment variables that are read by the application
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
-from sys import path
 from functools import lru_cache
 
 
