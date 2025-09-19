@@ -44,7 +44,7 @@ const HomeHeader = ({
       bg="gradient.blue"
       p={{
         base: "24px 32px 26px 24px",
-        xl: "40px 48px 32px 48px",
+        xl: "28px 48px 28px 48px",
       }}
     >
       <Flex

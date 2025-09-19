@@ -133,7 +133,11 @@ const CardHazard: React.FC<CardHazardProps> = ({
             </Switch.Root>
           </Card.Header>
           <Card.Body textAlign="left" p={0} mb={"6px"}>
-            <Text textStyle="textMedium" layerStyle="text">
+            <Text
+              textStyle="textMedium"
+              layerStyle="text"
+              fontSize={description.length >= 105 ? 15.2 : 16} // TODO: find better solution such as adjusting description text or whitespace between characters
+            >
               {description}
             </Text>
           </Card.Body>
