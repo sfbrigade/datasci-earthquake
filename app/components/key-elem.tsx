@@ -9,10 +9,10 @@ type KeyElemProps = {
 export const KeyElem = ({ name, color, icon }: KeyElemProps) => {
   return (
     <Stack direction="row" alignItems="center">
-      <Icon size="sm" color={color}>
+      <Icon size="md" color={color}>
         {icon}
       </Icon>
-      <Text textStyle="textMedium" layerStyle="text">
+      <Text textStyle="textMedium" layerStyle="headerAlt" fontWeight="700">
         {name}
       </Text>
     </Stack>

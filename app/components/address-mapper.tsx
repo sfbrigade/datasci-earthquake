@@ -15,6 +15,7 @@ const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
 };
 const defaultCoords = addressLookupCoordinates.geometry.coordinates ?? [];
+const toggledStatesDefaults = [true, true, true];
 
 interface AddressMapperProps {
   softStoryData: FeatureCollection<Geometry>;
@@ -59,11 +60,14 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   );
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
-  const [isSearchComplete, setSearchComplete] = useState(false);
+  const [toggledStates, setToggledStates] = useState<boolean[]>(
+    toggledStatesDefaults
+  );
   const [layerToggleObj, setLayerToggleObj] = useState<LayerToggleObjProps>({
     layerId: "",
     toggleState: true,
   });
+  const [isSearchComplete, setSearchComplete] = useState(false);
   const toastIdDataLoadFailed = "data-load-failed";
   const coordinatesRef = useRef<number[] | null>(null);
   const router = useRouter();
@@ -132,6 +136,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       setCoordinates(null);
       setSearchedAddress(null);
       setAddressHazardData({});
+      setSearchComplete(false);
       coordinatesRef.current = null;
     }
   }, [searchParams, updateHazardData]);
@@ -177,6 +182,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             <ReportHazards
               addressHazardData={addressHazardData}
               isHazardDataLoading={isHazardDataLoading}
+              toggledStates={toggledStates}
+              setToggledStates={setToggledStates}
               setLayerToggleObj={setLayerToggleObj}
             />
           </Box>

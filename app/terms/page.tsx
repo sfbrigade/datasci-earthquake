@@ -20,7 +20,7 @@ const TermsOfService = () => {
           <Text
             textStyle="headerBig"
             layerStyle="headerMain"
-            color="blue"
+            color="blue.text"
             fontWeight="300"
             marginBottom="2rem"
           >
@@ -30,7 +30,7 @@ const TermsOfService = () => {
             textStyle="headerMedium"
             layerStyle="headerAlt"
             alignSelf="flex-start"
-            color="blue"
+            color="blue.text"
           >
             Acceptable Use
           </Text>

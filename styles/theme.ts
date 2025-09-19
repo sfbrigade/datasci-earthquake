@@ -101,7 +101,7 @@ const layerStyles = defineLayerStyles({
   // for textStyles: headerMedium, cardTitle
   headerAlt: {
     description: "header alt",
-    value: { color: "blue" },
+    value: { color: "blue.text" },
   },
   // for textStyles: textSmall, textMedium, textBig
   text: {
@@ -132,7 +132,7 @@ const tokens = defineTokens({
     },
     white: { value: "#FFF" },
     blueBackground: { value: "#2C5282" }, // blue/700
-    blue: { value: "#2B6CB0" }, // blue/600 (TODO: all headings)
+    blue: { 600: { value: "#0088FF" }, text: { value: "#2B6CB0" } }, // blue/600 (TODO: all headings) // "#0088FF" comes from Figma switches
     lightBlue: { value: "#3182CE" }, // blue/500 (TODO: remove)
     tsunamiBlue: { value: "#63B3ED" }, // blue/300
     yellow: { value: "#ECC94B" },
