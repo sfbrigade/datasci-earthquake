@@ -208,12 +208,12 @@ const Map: React.FC<MapProps> = ({
   return (
     <>
       <Box
-        position={"absolute"}
-        bgColor={"blue"}
-        h={200}
+        position="absolute"
+        bgColor="blueBackground"
+        h={160}
         w={420}
         zIndex={15}
-        top={10}
+        top={0}
         right={0}
         padding={5}
       >
