@@ -12,6 +12,7 @@ import {
   fetchTsunami,
   fetchLiquefaction,
 } from "./api/services";
+import { HomePageText } from "./data/data";
 
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `home-skeleton.tsx` and vice versa
 // TODO: look into if we can use narrow Suspense boundaries instead of `loading.tsx` and achieve the same (or better) perceived loading time effect
@@ -50,16 +51,13 @@ const Home = async () => {
         />
       </Suspense>
       <Flex
-        w={{ base: "full", xl: "7xl" }}
+        w={{ base: "full" }}
         p={{
-          base: "24px 24px 24px 24px",
-          md: "36px 28px 16px 28px",
-          xl: "96px 128px 96px 128px",
+          base: "32px 32px 64px 32px",
         }}
-        m="auto"
-        gap="46px"
+        justifyContent="space-between"
       >
-        <HStack alignItems={"start"}>
+        <HStack alignItems={"start"} w={{ base: "75%" }}>
           <div>
             <Heading as="h2">
               <Text
@@ -69,9 +67,7 @@ const Home = async () => {
                 color="blue.text"
                 fontWeight="300"
               >
-                How to be
-                <br />
-                earthquake-ready
+                How to be earthquake-ready
               </Text>
             </Heading>
             <Text as="p" mt="2" textStyle="textBig" layerStyle="text">
@@ -79,202 +75,127 @@ const Home = async () => {
               resources can help you make confident, informed decisions around
               earthquake safety.
             </Text>
-            <Heading as="h3" mt="4">
+
+            <Heading as="h3" mt="7">
               <Text as="span" textStyle="headerMedium" layerStyle="headerAlt">
-                Know the lingo
+                {HomePageText[0].title}
               </Text>
             </Heading>
             <Text as="p" mt="2">
-              You’ve seen words like “soft story” and “retrofit” floating
-              around, but what do they actually mean?
+              {HomePageText[0].subtext}
             </Text>
-
-            <List.Root textStyle="textMedium" layerStyle="list">
-              <List.Item>
-                A{" "}
-                <Text as="span" textStyle="textSemibold">
-                  soft story
-                </Text>{" "}
-                building is a structure that contains an open-floor (or “soft”)
-                level, such as a garage or retail space, below one or more
-                living spaces.
-              </List.Item>
-              <List.Item>
-                <Text as="span" textStyle="textSemibold">
-                  Earthquake retrofitting
-                </Text>{" "}
-                is the process of strengthening a building to make it safer in
-                an earthquake, such as adding structural reinforcements or
-                upgrading the foundation to better withstand shaking.
-              </List.Item>
-              <List.Item>
-                San Francisco’s{" "}
-                <Text as="span" textStyle="textSemibold">
-                  Mandatory Soft Story Retrofit Ordinance
-                </Text>
-                , enacted in 2013, requires all multi-unit soft story buildings
-                built before 1978 to be retrofitted in order to minimize the
-                risk of earthquake damage. Soft-story homes with 1 to 4 units
-                are still vulnerable to earthquake damage, even though the
-                ordinance does not legally require them to be retrofitted.
-              </List.Item>
+            <List.Root textStyle="textMedium" layerStyle="list" mt="0">
+              {HomePageText[0].listItems.map((li, index) => (
+                <List.Item key={index}>{li}</List.Item>
+              ))}
             </List.Root>
 
-            <Heading as="h3" mt="4">
-              <Text as="span" textStyle="headerMedium" layerStyle="headerAlt">
-                Plan ahead
-              </Text>
-            </Heading>
-            <Text as="p" mt="2">
-              These quick and easy steps will help you stay safe during future
-              earthquakes.
-            </Text>
+            {HomePageText.slice(1).map((data, index) =>
+              data.links !== undefined && data.links.length < 4 ? (
+                <div key={index}>
+                  <Heading as="h3" mt="7">
+                    <Text
+                      as="span"
+                      textStyle="headerMedium"
+                      layerStyle="headerAlt"
+                    >
+                      {data.title}
+                    </Text>
+                  </Heading>
+                  <Text as="p" mt="1">
+                    {data.subtext}
+                  </Text>
 
-            <List.Root textStyle="textMedium" layerStyle="list">
-              <List.Item>
-                <Link
-                  as={NextLink}
-                  href="https://www.ready.gov/earthquakes"
-                  textDecoration="underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Learn how to protect yourself
-                </Link>{" "}
-                in an earthquake.
-              </List.Item>
-              <List.Item>
-                <Link
-                  as={NextLink}
-                  href="https://www.ready.gov/kit"
-                  textDecoration="underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Prep your emergency kit
-                </Link>{" "}
-                with first aid supplies, batteries, and other essentials.
-              </List.Item>
-              <List.Item>
-                <Link
-                  as={NextLink}
-                  href="https://myshake.berkeley.edu/"
-                  textDecoration="underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Download the MyShake app
-                </Link>{" "}
-                to get early warnings when an earthquake is detected.
-              </List.Item>
-            </List.Root>
+                  <List.Root textStyle="textMedium" layerStyle="list" mt="0">
+                    {data.listItems.map((li, index) => (
+                      <List.Item key={index} mt="1">
+                        <Link
+                          as={NextLink}
+                          href={data.links[index]}
+                          textDecoration="underline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {data.linkText[index]}
+                        </Link>{" "}
+                        {li}
+                      </List.Item>
+                    ))}
+                  </List.Root>
+                </div>
+              ) : (
+                <div key={index}>
+                  <Heading as="h3" mt="7">
+                    <Text
+                      as="span"
+                      textStyle="headerMedium"
+                      layerStyle="headerAlt"
+                    >
+                      {data.title}
+                    </Text>
+                  </Heading>
+                  <Text as="p" mt="1">
+                    {data.subtext}
+                  </Text>
 
-            <Heading as="h3" mt="4">
-              <Text as="span" textStyle="headerMedium" layerStyle="headerAlt">
-                Find retrofitting services (if applicable)
-              </Text>
-            </Heading>
-            <Text as="p" mt="2">
-              If you own a building in need of retrofitting, the following
-              resources can help you get started.
-            </Text>
-
-            <List.Root textStyle="textMedium" layerStyle="list">
-              <List.Item>
-                <Link
-                  as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
-                  textDecoration="underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Learn more
-                </Link>{" "}
-                about what’s involved in a seismic retrofit.
-              </List.Item>
-              <List.Item>
-                <Link
-                  as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/resources/find-a-contractor/"
-                  textDecoration="underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Find a licensed contractor
-                </Link>{" "}
-                who can perform the right updates to your home.
-              </List.Item>
-              <List.Item>
-                Check your eligibility for an{" "}
-                <Link
-                  as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ebb-retrofit"
-                  textDecoration="underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Earthquake Brace and Bolt
-                </Link>{" "}
-                grant or{" "}
-                <Link
-                  as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
-                  textDecoration="underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Earthquake Soft-Story
-                </Link>{" "}
-                retrofit grant.
-              </List.Item>
-            </List.Root>
-
-            <Heading as="h3" mt="4">
-              <Text as="span" textStyle="headerMedium" layerStyle="headerAlt">
-                Know your renters’ rights
-              </Text>
-            </Heading>
-            <Text as="p" mt="2">
-              If you’re a renter in a non-compliant building, liquefaction area,
-              or tsunami zone, you may want to look into these additional
-              resources.
-            </Text>
-            <List.Root textStyle="textMedium" layerStyle="list">
-              <List.Item>
-                <Link
-                  as={NextLink}
-                  href="https://www.earthquakeauthority.com/california-earthquake-insurance-policies/renters"
-                  textDecoration="underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Search for renters earthquake insurance
-                </Link>{" "}
-                to cover your personal belongings.
-              </List.Item>
-              <List.Item>
-                <Link
-                  as={NextLink}
-                  href="https://sftu.org/repairs/"
-                  textDecoration="underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Learn about your right
-                </Link>{" "}
-                to report unsafe living conditions.
-              </List.Item>
-            </List.Root>
+                  <List.Root textStyle="textMedium" layerStyle="list" mt="0">
+                    {data.listItems.slice(0, 2).map((li, index) => (
+                      <List.Item key={index} mt="1">
+                        <Link
+                          as={NextLink}
+                          href={
+                            data.links !== undefined ? data.links[index] : ""
+                          }
+                          textDecoration="underline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {data.linkText !== undefined
+                            ? data.linkText[index]
+                            : ""}
+                        </Link>{" "}
+                        {li}
+                      </List.Item>
+                    ))}
+                    <List.Item mt="1">
+                      {data.listItems[2]}{" "}
+                      <Link
+                        as={NextLink}
+                        href={data.links !== undefined ? data.links[2] : ""}
+                        textDecoration="underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {data.linkText !== undefined ? data.linkText[2] : ""}
+                      </Link>{" "}
+                      {data.listItems[3]}{" "}
+                      <Link
+                        as={NextLink}
+                        href={data.links !== undefined ? data.links[3] : ""}
+                        textDecoration="underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {data.linkText !== undefined
+                          ? data.linkText[3]
+                          : ""}{" "}
+                      </Link>{" "}
+                      {data.listItems[4]}
+                    </List.Item>
+                  </List.Root>
+                </div>
+              )
+            )}
           </div>
-          <Box flexShrink={0} display={{ base: "none", lg: "block" }}>
-            <Image
-              src="/images/earthquake-ready.png"
-              alt="about us"
-              width="300"
-              height="300"
-            />
-          </Box>
         </HStack>
+        <Box flexShrink={0} display={{ base: "none", lg: "block" }}>
+          <Image
+            src="/images/earthquake-ready.png"
+            alt="about us"
+            width="300"
+            height="300"
+          />
+        </Box>
       </Flex>
     </Flex>
   );
