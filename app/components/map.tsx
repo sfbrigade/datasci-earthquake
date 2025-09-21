@@ -67,7 +67,7 @@ const Map: React.FC<MapProps> = ({
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current!,
         style: "mapbox://styles/mapbox/standard",
-        center: [-122.437, 37.765],
+        center: [-122.437, 37.768],
         zoom: 12.1, // Start with more zoomed-out view but not too far
         minZoom: 11, // Allow users to zoom out more
         maxZoom: 15, // Increase max zoom to allow closer inspection
