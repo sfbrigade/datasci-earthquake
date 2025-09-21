@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: debug
+        run: curl -I https://www.safehome.report/api/health
       - name: Ping health API
         run: |
           response=$(curl -s -o /dev/null -w "%{http_code}" "https://www.safehome.report/api/health")
