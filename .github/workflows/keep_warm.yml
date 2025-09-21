@@ -11,10 +11,13 @@ jobs:
 
     steps:
       - name: debug
-        run: curl -I https://www.safehome.report/api/health
+        run: | 
+          curl -I -A "Mozilla/5.0 (compatible; GitHubActionsHealthCheck/1.0)" \
+          https://www.safehome.report/api/health
+
       - name: Ping health API
         run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" "https://www.safehome.report/api/health")
+          response=$(curl -s -A "Mozilla/5.0 (compatible; GitHubActionsHealthCheck/1.0)" -o /dev/null -w "%{http_code}" "https://www.safehome.report/api/health")
           if [ "$response" -ne 200 ]; then
             echo "Failed to ping health API. HTTP status code: $response"
             exit 1
