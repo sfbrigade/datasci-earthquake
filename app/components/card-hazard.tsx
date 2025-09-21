@@ -89,8 +89,8 @@ const CardHazard: React.FC<CardHazardProps> = ({
   return (
     <Card.Root
       flex={1}
-      maxW={{ base: 336 }}
-      minH={{ base: 184 }}
+      maxW={{ base: 320, "2xl": 336 }}
+      minH={{ base: 178, "2xl": 184 }}
       p={{ base: "14px 16px", md: "18px 20px" }}
       // boxShadow="0px 5px 6px #c8caceff"
       variant="elevated"
@@ -136,7 +136,10 @@ const CardHazard: React.FC<CardHazardProps> = ({
             <Text
               textStyle="textMedium"
               layerStyle="text"
-              fontSize={description.length >= 105 ? 15.2 : 16} // TODO: find better solution such as adjusting description text or whitespace between characters
+              fontSize={{
+                base: description.length >= 105 ? 14.4 : 15.2,
+                "2xl": description.length >= 105 ? 15.2 : 16,
+              }} // TODO: find better solution such as adjusting description text or whitespace between characters
             >
               {description}
             </Text>

@@ -43,7 +43,7 @@ const HomeHeader = ({
       as="header"
       bg="gradient.blue"
       p={{
-        base: "24px 32px 26px 24px",
+        base: "22px 32px 24px 48px",
         "2xl": "28px 48px 28px 48px",
       }}
     >
@@ -56,7 +56,7 @@ const HomeHeader = ({
         justifyContent={"space-between"}
         alignItems={{ base: "flex-start", xl: "center" }}
         gap={1.5}
-        mb={{ base: 2, xl: 6 }}
+        mb={{ base: 2 }}
       >
         <HStack align="start" gap="1">
           <Link

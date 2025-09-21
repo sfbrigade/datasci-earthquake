@@ -180,8 +180,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         w="full"
         h={{
           base: "980px",
-          md: "700px",
-          "2xl": "750px",
+          md: "650px",
+          "2xl": "740px",
         }}
         m="auto"
       >
