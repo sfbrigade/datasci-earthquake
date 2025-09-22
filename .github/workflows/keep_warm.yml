@@ -25,6 +25,7 @@ jobs:
           else
             echo "Successfully pinged soft story API. HTTP status code: $response"
           fi
+          
       - name: Ping tsunami zones API
         run: |
           response=$(curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" \
@@ -40,6 +41,7 @@ jobs:
           else
             echo "Successfully pinged tsunami zones API. HTTP status code: $response"
           fi
+
       - name: Ping liquefaction zones API
         run: |
           response=$(curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" \
