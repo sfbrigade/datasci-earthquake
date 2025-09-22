@@ -77,7 +77,7 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
         for item in data:
             status = item["status"]
             wkt_point = item.get("point")  # Extract 'point' value (WKT)
-            if status and status.lower() == "work complete, cfc issued":
+            if status and status != "Non-Compliant":
                 continue
             if wkt_point:
                 point_geom = loads(wkt_point)  # Convert WKT to Shapely Point
