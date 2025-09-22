@@ -17,7 +17,13 @@ jobs:
 
       - name: Ping health API
         run: |
-          response=$(curl -s -A "Mozilla/5.0 (compatible; GitHubActionsHealthCheck/1.0)" -o /dev/null -w "%{http_code}" "https://www.safehome.report/api/health")
+          response=$(curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" \
+            -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" \
+            -H "Accept-Language: en-US,en;q=0.5" \
+            -H "Connection: keep-alive" \
+            -H "Upgrade-Insecure-Requests: 1" \
+            -o /dev/null -w "%{http_code}" \
+            https://www.safehome.report/api/health)
           if [ "$response" -ne 200 ]; then
             echo "Failed to ping health API. HTTP status code: $response"
             exit 1
