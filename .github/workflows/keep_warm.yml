@@ -20,8 +20,38 @@ jobs:
             -o /dev/null -w "%{http_code}" \
             https://www.safehome.report/api/soft-stories/is-soft-story?ping=true)
           if [ "$response" -ne 200 ]; then
-            echo "Failed to ping health API. HTTP status code: $response"
+            echo "Failed to ping soft story API. HTTP status code: $response"
             exit 1
           else
             echo "Successfully pinged soft story API. HTTP status code: $response"
           fi
+      - name: Ping tsunami zones API
+        run: |
+          response=$(curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" \
+            -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" \
+            -H "Accept-Language: en-US,en;q=0.5" \
+            -H "Connection: keep-alive" \
+            -H "Upgrade-Insecure-Requests: 1" \
+            -o /dev/null -w "%{http_code}" \
+            https://www.safehome.report/api/tsunami-zones/is-in-tsunami-zone?ping=true)
+          if [ "$response" -ne 200 ]; then
+            echo "Failed to ping tsunami zones API. HTTP status code: $response"
+            exit 1
+          else
+            echo "Successfully pinged tsunami zones API. HTTP status code: $response"
+          fi
+      - name: Ping liquefaction zones API
+        run: |
+          response=$(curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" \
+            -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" \
+            -H "Accept-Language: en-US,en;q=0.5" \
+            -H "Connection: keep-alive" \
+            -H "Upgrade-Insecure-Requests: 1" \
+            -o /dev/null -w "%{http_code}" \
+            https://www.safehome.report/api/liquefaction-zones/is-in-liquefaction-zone?ping=true)
+          if [ "$response" -ne 200 ]; then
+            echo "Failed to ping liquefaction zones API. HTTP status code: $response"
+            exit 1
+          else
+            echo "Successfully pinged liquefaction zones API. HTTP status code: $response"
+          fi                    
