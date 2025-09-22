@@ -33,7 +33,7 @@ STATUS_WORK_COMPLETE_LOWERCASE = (
 
 
 @router.get("", response_model=SoftStoryFeatureCollection)
-async def get_soft_stories(db: Session = Depends(get_db)):
+def get_soft_stories(db: Session = Depends(get_db)):
     """
     Retrieves all soft story properties (of which coordinates are
     known) from the database except the ones for which work is
@@ -71,7 +71,7 @@ async def get_soft_stories(db: Session = Depends(get_db)):
 
 
 @router.get("/is-soft-story", response_model=IsSoftStoryPropertyView)
-async def is_soft_story(
+def is_soft_story(
     lon: Optional[float] = Query(None),
     lat: Optional[float] = Query(None),
     ping: bool = False,
