@@ -10,12 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: debug
-        run: | 
-          curl -I -A "Mozilla/5.0 (compatible; GitHubActionsHealthCheck/1.0)" \
-          https://www.safehome.report/api/health
-
-      - name: Ping health API
+      - name: Ping soft stories API
         run: |
           response=$(curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" \
             -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" \
@@ -23,10 +18,10 @@ jobs:
             -H "Connection: keep-alive" \
             -H "Upgrade-Insecure-Requests: 1" \
             -o /dev/null -w "%{http_code}" \
-            https://www.safehome.report/api/health)
+            https://www.safehome.report/api/soft-stories/is-soft-story?ping=true)
           if [ "$response" -ne 200 ]; then
             echo "Failed to ping health API. HTTP status code: $response"
             exit 1
           else
-            echo "Successfully pinged health API. HTTP status code: $response"
+            echo "Successfully pinged soft story API. HTTP status code: $response"
           fi
