@@ -1,0 +1,607 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.4, pytest-8.3.3, pluggy-1.5.0
+rootdir: /
+configfile: pytest.ini
+plugins: anyio-4.4.0, cov-6.0.0
+collected 47 items
+
+backend/api/tests/test_composite.py::test_composite_hazards_lookup 
+-------------------------------- live log call ---------------------------------
+INFO     root:composite_api.py:64 Looking up hazards for coordinates: lon=-125.9, lat=37.8
+INFO     root:composite_api.py:70 Soft story check complete: exists=False, updated=None
+INFO     root:composite_api.py:75 Liquefaction check complete: exists=True, updated=2024-12-19 13:15:00
+INFO     root:composite_api.py:80 Tsunami check complete: exists=False, updated=None
+INFO     root:composite_api.py:88 Returning response: soft_story=HazardStatus(exists=False, last_updated=None) liquefaction=HazardStatus(exists=True, last_updated=datetime.datetime(2024, 12, 19, 13, 15)) tsunami=HazardStatus(exists=False, last_updated=None)
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/hazards/lookup?lon=-125.9&lat=37.8 "HTTP/1.1 200 OK"
+PASSED                                                                   [  2%]
+backend/api/tests/test_liquefaction.py::test_get_liquefaction_zones 
+-------------------------------- live log call ---------------------------------
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/liquefaction-zones "HTTP/1.1 200 OK"
+PASSED                                                                   [  4%]
+backend/api/tests/test_liquefaction.py::test_is_in_liquefaction_zone 
+-------------------------------- live log call ---------------------------------
+INFO     backend.api.routers.liquefaction_api:liquefaction_api.py:90 Checking liquefaction zone for coordinates: lon=-122.35, lat=37.83
+INFO     backend.api.routers.liquefaction_api:liquefaction_api.py:102 Liquefaction zone check result for coordinates: lon=-122.35, lat=37.83 - exists: True, last_updated: 2024-12-19 13:15:00
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/liquefaction-zones/is-in-liquefaction-zone?lon=-122.35&lat=37.83 "HTTP/1.1 200 OK"
+INFO     backend.api.routers.liquefaction_api:liquefaction_api.py:90 Checking liquefaction zone for coordinates: lon=0.0, lat=0.0
+INFO     backend.api.routers.liquefaction_api:liquefaction_api.py:102 Liquefaction zone check result for coordinates: lon=0.0, lat=0.0 - exists: False, last_updated: None
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/liquefaction-zones/is-in-liquefaction-zone?lon=0.0&lat=0.0 "HTTP/1.1 200 OK"
+PASSED                                                                   [  6%]
+backend/api/tests/test_liquefaction.py::test_is_in_liquefaction_zone_ping 
+-------------------------------- live log call ---------------------------------
+INFO     backend.api.routers.liquefaction_api:liquefaction_api.py:80 Pinging the is-in-liquefaction-zone endpoint
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/liquefaction-zones/is-in-liquefaction-zone?ping=true "HTTP/1.1 200 OK"
+PASSED                                                                   [  8%]
+backend/api/tests/test_liquefaction.py::test_is_in_liquefaction_zone_missing_params 
+-------------------------------- live log call ---------------------------------
+WARNING  backend.api.routers.liquefaction_api:liquefaction_api.py:84 Missing coordinates in non-ping request
+WARNING  backend.api.routers.liquefaction_api:liquefaction_api.py:84 Missing coordinates in non-ping request
+WARNING  backend.api.routers.liquefaction_api:liquefaction_api.py:84 Missing coordinates in non-ping request
+PASSED                                                                   [ 10%]
+backend/api/tests/test_soft_story.py::test_get_soft_stories 
+-------------------------------- live log call ---------------------------------
+INFO     backend.api.routers.soft_story_api:soft_story_api.py:69 Successfully retrieved 1 soft story properties
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/soft-stories "HTTP/1.1 200 OK"
+PASSED                                                                   [ 12%]
+backend/api/tests/test_soft_story.py::test_is_soft_story 
+-------------------------------- live log call ---------------------------------
+INFO     backend.api.routers.soft_story_api:soft_story_api.py:107 Checking soft story status for coordinates: lon=-122.41211, lat=37.80541
+INFO     backend.api.routers.soft_story_api:soft_story_api.py:126 Soft story check result for coordinates: lon=-122.41211, lat=37.80541 - exists: True, last_updated: 2024-11-28 17:11:26
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/soft-stories/is-soft-story?lon=-122.41211&lat=37.80541 "HTTP/1.1 200 OK"
+INFO     backend.api.routers.soft_story_api:soft_story_api.py:107 Checking soft story status for coordinates: lon=-122.424968, lat=37.76293
+INFO     backend.api.routers.soft_story_api:soft_story_api.py:126 Soft story check result for coordinates: lon=-122.424968, lat=37.76293 - exists: False, last_updated: None
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/soft-stories/is-soft-story?lon=-122.424968&lat=37.76293 "HTTP/1.1 200 OK"
+INFO     backend.api.routers.soft_story_api:soft_story_api.py:107 Checking soft story status for coordinates: lon=0.0, lat=0.0
+INFO     backend.api.routers.soft_story_api:soft_story_api.py:126 Soft story check result for coordinates: lon=0.0, lat=0.0 - exists: False, last_updated: None
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/soft-stories/is-soft-story?lon=0.0&lat=0.0 "HTTP/1.1 200 OK"
+PASSED                                                                   [ 14%]
+backend/api/tests/test_soft_story.py::test_is_soft_story_ping 
+-------------------------------- live log call ---------------------------------
+INFO     backend.api.routers.soft_story_api:soft_story_api.py:97 Pinging the is-soft-story endpoint
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/soft-stories/is-soft-story?ping=true "HTTP/1.1 200 OK"
+PASSED                                                                   [ 17%]
+backend/api/tests/test_soft_story.py::test_is_soft_story_missing_params 
+-------------------------------- live log call ---------------------------------
+WARNING  backend.api.routers.soft_story_api:soft_story_api.py:101 Missing coordinates in non-ping request
+WARNING  backend.api.routers.soft_story_api:soft_story_api.py:101 Missing coordinates in non-ping request
+WARNING  backend.api.routers.soft_story_api:soft_story_api.py:101 Missing coordinates in non-ping request
+PASSED                                                                   [ 19%]
+backend/api/tests/test_tsunami.py::test_get_tsunami_zones 
+-------------------------------- live log call ---------------------------------
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/tsunami-zones "HTTP/1.1 200 OK"
+PASSED                                                                   [ 21%]
+backend/api/tests/test_tsunami.py::test_is_in_tsunami_zone 
+-------------------------------- live log call ---------------------------------
+INFO     backend.api.routers.tsunami_api:tsunami_api.py:84 Checking tsunami zone for coordinates: lon=-122.35, lat=37.83
+INFO     backend.api.routers.tsunami_api:tsunami_api.py:97 Tsunami zone check result for coordinates: lon=-122.35, lat=37.83 - exists: True, last_updated: 2024-12-16 17:10:00
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/tsunami-zones/is-in-tsunami-zone?lon=-122.35&lat=37.83 "HTTP/1.1 200 OK"
+INFO     backend.api.routers.tsunami_api:tsunami_api.py:84 Checking tsunami zone for coordinates: lon=0.0, lat=0.0
+INFO     backend.api.routers.tsunami_api:tsunami_api.py:97 Tsunami zone check result for coordinates: lon=0.0, lat=0.0 - exists: False, last_updated: None
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/tsunami-zones/is-in-tsunami-zone?lon=0.0&lat=0.0 "HTTP/1.1 200 OK"
+PASSED                                                                   [ 23%]
+backend/api/tests/test_tsunami.py::test_is_in_tsunami_zone_ping 
+-------------------------------- live log call ---------------------------------
+INFO     backend.api.routers.tsunami_api:tsunami_api.py:74 Pinging the is-in-tsunami-zone endpoint
+INFO     httpx:_client.py:1038 HTTP Request: GET http://testserver/api/tsunami-zones/is-in-tsunami-zone?ping=true "HTTP/1.1 200 OK"
+PASSED                                                                   [ 25%]
+backend/api/tests/test_tsunami.py::test_is_in_tsunami_zone_missing_params 
+-------------------------------- live log call ---------------------------------
+WARNING  backend.api.routers.tsunami_api:tsunami_api.py:78 Missing coordinates in non-ping request
+WARNING  backend.api.routers.tsunami_api:tsunami_api.py:78 Missing coordinates in non-ping request
+WARNING  backend.api.routers.tsunami_api:tsunami_api.py:78 Missing coordinates in non-ping request
+PASSED                                                                   [ 27%]
+backend/etl/tests/test_data_handler.py::test_fetch_data_success 
+-------------------------------- live log setup --------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: https://api.test.com, page size: 3, session: None
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:data_handler.py:137 Starting data fetch for DummyModel with params: None
+INFO     DummyDataHandler:request_handler.py:28 Making request to https://api.test.com with params {'$offset': 0, '$limit': 3}
+INFO     DummyDataHandler:request_handler.py:31 Got response with status: <Mock name='mock.get().status_code' id='140329158095952'>
+INFO     DummyDataHandler:request_handler.py:40 Request completed successfully:
+URL: https://api.test.com
+Params: {'$offset': 0, '$limit': 3}
+Time: 0.00s
+INFO     DummyDataHandler:data_handler.py:121 DummyModel: Retrieved 3 features on page 1. Offset: 0, Request time: 0.00s
+INFO     DummyDataHandler:request_handler.py:28 Making request to https://api.test.com with params {'$offset': 3, '$limit': 3}
+INFO     DummyDataHandler:request_handler.py:31 Got response with status: <Mock name='mock.get().status_code' id='140329158095952'>
+INFO     DummyDataHandler:request_handler.py:40 Request completed successfully:
+URL: https://api.test.com
+Params: {'$offset': 3, '$limit': 3}
+Time: 0.00s
+INFO     DummyDataHandler:data_handler.py:102 DummyModel: Completed pagination. Final stats: Pages=1, Total Features=3, Last Offset=3, Request time: 0.00s
+INFO     DummyDataHandler:data_handler.py:145 DummyModel: Successfully fetched 3 total features.
+INFO     DummyDataHandler:data_handler.py:156 Closed session
+PASSED                                                                   [ 29%]
+backend/etl/tests/test_data_handler.py::test_fetch_data_partial_page 
+-------------------------------- live log setup --------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: https://api.test.com, page size: 3, session: None
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:data_handler.py:137 Starting data fetch for DummyModel with params: None
+INFO     DummyDataHandler:request_handler.py:28 Making request to https://api.test.com with params {'$offset': 0, '$limit': 3}
+INFO     DummyDataHandler:request_handler.py:31 Got response with status: 200
+INFO     DummyDataHandler:request_handler.py:40 Request completed successfully:
+URL: https://api.test.com
+Params: {'$offset': 0, '$limit': 3}
+Time: 0.00s
+INFO     DummyDataHandler:data_handler.py:121 DummyModel: Retrieved 3 features on page 1. Offset: 0, Request time: 0.00s
+INFO     DummyDataHandler:request_handler.py:28 Making request to https://api.test.com with params {'$offset': 3, '$limit': 3}
+INFO     DummyDataHandler:request_handler.py:31 Got response with status: 200
+INFO     DummyDataHandler:request_handler.py:40 Request completed successfully:
+URL: https://api.test.com
+Params: {'$offset': 3, '$limit': 3}
+Time: 0.00s
+INFO     DummyDataHandler:data_handler.py:112 DummyModel: Received fewer records (2) than page size (3). Assuming final page and stopping fetch. Request time: 0.00s
+INFO     DummyDataHandler:data_handler.py:145 DummyModel: Successfully fetched 5 total features.
+INFO     DummyDataHandler:data_handler.py:156 Closed session
+PASSED                                                                   [ 31%]
+backend/etl/tests/test_data_handler.py::test_fetch_data_request_exception 
+-------------------------------- live log setup --------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: https://api.test.com, page size: 3, session: None
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:data_handler.py:137 Starting data fetch for DummyModel with params: None
+INFO     DummyDataHandler:request_handler.py:28 Making request to https://api.test.com with params {'$offset': 0, '$limit': 3}
+ERROR    DummyDataHandler:request_handler.py:50 Request failed:
+Error: API Error
+URL: https://api.test.com
+Params: {'$offset': 0, '$limit': 3}
+Time: 0.00s
+Traceback (most recent call last):
+  File "/backend/etl/request_handler.py", line 30, in make_request
+    response = self.session.get(url, params=params, timeout=timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/unittest/mock.py", line 1124, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/unittest/mock.py", line 1128, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/unittest/mock.py", line 1183, in _execute_mock_call
+    raise effect
+requests.exceptions.RequestException: API Error
+ERROR    DummyDataHandler:data_handler.py:152 Data fetch failed: API Error
+Traceback (most recent call last):
+  File "/backend/etl/data_handler.py", line 143, in fetch_data
+    for features in self._yield_data(params):
+  File "/backend/etl/data_handler.py", line 97, in _yield_data
+    data = self.request_handler.make_request(self.url, paginated_params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backend/etl/request_handler.py", line 30, in make_request
+    response = self.session.get(url, params=params, timeout=timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/unittest/mock.py", line 1124, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/unittest/mock.py", line 1128, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/unittest/mock.py", line 1183, in _execute_mock_call
+    raise effect
+requests.exceptions.RequestException: API Error
+INFO     DummyDataHandler:data_handler.py:156 Closed session
+PASSED                                                                   [ 34%]
+backend/etl/tests/test_data_handler.py::test_fetch_data_retry_exhausted 
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: https://fake.test/504, page size: 3, session: <requests.sessions.Session object at 0x7fa105d9e350>
+INFO     DummyDataHandler:data_handler.py:137 Starting data fetch for DummyModel with params: None
+INFO     DummyDataHandler:request_handler.py:28 Making request to https://fake.test/504 with params {'$offset': 0, '$limit': 3}
+WARNING  RetryLogger:retry.py:42 
+                  === Retry Attempt 1 of 5 ===
+                  URL: https://fake.test/504?$offset=0&$limit=3
+                  Method: GET
+                  Status: unknown
+                  Error: no error
+                  Backoff: 0 seconds
+          
+WARNING  RetryLogger:retry.py:42 
+                  === Retry Attempt 2 of 5 ===
+                  URL: https://fake.test/504?$offset=0&$limit=3
+                  Method: GET
+                  Status: unknown
+                  Error: no error
+                  Backoff: 0.2 seconds
+          
+WARNING  RetryLogger:retry.py:42 
+                  === Retry Attempt 3 of 5 ===
+                  URL: https://fake.test/504?$offset=0&$limit=3
+                  Method: GET
+                  Status: unknown
+                  Error: no error
+                  Backoff: 0.4 seconds
+          
+WARNING  RetryLogger:retry.py:42 
+                  === Retry Attempt 4 of 5 ===
+                  URL: https://fake.test/504?$offset=0&$limit=3
+                  Method: GET
+                  Status: unknown
+                  Error: no error
+                  Backoff: 0.8 seconds
+          
+WARNING  RetryLogger:retry.py:42 
+                  === Retry Attempt 5 of 5 ===
+                  URL: https://fake.test/504?$offset=0&$limit=3
+                  Method: GET
+                  Status: unknown
+                  Error: no error
+                  Backoff: 1.6 seconds
+          
+ERROR    RetryLogger:retry.py:21 Max retries (5) exceeded. Giving up.
+ERROR    DummyDataHandler:request_handler.py:50 Request failed:
+Error: None: Max retries exceeded with url: https://fake.test/504?%24offset=0&%24limit=3 (Caused by ResponseError('too many 504 error responses'))
+URL: https://fake.test/504
+Params: {'$offset': 0, '$limit': 3}
+Time: 3.04s
+urllib3.exceptions.ResponseError: too many 504 error responses
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/responses/__init__.py", line 1158, in _on_request
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/backend/etl/retry.py", line 24, in increment
+    return super().increment(
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: None: Max retries exceeded with url: https://fake.test/504?%24offset=0&%24limit=3 (Caused by ResponseError('too many 504 error responses'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/backend/etl/request_handler.py", line 30, in make_request
+    response = self.session.get(url, params=params, timeout=timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/requests/sessions.py", line 602, in get
+    return self.request("GET", url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/responses/__init__.py", line 1202, in send
+    return self._on_request(adapter, request, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/responses/__init__.py", line 1163, in _on_request
+    return self._on_request(adapter, request, retries=retries, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/responses/__init__.py", line 1163, in _on_request
+    return self._on_request(adapter, request, retries=retries, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/responses/__init__.py", line 1163, in _on_request
+    return self._on_request(adapter, request, retries=retries, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [Previous line repeated 2 more times]
+  File "/usr/local/lib/python3.11/site-packages/responses/__init__.py", line 1175, in _on_request
+    raise RetryError(e, request=request)
+requests.exceptions.RetryError: None: Max retries exceeded with url: https://fake.test/504?%24offset=0&%24limit=3 (Caused by ResponseError('too many 504 error responses'))
+ERROR    DummyDataHandler:data_handler.py:152 Data fetch failed: None: Max retries exceeded with url: https://fake.test/504?%24offset=0&%24limit=3 (Caused by ResponseError('too many 504 error responses'))
+urllib3.exceptions.ResponseError: too many 504 error responses
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/responses/__init__.py", line 1158, in _on_request
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/backend/etl/retry.py", line 24, in increment
+    return super().increment(
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: None: Max retries exceeded with url: https://fake.test/504?%24offset=0&%24limit=3 (Caused by ResponseError('too many 504 error responses'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/backend/etl/data_handler.py", line 143, in fetch_data
+    for features in self._yield_data(params):
+  File "/backend/etl/data_handler.py", line 97, in _yield_data
+    data = self.request_handler.make_request(self.url, paginated_params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/backend/etl/request_handler.py", line 30, in make_request
+    response = self.session.get(url, params=params, timeout=timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/requests/sessions.py", line 602, in get
+    return self.request("GET", url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/responses/__init__.py", line 1202, in send
+    return self._on_request(adapter, request, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/responses/__init__.py", line 1163, in _on_request
+    return self._on_request(adapter, request, retries=retries, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/responses/__init__.py", line 1163, in _on_request
+    return self._on_request(adapter, request, retries=retries, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/responses/__init__.py", line 1163, in _on_request
+    return self._on_request(adapter, request, retries=retries, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [Previous line repeated 2 more times]
+  File "/usr/local/lib/python3.11/site-packages/responses/__init__.py", line 1175, in _on_request
+    raise RetryError(e, request=request)
+requests.exceptions.RetryError: None: Max retries exceeded with url: https://fake.test/504?%24offset=0&%24limit=3 (Caused by ResponseError('too many 504 error responses'))
+INFO     DummyDataHandler:data_handler.py:156 Closed session
+PASSED                                                                   [ 36%]
+backend/etl/tests/test_data_handler.py::test_fetch_data_session_cleanup 
+-------------------------------- live log setup --------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: https://api.test.com, page size: 3, session: None
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:data_handler.py:137 Starting data fetch for DummyModel with params: None
+INFO     DummyDataHandler:request_handler.py:28 Making request to https://api.test.com with params {'$offset': 0, '$limit': 3}
+INFO     DummyDataHandler:request_handler.py:31 Got response with status: <Mock name='mock.get().status_code' id='140329158419984'>
+INFO     DummyDataHandler:request_handler.py:40 Request completed successfully:
+URL: https://api.test.com
+Params: {'$offset': 0, '$limit': 3}
+Time: 0.00s
+INFO     DummyDataHandler:data_handler.py:102 DummyModel: Completed pagination. Final stats: Pages=0, Total Features=0, Last Offset=0, Request time: 0.00s
+INFO     DummyDataHandler:data_handler.py:145 DummyModel: Successfully fetched 0 total features.
+INFO     DummyDataHandler:data_handler.py:156 Closed session
+PASSED                                                                   [ 38%]
+backend/etl/tests/test_data_handler.py::test_bulk_insert_data_with_timestamp_upsert_policy 
+-------------------------------- live log call ---------------------------------
+INFO     TimestampDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     TimestampDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: https://api.test.com, page size: 3, session: None
+INFO     TimestampDataHandler:data_handler.py:217 DummyModel: Inserted 1 rows with update conflict policy.
+PASSED                                                                   [ 40%]
+backend/etl/tests/test_data_handler.py::test_bulk_insert_data_with_basic_policy 
+-------------------------------- live log setup --------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: https://api.test.com, page size: 3, session: None
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:data_handler.py:217 DummyModel: Inserted 2 rows with do nothing conflict policy.
+PASSED                                                                   [ 42%]
+backend/etl/tests/test_data_handler.py::test_get_last_export_time_from_db 
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: , page size: 1000, session: None
+INFO     DummyDataHandler:data_handler.py:283 The DummyModel dataset was last exported at 2025-01-01 12:00:00+00:00
+PASSED                                                                   [ 44%]
+backend/etl/tests/test_data_handler.py::test_get_last_export_time_from_db_not_found 
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: , page size: 1000, session: None
+PASSED                                                                   [ 46%]
+backend/etl/tests/test_data_handler.py::test_data_changed_since_last_export_true 
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: , page size: 1000, session: None
+PASSED                                                                   [ 48%]
+backend/etl/tests/test_data_handler.py::test_data_changed_since_last_export_false 
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: , page size: 1000, session: None
+PASSED                                                                   [ 51%]
+backend/etl/tests/test_data_handler.py::test_update_last_export_time_in_db 
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: , page size: 1000, session: None
+INFO     DummyDataHandler:data_handler.py:329 Creating new row for DummyModel
+INFO     DummyDataHandler:data_handler.py:335 Updated export metadata for DummyModel
+INFO     DummyDataHandler:data_handler.py:326 Updating existing row for DummyModel
+INFO     DummyDataHandler:data_handler.py:335 Updated export metadata for DummyModel
+PASSED                                                                   [ 53%]
+backend/etl/tests/test_data_handler.py::test_save_geojson_file 
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: , page size: 1000, session: None
+INFO     DummyDataHandler:data_handler.py:349 Generated /public/data/DummyModel.geojson
+PASSED                                                                   [ 55%]
+backend/etl/tests/test_data_handler.py::test_export_geojson_if_changed_local_file_exists 
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: , page size: 1000, session: None
+INFO     DummyDataHandler:data_handler.py:369 GeoJSON DummyModel.geojson already exists locally, skipping write
+PASSED                                                                   [ 57%]
+backend/etl/tests/test_data_handler.py::test_export_geojson_if_changed_local_file_not_exists 
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: , page size: 1000, session: None
+INFO     DummyDataHandler:data_handler.py:374 GeoJSON DummyModel.geojson doesn't exist, creating it
+PASSED                                                                   [ 59%]
+backend/etl/tests/test_data_handler.py::test_export_geojson_if_changed_on_prod_data_changed 
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: , page size: 1000, session: None
+INFO     DummyDataHandler:data_handler.py:381 Check if geojsons should be updated in production
+PASSED                                                                   [ 61%]
+backend/etl/tests/test_data_handler.py::test_export_geojson_if_changed_on_prod_data_not_changed 
+-------------------------------- live log call ---------------------------------
+INFO     DummyDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     DummyDataHandler:data_handler.py:76 Initialized handler for DummyModel with URL: , page size: 1000, session: None
+INFO     DummyDataHandler:data_handler.py:381 Check if geojsons should be updated in production
+INFO     DummyDataHandler:data_handler.py:387 GeoJSON DummyModel.geojson unchanged, skipping write
+PASSED                                                                   [ 63%]
+backend/etl/tests/test_mapbox_geojson_manager.py::TestBatchMapboxGeocoder::test_build_address_request PASSED [ 65%]
+backend/etl/tests/test_mapbox_geojson_manager.py::TestBatchMapboxGeocoder::test_post_request_success PASSED [ 68%]
+backend/etl/tests/test_mapbox_geojson_manager.py::TestBatchMapboxGeocoder::test_post_request_http_error PASSED [ 70%]
+backend/etl/tests/test_mapbox_geojson_manager.py::TestBatchMapboxGeocoder::test_batch_geocode_addresses_one_batch PASSED [ 72%]
+backend/etl/tests/test_mapbox_geojson_manager.py::TestMapboxGeojsonManager::test_mapbox_points_read_file PASSED [ 74%]
+backend/etl/tests/test_mapbox_geojson_manager.py::TestMapboxGeojsonManager::test_get_mapbox_coordinates PASSED [ 76%]
+backend/etl/tests/test_mapbox_geojson_manager.py::TestMapboxGeojsonManager::test_parse_mapbox_features PASSED [ 78%]
+backend/etl/tests/test_mapbox_geojson_manager.py::TestMapboxGeojsonManager::test_write_to_geojson_new_file PASSED [ 80%]
+backend/etl/tests/test_mapbox_geojson_manager.py::TestMapboxGeojsonManager::test_write_to_geojson_append PASSED [ 82%]
+backend/etl/tests/test_mapbox_geojson_manager.py::TestMapboxGeojsonManager::test_batch_geocode_addresses_integration PASSED [ 85%]
+backend/etl/tests/test_soft_story_properties_data_handler.py::test_fill_in_missing_mapbox_points 
+-------------------------------- live log setup --------------------------------
+INFO     _SoftStoryPropertiesDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     _SoftStoryPropertiesDataHandler:data_handler.py:76 Initialized handler for SoftStoryProperty with URL: dummy_url, page size: 1000, session: None
+PASSED                                                                   [ 87%]
+backend/etl/tests/test_soft_story_properties_data_handler.py::test_parse_data_address_in_mapbox 
+-------------------------------- live log setup --------------------------------
+INFO     _SoftStoryPropertiesDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     _SoftStoryPropertiesDataHandler:data_handler.py:76 Initialized handler for SoftStoryProperty with URL: dummy_url, page size: 1000, session: None
+-------------------------------- live log call ---------------------------------
+INFO     _SoftStoryPropertiesDataHandler:soft_story_properties_data_handler.py:95 There are 1 non-retroffited soft stories
+PASSED                                                                   [ 89%]
+backend/etl/tests/test_soft_story_properties_data_handler.py::test_parse_data_address_not_in_mapbox 
+-------------------------------- live log setup --------------------------------
+INFO     _SoftStoryPropertiesDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     _SoftStoryPropertiesDataHandler:data_handler.py:76 Initialized handler for SoftStoryProperty with URL: dummy_url, page size: 1000, session: None
+-------------------------------- live log call ---------------------------------
+INFO     _SoftStoryPropertiesDataHandler:soft_story_properties_data_handler.py:95 There are 1 non-retroffited soft stories
+PASSED                                                                   [ 91%]
+backend/etl/tests/test_soft_story_properties_data_handler.py::test_parse_data_address_not_in_mapbox_and_no_geometry 
+-------------------------------- live log setup --------------------------------
+INFO     _SoftStoryPropertiesDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     _SoftStoryPropertiesDataHandler:data_handler.py:76 Initialized handler for SoftStoryProperty with URL: dummy_url, page size: 1000, session: None
+-------------------------------- live log call ---------------------------------
+INFO     _SoftStoryPropertiesDataHandler:soft_story_properties_data_handler.py:95 There are 0 non-retroffited soft stories
+PASSED                                                                   [ 93%]
+backend/etl/tests/test_soft_story_properties_data_handler.py::test_parse_data_address_not_in_mapbox_but_has_sf_geometry 
+-------------------------------- live log setup --------------------------------
+INFO     _SoftStoryPropertiesDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     _SoftStoryPropertiesDataHandler:data_handler.py:76 Initialized handler for SoftStoryProperty with URL: dummy_url, page size: 1000, session: None
+-------------------------------- live log call ---------------------------------
+INFO     _SoftStoryPropertiesDataHandler:soft_story_properties_data_handler.py:95 There are 1 non-retroffited soft stories
+PASSED                                                                   [ 95%]
+backend/etl/tests/test_soft_story_properties_data_handler.py::test_parse_data_address_in_mapbox_but_mapbox_has_none_coordinates 
+-------------------------------- live log setup --------------------------------
+INFO     _SoftStoryPropertiesDataHandler:session_manager.py:36 Created new session with retry configuration:
+Max retries: 5
+Backoff factor: 1
+Status codes: [404, 500, 502, 503, 504]
+Allowed methods: ['GET']
+Respect retry after header: True
+INFO     _SoftStoryPropertiesDataHandler:data_handler.py:76 Initialized handler for SoftStoryProperty with URL: dummy_url, page size: 1000, session: None
+-------------------------------- live log call ---------------------------------
+INFO     _SoftStoryPropertiesDataHandler:soft_story_properties_data_handler.py:95 There are 1 non-retroffited soft stories
+PASSED                                                                   [ 97%]
+backend/etl/tests/test_soft_story_properties_data_handler.py::test_addresses_from_range PASSED [100%]
+
+=============================== warnings summary ===============================
+usr/local/lib/python3.11/site-packages/pydantic/_internal/_config.py:291
+usr/local/lib/python3.11/site-packages/pydantic/_internal/_config.py:291
+usr/local/lib/python3.11/site-packages/pydantic/_internal/_config.py:291
+usr/local/lib/python3.11/site-packages/pydantic/_internal/_config.py:291
+  /usr/local/lib/python3.11/site-packages/pydantic/_internal/_config.py:291: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.9/migration/
+    warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
+
+usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:475
+  /usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /.pytest_cache/v/cache/nodeids: [Errno 13] Permission denied: '/pytest-cache-files-jtw1e__d'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+usr/local/lib/python3.11/site-packages/_pytest/stepwise.py:51
+  /usr/local/lib/python3.11/site-packages/_pytest/stepwise.py:51: PytestCacheWarning: could not create cache path /.pytest_cache/v/cache/stepwise: [Errno 13] Permission denied: '/pytest-cache-files-w6n0n9tb'
+    session.config.cache.set(STEPWISE_CACHE_DIR, [])
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================= 47 passed, 6 warnings in 16.87s ========================
