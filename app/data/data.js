@@ -278,7 +278,7 @@ export const PillData = [
   {
     name: "softStory",
     trueData: "Non-Compliant",
-    falseData: "Compliant",
+    falseData: "No Data",
     noData: "No Data",
   },
   {
