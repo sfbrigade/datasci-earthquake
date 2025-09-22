@@ -27,7 +27,7 @@ router = APIRouter(
 
 
 @router.get("", response_model=TsunamiFeatureCollection)
-async def get_tsunami_zones(db: Session = Depends(get_db)):
+def get_tsunami_zones(db: Session = Depends(get_db)):
     """
     Retrieve all tsunami hazard zones from the database.
 
@@ -48,7 +48,7 @@ async def get_tsunami_zones(db: Session = Depends(get_db)):
 
 
 @router.get("/is-in-tsunami-zone", response_model=IsInTsunamiZoneView)
-async def is_in_tsunami_zone(
+def is_in_tsunami_zone(
     lon: Optional[float] = Query(None),
     lat: Optional[float] = Query(None),
     ping: bool = False,

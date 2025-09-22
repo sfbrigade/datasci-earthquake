@@ -17,7 +17,7 @@ router = APIRouter(
 
 
 @router.get("/", response_model=LandslideFeatureCollection)
-async def get_landslide_zones(db: Session = Depends(get_db)):
+def get_landslide_zones(db: Session = Depends(get_db)):
     """
     Retrieve all hazardous landslide zones (with gridcode 8, 9, 10) from the database.
 

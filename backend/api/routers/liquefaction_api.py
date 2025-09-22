@@ -27,7 +27,7 @@ router = APIRouter(
 
 
 @router.get("", response_model=LiquefactionFeatureCollection)
-async def get_liquefaction_zones(db: Session = Depends(get_db)):
+def get_liquefaction_zones(db: Session = Depends(get_db)):
     """
     Retrieve all liquefaction zones from the database
 
@@ -56,7 +56,7 @@ async def get_liquefaction_zones(db: Session = Depends(get_db)):
 
 
 @router.get("/high-susceptibility", response_model=LiquefactionFeatureCollection)
-async def get_high_susceptibility_zones(db: Session = Depends(get_db)):
+def get_high_susceptibility_zones(db: Session = Depends(get_db)):
     """
     Retrieve all high-susceptibility liquefaction zones from the database.
 
@@ -96,7 +96,7 @@ async def get_high_susceptibility_zones(db: Session = Depends(get_db)):
 
 
 @router.get("/very-high-susceptibility", response_model=LiquefactionFeatureCollection)
-async def get_very_high_susceptibility_zones(db: Session = Depends(get_db)):
+def get_very_high_susceptibility_zones(db: Session = Depends(get_db)):
     """
     Retrieve all very-high-susceptibility liquefaction zones from the database.
 
@@ -137,7 +137,7 @@ async def get_very_high_susceptibility_zones(db: Session = Depends(get_db)):
 
 
 @router.get("/is-in-liquefaction-zone", response_model=InLiquefactionZoneView)
-async def is_in_liquefaction_zone(
+def is_in_liquefaction_zone(
     lon: Optional[float] = Query(None),
     lat: Optional[float] = Query(None),
     ping: bool = False,
