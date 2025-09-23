@@ -7,6 +7,25 @@ from pathlib import Path
 from functools import lru_cache
 
 
+def find_env_file(start: Path, filename: str = ".env") -> Path | None:
+    """
+    Walk upwards from `start` until `filename` is found or the root directory is reached.
+    Returns the Path if found, otherwise None.
+    """
+    current = start.resolve()
+    for parent in [current, *current.parents]:
+        candidate = parent / filename
+        if candidate.is_file():
+            return candidate
+        if (parent / "compose.yaml").is_file():
+            break
+    return None
+
+
+BACKEND_DIR = Path(__file__).parent
+ENV_FILE = find_env_file(BACKEND_DIR) or find_env_file(BACKEND_DIR, ".env.example")
+
+
 class Settings(BaseSettings):
     postgres_user: str
     postgres_password: str
@@ -27,7 +46,7 @@ class Settings(BaseSettings):
     next_public_posthog_key: str
 
     model_config = SettingsConfigDict(
-        env_file=Path(__file__).resolve().parent.parent.parent / ".env",
+        env_file=ENV_FILE,
         env_file_encoding="utf-8",
     )
 
