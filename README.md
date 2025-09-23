@@ -15,9 +15,9 @@ You can work on this app entirely [locally](#local-development), entirely [using
 We use GitHub Secrets to store sensitive environment variables. To be able to run the app with all features enabled, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
 
 ### Contributors working from forks
-- If you are contributing from a fork, you do not need to follow the workflow below.
+- If you are contributing from a fork, you do not need to follow the workflow below for core contributors.
 - The CI pipeline for forked PRs will automatically use the provided `.env.example`.
-- You may also copy `.env.example` and rename it to `.env` locally. This allows you to run the app, but with limited functionality (since the real secrets are not included).
+- If you don't have `.env`, `.env.example` will be automatically used instead. This allows you to run the app, but with limited functionality (since the real secrets are not included).
 
 ### Core contributors
 Before starting work on the project, make sure to:
