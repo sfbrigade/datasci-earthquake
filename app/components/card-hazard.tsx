@@ -100,11 +100,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
       // boxShadow="0px 5px 6px #c8caceff"
       variant="elevated"
     >
-      <Accordion.Item
-        border="none"
-        minH="154px"
-        value={hazard.name}
-      >
+      <Accordion.Item border="none" minH="154px" value={hazard.name}>
         <VStack alignItems={"flex-start"} flexGrow={1} minH="154px">
           <Card.Header
             w="102%"
