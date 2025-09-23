@@ -134,12 +134,17 @@ const CardHazard: React.FC<CardHazardProps> = ({
           </Card.Header>
           <Card.Body textAlign="left" p={0} mb={"6px"}>
             <Text
-              textStyle="textMedium"
+              textStyle={{
+                base:
+                  description.length >= 105
+                    ? "cardTextXSmall"
+                    : "cardTextSmall",
+                "2xl":
+                  description.length >= 105
+                    ? "cardTextSmall"
+                    : "cardTextMedium",
+              }}
               layerStyle="text"
-              fontSize={{
-                base: description.length >= 105 ? 14.4 : 15.2,
-                "2xl": description.length >= 105 ? 15.2 : 16,
-              }} // TODO: find better solution such as adjusting description text or whitespace between characters
             >
               {description}
             </Text>
@@ -147,7 +152,14 @@ const CardHazard: React.FC<CardHazardProps> = ({
           <Card.Footer p={0} width={"100%"}>
             <HStack justifyContent="space-between" width="100%">
               <Popover.Trigger>
-                <Text cursor={"pointer"} textDecoration={"underline"}>
+                <Text
+                  cursor={"pointer"}
+                  textDecoration={"underline"}
+                  fontSize={{
+                    base: 15.2,
+                    "2xl": "md",
+                  }}
+                >
                   More Info
                 </Text>
               </Popover.Trigger>

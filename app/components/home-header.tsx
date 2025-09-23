@@ -43,8 +43,8 @@ const HomeHeader = ({
       as="header"
       bg="gradient.blue"
       p={{
-        base: "22px 32px 24px 48px",
-        "2xl": "28px 48px 28px 48px",
+        base: "18px 32px 22px 48px",
+        "2xl": "22px 48px 26px 48px",
       }}
     >
       <Flex
