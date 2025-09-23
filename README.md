@@ -126,8 +126,7 @@ Replace <service name> with frontend, backend, db, or db_test:
 
 1. First update code and/or rebuild any containers as necessary. Otherwise you may get false results.
 2. Run the containers (`docker compose up -d)`
-3. Run pytest to test the docker container: `docker exec -it datasci-earthquake-backend-1 pytest backend` 
-   - Alternatively, start a new container to test in a clean environment: `docker compose run --rm backend pytest backend`
+3. Run pytest to test the docker container: `docker exec -it datasci-earthquake-backend-1 pytest backend`
 4. To get code coverage, run `docker exec -w /backend datasci-earthquake-backend-1 pytest --cov=backend`
 
 ---
