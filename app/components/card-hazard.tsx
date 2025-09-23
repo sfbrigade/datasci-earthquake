@@ -10,6 +10,7 @@ import {
   Accordion,
   Portal,
   Switch,
+  Separator,
 } from "@chakra-ui/react";
 import posthog from "posthog-js";
 import Pill from "./pill";
@@ -70,7 +71,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
 
   const buildHazardCardInfo = () => {
     return hazard.info.map((infoItem, index) => (
-      <Text as="p" mt="4" key={index}>
+      <Text as="p" mt="1" key={index}>
         {infoItem}
       </Text>
     ));
@@ -101,14 +102,10 @@ const CardHazard: React.FC<CardHazardProps> = ({
     >
       <Accordion.Item
         border="none"
-        /*
-        closeOnEscape={true}
-        closeOnInteractOutside={true}
-        aria-label={`${hazard.title} information`} 
-      */
+        minH="154px"
         value={hazard.name}
       >
-        <VStack alignItems={"flex-start"} flexGrow={1} h="full">
+        <VStack alignItems={"flex-start"} flexGrow={1} minH="154px">
           <Card.Header
             w="102%"
             p={0}
@@ -141,7 +138,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
           </Card.Body>
           <Card.Footer p={0} width={"100%"}>
             <HStack justifyContent="space-between" width="100%">
-              <Accordion.ItemTrigger p={0}>
+              <Accordion.ItemTrigger p={0} w="initial">
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info
                 </Text>
@@ -151,14 +148,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
           </Card.Footer>
         </VStack>
         <Accordion.ItemContent maxHeight="unset">
-          {/* <Accordion.CloseTrigger
-                cursor="pointer"
-                position="absolute"
-                top="2"
-                right="2"
-              >
-                <RxCross2 color="grey.900" size="20" data-testid="clear-icon" />
-              </Accordion.CloseTrigger> */}
+          <Separator mt="3" />
           <Accordion.ItemBody>
             {buildHazardCardInfo()}
             <Link
