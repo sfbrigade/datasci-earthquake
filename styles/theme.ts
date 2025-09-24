@@ -74,6 +74,30 @@ const textStyles = defineTextStyles({
       fontWeight: "normal",
     },
   },
+  cardTextMedium: {
+    description: "hazard card text medium",
+    value: {
+      fontFamily: "body",
+      fontSize: "md",
+      fontWeight: "normal",
+    },
+  },
+  cardTextSmall: {
+    description: "hazard card text small",
+    value: {
+      fontFamily: "body",
+      fontSize: 15.2,
+      fontWeight: "normal",
+    },
+  },
+  cardTextXSmall: {
+    description: "hazard card text small",
+    value: {
+      fontFamily: "body",
+      fontSize: 14.4,
+      fontWeight: "normal",
+    },
+  },
   textSemibold: {
     description: "text semibold",
     value: {
