@@ -13,7 +13,7 @@ import sentry_sdk
 
 # Initialize Sentry
 sentry_sdk.init(
-    dsn=settings.sentry_dsn,
+    dsn=settings.sentry_dsn or None,
     # Add request headers and IP for users,
     # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
     send_default_pii=False,
