@@ -30,6 +30,7 @@ router = APIRouter(
 STATUS_WORK_COMPLETE_LOWERCASE = (
     "work complete, cfc issued"  # Work Complete, CFC Issued
 )
+STATUS_NON_COMPLIANT = "non-compliant"
 
 
 @router.get("", response_model=SoftStoryFeatureCollection)
@@ -107,21 +108,22 @@ def is_soft_story(
     logger.info(f"Checking soft story status for coordinates: lon={lon}, lat={lat}")
 
     try:
+        exists = None
+        last_updated = None
         point = from_shape(Point(lon, lat), srid=4326)
         property = (
             db.query(SoftStoryProperty)
-            .filter(
-                and_(
-                    geo_func.ST_DWithin(SoftStoryProperty.point, point, 0.000001),
-                    func.lower(SoftStoryProperty.status)
-                    != STATUS_WORK_COMPLETE_LOWERCASE,
-                )
-            )
+            .filter(geo_func.ST_DWithin(SoftStoryProperty.point, point, 0.000001))
             .first()
         )
 
-        exists = property is not None
-        last_updated = property.update_timestamp if property else None
+        if property:
+            last_updated = property.update_timestamp
+            status_lower = property.status.lower()
+            if status_lower == STATUS_WORK_COMPLETE_LOWERCASE:
+                exists = False
+            elif status_lower == STATUS_NON_COMPLIANT:
+                exists = True
 
         logger.info(
             f"Soft story check result for coordinates: lon={lon}, lat={lat} - "
