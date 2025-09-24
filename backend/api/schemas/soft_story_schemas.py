@@ -82,7 +82,7 @@ class IsSoftStoryPropertyView(BaseModel):
         last_updated (Optional[datetime]): Timestamp of last update if exists
     """
 
-    exists: bool
+    exists: Optional[bool]
     last_updated: Optional[datetime]
 
     model_config = ConfigDict(from_attributes=True)
