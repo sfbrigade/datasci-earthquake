@@ -77,24 +77,20 @@ const CardHazard: React.FC<CardHazardProps> = ({
   };
 
   const handleSwitchClick = (num: number, checked: boolean) => {
-    const newArray = [];
-    const obj = {
+    const newArray = [...toggledStates];
+    newArray[num] = checked;
+    setToggledStates(newArray);
+    setLayerToggleObj({
       layerId: LayerIds[num],
       toggleState: checked,
-    };
-    for (let i = 0; i < toggledStates.length; i++) {
-      if (i === num) newArray.push(checked);
-      else newArray.push(toggledStates[i]);
-    }
-    setToggledStates(newArray);
-    setLayerToggleObj(obj);
+    });
   };
 
   return (
     <Card.Root
       flex={1}
-      maxW={{ base: 336 }}
-      minH={{ base: 184 }}
+      maxW={{ base: 320, "2xl": 336 }}
+      minH={{ base: 178, "2xl": 184 }}
       p={{ base: "14px 16px", md: "18px 20px" }}
       // boxShadow="0px 5px 6px #c8caceff"
       variant="elevated"
@@ -137,14 +133,33 @@ const CardHazard: React.FC<CardHazardProps> = ({
             </Switch.Root>
           </Card.Header>
           <Card.Body textAlign="left" p={0} mb={"6px"}>
-            <Text textStyle="textMedium" layerStyle="text">
+            <Text
+              textStyle={{
+                base:
+                  description.length >= 105
+                    ? "cardTextXSmall"
+                    : "cardTextSmall",
+                "2xl":
+                  description.length >= 105
+                    ? "cardTextSmall"
+                    : "cardTextMedium",
+              }}
+              layerStyle="text"
+            >
               {description}
             </Text>
           </Card.Body>
           <Card.Footer p={0} width={"100%"}>
             <HStack justifyContent="space-between" width="100%">
               <Popover.Trigger>
-                <Text cursor={"pointer"} textDecoration={"underline"}>
+                <Text
+                  cursor={"pointer"}
+                  textDecoration={"underline"}
+                  fontSize={{
+                    base: 15.2,
+                    "2xl": "md",
+                  }}
+                >
                   More Info
                 </Text>
               </Popover.Trigger>
