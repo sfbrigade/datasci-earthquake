@@ -49,6 +49,10 @@ COPY backend/pyproject.toml backend/uv.lock ./
 # Install dependencies using uv
 RUN uv sync --frozen
 
+# uv sync creates a virtual environment in the root directory, add it to PATH
+ENV VIRTUAL_ENV=/.venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
 # Copy the source code into the container.
 COPY backend ./backend
 
