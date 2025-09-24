@@ -36,3 +36,9 @@ node_modules
 !.vscode/extensions.json
 !.vscode/settings.json
 !.vscode/launch.json
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
