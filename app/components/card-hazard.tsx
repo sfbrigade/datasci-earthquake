@@ -7,9 +7,10 @@ import {
   Link,
   Card,
   Spinner,
-  Popover,
+  Accordion,
   Portal,
   Switch,
+  Separator,
 } from "@chakra-ui/react";
 import posthog from "posthog-js";
 import Pill from "./pill";
@@ -70,7 +71,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
 
   const buildHazardCardInfo = () => {
     return hazard.info.map((infoItem, index) => (
-      <Text as="p" mt="4" key={index}>
+      <Text as="p" mt="1" key={index}>
         {infoItem}
       </Text>
     ));
@@ -99,18 +100,8 @@ const CardHazard: React.FC<CardHazardProps> = ({
       // boxShadow="0px 5px 6px #c8caceff"
       variant="elevated"
     >
-      <Popover.Root
-        positioning={{
-          placement: "bottom",
-          flip: false,
-          offset: { crossAxis: -12, mainAxis: 24 },
-          sameWidth: true,
-        }}
-        closeOnEscape={true}
-        closeOnInteractOutside={true}
-        aria-label={`${hazard.title} information`}
-      >
-        <VStack alignItems={"flex-start"} flexGrow={1} h="full">
+      <Accordion.Item border="none" minH="154px" value={hazard.name}>
+        <VStack alignItems={"flex-start"} flexGrow={1} minH="154px">
           <Card.Header
             w="102%"
             p={0}
@@ -143,50 +134,36 @@ const CardHazard: React.FC<CardHazardProps> = ({
           </Card.Body>
           <Card.Footer p={0} width={"100%"}>
             <HStack justifyContent="space-between" width="100%">
-              <Popover.Trigger>
+              <Accordion.ItemTrigger p={0} w="initial">
                 <Text cursor={"pointer"} textDecoration={"underline"}>
                   More Info
                 </Text>
-              </Popover.Trigger>
+              </Accordion.ItemTrigger>
               {hazardPill}
             </HStack>
           </Card.Footer>
         </VStack>
-        <Portal>
-          <Popover.Positioner>
-            <Popover.Content maxHeight="unset">
-              <Popover.CloseTrigger
-                cursor="pointer"
-                position="absolute"
-                top="2"
-                right="2"
-              >
-                <RxCross2 color="grey.900" size="20" data-testid="clear-icon" />
-              </Popover.CloseTrigger>
-              <Popover.Arrow>
-                <Popover.ArrowTip />
-              </Popover.Arrow>
-              <Popover.Body>
-                {buildHazardCardInfo()}
-                <Link
-                  display={"inline-block"}
-                  href={hazard.link.url}
-                  mt="4"
-                  target="_blank"
-                  textDecoration="underline"
-                  onClick={() =>
-                    posthog.capture("dataset-link-clicked", {
-                      link_name: hazard.link.label,
-                    })
-                  }
-                >
-                  {hazard.link.label}
-                </Link>
-              </Popover.Body>
-            </Popover.Content>
-          </Popover.Positioner>
-        </Portal>
-      </Popover.Root>
+        <Accordion.ItemContent maxHeight="unset">
+          <Separator mt="3" />
+          <Accordion.ItemBody>
+            {buildHazardCardInfo()}
+            <Link
+              display={"inline-block"}
+              href={hazard.link.url}
+              mt="4"
+              target="_blank"
+              textDecoration="underline"
+              onClick={() =>
+                posthog.capture("dataset-link-clicked", {
+                  link_name: hazard.link.label,
+                })
+              }
+            >
+              {hazard.link.label}
+            </Link>
+          </Accordion.ItemBody>
+        </Accordion.ItemContent>
+      </Accordion.Item>
     </Card.Root>
   );
 };

@@ -5,6 +5,7 @@ import { Hazards } from "../../data/data";
 import "@testing-library/jest-dom";
 import { Provider } from "../ui/provider";
 import "../__mocks__/match-media";
+import { Accordion } from "@chakra-ui/react";
 
 // eslint-disable-next-line react/display-name
 jest.mock("../pill.tsx", () => () => (
@@ -39,14 +40,16 @@ describe("CardHazard Component", () => {
   it("renders without crashing", () => {
     render(
       <Provider>
-        <CardHazard
-          hazard={Hazards[0]}
-          showData={true}
-          isHazardDataLoading={true}
-          toggledStates={toggledStates}
-          setToggledStates={setToggledStates}
-          setLayerToggleObj={setLayerToggleObj}
-        />
+        <Accordion.Root>
+          <CardHazard
+            hazard={Hazards[0]}
+            showData={true}
+            isHazardDataLoading={true}
+            toggledStates={toggledStates}
+            setToggledStates={setToggledStates}
+            setLayerToggleObj={setLayerToggleObj}
+          />
+        </Accordion.Root>
       </Provider>
     );
     expect(screen.getByText("Earthquake")).toBeInTheDocument();
@@ -55,14 +58,16 @@ describe("CardHazard Component", () => {
   it("displays the hazard title and description", () => {
     render(
       <Provider>
-        <CardHazard
-          hazard={Hazards[0]}
-          showData={true}
-          isHazardDataLoading={true}
-          toggledStates={toggledStates}
-          setToggledStates={setToggledStates}
-          setLayerToggleObj={setLayerToggleObj}
-        />
+        <Accordion.Root>
+          <CardHazard
+            hazard={Hazards[0]}
+            showData={true}
+            isHazardDataLoading={true}
+            toggledStates={toggledStates}
+            setToggledStates={setToggledStates}
+            setLayerToggleObj={setLayerToggleObj}
+          />{" "}
+        </Accordion.Root>
       </Provider>
     );
     expect(screen.getByText("Earthquake")).toBeInTheDocument();
