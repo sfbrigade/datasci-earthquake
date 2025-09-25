@@ -179,13 +179,15 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       <Box
         w="full"
         h={{
-          base: "980px",
-          md: "685px",
-          "2xl": "765px",
+          base: "calc(100vh - 198px - 32px)",
+          md: "calc(100vh - 175px - 32px)",
+          xl: "calc(100vh - 141px - 32px)",
+          "2xl": "calc(100vh - 149px - 32px)",
         }}
         m="auto"
+        position="relative"
       >
-        <Box h="100%" overflow="hidden" position="relative">
+        <Box h="100%" overflow="hidden">
           <Box zIndex={10} top={0} position="absolute">
             <ReportHazards
               addressHazardData={addressHazardData}
