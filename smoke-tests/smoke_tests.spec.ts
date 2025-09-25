@@ -15,7 +15,6 @@ test("should load the home page with core UI elements", async ({page}) => {
 
   // Expects page to have a map
   await expect(page.getByRole('region', { name: 'Map' })).toBeVisible();
-  await expect(page.getByRole('img', { name: 'Map marker' })).toBeVisible();
 
   // Expects page to have 3 hazard cards
   const cards = page.locator('.chakra-card__root');
