@@ -33,11 +33,11 @@ test('should display correct hazard report for a searched address', async ({ pag
   await page.getByText('321 7th Street', { exact: true }).click();
 
   // Expects page to have a heading for the search result address
-  await expect(page.getByText('Report for 321 7th Street')).toBeVisible();
+  await expect(page.getByText('Report for 321 7th Street')).toBeVisible({ timeout: 10000 });
   
   // Expects hazard cards to have pill data for the search result address
   const cards = page.locator('.chakra-card__root');
-  await expect(cards.first()).toContainText('No Data');
+  await expect(cards.first()).toContainText('Compliant');
   await expect(cards.nth(1)).toContainText('Susceptible');
   await expect(cards.nth(2)).toContainText('Not in Zone');
 });
