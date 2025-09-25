@@ -23,7 +23,7 @@ const ReportHazards = ({
   return (
     <Box>
       <CardContainer>
-        {Hazards.map((hazard, index) => {
+        {Hazards.map((hazard) => {
           return (
             <CardHazard
               key={hazard.id}

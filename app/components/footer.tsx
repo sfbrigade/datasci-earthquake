@@ -8,7 +8,7 @@ const Footer = () => {
       return (
         <Text
           key={index}
-          textStyle="textSmall"
+          textStyle="textXSmall"
           layerStyle="text"
           lineHeight="shorter"
           color="white"
@@ -38,7 +38,7 @@ const Footer = () => {
           maxW={{ base: "100%", lg: "672px" }}
           gap="24px"
         >
-          <Text textStyle="textSmall" layerStyle="text" color="white">
+          <Text textStyle="textXSmall" layerStyle="text" color="white">
             © 2025 SF Civic Tech
           </Text>
           {buildDisclaimers()}

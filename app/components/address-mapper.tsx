@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
+import MobileReportHazards from "./mobile-report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
@@ -39,11 +40,6 @@ const isErrorResult = (data: unknown): data is ErrorResult => {
   );
 };
 
-// const testingMobile = () => {
-//   if (window.innerWidth <= 480) return true;
-//   else return false;
-// };
-
 const AddressMapper: React.FC<AddressMapperProps> = ({
   softStoryData,
   tsunamiData,
@@ -72,13 +68,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     layerId: "",
     toggleState: true,
   });
+  const [showHazards, setShowHazards] = useState(false);
   const [isSearchComplete, setSearchComplete] = useState(false);
   const [currentView, setCurrentView] = useState("");
   const toastIdDataLoadFailed = "data-load-failed";
   const coordinatesRef = useRef<number[] | null>(null);
   const router = useRouter();
-
-  console.log(currentView);
 
   const { fetchHazardData } = useHazardDataFetcher({
     setSearchComplete,
@@ -184,13 +179,15 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   }, [softStoryData, tsunamiData, liquefactionData]);
 
   useEffect(() => {
-    if (window.innerWidth <= 480) setCurrentView("mobile");
-    else setCurrentView("desktop");
+    if (currentView === "") {
+      if (window.innerWidth <= 480) setCurrentView("mobile");
+      else setCurrentView("desktop");
+    }
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [currentView]);
 
   return (
     <>
@@ -217,6 +214,16 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 addressHazardData={addressHazardData}
                 isHazardDataLoading={isHazardDataLoading}
                 toggledStates={toggledStates}
+                setToggledStates={setToggledStates}
+                setLayerToggleObj={setLayerToggleObj}
+              />
+            ) : currentView === "mobile" ? (
+              <MobileReportHazards
+                showHazards={showHazards}
+                addressHazardData={addressHazardData}
+                isHazardDataLoading={isHazardDataLoading}
+                toggledStates={toggledStates}
+                setShowHazards={setShowHazards}
                 setToggledStates={setToggledStates}
                 setLayerToggleObj={setLayerToggleObj}
               />

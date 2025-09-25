@@ -69,6 +69,14 @@ const textStyles = defineTextStyles({
     description: "text small",
     value: {
       fontFamily: "body",
+      fontSize: "sm",
+      fontWeight: "normal",
+    },
+  },
+  textXSmall: {
+    description: "text small",
+    value: {
+      fontFamily: "body",
       fontSize: "xs",
       fontWeight: "normal",
     },
@@ -138,6 +146,10 @@ const layerStyles = defineLayerStyles({
   list: {
     description: "list",
     value: { paddingLeft: "6", marginTop: "2" },
+  },
+  mobileButton: {
+    description: "mobile button",
+    value: { color: "black", bg: "white", borderRadius: "30px" },
   },
 });
 
