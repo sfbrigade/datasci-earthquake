@@ -35,20 +35,13 @@ const MobileReportHazards = ({
   return (
     <Menu.Root
       positioning={{ flip: false }}
-      onOpenChange={() => setShowHazards(!showHazards)}
+      onOpenChange={(e) => setShowHazards(e.open)}
     >
-      <Box
-        pt="36px"
-        px={{ base: "32px", md: "32px", xl: "36px" }}
-        zIndex={10}
-        w="full"
-        position={"relative"}
-      >
+      <Box pt="36px" px="28px" zIndex={10} position="relative">
         <Menu.Trigger asChild>
           <Button
             textStyle={"textMedium"}
             layerStyle={"mobileButton"}
-            // mb="10px"
             fontWeight="700"
             boxShadow="0px 0px 3px #c8caceff"
           >
@@ -65,9 +58,9 @@ const MobileReportHazards = ({
           </Button>
         </Menu.Trigger>
         <Portal>
-          <Menu.Positioner w="90%">
-            <Menu.Content p={0} borderRadius="15px" py={3} w="95%">
-              <Accordion.Root collapsible={true} w="100%">
+          <Menu.Positioner>
+            <Menu.Content p={0} borderRadius="15px" py="12px" w="100%">
+              <Accordion.Root collapsible={true}>
                 {Hazards.map((hazard) => {
                   return (
                     <MobileCardHazard

@@ -11,7 +11,7 @@ const ReportAddress: React.FC<ReportAddressProps> = ({ searchedAddress }) => {
       alignItems={{ base: "flex-start", md: "center" }}
       gap={{ base: 1, md: 1 }} // TODO FIXME: double check if this should be "9px", as commented out above
     >
-      <Text textStyle="headerMedium" layerStyle="headerMain" fontSize="3xl">
+      <Text textStyle="headerMedium" layerStyle="headerMain">
         Report for {searchedAddress}
       </Text>
     </Stack>

@@ -17,7 +17,7 @@ import Pill from "./pill";
 import { PillData, LayerIds } from "../data/data";
 import { FaCircle, FaSquareFull } from "react-icons/fa";
 import { KeyElem } from "./key-elem";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { LayerToggleObjProps } from "./address-mapper";
 interface CardHazardProps {
   hazard: {
@@ -54,6 +54,7 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
     falseData: "No Data",
     noData: "No Data",
   };
+  const [isMoreInfo, setIsMoreInfo] = useState(false);
 
   const hazardPill = isHazardDataLoading ? (
     <Spinner size="xs" />
@@ -77,17 +78,13 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
   };
 
   const handleSwitchClick = (num: number, checked: boolean) => {
-    const newArray = [];
-    const obj = {
+    const newArray = [...toggledStates];
+    newArray[num] = checked;
+    setToggledStates(newArray);
+    setLayerToggleObj({
       layerId: LayerIds[num],
       toggleState: checked,
-    };
-    for (let i = 0; i < toggledStates.length; i++) {
-      if (i === num) newArray.push(checked);
-      else newArray.push(toggledStates[i]);
-    }
-    setToggledStates(newArray);
-    setLayerToggleObj(obj);
+    });
   };
 
   return (
@@ -99,12 +96,11 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
       variant="elevated"
       borderRadius={0}
     >
-      <Accordion.Item border="none" w="100%" value={hazard.name}>
+      <Accordion.Item border="none" w="98%" value={hazard.name}>
         <Accordion.ItemTrigger p={0} w={"100%"}>
           <Card.Header
-            w="98%"
+            w="100%"
             p={0}
-            // mb={"0.2em"}
             textAlign="left"
             flexDirection="row"
             justifyContent="space-between"
@@ -120,7 +116,7 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
         </Accordion.ItemTrigger>
         <Accordion.ItemContent maxHeight="unset">
           <Accordion.ItemBody pb={0}>
-            <Collapsible.Root>
+            <Collapsible.Root onOpenChange={(e) => setIsMoreInfo(e.open)}>
               <Card.Body textAlign="left" p={0}>
                 <HStack justifyContent="space-between">
                   <Text textStyle="textXSmall" layerStyle="text">
@@ -147,7 +143,7 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
                     textDecoration={"underline"}
                     fontWeight={"bold"}
                   >
-                    More Info
+                    {!isMoreInfo ? "More info" : "Less info"}
                   </Text>
                 </Collapsible.Trigger>
               </Card.Footer>
