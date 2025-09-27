@@ -163,114 +163,119 @@ export const DataInfoLinks = [
 
 export const TeamMembers = [
   {
-    id: 1,
     role: "Project Manager, Data Science",
     name: "Leela Solomon",
   },
   {
-    id: 2,
-    role: "Assistant Project Manager, Data Science",
+    role: "Assistant Project Manager, Data Science Lead",
     name: "Oscar Syu",
   },
   {
-    id: 15,
-    role: "Product Management",
+    role: "UX/UI Design Lead",
+    name: "Ramya Rajasekaran",
+  },
+  {
+    role: "Partnerships Lead",
     name: "Julia Cordero",
   },
   {
-    id: 3,
-    role: "Product Design Lead",
-    name: "Micah Johnson",
-  },
-  {
-    id: 6,
-    role: "Product Design Lead",
-    name: "Jocelyn Su",
-  },
-  {
-    id: 12,
-    role: "Engineering Lead",
-    name: "Eli Lucherini ",
-  },
-  {
-    id: 4,
-    role: "Engineering Lead",
+    role: "Back End Engineering Lead",
     name: "Anna Gennadinik",
   },
   {
-    id: 5,
-    role: "Engineering Lead",
-    name: "Svetlana Eliseeva",
-  },
-  {
-    id: 8,
-    role: "Engineering Lead",
+    role: "Front End Engineering Lead",
     name: "Nick Visutsithiwong",
   },
   {
-    id: 7,
+    role: "Front End Engineering Lead",
+    name: "Josh van Eyken",
+  },
+  {
+    role: "UX/UI Design",
+    name: "Jocelyn Su",
+  },
+  {
     role: "UX Writer",
     name: "Nikki Collister",
   },
   {
-    id: 9,
-    role: "Front End Engineer",
-    name: "Amna Khan",
-  },
-  {
-    id: 10,
-    role: "Front End Engineer",
-    name: "Diya Baliga",
-  },
-  {
-    id: 19,
-    role: "Front End Engineer",
-    name: "Leah Treidler",
-  },
-  {
-    id: 16,
-    role: "Front End Engineer",
-    name: "Josh van Eyken",
-  },
-  {
-    id: 21,
     role: "Front End Engineer",
     name: "Jobe Abdellah",
   },
   {
-    id: 22,
     role: "Front End Engineer",
     name: "Jesse Mavi",
   },
   {
-    id: 14,
-    role: "Full Stack Engineer",
-    name: "Raymond Yee",
-  },
-  {
-    id: 20,
-    role: "Full Stack Engineer",
-    name: "Vincent Shuali",
-  },
-  {
-    id: 11,
     role: "Back End Engineer",
     name: "Adam Finkle",
   },
   {
-    id: 18,
+    role: "Data Science, Back End Engineer",
+    name: "Lola Jackson",
+  },
+  {
+    role: "Back End Engineer, Data Science",
+    name: "Jiang John",
+  },
+  {
+    role: "Partnerships",
+    name: "Chanel Johnson",
+  },
+  {
+    role: "Data Science",
+    name: "Amreen Kaur",
+  },
+  {
+    role: "UX/UI Design",
+    name: "Teresa Yang",
+  },
+  {
+    role: "UX/UI Design",
+    name: "Ruby Hirsch",
+  },
+];
+
+export const InactiveTeamMembers = [
+  {
+    role: "Product Design Lead",
+    name: "Micah Johnson",
+  },
+  {
+    role: "Engineering Lead",
+    name: "Eli Lucherini ",
+  },
+  {
+    role: "Engineering Lead",
+    name: "Svetlana Eliseeva",
+  },
+  {
+    role: "Front End Engineer",
+    name: "Amna Khan",
+  },
+  {
+    role: "Front End Engineer",
+    name: "Diya Baliga",
+  },
+  {
+    role: "Front End Engineer",
+    name: "Leah Treidler",
+  },
+  {
+    role: "Full Stack Engineer",
+    name: "Raymond Yee",
+  },
+  {
+    role: "Full Stack Engineer",
+    name: "Vincent Shuali",
+  },
+  {
     role: "Back End Engineer",
     name: "Neeraj Lad",
   },
   {
-    id: 13,
     role: "Data Science",
     name: "Peter Cuddihy",
-  },
-  {
-    id: 17,
-    role: "Data Science",
-    name: "Lola Jackson",
   },
 ];
 
