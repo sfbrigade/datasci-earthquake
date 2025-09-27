@@ -107,9 +107,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   );
 
   const handleResize = () => {
-    if (window.innerWidth <= 480) {
-      setCurrentView("mobile");
-    } else setCurrentView("desktop");
+    setCurrentView(window.innerWidth <= 480 ? "mobile" : "desktop");
   };
 
   const handleSearchChange = useCallback(
