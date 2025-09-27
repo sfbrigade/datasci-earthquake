@@ -43,13 +43,13 @@ const Footer = () => {
           </Text>
           {buildDisclaimers()}
         </VStack>
-        <VStack alignItems={{ base: "flex-start", lg: "flex-end" }} gap="32px">
+        <VStack alignItems={{ base: "flex-start", lg: "flex-end" }} gap={8}>
           <Stack
-            gap="16px"
+            gap={4}
             align="flex-end"
             direction={{ base: "row", lg: "column" }}
             width="100%"
-            mt={{ xl: "16px" }}
+            mt={{ xl: 4 }}
           >
             <Link as={NextLink} color="white" href="/about">
               <Text textStyle="textMedium" layerStyle="text" color="white">
