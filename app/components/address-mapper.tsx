@@ -180,8 +180,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
   useEffect(() => {
     if (currentView === "") {
-      if (window.innerWidth <= 480) setCurrentView("mobile");
-      else setCurrentView("desktop");
+      handleResize();
     }
     window.addEventListener("resize", handleResize);
     return () => {

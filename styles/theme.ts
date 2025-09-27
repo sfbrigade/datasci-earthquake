@@ -74,7 +74,7 @@ const textStyles = defineTextStyles({
     },
   },
   textXSmall: {
-    description: "text small",
+    description: "text extra small",
     value: {
       fontFamily: "body",
       fontSize: "xs",
