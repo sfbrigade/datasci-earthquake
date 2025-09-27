@@ -7,13 +7,13 @@ import {
   Link,
   Card,
   Spinner,
-  Popover,
-  Portal,
+  Accordion,
   Switch,
+  Separator,
+  Collapsible,
 } from "@chakra-ui/react";
 import posthog from "posthog-js";
 import Pill from "./pill";
-import { RxCross2 } from "react-icons/rx";
 import { PillData, LayerIds } from "../data/data";
 import { FaCircle, FaSquareFull } from "react-icons/fa";
 import { KeyElem } from "./key-elem";
@@ -38,7 +38,7 @@ interface CardHazardProps {
   setLayerToggleObj: Dispatch<SetStateAction<LayerToggleObjProps>>;
 }
 
-const CardHazard: React.FC<CardHazardProps> = ({
+const MobileCardHazard: React.FC<CardHazardProps> = ({
   hazard,
   hazardData,
   showData,
@@ -71,7 +71,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
 
   const buildHazardCardInfo = () => {
     return hazard.info.map((infoItem, index) => (
-      <Text as="p" mt="4" key={index}>
+      <Text as="p" mt="1.5" key={index} textStyle="textXSmall">
         {infoItem}
       </Text>
     ));
@@ -90,29 +90,17 @@ const CardHazard: React.FC<CardHazardProps> = ({
   return (
     <Card.Root
       flex={1}
-      maxW={{ base: 320, "2xl": 336 }}
-      minH={{ base: 178, "2xl": 184 }}
-      p={{ base: "14px 16px", md: "18px 20px" }}
+      w="86vw"
+      p={"8px 12px"}
       // boxShadow="0px 5px 6px #c8caceff"
       variant="elevated"
+      borderRadius={0}
     >
-      <Popover.Root
-        positioning={{
-          placement: "bottom",
-          flip: false,
-          offset: { crossAxis: -12, mainAxis: 24 },
-          sameWidth: true,
-        }}
-        closeOnEscape={true}
-        closeOnInteractOutside={true}
-        aria-label={`${hazard.title} information`}
-        onOpenChange={(e) => setIsMoreInfo(e.open)}
-      >
-        <VStack alignItems={"flex-start"} flexGrow={1} h="full">
+      <Accordion.Item border="none" w="98%" value={hazard.name}>
+        <Accordion.ItemTrigger p={0} w={"100%"}>
           <Card.Header
-            w="102%"
+            w="100%"
             p={0}
-            mb={"0.2em"}
             textAlign="left"
             flexDirection="row"
             justifyContent="space-between"
@@ -121,69 +109,46 @@ const CardHazard: React.FC<CardHazardProps> = ({
               name={title}
               color={iconColor}
               icon={icon === "circle" ? <FaCircle /> : <FaSquareFull />}
+              isMobile={true}
             />
-            <Switch.Root
-              size="lg"
-              colorPalette="blue"
-              checked={toggledStates[id]}
-              onCheckedChange={(e) => handleSwitchClick(id, e.checked)}
-              defaultChecked
-            >
-              <Switch.HiddenInput />
-              <Switch.Control />
-              <Switch.Label />
-            </Switch.Root>
+            {hazardPill}
           </Card.Header>
-          <Card.Body textAlign="left" p={0} mb={"6px"}>
-            <Text
-              textStyle={{
-                base:
-                  description.length >= 105
-                    ? "cardTextXSmall"
-                    : "cardTextSmall",
-                "2xl":
-                  description.length >= 105
-                    ? "cardTextSmall"
-                    : "cardTextMedium",
-              }}
-              layerStyle="text"
-            >
-              {description}
-            </Text>
-          </Card.Body>
-          <Card.Footer p={0} width={"100%"}>
-            <HStack justifyContent="space-between" width="100%">
-              <Popover.Trigger>
-                <Text
-                  cursor={"pointer"}
-                  textDecoration={"underline"}
-                  fontSize={{
-                    base: 15.2,
-                    "2xl": "md",
-                  }}
-                >
-                  {!isMoreInfo ? "More info" : "Less info"}
-                </Text>
-              </Popover.Trigger>
-              {hazardPill}
-            </HStack>
-          </Card.Footer>
-        </VStack>
-        <Portal>
-          <Popover.Positioner>
-            <Popover.Content maxHeight="unset">
-              <Popover.CloseTrigger
-                cursor="pointer"
-                position="absolute"
-                top="2"
-                right="2"
-              >
-                <RxCross2 color="grey.900" size="20" data-testid="clear-icon" />
-              </Popover.CloseTrigger>
-              <Popover.Arrow>
-                <Popover.ArrowTip />
-              </Popover.Arrow>
-              <Popover.Body>
+        </Accordion.ItemTrigger>
+        <Accordion.ItemContent maxHeight="unset">
+          <Accordion.ItemBody pb={0}>
+            <Collapsible.Root onOpenChange={(e) => setIsMoreInfo(e.open)}>
+              <Card.Body textAlign="left" p={0}>
+                <HStack justifyContent="space-between">
+                  <Text textStyle="textXSmall" layerStyle="text">
+                    {description}
+                  </Text>
+                  <Switch.Root
+                    size="lg"
+                    colorPalette="blue"
+                    checked={toggledStates[id]}
+                    onCheckedChange={(e) => handleSwitchClick(id, e.checked)}
+                    defaultChecked
+                  >
+                    <Switch.HiddenInput />
+                    <Switch.Control />
+                    <Switch.Label />
+                  </Switch.Root>
+                </HStack>
+              </Card.Body>
+              <Card.Footer p={0} width={"100%"}>
+                <Collapsible.Trigger>
+                  <Text
+                    textStyle="textXSmall"
+                    cursor={"pointer"}
+                    textDecoration={"underline"}
+                    fontWeight={"bold"}
+                  >
+                    {!isMoreInfo ? "More info" : "Less info"}
+                  </Text>
+                </Collapsible.Trigger>
+              </Card.Footer>
+              <Collapsible.Content>
+                <Separator mt="2" />
                 {buildHazardCardInfo()}
                 <Link
                   display={"inline-block"}
@@ -196,16 +161,18 @@ const CardHazard: React.FC<CardHazardProps> = ({
                       link_name: hazard.link.label,
                     })
                   }
+                  textStyle={"textXSmall"}
+                  fontWeight={"bold"}
                 >
                   {hazard.link.label}
                 </Link>
-              </Popover.Body>
-            </Popover.Content>
-          </Popover.Positioner>
-        </Portal>
-      </Popover.Root>
+              </Collapsible.Content>
+            </Collapsible.Root>
+          </Accordion.ItemBody>
+        </Accordion.ItemContent>
+      </Accordion.Item>
     </Card.Root>
   );
 };
 
-export default CardHazard;
+export default MobileCardHazard;
