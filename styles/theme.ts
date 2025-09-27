@@ -12,9 +12,8 @@ const textStyles = defineTextStyles({
     description: "header big",
     value: {
       fontFamily: "heading",
-      fontSize: ["4xl", "4xl", "5xl", "5xl", "6xl", "6xl"],
-      fontWeight: "300",
-      lineHeight: ["40px", "40px", "48px", "48px", "60px", "60px"],
+      fontSize: ["2xl", "2xl", "3xl", "3xl", "4xl", "4xl"],
+      fontWeight: "500",
     },
   },
   headerReport: {
@@ -30,7 +29,7 @@ const textStyles = defineTextStyles({
     description: "header medium",
     value: {
       fontFamily: "heading",
-      fontSize: ["2xl", "2xl", "3xl", "3xl", "3xl", "3xl"],
+      fontSize: ["xl", "xl", "2xl", "2xl", "2xl", "2xl"],
       fontWeight: "500",
     },
   },
