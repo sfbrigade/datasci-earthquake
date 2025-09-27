@@ -49,7 +49,7 @@ const Footer = () => {
             align="flex-end"
             direction={{ base: "row", lg: "column" }}
             width="100%"
-            mt={{xl: "16px"}}
+            mt={{ xl: "16px" }}
           >
             <Link as={NextLink} color="white" href="/about">
               <Text textStyle="textMedium" layerStyle="text" color="white">
