@@ -5,6 +5,7 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ["@chakra-ui/react"],
   },
+  productionBrowserSourceMaps: true,
   rewrites: async () => {
     const env = process.env.ENVIRONMENT;
     let backendHost;
