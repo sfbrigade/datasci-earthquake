@@ -234,6 +234,10 @@ export const TeamMembers = [
     role: "UX/UI Design",
     name: "Ruby Hirsch",
   },
+  {
+    role: "Front End Engineer, Back End Engineer",
+    name: "Zaima Choudhry",
+  },
 ];
 
 export const InactiveTeamMembers = [
