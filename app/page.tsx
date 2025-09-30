@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Suspense } from "react";
 import { Box, Flex, Heading, Text, List, HStack, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import Image from "next/image";
@@ -40,34 +41,32 @@ const Home = async () => {
   }
   return (
     <Flex direction="column">
-      <AddressMapper
-        softStoryData={softStoryData}
-        tsunamiData={tsunamiData}
-        liquefactionData={liquefactionData}
-      />
+      {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
+      <Suspense fallback={null}>
+        <AddressMapper
+          softStoryData={softStoryData}
+          tsunamiData={tsunamiData}
+          liquefactionData={liquefactionData}
+        />
+      </Suspense>
       <Flex
-        w={{ base: "full", xl: "7xl" }}
+        w={{ base: "full" }}
         p={{
-          base: "24px 24px 24px 24px",
-          md: "36px 28px 16px 28px",
-          xl: "96px 128px 96px 128px",
+          base: "32px 32px 64px 32px",
         }}
-        m="auto"
-        gap="46px"
+        justifyContent="space-between"
       >
-        <HStack alignItems={"start"}>
+        <HStack alignItems={"start"} w={{ base: "100%", lg: "75%" }}>
           <div>
             <Heading as="h2">
               <Text
                 as="span"
                 textStyle="headerBig"
                 layerStyle="headerMain"
-                color="blue"
+                color="blue.text"
                 fontWeight="300"
               >
-                How to be
-                <br />
-                earthquake-ready
+                How to be earthquake-ready
               </Text>
             </Heading>
             <Text as="p" mt="2" textStyle="textBig" layerStyle="text">
@@ -75,7 +74,8 @@ const Home = async () => {
               resources can help you make confident, informed decisions around
               earthquake safety.
             </Text>
-            <Heading as="h3" mt="4">
+
+            <Heading as="h3" mt="7">
               <Text as="span" textStyle="headerMedium" layerStyle="headerAlt">
                 Know the lingo
               </Text>
@@ -85,30 +85,21 @@ const Home = async () => {
               around, but what do they actually mean?
             </Text>
 
-            <List.Root textStyle="textMedium" layerStyle="list">
+            <List.Root textStyle="textMedium" layerStyle="list" mt="0">
               <List.Item>
-                A{" "}
-                <Text as="span" textStyle="textSemibold">
-                  soft story
-                </Text>{" "}
-                building is a structure that contains an open-floor (or “soft”)
-                level, such as a garage or retail space, below one or more
-                living spaces.
+                A soft story building is a structure that contains an open-floor
+                (or “soft”) level, such as a garage or retail space, below one
+                or more living spaces.
               </List.Item>
               <List.Item>
-                <Text as="span" textStyle="textSemibold">
-                  Earthquake retrofitting
-                </Text>{" "}
-                is the process of strengthening a building to make it safer in
-                an earthquake, such as adding structural reinforcements or
-                upgrading the foundation to better withstand shaking.
+                Earthquake retrofitting is the process of strengthening a
+                building to make it safer in an earthquake, such as adding
+                structural reinforcements or upgrading the foundation to better
+                withstand shaking.
               </List.Item>
               <List.Item>
-                San Francisco’s{" "}
-                <Text as="span" textStyle="textSemibold">
-                  Mandatory Soft Story Retrofit Ordinance
-                </Text>
-                , enacted in 2013, requires all multi-unit soft story buildings
+                San Francisco’s Mandatory Soft Story Retrofit Ordinance ,
+                enacted in 2013, requires all multi-unit soft story buildings
                 built before 1978 to be retrofitted in order to minimize the
                 risk of earthquake damage. Soft-story homes with 1 to 4 units
                 are still vulnerable to earthquake damage, even though the
@@ -116,7 +107,7 @@ const Home = async () => {
               </List.Item>
             </List.Root>
 
-            <Heading as="h3" mt="4">
+            <Heading as="h3" mt="7">
               <Text as="span" textStyle="headerMedium" layerStyle="headerAlt">
                 Plan ahead
               </Text>
@@ -126,7 +117,7 @@ const Home = async () => {
               earthquakes.
             </Text>
 
-            <List.Root textStyle="textMedium" layerStyle="list">
+            <List.Root textStyle="textMedium" layerStyle="list" mt="0">
               <List.Item>
                 <Link
                   as={NextLink}
@@ -165,7 +156,7 @@ const Home = async () => {
               </List.Item>
             </List.Root>
 
-            <Heading as="h3" mt="4">
+            <Heading as="h3" mt="7">
               <Text as="span" textStyle="headerMedium" layerStyle="headerAlt">
                 Find retrofitting services (if applicable)
               </Text>
@@ -175,7 +166,7 @@ const Home = async () => {
               resources can help you get started.
             </Text>
 
-            <List.Root textStyle="textMedium" layerStyle="list">
+            <List.Root textStyle="textMedium" layerStyle="list" mt="0">
               <List.Item>
                 <Link
                   as={NextLink}
@@ -225,7 +216,7 @@ const Home = async () => {
               </List.Item>
             </List.Root>
 
-            <Heading as="h3" mt="4">
+            <Heading as="h3" mt="7">
               <Text as="span" textStyle="headerMedium" layerStyle="headerAlt">
                 Know your renters’ rights
               </Text>
@@ -235,7 +226,7 @@ const Home = async () => {
               or tsunami zone, you may want to look into these additional
               resources.
             </Text>
-            <List.Root textStyle="textMedium" layerStyle="list">
+            <List.Root textStyle="textMedium" layerStyle="list" mt="0">
               <List.Item>
                 <Link
                   as={NextLink}
@@ -262,15 +253,15 @@ const Home = async () => {
               </List.Item>
             </List.Root>
           </div>
-          <Box flexShrink={0} display={{ base: "none", lg: "block" }}>
-            <Image
-              src="/images/earthquake-ready.png"
-              alt="about us"
-              width="300"
-              height="300"
-            />
-          </Box>
         </HStack>
+        <Box flexShrink={0} display={{ base: "none", lg: "block" }}>
+          <Image
+            src="/images/earthquake-ready.png"
+            alt="about us"
+            width="300"
+            height="300"
+          />
+        </Box>
       </Flex>
     </Flex>
   );

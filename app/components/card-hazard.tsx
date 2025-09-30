@@ -9,10 +9,16 @@ import {
   Spinner,
   Popover,
   Portal,
+  Switch,
 } from "@chakra-ui/react";
 import posthog from "posthog-js";
 import Pill from "./pill";
 import { RxCross2 } from "react-icons/rx";
+import { PillData, LayerIds } from "../data/data";
+import { FaCircle, FaSquareFull } from "react-icons/fa";
+import { KeyElem } from "./key-elem";
+import { Dispatch, SetStateAction, useState } from "react";
+import { LayerToggleObjProps } from "./address-mapper";
 interface CardHazardProps {
   hazard: {
     id: number;
@@ -21,10 +27,15 @@ interface CardHazardProps {
     description: string;
     info: string[];
     link: { label: string; url: string };
+    icon: string;
+    iconColor: string;
   };
   hazardData?: { exists?: boolean; last_updated?: string };
   showData: boolean;
   isHazardDataLoading: boolean;
+  toggledStates: boolean[];
+  setToggledStates: Dispatch<SetStateAction<boolean[]>>;
+  setLayerToggleObj: Dispatch<SetStateAction<LayerToggleObjProps>>;
 }
 
 const CardHazard: React.FC<CardHazardProps> = ({
@@ -32,14 +43,28 @@ const CardHazard: React.FC<CardHazardProps> = ({
   hazardData,
   showData,
   isHazardDataLoading,
+  toggledStates,
+  setToggledStates,
+  setLayerToggleObj,
 }) => {
-  const { title, name, description } = hazard;
+  const { id, title, name, description, icon, iconColor } = hazard;
   const { exists, last_updated: date } = hazardData || {};
+  const pillTextOptions = PillData.find((object) => object.name === name) ?? {
+    trueData: "No Data",
+    falseData: "No Data",
+    noData: "No Data",
+  };
+  const [isMoreInfo, setIsMoreInfo] = useState(false);
 
   const hazardPill = isHazardDataLoading ? (
     <Spinner size="xs" />
   ) : showData ? (
-    <Pill exists={exists} />
+    <Pill
+      exists={exists}
+      trueData={pillTextOptions.trueData}
+      falseData={pillTextOptions.falseData}
+      noData={pillTextOptions.noData}
+    />
   ) : (
     ""
   );
@@ -52,44 +77,105 @@ const CardHazard: React.FC<CardHazardProps> = ({
     ));
   };
 
+  const handleSwitchClick = (num: number, checked: boolean) => {
+    const newArray = [...toggledStates];
+    newArray[num] = checked;
+    setToggledStates(newArray);
+    setLayerToggleObj({
+      layerId: LayerIds[num],
+      toggleState: checked,
+    });
+  };
+
   return (
-    <Card.Root flex={1} maxW={400} p={{ base: "16px", md: "20px" }}>
+    <Card.Root
+      flex={1}
+      maxW={{ base: 320, "2xl": 336 }}
+      minH={{ base: 178, "2xl": 184 }}
+      p={{ base: "14px 16px", md: "18px 20px" }}
+      // boxShadow="0px 5px 6px #c8caceff"
+      variant="elevated"
+    >
       <Popover.Root
         positioning={{
           placement: "bottom",
           flip: false,
-          offset: { crossAxis: 0, mainAxis: 24 },
+          offset: { crossAxis: -12, mainAxis: 24 },
+          sameWidth: true,
         }}
         closeOnEscape={true}
         closeOnInteractOutside={true}
         aria-label={`${hazard.title} information`}
+        onOpenChange={(e) => setIsMoreInfo(e.open)}
       >
-        <Popover.Trigger h="full">
-          <VStack cursor={"pointer"} alignItems={"flex-start"} h="full">
-            <Card.Header p={0} marginBottom={"0.5em"} textAlign="left">
-              <Text
-                textStyle="cardTitle"
-                layerStyle="headerAlt"
-                fontWeight={"700"}
-              >
-                {title}
-              </Text>
-            </Card.Header>
-            <Card.Body textAlign="left" p={0} mb={"14px"}>
-              <Text textStyle="textMedium" layerStyle="text">
-                {description}
-              </Text>
-            </Card.Body>
-            <Card.Footer p={0} width={"100%"}>
-              <HStack justifyContent="space-between" width="100%">
-                <Text cursor={"pointer"} textDecoration={"underline"}>
-                  More Info
+        <VStack alignItems={"flex-start"} flexGrow={1} h="full">
+          <Card.Header
+            w="102%"
+            p={0}
+            mb={"0.2em"}
+            textAlign="left"
+            flexDirection="row"
+            justifyContent="space-between"
+          >
+            <KeyElem
+              name={title}
+              color={iconColor}
+              icon={icon === "circle" ? <FaCircle /> : <FaSquareFull />}
+            />
+            <Switch.Root
+              size="lg"
+              colorPalette="blue"
+              checked={toggledStates[id]}
+              onCheckedChange={(e) => handleSwitchClick(id, e.checked)}
+              defaultChecked
+            >
+              <Switch.HiddenInput />
+              <Switch.Control />
+              <Switch.Label />
+            </Switch.Root>
+          </Card.Header>
+          <Card.Body textAlign="left" p={0} mb={"6px"}>
+            <Text
+              textStyle={{
+                base:
+                  description.length >= 105
+                    ? "cardTextXSmall"
+                    : "cardTextSmall",
+                "2xl":
+                  description.length >= 105
+                    ? "cardTextSmall"
+                    : "cardTextMedium",
+              }}
+              layerStyle="text"
+            >
+              {description}
+            </Text>
+          </Card.Body>
+          <Card.Footer p={0} width={"100%"}>
+            <HStack justifyContent="space-between" width="100%">
+              <Popover.Trigger>
+                <Text
+                  cursor={"pointer"}
+                  textDecoration={"underline"}
+                  fontSize={{
+                    base: 15.2,
+                    "2xl": "md",
+                  }}
+                  onClick={() => {
+                    if (!isMoreInfo) {
+                      posthog.capture("more-info-clicked", {
+                        hazard_name: hazard.name,
+                      });
+                    }
+                  }}
+                >
+                  {!isMoreInfo ? "More info" : "Less info"}
                 </Text>
-                {hazardPill}
-              </HStack>
-            </Card.Footer>
-          </VStack>
-        </Popover.Trigger>
+              </Popover.Trigger>
+              {hazardPill}
+            </HStack>
+          </Card.Footer>
+        </VStack>
         <Portal>
           <Popover.Positioner>
             <Popover.Content maxHeight="unset">

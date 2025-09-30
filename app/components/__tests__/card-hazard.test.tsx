@@ -12,6 +12,9 @@ jest.mock("../pill.tsx", () => () => (
 ));
 
 describe("CardHazard Component", () => {
+  const toggledStates = [true];
+  const setToggledStates = () => {};
+  const setLayerToggleObj = () => {};
   beforeEach(() => {
     Hazards[0] = {
       id: 4,
@@ -28,6 +31,8 @@ describe("CardHazard Component", () => {
         label: "Soft story dataset",
         url: "https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data",
       },
+      icon: "circle",
+      iconColor: "grey.400",
     };
   });
 
@@ -38,6 +43,9 @@ describe("CardHazard Component", () => {
           hazard={Hazards[0]}
           showData={true}
           isHazardDataLoading={true}
+          toggledStates={toggledStates}
+          setToggledStates={setToggledStates}
+          setLayerToggleObj={setLayerToggleObj}
         />
       </Provider>
     );
@@ -51,6 +59,9 @@ describe("CardHazard Component", () => {
           hazard={Hazards[0]}
           showData={true}
           isHazardDataLoading={true}
+          toggledStates={toggledStates}
+          setToggledStates={setToggledStates}
+          setLayerToggleObj={setLayerToggleObj}
         />
       </Provider>
     );

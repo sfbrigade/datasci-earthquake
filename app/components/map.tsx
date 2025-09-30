@@ -5,6 +5,7 @@ import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
+import { LayerToggleObjProps } from "./address-mapper";
 
 const defaultCoords = [-122.463733, 37.777448];
 
@@ -13,6 +14,7 @@ interface MapProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
+  layerToggleObj: LayerToggleObjProps;
 }
 
 const Map: React.FC<MapProps> = ({
@@ -20,12 +22,26 @@ const Map: React.FC<MapProps> = ({
   softStoryData,
   tsunamiData,
   liquefactionData,
+  layerToggleObj,
 }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>(undefined);
   const markerRef = useRef<mapboxgl.Marker>(undefined);
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
+
+  const handleToggleLayers = () => {
+    if (!mapRef.current) return;
+    const map = mapRef.current;
+
+    const layerId = layerToggleObj.layerId;
+
+    if (layerId && map.getLayer(layerId)) {
+      const newVisibility = layerToggleObj.toggleState ? "visible" : "none";
+      // sets new visibility property value for layer, creating the "toggling" effect
+      map.setLayoutProperty(layerId, "visibility", newVisibility);
+    }
+  };
 
   useEffect(() => {
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
@@ -51,9 +67,9 @@ const Map: React.FC<MapProps> = ({
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current!,
         style: "mapbox://styles/mapbox/standard",
-        center: [-122.437, 37.75],
-        zoom: 11, // Start with more zoomed-out view but not too far
-        minZoom: 10.5, // Allow users to zoom out more
+        center: [-122.437, 37.768],
+        zoom: 12.1, // Start with more zoomed-out view but not too far
+        minZoom: 11, // Allow users to zoom out more
         maxZoom: 15, // Increase max zoom to allow closer inspection
         maxBounds: [
           [-122.6, 37.65], // Southwest coordinates
@@ -62,8 +78,6 @@ const Map: React.FC<MapProps> = ({
         dragRotate: false, // turn off rotation on drag
         touchPitch: false, // turn off pitch change w/touch
         touchZoomRotate: true, // turn on zoom/rotate w/touch
-        keyboard: true, // turn on keyboard shortcuts
-        cooperativeGestures: true, // scroll-to-zoom requires using the control or command key while scrolling to zoom the map
         config: {
           // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
           basemap: {
@@ -78,7 +92,7 @@ const Map: React.FC<MapProps> = ({
       map.touchZoomRotate.disableRotation(); // turn off rotate w/touch
 
       const nav = new mapboxgl.NavigationControl({ showCompass: false });
-      map.addControl(nav, "right");
+      map.addControl(nav, "bottom-right");
 
       // wait for map to load before drawing marker
       map.on("load", () => {
@@ -163,6 +177,10 @@ const Map: React.FC<MapProps> = ({
       return;
     }
   }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
+
+  useEffect(() => {
+    if (layerToggleObj.layerId != "") handleToggleLayers();
+  }, [layerToggleObj]); // re-runs every time state changes
 
   return (
     <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
