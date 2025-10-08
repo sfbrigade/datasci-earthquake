@@ -147,7 +147,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 **On Windows:**
 ```powershell
-powershell -c "irm https://astral.sh/uv/install.ps1 | more"
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
 **Alternative (all platforms):**
@@ -169,16 +169,16 @@ cd backend
 uv sync --extra dev
 ```
 
-**Note**: After running `uv sync`, the virtual environment will be automatically activated. If you need to activate it manually later:
+**Note**: The backend dependencies are installed automatically when you run the development server (`npm run fastapi-dev`). If you need to run backend commands manually (e.g., running `pytest`), you'll need to activate the virtual environment first from the project root:
 
 **On macOS/Linux:**
 ```bash
-source .venv/bin/activate
+source backend/.venv/bin/activate
 ```
 
 **On Windows:**
 ```cmd
-.venv\Scripts\activate
+backend\.venv\Scripts\activate
 ```
 
 #### Frontend Setup
