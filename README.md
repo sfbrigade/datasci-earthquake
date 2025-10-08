@@ -164,12 +164,13 @@ pip install uv
 
 #### Backend Setup
 
+**Note**: The backend dependencies are installed automatically when you run the development server (`npm run fastapi-dev`). If you need to run backend commands manually (e.g., running `pytest`), run:
+
 ```bash
-cd backend
-uv sync --extra dev
+(cd backend && uv sync --extra dev)
 ```
 
-**Note**: The backend dependencies are installed automatically when you run the development server (`npm run fastapi-dev`). If you need to run backend commands manually (e.g., running `pytest`), you'll need to activate the virtual environment first from the project root:
+To manually activate the virtual environment from the project root, run:
 
 **On macOS/Linux:**
 ```bash
