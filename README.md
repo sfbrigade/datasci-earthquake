@@ -138,6 +138,23 @@ Docker development is recommended as the configuration is more guaranteed.
 
 ### Prerequisites
 
+**uv**: Install the uv package manager:
+
+**On macOS/Linux:**
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**On Windows:**
+```powershell
+powershell -c "irm https://astral.sh/uv/install.ps1 | more"
+```
+
+**Alternative (all platforms):**
+```bash
+pip install uv
+```
+
 **PostgreSQL**: 
 1. [Install](https://adoptium.net/) Java 1.8 or later if your PostgreSQL installer requires it (e.g., the EDB installer).
 2. [Install](https://www.postgresql.org/download/) PostgreSQL locally with the PostGIS extension, select the PostGIS extension when prompted by the installer.
@@ -145,22 +162,33 @@ Docker development is recommended as the configuration is more guaranteed.
 
 ### Starting the Application
 
-1. Set up a python environment
+#### Backend Setup
+
 ```bash
-python3.11 -m venv backend/venv
+cd backend
+uv sync --extra dev
 ```
 
-2. Activate the python environment (NOTE: `npm run dev` will install the dependencies)
+**Note**: After running `uv sync`, the virtual environment will be automatically activated. If you need to activate it manually later:
+
+**On macOS/Linux:**
 ```bash
-source backend/venv/bin/activate
+source .venv/bin/activate
 ```
 
-3. Set nvm version
+**On Windows:**
+```cmd
+.venv\Scripts\activate
+```
+
+#### Frontend Setup
+
+1. Set nvm version:
 ```bash
 nvm use 18
 ```
 
-4. Install the front end dependencies:
+2. Install the front end dependencies:
 ```bash
 npm install
 # or
@@ -169,7 +197,7 @@ yarn
 pnpm install
 ```
 
-5. Run the development server:
+3. Run the development server:
 
 ```bash
 npm run dev
@@ -312,10 +340,11 @@ This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code s
 
 ### Prerequisites
 
-- If you haven't already, install pre-commit:
-  `pip install pre-commit`
+- Pre-commit is included in the project dependencies and will be installed with `uv sync --extra dev`
 - Run the following command to install the pre-commit hooks defined in the configuration file `.pre-commit-config.yaml`:
-  `pre-commit install`
+  ```bash
+  pre-commit install
+  ```
   This command sets up pre-commit to automatically run ESLint, Black, and MyPy before each commit.
 
 ### Usage
