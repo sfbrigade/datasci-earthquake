@@ -15,9 +15,9 @@ You can work on this app entirely [locally](#local-development), entirely [using
 We use GitHub Secrets to store sensitive environment variables. To be able to run the app with all features enabled, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
 
 ### Contributors working from forks
-- If you are contributing from a fork, you do not need to follow the workflow below.
+- If you are contributing from a fork, you do not need to follow the workflow below for core contributors.
 - The CI pipeline for forked PRs will automatically use the provided `.env.example`.
-- You may also copy `.env.example` and rename it to `.env` locally. This allows you to run the app, but with limited functionality (since the real secrets are not included).
+- If you don't have `.env`, `.env.example` will be automatically used instead. This allows you to run the app, but with limited functionality (since the real secrets are not included).
 
 ### Core contributors
 Before starting work on the project, make sure to:
@@ -126,8 +126,7 @@ Replace <service name> with frontend, backend, db, or db_test:
 
 1. First update code and/or rebuild any containers as necessary. Otherwise you may get false results.
 2. Run the containers (`docker compose up -d)`
-3. Run pytest: `docker compose run backend pytest backend`
-   - Alternatively, run pytest with container cleanup: `docker compose run --remove-orphans backend pytest backend`
+3. Run pytest to test the docker container: `docker exec -it datasci-earthquake-backend-1 pytest backend` or `docker compose exec backend pytest backend`
 4. To get code coverage, run `docker exec -w /backend datasci-earthquake-backend-1 pytest --cov=backend`
 
 ---

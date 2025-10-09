@@ -4,14 +4,14 @@ import { IoIosLink } from "react-icons/io";
 const ShareSkeleton = () => {
   return (
     <Button
-      aria-label="Copy link"
+      aria-label="Copy link to this page"
       variant="ghost"
       disabled={true}
       background={"transparent"}
       textStyle="textMedium"
       color="white"
     >
-      <IoIosLink /> Copy Link
+      <IoIosLink /> Copy link to this page
     </Button>
   );
 };
