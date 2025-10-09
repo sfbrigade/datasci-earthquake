@@ -8,7 +8,7 @@ const Footer = () => {
       return (
         <Text
           key={index}
-          textStyle="textSmall"
+          textStyle="textXSmall"
           layerStyle="text"
           lineHeight="shorter"
           color="white"
@@ -22,11 +22,10 @@ const Footer = () => {
   return (
     <Box as="footer" w="100%" bgColor="blueBackground">
       <Stack
-        w={{ base: "full", xl: "7xl" }}
+        w={{ base: "full" }}
         p={{
-          base: "14px 24px 14px 24px",
-          md: "14px 28px 14px 28px",
-          xl: "72px 128px 72px 128px",
+          base: "24px 48px 22px 48px",
+          "2xl": "22px 48px 26px 48px",
         }}
         direction={{ base: "column", lg: "row" }}
         justify="space-between"
@@ -39,17 +38,18 @@ const Footer = () => {
           maxW={{ base: "100%", lg: "672px" }}
           gap="24px"
         >
-          <Text textStyle="textSmall" layerStyle="text" color="white">
+          <Text textStyle="textXSmall" layerStyle="text" color="white">
             © 2025 SF Civic Tech
           </Text>
           {buildDisclaimers()}
         </VStack>
-        <VStack alignItems={{ base: "flex-start", lg: "flex-end" }} gap="24px">
+        <VStack alignItems={{ base: "flex-start", lg: "flex-end" }} gap={8}>
           <Stack
-            gap="10px"
+            gap={4}
             align="flex-end"
             direction={{ base: "row", lg: "column" }}
             width="100%"
+            mt={{ xl: 4 }}
           >
             <Link as={NextLink} color="white" href="/about">
               <Text textStyle="textMedium" layerStyle="text" color="white">

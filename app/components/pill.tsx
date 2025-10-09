@@ -37,6 +37,7 @@ const Pill: React.FC<PillProps> = ({ exists, trueData, falseData, noData }) => {
         color="white"
         p="2px 12px 2px 12px"
         borderRadius="full"
+        whiteSpace={"nowrap"}
       >
         {getLabel()}
       </Text>

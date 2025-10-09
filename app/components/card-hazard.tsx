@@ -17,7 +17,7 @@ import { RxCross2 } from "react-icons/rx";
 import { PillData, LayerIds } from "../data/data";
 import { FaCircle, FaSquareFull } from "react-icons/fa";
 import { KeyElem } from "./key-elem";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { LayerToggleObjProps } from "./address-mapper";
 interface CardHazardProps {
   hazard: {
@@ -54,6 +54,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
     falseData: "No Data",
     noData: "No Data",
   };
+  const [isMoreInfo, setIsMoreInfo] = useState(false);
 
   const hazardPill = isHazardDataLoading ? (
     <Spinner size="xs" />
@@ -77,24 +78,20 @@ const CardHazard: React.FC<CardHazardProps> = ({
   };
 
   const handleSwitchClick = (num: number, checked: boolean) => {
-    const newArray = [];
-    const obj = {
+    const newArray = [...toggledStates];
+    newArray[num] = checked;
+    setToggledStates(newArray);
+    setLayerToggleObj({
       layerId: LayerIds[num],
       toggleState: checked,
-    };
-    for (let i = 0; i < toggledStates.length; i++) {
-      if (i === num) newArray.push(checked);
-      else newArray.push(toggledStates[i]);
-    }
-    setToggledStates(newArray);
-    setLayerToggleObj(obj);
+    });
   };
 
   return (
     <Card.Root
       flex={1}
-      maxW={{ base: 336 }}
-      minH={{ base: 184 }}
+      maxW={{ base: 320, "2xl": 336 }}
+      minH={{ base: 178, "2xl": 184 }}
       p={{ base: "14px 16px", md: "18px 20px" }}
       // boxShadow="0px 5px 6px #c8caceff"
       variant="elevated"
@@ -109,6 +106,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
         closeOnEscape={true}
         closeOnInteractOutside={true}
         aria-label={`${hazard.title} information`}
+        onOpenChange={(e) => setIsMoreInfo(e.open)}
       >
         <VStack alignItems={"flex-start"} flexGrow={1} h="full">
           <Card.Header
@@ -137,15 +135,41 @@ const CardHazard: React.FC<CardHazardProps> = ({
             </Switch.Root>
           </Card.Header>
           <Card.Body textAlign="left" p={0} mb={"6px"}>
-            <Text textStyle="textMedium" layerStyle="text">
+            <Text
+              textStyle={{
+                base:
+                  description.length >= 105
+                    ? "cardTextXSmall"
+                    : "cardTextSmall",
+                "2xl":
+                  description.length >= 105
+                    ? "cardTextSmall"
+                    : "cardTextMedium",
+              }}
+              layerStyle="text"
+            >
               {description}
             </Text>
           </Card.Body>
           <Card.Footer p={0} width={"100%"}>
             <HStack justifyContent="space-between" width="100%">
               <Popover.Trigger>
-                <Text cursor={"pointer"} textDecoration={"underline"}>
-                  More Info
+                <Text
+                  cursor={"pointer"}
+                  textDecoration={"underline"}
+                  fontSize={{
+                    base: 15.2,
+                    "2xl": "md",
+                  }}
+                  onClick={() => {
+                    if (!isMoreInfo) {
+                      posthog.capture("more-info-clicked", {
+                        hazard_name: hazard.name,
+                      });
+                    }
+                  }}
+                >
+                  {!isMoreInfo ? "More info" : "Less info"}
                 </Text>
               </Popover.Trigger>
               {hazardPill}
