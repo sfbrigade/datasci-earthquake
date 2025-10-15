@@ -104,10 +104,10 @@ def is_in_tsunami_zone(
 
     except Exception:
         logger.error(
-            f"Error checking tsunami zone status for coordinates: lon={lon}, lat={lat}, ",
+            f"Error checking tsunami zone status for coordinates: lon={lon}, lat={lat}",
             exc_info=True,
         )
         raise HTTPException(
             status_code=500,
-            detail=f"An unexpected error occured while checking tsunami zone status.",
+            detail=f"An unexpected error occurred while checking tsunami zone status.",
         )
