@@ -86,10 +86,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         const values = await fetchHazardData(coords);
         setAddressHazardData(values);
       } catch (error) {
-        console.error(
-          "Error while retrieving data: ",
-          error instanceof Error ? error.message : error?.toString()
-        );
         setAddressHazardData({
           softStory: null,
           tsunami: null,

@@ -36,9 +36,7 @@ const Home = async () => {
       fetchTsunami(),
       fetchLiquefaction(),
     ]);
-  } catch (error: any) {
-    console.error("Error: ", error);
-  }
+  } catch (error: any) {}
   return (
     <Flex direction="column">
       {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
