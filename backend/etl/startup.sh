@@ -34,7 +34,7 @@ echo "===== startup.sh finished ====="
 
 # Start FastAPI
 RELOAD_FLAG=""
-if [ "${ENVIRONMENT}" = "development" ]; then
+if [ "${ENVIRONMENT}" = "development" ] || [ "${ENVIRONMENT}" = "dev_docker" ]; then
   RELOAD_FLAG="--reload"
 fi
 echo "Starting FastAPI server"
