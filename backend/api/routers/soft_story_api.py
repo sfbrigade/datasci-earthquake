@@ -133,14 +133,12 @@ def is_soft_story(
 
         return IsSoftStoryPropertyView(exists=exists, last_updated=last_updated)
 
-    except Exception as e:
+    except Exception:
         logger.error(
-            f"Error checking soft story status for coordinates: lon={lon}, lat={lat}, "
-            f"error: {str(e)}",
+            f"Error checking soft story status for coordinates: lon={lon}, lat={lat}",
             exc_info=True,
         )
         raise HTTPException(
             status_code=500,
-            detail=f"Error checking soft story status for coordinates: lon={lon}, lat={lat}, "
-            f"error: {str(e)}",
+            detail=f"An unexpected error occurred while checking soft story status.",
         )
