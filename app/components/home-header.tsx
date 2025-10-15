@@ -43,7 +43,7 @@ const HomeHeader = ({
       as="header"
       bg="gradient.blue"
       p={{
-        base: "18px 32px 22px 48px",
+        base: "18px 32px 22px 32px",
         "2xl": "22px 48px 26px 48px",
       }}
     >

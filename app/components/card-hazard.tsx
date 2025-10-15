@@ -17,7 +17,7 @@ import { RxCross2 } from "react-icons/rx";
 import { PillData, LayerIds } from "../data/data";
 import { FaCircle, FaSquareFull } from "react-icons/fa";
 import { KeyElem } from "./key-elem";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { LayerToggleObjProps } from "./address-mapper";
 interface CardHazardProps {
   hazard: {
@@ -54,6 +54,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
     falseData: "No Data",
     noData: "No Data",
   };
+  const [isMoreInfo, setIsMoreInfo] = useState(false);
 
   const hazardPill = isHazardDataLoading ? (
     <Spinner size="xs" />
@@ -105,6 +106,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
         closeOnEscape={true}
         closeOnInteractOutside={true}
         aria-label={`${hazard.title} information`}
+        onOpenChange={(e) => setIsMoreInfo(e.open)}
       >
         <VStack alignItems={"flex-start"} flexGrow={1} h="full">
           <Card.Header
@@ -159,8 +161,15 @@ const CardHazard: React.FC<CardHazardProps> = ({
                     base: 15.2,
                     "2xl": "md",
                   }}
+                  onClick={() => {
+                    if (!isMoreInfo) {
+                      posthog.capture("more-info-clicked", {
+                        hazard_name: hazard.name,
+                      });
+                    }
+                  }}
                 >
-                  More Info
+                  {!isMoreInfo ? "More info" : "Less info"}
                 </Text>
               </Popover.Trigger>
               {hazardPill}
