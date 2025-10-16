@@ -390,6 +390,7 @@ When opening a pull request, please:
 - add reviewers
 - use draft/WIP if it turns out to be not ready for review
 - link the relevant issue so it is automatically closed when the PR is merged
+- run `npm run build` locally if you have changed any frontend code or dependencies to catch potential build errors.
 
 Ideally, we maintain a readable, clean, and linear commit history. To that end, when merging a pull request, please use `Squash and Merge`¹.
 
