@@ -98,12 +98,12 @@ const Home = async () => {
                 withstand shaking.
               </List.Item>
               <List.Item>
-                San Francisco’s Mandatory Soft Story Retrofit Ordinance ,
-                enacted in 2013, requires all multi-unit soft story buildings
-                built before 1978 to be retrofitted in order to minimize the
-                risk of earthquake damage. Soft-story homes with 1 to 4 units
-                are still vulnerable to earthquake damage, even though the
-                ordinance does not legally require them to be retrofitted.
+                San Francisco’s Mandatory Soft Story Retrofit Ordinance, enacted
+                in 2013, requires all multi-unit soft story buildings built
+                before 1978 to be retrofitted in order to minimize the risk of
+                earthquake damage. Soft-story homes with 1 to 4 units are still
+                vulnerable to earthquake damage, even though the ordinance does
+                not legally require them to be retrofitted.
               </List.Item>
             </List.Root>
 
