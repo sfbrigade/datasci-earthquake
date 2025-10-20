@@ -2,7 +2,7 @@ export const Hazards = [
   {
     id: 0,
     name: "softStory",
-    title: "Soft Story",
+    title: "Soft story",
     description:
       "Soft story buildings that haven't been reinforced may be at risk in an earthquake.",
     info: [
@@ -233,6 +233,10 @@ export const TeamMembers = [
   {
     role: "UX/UI Design",
     name: "Ruby Hirsch",
+  },
+  {
+    role: "Front End Engineer, Back End Engineer",
+    name: "Zaima Choudhry",
   },
 ];
 

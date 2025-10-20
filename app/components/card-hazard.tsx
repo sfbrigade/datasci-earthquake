@@ -161,6 +161,13 @@ const CardHazard: React.FC<CardHazardProps> = ({
                     base: 15.2,
                     "2xl": "md",
                   }}
+                  onClick={() => {
+                    if (!isMoreInfo) {
+                      posthog.capture("more-info-clicked", {
+                        hazard_name: hazard.name,
+                      });
+                    }
+                  }}
                 >
                   {!isMoreInfo ? "More info" : "Less info"}
                 </Text>

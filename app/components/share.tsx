@@ -34,7 +34,7 @@ const Share = () => {
 
   return (
     <Button
-      aria-label="Copy link to this report"
+      aria-label="Copy link to this page"
       variant="ghost"
       onClick={copyLinkToClipBoard}
       background={"transparent"}
@@ -43,7 +43,7 @@ const Share = () => {
       p="0"
       _hover={{ color: "grey.400" }}
     >
-      <IoIosLink /> Copy Link
+      <IoIosLink /> Copy link to this page
     </Button>
   );
 };

@@ -142,6 +142,13 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
                     cursor={"pointer"}
                     textDecoration={"underline"}
                     fontWeight={"bold"}
+                    onClick={() => {
+                      if (!isMoreInfo) {
+                        posthog.capture("more-info-clicked", {
+                          hazard_name: hazard.name,
+                        });
+                      }
+                    }}
                   >
                     {!isMoreInfo ? "More info" : "Less info"}
                   </Text>

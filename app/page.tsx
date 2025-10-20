@@ -56,7 +56,7 @@ const Home = async () => {
         }}
         justifyContent="space-between"
       >
-        <HStack alignItems={"start"} w={{ base: "75%" }}>
+        <HStack alignItems={"start"} w={{ base: "100%", lg: "75%" }}>
           <div>
             <Heading as="h2">
               <Text
