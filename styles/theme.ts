@@ -195,23 +195,24 @@ const tokens = defineTokens({
     // lg: { value: "512px" }, // 512px, not overridden ==
     xl: { value: "1280px" }, // 1280px (vs 576px) !== // xl?
   },
-  breakpoints: {
-    // // originals
-    // base: { value: "0em" }, // 0px
-    // sm: { value: "30em" }, // 480px
-    // md: { value: "48em" }, // 768px
-    // lg: { value: "62em" }, // 992px
-    // xl: { value: "80em" }, // 1280px
-    // "2xl": "96em", // 1536px
-    // overrides
-    base: { value: "0px" }, // 0px
-    sm: { value: "375px" }, // 375px (vs 480px) !=
-    md: { value: "744px" }, // 744px (vs 768px) !=
-    lg: { value: "992px" }, // 992px (vs 992px) ==
-    xl: { value: "1280px" }, // 1280px (vs 1280px) ==
-    "2xl": { value: "1536px" }, // 1536px (vs 1536px) ==
-  },
 });
+
+const breakpoints = {
+  // // originals
+  // base: { value: "0em" }, // 0px
+  // sm: { value: "30em" }, // 480px
+  // md: { value: "48em" }, // 768px
+  // lg: { value: "62em" }, // 992px
+  // xl: { value: "80em" }, // 1280px
+  // "2xl": "96em", // 1536px
+  // overrides
+  base: { value: "0px" }, // 0px
+  sm: { value: "375px" }, // 375px (vs 480px) !=
+  md: { value: "744px" }, // 744px (vs 768px) !=
+  lg: { value: "992px" }, // 992px (vs 992px) ==
+  xl: { value: "1280px" }, // 1280px (vs 1280px) ==
+  "2xl": { value: "1536px" }, // 1536px (vs 1536px) ==
+};
 
 const config = defineConfig({
   strictTokens: false,
