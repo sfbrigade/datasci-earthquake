@@ -199,19 +199,19 @@ const tokens = defineTokens({
 
 const breakpoints = {
   // // originals
-  // base: { value: "0em" }, // 0px
-  // sm: { value: "30em" }, // 480px
-  // md: { value: "48em" }, // 768px
-  // lg: { value: "62em" }, // 992px
-  // xl: { value: "80em" }, // 1280px
+  // base: "0em", // 0px
+  // sm: "30em", // 480px
+  // md: "48em", // 768px
+  // lg: "62em", // 992px
+  // xl: "80em", // 1280px
   // "2xl": "96em", // 1536px
   // overrides
-  base: { value: "0px" }, // 0px
-  sm: { value: "375px" }, // 375px (vs 480px) !=
-  md: { value: "744px" }, // 744px (vs 768px) !=
-  lg: { value: "992px" }, // 992px (vs 992px) ==
-  xl: { value: "1280px" }, // 1280px (vs 1280px) ==
-  "2xl": { value: "1536px" }, // 1536px (vs 1536px) ==
+  base: "0px", // 0px
+  sm: "375px", // 375px (vs 480px) !=
+  md: "744px", // 744px (vs 768px) !=
+  lg: "992px", // 992px (vs 992px) ==
+  xl: "1280px", // 1280px (vs 1280px) ==
+  "2xl": "1536px", // 1536px (vs 1536px) ==
 };
 
 const config = defineConfig({
