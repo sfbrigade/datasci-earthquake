@@ -24,4 +24,5 @@ def health_check():
         dict: Status message indicating the API is healthy.
     """
     logger.info("Health check endpoint called")
+    logger.info("Test change to trigger CI workflow")
     return {"status": "healthy"}
