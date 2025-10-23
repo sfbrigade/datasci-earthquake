@@ -11,7 +11,7 @@ Functions:
     drop_db(): Drops all tables defined in the SQLAlchemy `Base` 
                metadata. Use cautiously because this action is 
                irreversible.
-    check_tables_exist(): Checks if any tables exist in the database.
+    check_tables_exist(): Checks if all ETL-related tables exist in the database.
     check_tables_empty(): Checks if any main tables are empty.
 
 Usage:
@@ -63,21 +63,23 @@ def drop_db():
     print("Database tables dropped.")
 
 
+table_classes = [TsunamiZone, LiquefactionZone, SoftStoryProperty]
+
+
 def check_tables_exist():
     inspector = inspect(engine)
     tables = inspector.get_table_names()
-    return len(tables) > 0
+
+    for table in table_classes:
+        if table.__tablename__ not in tables:
+            return False
+    return True
 
 
 # LandslideZone is not being used, and isn't included in this check.
 def check_tables_empty():
-    table_classes = [TsunamiZone, LiquefactionZone, SoftStoryProperty]
-    inspector = inspect(engine)
-    tables = inspector.get_table_names()
-    for table in table_classes:
-        if table.__tablename__ not in tables:
-            return True
-        with SessionLocal() as session:
+    with SessionLocal() as session:
+        for table in table_classes:
             if session.query(table).first() is None:
                 return True
     return False
