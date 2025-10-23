@@ -24,11 +24,16 @@ run_python_script() {
     fi
 }
 
-# Run each Python script with diagnostics
-run_python_script backend/database/init_db.py
-run_python_script backend/etl/liquefaction_data_handler.py
-run_python_script backend/etl/soft_story_properties_data_handler.py
-run_python_script backend/etl/tsunami_data_handler.py
+
+# Run init_db.py and check for SKIP_ETL in its output
+ETL_SIGNAL=$($VENV_PYTHON backend/database/init_db.py | grep SKIP_ETL)
+
+# Run Python ETL scripts with diagnostics, unless SKIP_ETL is indicated
+if [ "$ETL_SIGNAL" != "SKIP_ETL" ]; then
+    run_python_script backend/etl/liquefaction_data_handler.py
+    run_python_script backend/etl/soft_story_properties_data_handler.py
+    run_python_script backend/etl/tsunami_data_handler.py
+fi
 
 echo "===== startup.sh finished ====="
 

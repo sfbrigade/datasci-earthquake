@@ -12,15 +12,17 @@ Functions:
                metadata. Use cautiously because this action is 
                irreversible.
     check_tables_exist(): Checks if any tables exist in the database.
+    check_tables_empty(): Checks if any main tables are empty.
 
 Usage:
     Run this script in docker to initialize the database by creating 
-    all necessary tables.  If existing tables are detected, they will 
-    be dropped and recreated.
+    all necessary tables.  If existing tables are detected but are empty,
+    they will be populated.  If tables exist and are not empty, the ETL
+    process will be skipped.
 
 Example:
     $ docker exec -it datasci-earthquake-backend-1 python backend/database/init_db.py
-    Database tables created.
+    Database tables created. ETL should run to populate data.
 
 Note:
     The `Base` object should be imported from your SQLAlchemy model 
@@ -34,17 +36,26 @@ Caution:
 from backend.api.models.base import Base
 from sqlalchemy import inspect
 from backend.database.session import engine
+from sqlalchemy.orm import sessionmaker
 from backend.api.models.tsunami import TsunamiZone
 from backend.api.models.landslide_zones import LandslideZone
 from backend.api.models.liquefaction_zones import LiquefactionZone
 from backend.api.models.soft_story_properties import SoftStoryProperty
 
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 
 def init_db():
-    if check_tables_exist():
-        drop_db()
-    Base.metadata.create_all(bind=engine)
-    print("Database tables created.")
+    if not check_tables_exist():
+        Base.metadata.create_all(bind=engine)
+        print("Database tables created. ETL should run to populate data.")
+    elif check_tables_empty():
+        print(
+            "Tables exist but at least one is empty. ETL should run to populate data."
+        )
+    else:
+        print("Tables exist and are populated.")
+        print("SKIP_ETL")
 
 
 def drop_db():
@@ -56,6 +67,16 @@ def check_tables_exist():
     inspector = inspect(engine)
     tables = inspector.get_table_names()
     return len(tables) > 0
+
+
+def check_tables_empty():
+    table_classes = [TsunamiZone, LandslideZone, LiquefactionZone, SoftStoryProperty]
+    with SessionLocal() as session:
+        for table in table_classes:
+            count = session.query(table).count()
+            if count == 0:
+                return True
+    return False
 
 
 if __name__ == "__main__":
