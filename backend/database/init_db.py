@@ -69,8 +69,9 @@ def check_tables_exist():
     return len(tables) > 0
 
 
+# LandslideZone is not being used, and isn't included in this check.
 def check_tables_empty():
-    table_classes = [TsunamiZone, LandslideZone, LiquefactionZone, SoftStoryProperty]
+    table_classes = [TsunamiZone, LiquefactionZone, SoftStoryProperty]
     with SessionLocal() as session:
         for table in table_classes:
             count = session.query(table).count()

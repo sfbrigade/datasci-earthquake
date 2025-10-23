@@ -24,9 +24,8 @@ run_python_script() {
     fi
 }
 
-
 # Run init_db.py and check for SKIP_ETL in its output
-ETL_SIGNAL=$($VENV_PYTHON backend/database/init_db.py | grep SKIP_ETL)
+ETL_SIGNAL=$($VENV_PYTHON backend/database/init_db.py | grep SKIP_ETL || true)
 
 # Run Python ETL scripts with diagnostics, unless SKIP_ETL is indicated
 if [ "$ETL_SIGNAL" != "SKIP_ETL" ]; then
