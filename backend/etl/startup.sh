@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 set -x   # Trace each command as it executes
+set -o pipefail   # Fail if any command in a pipeline fails
 
 echo "===== Starting startup.sh ====="
 
@@ -24,11 +25,20 @@ run_python_script() {
     fi
 }
 
-# Run init_db.py and check for SKIP_ETL in its output
-ETL_SIGNAL=$($VENV_PYTHON backend/database/init_db.py | grep SKIP_ETL || true)
+# Run init_db.py
+ETL_OUTPUT=$($VENV_PYTHON backend/database/init_db.py)
+INIT_DB_EXIT_CODE=$?
+
+if [[ $INIT_DB_EXIT_CODE -ne 0 ]]; then
+    echo "init_db.py failed!"
+    exit 1
+fi
+
+# Check for SKIP_ETL in the output
+ETL_SIGNAL=$(echo "$ETL_OUTPUT" | grep SKIP_ETL || true)
 
 # Run Python ETL scripts with diagnostics, unless SKIP_ETL is indicated
-if [ "$ETL_SIGNAL" != "SKIP_ETL" ]; then
+if [[ "$ETL_SIGNAL" != "SKIP_ETL" ]]; then
     run_python_script backend/etl/liquefaction_data_handler.py
     run_python_script backend/etl/soft_story_properties_data_handler.py
     run_python_script backend/etl/tsunami_data_handler.py

@@ -74,8 +74,7 @@ def check_tables_empty():
     table_classes = [TsunamiZone, LiquefactionZone, SoftStoryProperty]
     with SessionLocal() as session:
         for table in table_classes:
-            count = session.query(table).count()
-            if count == 0:
+            if session.query(table).first() is None:
                 return True
     return False
 
