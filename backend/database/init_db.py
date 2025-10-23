@@ -72,8 +72,12 @@ def check_tables_exist():
 # LandslideZone is not being used, and isn't included in this check.
 def check_tables_empty():
     table_classes = [TsunamiZone, LiquefactionZone, SoftStoryProperty]
-    with SessionLocal() as session:
-        for table in table_classes:
+    inspector = inspect(engine)
+    tables = inspector.get_table_names()
+    for table in table_classes:
+        if table.__tablename__ not in tables:
+            return True
+        with SessionLocal() as session:
             if session.query(table).first() is None:
                 return True
     return False
