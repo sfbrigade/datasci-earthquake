@@ -18,7 +18,9 @@
     "clean": "npm run clean-front",
     "clean-front": "rm -rf .next && rm -rf node_modules && npm cache clean --force",
     "rebuild": "npm run rebuild-front",
-    "rebuild-front": "npm run clean-front && npm install && npm run build"
+    "rebuild-front": "npm run clean-front && npm install && npm run build",
+    "gen:theme-typings": "chakra typegen styles/theme.ts",
+    "postinstall": "npm run gen:theme-typings"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.22.0",
@@ -44,6 +46,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
+    "@chakra-ui/cli": "3.22.0",
     "@svgr/webpack": "^8.1.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
