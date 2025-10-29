@@ -235,4 +235,18 @@ const config = defineConfig({
   },
 });
 
-export default createSystem(defaultConfig, config);
+const system = createSystem(defaultConfig, config);
+
+if (process.env.NODE_ENV === "development" && console) {
+  console.log("Chakra UI v3 default config:");
+  console.dir(defaultConfig);
+
+  console.log("Chakra UI v3 SafeHome config:");
+  console.dir(config);
+
+  console.log("Chakra UI v3 combined system config:");
+  console.dir(system._config);
+}
+
+export default system;
+
