@@ -197,24 +197,36 @@ const tokens = defineTokens({
   },
 });
 
-const breakpoints = {
-  // // originals
-  // base: "0em", // 0px
-  // sm: "30em", // 480px
-  // md: "48em", // 768px
-  // lg: "62em", // 992px
-  // xl: "80em", // 1280px
-  // "2xl": "96em", // 1536px
-  // overrides
-  base: "0px", // 0px
-  sm: "375px", // 375px (vs 480px) !=
-  md: "744px", // 744px (vs 768px) !=
-  lg: "992px", // 992px (vs 992px) ==
-  xl: "1280px", // 1280px (vs 1280px) ==
-  "2xl": "1536px", // 1536px (vs 1536px) ==
+/*
+  breakpoints:
+  sm: "480px"​​​
+  md: "768px"
+  lg: "1024px"
+  xl: "1280px"
+  2xl: "1536px"​​​
+*/
+
+/* Global CSS: https://chakra-ui.com/docs/theming/customization/global-css#add-global-styles */
+const globalCss = {
+  ".marker": {
+    width: "26.2px",
+    height: "41px",
+    backgroundImage: "url('/marker.svg')",
+    backgroundSize: "cover",
+    borderRadius: 0,
+  },
+  ".mapboxgl-ctrl-group button": {
+    width: "40px",
+    height: "40px",
+  },
+  ".mapboxgl-ctrl-bottom-right": {
+    marginRight: "16px",
+  },
 };
 
 const config = defineConfig({
+  preflight: true, // explicitly enable reset styles (AKA preflight styles)
+  globalCss,
   strictTokens: false,
   theme: {
     textStyles,
