@@ -88,7 +88,7 @@ def get_high_susceptibility_zones(db: Session = Depends(get_db)):
 
     # Create feature collection
     high_susceptibility_collection = LiquefactionFeatureCollection(
-        features=high_susceptibility_features
+        type="FeatureCollection", features=high_susceptibility_features
     )
 
     # Return the response
@@ -129,7 +129,7 @@ def get_very_high_susceptibility_zones(db: Session = Depends(get_db)):
 
     # Create feature collection
     very_high_susceptibility_collection = LiquefactionFeatureCollection(
-        features=very_high_susceptibility_features
+        type="FeatureCollection", features=very_high_susceptibility_features
     )
 
     # Return the response
@@ -194,14 +194,12 @@ def is_in_liquefaction_zone(
 
         return InLiquefactionZoneView(exists=exists, last_updated=last_updated, liq=liq)
 
-    except Exception as e:
+    except Exception:
         logger.error(
-            f"Error checking liquefaction zone status for coordinates: lon={lon}, lat={lat}, "
-            f"error: {str(e)}",
+            f"Error checking liquefaction zone status for coordinates: lon={lon}, lat={lat}",
             exc_info=True,
         )
         raise HTTPException(
             status_code=500,
-            detail=f"Error checking liquefaction zone status for coordinates: lon={lon}, lat={lat}, "
-            f"error: {str(e)}",
+            detail=f"An unexpected error occurred while checking liquefaction zone status.",
         )
