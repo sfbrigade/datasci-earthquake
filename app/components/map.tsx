@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
+import { Box, chakra } from "@chakra-ui/react";
+import { LayerIds, LayerDefaults } from "@/data/data";
 
 const defaultCoords = [-122.463733, 37.777448];
 
@@ -29,6 +31,9 @@ const Map: React.FC<MapProps> = ({
   const markerRef = useRef<mapboxgl.Marker>(undefined);
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
+  const [softStoryColor, setSoftStoryColor] = useState(LayerDefaults[0]);
+  const [liquefactionColor, setLiquefactionColor] = useState(LayerDefaults[1]);
+  const [tsunamiColor, setTsunamiColor] = useState(LayerDefaults[2]);
 
   const handleToggleLayers = () => {
     if (!mapRef.current) return;
@@ -40,6 +45,22 @@ const Map: React.FC<MapProps> = ({
       const newVisibility = layerToggleObj.toggleState ? "visible" : "none";
       // sets new visibility property value for layer, creating the "toggling" effect
       map.setLayoutProperty(layerId, "visibility", newVisibility);
+    }
+  };
+
+  const handleColorChange = (
+    layerId: string,
+    color: string,
+    opacity?: number
+  ) => {
+    if (!mapRef.current) return;
+    const map = mapRef.current;
+
+    if (layerId === "softStoriesLayer" && map.getLayer(layerId))
+      map.setPaintProperty(layerId, "circle-color", color);
+    else if (layerId && map.getLayer(layerId)) {
+      map.setPaintProperty(layerId, "fill-color", color);
+      if (opacity) map.setPaintProperty(layerId, "fill-opacity", opacity);
     }
   };
 
@@ -183,7 +204,146 @@ const Map: React.FC<MapProps> = ({
   }, [layerToggleObj]); // re-runs every time state changes
 
   return (
-    <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
+    <>
+      <Box
+        position="absolute"
+        bgColor="blueBackground"
+        h={160}
+        w={420}
+        zIndex={15}
+        top={0}
+        right={0}
+        padding={5}
+      >
+        <chakra.form>
+          <chakra.label display={"flex"} mb={3}>
+            <b style={{ color: "white", marginRight: "15px" }}>
+              {LayerIds[0]}:
+            </b>
+            <input
+              type="text"
+              value={softStoryColor.color}
+              style={{ width: "90px", marginRight: "10px" }}
+              onChange={(e) =>
+                setSoftStoryColor({
+                  color: e.target.value,
+                  opacity: softStoryColor.opacity,
+                })
+              }
+            />
+            <div
+              style={{
+                color: "white",
+                cursor: "pointer",
+                border: "2px solid white",
+                paddingInline: "4px",
+              }}
+              onClick={() =>
+                handleColorChange(
+                  LayerIds[0],
+                  softStoryColor.color,
+                  softStoryColor.opacity
+                )
+              }
+            >
+              Update
+            </div>
+          </chakra.label>
+          <chakra.label display={"flex"} mb={3}>
+            <b style={{ color: "white", marginRight: "15px" }}>
+              {LayerIds[1]}:
+            </b>
+            <input
+              type="text"
+              value={liquefactionColor.color}
+              style={{ width: "90px", marginRight: "15px" }}
+              onChange={(e) =>
+                setLiquefactionColor({
+                  color: e.target.value,
+                  opacity: liquefactionColor.opacity,
+                })
+              }
+            />
+            <input
+              type="number"
+              min={0}
+              max={1}
+              value={liquefactionColor.opacity}
+              style={{ width: "50px", marginRight: "10px" }}
+              onChange={(e) =>
+                setLiquefactionColor({
+                  color: liquefactionColor.color,
+                  opacity: +e.target.value,
+                })
+              }
+            />
+            <div
+              style={{
+                color: "white",
+                cursor: "pointer",
+                border: "2px solid white",
+                paddingInline: "4px",
+              }}
+              onClick={() =>
+                handleColorChange(
+                  LayerIds[1],
+                  liquefactionColor.color,
+                  liquefactionColor.opacity
+                )
+              }
+            >
+              Update
+            </div>
+          </chakra.label>
+          <chakra.label display={"flex"}>
+            <b style={{ color: "white", marginRight: "15px" }}>
+              {LayerIds[2]}:
+            </b>
+            <input
+              type="text"
+              value={tsunamiColor.color}
+              style={{ width: "90px", marginRight: "15px" }}
+              onChange={(e) =>
+                setTsunamiColor({
+                  color: e.target.value,
+                })
+              }
+            />
+            <input
+              type="number"
+              min={0}
+              max={1}
+              value={tsunamiColor.opacity}
+              style={{ width: "50px", marginRight: "10px" }}
+              onChange={(e) =>
+                setTsunamiColor({
+                  color: tsunamiColor.color,
+                  opacity: +e.target.value,
+                })
+              }
+            />
+            <div
+              style={{
+                color: "white",
+                cursor: "pointer",
+                border: "2px solid white",
+                paddingInline: "4px",
+              }}
+              onClick={() =>
+                handleColorChange(
+                  LayerIds[2],
+                  tsunamiColor.color,
+                  tsunamiColor.opacity
+                )
+              }
+            >
+              Update
+            </div>
+          </chakra.label>
+        </chakra.form>
+      </Box>
+      <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
+    </>
   );
 };
 
