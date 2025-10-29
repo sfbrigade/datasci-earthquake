@@ -1,4 +1,3 @@
-import "./globals.css";
 import { Suspense } from "react";
 import { Box, Flex, Heading, Text, List, HStack, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
