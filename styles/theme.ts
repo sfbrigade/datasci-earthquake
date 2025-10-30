@@ -5,24 +5,30 @@ import {
   defineTextStyles,
   defineLayerStyles,
   defineTokens,
+  SystemConfig,
+  ThemingConfig,
 } from "@chakra-ui/react";
 
-const textStyles = defineTextStyles({
+// TODO: look into whether it makes sense to use responsive text sizes just for headings as is done below; perhaps another approach is better
+const textStyles: ThemingConfig["textStyles"] = defineTextStyles({
   headerBig: {
     description: "header big",
     value: {
       fontFamily: "heading",
       fontSize: ["2xl", "2xl", "3xl", "3xl", "4xl", "4xl"],
-      fontWeight: "500",
+      fontWeight: "medium",
     },
   },
   headerReport: {
     description: "header report",
     value: {
       fontFamily: "heading",
-      fontSize: ["3xl", "3xl", "4xl", "4xl", "4xl", "4xl"],
-      fontWeight: "300",
-      lineHeight: ["40px", "40px", "48px", "48px", "60px", "60px"],
+      fontSize: ["3xl", "3xl", "4xl", "4xl", "4xl", "4xl"], // 30, 30, 36, 36, 36, 36
+      fontWeight: "light",
+      lineHeight: ["short", "short", "short", "short", "tall", "tall"],
+      // TODO: compare new line heights: 37.5px, 37.5px, 49.5px, 49.5px, 58.5px, 58.5px (1.375, 1.375, 1.375, 1.375, 1.625, 1.625)
+      // - to original line heights: 40px, 40px, 48px, 48px, 60px, 60px
+      // TODO: consider replacing this header's line-height with combo of line-height and vertical margin (margin via a textStyle?)
     },
   },
   headerMedium: {
@@ -30,7 +36,7 @@ const textStyles = defineTextStyles({
     value: {
       fontFamily: "heading",
       fontSize: ["xl", "xl", "2xl", "2xl", "2xl", "2xl"],
-      fontWeight: "500",
+      fontWeight: "medium",
     },
   },
   headerSmall: {
@@ -93,36 +99,36 @@ const textStyles = defineTextStyles({
     description: "hazard card text small",
     value: {
       fontFamily: "body",
-      fontSize: 15.2,
+      fontSize: "md",
       fontWeight: "normal",
     },
   },
   cardTextXSmall: {
-    description: "hazard card text small",
+    description: "hazard card text xsmall",
     value: {
       fontFamily: "body",
-      fontSize: 14.4,
+      fontSize: "sm",
       fontWeight: "normal",
     },
   },
   textSemibold: {
     description: "text semibold",
     value: {
-      fontWeight: "600",
+      fontWeight: "semibold",
     },
   },
   textPrerelease: {
     description: "text prerelease",
     value: {
-      fontSize: "12px",
-      lineHeight: "12px",
+      fontSize: "xs",
+      lineHeight: "none",
       fontWeight: "bold",
       textTransform: "uppercase",
     },
   },
 });
 
-const layerStyles = defineLayerStyles({
+const layerStyles: ThemingConfig["layerStyles"] = defineLayerStyles({
   // TODO: try to combine text styles and layer styles if possible (e.g., using Chakra v3 component) (post-migration from v2 to v3)
   // for textStyles: headerBig, headerReport, headerSmall
   headerMain: {
@@ -141,7 +147,7 @@ const layerStyles = defineLayerStyles({
   },
   prerelease: {
     description: "prerelease",
-    value: { color: "#ccc" },
+    value: { color: "gray.300" },
   },
   list: {
     description: "list",
@@ -149,16 +155,21 @@ const layerStyles = defineLayerStyles({
   },
   mobileButton: {
     description: "mobile button",
-    value: { color: "black", bg: "white", borderRadius: "30px" },
+    value: { color: "black", bg: "white", borderRadius: "4xl" }, // TODO: compare new 32px to old 30px
   },
 });
 
-const tokens = defineTokens({
+// TODO: move appropriate tokens to semanticTokens and remove unused tokens
+const tokens: ThemingConfig["tokens"] = defineTokens({
+  assets: {
+    mapMarker: { type: "url", value: "/marker.svg" },
+  },
   fonts: {
     heading: { value: "Manrope, sans-serif" },
     body: { value: "Inter, sans-serif" },
   },
   colors: {
+    // TODO: fallback to Chakra defaults where possible and get rid of unused colors
     grey: {
       200: { value: "#E2E8F0" },
       400: { value: "#A0AEC0" },
@@ -168,7 +179,7 @@ const tokens = defineTokens({
     white: { value: "#FFF" },
     blueBackground: { value: "#2C5282" }, // blue/700
     blue: { 600: { value: "#0088FF" }, text: { value: "#2B6CB0" } }, // blue/600 (TODO: all headings) // "#0088FF" comes from Figma switches
-    lightBlue: { value: "#3182CE" }, // blue/500 (TODO: remove)
+    lightBlue: { value: "#3182CE" }, // blue/500 (TODO: remove if unused)
     tsunamiBlue: { value: "#63B3ED" }, // blue/300
     yellow: { value: "#ECC94B" },
     red: { value: "#C53030" },
@@ -182,7 +193,14 @@ const tokens = defineTokens({
       },
     },
   },
+  lineHeights: {
+    none: { value: 1 },
+  },
+  spacing: {
+    0: { value: 0 }, // explicit 0 value for margin, padding, etc.
+  },
   sizes: {
+    // TODO: replace all these and their references with Chakra defaults (consider even replacing eg 375px with 480px/the rem equivalent)
     // // originals
     // sm: { value: "24rem" }, // 384px
     // md: { value: "28rem" }, // 448px
@@ -194,37 +212,46 @@ const tokens = defineTokens({
     md: { value: "744px" }, // 744px (vs 448px) !==
     // lg: { value: "512px" }, // 512px, not overridden ==
     xl: { value: "1280px" }, // 1280px (vs 576px) !== // xl?
+
+    // used in global CSS for map marker
+    // TODO: adjust these so that they are based on Chakra sizing scale
+    mapMarkerWidth: { value: "26.2px" },
+    mapMarkerHeight: { value: "41px" },
   },
 });
 
 /*
-  breakpoints:
-  sm: "480px"​​​
-  md: "768px"
-  lg: "1024px"
-  xl: "1280px"
-  2xl: "1536px"​​​
+  Breakpoints:
+  // TODO: test and finalize breakpoints
+  - sm: "480px"​​​
+  - md: "768px"
+  - lg: "1024px" // TODO: is this 996px or 1024px? docs say 996px, but live config from `console.dir` below shows 1024px
+  - xl: "1280px"
+  - 2xl: "1536px"​​​
 */
 
 /* Global CSS: https://chakra-ui.com/docs/theming/customization/global-css#add-global-styles */
-const globalCss = {
+// TODO: attempt to replace this and the related DOM manipulation code in `map.tsx` with React code (if performant)
+// - see: https://docs.mapbox.com/help/tutorials/dynamic-markers-react/?step=0
+// - also see: https://docs.mapbox.com/help/tutorials/use-mapbox-gl-js-with-react/
+const globalCss: SystemConfig["globalCss"] = {
   ".marker": {
-    width: "26.2px",
-    height: "41px",
-    backgroundImage: "url('/marker.svg')",
+    width: "mapMarkerWidth",
+    height: "mapMarkerHeight",
+    backgroundImage: "mapMarker",
     backgroundSize: "cover",
-    borderRadius: 0,
+    borderRadius: "none",
   },
   ".mapboxgl-ctrl-group button": {
-    width: "40px",
-    height: "40px",
+    width: "10",
+    height: "10",
   },
   ".mapboxgl-ctrl-bottom-right": {
-    marginRight: "16px",
+    marginRight: "4",
   },
 };
 
-const config = defineConfig({
+const overridesConfig: SystemConfig = defineConfig({
   preflight: true, // explicitly enable reset styles (AKA preflight styles)
   globalCss,
   strictTokens: false,
@@ -235,18 +262,15 @@ const config = defineConfig({
   },
 });
 
-const system = createSystem(defaultConfig, config);
+const system = createSystem(defaultConfig, overridesConfig);
 
+// Log out the final merged config in development mode for debugging purposes
 if (process.env.NODE_ENV === "development" && console) {
-  console.log("Chakra UI v3 default config:");
-  console.dir(defaultConfig);
-
-  console.log("Chakra UI v3 SafeHome config:");
-  console.dir(config);
-
-  console.log("Chakra UI v3 combined system config:");
-  console.dir(system._config);
+  console.log("SafeHome Chakra UI v3 configuration (theming, tokens, etc):");
+  console.dir({
+    _originalConfigs: { defaultConfig, overridesConfig },
+    ...system._config,
+  });
 }
 
 export default system;
-
