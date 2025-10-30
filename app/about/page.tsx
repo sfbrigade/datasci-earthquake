@@ -28,9 +28,9 @@ const About = () => {
   const buildTeamMembers = () => {
     return TeamMembers.map((teamMember, index) => {
       return (
-        <List.Item key={index} mb="4px">
+        <List.Item key={index} mb="1">
           <Text>
-            <Text as="span" fontWeight={800}>
+            <Text as="span" fontWeight="extrabold">
               {teamMember.name}
               {" - "}
             </Text>
@@ -44,16 +44,13 @@ const About = () => {
   return (
     <Flex
       w={{ base: "full", xl: "7xl" }}
-      p={{
-        base: "24px 24px 24px 24px",
-        md: "36px 28px 36px 28px",
-        xl: "80px 128px 80px 128px",
-      }}
+      py={{ base: "6", md: "9", xl: "20" }} // TODO: compare new "9" (38px) to old "36px"
+      px={{ base: "6", md: "7", xl: "32" }}
       direction={{ base: "column", lg: "row" }}
       m="auto"
-      gap="44px"
+      gap="11"
     >
-      <Flex direction="column" alignItems={"flex-start"} gap="48px">
+      <Flex direction="column" alignItems={"flex-start"} gap="12">
         <Heading headingData={headingData} />
         <Text textStyle="textBig" layerStyle="text">
           Seismologists predict a 72% probability that the Bay Area will
@@ -122,11 +119,11 @@ const About = () => {
             building tools to help communities access important services and
             solve local challenges. 
           </Text>
-          <List.Root listStyleType="none" mb="40px">
+          <List.Root listStyleType="none" mb="10">
             {buildTeamMembers()}
           </List.Root>
           <Text>
-            <Text as="span" fontWeight={800}>
+            <Text as="span" fontWeight="extrabold">
               Interested in joining SF Civic Tech?
             </Text>{" "}
             Whether you’re into coding, design, research, or just want to help
@@ -136,7 +133,7 @@ const About = () => {
             our city thrive!
           </Text>
           <Text>
-            <Text as="span" fontWeight={800}>
+            <Text as="span" fontWeight="extrabold">
               Have a question or feedback about SafeHome?
             </Text>{" "}
             You can get in touch with us at{" "}

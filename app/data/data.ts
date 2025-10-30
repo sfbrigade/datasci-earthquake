@@ -1,4 +1,9 @@
-export const Hazards = [
+import { HeadingProps } from "@/components/heading";
+import { HazardProps } from "@/components/mobile-card-hazard";
+
+type HazardPropsCollection = HazardProps[];
+
+export const Hazards: HazardPropsCollection = [
   {
     id: 0,
     name: "softStory",
@@ -113,7 +118,9 @@ export const Info = [
   },
 ];
 
-export const Headings = {
+type HeadingPropsCollection = Record<string, HeadingProps>;
+
+export const Headings: HeadingPropsCollection = {
   home: {
     text: "How safe is your home in an earthquake?",
     highlight: "How safe ",
@@ -127,7 +134,7 @@ export const Headings = {
   about: {
     text: "Earthquake safety starts with knowledge. We're here to help.",
     highlight: "",
-    style: { color: "blue.text", fontWeight: "300", paddingRight: "50" },
+    style: { color: "blue.text", fontWeight: "light", paddingRight: "48" }, // TODO: compare new 48 (192px) to old 50h; or shoulud ti be "12"?
     highlightStyle: {},
     maxWidth: { base: "100%", md: "100%", xl: "842px" },
     themeTextStyle: "headerBig",

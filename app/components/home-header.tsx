@@ -12,7 +12,7 @@ import {
   Link,
   Flex,
 } from "@chakra-ui/react";
-import Heading from "./heading";
+import Heading, { HeadingProps } from "./heading";
 import ReportAddress from "./report-address";
 import SearchBar from "./search-bar";
 import Share from "./share";
@@ -41,11 +41,11 @@ const HomeHeader = ({
   return (
     <Box
       as="header"
-      bg="gradient.blue"
-      p={{
-        base: "18px 32px 22px 32px",
-        "2xl": "22px 48px 26px 48px",
-      }}
+      bgGradient="blue"
+      // TODO: make pt same as pb? (and convert to px and can then ignore the two TODOs below)
+      pt={{ base: "4", "2xl": "5" }} // TODO: compare new 4 (16px) to old 18px and new 5 (20px) to old 22px
+      pb={{ base: "5", "2xl": "6" }} // TODO: compare new 5 (20px) to old 22px and new 6 (24px) to old 26px
+      px={{ base: "8", "2xl": "12" }}
     >
       <Flex
         direction={{
@@ -55,15 +55,15 @@ const HomeHeader = ({
         }}
         justifyContent={"space-between"}
         alignItems={{ base: "flex-start", xl: "center" }}
-        gap={1.5}
-        mb={{ base: 2 }}
+        gap="1.5"
+        mb={{ base: "2" }}
       >
         <HStack align="start" gap="1">
           <Link
             as={"a"}
             color="white"
             href="/"
-            cursor="pointer"
+            cursor="button"
             textDecoration={"none"}
             onClick={(e) => {
               e.preventDefault();
@@ -75,9 +75,10 @@ const HomeHeader = ({
                 src="/images/SFSafeHome-fulllogo.svg"
                 alt="SafeHome logo"
                 role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
-                h="28px"
-                w="142px"
+                h="7"
+                w="36"
               />
+              {/* TODO: compare new 36 (144px) to old 142px */}
               <VisuallyHidden>SafeHome</VisuallyHidden>
             </HStack>{" "}
           </Link>
@@ -97,7 +98,7 @@ const HomeHeader = ({
         justifyContent={"space-between"}
         alignItems={{ base: "flex-start", xl: "center" }}
       >
-        <Box width={{ base: "100%", xl: "fit-content" }}>
+        <Box width={{ base: "full", xl: "fit" }}>
           <SearchBar onSearchChange={onSearchChange} />
         </Box>
 

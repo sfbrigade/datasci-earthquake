@@ -1,8 +1,15 @@
 import { Suspense } from "react";
-import { Box, Flex, Heading, Text, List, HStack, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  List,
+  HStack,
+  Link,
+  Image,
+} from "@chakra-ui/react";
 import NextLink from "next/link";
-import Image from "next/image";
-
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
 import AddressMapper from "./components/address-mapper";
@@ -48,14 +55,8 @@ const Home = async () => {
           liquefactionData={liquefactionData}
         />
       </Suspense>
-      <Flex
-        w={{ base: "full" }}
-        p={{
-          base: "32px 32px 64px 32px",
-        }}
-        justifyContent="space-between"
-      >
-        <HStack alignItems={"start"} w={{ base: "100%", lg: "75%" }}>
+      <Flex w="full" py="8" px="16" justifyContent="space-between" gap="2">
+        <HStack alignItems={"start"} w={{ base: "full", lg: "3/4" }}>
           <div>
             <Heading as="h2">
               <Text
@@ -63,7 +64,7 @@ const Home = async () => {
                 textStyle="headerBig"
                 layerStyle="headerMain"
                 color="blue.text"
-                fontWeight="300"
+                fontWeight="light"
               >
                 How to be earthquake-ready
               </Text>
@@ -257,9 +258,11 @@ const Home = async () => {
           <Image
             src="/images/earthquake-ready.png"
             alt="about us"
-            width="300"
-            height="300"
+            width="xs"
+            height="xs"
           />
+          {/* TODO: should this be a NextImage or a Chakra Image? */}{" "}
+          {/* TODO: compare new xs (320) to old 300 */}
         </Box>
       </Flex>
     </Flex>

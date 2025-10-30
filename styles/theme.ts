@@ -7,6 +7,7 @@ import {
   defineTokens,
   SystemConfig,
   ThemingConfig,
+  defineSemanticTokens,
 } from "@chakra-ui/react";
 
 // TODO: look into whether it makes sense to use responsive text sizes just for headings as is done below; perhaps another approach is better
@@ -121,7 +122,7 @@ const textStyles: ThemingConfig["textStyles"] = defineTextStyles({
     description: "text prerelease",
     value: {
       fontSize: "xs",
-      lineHeight: "none",
+      lineHeight: "shortest",
       fontWeight: "bold",
       textTransform: "uppercase",
     },
@@ -162,7 +163,20 @@ const layerStyles: ThemingConfig["layerStyles"] = defineLayerStyles({
 // TODO: move appropriate tokens to semanticTokens and remove unused tokens
 const tokens: ThemingConfig["tokens"] = defineTokens({
   assets: {
-    mapMarker: { type: "url", value: "/marker.svg" },
+    mapMarkerUrl: { type: "url", value: 'url("/marker.svg")' },
+  },
+  borders: {
+    none: { value: "none" },
+    search: {
+      value: "{borderWidths.0.25} {borderStyles.solid} {colors.grey.600}",
+    }, // TODO: double check if `0.25`, `solid`, and `grey.600` actually resolve
+    // TODO: can the color be part of the border value, or should it separately assigned to the `borderColor` prop for it to actually work?
+  },
+  borderWidths: {
+    0.25: { value: "1px" }, // TODO: compare new 1px to old 2px
+  },
+  borderStyles: {
+    solid: { value: "solid" },
   },
   fonts: {
     heading: { value: "Manrope, sans-serif" },
@@ -177,47 +191,108 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
       900: { value: "#171923" },
     },
     white: { value: "#FFF" },
-    blueBackground: { value: "#2C5282" }, // blue/700
     blue: { 600: { value: "#0088FF" }, text: { value: "#2B6CB0" } }, // blue/600 (TODO: all headings) // "#0088FF" comes from Figma switches
     lightBlue: { value: "#3182CE" }, // blue/500 (TODO: remove if unused)
-    tsunamiBlue: { value: "#63B3ED" }, // blue/300
     yellow: { value: "#ECC94B" },
     red: { value: "#C53030" },
     green: { value: "#25855A" },
     orange: { value: "#F6AD55" },
     pink: { value: "#ED64A6" },
-    gradient: {
-      blue: {
-        value:
-          "radial-gradient(120% 180% at 17.81% 82.6%, rgba(59,98,148,1) 0%, rgba(24,50,82,1) 100%);",
-      },
+
+    // TODO: move some of these to `semanticTokens` and rename accordingly
+    blueBackground: { value: "#2C5282" }, // blue/700
+    tsunamiBlue: { value: "#63B3ED" }, // blue/300
+    lightGrey: { value: "#c8caceff" },
+    labelGrey: { value: "#bfb9b9" },
+    warningRed: { value: "#b53d37" },
+    blueGradientFrom: { value: "#3b6294" },
+    blueGradientTo: { value: "#183252" },
+  },
+  gradients: {
+    // string value
+    blue: {
+      value:
+        "radial-gradient(120% 180% at 17.81% 82.6%, {colors.blueGradientFrom} 0%, {colors.blueGradientTo} 100%);", // TODO: double check that this gradient still works
     },
   },
   lineHeights: {
-    none: { value: 1 },
+    shortest: { value: 1 },
   },
   spacing: {
     0: { value: 0 }, // explicit 0 value for margin, padding, etc.
+    auto: { value: "auto" }, // explicit "auto" value for margin
   },
   sizes: {
-    // TODO: replace all these and their references with Chakra defaults (consider even replacing eg 375px with 480px/the rem equivalent)
-    // // originals
-    // sm: { value: "24rem" }, // 384px
-    // md: { value: "28rem" }, // 448px
-    // lg: { value: "32rem" }, // 512px, not overridden
-    // xl: { value: "36rem" }, // 576px
-    // overrides
-    base: { value: "100%" }, // new
-    sm: { value: "375px" }, // 375px (vs 384px) !== // xs?
-    md: { value: "744px" }, // 744px (vs 448px) !==
-    // lg: { value: "512px" }, // 512px, not overridden ==
-    xl: { value: "1280px" }, // 1280px (vs 576px) !== // xl?
+    // for popover content maxHeight
+    unset: { value: "unset" },
 
-    // used in global CSS for map marker
+    // map marker (global CSS)
     // TODO: adjust these so that they are based on Chakra sizing scale
+    // TODO: convert this to default sizes
     mapMarkerWidth: { value: "26.2px" },
     mapMarkerHeight: { value: "41px" },
+
+    // mobile card
+    // TODO: convert this to default sizes
+    mobileCardWidth: { value: "86vw" },
+    mobileCardAccordionWidth: { value: "98%" },
   },
+});
+
+const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
+  shadows: {
+    card: {
+      value: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}", // TODO: compare new "1" (4px) to old 5px; also test if _dark works
+    },
+    mobileButton: {
+      value: "{spacing.0} {spacing.0} {spacing.0.5} {colors.lightGrey}", // TODO: compare new "0.5" (2px) to old 3px; also test if _dark works
+    },
+    search: {
+      value:
+        "{spacing.0} {spacing.1} {spacing.1.5} {-spacing.0.25} {colors.blackAlpha.200}, {spacing.0} {spacing.0.5} {spacing.1} {-spacing.0.25} {colors.blackAlpha.50}", // TODO: compare new  blackAlpha.50 (rgba(0, 0, 0, 0.04)) vs old rgba(0, 0, 0, 0.06) and new blackAlpha.50 (rgba(0, 0, 0, 0.08)) vs old rgba(0, 0, 0, 0.10),
+    },
+  },
+
+  /*
+    WORKS
+
+    mobileButton: {
+      value: {
+        _light: "0px 0px 3px #c8caceff",
+        _dark: "0px 0px 3px #c8caceff",
+      },
+    },
+    
+    card: {
+      value: {
+        _light: "0px 5px 6px #c8caceff", // TODO: compare new "1" (4px) to old 5px
+        _dark: "0px 5px 6px #c8caceff", // TODO: compare new "1" (4px) to old 5px
+      },
+    },
+    
+    card: {
+      value: {
+        _light: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}", // TODO: compare new "1" (4px) to old 5px
+        _dark: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}", // TODO: compare new "1" (4px) to old 5px
+      },
+    },
+
+    card: { value: { _light: "0px 5px 6px #c8caceff", _dark: "0px 5px 6px #c8caceff" }},
+
+    card: { value: { _light: "0 1 1.5 lightGrey", _dark: "0 1 1.5 lightGrey" }},
+
+    card: { value: {
+      _light: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}",
+      _dark: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}",
+    }},
+
+    DOES NOT WORK
+
+    card: { value: {
+      _light: [":", "1", "1.5", "lightGrey"],
+      _dark: ["0", "1", "1.5", "lightGrey"],
+    }},
+  */
 });
 
 /*
@@ -238,27 +313,28 @@ const globalCss: SystemConfig["globalCss"] = {
   ".marker": {
     width: "mapMarkerWidth",
     height: "mapMarkerHeight",
-    backgroundImage: "mapMarker",
+    backgroundImage: "mapMarkerUrl",
     backgroundSize: "cover",
     borderRadius: "none",
   },
   ".mapboxgl-ctrl-group button": {
-    width: "10",
-    height: "10",
+    width: "10 !important",
+    height: "10 !important",
   },
   ".mapboxgl-ctrl-bottom-right": {
-    marginRight: "4",
+    marginRight: "4 !important",
   },
 };
 
 const overridesConfig: SystemConfig = defineConfig({
   preflight: true, // explicitly enable reset styles (AKA preflight styles)
   globalCss,
-  strictTokens: false,
+  strictTokens: true,
   theme: {
     textStyles,
     layerStyles,
     tokens,
+    semanticTokens,
   },
 });
 

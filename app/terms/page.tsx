@@ -6,13 +6,11 @@ const TermsOfService = () => {
   return (
     <>
       <Flex
-        w={{ base: "base", xl: "xl" }}
-        p={{
-          base: "23px 24px 50px 24px",
-          md: "37px 27px 50px 26px",
-          xl: "50px 128px 50px 127px",
-        }}
-        gap="44px"
+        w={{ base: "full", xl: "7xl" }}
+        pt={{ base: "6", md: "9", xl: "12" }} // TODO: compare new 6 (24px) to old 23px, new 12 (48px) to old 50px
+        pb="12" // TODO: compare new 12 (48px) to old 50px
+        px={{ base: "6", md: "7", xl: "32" }} // TODO: compare new 7 (28px) to old 27px and old 26px, new 32 (128px) to old 127px
+        gap="11"
         direction={{ base: "column", lg: "row" }}
         m="auto"
       >
@@ -21,8 +19,8 @@ const TermsOfService = () => {
             textStyle="headerBig"
             layerStyle="headerMain"
             color="blue.text"
-            fontWeight="300"
-            marginBottom="2rem"
+            fontWeight="light"
+            marginBottom="8"
           >
             Terms of Service
           </Text>
@@ -34,7 +32,7 @@ const TermsOfService = () => {
           >
             Acceptable Use
           </Text>
-          <VStack gap="2rem" alignItems="flex-start">
+          <VStack gap="8" alignItems="flex-start">
             <Text textStyle="textMedium" layerStyle="text">
               You may view, use, and download information from this website for
               your informational, non-commercial use. The data is NOT suitable
