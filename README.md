@@ -9,20 +9,24 @@ This is a hybrid Next.js + Python app that uses Next.js as the frontend and Fast
 You can work on this app entirely [locally](#local-development), entirely [using Docker](#development-with-docker), or--if you prefer to focus on front end or back end--a [combination of the two](#hybrid-development).
 
 ---
+
 # Setting Up and Using Environments
+
 ## Configuration of environment variables for all environments
 
 We use GitHub Secrets to store sensitive environment variables. To be able to run the app with all features enabled, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
 
 ### Contributors working from forks
+
 - If you are contributing from a fork, you do not need to follow the workflow below for core contributors.
 - The CI pipeline for forked PRs will automatically use the provided `.env.example`.
 - If you don't have `.env`, `.env.example` will be automatically used instead. This allows you to run the app, but with limited functionality (since the real secrets are not included).
 
 ### Core contributors
+
 Before starting work on the project, make sure to:
 
-1. Get **write** access to the repository.  Accept invitation after you have been invited.
+1. Get **write** access to the repository. Accept invitation after you have been invited.
 2. Get the **decryption passphrase** from other devs or in the Slack Engineering channel.
 3. Navigate to workflow [on the repository's Actions page](https://github.com/sfbrigade/datasci-earthquake/actions)
 4. Click on `Generate .env File` workflow
@@ -37,22 +41,23 @@ The file is organized into four main sections:
 - **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.
 - **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
 - **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
-- **Monitoring and Analytics Variables**. This section contains variables for Sentry and Posthog. 
+- **Monitoring and Analytics Variables**. This section contains variables for Sentry and Posthog.
 
 #### ⚠️ If you add a new variable to the Settings class in the backend, you must also add a dummy value for it in .env.example. Otherwise, PRs from forks will fail, since the CI depends on .env.example when secrets are unavailable.`
 
 ---
 
-
 ## Development with Docker
 
-This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.  
+This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.
 
 ### Changing code
-Docker is configured so that any changes you make should trigger re-compiling by the appropriate service.  If the change is not taking, you may need to restart the server, but you do not have to rebuild everything.  
+
+Docker is configured so that any changes you make should trigger re-compiling by the appropriate service. If the change is not taking, you may need to restart the server, but you do not have to rebuild everything.
 
 ### Changing configuration files
-This includes `pyproject.toml` and `.env`, and `package.json`.  You will need to restart the individual server, but should not have to rebuild everything.
+
+This includes `pyproject.toml` and `.env`, and `package.json`. You will need to restart the individual server, but should not have to rebuild everything.
 
 ### Prerequisites
 
@@ -77,15 +82,15 @@ This includes `pyproject.toml` and `.env`, and `package.json`.  You will need to
 
 2. **Start Postgres**
 
-3.  **Access the Application**:
-    - The app is running at http://localhost:3000. Note that this may conflict with your local dev server. If so, one will be running on port 3000 and the other on port 3001.
-    - The API is accessible at http://localhost:8000.
-    - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
-    - To interact with a running container, use `docker exec [OPTIONS] CONTAINER COMMAND [ARG...]`
-      - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
-      - To execute a python script, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
+3. **Access the Application**:
+   - The app is running at http://localhost:3000. Note that this may conflict with your local dev server. If so, one will be running on port 3000 and the other on port 3001.
+   - The API is accessible at http://localhost:8000.
+   - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
+   - To interact with a running container, use `docker exec [OPTIONS] CONTAINER COMMAND [ARG...]`
+     - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
+     - To execute a python script, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
 
-    **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
+   **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
 
 ### Shutting Down the Application
 
@@ -102,11 +107,13 @@ To stop and shut down the application:
     **Note:** If you want to start with a clean slate and remove all data inside the containers, run `docker compose down -v`.
 
 ### Rebuilding individual servers
+
 Replace <image name> with `datasci-earthquake-frontend`, `datasci-earthquake-backend`, `datasci-earthquake-db` or `datasci-earthquake-db_test`:
 
 `docker compose build <service_name>`
 
 ### Starting/stopping individual servers
+
 Replace <service name> with frontend, backend, db, or db_test:
 
 `docker compose up -d <service_name>`
@@ -131,8 +138,8 @@ Replace <service name> with frontend, backend, db, or db_test:
 
 ---
 
-
 ## Local development
+
 Docker development is recommended as the configuration is more guaranteed.
 
 ### Prerequisites
@@ -140,21 +147,25 @@ Docker development is recommended as the configuration is more guaranteed.
 **uv**: Install the uv package manager:
 
 **On macOS/Linux:**
+
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 **On Windows:**
+
 ```powershell
 powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
 **Alternative (all platforms):**
+
 ```bash
 pip install uv
 ```
 
-**PostgreSQL**: 
+**PostgreSQL**:
+
 1. [Install](https://adoptium.net/) Java 1.8 or later if your PostgreSQL installer requires it (e.g., the EDB installer).
 2. [Install](https://www.postgresql.org/download/) PostgreSQL locally with the PostGIS extension, select the PostGIS extension when prompted by the installer.
 3. If PostgreSQL was already installed, add the PostGIS extension if not already included
@@ -172,11 +183,13 @@ pip install uv
 To manually activate the virtual environment from the project root, run:
 
 **On macOS/Linux:**
+
 ```bash
 source backend/.venv/bin/activate
 ```
 
 **On Windows:**
+
 ```cmd
 backend\.venv\Scripts\activate
 ```
@@ -184,28 +197,30 @@ backend\.venv\Scripts\activate
 #### Frontend Setup
 
 1. Set nvm version:
-```bash
-nvm use 18
-```
+
+   ```shell
+   nvm use 18
+   ```
 
 2. Install the front end dependencies:
-```bash
-npm install
-# or
-yarn
-# or
-pnpm install
-```
+
+   ```shell
+   npm install
+   # or
+   yarn
+   # or
+   pnpm install
+   ```
 
 3. Run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+   ```shell
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
@@ -246,7 +261,102 @@ If you need to rebuild the containers, run `npm run docker-back`.
 
 #### Working with Chakra UI
 
-For UI components, styling, and theming, most initial setup is done via Chakra UI v3 within `theme.ts`. Docs are located at https://chakra-ui.com/. For default theme values, which are automatically used by Chakra along with the overrides in `theme.ts`, you can refer to https://github.com/chakra-ui/chakra-ui/tree/main/packages/react/src/theme (note that `sizing` is a **superset** of `spacing`).
+For UI components, styling, and theming, most initial setup is done via Chakra UI v3 within `theme.ts`. Docs are located at https://chakra-ui.com/. For default theme values, which are automatically used by Chakra along with the overrides in `theme.ts`, you can refer to https://github.com/chakra-ui/chakra-ui/tree/main/packages/react/src/theme (note that `sizing` is a **superset** of `spacing`). Be aware that there are a lot of out-of-date resources and articles online for Chakra UI v2 that you should ignore in favor of v3.
+
+While doing development, note that style prop autocompletion relies on theme typings generated from [styles/theme.ts], which is where SafeHome's Chakra theme overrides are defined. The overrides are merged with Chakra's default theme to give us the final SafeHome theme. To see a full list of theme values and tokens, check your browser console. To improve the developer experience, we log the final theme to the browser console for easy reference.
+
+Note that if you make changes to `theme.ts`, theme typings will be regenerated on the fly, but only if you are running `npm run dev-front`.
+
+##### CHAKRA TIP: STRINGS AS PROP VALUES
+
+Chakra prefers strings as prop values as opposed to numbers.
+
+Instead of:
+
+```
+gap={1.5}
+```
+
+Use:
+
+```
+gap="1.5"
+```
+
+##### CHAKRA TIP: SHORTHAND NOTATION
+
+As for shorthand notation (e.g., `"{spacing.4} {spacing.2}"`); see: Chakra's [token reference syntax](https://chakra-ui.com/docs/theming/tokens#token-reference-syntax)), it doesn’t quite work, unfortunately. Although it works in development mode, when `strictTokens` is set to “true” in `theme.ts`, red squiggly lines will appear in the editor and the TypeScript build will fail. The alternative is to not use shorthand at all.
+
+For shorthand notation, (e.g., `"{spacing.4} {spacing.2}"`) appears to trip up the theme typings (seen as red squiggly lines in Visual Studio Code), so please use the array syntax instead:
+
+Instead of this shorthand:
+
+```
+// works in dev mode, but build will fail
+p="{spacing.8} {spacing.16} {spacing.8} {spacing.16}"
+```
+
+Use individual props and single values:
+
+```
+// works
+py="8"
+px="16"
+```
+
+---
+
+For responsive props, instead of the aforementioned token reference syntax:
+
+```
+// works in dev mode, but build will fail
+p={{
+  base: "{spacing.6}",
+  md: "{spacing.7}",
+  lg: "{spacing.7} {spacing.8} {spacing.7} {spacing.8}",
+  xl: "{spacing.7} {spacing.9} {spacing.7} {spacing.9]",
+}}
+```
+
+And instead of trying to convert the shorthand string into an array (will NOT work … only the last value is utilized):
+
+```
+// doesn't work at all (only last value of array is used)
+p={{
+  base: "6",
+  md: "7",
+  lg: ["7", "8", "7", "8"],
+  xl: ["7", "9", "7", "9"],
+}}
+```
+
+Use individual props combined with prop-based object syntax:
+
+```
+// works
+pt={{ base: "6", md: "7", lg: "7", xl: "7" }}
+pr={{ base: "6", md: "7", lg: "8", xl: "9" }}
+pb={{ base: "6", md: "7", lg: "7", xl: "7" }}
+pl={{ base: "6", md: "7", lg: "8", xl: "9" }}
+```
+
+Which can be simplified to:
+
+```
+// works
+pt={{ base: "6", md: "7" }}
+pr={{ base: "6", md: "7", lg: "8", xl: "9" }}
+pb={{ base: "6", md: "7" }}
+pl={{ base: "6", md: "7", lg: "8", xl: "9" }}
+```
+
+And further simplified to:
+
+```
+// works
+py={{ base: "6", md: "7" }}
+px={{ base: "6", md: "7", lg: "8", xl: "9" }}
+```
 
 #### Troubleshooting front end
 

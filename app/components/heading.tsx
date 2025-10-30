@@ -8,7 +8,7 @@ export interface HeadingProps {
   maxWidth?: {
     [key: string]: string;
   };
-  themeTextStyle: string;
+  themeTextStyle: SystemStyleObject["textStyle"];
 }
 
 const Heading: React.FC<{ headingData: HeadingProps }> = ({ headingData }) => {

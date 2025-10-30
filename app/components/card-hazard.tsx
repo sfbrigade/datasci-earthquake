@@ -10,6 +10,7 @@ import {
   Popover,
   Portal,
   Switch,
+  SystemStyleObject,
 } from "@chakra-ui/react";
 import posthog from "posthog-js";
 import Pill from "./pill";
@@ -28,7 +29,7 @@ interface CardHazardProps {
     info: string[];
     link: { label: string; url: string };
     icon: string;
-    iconColor: string;
+    iconColor: SystemStyleObject["color"];
   };
   hazardData?: { exists?: boolean; last_updated?: string };
   showData: boolean;
@@ -90,10 +91,11 @@ const CardHazard: React.FC<CardHazardProps> = ({
   return (
     <Card.Root
       flex={1}
-      maxW={{ base: 320, "2xl": 336 }}
-      minH={{ base: 178, "2xl": 184 }}
-      p={{ base: "14px 16px", md: "18px 20px" }}
-      // boxShadow="0px 5px 6px #c8caceff"
+      maxW={{ base: "80", "2xl": "sm" }} // TODO: compare 2xl: sm (320px) to original 336px
+      minH={{ base: "44", "2xl": "48" }} // TODO: compare base: 44 (176px) to original 178px and compare 2xl: 48 (192px) to original 184px
+      py={{ base: "3.5", md: "4" }} // TODO: compare py md: "4" (16px) to original md: "18px"
+      px={{ base: "4", md: "5" }}
+      shadow="card"
       variant="elevated"
     >
       <Popover.Root
@@ -110,9 +112,9 @@ const CardHazard: React.FC<CardHazardProps> = ({
       >
         <VStack alignItems={"flex-start"} flexGrow={1} h="full">
           <Card.Header
-            w="102%"
-            p={0}
-            mb={"0.2em"}
+            w="full" // TODO: compare full to original 102%
+            p="0"
+            mb="1" // TODO: compare mb=1 (0.25rem) to original 0.2em
             textAlign="left"
             flexDirection="row"
             justifyContent="space-between"
@@ -134,7 +136,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
               <Switch.Label />
             </Switch.Root>
           </Card.Header>
-          <Card.Body textAlign="left" p={0} mb={"6px"}>
+          <Card.Body textAlign="left" p="0" mb="1.5">
             <Text
               textStyle={{
                 base:
@@ -151,14 +153,14 @@ const CardHazard: React.FC<CardHazardProps> = ({
               {description}
             </Text>
           </Card.Body>
-          <Card.Footer p={0} width={"100%"}>
-            <HStack justifyContent="space-between" width="100%">
+          <Card.Footer p="0" width="full">
+            <HStack justifyContent="space-between" width="full">
               <Popover.Trigger>
                 <Text
-                  cursor={"pointer"}
+                  cursor="button"
                   textDecoration={"underline"}
                   fontSize={{
-                    base: 15.2,
+                    base: "sm", // TODO: compare sm (14px) to original 15.2px
                     "2xl": "md",
                   }}
                   onClick={() => {
@@ -180,7 +182,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
           <Popover.Positioner>
             <Popover.Content maxHeight="unset">
               <Popover.CloseTrigger
-                cursor="pointer"
+                cursor="button"
                 position="absolute"
                 top="2"
                 right="2"

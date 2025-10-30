@@ -21,8 +21,8 @@ const Header = () => {
   return (
     <Box
       as="header"
-      bg={isHome ? undefined : "gradient.blue"}
-      w="100%"
+      bgGradient={isHome ? undefined : "blue"}
+      w="full"
       position={isHome ? "absolute" : undefined}
       top={isHome ? "0" : undefined}
       display={isHome ? "none" : undefined}
@@ -36,12 +36,8 @@ const Header = () => {
           xl: "flex-end",
         }}
         alignItems="center"
-        p={{
-          base: 6,
-          md: 7,
-          lg: [7, 8, 7, 8],
-          xl: [7, 9, 7, 9],
-        }}
+        py={{ base: "6", md: "7" }}
+        px={{ base: "6", md: "7", lg: "8", xl: "9" }}
       >
         <HStack align="start" gap="1">
           <Link
@@ -59,8 +55,8 @@ const Header = () => {
                 src="/images/SFSafeHome-fulllogo.svg"
                 alt="SafeHome logo"
                 role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
-                h="28px"
-                w="142px"
+                h="7"
+                w="36" // TODO: contrast new 36 (144px) to old 142px
               />
               <VisuallyHidden>SafeHome</VisuallyHidden>
             </HStack>{" "}

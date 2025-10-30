@@ -37,15 +37,17 @@ const MobileReportHazards = ({
       positioning={{ flip: false }}
       onOpenChange={(e) => setShowHazards(e.open)}
     >
-      <Box pt="36px" px="28px" zIndex={10} position="relative">
+      {/* TODO: look at whether the pt should be py */}
+      <Box pt="9" px="7" zIndex="docked" position="relative">
+        {/* TODO: compare new "docked" to old 10 */}
         <Menu.Trigger asChild>
           <Button
             textStyle={"textMedium"}
             layerStyle={"mobileButton"}
-            fontWeight="700"
-            boxShadow="0px 0px 3px #c8caceff"
+            fontWeight="bold"
+            shadow="mobileButton"
           >
-            <Span mr="8px">Legend</Span>
+            <Span mr="2">Legend</Span>
             {!showHazards ? (
               <Icon size={"sm"}>
                 <FaAngleDown />
@@ -59,7 +61,8 @@ const MobileReportHazards = ({
         </Menu.Trigger>
         <Portal>
           <Menu.Positioner>
-            <Menu.Content p={0} borderRadius="15px" py="12px" w="100%">
+            <Menu.Content p="0" borderRadius="2xl" py="3" w="full">
+              {/* TODO: compare new "2xl" (16px) vs old 15px */}
               <Accordion.Root
                 collapsible={true}
                 defaultValue={[Hazards[0].name]}

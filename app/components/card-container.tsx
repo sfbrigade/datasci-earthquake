@@ -4,12 +4,12 @@ import { Box, VStack } from "@chakra-ui/react";
 export const CardContainer = ({ children }: { children: React.ReactNode }) => {
   return (
     <Box
-      pt={{ base: "32px", "2xl": "44px" }}
-      px={{ base: "24px", md: "28px", "2xl": "36px" }}
-      zIndex={10}
+      pt={{ base: "8", "2xl": "10" }} // TODO: compare 2xl: 10 (40px) to original 44px
+      px={{ base: "6", md: "7", "2xl": "9" }}
+      zIndex="docked" // TODO: compare "docked" to original value of 10
       w="full"
     >
-      <VStack gap="14px">{children}</VStack>
+      <VStack gap="3.5">{children}</VStack>
     </Box>
   );
 };

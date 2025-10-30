@@ -40,12 +40,12 @@ export const Toaster = () => {
             // TODO: how to tie this to Chakra theme? also, should `warning` and other types have different colors?
             bg={
               toast.type === "error" || toast.type === "warning"
-                ? "#b53d37"
+                ? "warningRed"
                 : "white"
             }
           >
             <ToasterIcon type={toast.type} />
-            <Stack gap="1" flex="1" maxWidth="100%">
+            <Stack gap="1" flex="1" maxWidth="full">
               {toast.title && <Toast.Title>{toast.title}</Toast.Title>}
               {toast.description && (
                 <Toast.Description>{toast.description}</Toast.Description>

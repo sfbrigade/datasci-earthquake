@@ -33,17 +33,8 @@ const HomeSkeleton = () => {
         tsunamiData={tsunamiData}
         liquefactionData={liquefactionData}
       />
-      <Flex
-        w={{ base: "full", xl: "7xl" }}
-        p={{
-          base: "24px 24px 24px 24px",
-          md: "36px 28px 16px 28px",
-          xl: "96px 128px 96px 128px",
-        }}
-        m="auto"
-        gap="46px"
-      >
-        <HStack alignItems={"start"}>
+      <Flex w="full" py="8" px="16" justifyContent="space-between">
+        <HStack alignItems={"start"} w={{ base: "full", lg: "3/4" }}>
           <div>
             <Heading as="h2">
               <Text
@@ -51,7 +42,7 @@ const HomeSkeleton = () => {
                 textStyle="headerBig"
                 layerStyle="headerMain"
                 color="blue.text"
-                fontWeight="300"
+                fontWeight="light"
               >
                 How to be
                 <br />
@@ -254,9 +245,11 @@ const HomeSkeleton = () => {
             <Image
               src="/images/earthquake-ready.png"
               alt="about us"
-              width="300"
-              height="300"
-            />
+              width="xs"
+              height="xs"
+            />{" "}
+            {/* TODO: compare new xs (320) to old 300 */}
+            {/* TODO: should this be a NextImage or a Chakra Image? */}{" "}
           </Box>
         </HStack>
       </Flex>
