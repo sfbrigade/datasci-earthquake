@@ -263,9 +263,18 @@ If you need to rebuild the containers, run `npm run docker-back`.
 
 For UI components, styling, and theming, most initial setup is done via Chakra UI v3 within `theme.ts`. Docs are located at https://chakra-ui.com/. For default theme values, which are automatically used by Chakra along with the overrides in `theme.ts`, you can refer to https://github.com/chakra-ui/chakra-ui/tree/main/packages/react/src/theme (note that `sizing` is a **superset** of `spacing`). Be aware that there are a lot of out-of-date resources and articles online for Chakra UI v2 that you should ignore in favor of v3.
 
-While doing development, note that style prop autocompletion relies on theme typings generated from [styles/theme.ts], which is where SafeHome's Chakra theme overrides are defined. The overrides are merged with Chakra's default theme to give us the final SafeHome theme. To see a full list of theme values and tokens, check your browser console. To improve the developer experience, we log the final theme to the browser console for easy reference.
+While doing development, note that style prop autocompletion relies on theme typings generated from [styles/theme.ts], which is where SafeHome's Chakra theme overrides are defined. The overrides are merged with Chakra's default theme to give us the final SafeHome theme. To see a full list of theme values and tokens, check your browser console.
+
+##### CHAKRA TIP: ACCESSING THEME VALUES
+
+It's not obvious how to see a theme's tokens and values for reference during development. To make this easier and improve the experience, there are two ways you can currently view the theme:
+
+1. Browser console log: While running `npm run dev-front`, on page load, we log the theme as an object to the browser console
+2. `theme` folder in your local filesystem: If you run `npm run gen:tokens`, the theme will be outputted to a temporary `theme` folder
 
 Note that if you make changes to `theme.ts`, theme typings will be regenerated on the fly, but only if you are running `npm run dev-front`.
+
+There are plans to introduce a third way of viewing our theme: via Storybook!
 
 ##### CHAKRA TIP: STRINGS AS PROP VALUES
 
