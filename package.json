@@ -25,7 +25,8 @@
     "cache-clean": "npm cache clean",
     "rebuild": "npm run rebuild-front",
     "rebuild-front": "run-s clean-front install-deps build",
-    "gen:theme-typings": "chakra typegen styles/theme.ts"
+    "gen:theme-typings": "chakra typegen styles/theme.ts",
+    "gen:tokens": "chakra eject styles/theme.ts"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.22.0",
