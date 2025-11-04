@@ -55,8 +55,8 @@ const Header = () => {
                 src="/images/SFSafeHome-fulllogo.svg"
                 alt="SafeHome logo"
                 role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
-                h="7"
-                w="36" // TODO: contrast new 36 (144px) to old 142px
+                height="safeHomeLogoHeight"
+                width="safeHomeLogoWidth"
               />
               <VisuallyHidden>SafeHome</VisuallyHidden>
             </HStack>{" "}

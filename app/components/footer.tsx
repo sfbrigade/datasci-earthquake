@@ -75,6 +75,9 @@ const Footer = () => {
             <Image
               src="/images/SFCivicTech-logo.svg"
               alt="SF Civic Tech Logo"
+              role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
+              height="sfctLogoHeight"
+              width="sfctLogoWidth"
             />
           </Link>
         </VStack>

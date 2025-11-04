@@ -55,7 +55,7 @@ const Home = async () => {
           liquefactionData={liquefactionData}
         />
       </Suspense>
-      <Flex w="full" py="8" px="16" justifyContent="space-between" gap="2">
+      <Flex w="full" py="8" px="16" justifyContent="space-between" gap="11">
         <HStack alignItems={"start"} w={{ base: "full", lg: "3/4" }}>
           <div>
             <Heading as="h2">
@@ -257,12 +257,11 @@ const Home = async () => {
         <Box flexShrink={0} display={{ base: "none", lg: "block" }}>
           <Image
             src="/images/earthquake-ready.png"
+            width="earthquakeReadyImageWidth"
+            height="earthquakeReadyImageHeight"
             alt="about us"
-            width="xs"
-            height="xs"
           />
-          {/* TODO: should this be a NextImage or a Chakra Image? */}{" "}
-          {/* TODO: compare new xs (320) to old 300 */}
+          {/* TODO: should this be a NextImage or a Chakra Image? */}
         </Box>
       </Flex>
     </Flex>

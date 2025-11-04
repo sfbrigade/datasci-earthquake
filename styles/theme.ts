@@ -236,6 +236,19 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     // TODO: convert this to default sizes
     mobileCardWidth: { value: "86vw" },
     mobileCardAccordionWidth: { value: "98%" },
+
+    // image sizess
+    // TODO: convert this to default sizes (and get images of equal or retina dimensions)
+    earthquakeReadyImageWidth: { value: "303px" }, // 606px real width
+    earthquakeReadyImageHeight: { value: "292px" }, // 584px real width
+    aboutImageWidth: { value: "304px" },
+    aboutImageHeight: { value: "282px" },
+    termsImageWidth: { value: "300px" },
+    termsImageHeight: { value: "300px" },
+    safeHomeLogoWidth: { value: "142px" }, // 619 real width
+    safeHomeLogoHeight: { value: "28px" }, // 122 real width
+    sfctLogoWidth: { value: "206px" },
+    sfctLogoHeight: { value: "54px" },
   },
 });
 

@@ -1,6 +1,5 @@
-import { Flex, Text, Link, VStack, Box } from "@chakra-ui/react";
+import { Flex, Text, Link, VStack, Box, Image } from "@chakra-ui/react";
 import NextLink from "next/link";
-import Image from "next/image";
 
 const TermsOfService = () => {
   return (
@@ -85,8 +84,8 @@ const TermsOfService = () => {
           <Image
             src="/images/UserCartoon3.png"
             alt="about us"
-            width="300"
-            height="300"
+            width="termsImageWidth"
+            height="termsImageHeight"
           />
         </Box>
       </Flex>

@@ -33,7 +33,7 @@ const HomeSkeleton = () => {
         tsunamiData={tsunamiData}
         liquefactionData={liquefactionData}
       />
-      <Flex w="full" py="8" px="16" justifyContent="space-between">
+      <Flex w="full" py="8" px="16" justifyContent="space-between" gap="11">
         <HStack alignItems={"start"} w={{ base: "full", lg: "3/4" }}>
           <div>
             <Heading as="h2">
@@ -245,10 +245,9 @@ const HomeSkeleton = () => {
             <Image
               src="/images/earthquake-ready.png"
               alt="about us"
-              width="xs"
-              height="xs"
-            />{" "}
-            {/* TODO: compare new xs (320) to old 300 */}
+              width="earthquakeReadyImageWidth"
+              height="earthquakeReadyImageHeight"
+            />
             {/* TODO: should this be a NextImage or a Chakra Image? */}{" "}
           </Box>
         </HStack>
