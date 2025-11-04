@@ -1,8 +1,7 @@
-import { Flex, Link, Text, Box, VStack, List } from "@chakra-ui/react";
+import { Flex, Link, Text, Box, VStack, List, Image } from "@chakra-ui/react";
 import Heading from "../components/heading";
 import { Headings, DataInfoLinks, TeamMembers } from "../data/data";
 import NextLink from "next/link";
-import Image from "next/image";
 
 const About = () => {
   const headingData = Headings.about;
@@ -148,8 +147,8 @@ const About = () => {
         <Image
           src="/images/UserCartoon.png"
           alt="about us"
-          width="280"
-          height="280"
+          width="aboutImageWidth"
+          height="aboutImageHeight"
         />
       </Box>
     </Flex>

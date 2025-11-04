@@ -39,14 +39,12 @@ export default function RootLayout({
       <body className={`${manrope.className} ${inter.className}`}>
         <Provider>
           <Flex direction="column" align="center" minH="dvh">
-            {/* TODO: should this be svh or vh instead? */}
             <Header />
             <Box flex="1" as="main" width="full">
               {children}
             </Box>
             <Footer />
           </Flex>
-          {/* TODO FIXME: is this Toaster component declared in the right place? */}
           <Toaster />
         </Provider>
       </body>

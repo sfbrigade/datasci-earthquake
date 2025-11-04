@@ -75,10 +75,9 @@ const HomeHeader = ({
                 src="/images/SFSafeHome-fulllogo.svg"
                 alt="SafeHome logo"
                 role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
-                h="7"
-                w="36"
+                height="safeHomeLogoHeight"
+                width="safeHomeLogoWidth"
               />
-              {/* TODO: compare new 36 (144px) to old 142px */}
               <VisuallyHidden>SafeHome</VisuallyHidden>
             </HStack>{" "}
           </Link>
