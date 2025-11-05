@@ -17,7 +17,7 @@ const config: Config = {
     "^@/(.*)$": "<rootDir>/app/$1",
   },
   testPathIgnorePatterns: [
-    "/smoke-tests/",
+    "/e2e-tests/",
   ],
 };
 
