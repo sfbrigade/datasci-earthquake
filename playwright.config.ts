@@ -1,16 +1,23 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const baseURL = process.env.BASE_URL || 'https://www.safehome.report';
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './smoke-tests',
+  testDir: './e2e-tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
+  /* 
+    * Limit workers in CI for possible resource-starvation issues in Firefox.
+    * Setting to 2 workers for CI keeps parallelism but reduces load significantly.
+  */
+  workers: process.env.CI ? 2 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Timeout for each test. Default is 30000(30s). */
@@ -18,7 +25,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'https://www.safehome.report',
+    baseURL: baseURL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
@@ -32,7 +39,22 @@ export default defineConfig({
     },
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: { 
+        ...devices['Desktop Firefox'],
+        actionTimeout: 15000, // Increased to 15s to help with CI stability
+        navigationTimeout: 45000, // Slightly longer navigation wait
+        launchOptions: {
+            // Force WebGL initialization in Firefox via software rendering to behave like chromium and webkit which have automatic fallbacks.
+            // This is required because headless CI environments lack GPU hardware, which causes the map component to crash the application.
+            firefoxUserPrefs: {
+                'webgl.force-enabled': true,
+                'webgl.use-default-device': true,
+                'dom.webgl.enabled': true,
+            },
+        },
+        // Disable persistent storage/cookies to avoid domain rejection error
+        storageState: { cookies: [], origins: [] },
+      },
     },
     {
       name: 'webkit',
