@@ -20,18 +20,6 @@ const textStyles: ThemingConfig["textStyles"] = defineTextStyles({
       fontWeight: "medium",
     },
   },
-  headerReport: {
-    description: "header report",
-    value: {
-      fontFamily: "heading",
-      fontSize: ["3xl", "3xl", "4xl", "4xl", "4xl", "4xl"], // 30, 30, 36, 36, 36, 36
-      fontWeight: "light",
-      lineHeight: ["short", "short", "short", "short", "tall", "tall"],
-      // TODO: compare new line heights: 37.5px, 37.5px, 49.5px, 49.5px, 58.5px, 58.5px (1.375, 1.375, 1.375, 1.375, 1.625, 1.625)
-      // - to original line heights: 40px, 40px, 48px, 48px, 60px, 60px
-      // TODO: consider replacing this header's line-height with combo of line-height and vertical margin (margin via a textStyle?)
-    },
-  },
   headerMedium: {
     description: "header medium",
     value: {
@@ -100,7 +88,7 @@ const textStyles: ThemingConfig["textStyles"] = defineTextStyles({
     description: "hazard card text small",
     value: {
       fontFamily: "body",
-      fontSize: "md",
+      fontSize: "sm",
       fontWeight: "normal",
     },
   },
@@ -108,7 +96,7 @@ const textStyles: ThemingConfig["textStyles"] = defineTextStyles({
     description: "hazard card text xsmall",
     value: {
       fontFamily: "body",
-      fontSize: "sm",
+      fontSize: "xs",
       fontWeight: "normal",
     },
   },
@@ -156,7 +144,7 @@ const layerStyles: ThemingConfig["layerStyles"] = defineLayerStyles({
   },
   mobileButton: {
     description: "mobile button",
-    value: { color: "black", bg: "white", borderRadius: "4xl" }, // TODO: compare new 32px to old 30px
+    value: { color: "black", bg: "white", borderRadius: "4xl" },
   },
 });
 
@@ -169,11 +157,10 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     none: { value: "none" },
     search: {
       value: "{borderWidths.0.25} {borderStyles.solid} {colors.grey.600}",
-    }, // TODO: double check if `0.25`, `solid`, and `grey.600` actually resolve
-    // TODO: can the color be part of the border value, or should it separately assigned to the `borderColor` prop for it to actually work?
+    },
   },
   borderWidths: {
-    0.25: { value: "1px" }, // TODO: compare new 1px to old 2px
+    0.25: { value: "1px" },
   },
   borderStyles: {
     solid: { value: "solid" },
@@ -192,7 +179,6 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     },
     white: { value: "#FFF" },
     blue: { 600: { value: "#0088FF" }, text: { value: "#2B6CB0" } }, // blue/600 (TODO: all headings) // "#0088FF" comes from Figma switches
-    lightBlue: { value: "#3182CE" }, // blue/500 (TODO: remove if unused)
     yellow: { value: "#ECC94B" },
     red: { value: "#C53030" },
     green: { value: "#25855A" },
@@ -212,7 +198,7 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     // string value
     blue: {
       value:
-        "radial-gradient(120% 180% at 17.81% 82.6%, {colors.blueGradientFrom} 0%, {colors.blueGradientTo} 100%);", // TODO: double check that this gradient still works
+        "radial-gradient(120% 180% at 17.81% 82.6%, {colors.blueGradientFrom} 0%, {colors.blueGradientTo} 100%);",
     },
   },
   lineHeights: {
@@ -253,59 +239,19 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
 });
 
 const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
+  // TODO: test what happens for dark mode (_light vs dark)
   shadows: {
     card: {
-      value: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}", // TODO: compare new "1" (4px) to old 5px; also test if _dark works
+      value: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}",
     },
     mobileButton: {
-      value: "{spacing.0} {spacing.0} {spacing.0.5} {colors.lightGrey}", // TODO: compare new "0.5" (2px) to old 3px; also test if _dark works
+      value: "{spacing.0} {spacing.0} {spacing.0.5} {colors.lightGrey}",
     },
     search: {
       value:
-        "{spacing.0} {spacing.1} {spacing.1.5} {-spacing.0.25} {colors.blackAlpha.200}, {spacing.0} {spacing.0.5} {spacing.1} {-spacing.0.25} {colors.blackAlpha.50}", // TODO: compare new  blackAlpha.50 (rgba(0, 0, 0, 0.04)) vs old rgba(0, 0, 0, 0.06) and new blackAlpha.50 (rgba(0, 0, 0, 0.08)) vs old rgba(0, 0, 0, 0.10),
+        "{spacing.0} {spacing.1} {spacing.1.5} {-spacing.0.25} {colors.blackAlpha.200}, {spacing.0} {spacing.0.5} {spacing.1} {-spacing.0.25} {colors.blackAlpha.50}",
     },
   },
-
-  /*
-    WORKS
-
-    mobileButton: {
-      value: {
-        _light: "0px 0px 3px #c8caceff",
-        _dark: "0px 0px 3px #c8caceff",
-      },
-    },
-    
-    card: {
-      value: {
-        _light: "0px 5px 6px #c8caceff", // TODO: compare new "1" (4px) to old 5px
-        _dark: "0px 5px 6px #c8caceff", // TODO: compare new "1" (4px) to old 5px
-      },
-    },
-    
-    card: {
-      value: {
-        _light: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}", // TODO: compare new "1" (4px) to old 5px
-        _dark: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}", // TODO: compare new "1" (4px) to old 5px
-      },
-    },
-
-    card: { value: { _light: "0px 5px 6px #c8caceff", _dark: "0px 5px 6px #c8caceff" }},
-
-    card: { value: { _light: "0 1 1.5 lightGrey", _dark: "0 1 1.5 lightGrey" }},
-
-    card: { value: {
-      _light: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}",
-      _dark: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}",
-    }},
-
-    DOES NOT WORK
-
-    card: { value: {
-      _light: [":", "1", "1.5", "lightGrey"],
-      _dark: ["0", "1", "1.5", "lightGrey"],
-    }},
-  */
 });
 
 /*
@@ -330,6 +276,8 @@ const globalCss: SystemConfig["globalCss"] = {
     backgroundSize: "cover",
     borderRadius: "none",
   },
+  // NOTE: !important required to override due to the use of @layer in Chakra UI; alternative is to turn off @layer in Chakra config
+  // TODO: consider looking into better workarounds or turning off @layer
   ".mapboxgl-ctrl-group button": {
     width: "10 !important",
     height: "10 !important",

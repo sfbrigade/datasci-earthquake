@@ -212,7 +212,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       >
         <Box h="full" overflow="hidden">
           <Box zIndex="docked" top="0" position="absolute">
-            {/* TODO: is "docked" a good replacement for 10? */}
             {currentView === "desktop" ? (
               <ReportHazards
                 addressHazardData={addressHazardData}

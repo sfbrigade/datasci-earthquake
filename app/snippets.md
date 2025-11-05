@@ -24,3 +24,48 @@ try {
   console.log(err);
 }
 ```
+
+## Responsive style props for Chakra UI v3
+
+WORKS
+
+```
+mobileButton: {
+  value: {
+    _light: "0px 0px 3px #c8caceff",
+    _dark: "0px 0px 3px #c8caceff",
+  },
+},
+
+card: {
+  value: {
+    _light: "0px 5px 6px #c8caceff",
+    _dark: "0px 5px 6px #c8caceff",
+  },
+},
+
+card: {
+  value: {
+    _light: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}",
+    _dark: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}",
+  },
+},
+
+card: { value: { _light: "0px 5px 6px #c8caceff", _dark: "0px 5px 6px #c8caceff" }},
+
+card: { value: { _light: "0 1 1.5 lightGrey", _dark: "0 1 1.5 lightGrey" }},
+
+card: { value: {
+  _light: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}",
+  _dark: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}",
+}},
+```
+
+DOES NOT WORK
+
+```
+card: { value: {
+  _light: [":", "1", "1.5", "lightGrey"],
+  _dark: ["0", "1", "1.5", "lightGrey"],
+}},
+```

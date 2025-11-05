@@ -6,9 +6,9 @@ const TermsOfService = () => {
     <>
       <Flex
         w={{ base: "full", xl: "7xl" }}
-        pt={{ base: "6", md: "9", xl: "12" }} // TODO: compare new 6 (24px) to old 23px, new 12 (48px) to old 50px
-        pb="12" // TODO: compare new 12 (48px) to old 50px
-        px={{ base: "6", md: "7", xl: "32" }} // TODO: compare new 7 (28px) to old 27px and old 26px, new 32 (128px) to old 127px
+        py="8"
+        pb="12"
+        px={{ base: "8", xl: "32" }}
         gap="11"
         direction={{ base: "column", lg: "row" }}
         m="auto"

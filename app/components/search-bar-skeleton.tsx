@@ -10,10 +10,6 @@ const SearchBarSkeleton = () => {
           sm: "xs",
           md: "sm",
           lg: "md",
-          // TODO: contrast new values to original values:
-          // sm: 320px vs "303px"
-          // md: 384px vs "371px",
-          // lg: 448px vs "417px",
         }}
         data-testid="search-bar"
         startElement={

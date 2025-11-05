@@ -55,7 +55,13 @@ const Home = async () => {
           liquefactionData={liquefactionData}
         />
       </Suspense>
-      <Flex w="full" py="8" px="16" justifyContent="space-between" gap="11">
+      <Flex
+        w="full"
+        p="8"
+        justifyContent="space-between"
+        gap="11"
+        direction={{ base: "column", lg: "row" }}
+      >
         <HStack alignItems={"start"} w={{ base: "full", lg: "3/4" }}>
           <div>
             <Heading as="h2">
@@ -254,7 +260,7 @@ const Home = async () => {
             </List.Root>
           </div>
         </HStack>
-        <Box flexShrink={0} display={{ base: "none", lg: "block" }}>
+        <Box flexShrink={0}>
           <Image
             src="/images/earthquake-ready.png"
             width="earthquakeReadyImageWidth"
