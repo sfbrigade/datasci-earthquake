@@ -91,9 +91,8 @@ const CardHazard: React.FC<CardHazardProps> = ({
   return (
     <Card.Root
       flex={1}
-      maxW={{ base: "80", "2xl": "sm" }} // TODO: compare 2xl: sm (320px) to original 336px
-      minH={{ base: "44", "2xl": "48" }} // TODO: compare base: 44 (176px) to original 178px and compare 2xl: 48 (192px) to original 184px
-      py={{ base: "3.5", md: "4" }} // TODO: compare py md: "4" (16px) to original md: "18px"
+      maxW={{ base: "xs", "2xl": "sm" }}
+      py={{ base: "3.5", md: "4" }}
       px={{ base: "4", md: "5" }}
       shadow="card"
       variant="elevated"
@@ -112,9 +111,9 @@ const CardHazard: React.FC<CardHazardProps> = ({
       >
         <VStack alignItems={"flex-start"} flexGrow={1} h="full">
           <Card.Header
-            w="full" // TODO: compare full to original 102%
+            w="full"
             p="0"
-            mb="1" // TODO: compare mb=1 (0.25rem) to original 0.2em
+            mb="1"
             textAlign="left"
             flexDirection="row"
             justifyContent="space-between"
@@ -130,6 +129,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
               checked={toggledStates[id]}
               onCheckedChange={(e) => handleSwitchClick(id, e.checked)}
               defaultChecked
+              gap="0" // prevent whitespace on right side
             >
               <Switch.HiddenInput />
               <Switch.Control />
@@ -137,19 +137,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
             </Switch.Root>
           </Card.Header>
           <Card.Body textAlign="left" p="0" mb="1.5">
-            <Text
-              textStyle={{
-                base:
-                  description.length >= 105
-                    ? "cardTextXSmall"
-                    : "cardTextSmall",
-                "2xl":
-                  description.length >= 105
-                    ? "cardTextSmall"
-                    : "cardTextMedium",
-              }}
-              layerStyle="text"
-            >
+            <Text textStyle="cardTextMedium" layerStyle="text">
               {description}
             </Text>
           </Card.Body>
@@ -159,10 +147,6 @@ const CardHazard: React.FC<CardHazardProps> = ({
                 <Text
                   cursor="button"
                   textDecoration={"underline"}
-                  fontSize={{
-                    base: "sm", // TODO: compare sm (14px) to original 15.2px
-                    "2xl": "md",
-                  }}
                   onClick={() => {
                     if (!isMoreInfo) {
                       posthog.capture("more-info-clicked", {

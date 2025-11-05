@@ -39,14 +39,7 @@ const HomeHeader = ({
   const router = useRouter();
 
   return (
-    <Box
-      as="header"
-      bgGradient="blue"
-      // TODO: make pt same as pb? (and convert to px and can then ignore the two TODOs below)
-      pt={{ base: "4", "2xl": "5" }} // TODO: compare new 4 (16px) to old 18px and new 5 (20px) to old 22px
-      pb={{ base: "5", "2xl": "6" }} // TODO: compare new 5 (20px) to old 22px and new 6 (24px) to old 26px
-      px={{ base: "8", "2xl": "12" }}
-    >
+    <Box as="header" bgGradient="blue" py={{ base: "4", "2xl": "5" }} px="8">
       <Flex
         direction={{
           base: "column",

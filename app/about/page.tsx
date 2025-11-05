@@ -2,6 +2,7 @@ import { Flex, Link, Text, Box, VStack, List, Image } from "@chakra-ui/react";
 import Heading from "../components/heading";
 import { Headings, DataInfoLinks, TeamMembers } from "../data/data";
 import NextLink from "next/link";
+import NextImage from "next/image";
 
 const About = () => {
   const headingData = Headings.about;
@@ -43,11 +44,12 @@ const About = () => {
   return (
     <Flex
       w={{ base: "full", xl: "7xl" }}
-      py={{ base: "6", md: "9", xl: "20" }} // TODO: compare new "9" (38px) to old "36px"
-      px={{ base: "6", md: "7", xl: "32" }}
+      py="8"
+      pb="12"
+      px={{ base: "8", xl: "32" }}
+      gap="11"
       direction={{ base: "column", lg: "row" }}
       m="auto"
-      gap="11"
     >
       <Flex direction="column" alignItems={"flex-start"} gap="12">
         <Heading headingData={headingData} />

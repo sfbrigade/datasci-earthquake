@@ -132,11 +132,10 @@ export const Headings: HeadingPropsCollection = {
     themeTextStyle: "headerMedium",
   },
   about: {
-    text: "Earthquake safety starts with knowledge. We're here to help.",
+    text: "Earthquake safety starts with knowledge.\nWe're here to help.",
     highlight: "",
-    style: { color: "blue.text", fontWeight: "light", paddingRight: "48" }, // TODO: compare new 48 (192px) to old 50h; or shoulud ti be "12"?
+    style: { color: "blue.text", fontWeight: "light" },
     highlightStyle: {},
-    maxWidth: { base: "100%", md: "100%", xl: "842px" },
     themeTextStyle: "headerBig",
   },
 };

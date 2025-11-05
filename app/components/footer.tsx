@@ -21,12 +21,8 @@ const Footer = () => {
     <Box as="footer" w="full" bgColor="blueBackground">
       <Stack
         w={{ base: "full" }}
-        p={{
-          base: ["6", "12", "6", "12"], // TODO: compare second 6 (24px) to 22px,
-          "2xl": ["6", "12", "6", "12"], // TODO: compare first 6 (24px) to 22px and second 6 to 26px,
-        }}
-        py="6" // TODO: check 6 (24px) against old measurements where base pt = 24px and base pb = 22px, 2xl pt = 24px and 2xp pb = 26px
-        px="12"
+        py="6"
+        px="8"
         direction={{ base: "column", lg: "row" }}
         justify="space-between"
         alignItems="flex-start"
@@ -75,7 +71,7 @@ const Footer = () => {
             <Image
               src="/images/SFCivicTech-logo.svg"
               alt="SF Civic Tech Logo"
-              role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
+              role="img" // needed for VoiceOver bug for SVGs: https://bugs.webkit.org/show_bug.cgi?id=216364
               height="sfctLogoHeight"
               width="sfctLogoWidth"
             />
