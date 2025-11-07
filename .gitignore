@@ -45,3 +45,5 @@ node_modules
 
 # Chakra
 /theme/
+*storybook.log
+storybook-static
