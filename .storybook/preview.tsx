@@ -10,6 +10,7 @@ import {
   Controls,
   Stories,
 } from "@storybook/addon-docs/blocks";
+import "./preview.css"; // overrides
 
 const preview: Preview = {
   parameters: {
@@ -41,6 +42,7 @@ const preview: Preview = {
       ),
     },
   },
+  // Wrap stories with functionality
   decorators: [
     (Story) => {
       return (
