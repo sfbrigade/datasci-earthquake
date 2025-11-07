@@ -14,7 +14,9 @@ You can work on this app entirely [locally](#local-development), entirely [using
 
 ## Configuration of environment variables for all environments
 
-We use GitHub Secrets to store sensitive environment variables. To be able to run the app with all features enabled, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
+We use GitHub Secrets to store sensitive environment variables. To be able to run the app with all features enabled, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact. You can ask a lead or fellow team member for both write access and the decryption passphrase [as described here](#core-contributors).
+
+For additional environment variables just for your local machine, please create a `.env.local` file in the root folder and add the variables there. Note that these will override any variables in `.env` of the same name. An example of an additional environment variable you may need to configure is `BROWSER` [for Storybook](#starting-storybook-component-workshop).
 
 ### Contributors working from forks
 
@@ -254,10 +256,28 @@ After going through the steps below for either front end-focused or back end-foc
 
 For front end-focused development, first run `npm install`, and then you can run `npm run dev-front`, which will:
 
-- install dependencies and start up your Next.js development server locally
 - build and restart your backend (and database) Docker containers
+- install dependencies
+- start up your Next.js development server locally (on port 3000 by default)
+- [start up Storybook](#starting-storybook-component-workshop) locally (on port 6006 in Chrome by default)
 
 If you need to rebuild the containers, run `npm run docker-back`.
+
+If you would prefer to skip starting Storybook, run `npm run dev-front-no-storybook' instead.
+
+#### Starting Storybook (component workshop)
+
+To start up our Storybook component workshop, run `npm run storybook`. This will:
+
+- start up an instance of Storybook in Google Chrome (on port 6006 by default)
+
+If you would like to [use a different browser than Chrome](https://storybook.js.org/docs/configure/environment-variables#using-environment-variables-to-choose-the-browser), then edit your `.env.local` file to include this line where "firefox" is the name of the browser you are targeting:
+
+```env
+BROWSER="firefox"
+```
+
+For context, when we work on components, we also write [Storybook](https://storybook.js.org) Stories for them so that we can more easily create and document each component in isolation. If you create or edit a component or part of our theme, you will need to create one or more Stories for it if they don't yet exist, or update them if they do.
 
 #### Working with Chakra UI
 
