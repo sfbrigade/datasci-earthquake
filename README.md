@@ -270,9 +270,9 @@ While doing development, note that style prop autocompletion relies on theme typ
 It's not obvious how to see a theme's tokens and values for reference during development. To make this easier and improve the experience, there are two ways you can currently view the theme:
 
 1. Browser console log: While running `npm run dev-front`, on page load, we log the theme as an object to the browser console
-2. `theme` folder in your local filesystem: If you run `npm run gen:tokens`, the theme will be outputted to a temporary `theme` folder
+2. ~~`theme` folder in your local filesystem: If you run `npm run gen:tokens`, the theme will be outputted to a temporary `theme` folder~~ WARNING: the `gen:tokens` npm script that creates a `theme` folder does not currently work as expected; see related comment in [package.json](package.json)
 
-Note that if you make changes to `theme.ts`, theme typings will be regenerated on the fly, but only if you are running `npm run dev-front`.
+For autocompletion of theme tokens in JSX, make sure you are running `npm run dev-front`. With this npm script running, theme typings will be regenerated whenever `theme.ts` is modified.
 
 There are plans to introduce a third way of viewing our theme: via Storybook!
 

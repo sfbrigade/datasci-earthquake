@@ -26,7 +26,8 @@
     "rebuild": "npm run rebuild-front",
     "rebuild-front": "run-s clean-front install-deps build",
     "gen:theme-typings": "chakra typegen styles/theme.ts",
-    "gen:tokens": "chakra eject styles/theme.ts"
+    "gen:tokens-COMMENT": "WARNING: this is currently broken and only outputs a default theme that does not include our overrides in `theme.ts`; TODO: look into workarounds or consider contributing an enhancement upstream to Chakra UI",
+    "gen:tokens": "chakra eject"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.22.0",
