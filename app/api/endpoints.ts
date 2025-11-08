@@ -1,5 +1,5 @@
 const API_URL = "/api";
-const CDN_URL = process.env.ENVIRONMENT === "ci" ? "data" : process.env.NEXT_PUBLIC_CDN_URL || "/data";
+const CDN_URL = ["ci", "local"].includes(process.env.ENVIRONMENT || "") ? "data" : process.env.NEXT_PUBLIC_CDN_URL || "/data";
 
 export const API_ENDPOINTS = {
   softStories: `${API_URL}/soft-stories`,
