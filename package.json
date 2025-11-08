@@ -11,7 +11,7 @@
     "dev": "run-p next-dev fastapi-dev",
     "build": "run-s gen:theme-typings next-build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "format": "prettier --write .",
     "test": "jest",
     "dev-back": "run-s docker-front fastapi-dev",

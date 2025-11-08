@@ -1,5 +1,8 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 
+import { next } from "eslint-config-next";
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+
 import prettier from "eslint-plugin-prettier";
 import js from "@eslint/js";
 
@@ -13,12 +16,12 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   {
-    extends: compat.extends(
-      "next",
-      "next/core-web-vitals",
-      "plugin:prettier/recommended",
-      "plugin:storybook/recommended"
-    ),
+    extends: [
+      ...next,
+      ...nextCoreWebVitals,
+      ...compat.extends("plugin:prettier/recommended"),
+      ...compat.extends("plugin:storybook/recommended"),
+    ],
 
     plugins: {
       prettier,
