@@ -57,7 +57,9 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
   const handleAddressChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputAddress(event.currentTarget.value);
     // shows hint again upon further search param changes without selection of suggestion
-    if (!suggestionSelected) {
+    if (!suggestionSelected) setSuggestionsAvailable(false);
+    else if (suggestionSelected && inputAddress.length <= 3) {
+      setSuggestionSelected(false);
       setSuggestionsAvailable(false);
     }
   };
@@ -93,7 +95,7 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
               md: "371px",
               lg: "417px",
             }}
-            mb={"24px"}
+            // mb={"24px"}
             data-testid="search-bar"
             startElement={
               <IoSearchSharp
@@ -153,7 +155,7 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
       {inputAddress.length && !suggestionSelected && !suggestionsAvailable ? (
         <Text
           position="absolute"
-          bottom={0}
+          bottom={-5}
           textStyle="textSmall"
           color="white"
         >

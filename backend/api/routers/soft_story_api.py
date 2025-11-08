@@ -30,10 +30,11 @@ router = APIRouter(
 STATUS_WORK_COMPLETE_LOWERCASE = (
     "work complete, cfc issued"  # Work Complete, CFC Issued
 )
+STATUS_NON_COMPLIANT = "non-compliant"
 
 
 @router.get("", response_model=SoftStoryFeatureCollection)
-async def get_soft_stories(db: Session = Depends(get_db)):
+def get_soft_stories(db: Session = Depends(get_db)):
     """
     Retrieves all soft story properties (of which coordinates are
     known) from the database except the ones for which work is
@@ -71,7 +72,7 @@ async def get_soft_stories(db: Session = Depends(get_db)):
 
 
 @router.get("/is-soft-story", response_model=IsSoftStoryPropertyView)
-async def is_soft_story(
+def is_soft_story(
     lon: Optional[float] = Query(None),
     lat: Optional[float] = Query(None),
     ping: bool = False,
@@ -107,21 +108,22 @@ async def is_soft_story(
     logger.info(f"Checking soft story status for coordinates: lon={lon}, lat={lat}")
 
     try:
+        exists = None
+        last_updated = None
         point = from_shape(Point(lon, lat), srid=4326)
         property = (
             db.query(SoftStoryProperty)
-            .filter(
-                and_(
-                    geo_func.ST_DWithin(SoftStoryProperty.point, point, 0.000001),
-                    func.lower(SoftStoryProperty.status)
-                    != STATUS_WORK_COMPLETE_LOWERCASE,
-                )
-            )
+            .filter(geo_func.ST_DWithin(SoftStoryProperty.point, point, 0.000001))
             .first()
         )
 
-        exists = property is not None
-        last_updated = property.update_timestamp if property else None
+        if property:
+            last_updated = property.update_timestamp
+            status_lower = property.status.lower()
+            if status_lower == STATUS_WORK_COMPLETE_LOWERCASE:
+                exists = False
+            elif status_lower == STATUS_NON_COMPLIANT:
+                exists = True
 
         logger.info(
             f"Soft story check result for coordinates: lon={lon}, lat={lat} - "
@@ -131,14 +133,12 @@ async def is_soft_story(
 
         return IsSoftStoryPropertyView(exists=exists, last_updated=last_updated)
 
-    except Exception as e:
+    except Exception:
         logger.error(
-            f"Error checking soft story status for coordinates: lon={lon}, lat={lat}, "
-            f"error: {str(e)}",
+            f"Error checking soft story status for coordinates: lon={lon}, lat={lat}",
             exc_info=True,
         )
         raise HTTPException(
             status_code=500,
-            detail=f"Error checking soft story status for coordinates: lon={lon}, lat={lat}, "
-            f"error: {str(e)}",
+            detail=f"An unexpected error occurred while checking soft story status.",
         )

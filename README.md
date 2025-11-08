@@ -15,9 +15,9 @@ You can work on this app entirely [locally](#local-development), entirely [using
 We use GitHub Secrets to store sensitive environment variables. To be able to run the app with all features enabled, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
 
 ### Contributors working from forks
-- If you are contributing from a fork, you do not need to follow the workflow below.
+- If you are contributing from a fork, you do not need to follow the workflow below for core contributors.
 - The CI pipeline for forked PRs will automatically use the provided `.env.example`.
-- You may also copy `.env.example` and rename it to `.env` locally. This allows you to run the app, but with limited functionality (since the real secrets are not included).
+- If you don't have `.env`, `.env.example` will be automatically used instead. This allows you to run the app, but with limited functionality (since the real secrets are not included).
 
 ### Core contributors
 Before starting work on the project, make sure to:
@@ -126,8 +126,7 @@ Replace <service name> with frontend, backend, db, or db_test:
 
 1. First update code and/or rebuild any containers as necessary. Otherwise you may get false results.
 2. Run the containers (`docker compose up -d)`
-3. Run pytest: `docker compose run backend pytest backend`
-   - Alternatively, run pytest with container cleanup: `docker compose run --remove-orphans backend pytest backend`
+3. Run pytest to test the docker container: `docker exec -it datasci-earthquake-backend-1 pytest backend` or `docker compose exec backend pytest backend`
 4. To get code coverage, run `docker exec -w /backend datasci-earthquake-backend-1 pytest --cov=backend`
 
 ---
@@ -138,6 +137,23 @@ Docker development is recommended as the configuration is more guaranteed.
 
 ### Prerequisites
 
+**uv**: Install the uv package manager:
+
+**On macOS/Linux:**
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**On Windows:**
+```powershell
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+**Alternative (all platforms):**
+```bash
+pip install uv
+```
+
 **PostgreSQL**: 
 1. [Install](https://adoptium.net/) Java 1.8 or later if your PostgreSQL installer requires it (e.g., the EDB installer).
 2. [Install](https://www.postgresql.org/download/) PostgreSQL locally with the PostGIS extension, select the PostGIS extension when prompted by the installer.
@@ -145,22 +161,34 @@ Docker development is recommended as the configuration is more guaranteed.
 
 ### Starting the Application
 
-1. Set up a python environment
+#### Backend Setup
+
+**Note**: The backend dependencies are installed automatically when you run the development server (`npm run fastapi-dev`). If you need to run backend commands manually (e.g., running `pytest`), run:
+
 ```bash
-python3.12 -m venv backend/venv
+(cd backend && uv sync --extra dev)
 ```
 
-2. Activate the python environment (NOTE: `npm run dev` will install the dependencies)
+To manually activate the virtual environment from the project root, run:
+
+**On macOS/Linux:**
 ```bash
-source backend/venv/bin/activate
+source backend/.venv/bin/activate
 ```
 
-3. Set nvm version
+**On Windows:**
+```cmd
+backend\.venv\Scripts\activate
+```
+
+#### Frontend Setup
+
+1. Set nvm version:
 ```bash
 nvm use 18
 ```
 
-4. Install the front end dependencies:
+2. Install the front end dependencies:
 ```bash
 npm install
 # or
@@ -169,7 +197,7 @@ yarn
 pnpm install
 ```
 
-5. Run the development server:
+3. Run the development server:
 
 ```bash
 npm run dev
@@ -312,10 +340,11 @@ This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code s
 
 ### Prerequisites
 
-- If you haven't already, install pre-commit:
-  `pip install pre-commit`
+- Pre-commit is included in the project dependencies and will be installed with `uv sync --extra dev`
 - Run the following command to install the pre-commit hooks defined in the configuration file `.pre-commit-config.yaml`:
-  `pre-commit install`
+  ```bash
+  pre-commit install
+  ```
   This command sets up pre-commit to automatically run ESLint, Black, and MyPy before each commit.
 
 ### Usage
@@ -361,6 +390,7 @@ When opening a pull request, please:
 - add reviewers
 - use draft/WIP if it turns out to be not ready for review
 - link the relevant issue so it is automatically closed when the PR is merged
+- run `npm run build` locally if you have changed any frontend code or dependencies to catch potential build errors.
 
 Ideally, we maintain a readable, clean, and linear commit history. To that end, when merging a pull request, please use `Squash and Merge`¹.
 

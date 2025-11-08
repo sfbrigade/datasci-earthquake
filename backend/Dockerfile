@@ -3,7 +3,7 @@
 # Dockerfile for FastAPI
 
 ARG PYTHON_VERSION=3.11.4
-FROM python:${PYTHON_VERSION}-slim as python_base
+FROM python:${PYTHON_VERSION}-slim AS python_base
 
 # Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -48,6 +48,10 @@ COPY backend/pyproject.toml backend/uv.lock ./
 
 # Install dependencies using uv
 RUN uv sync --frozen
+
+# uv sync creates a virtual environment in the root directory, add it to PATH
+ENV VIRTUAL_ENV=/.venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Copy the source code into the container.
 COPY backend ./backend

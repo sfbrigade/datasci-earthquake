@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
+import MobileReportHazards from "./mobile-report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
@@ -67,7 +68,9 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     layerId: "",
     toggleState: true,
   });
+  const [showHazards, setShowHazards] = useState(false);
   const [isSearchComplete, setSearchComplete] = useState(false);
+  const [currentView, setCurrentView] = useState("");
   const toastIdDataLoadFailed = "data-load-failed";
   const coordinatesRef = useRef<number[] | null>(null);
   const router = useRouter();
@@ -103,6 +106,10 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     [fetchHazardData]
   );
 
+  const handleResize = () => {
+    setCurrentView(window.innerWidth <= 480 ? "mobile" : "desktop");
+  };
+
   const handleSearchChange = useCallback(
     (coords: number[], address: string) => {
       const newUrl = `?address=${encodeURIComponent(address)}&lat=${coords[1]}&lon=${coords[0]}`;
@@ -136,6 +143,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       setCoordinates(null);
       setSearchedAddress(null);
       setAddressHazardData({});
+      setSearchComplete(false);
       coordinatesRef.current = null;
     }
   }, [searchParams, updateHazardData]);
@@ -168,6 +176,16 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     }
   }, [softStoryData, tsunamiData, liquefactionData]);
 
+  useEffect(() => {
+    if (currentView === "") {
+      handleResize();
+    }
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [currentView]);
+
   return (
     <>
       <HomeHeader
@@ -175,16 +193,38 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         isSearchComplete={isSearchComplete}
         onSearchChange={handleSearchChange}
       />
-      <Box w="full" h={{ base: "1400px", md: "1000px" }} m="auto">
-        <Box h="100%" overflow="hidden" position="relative">
+      <Box
+        w="full"
+        h={{
+          base: "calc(100vh - 198px - 32px)",
+          md: "calc(100vh - 175px - 32px)",
+          xl: "calc(100vh - 141px - 32px)",
+          "2xl": "calc(100vh - 149px - 32px)",
+        }}
+        m="auto"
+        position="relative"
+      >
+        <Box h="100%" overflow="hidden">
           <Box zIndex={10} top={0} position="absolute">
-            <ReportHazards
-              addressHazardData={addressHazardData}
-              isHazardDataLoading={isHazardDataLoading}
-              toggledStates={toggledStates}
-              setToggledStates={setToggledStates}
-              setLayerToggleObj={setLayerToggleObj}
-            />
+            {currentView === "desktop" ? (
+              <ReportHazards
+                addressHazardData={addressHazardData}
+                isHazardDataLoading={isHazardDataLoading}
+                toggledStates={toggledStates}
+                setToggledStates={setToggledStates}
+                setLayerToggleObj={setLayerToggleObj}
+              />
+            ) : currentView === "mobile" ? (
+              <MobileReportHazards
+                showHazards={showHazards}
+                addressHazardData={addressHazardData}
+                isHazardDataLoading={isHazardDataLoading}
+                toggledStates={toggledStates}
+                setShowHazards={setShowHazards}
+                setToggledStates={setToggledStates}
+                setLayerToggleObj={setLayerToggleObj}
+              />
+            ) : null}
           </Box>
           <Map
             coordinates={coordinates || defaultCoords}

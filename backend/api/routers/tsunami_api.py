@@ -27,7 +27,7 @@ router = APIRouter(
 
 
 @router.get("", response_model=TsunamiFeatureCollection)
-async def get_tsunami_zones(db: Session = Depends(get_db)):
+def get_tsunami_zones(db: Session = Depends(get_db)):
     """
     Retrieve all tsunami hazard zones from the database.
 
@@ -48,7 +48,7 @@ async def get_tsunami_zones(db: Session = Depends(get_db)):
 
 
 @router.get("/is-in-tsunami-zone", response_model=IsInTsunamiZoneView)
-async def is_in_tsunami_zone(
+def is_in_tsunami_zone(
     lon: Optional[float] = Query(None),
     lat: Optional[float] = Query(None),
     ping: bool = False,
@@ -102,14 +102,12 @@ async def is_in_tsunami_zone(
 
         return IsInTsunamiZoneView(exists=exists, last_updated=last_updated)
 
-    except Exception as e:
+    except Exception:
         logger.error(
-            f"Error checking tsunami zone status for coordinates: lon={lon}, lat={lat}, "
-            f"error: {str(e)}",
+            f"Error checking tsunami zone status for coordinates: lon={lon}, lat={lat}",
             exc_info=True,
         )
         raise HTTPException(
             status_code=500,
-            detail=f"Error checking tsunami zone status for coordinates: lon={lon}, lat={lat}, "
-            f"error: {str(e)}",
+            detail=f"An unexpected error occurred while checking tsunami zone status.",
         )
