@@ -1,7 +1,8 @@
 {
-  "name": "nextjs-fastapi",
+  "name": "safehome",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "fastapi-dev-COMMENT": "TODO: look into if && is cross-platform; if not, replace accordingly",
     "fastapi-dev": "cd backend && uv sync --extra dev && uv run fastapi dev ../api/index.py",
