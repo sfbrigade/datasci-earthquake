@@ -36,7 +36,7 @@ const isErrorResult = (data: unknown): data is ErrorResult => {
     typeof data === "object" &&
     data !== null &&
     "error" in data &&
-    (data as any).error === true
+    data.error === true
   );
 };
 

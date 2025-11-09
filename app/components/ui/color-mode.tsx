@@ -7,9 +7,10 @@ import type { ThemeProviderProps } from "next-themes";
 import * as React from "react";
 import { LuMoon, LuSun } from "react-icons/lu";
 
-export interface ColorModeProviderProps extends ThemeProviderProps {}
+// TODO: look into whether or not to we need to leverage the following:
+// export interface ColorModeProviderProps extends ThemeProviderProps {}
 
-export function ColorModeProvider(props: ColorModeProviderProps) {
+export function ColorModeProvider(props: ThemeProviderProps) {
   return (
     <ThemeProvider attribute="class" disableTransitionOnChange {...props} />
   );
@@ -46,7 +47,7 @@ export function ColorModeIcon() {
   const { colorMode } = useColorMode();
   return colorMode === "dark" ? <LuMoon /> : <LuSun />;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface ColorModeButtonProps extends Omit<IconButtonProps, "aria-label"> {}
 
 export const ColorModeButton = React.forwardRef<

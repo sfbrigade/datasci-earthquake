@@ -42,7 +42,7 @@ const Home = async () => {
       fetchTsunami(),
       fetchLiquefaction(),
     ]);
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error: ", error);
   }
   return (

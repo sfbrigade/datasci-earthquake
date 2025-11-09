@@ -1,43 +1,54 @@
 import { defineConfig } from "eslint/config";
-import js from "@eslint/js";
+import globals from "globals";
+import pluginJs from "@eslint/js";
+import tseslint from "typescript-eslint";
 import prettier from "eslint-plugin-prettier";
-
-// Conditionally import Next.js configs, handling possible missing types.
-let next: any = [];
-let nextCoreWebVitals: any = [];
-
-try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  next = require("eslint-config-next");
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  nextCoreWebVitals = require("eslint-config-next/core-web-vitals");
-} catch (e) {
-  // If Next.js config packages are not installed, fallback to empty configs.
-  next = [];
-  nextCoreWebVitals = [];
-}
+// Add type declarations for modules without types
+// // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// // @ts-expect-error: No types for eslint-config-next
+// import next from "eslint-config-next";
+// // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// // @ts-expect-error: No types for eslint-config-next/core-web-vitals
+// import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
 
 import { globalIgnores } from "eslint/config";
-
 import { FlatCompat } from "@eslint/eslintrc";
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
+  recommendedConfig: pluginJs.configs.recommended,
+  allConfig: pluginJs.configs.all,
 });
 
 export default defineConfig([
+  // TypeScript ESLint recommended configs
+  ...tseslint.configs.recommended,
+
   {
     extends: [
-      ...next,
-      ...nextCoreWebVitals,
+      // ...next,
+      // ...nextCoreWebVitals,
       ...compat.extends("plugin:prettier/recommended"),
       ...compat.extends("plugin:storybook/recommended"),
     ],
 
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...globals.es2021,
+      },
+      parser: tseslint.parser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+        project: "./tsconfig.json",
+      },
+    },
+
     plugins: {
       prettier,
+      "@typescript-eslint": tseslint.plugin,
     },
 
     rules: {
@@ -49,5 +60,7 @@ export default defineConfig([
     "**/dist/",
     "**/.next/",
     "**/next.config.js",
+    "**/.**/",
+    "**/*.d.ts",
   ]),
 ]);

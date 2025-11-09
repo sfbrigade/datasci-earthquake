@@ -12,7 +12,7 @@ import {
   Link,
   Flex,
 } from "@chakra-ui/react";
-import Heading, { HeadingProps } from "./heading";
+import Heading from "./heading";
 import ReportAddress from "./report-address";
 import SearchBar from "./search-bar";
 import Share from "./share";

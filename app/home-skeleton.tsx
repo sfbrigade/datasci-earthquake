@@ -13,15 +13,15 @@ import {
 import NextLink from "next/link";
 
 const HomeSkeleton = () => {
-  let softStoryData: FeatureCollection<Geometry, GeoJsonProperties> = {
+  const softStoryData: FeatureCollection<Geometry, GeoJsonProperties> = {
     type: "FeatureCollection",
     features: [],
   };
-  let tsunamiData: FeatureCollection<Geometry, GeoJsonProperties> = {
+  const tsunamiData: FeatureCollection<Geometry, GeoJsonProperties> = {
     type: "FeatureCollection",
     features: [],
   };
-  let liquefactionData: FeatureCollection<Geometry, GeoJsonProperties> = {
+  const liquefactionData: FeatureCollection<Geometry, GeoJsonProperties> = {
     type: "FeatureCollection",
     features: [],
   };

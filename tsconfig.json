@@ -28,6 +28,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    // "**/*.*.ts",
+    // "**/*.*.tsx",
     ".next/types/**/*.ts",
     "app/components/__tests__/search-bar.test.jsx"
   ],

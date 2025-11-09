@@ -23,7 +23,7 @@ jest.mock("next/navigation", () => ({
 }));
 
 jest.mock("../home-header", () => {
-  const mockComponent = jest.fn((props) => (
+  const mockComponent = jest.fn(() => (
     <div data-testid="home-header">Mock HomeHeader</div>
   ));
 

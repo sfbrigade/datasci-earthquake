@@ -3,7 +3,6 @@
 import {
   Text,
   HStack,
-  VStack,
   Link,
   Card,
   Spinner,
@@ -51,7 +50,7 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
   setLayerToggleObj,
 }) => {
   const { id, title, name, description, icon, iconColor } = hazard;
-  const { exists, last_updated: date } = hazardData || {};
+  const { exists } = hazardData || {};
   const pillTextOptions = PillData.find((object) => object.name === name) ?? {
     trueData: "No Data",
     falseData: "No Data",

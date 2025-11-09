@@ -13,7 +13,11 @@ import { Dispatch, SetStateAction } from "react";
 import { LayerToggleObjProps } from "./address-mapper";
 import { FaAngleUp, FaAngleDown } from "react-icons/fa6";
 
-type HazardData = { softStory?: any; tsunami?: any; liquefaction?: any };
+type HazardData = {
+  softStory?: object;
+  tsunami?: object;
+  liquefaction?: object;
+};
 
 const MobileReportHazards = ({
   showHazards,

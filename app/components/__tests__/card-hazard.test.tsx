@@ -6,7 +6,6 @@ import "@testing-library/jest-dom";
 import { Provider } from "../ui/provider";
 import "../__mocks__/match-media";
 
-// eslint-disable-next-line react/display-name
 jest.mock("../pill.tsx", () => () => (
   <div data-testid="pill-mock">Pill Component</div>
 ));

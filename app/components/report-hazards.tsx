@@ -5,7 +5,11 @@ import { CardContainer } from "./card-container";
 import { Dispatch, SetStateAction } from "react";
 import { LayerToggleObjProps } from "./address-mapper";
 
-type HazardData = { softStory?: any; tsunami?: any; liquefaction?: any };
+type HazardData = {
+  softStory?: object;
+  tsunami?: object;
+  liquefaction?: object;
+};
 
 const ReportHazards = ({
   addressHazardData,

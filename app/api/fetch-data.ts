@@ -8,12 +8,15 @@ export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
       return await cdnResponse.json();
     } else {
       console.warn(`CDN fetch failed with: ${cdnResponse.status} (${cdnResponse.statusText}). Falling back to API.`);
-    }
-  } catch (error: any) {
-    console.warn(`CDN fetch error: ${error.message}. Falling back to API.`);
-  }
-
-  // TODO: prevent this fallback from running if the CDN call successfully returns valid data
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.warn(`CDN fetch error: ${error.message}. Falling back to API.`);
+      } else {
+        console.warn(`CDN fetch error: Unexpected error. Falling back to API.`);
+      }
+      // Fallback to API only proceeds if an error is thrown or CDN response is not ok.
+      }
   // Fallback to API
   try {
     const apiResponse = await fetch(apiEndpoint, { next: { revalidate: SECONDS_PER_DAY } });
@@ -29,8 +32,13 @@ export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
     }
     const data = await apiResponse.json();
     return data;
-  } catch (error: any) {
-    console.log("Error: " + error.message);
-    return { error: true, message: error.message };
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log("Error: " + error.message);
+      return { error: true, message: error.message };
+    } else {
+      console.log("Error: Unexpected error");
+      return { error: true, message: "Unexpected error" };
+    }
   }
-};
+}

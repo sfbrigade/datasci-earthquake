@@ -1,5 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen } from "@testing-library/react";
 import Share from "../share";
 import "@testing-library/jest-dom";
 import { Provider } from "../ui/provider";
