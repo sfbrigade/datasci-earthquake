@@ -60,7 +60,10 @@ const MobileReportHazards = ({
         <Portal>
           <Menu.Positioner>
             <Menu.Content p={0} borderRadius="15px" py="12px" w="100%">
-              <Accordion.Root collapsible={true}>
+              <Accordion.Root
+                collapsible={true}
+                defaultValue={[Hazards[0].name]}
+              >
                 {Hazards.map((hazard) => {
                   return (
                     <MobileCardHazard
