@@ -34,15 +34,26 @@ if [[ $INIT_DB_EXIT_CODE -ne 0 ]]; then
     exit 1
 fi
 
-# Check for SKIP_ETL in the output
-ETL_SIGNAL=$(echo "$ETL_OUTPUT" | grep SKIP_ETL || true)
+# Check which tables need ETL
+ETL_TABLES=$(echo "$ETL_OUTPUT" | awk -F: '/^ETL_REQUIRED:/ {print $2}')
 
-# Run Python ETL scripts with diagnostics, unless SKIP_ETL is indicated
-if [[ "$ETL_SIGNAL" != "SKIP_ETL" ]]; then
-    run_python_script backend/etl/liquefaction_data_handler.py
-    run_python_script backend/etl/soft_story_properties_data_handler.py
-    run_python_script backend/etl/tsunami_data_handler.py
-fi
+# run ETL only for required tables
+for tbl in $ETL_TABLES; do
+  case "$tbl" in
+    tsunami_zones)
+      run_python_script backend/etl/tsunami_data_handler.py
+      ;;
+    liquefaction_zones)
+      run_python_script backend/etl/liquefaction_data_handler.py
+      ;;
+    soft_story_properties)
+      run_python_script backend/etl/soft_story_properties_data_handler.py
+      ;;
+    *)
+      echo "No ETL mapping for $tbl; skipping" >&2
+      ;;
+  esac
+done
 
 echo "===== startup.sh finished ====="
 
