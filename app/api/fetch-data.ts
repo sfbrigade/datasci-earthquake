@@ -8,7 +8,7 @@ export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
     // Try reading local geojsons from public/data
     try {
       const filePath = path.join(process.cwd(), 'public', cdnEndpoint);
-      const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      const json = JSON.parse(await fs.promises.readFile(filePath, 'utf-8'));
       console.log(`Successfully read local file ${filePath}`)
       return json;
     } catch (error: any) {
@@ -20,7 +20,7 @@ export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
       // Try fetching from CDN first
       const cdnResponse = await fetch(cdnEndpoint, { next: { revalidate: SECONDS_PER_DAY } });
       if (cdnResponse.ok) {
-        console.warn(`CDN fetch successful from ${cdnEndpoint}`)
+        console.log(`CDN fetch successful from ${cdnEndpoint}`)
         return await cdnResponse.json();
       } else {
         console.warn(`CDN fetch failed with: ${cdnResponse.status} (${cdnResponse.statusText}). Falling back to API.`);
