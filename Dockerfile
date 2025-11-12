@@ -2,7 +2,7 @@
 
 #Dockerfile for next.js
 
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Install curl
 RUN apk add --no-cache curl
