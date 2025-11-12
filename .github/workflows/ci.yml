@@ -131,6 +131,8 @@ jobs:
           docker logs datasci-earthquake-backend-1 || echo "No logs found"
           echo "Logs for db:"
           docker logs my_postgis_db || echo "No logs found"
+          echo "Logs for frontend:"
+          docker logs datasci-earthquake-frontend-1 || echo "No logs found"
 
       - name: Run Backend Tests
         run: docker compose run --rm backend pytest backend -v
