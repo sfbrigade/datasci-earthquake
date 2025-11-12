@@ -61,13 +61,30 @@ def parse_env_example(path: Path) -> Set[str]:
 
 
 def main() -> int:
-    # 1) Get expected keys from Settings
+    # 1) Get expected keys from Settings, handle import errors
     try:
         expected = get_expected_env_keys_from_settings()
     except (
         Exception
     ) as exc:  # pragma: no cover - import errors are environment specific
         print(f"Error importing Settings: {exc}", file=sys.stderr)
+
+        # If this was a Pydantic ValidationError (missing/invalid env vars),
+        # print a short, actionable hint about .env not being in sync.
+        try:
+            from pydantic import ValidationError  # type: ignore
+        except Exception:
+            ValidationError = None  # type: ignore
+
+        if ValidationError is not None and isinstance(exc, ValidationError):
+            print(
+                "\nHint: Pydantic validation failed while constructing `Settings`.\n"
+                "Check to ensure your ENV_FILE(.env, or .env.example if .env is\n"
+                "missing) is up to date with the fields declared on\n"
+                "`backend.api.config.Settings`.\n",
+                file=sys.stderr,
+            )
+
         return 2
 
     # 2) Parse .env.example
