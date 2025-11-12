@@ -41,3 +41,11 @@ repos:
         additional_dependencies:
           - "prettier"
         files: \.[jt]sx?$
+  - repo: local
+    hooks:
+      - id: check-env-sync
+        name: Check .env.example matches Settings
+        entry: python scripts/check_env_sync.py
+        language: system
+        pass_filenames: false
+        files: ^backend/api/config\.py$
