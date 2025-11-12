@@ -2,7 +2,7 @@
 
 #Dockerfile for next.js
 
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Install curl
 RUN apk add --no-cache curl
@@ -15,8 +15,8 @@ WORKDIR /app
 COPY ./package*.json ./
 RUN npm install && chown -R appuser:appgroup /app
 
-# Copy the rest of the application code and fix ownership
-COPY --chown=appuser:appgroup . .
+# Copy the rest of the application 
+COPY . .
 
 # Ensure writable build dirs
 RUN mkdir -p .next && chown -R appuser:appgroup /app
