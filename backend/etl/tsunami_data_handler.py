@@ -25,8 +25,11 @@ class TsunamiDataHandler(DataHandler):
         """
         features = data["features"]
         parsed_data = []
-        geojson_features: List[Dict] = []
-        geojson = {"type": "FeatureCollection", "features": geojson_features}
+        geojson_features: List[Dict[str, Any]] = []
+        geojson: Dict[str, Any] = {
+            "type": "FeatureCollection",
+            "features": geojson_features,
+        }
 
         for feature in features:
             properties = feature.get("attributes", {})
