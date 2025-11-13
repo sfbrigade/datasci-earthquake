@@ -19,12 +19,15 @@ export const toaster = createToaster({
 
 const ToasterIcon = ({ type = "info" }: { type?: string }) => {
   switch (type) {
-    case "loading":
+    case "loading": {
       return <Spinner size="sm" color="blue.solid" />;
-    case "link":
+    }
+    case "link": {
       return <LinkIcon />;
-    default:
+    }
+    default: {
       return <Toast.Indicator />;
+    }
   }
 };
 

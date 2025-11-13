@@ -13,7 +13,7 @@ import { useSearchParams } from "next/navigation";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 
 const addressLookupCoordinates = {
-  geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
+  geometry: { type: "Point", coordinates: [-122.408_020_683, 37.801_698_301] },
 };
 const defaultCoords = addressLookupCoordinates.geometry.coordinates ?? [];
 const toggledStatesDefaults = [true, true, true];
@@ -53,7 +53,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   // initialize state directly from searchParams or fall back to null
   const [coordinates, setCoordinates] = useState<number[] | null>(
     initialLat && initialLon
-      ? [parseFloat(initialLon), parseFloat(initialLat)]
+      ? [Number.parseFloat(initialLon), Number.parseFloat(initialLat)]
       : null
   );
   const [searchedAddress, setSearchedAddress] = useState(
@@ -87,7 +87,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         setAddressHazardData(values);
       } catch (error) {
         console.error(
-          "Error while retrieving data: ",
+          "Error while retrieving data:",
           error instanceof Error ? error.message : error?.toString()
         );
         setAddressHazardData({
@@ -124,7 +124,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     const address = searchParams.get("address");
 
     if (lat && lon && address) {
-      const newCoords = [parseFloat(lon), parseFloat(lat)];
+      const newCoords = [Number.parseFloat(lon), Number.parseFloat(lat)];
       const lastCoords = coordinatesRef.current;
 
       // only update state and fetch data if coordinates have changed
@@ -162,17 +162,15 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           `${src.name}: ${(src.data as unknown as ErrorResult).message || "Unknown error"}`
       );
 
-    if (errors.length > 0) {
-      if (!toaster.isVisible(toastIdDataLoadFailed)) {
-        toaster.create({
-          id: toastIdDataLoadFailed,
-          title: "Data Load Error",
-          description: errors.join(" | "),
-          type: "error",
-          duration: 5000,
-          closable: true,
-        });
-      }
+    if (errors.length > 0 && !toaster.isVisible(toastIdDataLoadFailed)) {
+      toaster.create({
+        id: toastIdDataLoadFailed,
+        title: "Data Load Error",
+        description: errors.join(" | "),
+        type: "error",
+        duration: 5000,
+        closable: true,
+      });
     }
   }, [softStoryData, tsunamiData, liquefactionData]);
 

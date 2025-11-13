@@ -64,7 +64,7 @@ const mockSetSearchParams = (params: Record<string, string>) => {
   mockGet.mockImplementation((key) => params[key] || null);
 };
 
-const defaultCoords = [-122.408020683, 37.801698301];
+const defaultCoords = [-122.408_020_683, 37.801_698_301];
 const mockFeatureCollection = {
   type: "FeatureCollection" as const,
   features: [],
@@ -125,7 +125,7 @@ describe("AddressMapper", () => {
 
   it("should fetch data when URL parameters change from a user action", async () => {
     // Arrange
-    const newCoords = [-120.0, 35.0];
+    const newCoords = [-120, 35];
     const testAddress = "1 Lombard St";
     const mockData = { softStory: "data", tsunami: null, liquefaction: "data" };
     fetchHazardDataMock.mockResolvedValue(mockData);

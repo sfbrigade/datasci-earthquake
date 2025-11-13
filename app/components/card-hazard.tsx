@@ -155,7 +155,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
                     }
                   }}
                 >
-                  {!isMoreInfo ? "More info" : "Less info"}
+                  {isMoreInfo ? "Less info" : "More info"}
                 </Text>
               </Popover.Trigger>
               {hazardPill}

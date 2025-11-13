@@ -43,7 +43,7 @@ const Home = async () => {
       fetchLiquefaction(),
     ]);
   } catch (error) {
-    console.error("Error: ", error);
+    console.error("Error:", error);
   }
   return (
     <Flex direction="column">

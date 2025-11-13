@@ -12,7 +12,7 @@ const Share = () => {
 
   const copyLinkToClipBoard = async () => {
     try {
-      const currentUrl = `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`;
+      const currentUrl = `${globalThis.location.origin}${globalThis.location.pathname}?${searchParams.toString()}`;
       await navigator.clipboard.writeText(currentUrl);
       toaster.create({
         description: "Link copied",
@@ -20,8 +20,8 @@ const Share = () => {
         duration: 5000,
         closable: true,
       });
-    } catch (err) {
-      console.error("Failed to copy: ", err);
+    } catch (error) {
+      console.error("Failed to copy:", error);
       toaster.create({
         title: "Error",
         description: "Failed to copy link to clipboard.",

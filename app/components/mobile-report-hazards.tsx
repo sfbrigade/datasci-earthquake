@@ -50,13 +50,13 @@ const MobileReportHazards = ({
             shadow="mobileButton"
           >
             <Span mr="2">Legend</Span>
-            {!showHazards ? (
+            {showHazards ? (
               <Icon size={"sm"}>
-                <FaAngleDown />
+                <FaAngleUp />
               </Icon>
             ) : (
               <Icon size={"sm"}>
-                <FaAngleUp />
+                <FaAngleDown />
               </Icon>
             )}
           </Button>

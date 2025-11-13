@@ -41,7 +41,7 @@ test("should display correct hazard report for a searched address", async ({
 
   // Expects page to have a heading for the search result address
   await expect(page.getByText("Report for 321 7th Street")).toBeVisible({
-    timeout: 10000,
+    timeout: 10_000,
   });
 
   // Expects hazard cards to have pill data for the search result address

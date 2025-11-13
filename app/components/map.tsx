@@ -7,7 +7,7 @@ import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
 
-const defaultCoords = [-122.463733, 37.777448];
+const defaultCoords = [-122.463_733, 37.777_448];
 
 interface MapProps {
   coordinates: number[];
@@ -62,7 +62,14 @@ const Map: React.FC<MapProps> = ({
 
     mapboxgl.accessToken = mapboxToken;
 
-    if (!mapRef.current) {
+    if (mapRef.current) {
+      // subsequent passes: update map
+      const map = mapRef.current;
+      const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
+      map.panTo(addressLngLat);
+      markerRef.current?.setLngLat(addressLngLat);
+      return;
+    } else {
       // initial pass: render map
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current!,
@@ -168,13 +175,6 @@ const Map: React.FC<MapProps> = ({
           }
         });
       });
-    } else {
-      // subsequent passes: update map
-      const map = mapRef.current;
-      const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
-      map.panTo(addressLngLat);
-      markerRef.current?.setLngLat(addressLngLat);
-      return;
     }
   }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
 

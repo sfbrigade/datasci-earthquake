@@ -105,7 +105,7 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
               />
             }
             endElement={
-              inputAddress.length !== 0 && (
+              inputAddress.length > 0 && (
                 <RxCross2
                   color="grey.900"
                   fontSize="1.1em"
@@ -149,7 +149,9 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
           </InputGroup>
         </DynamicAddressAutofill>
       </Suspense>
-      {inputAddress.length && !suggestionSelected && !suggestionsAvailable ? (
+      {inputAddress.length > 0 &&
+      !suggestionSelected &&
+      !suggestionsAvailable ? (
         <Text
           position="absolute"
           bottom="-5"

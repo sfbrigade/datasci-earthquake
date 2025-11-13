@@ -3,7 +3,7 @@ import { useHazardDataFetcher } from "../../../hooks/useHazardDataFetcher";
 import { toaster } from "@/components/ui/toaster";
 
 const fetchMock = jest.fn();
-global.fetch = fetchMock;
+globalThis.fetch = fetchMock;
 
 // mock for a successful fetch response
 const mockSuccessResponse = (data: {

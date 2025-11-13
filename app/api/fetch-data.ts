@@ -22,12 +22,15 @@ export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
     const apiResponse = await fetch(apiEndpoint, { next: { revalidate: SECONDS_PER_DAY } });
     if (!apiResponse.ok) {
       switch (apiResponse.status) {
-        case 404:
+        case 404: {
           throw new Error("404 Not Found");
-        case 500:
+        }
+        case 500: {
           throw new Error("500 Internal Server Error")
-        default:
+        }
+        default: {
           throw new Error(apiResponse.status + " Unexpected Error")
+        }
       }
     }
     const data = await apiResponse.json();

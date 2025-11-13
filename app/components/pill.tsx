@@ -10,24 +10,30 @@ interface PillProps {
 const Pill: React.FC<PillProps> = ({ exists, trueData, falseData, noData }) => {
   const getColor = () => {
     switch (exists) {
-      case true:
+      case true: {
         return "red";
-      case false:
+      }
+      case false: {
         return "green";
-      default:
+      }
+      default: {
         return "lightGrey";
+      }
     }
   };
   const color = getColor();
 
   const getLabel = () => {
     switch (exists) {
-      case true:
+      case true: {
         return trueData;
-      case false:
+      }
+      case false: {
         return falseData;
-      default:
+      }
+      default: {
         return noData;
+      }
     }
   };
   const label = getLabel();

@@ -48,19 +48,17 @@ export function useHazardDataFetcher({
           { name: "Liquefaction", result: liquefactionZone },
         ].filter(({ result }) => result.status === "rejected");
 
-        if (failed.length > 0) {
-          if (!toaster.isVisible(toastIdFailedHazardData)) {
-            toaster.create({
-              id: toastIdFailedHazardData,
-              title: "Hazard data warning",
-              description: `Failed to fetch: ${failed
-                .map((f) => f.name)
-                .join(", ")}`,
-              type: "warning",
-              duration: 5000,
-              closable: true,
-            });
-          }
+        if (failed.length > 0 && !toaster.isVisible(toastIdFailedHazardData)) {
+          toaster.create({
+            id: toastIdFailedHazardData,
+            title: "Hazard data warning",
+            description: `Failed to fetch: ${failed
+              .map((f) => f.name)
+              .join(", ")}`,
+            type: "warning",
+            duration: 5000,
+            closable: true,
+          });
         }
 
         return {

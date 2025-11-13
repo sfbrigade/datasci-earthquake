@@ -156,7 +156,7 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
                       }
                     }}
                   >
-                    {!isMoreInfo ? "More info" : "Less info"}
+                    {isMoreInfo ? "Less info" : "More info"}
                   </Text>
                 </Collapsible.Trigger>
               </Card.Footer>
