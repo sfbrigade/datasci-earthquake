@@ -1,4 +1,5 @@
 from http.client import HTTPException
+from typing import List, Dict
 from backend.etl.data_handler import DataHandler
 from backend.api.models.tsunami import TsunamiZone
 from shapely.geometry import Polygon, MultiPolygon, mapping
@@ -24,7 +25,8 @@ class TsunamiDataHandler(DataHandler):
         """
         features = data["features"]
         parsed_data = []
-        geojson_features = []
+        geojson_features: List[Dict] = []
+        geojson = {"type": "FeatureCollection", "features": geojson_features}
 
         for feature in features:
             properties = feature.get("attributes", {})
@@ -71,7 +73,6 @@ class TsunamiDataHandler(DataHandler):
                 "properties": {"evacuate": tsunami_zone["evacuate"]},
             }
             geojson_features.append(geojson_feature)
-            geojson = {"type": "FeatureCollection", "features": geojson_features}
 
         return parsed_data, geojson
 
