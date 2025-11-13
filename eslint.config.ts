@@ -7,10 +7,10 @@ import prettier from "eslint-plugin-prettier";
 // Add type declarations for modules without types
 // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // // @ts-expect-error: No types for eslint-config-next
-// import next from "eslint-config-next";
+import next from "eslint-config-next";
 // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // // @ts-expect-error: No types for eslint-config-next/core-web-vitals
-// import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
 
 import { globalIgnores } from "eslint/config";
 import { FlatCompat } from "@eslint/eslintrc";
@@ -27,8 +27,8 @@ export default defineConfig([
 
   {
     extends: [
-      // ...next,
-      // ...nextCoreWebVitals,
+      ...next,
+      ...nextCoreWebVitals,
       ...compat.extends("plugin:prettier/recommended"),
       ...compat.extends("plugin:storybook/recommended"),
     ],
