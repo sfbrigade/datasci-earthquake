@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
@@ -30,7 +30,7 @@ const Map: React.FC<MapProps> = ({
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
 
-  const handleToggleLayers = () => {
+  const handleToggleLayers = useCallback(() => {
     if (!mapRef.current) return;
     const map = mapRef.current;
 
@@ -41,7 +41,7 @@ const Map: React.FC<MapProps> = ({
       // sets new visibility property value for layer, creating the "toggling" effect
       map.setLayoutProperty(layerId, "visibility", newVisibility);
     }
-  };
+  }, [layerToggleObj.layerId, layerToggleObj.toggleState]);
 
   useEffect(() => {
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
@@ -180,7 +180,7 @@ const Map: React.FC<MapProps> = ({
 
   useEffect(() => {
     if (layerToggleObj.layerId != "") handleToggleLayers();
-  }, [layerToggleObj]); // re-runs every time state changes
+  }, [layerToggleObj, handleToggleLayers]); // re-runs every time state changes
 
   return (
     <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />

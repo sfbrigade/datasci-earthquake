@@ -6,14 +6,16 @@ import "@testing-library/jest-dom";
 import { Provider } from "../ui/provider";
 import "../__mocks__/match-media";
 
-jest.mock("../pill.tsx", () => () => (
+jest.mock("../pill.tsx", () => (
   <div data-testid="pill-mock">Pill Component</div>
 ));
 
+const setToggledStates = () => {};
+const setLayerToggleObj = () => {};
+
 describe("CardHazard Component", () => {
   const toggledStates = [true];
-  const setToggledStates = () => {};
-  const setLayerToggleObj = () => {};
+
   beforeEach(() => {
     Hazards[0] = {
       id: 4,

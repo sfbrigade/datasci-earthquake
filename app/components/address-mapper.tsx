@@ -10,7 +10,7 @@ import MobileReportHazards from "./mobile-report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
-import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
+import { useHazardDataFetcher } from "../hooks/use-hazard-data-fetcher";
 
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408_020_683, 37.801_698_301] },

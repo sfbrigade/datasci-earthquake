@@ -9,7 +9,7 @@ const createJestConfig = nextJest({
 // Add any custom config to be passed to Jest
 const config: Config = {
   coverageProvider: "v8",
-  testEnvironment: "./app/tests/FixJSDOMEnvironment.ts",
+  testEnvironment: "./app/tests/fix-jsdom-environment.ts",
   // Add more setup options before each test is run
   setupFilesAfterEnv: ["<rootDir>/app/components/__mocks__/jest.setup.tsx"],
   // Map the "@" alias to the app directory for importing ui components(ex. toaster)

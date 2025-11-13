@@ -16,10 +16,11 @@ import ShareSkeleton from "../components/share-skeleton";
 import SearchBarSkeleton from "@/components/search-bar-skeleton";
 import SearchBar from "@/components/search-bar";
 
+const setToggledStates = () => {};
+const setLayerToggleObj = () => {};
+
 const ComponentsTestLib = () => {
   const toggledStates = [true, true, true];
-  const setToggledStates = () => {};
-  const setLayerToggleObj = () => {};
 
   return (
     <Box

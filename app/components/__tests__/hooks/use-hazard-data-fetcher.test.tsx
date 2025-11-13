@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
-import { useHazardDataFetcher } from "../../../hooks/useHazardDataFetcher";
+import { useHazardDataFetcher } from "../../../hooks/use-hazard-data-fetcher";
 import { toaster } from "@/components/ui/toaster";
 
 const fetchMock = jest.fn();

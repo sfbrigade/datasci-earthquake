@@ -7,7 +7,7 @@ const fetchHazardDataMock = jest.fn();
 const mockGet = jest.fn();
 const mockRouterPush = jest.fn();
 
-jest.mock("../../hooks/useHazardDataFetcher", () => ({
+jest.mock("../../hooks/use-hazard-data-fetcher", () => ({
   useHazardDataFetcher: jest.fn(() => ({
     fetchHazardData: fetchHazardDataMock,
   })),

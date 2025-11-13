@@ -1,10 +1,10 @@
-import { Config, defineConfig, globalIgnores } from "eslint/config";
+import { defineConfig, globalIgnores } from "eslint/config";
 import { FlatCompat } from "@eslint/eslintrc";
 // import nextPlugin from "@next/eslint-plugin-next"; // Import the Next.js plugin
 
 import js from "@eslint/js";
 import globals from "globals";
-import tseslint, { ConfigWithExtends } from "typescript-eslint";
+import tseslint from "typescript-eslint";
 import pluginReact from "eslint-plugin-react";
 import pluginStorybook from "eslint-plugin-storybook";
 import pluginUnicorn from "eslint-plugin-unicorn"; // covers lots of rules and opinions on general typescript styling outside of conventions for the specific frameworks covered by the plugins above as per https://dev.to/jordanahaines/just-use-this-nextjs-eslint-configuration-540
@@ -81,7 +81,7 @@ const jsRecommendedExtended = {
 // },
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+  baseDirectory: import.meta.dirname,
 });
 
 export default defineConfig([
@@ -94,7 +94,9 @@ export default defineConfig([
   {
     plugins: { pluginUnicorn },
     rules: {
-      "unicorn/prevent-abbreviations": "off", // Disable the rule
+      // Disable these rules
+      "unicorn/prevent-abbreviations": "off",
+      "unicorn/no-null": "off", // TODO: look into if it makes sense to re-enable this rule
     },
   },
   ...compat.config({

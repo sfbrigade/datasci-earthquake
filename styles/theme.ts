@@ -255,13 +255,14 @@ const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
 });
 
 /*
+// TODO: test and finalize breakpoints
   Breakpoints:
-  // TODO: test and finalize breakpoints
-  - sm: "480px"​​​
+  - sm: "480px"
   - md: "768px"
-  - lg: "1024px" // TODO: is this 996px or 1024px? docs say 996px, but live config from `console.dir` below shows 1024px
+  // TODO: is this 996px or 1024px? docs say 996px, but live config from `console.dir` below shows 1024px
+  - lg: "1024px"
   - xl: "1280px"
-  - 2xl: "1536px"​​​
+  - "2xl": "1536px"
 */
 
 /* Global CSS: https://chakra-ui.com/docs/theming/customization/global-css#add-global-styles */

@@ -26,6 +26,16 @@ interface SearchBarProps {
   onSearchChange: (coords: number[], address: string) => void;
 }
 
+/**
+ * TODO: capture and update address on submit OR use first autocomplete suggestion; see file://./../snippets.md#geocode-on-search for details.
+ */
+const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  console.log("onSubmit", event.currentTarget.value);
+  event.preventDefault();
+
+  // TODO: capture and update address as described above
+};
+
 const SearchBar = ({ onSearchChange }: SearchBarProps) => {
   const [inputAddress, setInputAddress] = useState("");
   const [suggestionSelected, setSuggestionSelected] = useState(false);
@@ -62,16 +72,6 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
       setSuggestionSelected(false);
       setSuggestionsAvailable(false);
     }
-  };
-
-  /**
-   * TODO: capture and update address on submit OR use first autocomplete suggestion; see file://./../snippets.md#geocode-on-search for details.
-   */
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    console.log("onSubmit", event.currentTarget.value);
-    event.preventDefault();
-
-    // TODO: capture and update address as described above
   };
 
   const handleSuggest = (res: AddressAutofillSuggestionResponse) => {

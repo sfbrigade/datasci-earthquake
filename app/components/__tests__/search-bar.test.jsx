@@ -1,12 +1,13 @@
+import { describe, expect, jest, it } from "@jest/globals";
 import { render, fireEvent, screen } from "@testing-library/react";
 import SearchBar from "../search-bar";
 import "@testing-library/jest-dom";
 import { Provider } from "../ui/provider";
 import "../__mocks__/match-media";
 
-// FIXME: to be able to re-enable this test suite, modify the mock etc to handle the usage
-// of Next's `dynamic()` in `address-autofill.tsx` to get the tests running again
+// Mock @mapbox/search-js-react to support dynamic() usage in address-autofill.tsx.
 jest.mock("@mapbox/search-js-react", () => ({
+  __esModule: true,
   AddressAutofill: ({ children, onRetrieve }) => (
     <div
       onClick={() => onRetrieve({ features: [{ place_name: "Mock Address" }] })}

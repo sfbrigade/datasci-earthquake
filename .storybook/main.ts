@@ -3,7 +3,7 @@ import type { StorybookConfig } from "@storybook/nextjs-vite";
 const config: StorybookConfig = {
   // NOTE: more advanced sort is possible if needed: https://storybook.js.org/docs/writing-stories/naming-components-and-hierarchy
   stories: [
-    "../stories/Welcome.mdx",
+    "../stories/welcome.mdx",
     // components first
     "../app/components/**/*.mdx",
     "../app/components/**/*.stories.@(js|jsx|mjs|ts|tsx)",

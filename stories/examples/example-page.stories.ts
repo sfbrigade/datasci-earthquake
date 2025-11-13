@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import { expect, userEvent, within } from "storybook/test";
 
-import { Page } from "./Page";
+import { Page } from "./example-page";
 
 const meta = {
   title: "Example/Page",

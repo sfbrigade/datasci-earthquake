@@ -85,14 +85,14 @@ const About = () => {
           </Text>
           <Text textStyle="textMedium" layerStyle="text">
             SafeHome uses up-to-date official public datasets to power the maps
-            and information displayed to users. Our technologists and data
+            and information displayed to users. Our technologists and data
             scientists have rigorously analyzed the Soft Story Properties
             dataset, which includes compliance tiers and statuses for soft-story
             buildings, defined as structures with wood-frame structures
             containing five or more residential units and having two or more
-            stories over a soft&quot; or weak&quot; story. We’ve also compiled
-            publicly available data to visualize other earthquake-related
-            hazards, such as liquefaction and tsunami zones.
+            stories over a soft&quot; or weak&quot; story. We&apos;ve also
+            compiled publicly available data to visualize other
+            earthquake-related hazards, such as liquefaction and tsunami zones.
           </Text>
           <Text textStyle="textMedium" layerStyle="text">
             For more information on the data, please visit:
@@ -117,7 +117,7 @@ const About = () => {
             {buildLink("https://www.sfcivictech.org/about/", "SF Civic Tech")},
             a diverse group of technologists, creatives, and data scientists
             building tools to help communities access important services and
-            solve local challenges. 
+            solve local challenges.
           </Text>
           <List.Root listStyleType="none" mb="10">
             {buildTeamMembers()}
