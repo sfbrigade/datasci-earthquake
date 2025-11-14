@@ -1,18 +1,15 @@
-import { Flex, Text, Link, VStack, Box } from "@chakra-ui/react";
+import { Flex, Text, Link, VStack, Box, Image } from "@chakra-ui/react";
 import NextLink from "next/link";
-import Image from "next/image";
 
 const TermsOfService = () => {
   return (
     <>
       <Flex
-        w={{ base: "base", xl: "xl" }}
-        p={{
-          base: "23px 24px 50px 24px",
-          md: "37px 27px 50px 26px",
-          xl: "50px 128px 50px 127px",
-        }}
-        gap="44px"
+        w={{ base: "full", xl: "7xl" }}
+        py="8"
+        pb="12"
+        px={{ base: "8", xl: "32" }}
+        gap="11"
         direction={{ base: "column", lg: "row" }}
         m="auto"
       >
@@ -21,8 +18,8 @@ const TermsOfService = () => {
             textStyle="headerBig"
             layerStyle="headerMain"
             color="blue.text"
-            fontWeight="300"
-            marginBottom="2rem"
+            fontWeight="light"
+            marginBottom="8"
           >
             Terms of Service
           </Text>
@@ -34,7 +31,7 @@ const TermsOfService = () => {
           >
             Acceptable Use
           </Text>
-          <VStack gap="2rem" alignItems="flex-start">
+          <VStack gap="8" alignItems="flex-start">
             <Text textStyle="textMedium" layerStyle="text">
               You may view, use, and download information from this website for
               your informational, non-commercial use. The data is NOT suitable
@@ -87,8 +84,8 @@ const TermsOfService = () => {
           <Image
             src="/images/UserCartoon3.png"
             alt="about us"
-            width="300"
-            height="300"
+            width="termsImageWidth"
+            height="termsImageHeight"
           />
         </Box>
       </Flex>

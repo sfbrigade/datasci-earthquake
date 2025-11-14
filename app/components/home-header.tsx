@@ -12,7 +12,7 @@ import {
   Link,
   Flex,
 } from "@chakra-ui/react";
-import Heading from "./heading";
+import Heading, { HeadingProps } from "./heading";
 import ReportAddress from "./report-address";
 import SearchBar from "./search-bar";
 import Share from "./share";
@@ -39,14 +39,7 @@ const HomeHeader = ({
   const router = useRouter();
 
   return (
-    <Box
-      as="header"
-      bg="gradient.blue"
-      p={{
-        base: "18px 32px 22px 32px",
-        "2xl": "22px 48px 26px 48px",
-      }}
-    >
+    <Box as="header" bgGradient="blue" py={{ base: "4", "2xl": "5" }} px="8">
       <Flex
         direction={{
           base: "column",
@@ -55,15 +48,15 @@ const HomeHeader = ({
         }}
         justifyContent={"space-between"}
         alignItems={{ base: "flex-start", xl: "center" }}
-        gap={1.5}
-        mb={{ base: 2 }}
+        gap="1.5"
+        mb={{ base: "2" }}
       >
         <HStack align="start" gap="1">
           <Link
             as={"a"}
             color="white"
             href="/"
-            cursor="pointer"
+            cursor="button"
             textDecoration={"none"}
             onClick={(e) => {
               e.preventDefault();
@@ -75,8 +68,8 @@ const HomeHeader = ({
                 src="/images/SFSafeHome-fulllogo.svg"
                 alt="SafeHome logo"
                 role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
-                h="28px"
-                w="142px"
+                height="safeHomeLogoHeight"
+                width="safeHomeLogoWidth"
               />
               <VisuallyHidden>SafeHome</VisuallyHidden>
             </HStack>{" "}
@@ -97,7 +90,7 @@ const HomeHeader = ({
         justifyContent={"space-between"}
         alignItems={{ base: "flex-start", xl: "center" }}
       >
-        <Box width={{ base: "100%", xl: "fit-content" }}>
+        <Box width={{ base: "full", xl: "fit" }}>
           <SearchBar onSearchChange={onSearchChange} />
         </Box>
 

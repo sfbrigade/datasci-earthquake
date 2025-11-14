@@ -90,12 +90,11 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
         >
           <InputGroup
             w={{
-              base: "100%",
-              sm: "303px",
-              md: "371px",
-              lg: "417px",
+              base: "full",
+              sm: "xs",
+              md: "sm",
+              lg: "md",
             }}
-            // mb={"24px"}
             data-testid="search-bar"
             startElement={
               <IoSearchSharp
@@ -119,7 +118,7 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
           >
             <Input
               placeholder="Search San Francisco address"
-              fontFamily="Inter, sans-serif"
+              fontFamily="body"
               fontSize={{
                 base: "sm",
                 sm: "md",
@@ -127,16 +126,14 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
                 lg: "md",
               }}
               size={{ base: "lg", md: "xl", xl: "xl" }}
-              p={{
-                base: "0 10px 0 35px",
-                sm: "0 10px 0 35px",
-                md: "0 10px 0 48px",
-                lg: "0 10px 0 48px",
-              }}
+              pt="0"
+              pr="2.5"
+              pb="0"
+              pl={{ base: "9", md: "12" }}
               borderRadius="full"
-              border="1px solid #4A5568"
+              border="search"
               bgColor="white"
-              boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
+              shadow="search"
               type="text"
               name="address-1"
               value={inputAddress}
@@ -155,7 +152,7 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
       {inputAddress.length && !suggestionSelected && !suggestionsAvailable ? (
         <Text
           position="absolute"
-          bottom={-5}
+          bottom="-5"
           textStyle="textSmall"
           color="white"
         >

@@ -1,8 +1,8 @@
-import { Stack, Text, Icon } from "@chakra-ui/react";
+import { Stack, Text, Icon, SystemStyleObject } from "@chakra-ui/react";
 
 type KeyElemProps = {
   name: string;
-  color: string;
+  color: SystemStyleObject["color"];
   icon: React.ReactNode;
   isMobile?: boolean;
 };
@@ -16,7 +16,7 @@ export const KeyElem = ({ name, color, icon, isMobile }: KeyElemProps) => {
       <Text
         textStyle={isMobile ? "textSmall" : "textMedium"}
         layerStyle="headerAlt"
-        fontWeight="700"
+        fontWeight="bold"
         whiteSpace={"nowrap"}
       >
         {name}
