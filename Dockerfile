@@ -11,13 +11,16 @@ RUN apk add --no-cache curl
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /app
 
-# Copy package.json and install dependencies
+# Copy package.json, install dependencies, fix ownership
 COPY ./package*.json ./
-RUN npm install
+RUN npm install && chown -R appuser:appgroup /app
 
-# Copy the rest of the application code
-COPY --chown=appuser:appgroup . .
-RUN mkdir -p .next && chmod -R 777 .next
+# Copy the rest of the application 
+COPY . .
+
+# Ensure writable build dirs
+RUN mkdir -p .next && chown -R appuser:appgroup /app
+
 # Switch to the non-privileged user
 USER appuser
 
