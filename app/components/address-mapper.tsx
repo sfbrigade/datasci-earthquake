@@ -193,19 +193,25 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         isSearchComplete={isSearchComplete}
         onSearchChange={handleSearchChange}
       />
+      {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
       <Box
         w="full"
-        h={{
-          base: "calc(100vh - 198px - 32px)",
-          md: "calc(100vh - 175px - 32px)",
-          xl: "calc(100vh - 141px - 32px)",
-          "2xl": "calc(100vh - 149px - 32px)",
+        css={{
+          "--header-height": "198px",
+          md: { "--header-height": "175px" },
+          xl: { "--header-height": "141px" },
+          "2xl": { "--header-height": "149px" },
+          "--whitespace-height": "32px",
+        }}
+        style={{
+          height:
+            "calc(100dvh - var(--header-height) - var(--whitespace-height)",
         }}
         m="auto"
         position="relative"
       >
-        <Box h="100%" overflow="hidden">
-          <Box zIndex={10} top={0} position="absolute">
+        <Box h="full" overflow="hidden">
+          <Box zIndex="docked" top="0" position="absolute">
             {currentView === "desktop" ? (
               <ReportHazards
                 addressHazardData={addressHazardData}

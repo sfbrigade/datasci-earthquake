@@ -38,14 +38,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${manrope.className} ${inter.className}`}>
         <Provider>
-          <Flex direction="column" align="center" minH="100vh">
+          <Flex direction="column" align="center" minH="dvh">
             <Header />
-            <Box flex="1" as="main" width="100%">
+            <Box flex="1" as="main" width="full">
               {children}
             </Box>
             <Footer />
           </Flex>
-          {/* TODO FIXME: is this Toaster component declared in the right place? */}
           <Toaster />
         </Provider>
       </body>
