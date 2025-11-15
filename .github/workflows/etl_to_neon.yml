@@ -7,12 +7,8 @@ on:
   workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
-  run-etl:
-    runs-on: ubuntu-latest  
-    outputs:
-      changes: ${{ steps.detect_changes.outputs.changes }}    
-      etl_commit: ${{ steps.detect_changes.outputs.commit_sha }}
-
+  pre-etl:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -60,14 +56,26 @@ jobs:
       - name: Decrypt .env File
         run: |
           openssl aes-256-cbc -d -salt -pbkdf2 -k "${{ secrets.ARTIFACT_PASS }}" -in .env.enc -out .env
-          echo "Decryption complete"      
+          echo "Decryption complete"
 
+  run-etl:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        handler: [tsunami_data_handler, soft_story_properties_data_handler, liquefaction_data_handler]
+    steps:
       - name: ETL data to Neon DB
         run: |
-          ENVIRONMENT=prod uv run --project backend -m backend.etl.tsunami_data_handler
-          ENVIRONMENT=prod uv run --project backend -m backend.etl.soft_story_properties_data_handler
-          ENVIRONMENT=prod uv run --project backend -m backend.etl.liquefaction_data_handler
+          ENVIRONMENT=prod uv run --project backend -m backend.etl.${{ matrix.handler }}
+          ENVIRONMENT=prod uv run --project backend -m backend.etl.${{ matrix.handler }}
+          ENVIRONMENT=prod uv run --project backend -m backend.etl.${{ matrix.handler }}
 
+  post-etl:
+    runs-on: ubuntu-latest
+    outputs:
+      changes: ${{ steps.detect_changes.outputs.changes }}
+      etl_commit: ${{ steps.detect_changes.outputs.commit_sha }}
+    steps:
       - name: Commit & Push Changes
         id: detect_changes 
         run: |
