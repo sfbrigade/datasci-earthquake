@@ -64,10 +64,8 @@ jobs:
       matrix:
         handler: [tsunami_data_handler, soft_story_properties_data_handler, liquefaction_data_handler]
     steps:
-      - name: ETL data to Neon DB
+      - name: ${{ matrix.handler }} ETL data to Neon DB
         run: |
-          ENVIRONMENT=prod uv run --project backend -m backend.etl.${{ matrix.handler }}
-          ENVIRONMENT=prod uv run --project backend -m backend.etl.${{ matrix.handler }}
           ENVIRONMENT=prod uv run --project backend -m backend.etl.${{ matrix.handler }}
 
   post-etl:
