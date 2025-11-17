@@ -1,4 +1,4 @@
-name: Playwright E2E Tests
+name: E2E Tests
 
 on:
   # Trigger 1: Automatic run after Vercel successfully deploys a PR Preview
