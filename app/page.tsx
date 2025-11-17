@@ -1,9 +1,15 @@
-import "./globals.css";
 import { Suspense } from "react";
-import { Box, Flex, Heading, Text, List, HStack, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  List,
+  HStack,
+  Link,
+  Image,
+} from "@chakra-ui/react";
 import NextLink from "next/link";
-import Image from "next/image";
-
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
 import AddressMapper from "./components/address-mapper";
@@ -50,13 +56,13 @@ const Home = async () => {
         />
       </Suspense>
       <Flex
-        w={{ base: "full" }}
-        p={{
-          base: "32px 32px 64px 32px",
-        }}
+        w="full"
+        p="8"
         justifyContent="space-between"
+        gap="11"
+        direction={{ base: "column", lg: "row" }}
       >
-        <HStack alignItems={"start"} w={{ base: "100%", lg: "75%" }}>
+        <HStack alignItems={"start"} w={{ base: "full", lg: "3/4" }}>
           <div>
             <Heading as="h2">
               <Text
@@ -64,7 +70,7 @@ const Home = async () => {
                 textStyle="headerBig"
                 layerStyle="headerMain"
                 color="blue.text"
-                fontWeight="300"
+                fontWeight="light"
               >
                 How to be earthquake-ready
               </Text>
@@ -254,13 +260,14 @@ const Home = async () => {
             </List.Root>
           </div>
         </HStack>
-        <Box flexShrink={0} display={{ base: "none", lg: "block" }}>
+        <Box flexShrink={0}>
           <Image
             src="/images/earthquake-ready.png"
+            width="earthquakeReadyImageWidth"
+            height="earthquakeReadyImageHeight"
             alt="about us"
-            width="300"
-            height="300"
           />
+          {/* TODO: should this be a NextImage or a Chakra Image? */}
         </Box>
       </Flex>
     </Flex>
