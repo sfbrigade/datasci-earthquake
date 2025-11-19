@@ -522,7 +522,10 @@ def test_update_last_export_time_in_db(test_db):
 def test_save_geojson_file(tmp_path):
     """Test that geojsons are saved"""
     data_handler = DummyDataHandler(url="", table=DummyModel)
-    features = {"type": "FeatureCollection", "features": [{"id": 1}]}
+    features = {
+        "type": "FeatureCollection",
+        "features": [{"type": "Feature", "geometry": None, "properties": {"id": 1}}],
+    }
 
     # Create a path where the geojson is going to be saved
     geojson_path = tmp_path / "test.geojson"
