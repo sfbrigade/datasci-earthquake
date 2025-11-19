@@ -236,9 +236,9 @@ def test_fetch_data_partial_page(data_handler, caplog):
     full_page_response.json.return_value = {
         "type": "FeatureCollection",
         "features": [
-            {"id": 0},
-            {"id": 1},
-            {"id": 2},
+            {"type": "Feature", "geometry": None, "properties": {"id": 0}},
+            {"type": "Feature", "geometry": None, "properties": {"id": 1}},
+            {"type": "Feature", "geometry": None, "properties": {"id": 2}},
         ],
     }
     full_page_response.status_code = 200
@@ -248,8 +248,8 @@ def test_fetch_data_partial_page(data_handler, caplog):
     partial_page_response.json.return_value = {
         "type": "FeatureCollection",
         "features": [
-            {"id": 3},
-            {"id": 4},
+            {"type": "Feature", "geometry": None, "properties": {"id": 3}},
+            {"type": "Feature", "geometry": None, "properties": {"id": 4}},
         ],
     }
     partial_page_response.status_code = 200
@@ -270,8 +270,8 @@ def test_fetch_data_partial_page(data_handler, caplog):
     calls = data_handler.session.get.call_args_list
     assert calls[0][1]["params"] == {"$offset": 0, "$limit": 3}
     assert calls[1][1]["params"] == {"$offset": 3, "$limit": 3}
-    assert result["features"][0]["id"] == 0
-    assert result["features"][-1]["id"] == 4
+    assert result["features"][0]["properties"]["id"] == 0
+    assert result["features"][-1]["properties"]["id"] == 4
     assert "Assuming final page and stopping fetch" in caplog.text
 
 
@@ -541,7 +541,10 @@ def test_export_geojson_if_changed_local_file_exists(tmp_path, monkeypatch):
     monkeypatch.setenv("ENVIRONMENT", "local")
     monkeypatch.setenv("DATA_GEOJSON_PATH", str(tmp_path) + "/")
     data_handler = DummyDataHandler(url="", table=DummyModel)
-    features = {"type": "FeatureCollection", "features": [{"id": 1}]}
+    features = {
+        "type": "FeatureCollection",
+        "features": [{"type": "Feature", "geometry": None, "properties": {"id": 1}}],
+    }
 
     # Create a file to simulate the scenario when it already exists
     geojson_path = tmp_path / "DummyModel.geojson"
@@ -559,7 +562,10 @@ def test_export_geojson_if_changed_local_file_not_exists(tmp_path, monkeypatch):
     monkeypatch.setenv("DATA_GEOJSON_PATH", str(tmp_path) + "/")
 
     data_handler = DummyDataHandler(url="", table=DummyModel)
-    features = {"type": "FeatureCollection", "features": [{"id": 1}]}
+    features = {
+        "type": "FeatureCollection",
+        "features": [{"type": "Feature", "geometry": None, "properties": {"id": 1}}],
+    }
 
     # Ensure file doesn't exist
     geojson_path = tmp_path / "DummyModel.geojson"
@@ -574,7 +580,10 @@ def test_export_geojson_if_changed_local_file_not_exists(tmp_path, monkeypatch):
 def test_export_geojson_if_changed_on_prod_data_changed(tmp_path, monkeypatch):
     """Test production environment when geojson data is stale and needs to be updated"""
     data_handler = DummyDataHandler(url="", table=DummyModel)
-    features = {"type": "FeatureCollection", "features": [{"id": 1}]}
+    features = {
+        "type": "FeatureCollection",
+        "features": [{"type": "Feature", "geometry": None, "properties": {"id": 1}}],
+    }
     monkeypatch.setenv("ENVIRONMENT", "prod")
 
     # Patch methods to simulate data changed
@@ -598,7 +607,10 @@ def test_export_geojson_if_changed_on_prod_data_changed(tmp_path, monkeypatch):
 def test_export_geojson_if_changed_on_prod_data_not_changed(tmp_path, monkeypatch):
     """Test production environment when geojson data is up-to-date"""
     data_handler = DummyDataHandler(url="", table=DummyModel)
-    features = {"type": "FeatureCollection", "features": [{"id": 1}]}
+    features = {
+        "type": "FeatureCollection",
+        "features": [{"type": "Feature", "geometry": None, "properties": {"id": 1}}],
+    }
     monkeypatch.setenv("ENVIRONMENT", "prod")
 
     # Patch methods to simulate data did not change
