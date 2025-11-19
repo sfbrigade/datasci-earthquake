@@ -31,6 +31,8 @@ from backend.etl.soft_story_properties_data_handler import (
 import os
 import json
 from pathlib import Path
+from pydantic import ValidationError
+from geojson_pydantic import FeatureCollection
 
 
 class DummyModel(Base):
@@ -612,3 +614,53 @@ def test_export_geojson_if_changed_on_prod_data_not_changed(tmp_path, monkeypatc
                     data_handler.export_geojson_if_changed(features)
                     mock_save.assert_not_called()
                     mock_update.assert_not_called()
+
+
+def test_save_geojson_file_raises_validation_error_for_invalid_geojson(
+    data_handler, tmp_path
+):
+    """
+    Test that _save_geojson_file raises a ValidationError when the input is not a valid GeoJSON FeatureCollection.
+    """
+    invalid_geojson = {"type": "NotAFeatureCollection", "features": []}
+    geojson_path = tmp_path / "test.geojson"
+
+    with pytest.raises(ValidationError):
+        data_handler._save_geojson_file(invalid_geojson, geojson_path)
+
+    # Also assert that the file was not created
+    assert not geojson_path.exists()
+
+
+def test_save_geojson_file_writes_valid_geojson(data_handler, tmp_path):
+    """
+    Test that _save_geojson_file successfully writes a valid GeoJSON FeatureCollection.
+    """
+    valid_geojson = {
+        "type": "FeatureCollection",
+        "features": [{"type": "Feature", "geometry": None, "properties": {}}],
+    }
+    geojson_path = tmp_path / "test.geojson"
+
+    # This should not raise an exception
+    data_handler._save_geojson_file(valid_geojson, geojson_path)
+
+    # Assert that the file was created and has the correct content
+    assert geojson_path.exists()
+    with open(geojson_path) as f:
+        data = json.load(f)
+    assert data == valid_geojson
+
+
+def test_save_geojson_file_logs_validation_error(data_handler, tmp_path, caplog):
+    """
+    Test that a validation error is logged when saving invalid GeoJSON.
+    """
+    invalid_geojson = {"type": "Invalid", "features": "not a list"}
+    geojson_path = tmp_path / "test.geojson"
+
+    with caplog.at_level(logging.ERROR):
+        with pytest.raises(ValidationError):
+            data_handler._save_geojson_file(invalid_geojson, geojson_path)
+
+    assert "Failed to validate GeoJSON" in caplog.text
