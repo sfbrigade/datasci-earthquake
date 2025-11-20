@@ -51,4 +51,5 @@ repos:
           - pydantic>=2.9.0
           - pydantic-settings>=2.5.2
         pass_filenames: false
-        files: ^backend/api/config\.py$
+        always_run: true
+        files: ^(backend/api/config\.py|\.env\.example)$

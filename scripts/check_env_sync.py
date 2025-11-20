@@ -9,7 +9,8 @@ Functions:
     expected env variable keys. This uses Pydantic v2's `model_fields` metadata
 	to list declared fields and converts them to canonical env names (uppercase).
     - parse_env_example(path): Parses a .env-style file and returns the set of keys
-    present.
+    present. Raises ValueError with file/line context if a non-empty, non-comment line
+    is malformed (missing '=' separator).
     - main(argv): Main entry point; compares expected keys to those in
     .env.example and reports any missing keys.
 
@@ -49,10 +50,12 @@ def get_expected_env_keys_from_settings() -> Set[str]:
 def parse_env_example(path: Path) -> Set[str]:
     keys: Set[str] = set()
     text = path.read_text(encoding="utf8")
-    for raw in text.splitlines():
+    for idx, raw in enumerate(text.splitlines(), start=1):
         line = raw.strip()
         if not line or line.startswith("#"):
             continue
+        if "=" not in line:
+            raise ValueError(f"Malformed line {idx} in {path}: missing '=' -> {raw!r}")
         key, _ = line.split("=", 1)
         key = key.strip()
         if key:
@@ -83,8 +86,20 @@ def main() -> int:
         print(f"Error importing Settings: {exc}", file=sys.stderr)
         return 2
 
-    # 2) Parse .env.example
-    example_keys = parse_env_example(ENV_EXAMPLE)
+    # 2) Ensure .env.example exists and parse it
+    if not ENV_EXAMPLE.exists():
+        print(
+            f"Error: {ENV_EXAMPLE} not found. Add `.env.example` to the repository root "
+            "and include placeholder values for required settings.",
+            file=sys.stderr,
+        )
+        return 2
+
+    try:
+        example_keys = parse_env_example(ENV_EXAMPLE)
+    except ValueError as exc:
+        print(f"Error parsing {ENV_EXAMPLE}: {exc}", file=sys.stderr)
+        return 2
 
     # 3) Compare
     missing = sorted(expected - example_keys)
