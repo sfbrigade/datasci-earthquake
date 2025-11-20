@@ -1,5 +1,5 @@
-import { Highlight, SystemStyleObject, Text } from "@chakra-ui/react";
-
+import { SystemStyleObject, Text } from "@chakra-ui/react";
+import ResponsiveTextWithHighlight from "./responsive-text-with-highlight";
 export interface HeadingProps {
   text: string;
   highlight: string;
@@ -8,17 +8,20 @@ export interface HeadingProps {
   maxWidth?: {
     [key: string]: string;
   };
-  themeTextStyle: string;
+  themeTextStyle: SystemStyleObject["textStyle"];
 }
 
 const Heading: React.FC<{ headingData: HeadingProps }> = ({ headingData }) => {
   const { text, highlight, style, highlightStyle, maxWidth, themeTextStyle } =
     headingData;
+
   return (
     <Text textStyle={themeTextStyle} maxW={maxWidth} css={style}>
-      <Highlight query={highlight} styles={highlightStyle}>
-        {text}
-      </Highlight>
+      <ResponsiveTextWithHighlight
+        text={text}
+        highlight={highlight}
+        highlightStyle={highlightStyle}
+      />
     </Text>
   );
 };

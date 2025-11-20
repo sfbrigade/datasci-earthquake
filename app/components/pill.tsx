@@ -15,9 +15,10 @@ const Pill: React.FC<PillProps> = ({ exists, trueData, falseData, noData }) => {
       case false:
         return "green";
       default:
-        return "grey";
+        return "lightGrey";
     }
   };
+  const color = getColor();
 
   const getLabel = () => {
     switch (exists) {
@@ -29,17 +30,19 @@ const Pill: React.FC<PillProps> = ({ exists, trueData, falseData, noData }) => {
         return noData;
     }
   };
+  const label = getLabel();
 
   return (
     <Box>
       <Text
-        bgColor={getColor()}
+        bgColor={color}
         color="white"
-        p="2px 12px 2px 12px"
+        py="0.5"
+        px="3"
         borderRadius="full"
         whiteSpace={"nowrap"}
       >
-        {getLabel()}
+        {label}
       </Text>
     </Box>
   );
