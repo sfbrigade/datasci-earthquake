@@ -56,7 +56,6 @@ const Map: React.FC<MapProps> = ({
           closable: true,
         });
       }
-      console.error("Mapbox access token or container is not set!");
       return;
     }
 
@@ -164,7 +163,6 @@ const Map: React.FC<MapProps> = ({
                 closable: true,
               });
             }
-            console.error("Invalid Mapbox token:", e.error);
           }
         });
       });

@@ -21,7 +21,6 @@ const Share = () => {
         closable: true,
       });
     } catch (err) {
-      console.error("Failed to copy: ", err);
       toaster.create({
         title: "Error",
         description: "Failed to copy link to clipboard.",

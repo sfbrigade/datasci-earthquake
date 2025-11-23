@@ -30,7 +30,6 @@ export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
     const data = await apiResponse.json();
     return data;
   } catch (error: any) {
-    console.log("Error: " + error.message);
     return { error: true, message: error.message };
   }
 };

@@ -73,7 +73,6 @@ export function useHazardDataFetcher({
               : null,
         };
       } catch (error) {
-        console.error("Error fetching hazard data:", error);
         throw error;
       } finally {
         setHazardDataLoading(false);
