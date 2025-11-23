@@ -48,8 +48,8 @@ By the end of this period you should:
      2. Oscar Syu (Interim project lead/Data science lead)
      3. For Data Research:
          - introduce yourself to Backend/Frontend eng: esp Anna Gennadinik, Svetlana Eliseeva
-    4. For Data Products/Analytics
+     4. For Data Products/Analytics
         - introduce yourself to Design/UX: esp Jocelyn Su
         - recommend introducing to the above Backend/Frontend folks if you have time too
-   6. This is just a suggested starter list, please reach out to more if you are able to!
+     5. This is just a suggested starter list, please reach out to more if you are able to!
 - Take on a starter task!  Talk to Oscar about getting on one.
