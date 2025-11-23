@@ -41,7 +41,7 @@ By the end of this period you should:
 - Learn Skills
   1. We encourage this to a space where you get to learn new skills and explore!  Highly suggest leveraging the internet, online courses, and other team members for learning & advice.  
   2. We're still in progress in building more resources in-house, but you can take look at some of the stuff we have today:
-     - [Product Analytics 101](https://docs.google.com/document/d/19ZWZZOtMj6BWFiQ9iAltAlL_KVHEtV6XZ8kBh3ni6j4/edit?tab=t.0#heading=h.auvnxplsw8t\)
+     - [Product Analytics 101](https://docs.google.com/document/d/19ZWZZOtMj6BWFiQ9iAltAlL_KVHEtV6XZ8kBh3ni6j4/edit?tab=t.0#heading=h.auvnxplsw8t)
 - Meet People
   1. Make sure you meet some of the folks you'll work with.  At a minimum:
      1. Leela Solomon (project lead) [Maternity Leave]
