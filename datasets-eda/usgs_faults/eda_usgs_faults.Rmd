@@ -1,0 +1,37 @@
+---
+title: "EDA of USGS fault lines dataset for SF"
+author: "Philippe Marchand"
+date: "2025-11-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The shapefiles below were obtained from the [USGS Quartenary Fault and Fold Database](https://www.usgs.gov/programs/earthquake-hazards/faults), choosing the *GIS files* download. The *qfaults* shapefile is for faults over land and the *ca_offshore* shapefile is for faults over water; a fault like the San Andreas one that is part over land and part over sea is split between the two datasets.
+
+Both datasets are cropped to a bounding box around San Francisco for faster loading of the map.
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(sf)
+library(mapview)
+
+qfaults <- read_sf("Qfaults_SHP/Qfaults_US_Database.shp") %>% 
+    filter(Location == "California") %>% 
+    st_crop(xmin = -122.9, xmax = -122.0,
+            ymin = 37.52, ymax = 37.93)
+
+ca_offshore <- read_sf("Qfaults_SHP/ca_offshore.shp") %>% 
+    st_crop(xmin = -122.9, xmax = -122.0,
+            ymin = 37.52, ymax = 37.93)
+```
+
+```{r, warning=FALSE, message = FALSE}
+mapview(list(qfaults, ca_offshore), color = list("red", "blue"))
+```
+
+As we can see on the map above, there are no fault lines over the land of San Francisco. The nearest faults are the Golden Gate fault, which is only over water and stops a bit over 1 mi. away from the shore near Golden Gate Park; the San Andreas fault, which crosses over land in Daly City near where State Routes 1 and 35 intersect; and Serra fault, which starts more inland in Daly City and roughly follows freeway 280 southeast.
+
+Therefore, the fault lines dataset would be usable for a regional map of the Bay Area, but not really within the territory of San Francisco. In addition, comparing this map with [National Risk Index (NRI) map for earthquakes](eda_fema_nri.html), we don't really see a pattern where the risk is higher near the fault; in fact, most of the very high risk areas are on the eastern side of the city.
