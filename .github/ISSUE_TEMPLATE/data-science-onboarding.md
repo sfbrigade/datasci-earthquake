@@ -30,7 +30,7 @@ By the end of this period you should:
 - Understand the project
    1. Explore https://www.safehome.report/, try inputting some addresses and play with the site.  We'd love your feedback & ideas!
    2. Join the #proj-earthquake-datasci channel, and read through some of the more recent (1-2 weeks ish) of messages
-   3. Visit the [SafeHome Canvas](https://sfbrigade.slack.com/docs/T0431NL8C/F07CLR2Q000), familiarize yourself with the Google Drive, Github, Product Requirement Document.  These represent our "best attempt" at capturing the current state of the project.  Please also familiarize yourself wtih the SafeHome Github [project board](https://github.com/orgs/sfbrigade/projects/13).  This is where we keep track of the tasks you are assigned to for each iteration.
+   3. Visit the [SafeHome Canvas](https://sfbrigade.slack.com/docs/T0431NL8C/F07CLR2Q000), familiarize yourself with the Google Drive, Github, Product Requirement Document. These represent our "best attempt" at capturing the current state of the project. Please also familiarize yourself with the SafeHome Github [project board](https://github.com/orgs/sfbrigade/projects/13). This is where we keep track of the tasks you are assigned to for each iteration.
 - Understand the data & tech stack
   1. We have a strong preference for Python and Co-Lab for analysis, but please use the appropriate tool for your application.
   2. Navigate to the "tech stack" resource in the Canvas to better understand the stack we use for our project too.
