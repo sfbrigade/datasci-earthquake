@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: develop
+          ref: test/715
           fetch-depth: 0
           ssh-key: ${{ secrets.DEPLOY_KEY }}          
 
@@ -89,19 +89,19 @@ jobs:
             echo "commit_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
           fi
 
-      - name: Push to develop
+      - name: Push to test/715
         if: steps.detect_changes.outputs.changes == 'true'
         run: |
-          git fetch origin develop
-          git checkout develop
-          git pull origin develop
+          git fetch origin test/715
+          git checkout test/715
+          git pull origin test/715
 
           git add public/data/*.geojson
           if git diff --cached --quiet; then
-            echo "No changes to commit on develop"
+            echo "No changes to commit on test/715"
           else
             git commit -m "Update datasets (ETL auto-update)"
-            git push origin develop
+            git push origin test/715
           fi
 
   create-pr:
@@ -117,13 +117,13 @@ jobs:
           fetch-depth: 0
           ssh-key: ${{ secrets.DEPLOY_KEY }}   
 
-      - name: Get updated files from develop
+      - name: Get updated files from test/715
         run: |
-          # Fetch the latest develop branch
-          git fetch origin develop
+          # Fetch the latest test/715 branch
+          git fetch origin test/715
           
-          # Copy the updated geojson files from develop to main
-          git checkout origin/develop -- public/data/*.geojson || echo "No changes found to copy"
+          # Copy the updated geojson files from test/715 to main
+          git checkout origin/test/715 -- public/data/*.geojson || echo "No changes found to copy"
           
           # Verify we got the changes
           git status          
