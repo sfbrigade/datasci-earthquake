@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 ## Context
-This is a onboarding task for your first 2-week sprint (or "iteration") as part of DataSF!  We're excited to have you and are looking forward to the impact you'll make on the team.  
+This is an onboarding task for your first 2-week sprint (or "iteration") as part of DataSF! We're excited to have you and are looking forward to the impact you'll make on the team.  
 
 Your role here as a data scientist is to:
 - find datasets and ingest them in a scalable manner
