@@ -51,6 +51,21 @@ jobs:
       - name: Type check with mypy
         run: mypy --config-file mypy.ini .
 
+  nextjs_build_check:
+    runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: ci
+    steps:
+      - uses: actions/checkout@v4 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'  
+      - name: Install dependencies
+        run: npm ci 
+      - name: Check Next.js production build
+        run: npm run build
+
   docker_build_test:
     runs-on: ubuntu-latest
     steps:
