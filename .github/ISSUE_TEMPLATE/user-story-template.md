@@ -1,3 +1,12 @@
+---
+name: User Story
+about: Create a user story for this project
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 # User Story
 
 As a [Safehome User/Backend Engineer/Partner] I want to be able to...
