@@ -20,6 +20,8 @@ import logging
 from backend.etl.session_manager import SessionManager
 from backend.etl.request_handler import RequestHandler
 from sqlalchemy.exc import SQLAlchemyError, ProgrammingError, IntegrityError
+from geojson_pydantic import FeatureCollection
+from pydantic import ValidationError
 
 load_dotenv()
 
@@ -401,12 +403,16 @@ class DataHandler(ABC):
         Write the geojson file to the public/data folder. The geojson is a static asset that is displayed on the map in the app.
         """
         try:
+            FeatureCollection.model_validate(features)
             with open(geojson_path, "wt") as f:
                 json.dump(features, f)
 
             self.logger.info(
                 f"Generated {get_geojson_prefix()}{self.table.__name__}.geojson"
             )
+        except ValidationError as e:
+            self.logger.error(f"Failed to validate GeoJSON: {e}")
+            raise
         except Exception as e:
             self.logger.error(f"Failed to write GeoJSON: {e}")
             raise
