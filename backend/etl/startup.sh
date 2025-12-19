@@ -37,23 +37,16 @@ fi
 # Check which tables need ETL
 ETL_TABLES=$(echo "$ETL_OUTPUT" | awk -F: '/^ETL_REQUIRED:/ {print $2}')
 
-# run ETL only for required tables
-for tbl in $ETL_TABLES; do
-  case "$tbl" in
-    tsunami_zones)
-      run_python_script backend/etl/tsunami_data_handler.py
-      ;;
-    liquefaction_zones)
-      run_python_script backend/etl/liquefaction_data_handler.py
-      ;;
-    soft_story_properties)
-      run_python_script backend/etl/soft_story_properties_data_handler.py
-      ;;
-    *)
-      echo "No ETL mapping for $tbl; skipping" >&2
-      ;;
-  esac
-done
+# Run ETL processes in parallel if any are needed
+if [ -n "$ETL_TABLES" ]; then
+    echo "Running ETL processes in parallel..."
+    if ! "$VENV_PYTHON" backend/etl/run_parallel_etls.py $ETL_TABLES; then
+        echo "Parallel ETL execution failed" >&2
+        exit 1
+    fi
+else
+    echo "No ETL processes needed - all tables are populated"
+fi
 
 echo "===== startup.sh finished ====="
 
