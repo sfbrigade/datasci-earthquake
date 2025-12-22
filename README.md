@@ -37,6 +37,8 @@ Before starting work on the project, make sure to:
 7. Download the artifact at the bottom of the page and unzip.
 8. Decrypt the env file using OpenSSL. In the folder with the artifact, run `openssl aes-256-cbc -d -salt -pbkdf2 -k <YOUR_PASSPHRASE> -in .env.enc -out env` in the terminal. This creates a decrypted file named `env`.
 9. Place the decrypted file in the root folder of the project and rename it to `.env`.
+10.This project requires OpenSSL for certain development and build steps.
+Windows does not include OpenSSL by default, so you must install it manually.
 
 The file is organized into four main sections:
 
