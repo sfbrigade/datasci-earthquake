@@ -6,12 +6,15 @@ const nextConfig: NextConfig = {
   },
   rewrites: async () => {
     const env = process.env.ENVIRONMENT;
+    const backendBaseUrl = process.env.BACKEND_BASE_URL;
     let backendHost;
 
     if (env === "local") {
       backendHost = "http://127.0.0.1:8000"; // Local development backend
     } else if (env === "dev_docker") {
       backendHost = "http://backend:8000"; // In docker, the service name is used as the hostname
+    } else if (backendBaseUrl && (env === "preview" || env === "production")) {
+      backendHost = backendBaseUrl; // Use the provided backend base URL for preview and production (currently Railway)
     } else {
       backendHost = ""; // In preview and production, the backend is served from the same origin
     }

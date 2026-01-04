@@ -32,6 +32,7 @@ class Settings(BaseSettings):
     postgres_db: str
     postgis_version: str
     frontend_host: str
+    backend_base_url: str | None = None
     neon_url: str
     database_url_sqlalchemy: str
     database_url_sqlalchemy_test: str
