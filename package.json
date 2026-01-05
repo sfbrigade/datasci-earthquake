@@ -44,6 +44,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.21",
+    "express": "^5.2.1",
     "framer-motion": "^12.23.0",
     "mapbox-gl": "^3.13.0",
     "next": "^15.5.7",
