@@ -7,10 +7,10 @@ from backend.api.routers import (
     soft_story_api,
     health_api,
 )
-from backend.api.config import settings
+from backend.api.config import get_settings
 import sentry_sdk
 
-
+settings = get_settings()
 # Initialize Sentry
 sentry_sdk.init(
     dsn=settings.sentry_dsn,

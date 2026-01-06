@@ -1,10 +1,11 @@
 import logging
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from backend.api.config import settings
+from backend.api.config import get_settings
 
 
 def _get_database_url() -> str:
+    settings = get_settings()
     match settings.environment:
         case "local" | "ci":
             return settings.localhost_database_url_sqlalchemy

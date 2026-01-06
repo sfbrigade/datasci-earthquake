@@ -57,9 +57,6 @@ class Settings(BaseSettings):
     )
 
 
-settings = Settings()
-
-
 # Cache the settings to avoid multiple calls to load the same settings
 @lru_cache()
 def get_settings() -> Settings:
