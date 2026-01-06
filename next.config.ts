@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
       backendHost = "http://127.0.0.1:8000"; // Local development backend
     } else if (env === "dev_docker") {
       backendHost = "http://backend:8000"; // In docker, the service name is used as the hostname
-    } else if (env === "preview" || env === "production") {
+    } else if (env === "prod") {
       if (!backendBaseUrl) {
         throw new Error(
           "NEXT_PUBLIC_API_URL is required in preview/production for API rewrites."
@@ -22,7 +22,7 @@ const nextConfig: NextConfig = {
       backendHost = backendBaseUrl; // Use the provided backend base URL for preview and production (currently Railway)
     } else {
       throw new Error(
-        `Unexpected ENVIRONMENT "${env}". Expected one of: local, dev_docker, preview, production.`
+        `Unexpected ENVIRONMENT "${env}". Expected one of: local, dev_docker, prod.`
       );
     }
 
