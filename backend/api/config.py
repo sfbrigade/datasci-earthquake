@@ -5,6 +5,7 @@ Provides the environment variables that are read by the application
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
 from functools import lru_cache
+import os
 
 
 def find_env_file(start: Path, filename: str = ".env") -> Path | None:
@@ -12,6 +13,10 @@ def find_env_file(start: Path, filename: str = ".env") -> Path | None:
     Walk upwards from `start` until `filename` is found or the root directory is reached.
     Returns the Path if found, otherwise None.
     """
+    # Skip .env file in production
+    if os.getenv("ENVIRONMENT") in ("prod", "production"):
+        return None
+
     current = start.resolve()
     for parent in [current, *current.parents]:
         candidate = parent / filename
