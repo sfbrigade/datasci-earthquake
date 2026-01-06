@@ -14,7 +14,7 @@ def find_env_file(start: Path, filename: str = ".env") -> Path | None:
     Returns the Path if found, otherwise None.
     """
     # Skip .env file in production
-    if os.getenv("ENVIRONMENT") in ("prod", "production"):
+    if os.getenv("ENVIRONMENT") == "prod":
         return None
 
     current = start.resolve()
@@ -53,6 +53,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=ENV_FILE,
         env_file_encoding="utf-8",
+        case_sensitive=False,
     )
 
 
