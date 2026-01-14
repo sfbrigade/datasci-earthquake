@@ -1,13 +1,6 @@
 "use client";
 
-import { 
-  ChangeEvent, 
-  FormEvent, 
-  Suspense, 
-  useState, 
-  Dispatch, 
-  SetStateAction 
-} from "react";
+import { ChangeEvent, FormEvent, Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import { chakra, Input, InputGroup, Text } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
@@ -31,7 +24,7 @@ const autofillOptions: AddressAutofillOptions = {
 // TODO: isolate the usage of `useSearchParams()` so that the Suspense boundary can be even more narrow if possible
 interface SearchBarProps {
   inputAddress: string;
-  onInputAddressChange: Dispatch<SetStateAction<string>>;
+  onInputAddressChange: (address: string) => void;
   onSearchChange: (coords: number[], address: string) => void;
 }
 
