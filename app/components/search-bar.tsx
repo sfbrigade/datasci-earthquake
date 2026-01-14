@@ -1,6 +1,13 @@
 "use client";
 
-import { ChangeEvent, FormEvent, Suspense, useState, Dispatch, SetStateAction } from "react";
+import { 
+  ChangeEvent, 
+  FormEvent, 
+  Suspense, 
+  useState, 
+  Dispatch, 
+  SetStateAction 
+} from "react";
 import { useRouter } from "next/navigation";
 import { chakra, Input, InputGroup, Text } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
