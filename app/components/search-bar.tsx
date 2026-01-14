@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FormEvent, Suspense, useState } from "react";
+import { ChangeEvent, FormEvent, Suspense, useState, Dispatch, SetStateAction } from "react";
 import { useRouter } from "next/navigation";
 import { chakra, Input, InputGroup, Text } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
@@ -23,18 +23,19 @@ const autofillOptions: AddressAutofillOptions = {
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `search-bar-skeleton.tsx` and vice versa
 // TODO: isolate the usage of `useSearchParams()` so that the Suspense boundary can be even more narrow if possible
 interface SearchBarProps {
+  inputAddress: string;
+  onInputAddressChange: Dispatch<SetStateAction<string>>;
   onSearchChange: (coords: number[], address: string) => void;
 }
 
-const SearchBar = ({ onSearchChange }: SearchBarProps) => {
-  const [inputAddress, setInputAddress] = useState("");
+const SearchBar = ({ inputAddress, onInputAddressChange, onSearchChange }: SearchBarProps) => {
   const [suggestionSelected, setSuggestionSelected] = useState(false);
   const [suggestionsAvailable, setSuggestionsAvailable] = useState(false);
   const router = useRouter();
   const characterCap = 5;
 
   const handleClearClick = () => {
-    setInputAddress("");
+    onInputAddressChange("");
     setSuggestionSelected(false);
     router.push("/", { scroll: false });
   };
@@ -55,7 +56,7 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
   };
 
   const handleAddressChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setInputAddress(event.currentTarget.value);
+    onInputAddressChange(event.currentTarget.value);
     // shows hint again upon further search param changes without selection of suggestion
     if (!suggestionSelected) setSuggestionsAvailable(false);
     else if (suggestionSelected && inputAddress.length <= 3) {
