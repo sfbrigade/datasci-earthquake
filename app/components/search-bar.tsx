@@ -28,11 +28,11 @@ interface SearchBarProps {
   onSearchChange: (coords: number[], address: string) => void;
 }
 
-const SearchBar = ({ 
-  inputAddress, 
-  onInputAddressChange, 
+const SearchBar = ({
+  inputAddress,
+  onInputAddressChange,
   onSearchChange,
- }: SearchBarProps) => {
+}: SearchBarProps) => {
   const [suggestionSelected, setSuggestionSelected] = useState(false);
   const [suggestionsAvailable, setSuggestionsAvailable] = useState(false);
   const router = useRouter();
