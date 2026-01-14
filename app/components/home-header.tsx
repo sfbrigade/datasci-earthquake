@@ -93,7 +93,7 @@ const HomeHeader = ({
         alignItems={{ base: "flex-start", xl: "center" }}
       >
         <Box width={{ base: "full", xl: "fit" }}>
-          <SearchBar 
+          <SearchBar
             inputAddress={inputAddress}
             onInputAddressChange={setInputAddress}
             onSearchChange={onSearchChange}
