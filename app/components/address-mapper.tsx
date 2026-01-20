@@ -110,18 +110,14 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     setCurrentView(window.innerWidth <= 480 ? "mobile" : "desktop");
   };
 
-  const handleSearchChange = useCallback(
-    (coords: number[], address: string) => {
-      const newUrl = `?address=${encodeURIComponent(address)}&lat=${coords[1]}&lon=${coords[0]}`;
-      router.push(newUrl, { scroll: false });
-    },
-    [router]
-  );
-
   useEffect(() => {
     const lat = searchParams.get("lat");
     const lon = searchParams.get("lon");
     const address = searchParams.get("address");
+
+    console.log(lat, "LAT")
+    console.log(lon, "LON")
+    console.log(address, "ADDRESS")
 
     if (lat && lon && address) {
       const newCoords = [parseFloat(lon), parseFloat(lat)];
@@ -191,7 +187,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       <HomeHeader
         searchedAddress={searchedAddress}
         isSearchComplete={isSearchComplete}
-        onSearchChange={handleSearchChange}
+        // onSearchChange={handleSearchChange}
       />
       {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
       <Box

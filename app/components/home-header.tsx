@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Headings } from "../data/data";
 import {
@@ -27,17 +27,25 @@ export type HazardData = {
 interface HomeHeaderProps {
   searchedAddress: string | null;
   isSearchComplete: boolean;
-  onSearchChange: (coords: number[], address: string) => void;
+  // onSearchChange: (coords: number[], address: string) => void;
 }
 
 const HomeHeader = ({
   searchedAddress,
   isSearchComplete,
-  onSearchChange,
+  // onSearchChange,
 }: HomeHeaderProps) => {
   const headingData = Headings.home;
   const router = useRouter();
 
+  const handleSearchChange = useCallback(
+      (coords: number[], address: string) => {
+        const newUrl = `?address=${encodeURIComponent(address)}&lat=${coords[1]}&lon=${coords[0]}`;
+        router.push(newUrl, { scroll: false });
+      },
+      [router]
+    );
+  
   return (
     <Box as="header" bgGradient="blue" py={{ base: "4", "2xl": "5" }} px="8">
       <Flex
@@ -91,7 +99,7 @@ const HomeHeader = ({
         alignItems={{ base: "flex-start", xl: "center" }}
       >
         <Box width={{ base: "full", xl: "fit" }}>
-          <SearchBar onSearchChange={onSearchChange} />
+          <SearchBar onSearchChange={handleSearchChange} />
         </Box>
 
         {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
