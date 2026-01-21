@@ -1,4 +1,7 @@
 {
     "postman.settings.dotenv-detection-notification-visibility": false,
-    "python.REPL.enableREPLSmartSend": false
+    "python.REPL.enableREPLSmartSend": false,
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "develop"
+    ]
 }
