@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Box } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
@@ -11,6 +11,7 @@ import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
+import { createContext } from "react";
 
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
@@ -73,7 +74,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const [currentView, setCurrentView] = useState("");
   const toastIdDataLoadFailed = "data-load-failed";
   const coordinatesRef = useRef<number[] | null>(null);
-  const router = useRouter();
+  // const router = useRouter();
+
+  const AddressSearchContext = createContext({
+    searchedAddress,
+    isSearchComplete,
+  });
 
   const { fetchHazardData } = useHazardDataFetcher({
     setSearchComplete,
@@ -115,9 +121,9 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     const lon = searchParams.get("lon");
     const address = searchParams.get("address");
 
-    console.log(lat, "LAT")
-    console.log(lon, "LON")
-    console.log(address, "ADDRESS")
+    console.log(lat, "LAT");
+    console.log(lon, "LON");
+    console.log(address, "ADDRESS");
 
     if (lat && lon && address) {
       const newCoords = [parseFloat(lon), parseFloat(lat)];
@@ -184,59 +190,59 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
   return (
     <>
-      <HomeHeader
-        searchedAddress={searchedAddress}
-        isSearchComplete={isSearchComplete}
-        // onSearchChange={handleSearchChange}
-      />
-      {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
-      <Box
-        w="full"
-        css={{
-          "--header-height": "198px",
-          md: { "--header-height": "175px" },
-          xl: { "--header-height": "141px" },
-          "2xl": { "--header-height": "149px" },
-          "--whitespace-height": "32px",
-        }}
-        style={{
-          height:
-            "calc(100dvh - var(--header-height) - var(--whitespace-height)",
-        }}
-        m="auto"
-        position="relative"
-      >
-        <Box h="full" overflow="hidden">
-          <Box zIndex="docked" top="0" position="absolute">
-            {currentView === "desktop" ? (
-              <ReportHazards
-                addressHazardData={addressHazardData}
-                isHazardDataLoading={isHazardDataLoading}
-                toggledStates={toggledStates}
-                setToggledStates={setToggledStates}
-                setLayerToggleObj={setLayerToggleObj}
-              />
-            ) : currentView === "mobile" ? (
-              <MobileReportHazards
-                showHazards={showHazards}
-                addressHazardData={addressHazardData}
-                isHazardDataLoading={isHazardDataLoading}
-                toggledStates={toggledStates}
-                setShowHazards={setShowHazards}
-                setToggledStates={setToggledStates}
-                setLayerToggleObj={setLayerToggleObj}
-              />
-            ) : null}
+        <HomeHeader
+          searchedAddress={searchedAddress}
+          isSearchComplete={isSearchComplete}
+          // onSearchChange={handleSearchChange}
+        />
+        {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
+        <Box
+          w="full"
+          css={{
+            "--header-height": "198px",
+            md: { "--header-height": "175px" },
+            xl: { "--header-height": "141px" },
+            "2xl": { "--header-height": "149px" },
+            "--whitespace-height": "32px",
+          }}
+          style={{
+            height:
+              "calc(100dvh - var(--header-height) - var(--whitespace-height)",
+          }}
+          m="auto"
+          position="relative"
+        >
+          <Box h="full" overflow="hidden">
+            <Box zIndex="docked" top="0" position="absolute">
+              {currentView === "desktop" ? (
+                <ReportHazards
+                  addressHazardData={addressHazardData}
+                  isHazardDataLoading={isHazardDataLoading}
+                  toggledStates={toggledStates}
+                  setToggledStates={setToggledStates}
+                  setLayerToggleObj={setLayerToggleObj}
+                />
+              ) : currentView === "mobile" ? (
+                <MobileReportHazards
+                  showHazards={showHazards}
+                  addressHazardData={addressHazardData}
+                  isHazardDataLoading={isHazardDataLoading}
+                  toggledStates={toggledStates}
+                  setShowHazards={setShowHazards}
+                  setToggledStates={setToggledStates}
+                  setLayerToggleObj={setLayerToggleObj}
+                />
+              ) : null}
+            </Box>
+            <Map
+              coordinates={coordinates || defaultCoords}
+              softStoryData={softStoryData}
+              tsunamiData={tsunamiData}
+              liquefactionData={liquefactionData}
+              layerToggleObj={layerToggleObj}
+            />
           </Box>
-          <Map
-            coordinates={coordinates || defaultCoords}
-            softStoryData={softStoryData}
-            tsunamiData={tsunamiData}
-            liquefactionData={liquefactionData}
-            layerToggleObj={layerToggleObj}
-          />
         </Box>
-      </Box>
     </>
   );
 };
