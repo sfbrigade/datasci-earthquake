@@ -68,10 +68,10 @@ This includes `pyproject.toml` and `.env`, and `package.json`. You will need to 
 
 ### Starting the application
 
-1. **Build images if not yet created**: From the project root directory (where the docker-compose.yml file is located), run:
+1. **Build images if not yet created**: From the project root directory (where the compose.yaml file is located), run:
    `docker compose build`
 
-1. **Run Docker Compose**: From the project root directory (where the docker-compose.yml file is located), run:
+1. **Run Docker Compose**: From the project root directory (where the compose.yaml file is located), run:
    `docker compose up`
 
    or
@@ -80,7 +80,7 @@ This includes `pyproject.toml` and `.env`, and `package.json`. You will need to 
 
    This will:
 
-- Start all services defined in the docker-compose.yml file (e.g., frontend, backend, database)
+- Start all services defined in the compose.yaml file (e.g., frontend, backend, database)
 
 2. **Start Postgres**
 
