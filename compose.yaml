@@ -18,9 +18,9 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       start_interval: 10s
-      interval: 500s
+      interval: 10s
       timeout: 5s
-      retries: 3
+      retries: 6
       start_period: 60s
     command: npm run next-dev
 
@@ -47,9 +47,9 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1"]
       start_interval: 10s
-      interval: 500s
+      interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
       start_period: 30s
 
   db_test:
@@ -69,9 +69,9 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       start_interval: 10s
-      interval: 500s
+      interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
       start_period: 30s
     depends_on:
       - db
@@ -93,9 +93,9 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       start_interval: 10s
-      interval: 500s
+      interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
       start_period: 30s
 
 volumes:
