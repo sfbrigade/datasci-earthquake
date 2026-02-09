@@ -441,6 +441,13 @@ def test_get_last_export_time_from_db(test_db):
     assert result == now
 
 
+def test_dummy(test_db):
+    """Test the last export time lookup"""
+    data_handler = DummyDataHandler(url="", table=DummyModel)
+    data_handler.db_getter = create_test_db_context_manager(test_db)
+
+    assert False
+
 def test_get_last_export_time_from_db_not_found(test_db):
     """Test the last export time lookup when the data is unavailable. The method should return the earliest date possible"""
     data_handler = DummyDataHandler(url="", table=DummyModel)
