@@ -150,7 +150,7 @@ jobs:
           docker logs datasci-earthquake-frontend-1 || echo "No logs found"
 
       - name: Run Backend Tests
-        run: docker compose run --rm backend pytest backend -Pv
+        run: docker compose run --rm backend pytest -Pv backend 
 
       - name: Run Frontend Tests
         run: docker compose run --rm frontend npm test
