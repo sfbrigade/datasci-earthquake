@@ -135,7 +135,7 @@ jobs:
         run: docker compose build
 
       - name: Start Services
-        run: docker compose up -d --wait --wait-timeout 70
+        run: docker compose up -d --wait --wait-timeout 20
 
       - name: Docker Backend Logs 
         if: always()  
