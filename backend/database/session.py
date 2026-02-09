@@ -3,9 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from backend.api.config import settings
 
-logging.basicConfig(level=logging.INFO, format="%(message)s", force=True)
-
-myLog = logging.getLogger('mylogger')
+myLog = logging.getLogger('DummyDataHandler')
 def _get_database_url() -> str:
     match settings.environment:
         case "local" | "ci":
