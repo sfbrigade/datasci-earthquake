@@ -3,11 +3,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from backend.api.config import settings
 
-
+myLog = logging.getLogger('mylogger')
 def _get_database_url() -> str:
     match settings.environment:
         case "local" | "ci":
             print(f'settings env = {settings.environment}')
+            myLog.info(f'.....settings env = {settings.environment}')
             return settings.localhost_database_url_sqlalchemy
         case "prod":
             return settings.neon_url
