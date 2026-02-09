@@ -135,7 +135,7 @@ jobs:
         run: docker compose build
 
       - name: Start Services
-        run: docker compose up -d --wait --wait-timeout 2
+        run: docker compose up -d --wait --wait-timeout 300
 
       - name: Docker Backend Logs 
         run: |
