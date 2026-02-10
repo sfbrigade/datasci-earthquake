@@ -94,13 +94,9 @@ def test_db():
 
     print('-----landslide------------')
     res = connection.execute(text('select identifier from landslide_zones'))
-    print(len(res.scalars().all()))
+    print(res.rowcount)
     print('-----------------')
 
-    print('-----tsunami------------')
-    res = connection.execute(text('select identifier from tsunami_zones'))
-    print(len(res.scalars().all()))
-    print('-----------------')
 
     # We own this code, so we can create our tables!
     Base.metadata.drop_all(engine)
