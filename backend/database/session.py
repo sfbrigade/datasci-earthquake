@@ -13,6 +13,8 @@ def _get_database_url() -> str:
             return settings.neon_url
         case "dev_docker":
             myLog.warning(f'oh hi!.....settings env = {settings.environment}')
+            if (settings.database_url_sqlalchemy.index('@db_test')):
+              print('has it!!!!!')
             return settings.database_url_sqlalchemy
         case _:
             raise ValueError(f"Unknown environment: {settings.environment}")
