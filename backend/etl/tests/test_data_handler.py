@@ -11,7 +11,7 @@ import logging
 from unittest.mock import call, patch, MagicMock
 from backend.etl.retry import LoggingRetry
 from backend.etl.request_handler import RequestHandler
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker, scoped_session
 from backend.api.config import settings
 from sqlalchemy.dialects.postgresql import Insert
@@ -84,6 +84,12 @@ class TimestampDataHandler(DataHandler):
 @pytest.fixture(scope="function")
 def test_db():
     engine = create_engine(_get_database_url())
+
+    insp = inspect(engine)
+
+    print('-----------------')
+    print(insp.get_table_names())
+    print('-----------------')
     connection = engine.connect()
 
     # We own this code, so we can create our tables!
