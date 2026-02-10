@@ -81,7 +81,7 @@ class DataHandler(ABC):
             f"page size: {page_size}, "
             f"session: {session}"
         )
-        self.logger.warning(f'env settings.....found = {os.getenv("ENVIRONMENT")')
+        self.logger.warning(f'env settings.....found = {os.getenv("ENVIRONMENT")}')
 
     def _yield_data(self, params: Optional[dict] = None) -> Generator:
         """
