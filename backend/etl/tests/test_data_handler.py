@@ -101,6 +101,18 @@ def test_db():
     print('-----landslide oh------------')
     res = connection.execute(text('select identifier from landslide_zones'))
     print(res.rowcount)
+
+    print('-----liq oh------------')
+    res = connection.execute(text('select identifier from liquefaction_zones'))
+    print(res.rowcount)
+
+    print('-----ss oh------------')
+    res = connection.execute(text('select identifier from soft_story_properties'))
+    print(res.rowcount)
+
+    print('-----tsu oh------------')
+    res = connection.execute(text('select identifier from tsunami_zones'))
+    print(res.rowcount)
     print('-----------------')
 
     Session = scoped_session(sessionmaker(bind=connection))
