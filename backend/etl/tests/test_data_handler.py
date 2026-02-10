@@ -92,17 +92,17 @@ def test_db():
     print('-----------------')
     connection = engine.connect()
 
-    print('-----landslide------------')
-    res = connection.execute(text('select identifier from landslide_zones'))
-    print(res.rowcount)
-    print('-----------------')
-
-
     # We own this code, so we can create our tables!
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
     transaction = connection.begin()
+
+    print('-----landslide oh------------')
+    res = connection.execute(text('select identifier from landslide_zones'))
+    print(res.rowcount)
+    print('-----------------')
+
     Session = scoped_session(sessionmaker(bind=connection))
     session = Session()
     session.begin_nested()
