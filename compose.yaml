@@ -1,6 +1,6 @@
 # Docker Compose configuration for local development and CI pipeline.
 # Not used for production; production is deployed via hosting platform.
-# oh
+
 services:
   db:
     image: postgis-custom
@@ -36,8 +36,8 @@ services:
     environment:
       - ENVIRONMENT=dev_docker
     volumes:
-      - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
       - ./backend/database/more:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
+      - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
     ports:
       - 5433:5432
     healthcheck:
