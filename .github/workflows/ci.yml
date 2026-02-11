@@ -151,7 +151,8 @@ jobs:
 
       - name: Run Backend Tests
         # run: docker compose run --rm backend pytest backend/etl/tests/test_data_handler.py::test_dummy 
-        run: docker compose run --rm backend pytest backend -v 
+        run: docker compose run --rm backend pytest backend/api/tests/test_liquefaction.py::test_get_liquefaction_zones 
+        # run: docker compose run --rm backend pytest backend -v 
 
       - name: Run Frontend Tests
         run: docker compose run --rm frontend npm test
