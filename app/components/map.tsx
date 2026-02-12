@@ -3,9 +3,10 @@
 import React, { useRef, useEffect } from "react";
 import mapboxgl, { LngLat } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { FeatureCollection, Geometry } from "geojson";
+import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
+import { Box } from "@chakra-ui/react";
 
 const defaultCoords = [-122.463733, 37.777448];
 
@@ -19,9 +20,9 @@ interface MapProps {
 
 const Map: React.FC<MapProps> = ({
   coordinates = defaultCoords,
-  softStoryData,
-  tsunamiData,
-  liquefactionData,
+  softStoryData: soft,
+  tsunamiData: tsunami,
+  liquefactionData: liquefaction,
   layerToggleObj,
 }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -29,6 +30,19 @@ const Map: React.FC<MapProps> = ({
   const markerRef = useRef<mapboxgl.Marker>(undefined);
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
+
+  let softStoryData: FeatureCollection<Geometry, GeoJsonProperties> = {
+    type: "FeatureCollection",
+    features: [],
+  };
+  let tsunamiData: FeatureCollection<Geometry, GeoJsonProperties> = {
+    type: "FeatureCollection",
+    features: [],
+  };
+  let liquefactionData: FeatureCollection<Geometry, GeoJsonProperties> = {
+    type: "FeatureCollection",
+    features: [],
+  };
 
   const handleToggleLayers = () => {
     if (!mapRef.current) return;
@@ -182,9 +196,7 @@ const Map: React.FC<MapProps> = ({
     if (layerToggleObj.layerId != "") handleToggleLayers();
   }, [layerToggleObj]); // re-runs every time state changes
 
-  return (
-    <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
-  );
+  return <Box ref={mapContainerRef} w="full" h="full" />;
 };
 
 export default Map;

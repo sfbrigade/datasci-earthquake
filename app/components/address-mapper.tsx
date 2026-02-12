@@ -193,23 +193,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         isSearchComplete={isSearchComplete}
         onSearchChange={handleSearchChange}
       />
-      {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
-      <Box
-        w="full"
-        css={{
-          "--header-height": "198px",
-          md: { "--header-height": "175px" },
-          xl: { "--header-height": "141px" },
-          "2xl": { "--header-height": "149px" },
-          "--whitespace-height": "32px",
-        }}
-        style={{
-          height:
-            "calc(100dvh - var(--header-height) - var(--whitespace-height)",
-        }}
-        m="auto"
-        position="relative"
-      >
+      <Box w="full" m="auto" h="full" position="relative">
         <Box h="full" overflow="hidden">
           <Box zIndex="docked" top="0" position="absolute">
             {currentView === "desktop" ? (

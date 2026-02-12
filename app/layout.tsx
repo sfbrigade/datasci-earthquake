@@ -38,9 +38,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${manrope.className} ${inter.className}`}>
         <Provider>
-          <Flex direction="column" align="center" minH="dvh">
+          <Flex direction="column" align="center" h="dvh">
             <Header />
-            <Box flex="1" as="main" width="full">
+            <Box flex="1" as="main" width="full" h="full">
               {children}
             </Box>
             <Footer />

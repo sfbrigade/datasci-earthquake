@@ -46,7 +46,7 @@ const Home = async () => {
     console.error("Error: ", error);
   }
   return (
-    <Flex direction="column">
+    <Flex direction="column" h="full">
       {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
       <Suspense fallback={null}>
         <AddressMapper
