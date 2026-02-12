@@ -40,7 +40,7 @@
     "@mapbox/search-js-react": "^1.1.0",
     "@storybook/addon-themes": "^10.0.5",
     "@types/geojson": "^7946.0.16",
-    "@types/node": "^20.2.4",
+    "@types/node": "^24.10.13",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.21",
@@ -80,6 +80,7 @@
     "eslint-plugin-storybook": "^10.0.5",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "jiti": "^2.6.1",
     "node-fetch": "^3.3.2",
     "npm-run-all": "^4.1.5",
     "playwright": "^1.56.1",
@@ -91,6 +92,6 @@
     "vitest": "^4.0.7"
   },
   "engines": {
-    "node": ">=20.19"
+    "node": ">=24.13.1"
   }
 }
