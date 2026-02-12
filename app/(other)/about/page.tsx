@@ -8,14 +8,14 @@ import {
   Collapsible,
   HStack,
 } from "@chakra-ui/react";
-import Heading from "../components/heading";
+import Heading from "@/components/heading";
 import {
   Headings,
   DataInfoLinks,
   TeamMembers,
   InactiveTeamMembers,
-} from "../data/data";
-import NextLink from "../components/custom-next-link";
+} from "../../data/data";
+import NextLink from "@/components/custom-next-link";
 import NextImage from "next/image";
 import { LuChevronRight } from "react-icons/lu";
 
@@ -205,6 +205,22 @@ const About = () => {
           src="/images/UserCartoon.png"
         />
       </Box>
+      <VStack alignItems="flex-start" gap="2" mt="8">
+        <Text textStyle="textMedium" layerStyle="text">
+          Instagram -{" "}
+          {buildLink(
+            "https://www.instagram.com/safehome.report",
+            "https://www.instagram.com/safehome.report"
+          )}
+        </Text>
+        <Text textStyle="textMedium" layerStyle="text">
+          LinkedIn -{" "}
+          {buildLink(
+            "https://www.linkedin.com/company/safehome-civictech",
+            "https://www.linkedin.com/company/safehome-civictech"
+          )}
+        </Text>
+      </VStack>
     </Flex>
   );
 };
