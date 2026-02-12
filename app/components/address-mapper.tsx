@@ -197,48 +197,30 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         isSearchComplete={isSearchComplete}
         onSearchChange={handleSearchChange}
       />
-      {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
-      <Box
-        w="full"
-        css={{
-          "--header-height": "198px",
-          md: { "--header-height": "175px" },
-          xl: { "--header-height": "141px" },
-          "2xl": { "--header-height": "149px" },
-          "--whitespace-height": "96px",
-          "--map-height":
-            "calc(100dvh - var(--header-height) - var(--whitespace-height))",
-        }}
-        h="var(--map-height)"
-        m="auto"
-        position={{ base: "relative", sm: "static" }}
-        alignItems={{ base: "stretch", sm: "start" }}
-        display={{ base: "block", sm: "flex" }}
-      >
-        {currentView === "desktop" ? (
-          <Box h="full" overflowY={{ base: "visible", sm: "auto" }}>
-            <ReportHazards
-              addressHazardData={addressHazardData}
-              isHazardDataLoading={isHazardDataLoading}
-              toggledStates={toggledStates}
-              setToggledStates={setToggledStates}
-              setLayerToggleObj={setLayerToggleObj}
-            />{" "}
-          </Box>
-        ) : currentView === "mobile" ? (
+      <Box w="full" m="auto" h="full" position="relative">
+        <Box h="full" overflow="hidden">
           <Box zIndex="docked" top="0" position="absolute">
-            <MobileReportHazards
-              showHazards={showHazards}
-              addressHazardData={addressHazardData}
-              isHazardDataLoading={isHazardDataLoading}
-              toggledStates={toggledStates}
-              setShowHazards={setShowHazards}
-              setToggledStates={setToggledStates}
-              setLayerToggleObj={setLayerToggleObj}
-            />
+            {currentView === "desktop" ? (
+              <ReportHazards
+                addressHazardData={addressHazardData}
+                isHazardDataLoading={isHazardDataLoading}
+                toggledStates={toggledStates}
+                setToggledStates={setToggledStates}
+                setLayerToggleObj={setLayerToggleObj}
+              />
+            ) : currentView === "mobile" ? (
+              <MobileReportHazards
+                showHazards={showHazards}
+                addressHazardData={addressHazardData}
+                isHazardDataLoading={isHazardDataLoading}
+                toggledStates={toggledStates}
+                setShowHazards={setShowHazards}
+                setToggledStates={setToggledStates}
+                setLayerToggleObj={setLayerToggleObj}
+              />
+            ) : null}
           </Box>
-        ) : null}
-
+        </Box>
         <Box flex={{ base: "initial", sm: "1" }} h="full">
           <Map
             coordinates={coordinates || defaultCoords}
