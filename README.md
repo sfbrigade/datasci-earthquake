@@ -1,6 +1,6 @@
 ### This is a project of SF Civic Tech [https://www.sfcivictech.org/](https://www.sfcivictech.org/)
 
-# Introduction
+# Introduction to SafeHome
 
 This is a hybrid Next.js + Python app that uses Next.js as the frontend and FastAPI as the API backend. It also uses PostgreSQL as the database.
 
