@@ -191,26 +191,9 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         isSearchComplete={displaySearchComplete}
         onSearchChange={handleSearchChange}
       />
-      {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
-      <Box
-        w="full"
-        css={{
-          "--header-height": "198px",
-          md: { "--header-height": "175px" },
-          xl: { "--header-height": "141px" },
-          "2xl": { "--header-height": "149px" },
-          "--whitespace-height": "96px",
-          "--map-height":
-            "calc(100dvh - var(--header-height) - var(--whitespace-height))",
-        }}
-        h="var(--map-height)"
-        m="auto"
-        position={{ base: "relative", md: "static" }}
-        alignItems={{ base: "stretch", md: "start" }}
-        display={{ base: "block", md: "flex" }}
-      >
-        {!md ? (
-          <Box zIndex="docked" top="0" position="absolute">
+      <Box w="full" m="auto" h="full" position="relative">
+        <Box zIndex="docked" top="0" position="absolute">
+          {!md ? (
             <MobileReportHazards
               showHazards={showHazards}
               addressHazardData={displayData}
@@ -220,18 +203,16 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               setToggledStates={setToggledStates}
               setLayerToggleObj={setLayerToggleObj}
             />
-          </Box>
-        ) : (
-          <Box h="full" overflowY={{ base: "visible", md: "auto" }}>
+          ) : (
             <ReportHazards
               addressHazardData={displayData}
               isHazardDataLoading={isHazardDataLoading}
               toggledStates={toggledStates}
               setToggledStates={setToggledStates}
               setLayerToggleObj={setLayerToggleObj}
-            />{" "}
-          </Box>
-        )}
+            />
+          )}
+        </Box>
         <Box
           flex={{ base: "initial", md: "1" }}
           h="full"

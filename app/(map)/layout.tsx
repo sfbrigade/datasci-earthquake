@@ -1,6 +1,6 @@
-import { Metadata } from "next";
 import { InterVariableName, ManropeVariableName } from "@/data/constants";
 import { Inter, Manrope } from "next/font/google";
+import { Metadata } from "next";
 import { Box, Flex } from "@chakra-ui/react";
 import { Provider } from "@/components/ui/provider";
 import Header from "@/components/header";
@@ -45,9 +45,9 @@ export default function RootLayout({
     >
       <body>
         <Provider>
-          <Flex direction="column" align="center" minH="dvh">
+          <Flex direction="column" align="center" h="dvh">
             <Header />
-            <Box flex="1" as="main" width="full">
+            <Box flex="1" as="main" width="full" h="full">
               {children}
             </Box>
             <Footer />
