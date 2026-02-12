@@ -137,16 +137,20 @@ jobs:
       - name: Start Services
         run: docker compose up -d --wait --wait-timeout 300
 
-      - name: Docker Logs 
-        if: always()  
+      - name: Docker Backend Logs 
         run: |
-          echo "Checking running containers..."
-          docker ps -a
-          echo "Logs for backend:"
           docker logs datasci-earthquake-backend-1 || echo "No logs found"
-          echo "Logs for db:"
+
+      - name: Docker DB Logs 
+        run: |
           docker logs my_postgis_db || echo "No logs found"
-          echo "Logs for frontend:"
+
+      - name: Docker DB Test (unit tests) Logs 
+        run: |
+          docker logs my_postgis_db_test || echo "No logs found"
+
+      - name: Docker Frontend Logs 
+        run: |
           docker logs datasci-earthquake-frontend-1 || echo "No logs found"
 
       - name: Run Backend Tests
