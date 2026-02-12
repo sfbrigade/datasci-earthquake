@@ -6,6 +6,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
+import { Box } from "@chakra-ui/react";
 
 const mapOptions: Omit<MapOptions, "container"> = {
   style: "mapbox://styles/mapbox/standard",
@@ -220,9 +221,7 @@ const Map: React.FC<MapProps> = ({
     if (layerToggleObj.layerId != "") handleToggleLayers();
   }, [layerToggleObj]); // re-runs every time state changes
 
-  return (
-    <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
-  );
+  return <Box ref={mapContainerRef} w="full" h="full" />;
 };
 
 export default Map;
