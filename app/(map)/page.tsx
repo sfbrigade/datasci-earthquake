@@ -12,12 +12,12 @@ import {
 import NextLink from "next/link";
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
-import AddressMapper from "./components/address-mapper";
+import AddressMapper from "@/components/address-mapper";
 import {
   fetchSoftStories,
   fetchTsunami,
   fetchLiquefaction,
-} from "./api/services";
+} from "../api/services";
 
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `home-skeleton.tsx` and vice versa
 // TODO: look into if we can use narrow Suspense boundaries instead of `loading.tsx` and achieve the same (or better) perceived loading time effect

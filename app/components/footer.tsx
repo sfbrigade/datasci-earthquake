@@ -47,6 +47,11 @@ const Footer = () => {
             width="full"
             mt={{ xl: "4" }}
           >
+            <Link as={NextLink} color="white" href="/earthquake-introduction">
+              <Text textStyle="textMedium" layerStyle="text" color="white">
+                Earthquake Introduction
+              </Text>
+            </Link>
             <Link as={NextLink} color="white" href="/about">
               <Text textStyle="textMedium" layerStyle="text" color="white">
                 About

@@ -9,7 +9,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 
-import { Headings } from "../data/data";
+import { Headings } from "../../data/data";
 import NextLink from "next/link";
 
 const EarthquakeIntroduction = () => {

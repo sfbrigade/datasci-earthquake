@@ -1,6 +1,6 @@
 import { Flex, Link, Text, Box, VStack, List, Image } from "@chakra-ui/react";
-import Heading from "../components/heading";
-import { Headings, DataInfoLinks, TeamMembers } from "../data/data";
+import Heading from "@/components/heading";
+import { Headings, DataInfoLinks, TeamMembers } from "../../data/data";
 import NextLink from "next/link";
 import NextImage from "next/image";
 
