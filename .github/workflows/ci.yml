@@ -65,6 +65,11 @@ jobs:
         run: npm ci 
       - name: Check Next.js production build
         run: npm run build
+      - name: check values 
+        run: |
+          echo '----------postgis version A---------' 
+          echo $POSTGIS_VERSION 
+          echo '----------done postgis version A---------' 
 
   docker_build_test:
     runs-on: ubuntu-latest
