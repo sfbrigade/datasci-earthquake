@@ -59,7 +59,7 @@ services:
     environment:
       - PYTHONPATH=/backend:/
       - DATA_GEOJSON_PATH=/public/data/
-      - ENVIRONMENT=dev_docker
+      #- ENVIRONMENT=dev_docker
     ports:
       - 8000:8000
     depends_on:
