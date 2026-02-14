@@ -113,6 +113,14 @@ jobs:
           openssl aes-256-cbc -d -salt -pbkdf2 -k "${{ secrets.ARTIFACT_PASS }}" -in .env.enc -out .env
           echo "Decryption complete"
 
+      - name: ENVIRONMENT value 
+        run: |
+          echo '----------postgis version---------' 
+          cat .env | grep 'POSTGIS_VERSION' 
+          echo '----------environment---------' 
+          cat .env | grep 'ENVIRONMENT' 
+          echo '----------done---------' 
+
       - name: Ensure .env exists
         run: |
           if [ ! -f .env ]; then
