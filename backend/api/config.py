@@ -14,13 +14,13 @@ def find_env_file(start: Path, filename: str = ".env") -> Path | None:
     Walk upwards from `start` until `filename` is found or the root directory is reached.
     Returns the Path if found, otherwise None.
     """
-    myLogger.warning(f'starting find_env_file:...{str(Path)}')
+    myLogger.warning(f'starting find_env_file:...{str(start)}')
     current = start.resolve()
     for parent in [current, *current.parents]:
         candidate = parent / filename
-        myLogger.warning(f'loop find_env_file:...{str(Path)} => {str(candidate)}')
+        myLogger.warning(f'loop find_env_file:...{str(start)} => {str(candidate)}')
         if candidate.is_file():
-            myLogger.warning(f'find_env_file:...{str(Path)}...FOUND! => {str(candidate)}')
+            myLogger.warning(f'find_env_file:...{str(start)}...FOUND! => {str(candidate)}')
             return candidate
         if (parent / "compose.yaml").is_file():
             break
