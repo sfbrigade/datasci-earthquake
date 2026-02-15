@@ -13,10 +13,10 @@ myLog = logging.getLogger('interstellar')
 @pytest.fixture(scope="session")
 def test_engine():
     engine = create_engine(settings.database_url_sqlalchemy_test)
-    if (settings.database_url_sqlalchemy_test.index('@db_test:')):
-        myLog.warning('using db_test......======>')
-    if (settings.database_url_sqlalchemy_test.index('@db:')):
-        myLog.warning('using db......======>')
+    #if (settings.database_url_sqlalchemy_test.index('@db_test:')):
+    #    myLog.warning('using db_test......======>')
+    #if (settings.database_url_sqlalchemy_test.index('@db:')):
+    #    myLog.warning('using db......======>')
     yield engine
 
 
