@@ -42,11 +42,6 @@ jobs:
         run: npm ci 
       - name: Check Next.js production build
         run: npm run build
-      - name: check values 
-        run: |
-          echo '----------postgis version A---------' 
-          echo $POSTGIS_VERSION 
-          echo '----------done postgis version A---------' 
 
   docker_build_test:
     runs-on: ubuntu-latest
@@ -94,14 +89,6 @@ jobs:
         run: |
           openssl aes-256-cbc -d -salt -pbkdf2 -k "${{ secrets.ARTIFACT_PASS }}" -in .env.enc -out .env
           echo "Decryption complete"
-
-      - name: ENVIRONMENT value 
-        run: |
-          echo '----------postgis version---------' 
-          cat .env | grep 'POSTGIS_VERSION' 
-          echo '----------environment---------' 
-          cat .env | grep 'ENVIRONMENT' 
-          echo '----------done---------' 
 
       - name: Ensure .env exists
         run: |
