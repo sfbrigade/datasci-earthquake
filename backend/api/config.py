@@ -5,20 +5,22 @@ Provides the environment variables that are read by the application
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
 from functools import lru_cache
+import logging
 
+myLogger = logging.getLogger('toadytoast')
 
 def find_env_file(start: Path, filename: str = ".env") -> Path | None:
     """
     Walk upwards from `start` until `filename` is found or the root directory is reached.
     Returns the Path if found, otherwise None.
     """
-    print(f'starting find_env_file:...{Path}')
+    myLogger.warning(f'starting find_env_file:...{Path}')
     current = start.resolve()
     for parent in [current, *current.parents]:
         candidate = parent / filename
-        print(f'loop find_env_file:...{Path} => {candidate}')
+        myLogger.warning(f'loop find_env_file:...{Path} => {candidate}')
         if candidate.is_file():
-            print(f'find_env_file:...{Path}...FOUND! => {candidate}')
+            myLogger.warning(f'find_env_file:...{Path}...FOUND! => {candidate}')
             return candidate
         if (parent / "compose.yaml").is_file():
             break
@@ -48,9 +50,9 @@ class Settings(BaseSettings):
     next_public_posthog_host: str
     next_public_posthog_key: str
 
-    print(f'--------- ENV FILE ----')
-    print(f'the env_file being used for settings = {ENV_FILE}')
-    print(f'--------- done ENV FILE ----')
+    myLogger.warning(f'--------- ENV FILE ----')
+    myLogger.warning(f'the env_file being used for settings = {ENV_FILE}')
+    myLogger.warning(f'--------- done ENV FILE ----')
 
     model_config = SettingsConfigDict(
         env_file=ENV_FILE,
