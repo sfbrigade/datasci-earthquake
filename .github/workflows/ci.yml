@@ -56,8 +56,6 @@ jobs:
 
       - name: Set default fork status
         run: echo "is_fork=false" >> $GITHUB_ENV        
-        run: |
-          echo "is_fork=false" >> $GITHUB_ENV        
 
       - name: Check if pull request from fork
         id: check_fork
