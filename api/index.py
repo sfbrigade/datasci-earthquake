@@ -24,6 +24,8 @@ sentry_sdk.init(
 @asynccontextmanager
 async def mystuff(app: FastAPI):
   print(f'pre: my environment = {os.getenv("ENVIRONMENT", "ITAINTHERE")}.........')
+  print(f'pre: my stuff = {os.getenv("POSTGIS_VERSION", "ITAINTHERE")}.........')
+  print(f'pre: my stuff other = {os.getenv("NODE_ENV", "ITAINTHERE")}.........')
   yield
   print(f'post: my environment = {os.getenv("ENVIRONMENT", "ITAINTHERE")}.........')
 
