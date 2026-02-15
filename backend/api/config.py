@@ -14,13 +14,13 @@ def find_env_file(start: Path, filename: str = ".env") -> Path | None:
     Walk upwards from `start` until `filename` is found or the root directory is reached.
     Returns the Path if found, otherwise None.
     """
-    myLogger.warning(f'starting find_env_file:...{Path}')
+    myLogger.warning(f'starting find_env_file:...{str(Path)}')
     current = start.resolve()
     for parent in [current, *current.parents]:
         candidate = parent / filename
-        myLogger.warning(f'loop find_env_file:...{Path} => {candidate}')
+        myLogger.warning(f'loop find_env_file:...{str(Path)} => {str(candidate)}')
         if candidate.is_file():
-            myLogger.warning(f'find_env_file:...{Path}...FOUND! => {candidate}')
+            myLogger.warning(f'find_env_file:...{str(Path)}...FOUND! => {str(candidate)}')
             return candidate
         if (parent / "compose.yaml").is_file():
             break
@@ -51,7 +51,7 @@ class Settings(BaseSettings):
     next_public_posthog_key: str
 
     myLogger.warning(f'--------- ENV FILE ----')
-    myLogger.warning(f'the env_file being used for settings = {ENV_FILE}')
+    myLogger.warning(f'the env_file being used for settings = {str(ENV_FILE)}')
     myLogger.warning(f'--------- done ENV FILE ----')
 
     model_config = SettingsConfigDict(
