@@ -23,16 +23,11 @@ sentry_sdk.init(
 
 @asynccontextmanager
 async def mystuff(app: FastAPI):
-  print(f'pre: my environment = {os.getenv("ENVIRONMENT", "ITAINTHERE")}.........')
-  print(f'pre: my stuff = {os.getenv("POSTGIS_VERSION", "ITAINTHERE")}.........')
-  print(f'pre: my stuff other = {os.getenv("NODE_ENV", "ITAINTHERE")}.........')
-  #for (k in os.environ.keys()):
-  #  print(f'key {k}')
-  print(f'keys = {os.environ.keys()}')
-
-  print(f'type of keys = {type(os.environ.keys())}')
+  print(f'pre_dino: my environment = {os.getenv("ENVIRONMENT", "ITAINTHERE")}.........')
+  print(f'pre_dino: my stuff = {os.getenv("POSTGIS_VERSION", "ITAINTHERE")}.........')
+  print(f'pre_dino: my stuff other = {os.getenv("NODE_ENV", "ITAINTHERE")}.........')
   yield
-  print(f'post: my environment = {os.getenv("ENVIRONMENT", "ITAINTHERE")}.........')
+  print(f'post_dino: my environment = {os.getenv("ENVIRONMENT", "ITAINTHERE")}.........')
 
 ### Create FastAPI instance with custom docs and openapi url
 app = FastAPI(docs_url="/docs", openapi_url="/openapi.json", redirect_slashes=False, lifespan=mystuff)
