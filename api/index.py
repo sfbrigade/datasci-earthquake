@@ -26,8 +26,11 @@ async def mystuff(app: FastAPI):
   print(f'pre: my environment = {os.getenv("ENVIRONMENT", "ITAINTHERE")}.........')
   print(f'pre: my stuff = {os.getenv("POSTGIS_VERSION", "ITAINTHERE")}.........')
   print(f'pre: my stuff other = {os.getenv("NODE_ENV", "ITAINTHERE")}.........')
-  for (k in os.environ.keys()):
-    print(f'key {k}')
+  #for (k in os.environ.keys()):
+  #  print(f'key {k}')
+  print(f'keys = {os.environ.keys()}')
+
+  print(f'type of keys = {type(os.environ.keys())}')
   yield
   print(f'post: my environment = {os.getenv("ENVIRONMENT", "ITAINTHERE")}.........')
 
