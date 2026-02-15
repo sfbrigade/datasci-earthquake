@@ -12,10 +12,13 @@ def find_env_file(start: Path, filename: str = ".env") -> Path | None:
     Walk upwards from `start` until `filename` is found or the root directory is reached.
     Returns the Path if found, otherwise None.
     """
+    print(f'starting find_env_file:...{Path}')
     current = start.resolve()
     for parent in [current, *current.parents]:
         candidate = parent / filename
+        print(f'loop find_env_file:...{Path} => {candidate}')
         if candidate.is_file():
+            print(f'find_env_file:...{Path}...FOUND! => {candidate}')
             return candidate
         if (parent / "compose.yaml").is_file():
             break
@@ -44,6 +47,10 @@ class Settings(BaseSettings):
     sentry_dsn: str
     next_public_posthog_host: str
     next_public_posthog_key: str
+
+    print(f'--------- ENV FILE ----')
+    print(f'the env_file being used for settings = {ENV_FILE}')
+    print(f'--------- done ENV FILE ----')
 
     model_config = SettingsConfigDict(
         env_file=ENV_FILE,
