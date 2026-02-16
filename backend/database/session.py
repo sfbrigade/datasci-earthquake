@@ -1,16 +1,28 @@
 import logging
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect, MetaData, Table, event
+from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker
 from backend.api.config import settings
+from backend.api.models.base import Base
 
 
 def _get_database_url() -> str:
     match settings.environment:
         case "local" | "ci":
-            return settings.localhost_database_url_sqlalchemy
+            print(f'using LOCAL DB STRING..')
+            url = settings.localhost_database_url_sqlalchemy.lower()
+            print('found localhost' if url.find('@localhost:') != -1 else 'nope') 
+            print('found lab' if url.find('5432') != -1 else 'nope numbers') 
+            print('found labby' if url.find('5433') != -1 else 'nope numbers again') 
+
+            # return settings.localhost_database_url_sqlalchemy
+            return settings.localhost_database_url_sqlalchemy.replace('5432', '5433')
+
         case "prod":
-            return settings.neon_url
+            print(f'using PROD DB STRING..')
+            return '' 
         case "dev_docker":
+            print(f'using DEV_DOCKER DB STRING..')
             return settings.database_url_sqlalchemy
         case _:
             raise ValueError(f"Unknown environment: {settings.environment}")
@@ -25,6 +37,45 @@ engine = create_engine(
     pool_pre_ping=True,
     pool_recycle=3600,
 )
+
+@event.listens_for(Engine, 'before_cursor_execute', retval=True)
+def dothis(conn, cursor, statement, parameters, context, executemany):
+    statement = 'set search_path to public; ' + statement 
+    print(f'statement = {statement}')
+    return statement, parameters
+
+
+
+#Base.metadata.create_all(engine)
+#verymeta = MetaData()
+#t_zones = Table('tsunami_zones', verymeta, autoload_with=engine)
+#print(f'----- t_zones ----')
+#print(str(t_zones))
+ii = inspect(engine)
+print('---- tables -----')
+print(ii.get_table_names())
+print('---- schemas -----')
+print(ii.get_schema_names())
+
+print('--- list tables from public ----')
+me = MetaData(schema='public')
+me.reflect(engine)
+print(me.tables)
+
+print('--- list tables from information_schema ----')
+me = MetaData(schema='information_schema')
+me.reflect(engine)
+print(me.tables)
+
+print('--- list tables from tiger ----')
+me = MetaData(schema='tiger')
+me.reflect(engine)
+print(me.tables)
+
+print('--- list tables from topology ----')
+me = MetaData(schema='topology')
+me.reflect(engine)
+print(me.tables)
 
 logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
 
