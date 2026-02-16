@@ -108,7 +108,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          uv run --project backend -m backend.etl.testme
+          uv run --env-file .env --project backend -m backend.etl.testme
 
       - name: Clean Up
         run: docker compose down db

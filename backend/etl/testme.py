@@ -1,4 +1,4 @@
 import os
 
 if __name__ == "__main__":
-  print(os.environ.keys())
+  print(os.getenv('POSTGIS_VERSION'), 'haha')
