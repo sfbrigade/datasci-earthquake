@@ -12,10 +12,16 @@ def find_env_file(start: Path, filename: str = ".env") -> Path | None:
     Walk upwards from `start` until `filename` is found or the root directory is reached.
     Returns the Path if found, otherwise None.
     """
+
+    print('start crawling!')
     current = start.resolve()
+
+    print(f'current = {str(current)}')
     for parent in [current, *current.parents]:
         candidate = parent / filename
+        print(f'candidate = {str(candidate)}')
         if candidate.is_file():
+            print(f'using {str(candidate)} - FOUND!')
             return candidate
         if (parent / "compose.yaml").is_file():
             break
