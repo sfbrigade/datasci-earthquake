@@ -42,9 +42,6 @@ jobs:
         run: |
           uv sync --frozen --project backend
 
-      - name: my echo 
-        run: uv self version        
-
       - name: Set default fork status
         run: echo "is_fork=false" >> $GITHUB_ENV        
 
@@ -110,7 +107,8 @@ jobs:
         run: docker logs my_postgis_db 
 
       - name: Run Tests
-        run: echo 'Coming soon'
+        run: |
+          uv run --project backend -m backend.etl.testme
 
       - name: Clean Up
         run: docker compose down db
