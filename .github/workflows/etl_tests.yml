@@ -34,6 +34,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: my echo 
+        run: uv version        
+
       - name: Set default fork status
         run: echo "is_fork=false" >> $GITHUB_ENV        
 
