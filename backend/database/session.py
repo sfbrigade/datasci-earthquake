@@ -7,10 +7,13 @@ from backend.api.config import settings
 def _get_database_url() -> str:
     match settings.environment:
         case "local" | "ci":
+            print(f'using LOCAL DB STRING..')
             return settings.localhost_database_url_sqlalchemy
         case "prod":
-            return settings.neon_url
+            print(f'using PROD DB STRING..')
+            return '' 
         case "dev_docker":
+            print(f'using DEV_DOCKER DB STRING..')
             return settings.database_url_sqlalchemy
         case _:
             raise ValueError(f"Unknown environment: {settings.environment}")
