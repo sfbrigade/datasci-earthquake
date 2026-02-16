@@ -43,7 +43,7 @@ jobs:
           uv sync --frozen --project backend
 
       - name: my echo 
-        run: uv version        
+        run: uv self version        
 
       - name: Set default fork status
         run: echo "is_fork=false" >> $GITHUB_ENV        
