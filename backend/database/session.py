@@ -35,12 +35,14 @@ engine = create_engine(
     pool_recycle=3600,
 )
 
-def dothis(conn, cursor):
-    cursor.execute('set search_path to PUBLIC')
-    cursor.close()
+def dothis(conn, cursor, statement, parameters, context, executemany):
+    #cursor.execute('set search_path to PUBLIC')
+    #cursor.close()
+    print(f'statement = {statement}')
 
 
-event.listen(engine, 'engine_connect', dothis)
+
+event.listen(engine, 'before_cursor_execute', dothis)
 #Base.metadata.create_all(engine)
 #verymeta = MetaData()
 #t_zones = Table('tsunami_zones', verymeta, autoload_with=engine)
