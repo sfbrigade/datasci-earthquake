@@ -15,7 +15,9 @@ def _get_database_url() -> str:
             print('found lab' if url.find('5432') != -1 else 'nope numbers') 
             print('found labby' if url.find('5433') != -1 else 'nope numbers again') 
 
-            return settings.localhost_database_url_sqlalchemy
+            # return settings.localhost_database_url_sqlalchemy
+            return settings.localhost_database_url_sqlalchemy.replace('5432', '5433')
+
         case "prod":
             print(f'using PROD DB STRING..')
             return '' 
