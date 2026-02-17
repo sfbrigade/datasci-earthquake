@@ -1,5 +1,5 @@
 import logging
-from sqlalchemy import create_engine, inspect, MetaData, Table
+from sqlalchemy import create_engine, inspect, MetaData, Table, event
 from sqlalchemy.orm import sessionmaker
 from backend.api.config import settings
 from backend.api.models.base import Base
@@ -35,6 +35,12 @@ engine = create_engine(
     pool_recycle=3600,
 )
 
+def dothis(conn, cursor):
+    cursor.execute('set search_path to PUBLIC')
+    cursor.close()
+
+
+event.listen(engine, 'engine_connect', dothis)
 #Base.metadata.create_all(engine)
 #verymeta = MetaData()
 #t_zones = Table('tsunami_zones', verymeta, autoload_with=engine)
