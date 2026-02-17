@@ -25,7 +25,7 @@ create table if not exists landslide_zones (
     update_timestamp timestamp
 );
 
-create table if not exists tsunami_zones (
+create table if not exists public.tsunami_zones (
     identifier integer primary key,
     evacuate varchar(255) not null,
     county varchar(255) not null,
@@ -90,7 +90,7 @@ insert into liquefaction_zones (identifier, geometry, liq, shape_length, shape_a
                                 'H', 123.4, 432.1, '2024/12/19 1:15:00 PM')                                
                                 ;
 
-insert into tsunami_zones (identifier, evacuate, county, global_id, shape_length, shape_area, geometry, update_timestamp) values 
+insert into public.tsunami_zones (identifier, evacuate, county, global_id, shape_length, shape_area, geometry, update_timestamp) values 
                                 (9, 'Yes, Tsunami Hazard Area', 'San Francisco', 'd63b7111-a144-49ca-aa79-69f69721e3d3', 123.45, 67.8, ST_GeomFromText('MULTIPOLYGON(
                                     ((-122.5 37.7, -122.5 37.9, -122.3 37.9, -122.3 37.7, -122.5 37.7)),
                                     ((-122.4 37.75, -122.4 37.85, -122.35 37.85, -122.35 37.75, -122.4 37.75))
