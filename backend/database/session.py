@@ -39,11 +39,26 @@ print('---- tables -----')
 print(ii.get_table_names())
 print('---- schemas -----')
 print(ii.get_schema_names())
-print('--- list schemas from public ----')
+
+print('--- list tables from public ----')
 me = MetaData(schema='public')
 me.reflect(engine)
 print(me.tables)
 
+print('--- list tables from information_schema ----')
+me = MetaData(schema='information_schema')
+me.reflect(engine)
+print(me.tables)
+
+print('--- list tables from tiger ----')
+me = MetaData(schema='tiger')
+me.reflect(engine)
+print(me.tables)
+
+print('--- list tables from topology ----')
+me = MetaData(schema='topology')
+me.reflect(engine)
+print(me.tables)
 
 logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
 
