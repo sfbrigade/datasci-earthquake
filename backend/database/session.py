@@ -1,5 +1,5 @@
 import logging
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker
 from backend.api.config import settings
 
@@ -34,6 +34,10 @@ engine = create_engine(
     pool_recycle=3600,
 )
 
+ii = inspect(engine)
+print('---- tables -----')
+print(ii.get_table_names())
+print('---- tables end -----')
 logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
 
 # Create a session factory
