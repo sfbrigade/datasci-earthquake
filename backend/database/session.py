@@ -9,14 +9,9 @@ def _get_database_url() -> str:
         case "local" | "ci":
             print(f'using LOCAL DB STRING..')
             url = settings.localhost_database_url_sqlalchemy.lower()
-            if (url.find('localhost') != -1):
-			print('found localhost')
-            else if (url.find('db_test') != -1):
-			print('found db_test')
-            else if (url.find('db') != -1):
-			print('found db')
-            else:
-			print('huh?')
+            print('found localhost' if url.find('@localhost:') != -1 else 'nope') 
+            print('found db_test' if url.find('@db_test:') != -1 else 'nopenope') 
+            print('found db' if url.find('@db:') != -1 else 'nopenopenope') 
 
             return settings.localhost_database_url_sqlalchemy
         case "prod":
