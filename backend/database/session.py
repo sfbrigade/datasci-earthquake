@@ -8,6 +8,16 @@ def _get_database_url() -> str:
     match settings.environment:
         case "local" | "ci":
             print(f'using LOCAL DB STRING..')
+            url = settings.localhost_database_url_sqlalchemy.lower()
+            if (url.find('localhost') != -1):
+			print('found localhost')
+            else if (url.find('db_test') != -1):
+			print('found db_test')
+            else if (url.find('db') != -1):
+			print('found db')
+            else:
+			print('huh?')
+
             return settings.localhost_database_url_sqlalchemy
         case "prod":
             print(f'using PROD DB STRING..')
