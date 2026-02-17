@@ -108,7 +108,8 @@ jobs:
 
       - name: Run Tests
         run: |
-          ENVIRONMENT=dev_docker uv run --env-file .env --project backend -m backend.etl.tsunami_data_handler
+          # uv run --env-file .env --project backend -m backend.etl.tsunami_data_handler
+          uv run --env-file .env --project backend -m backend.etl.testme
 
       - name: Clean Up
         run: docker compose down db_test
