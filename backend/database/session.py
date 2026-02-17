@@ -13,7 +13,8 @@ def _get_database_url() -> str:
             print('found db_test' if url.find('@db_test:') != -1 else 'nopenope') 
             print('found db' if url.find('@db:') != -1 else 'nopenopenope') 
 
-            return settings.localhost_database_url_sqlalchemy
+            #return settings.localhost_database_url_sqlalchemy
+            return settings.database_url_sqlalchemy_test 
         case "prod":
             print(f'using PROD DB STRING..')
             return '' 
