@@ -37,7 +37,8 @@ engine = create_engine(
 ii = inspect(engine)
 print('---- tables -----')
 print(ii.get_table_names())
-print('---- tables end -----')
+print('---- schemas -----')
+print(ii.get_schema_names())
 logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
 
 # Create a session factory
