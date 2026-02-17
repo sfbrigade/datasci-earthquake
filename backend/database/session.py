@@ -1,5 +1,5 @@
 import logging
-from sqlalchemy import create_engine, inspect
+from sqlalchemy import create_engine, inspect, MetaData
 from sqlalchemy.orm import sessionmaker
 from backend.api.config import settings
 
@@ -39,6 +39,12 @@ print('---- tables -----')
 print(ii.get_table_names())
 print('---- schemas -----')
 print(ii.get_schema_names())
+print('--- list schemas from public ----')
+me = MetaData(schema='public')
+me.reflect(engine)
+print(me.tables)
+
+
 logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
 
 # Create a session factory
