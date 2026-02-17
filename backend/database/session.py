@@ -2,6 +2,7 @@ import logging
 from sqlalchemy import create_engine, inspect, MetaData
 from sqlalchemy.orm import sessionmaker
 from backend.api.config import settings
+from backend.api.models.base import Base
 
 
 def _get_database_url() -> str:
@@ -34,6 +35,7 @@ engine = create_engine(
     pool_recycle=3600,
 )
 
+Base.metadata.create_all(engine)
 ii = inspect(engine)
 print('---- tables -----')
 print(ii.get_table_names())
