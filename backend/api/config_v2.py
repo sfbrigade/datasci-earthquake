@@ -7,6 +7,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class SettingsV2(BaseSettings):
     database_url: str = "postgresql+psycopg2://postgres:password@localhost:5432/qsdatabase"
     favorite_animal: str = 'wombat'
+    favorite_pw: str = 'password'
+    database_url_haha: str = "postgresql+psycopg2://oh:no@localhost:5432/qsdatabase"
 
     # postgres_user: str
     # postgres_password: str
