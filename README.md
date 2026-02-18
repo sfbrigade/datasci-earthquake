@@ -283,6 +283,18 @@ For UI components, styling, and theming, most initial setup is done via Chakra U
 
 While doing development, note that style prop autocompletion relies on theme typings generated from [styles/theme.ts], which is where SafeHome's Chakra theme overrides are defined. The overrides are merged with Chakra's default theme to give us the final SafeHome theme. To see a full list of theme values and tokens, check your browser console.
 
+#### Upgrading Node
+
+To upgrade required version of Node, you will need to make edits in the following places as of this writing:
+
+- `.nvmrc`
+  - this is used by `.github/actions/setup-node-using-nvmrc/action.yml` which is, in turn, used by the GitHub workflows in `.github/workflows`
+- `package.json` (and the resulting `package-lock.json`)
+  - `engines`
+  - `dependencies`: Change the version for `@types/node` so that its major version matches the version of Node you are upgrading to; minor version and patch version seem to not track exactly
+- `Dockerfile`
+  - `FROM node:{NODE_MAJOR_VERSION}-alpine` (e.g., `FROM node:24-alpine`)
+
 ##### CHAKRA TIP: ACCESSING THEME VALUES
 
 It's not obvious how to see a theme's tokens and values for reference during development. To make this easier and improve the experience, there are two ways you can currently view the theme:
