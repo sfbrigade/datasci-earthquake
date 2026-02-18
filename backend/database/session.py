@@ -48,21 +48,6 @@ me = MetaData(schema='public')
 me.reflect(engine)
 print(me.tables)
 
-print('--- list tables from information_schema ----')
-me = MetaData(schema='information_schema')
-me.reflect(engine)
-print(me.tables)
-
-print('--- list tables from tiger ----')
-me = MetaData(schema='tiger')
-me.reflect(engine)
-print(me.tables)
-
-print('--- list tables from topology ----')
-me = MetaData(schema='topology')
-me.reflect(engine)
-print(me.tables)
-
 logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
 
 # Create a session factory
