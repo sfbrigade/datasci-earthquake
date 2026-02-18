@@ -3,11 +3,13 @@ Provides the environment variables that are read by the application
 """
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import SecretStr
 
 class SettingsV2(BaseSettings):
     database_url: str = "postgresql+psycopg2://postgres:password@localhost:5432/qsdatabase"
     favorite_animal: str = 'wombat'
     favorite_pw: str = 'password'
+    favorite_pw_haha: SecretStr = 'ohpassword'
     database_url_haha: str = "postgresql+psycopg2://oh:no@localhost:5432/qsdatabase"
 
     # postgres_user: str
