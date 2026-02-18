@@ -101,14 +101,14 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Start DB
-        run: docker compose up -d --wait --wait-timeout 30 db_test
+        run: docker compose up -d --wait --wait-timeout 30 db
 
       - name: Docker DB Logs 
-        run: docker logs my_postgis_db_test 
+        run: docker logs my_postgis_db 
 
       - name: Run Tests
         run: |
           uv run --env-file .env --project backend -m backend.etl.tsunami_data_handler
 
       - name: Clean Up
-        run: docker compose down db_test
+        run: docker compose down db
