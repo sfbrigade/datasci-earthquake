@@ -9,6 +9,8 @@ from backend.api.routers import (
 )
 from backend.api.config import settings
 import sentry_sdk
+import logging
+from backend.api.exceptions import HazardCheckError
 
 
 # Initialize Sentry
@@ -39,6 +41,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.exception_handler(HazardCheckError)
+async def hazard_check_error_handler(request: Request, exc: HazardCheckError):
+    logging.error(
+        f"Error checking {exc.zone} status for coordinates: lon={exc.lon}, lat={exc.lat}",
+        exc_info=True,
+    )
+    sentry_sdk.capture_exception(exc)
+    sentry_sdk.flush(timeout=2.0)
+    return JSONResponse(
+        status_code=500,
+        content={
+            "detail": f"An unexpected error occurred while checking {exc.zone} status."
+        },
+    )
 
 
 # Global exception handler (ensures flush before serverless exit)
