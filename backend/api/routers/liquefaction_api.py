@@ -196,4 +196,6 @@ def is_in_liquefaction_zone(
         return InLiquefactionZoneView(exists=exists, last_updated=last_updated, liq=liq)
 
     except Exception as e:
-        raise HazardCheckError(zone="liquefaction", lon=lon, lat=lat, original_exception=e)
+        raise HazardCheckError(
+            zone="liquefaction", lon=lon, lat=lat, original_exception=e
+        )

@@ -135,4 +135,6 @@ def is_soft_story(
         return IsSoftStoryPropertyView(exists=exists, last_updated=last_updated)
 
     except Exception as e:
-        raise HazardCheckError(zone="soft-story", lon=lon, lat=lat, original_exception=e)
+        raise HazardCheckError(
+            zone="soft-story", lon=lon, lat=lat, original_exception=e
+        )

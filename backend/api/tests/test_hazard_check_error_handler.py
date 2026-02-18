@@ -43,7 +43,10 @@ def test_hazard_check_error_handler(
     }
 
     # Verify that the error was logged
-    assert "Error checking test_zone status for coordinates: lon=1.23, lat=4.56" in caplog.text
+    assert (
+        "Error checking test_zone status for coordinates: lon=1.23, lat=4.56"
+        in caplog.text
+    )
 
     # Verify that Sentry's capture_exception and flush were called
     mock_capture_exception.assert_called_once()
