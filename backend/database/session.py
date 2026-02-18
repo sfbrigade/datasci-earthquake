@@ -1,6 +1,5 @@
 import logging
-from sqlalchemy import create_engine, inspect, MetaData, Table, event
-from sqlalchemy.engine import Engine
+from sqlalchemy import create_engine, inspect, MetaData 
 from sqlalchemy.orm import sessionmaker
 from backend.api.config import settings
 from backend.api.models.base import Base
@@ -38,19 +37,6 @@ engine = create_engine(
     pool_recycle=3600,
 )
 
-@event.listens_for(Engine, 'before_cursor_execute', retval=True)
-def dothis(conn, cursor, statement, parameters, context, executemany):
-    statement = 'set search_path to public; ' + statement 
-    print(f'statement = {statement}')
-    return statement, parameters
-
-
-
-#Base.metadata.create_all(engine)
-#verymeta = MetaData()
-#t_zones = Table('tsunami_zones', verymeta, autoload_with=engine)
-#print(f'----- t_zones ----')
-#print(str(t_zones))
 ii = inspect(engine)
 print('---- tables -----')
 print(ii.get_table_names())
