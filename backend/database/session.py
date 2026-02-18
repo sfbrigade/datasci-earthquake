@@ -30,7 +30,7 @@ def _get_database_url() -> str:
 
 
 def _get_database_url_v2() -> str:
-    return settings.database_url
+    return settingsV2.database_url
 
 
 # Set up the database engine using settings
