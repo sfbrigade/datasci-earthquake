@@ -1,14 +1,14 @@
-import { Button, Heading, Text } from "@chakra-ui/react";
-import Link from "next/link";
+// import { Button, Heading, Text } from "@chakra-ui/react";
+import NextLink from "./components/custom-next-link";
 
 const NotFound = () => {
   return (
     <>
-      <Heading>404 - Page Not Found</Heading>
-      <Text>Sorry, but the page you are looking for does not exist.</Text>
-      <Link href="/">
-        <Button size="sm">Go Back to Home</Button>
-      </Link>
+      {/* <Heading>404 - Page Not Found</Heading>
+      <Text>Sorry, but the page you are looking for does not exist.</Text> */}
+      <NextLink href="/">
+        {/* <Button size="sm">Go Back to Home</Button> */}
+      </NextLink>
     </>
   );
 };
