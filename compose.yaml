@@ -8,9 +8,9 @@ services:
       context: ./backend/database
       dockerfile: Dockerfile
       cache_from: 
-        - type=local,src=/tmp/.buildx-cache-etl
+        - type=local,src=buildx-cache-etl
       cache_to: 
-        - type=local,src=/tmp/.buildx-cache-etl
+        - type=local,src=buildx-cache-etl
     container_name: my_postgis_db
     restart: always
     env_file:
