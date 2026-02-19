@@ -88,28 +88,25 @@ jobs:
         id: cache-etl
         uses: actions/cache@v4
         with:
-          path: buildx-cache-etl
-          key: ${{ runner.os }}-buildx-etl-aaa
-
-      - name: look inside directory 
-        run: ls -l buildx-cache-etl
+          path: buildx-cache-etl-hhh
+          key: ${{ runner.os }}-buildx-etl-hhh
 
       - name: echo stuff 
-        run: echo ${{ hashFiles('buildx-cache-etl') }}
+        run: echo ${{ hashFiles('buildx-cache-etl-hhh') }}
 
-      - name: echo non existent 
-        run: echo ${{ hashFiles('aaaaaaahhhhh') }}
+      - name: look inside directory 
+        run: ls -l buildx-cache-etl-hhh
 
-      - if: ${{ steps.cache-etl.outputs.cache-hit != 'true' }}
-        name: Check if miss
-        run: echo 'its a MISS!'
+      #- if: ${{ steps.cache-etl.outputs.cache-hit != 'true' }}
+      #  name: Check if miss
+      #  run: echo 'its a MISS!'
  
-      - if: ${{ steps.cache-etl.outputs.cache-hit == 'true' }}
-        name: Check if hit
-        run: echo 'its a HIT!' 
+      #- if: ${{ steps.cache-etl.outputs.cache-hit == 'true' }}
+      #  name: Check if hit
+      #  run: echo 'its a HIT!' 
 
-      - name: Build 
-        run: docker buildx bake -f compose.yaml db
+      #- name: Build 
+      #  run: docker buildx bake -f compose.yaml db
 
       #- name: Start DB
       #  run: docker compose up -d --wait --wait-timeout 30 db
