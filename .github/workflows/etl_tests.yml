@@ -89,7 +89,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: buildx-cache-etl
-          key: ${{ runner.os }}-${{ hashFiles('cache.tzst') }}-buildx-etl
+          key: ${{ runner.os }}-buildx-etl
 
       - name: look inside directory 
         run: ls -l buildx-cache-etl
