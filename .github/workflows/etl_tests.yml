@@ -92,7 +92,7 @@ jobs:
           key: ${{ runner.os }}-buildx-etl-aaa
 
       - name: look inside directory 
-        run: ls -l buildx-cache-etl
+        run: test -d buildx-cache-etl && ls -l buildx-cache-etl
 
       - if: ${{ steps.cache-etl.outputs.cache-hit != 'true' }}
         name: Check if miss
