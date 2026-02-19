@@ -1,37 +1,23 @@
 import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import prettierConfig from "eslint-config-prettier";
+// TODO: add in storybook config
+// TODO: add in typescript support
 
-import prettier from "eslint-plugin-prettier";
-import js from "@eslint/js";
-
-import { FlatCompat } from "@eslint/eslintrc";
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
-
-export default defineConfig([
-  {
-    extends: compat.extends(
-      "next",
-      "next/core-web-vitals",
-      "plugin:prettier/recommended",
-      "plugin:storybook/recommended"
-    ),
-
-    plugins: {
-      prettier,
-    },
-
-    rules: {
-      "prettier/prettier": "error",
-    },
-  },
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  prettierConfig,
+  // Override default ignores of eslint-config-next.
   globalIgnores([
-    "**/node_modules/",
-    "**/dist/",
-    "**/.next/",
-    "**/next.config.js",
+    // Default ignores of eslint-config-next:
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+    // Additional ignores:
+    ".tmp/**",
+    ".storybook/**",
   ]),
 ]);
+
+export default eslintConfig;
