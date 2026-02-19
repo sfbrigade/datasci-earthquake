@@ -100,7 +100,7 @@ jobs:
         run: echo 'its a HIT!' 
 
       - name: Build 
-        run: docker buildx bake -f compose.yaml
+        run: docker buildx bake -f compose.yaml db
 
       #- name: Start DB
       #  run: docker compose up -d --wait --wait-timeout 30 db
