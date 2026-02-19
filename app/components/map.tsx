@@ -85,6 +85,7 @@ const Map: React.FC<MapProps> = ({
             theme: "monochrome",
           },
         },
+        cooperativeGestures: true, // Enable cooperative gestures (zoom/rotate/drag)
       });
 
       const map = mapRef.current;
