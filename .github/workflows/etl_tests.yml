@@ -4,29 +4,29 @@ on: workflow_dispatch
   
 jobs:
   
-  #black_lint_and_mypy_type_check:
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #    - uses: actions/checkout@v4
-  #    - name: Set up Python
-  #      uses: actions/setup-python@v4
-  #      with:
-  #        python-version: '3.x'
+  black_lint_and_mypy_type_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
-  #    - name: Install uv
-  #      run: |
-  #        curl -sSL https://astral.sh/uv/install.sh | sh
+      - name: Install uv
+        run: |
+          curl -sSL https://astral.sh/uv/install.sh | sh
           
-  #    - name: Install dependencies with uv
-  #      run: |
-  #        uv pip install --system black==24.10.0 mypy
-  #        uv pip install --system fastapi pydantic pydantic-settings sqlalchemy GeoAlchemy2 pytest
+      - name: Install dependencies with uv
+        run: |
+          uv pip install --system black==24.10.0 mypy
+          uv pip install --system fastapi pydantic pydantic-settings sqlalchemy GeoAlchemy2 pytest
 
-  #    - name: Check code formatting with black
-  #      run: black --check .
+      - name: Check code formatting with black
+        run: black --check .
 
-  #    - name: Type check with mypy
-  #      run: mypy --config-file mypy.ini .
+      - name: Type check with mypy
+        run: mypy --config-file mypy.ini .
 
   etl_tests:
     runs-on: ubuntu-latest
@@ -85,31 +85,19 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Cache Docker layers
-        id: cache-etl
         uses: actions/cache@v4
         with:
-          path: /tmp/.buildx-cache-etl
-          key: ${{ runner.os }}-buildx-etl
+          path: buildx-cache-db
+          key: ${{ runner.os }}-${{ hashFiles('backend/database/Dockerfile') }}-buildx-db
 
-      - if: ${{ steps.cache-etl.outputs.cache-hit != 'true' }}
-        name: Check if miss
-        run: echo 'its a MISS!'
- 
-      - if: ${{ steps.cache-etl.outputs.cache-hit == 'true' }}
-        name: Check if hit
-        run: echo 'its a HIT!' 
+      - name: Start DB
+        run: docker compose up -d --wait --wait-timeout 20 db
 
-      - name: Build 
-        run: docker buildx bake -f compose.yaml
+      - name: Docker DB Logs 
+        run: docker logs my_postgis_db 
 
-      #- name: Start DB
-      #  run: docker compose up -d --wait --wait-timeout 30 db
+      - name: Run Tests
+        run: echo 'Coming soon'
 
-      #- name: Docker DB Logs 
-      #  run: docker logs my_postgis_db 
-
-      #- name: Run Tests
-      #  run: echo 'Coming soon'
-
-      #- name: Clean Up
-      #  run: docker compose down db
+      - name: Clean Up
+        run: docker compose down db
