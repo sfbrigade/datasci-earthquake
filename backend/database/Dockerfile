@@ -24,5 +24,8 @@ RUN chmod +x /docker-entrypoint-initdb.d/initdb-postgis.sh \
 EXPOSE 5432
 
 RUN echo 'nopenope'
+
+RUN echo 'rghtnopenope'
+
 # Start the database server with PostGIS enabled
 CMD ["postgres"]
