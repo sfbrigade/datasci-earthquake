@@ -10,7 +10,7 @@ services:
       cache_from: 
         - type=local,src=buildx-cache-etl
       cache_to: 
-        - type=local,src=buildx-cache-etl
+        - type=local,dest=buildx-cache-etl
     container_name: my_postgis_db
     restart: always
     env_file:
