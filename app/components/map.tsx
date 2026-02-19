@@ -27,6 +27,7 @@ const mapOptions: Omit<MapOptions, "container"> = {
       theme: "monochrome",
     },
   },
+  cooperativeGestures: true, // Enable cooperative gestures (zoom/rotate/drag)
 };
 interface MapProps {
   lon: number;
