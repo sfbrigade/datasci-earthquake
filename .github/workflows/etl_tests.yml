@@ -91,6 +91,9 @@ jobs:
           path: buildx-cache-etl
           key: ${{ runner.os }}-${{ hashFiles('cache.tzst') }}-buildx-etl
 
+      - name: look inside directory 
+        run: ls -l buildx-cache-etl
+
       - if: ${{ steps.cache-etl.outputs.cache-hit != 'true' }}
         name: Check if miss
         run: echo 'its a MISS!'
