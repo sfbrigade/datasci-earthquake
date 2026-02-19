@@ -3,6 +3,7 @@
 # Use the official PostgreSQL image
 FROM postgres:15
 
+RUN echo 'nope'
 
 # Install PostGIS and dependencies
 RUN apt-get update \
