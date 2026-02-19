@@ -1,6 +1,6 @@
 import { Box, Link, Text, VStack, Image, Stack } from "@chakra-ui/react";
 import { mockDisclaimers } from "./__mocks__/mock-data";
-import NextLink from "next/link";
+import NextLink from "./custom-next-link";
 
 const Footer = () => {
   const disclaimers = mockDisclaimers.map((disclaimer, index) => {

@@ -1,6 +1,7 @@
 import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  reactCompiler: true,
   experimental: {
     optimizePackageImports: ["@chakra-ui/react"],
   },
@@ -38,20 +39,20 @@ const nextConfig: NextConfig = {
 
     return rewrites;
   },
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: [
-        {
-          loader: "@svgr/webpack",
-          options: {
-            icon: true, // Optional: Optimize for icon usage
+  turbopack: {
+    rules: {
+      "*.svg": {
+        loaders: [
+          {
+            loader: "@svgr/webpack",
+            options: {
+              icon: true, // This is your desired option
+            },
           },
-        },
-      ],
-    });
-
-    return config;
+        ],
+        as: "*.js", // Important to tell Turbopack to treat as JS module
+      },
+    },
   },
 };
 
