@@ -89,7 +89,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: buildx-cache-etl
-          key: ${{ runner.os }}-buildx-etl
+          key: ${{ runner.os }}-${{ hashFiles('buildx-cache-etl') }}-buildx-etl
 
       - if: ${{ steps.cache-etl.outputs.cache-hit != 'true' }}
         name: Check if miss
