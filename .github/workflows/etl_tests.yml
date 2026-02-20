@@ -103,7 +103,7 @@ jobs:
         run: echo 'its a HIT!' 
 
       - name: Build 
-        run: docker buildx bake -f compose.yaml db
+        run: docker buildx bake -f compose.yaml --load db
 
       - name: List images 
         run: docker image ls
