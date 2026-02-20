@@ -1,10 +1,8 @@
 import { Inter, Manrope } from "next/font/google";
 import { Metadata } from "next";
-import { Box, Flex } from "@chakra-ui/react";
 import { Provider } from "@/components/ui/provider";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import { Toaster } from "@/components/ui/toaster";
+import { LayoutScrollable } from "@/components/layout-scrollable";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -39,13 +37,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${manrope.className} ${inter.className}`}>
         <Provider>
-          <Flex direction="column" align="center" minH="dvh">
-            <Header />
-            <Box flex="1" as="main" width="full" h="full">
-              {children}
-            </Box>
-            <Footer />
-          </Flex>
+          <LayoutScrollable>{children}</LayoutScrollable>
           <Toaster />
         </Provider>
       </body>

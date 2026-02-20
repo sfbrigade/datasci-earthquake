@@ -1,11 +1,11 @@
 import { InterVariableName, ManropeVariableName } from "@/data/constants";
 import { Inter, Manrope } from "next/font/google";
 import { Metadata } from "next";
-import { Box, Flex } from "@chakra-ui/react";
 import { Provider } from "@/components/ui/provider";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import { Toaster } from "@/components/ui/toaster";
+import { LayoutHeightConstrained } from "@/components/layout-height-constrained";
+import { CurrentVariant } from "@/data/constants";
+import { LayoutScrollable } from "@/components/layout-scrollable";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -36,7 +36,7 @@ export default function RootLayout({
   // This can help identify issues with server-side rendering and client-side hydration.
   // However, it may also lead to a lot of warnings if your app is not fully optimized for hydration;
   // case in point: Chakra's Color Mode / ThemeProvider will cause this warning, which is the reason
-  // this flag is toggled on. It applies one level deep on the element where it's applied.
+  // this flag is toggled on.
   return (
     <html
       lang="en"
@@ -45,15 +45,11 @@ export default function RootLayout({
     >
       <body>
         <Provider>
-          <Flex direction="column" align="center" h="dvh">
-            <Header />
-            <Box flex="1" as="main" w="full" h="full">
-              {children}
-            </Box>
-            <Box w="full" hideBelow="md">
-              <Footer />
-            </Box>
-          </Flex>
+          {CurrentVariant === "map-centric" ? (
+            <LayoutHeightConstrained>{children}</LayoutHeightConstrained>
+          ) : (
+            <LayoutScrollable>{children}</LayoutScrollable>
+          )}
           <Toaster />
         </Provider>
       </body>
