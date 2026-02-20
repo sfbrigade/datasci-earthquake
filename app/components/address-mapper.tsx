@@ -5,10 +5,13 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import {
   chakra,
   useDisclosure,
+  Heading,
   IconButton,
   Drawer,
   Portal,
   Box,
+  Text,
+  Center,
   useMediaQuery,
 } from "@chakra-ui/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
@@ -314,7 +317,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             </Drawer.Root>
           )}
           {CurrentVariant === "data-centric" && (
-            <Box zIndex="docked" top="16" left="5" position="absolute">
+            <Box zIndex="docked" top="16" left="8" position="absolute">
               <SearchBar
                 inputAddress={inputAddress}
                 onInputAddressChange={setInputAddress}
@@ -334,16 +337,31 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         </Box>
       </Box>
       {CurrentVariant === "data-centric" && (
-        <Box>
-          <ReportHazards
-            addressHazardData={addressHazardData}
-            isHazardDataLoading={isHazardDataLoading}
-            toggledStates={toggledStates}
-            setToggledStates={setToggledStates}
-            setLayerToggleObj={setLayerToggleObj}
-            stackDirectionResponsive={true}
-          />
-        </Box>
+        <>
+          <Box pt="8" pb="4" px="8">
+            <Heading as="h2">
+              <Text
+                as="span"
+                textStyle="headerBig"
+                layerStyle="headerMain"
+                color="blue.text"
+                fontWeight="light"
+              >
+                What your risks mean
+              </Text>
+            </Heading>
+          </Box>
+          <Center py="4" px="8">
+            <ReportHazards
+              addressHazardData={addressHazardData}
+              isHazardDataLoading={isHazardDataLoading}
+              toggledStates={toggledStates}
+              setToggledStates={setToggledStates}
+              setLayerToggleObj={setLayerToggleObj}
+              stackDirectionResponsive={true}
+            />
+          </Center>
+        </>
       )}
     </>
   );
