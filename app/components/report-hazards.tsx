@@ -14,6 +14,7 @@ const ReportHazards = ({
   setToggledStates,
   setLayerToggleObj,
   isInDrawer = false,
+  stackDirectionResponsive = false,
 }: {
   addressHazardData: HazardData;
   isHazardDataLoading: boolean;
@@ -21,10 +22,14 @@ const ReportHazards = ({
   setToggledStates: Dispatch<SetStateAction<boolean[]>>;
   setLayerToggleObj: Dispatch<SetStateAction<LayerToggleObjProps>>;
   isInDrawer?: boolean;
+  stackDirectionResponsive?: boolean;
 }) => {
   return (
     <Box>
-      <CardContainer padded={!isInDrawer}>
+      <CardContainer
+        padded={!isInDrawer}
+        stackDirectionResponsive={stackDirectionResponsive}
+      >
         {Hazards.map((hazard) => {
           return (
             <CardHazard
