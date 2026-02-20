@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
@@ -11,6 +11,7 @@ import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
+import SearchBar from "./search-bar";
 
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
@@ -191,47 +192,21 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       <HomeHeader
         searchedAddress={searchedAddress}
         isSearchComplete={isSearchComplete}
-        onSearchChange={handleSearchChange}
       />
       {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
       <Box
         w="full"
-        css={{
-          "--header-height": "198px",
-          md: { "--header-height": "175px" },
-          xl: { "--header-height": "141px" },
-          "2xl": { "--header-height": "149px" },
-          "--whitespace-height": "32px",
-        }}
         style={{
-          height:
-            "calc(100dvh - var(--header-height) - var(--whitespace-height)",
+          height: "336px",
         }}
         m="auto"
         position="relative"
       >
         <Box h="full" overflow="hidden">
-          <Box zIndex="docked" top="0" position="absolute">
-            {currentView === "desktop" ? (
-              <ReportHazards
-                addressHazardData={addressHazardData}
-                isHazardDataLoading={isHazardDataLoading}
-                toggledStates={toggledStates}
-                setToggledStates={setToggledStates}
-                setLayerToggleObj={setLayerToggleObj}
-              />
-            ) : currentView === "mobile" ? (
-              <MobileReportHazards
-                showHazards={showHazards}
-                addressHazardData={addressHazardData}
-                isHazardDataLoading={isHazardDataLoading}
-                toggledStates={toggledStates}
-                setShowHazards={setShowHazards}
-                setToggledStates={setToggledStates}
-                setLayerToggleObj={setLayerToggleObj}
-              />
-            ) : null}
+          <Box zIndex="docked" top="16" left="5" position="absolute">
+            <SearchBar onSearchChange={handleSearchChange} />
           </Box>
+
           <Map
             coordinates={coordinates || defaultCoords}
             softStoryData={softStoryData}
@@ -240,6 +215,17 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             layerToggleObj={layerToggleObj}
           />
         </Box>
+      </Box>
+      <Box>
+        <Stack direction={{ base: "column", md: "row" }} gap="10">
+          <ReportHazards
+            addressHazardData={addressHazardData}
+            isHazardDataLoading={isHazardDataLoading}
+            toggledStates={toggledStates}
+            setToggledStates={setToggledStates}
+            setLayerToggleObj={setLayerToggleObj}
+          />
+        </Stack>
       </Box>
     </>
   );
