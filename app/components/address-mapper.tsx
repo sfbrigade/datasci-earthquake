@@ -11,6 +11,7 @@ import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
+import SearchBar from "./search-bar";
 
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
@@ -49,6 +50,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const initialLat = searchParams.get("lat");
   const initialLon = searchParams.get("lon");
   const initialAddress = searchParams.get("address");
+  const [inputAddress, setInputAddress] = useState("");
 
   // initialize state directly from searchParams or fall back to null
   const [coordinates, setCoordinates] = useState<number[] | null>(
@@ -117,6 +119,10 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     },
     [router]
   );
+
+  const resetInputAddress = useCallback(() => {
+    setInputAddress("");
+  }, []);
 
   useEffect(() => {
     const lat = searchParams.get("lat");
@@ -191,7 +197,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       <HomeHeader
         searchedAddress={searchedAddress}
         isSearchComplete={isSearchComplete}
-        onSearchChange={handleSearchChange}
+        onHomeIconClick={resetInputAddress}
       />
       {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
       <Box
@@ -210,7 +216,13 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         position="relative"
       >
         <Box h="full" overflow="hidden">
-          <Box zIndex="docked" top="0" position="absolute"></Box>
+          <Box zIndex="docked" top="0" position="absolute">
+            <SearchBar
+              inputAddress={inputAddress}
+              onInputAddressChange={setInputAddress}
+              onSearchChange={handleSearchChange}
+            />
+          </Box>
           <Map
             coordinates={coordinates || defaultCoords}
             softStoryData={softStoryData}

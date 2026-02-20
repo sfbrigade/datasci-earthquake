@@ -14,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import Heading, { HeadingProps } from "./heading";
 import ReportAddress from "./report-address";
-import SearchBar from "./search-bar";
 import Share from "./share";
 import ShareSkeleton from "./share-skeleton";
 
@@ -27,15 +26,14 @@ export type HazardData = {
 interface HomeHeaderProps {
   searchedAddress: string | null;
   isSearchComplete: boolean;
-  onSearchChange: (coords: number[], address: string) => void;
+  onHomeIconClick: () => void;
 }
 
 const HomeHeader = ({
   searchedAddress,
   isSearchComplete,
-  onSearchChange,
+  onHomeIconClick,
 }: HomeHeaderProps) => {
-  const [inputAddress, setInputAddress] = useState("");
   const headingData = Headings.home;
   const router = useRouter();
 
@@ -61,7 +59,7 @@ const HomeHeader = ({
             textDecoration={"none"}
             onClick={(e) => {
               e.preventDefault();
-              setInputAddress("");
+              onHomeHeaderClick();
               router.push("/");
             }}
           >
@@ -87,19 +85,12 @@ const HomeHeader = ({
         )}
       </Flex>
 
+      {/* TODO: may no longer need this Flex since only one component is inside after moving out SearchBar*/}
       <Flex
         direction={{ base: "column-reverse", xl: "row" }}
         justifyContent={"space-between"}
         alignItems={{ base: "flex-start", xl: "center" }}
       >
-        <Box width={{ base: "full", xl: "fit" }}>
-          <SearchBar
-            inputAddress={inputAddress}
-            onInputAddressChange={setInputAddress}
-            onSearchChange={onSearchChange}
-          />
-        </Box>
-
         {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
         {isSearchComplete ? (
           <Suspense fallback={<ShareSkeleton />}>
