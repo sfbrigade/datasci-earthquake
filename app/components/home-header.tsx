@@ -59,7 +59,7 @@ const HomeHeader = ({
             textDecoration={"none"}
             onClick={(e) => {
               e.preventDefault();
-              onHomeHeaderClick();
+              onHomeIconClick();
               router.push("/");
             }}
           >
