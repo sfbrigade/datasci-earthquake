@@ -108,6 +108,9 @@ jobs:
       - name: Build 
         run: docker buildx bake -f compose.yaml db
 
+      - name: List images 
+        run: docker image ls
+
       #- name: Start DB
       #  run: docker compose up -d --wait --wait-timeout 30 db
 
