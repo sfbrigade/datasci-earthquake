@@ -4,6 +4,7 @@
 # botswana
 # cutter
 # dangle
+# equador
 services:
   db:
     image: postgis-custom
