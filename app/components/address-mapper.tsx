@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Box, Stack } from "@chakra-ui/react";
+import { Box, Center, Heading, Stack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
@@ -209,7 +209,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         position="relative"
       >
         <Box h="full" overflow="hidden">
-          <Box zIndex="docked" top="16" left="5" position="absolute">
+          <Box zIndex="docked" top="16" left="8" position="absolute">
             <SearchBar
               inputAddress={inputAddress}
               onInputAddressChange={setInputAddress}
@@ -226,7 +226,20 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           />
         </Box>
       </Box>
-      <Box>
+      <Box pt="8" pb="4" px="8">
+        <Heading as="h2">
+          <Text
+            as="span"
+            textStyle="headerBig"
+            layerStyle="headerMain"
+            color="blue.text"
+            fontWeight="light"
+          >
+            What your risks mean
+          </Text>
+        </Heading>
+      </Box>
+      <Center py="4" px="8">
         <ReportHazards
           addressHazardData={addressHazardData}
           isHazardDataLoading={isHazardDataLoading}
@@ -234,7 +247,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           setToggledStates={setToggledStates}
           setLayerToggleObj={setLayerToggleObj}
         />
-      </Box>
+      </Center>
     </>
   );
 };
