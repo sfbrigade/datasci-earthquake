@@ -1,10 +1,8 @@
 # Dockerfile
-# haha
-# haha
+
 # Use the official PostgreSQL image
 FROM postgres:15
 
-RUN echo 'nope'
 
 # Install PostGIS and dependencies
 RUN apt-get update \
@@ -22,10 +20,6 @@ RUN chmod +x /docker-entrypoint-initdb.d/initdb-postgis.sh \
 
 # Expose the default Postgres port
 EXPOSE 5432
-
-RUN echo 'nopenope'
-
-RUN echo 'rghtnopenope'
 
 # Start the database server with PostGIS enabled
 CMD ["postgres"]

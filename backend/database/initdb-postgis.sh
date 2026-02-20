@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-# ooo
+
 # Perform all actions as $POSTGRES_USER
 export PGUSER="$POSTGRES_USER"
 
