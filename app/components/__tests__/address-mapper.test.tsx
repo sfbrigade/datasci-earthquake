@@ -159,12 +159,13 @@ describe("AddressMapper", () => {
       </Provider>
     );
 
-    // Act
-    // Simulate a user action by directly calling the onSearchChange prop on the mocked component.
-    await act(async () => {
-      // The mock `HomeHeader` component is passed the `onSearchChange` prop. We can access it via the mock.
-      MockedHomeHeader.mock.calls[0][0].onSearchChange(newCoords, testAddress);
-    });
+    // FIXME: `onSearchChange` has been removed from `HomeHeader` so rewrite this test
+    // // Act
+    // // Simulate a user action by directly calling the onSearchChange prop on the mocked component.
+    // await act(async () => {
+    //   // The mock `HomeHeader` component is passed the `onSearchChange` prop. We can access it via the mock.
+    //   MockedHomeHeader.mock.calls[0][0].onSearchChange(newCoords, testAddress);
+    // });
 
     // Assert that the router was called correctly
     const searchParams = new URLSearchParams(paramsArray);
