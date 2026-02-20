@@ -196,42 +196,21 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
       <Box
         w="full"
-        css={{
-          "--header-height": "198px",
-          md: { "--header-height": "175px" },
-          xl: { "--header-height": "141px" },
-          "2xl": { "--header-height": "149px" },
-          "--whitespace-height": "32px",
-        }}
+        // css={{
+        //   "--header-height": "198px",
+        //   md: { "--header-height": "175px" },
+        //   xl: { "--header-height": "141px" },
+        //   "2xl": { "--header-height": "149px" },
+        //   "--whitespace-height": "32px",
+        // }}
         style={{
-          height:
-            "calc(100dvh - var(--header-height) - var(--whitespace-height)",
+          height: "336px",
         }}
         m="auto"
         position="relative"
       >
         <Box h="full" overflow="hidden">
-          <Box zIndex="docked" top="0" position="absolute">
-            {currentView === "desktop" ? (
-              <ReportHazards
-                addressHazardData={addressHazardData}
-                isHazardDataLoading={isHazardDataLoading}
-                toggledStates={toggledStates}
-                setToggledStates={setToggledStates}
-                setLayerToggleObj={setLayerToggleObj}
-              />
-            ) : currentView === "mobile" ? (
-              <MobileReportHazards
-                showHazards={showHazards}
-                addressHazardData={addressHazardData}
-                isHazardDataLoading={isHazardDataLoading}
-                toggledStates={toggledStates}
-                setShowHazards={setShowHazards}
-                setToggledStates={setToggledStates}
-                setLayerToggleObj={setLayerToggleObj}
-              />
-            ) : null}
-          </Box>
+          <Box zIndex="docked" top="0" position="absolute"></Box>
           <Map
             coordinates={coordinates || defaultCoords}
             softStoryData={softStoryData}
@@ -241,6 +220,25 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           />
         </Box>
       </Box>
+      {currentView === "desktop" ? (
+        <ReportHazards
+          addressHazardData={addressHazardData}
+          isHazardDataLoading={isHazardDataLoading}
+          toggledStates={toggledStates}
+          setToggledStates={setToggledStates}
+          setLayerToggleObj={setLayerToggleObj}
+        />
+      ) : currentView === "mobile" ? (
+        <MobileReportHazards
+          showHazards={showHazards}
+          addressHazardData={addressHazardData}
+          isHazardDataLoading={isHazardDataLoading}
+          toggledStates={toggledStates}
+          setShowHazards={setShowHazards}
+          setToggledStates={setToggledStates}
+          setLayerToggleObj={setLayerToggleObj}
+        />
+      ) : null}
     </>
   );
 };
