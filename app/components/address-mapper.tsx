@@ -15,7 +15,6 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
-import MobileReportHazards from "./mobile-report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
@@ -213,11 +212,13 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         isSearchComplete={displaySearchComplete}
         onHomeIconClick={resetInputAddress}
       >
-        <SearchBar
-          inputAddress={inputAddress}
-          onInputAddressChange={setInputAddress}
-          onSearchChange={handleSearchChange}
-        />
+        {CurrentVariant === "map-centric" && (
+          <SearchBar
+            inputAddress={inputAddress}
+            onInputAddressChange={setInputAddress}
+            onSearchChange={handleSearchChange}
+          />
+        )}
       </HomeHeader>
       <Box
         w="full"
@@ -313,26 +314,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             </Drawer.Root>
           )}
           {CurrentVariant === "data-centric" && (
-            <Box zIndex="docked" top="0" position="absolute">
-              {md ? (
-                <ReportHazards
-                  addressHazardData={addressHazardData}
-                  isHazardDataLoading={isHazardDataLoading}
-                  toggledStates={toggledStates}
-                  setToggledStates={setToggledStates}
-                  setLayerToggleObj={setLayerToggleObj}
-                />
-              ) : (
-                <MobileReportHazards
-                  showHazards={showHazards}
-                  addressHazardData={addressHazardData}
-                  isHazardDataLoading={isHazardDataLoading}
-                  toggledStates={toggledStates}
-                  setShowHazards={setShowHazards}
-                  setToggledStates={setToggledStates}
-                  setLayerToggleObj={setLayerToggleObj}
-                />
-              )}
+            <Box zIndex="docked" top="16" left="5" position="absolute">
+              <SearchBar
+                inputAddress={inputAddress}
+                onInputAddressChange={setInputAddress}
+                onSearchChange={handleSearchChange}
+              />
             </Box>
           )}
           <Map
@@ -346,6 +333,18 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           />
         </Box>
       </Box>
+      {CurrentVariant === "data-centric" && (
+        <Box>
+          <ReportHazards
+            addressHazardData={addressHazardData}
+            isHazardDataLoading={isHazardDataLoading}
+            toggledStates={toggledStates}
+            setToggledStates={setToggledStates}
+            setLayerToggleObj={setLayerToggleObj}
+            stackDirectionResponsive={true}
+          />
+        </Box>
+      )}
     </>
   );
 };
