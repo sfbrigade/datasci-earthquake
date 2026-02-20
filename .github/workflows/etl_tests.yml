@@ -88,14 +88,14 @@ jobs:
         id: cache-etl
         uses: actions/cache@v4
         with:
-          path: buildx-cache-etl-xxx
-          key: ${{ runner.os }}-${{ hashFiles('buildx-cache-etl-xxx') }}-buildx-etl
+          path: buildx-cache-etl-cornbread
+          key: ${{ runner.os }}-${{ hashFiles('backend/database/Dockerfile') }}-buildx-etl
 
       - name: echo stuff 
-        run: echo ${{ hashFiles('buildx-cache-etl-xxx') }}
+        run: echo ${{ hashFiles('backend/database/Dockerfile') }}
 
       #- name: look inside directory 
-      #  run: ls -l buildx-cache-etl-xxx
+      #  run: ls -l buildx-cache-etl-cornbread
 
       - if: ${{ steps.cache-etl.outputs.cache-hit != 'true' }}
         name: Check if miss

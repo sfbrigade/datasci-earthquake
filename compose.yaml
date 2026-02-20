@@ -1,9 +1,9 @@
 # Docker Compose configuration for local development and CI pipeline.
 # Not used for production; production is deployed via hosting platform.
-# haha
-# haha
-# haha
-# haha  look leek
+# africa
+# botswana
+# cutter
+# dangle
 services:
   db:
     image: postgis-custom
@@ -11,9 +11,9 @@ services:
       context: ./backend/database
       dockerfile: Dockerfile
       cache_from: 
-        - type=local,src=buildx-cache-etl-xxx
+        - type=local,src=buildx-cache-etl-cornbread
       cache_to: 
-        - type=local,dest=buildx-cache-etl-xxx
+        - type=local,dest=buildx-cache-etl-cornbread
     container_name: my_postgis_db
     restart: always
     env_file:
