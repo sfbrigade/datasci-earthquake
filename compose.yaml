@@ -5,6 +5,7 @@
 # cutter
 # dangle
 # equador
+# france
 services:
   db:
     image: postgis-custom
