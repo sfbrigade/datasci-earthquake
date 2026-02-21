@@ -88,12 +88,8 @@ jobs:
         id: cache-etl
         uses: actions/cache@v4
         with:
-          path: buildx-cache-etl-cornbread
-          key: ${{ runner.os }}-${{ hashFiles('backend/database/Dockerfile') }}-buildx-etl
-
-      # - name: Build 
-        # run: docker buildx bake -f compose.yaml --load db
-        # run: docker compose build db
+          path: buildx-cache-etl-db
+          key: ${{ runner.os }}-${{ hashFiles('backend/database/Dockerfile') }}-buildx-etl-db
 
       - name: Start DB
         run: docker compose up -d --wait --wait-timeout 20 db
