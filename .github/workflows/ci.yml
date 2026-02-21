@@ -1,20 +1,6 @@
 name: CI Pipeline
 
-on:
-  workflow_dispatch
-  push:
-    paths-ignore:
-      - '**.md'
-    branches:
-      - develop
-      - main
-  pull_request:
-    paths-ignore:
-      - '**.md'
-    types: [opened, synchronize, reopened]
-    branches:
-      - develop
-      - main
+on: workflow_dispatch
 
 jobs:
   eslint:
