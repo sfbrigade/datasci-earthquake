@@ -109,11 +109,11 @@ jobs:
       - name: List images 
         run: docker image ls
 
-      - name: remove db image 
-        run: docker image rm postgis-custom
-
       - name: Start DB
         run: docker compose up -d --wait --wait-timeout 30 db
+
+      - name: List images (AFTER) 
+        run: docker image ls
 
       #- name: Docker DB Logs 
       #  run: docker logs my_postgis_db 
