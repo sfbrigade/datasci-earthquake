@@ -1,5 +1,5 @@
 # Dockerfile
-# o
+
 # Use the official PostgreSQL image
 FROM postgres:15
 
