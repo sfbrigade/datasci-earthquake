@@ -91,35 +91,18 @@ jobs:
           path: buildx-cache-etl-cornbread
           key: ${{ runner.os }}-${{ hashFiles('backend/database/Dockerfile') }}-buildx-etl
 
-      - name: echo stuff 
-        run: echo ${{ hashFiles('backend/database/Dockerfile') }}
-
-      - if: ${{ steps.cache-etl.outputs.cache-hit != 'true' }}
-        name: Check if miss
-        run: echo 'its a MISS!'
- 
-      - if: ${{ steps.cache-etl.outputs.cache-hit == 'true' }}
-        name: Check if hit
-        run: echo 'its a HIT!' 
-
       # - name: Build 
         # run: docker buildx bake -f compose.yaml --load db
         # run: docker compose build db
 
-      - name: List images 
-        run: docker image ls
-
       - name: Start DB
         run: docker compose up -d --wait --wait-timeout 30 db
 
-      - name: List images (AFTER) 
-        run: docker image ls
+      - name: Docker DB Logs 
+        run: docker logs my_postgis_db 
 
-      #- name: Docker DB Logs 
-      #  run: docker logs my_postgis_db 
+      - name: Run Tests
+        run: echo 'Coming soon'
 
-      #- name: Run Tests
-      #  run: echo 'Coming soon'
-
-      #- name: Clean Up
-      #  run: docker compose down db
+      - name: Clean Up
+        run: docker compose down db
