@@ -87,7 +87,7 @@ jobs:
       - name: Cache Docker layers
         uses: actions/cache@v4
         with:
-          path: buildx-cache-etl-db
+          path: buildx-cache-db
           key: ${{ runner.os }}-${{ hashFiles('backend/database/Dockerfile') }}-buildx-db
 
       - name: Start DB
