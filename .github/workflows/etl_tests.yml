@@ -102,15 +102,18 @@ jobs:
         name: Check if hit
         run: echo 'its a HIT!' 
 
-      - name: Build 
+      # - name: Build 
         # run: docker buildx bake -f compose.yaml --load db
-        run: docker compose build db
+        # run: docker compose build db
 
       - name: List images 
         run: docker image ls
 
-      #- name: Start DB
-      #  run: docker compose up -d --wait --wait-timeout 30 db
+      - name: remove db image 
+        run: docker image rm postgis-custom
+
+      - name: Start DB
+        run: docker compose up -d --wait --wait-timeout 30 db
 
       #- name: Docker DB Logs 
       #  run: docker logs my_postgis_db 
