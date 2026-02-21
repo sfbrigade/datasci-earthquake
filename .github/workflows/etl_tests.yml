@@ -96,7 +96,7 @@ jobs:
         # run: docker compose build db
 
       - name: Start DB
-        run: docker compose up -d --wait --wait-timeout 30 db
+        run: docker compose up -d --wait --wait-timeout 20 db
 
       - name: Docker DB Logs 
         run: docker logs my_postgis_db 
