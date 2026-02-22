@@ -1,8 +1,9 @@
 "use client";
 
-import { Suspense, useCallback } from "react";
+import { Suspense, useCallback, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { Headings } from "../data/data";
+import { AddressSearchContext } from "./address-mapper";
 import {
   Box,
   Text,
@@ -24,28 +25,27 @@ export type HazardData = {
   tsunami: { exists: boolean; last_updated: string | null } | null;
 };
 
-interface HomeHeaderProps {
-  searchedAddress: string | null;
-  isSearchComplete: boolean;
-  // onSearchChange: (coords: number[], address: string) => void;
-}
+// interface HomeHeaderProps {
+//   searchedAddress: string | null;
+//   isSearchComplete: boolean;
+//   // onSearchChange: (coords: number[], address: string) => void;
+// }
 
-const HomeHeader = ({
-  searchedAddress,
-  isSearchComplete,
-  // onSearchChange,
-}: HomeHeaderProps) => {
+const HomeHeader = () => {
+  const { searchedAddress, isSearchComplete } =
+    useContext(AddressSearchContext);
+
   const headingData = Headings.home;
   const router = useRouter();
 
   const handleSearchChange = useCallback(
-      (coords: number[], address: string) => {
-        const newUrl = `?address=${encodeURIComponent(address)}&lat=${coords[1]}&lon=${coords[0]}`;
-        router.push(newUrl, { scroll: false });
-      },
-      [router]
-    );
-  
+    (coords: number[], address: string) => {
+      const newUrl = `?address=${encodeURIComponent(address)}&lat=${coords[1]}&lon=${coords[0]}`;
+      router.push(newUrl, { scroll: false });
+    },
+    [router]
+  );
+
   return (
     <Box as="header" bgGradient="blue" py={{ base: "4", "2xl": "5" }} px="8">
       <Flex
