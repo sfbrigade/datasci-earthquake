@@ -82,6 +82,12 @@ jobs:
           openssl aes-256-cbc -d -salt -pbkdf2 -k "${{ secrets.ARTIFACT_PASS }}" -in .env.enc -out .env
           echo "Decryption complete"
 
+      - name: touch 
+        run: |
+          touch haha.txt
+          ls -l
+          pwd
+
       - name: Ensure .env exists
         run: |
           if [ ! -f .env ]; then
