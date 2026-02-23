@@ -196,31 +196,23 @@ backend\.venv\Scripts\activate
 
 #### Frontend Setup
 
-1. Set nvm version:
+<!-- TODO: combine all frontend setup into one section and differentiate between environment differences in steps instead -->
 
-   ```shell
-   nvm use 18
-   ```
+1. Follow Step 1 of [Starting the app in the front-end focused section](#starting-the-app-front-end-focused) and then resume Step 2 back here
 
 2. Install the front end dependencies:
 
    ```shell
    npm install
-   # or
-   yarn
-   # or
-   pnpm install
    ```
 
 3. Run the development server:
 
    ```shell
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
+   npm run next-dev
    ```
+
+   Alternatively, run `npm run dev` if you want to automatically start up the API server as well (runs both `npm run dev` and `npm run fastapi-dev`)
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
@@ -250,14 +242,37 @@ After going through the steps below for either front end-focused or back end-foc
 - **Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).
 - **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
 
-#### Starting the app
+#### Starting the app (front end-focused)
 
-For front end-focused development, first run `npm install`, and then you can run `npm run dev-front`, which will:
+For front end-focused development, do the following:
 
-- build and restart your backend (and database) Docker containers
-- install dependencies
-- start up your Next.js development server locally (on port 3000 by default)
-- [start up Storybook](#starting-storybook-component-workshop) locally (on port 6006 in Chrome by default)
+1. Set node version, defined in `.nvmrc`, using Node Version Manager (nvm):
+
+   ```shell
+   nvm use
+   ```
+
+   - install `nvm` if you haven't yet; it is a useful tool for ensuring you're switching to a compatible version of Node when working on different projects
+   - if you want to avoid manually running `nvm use`, it's recommended that you do the following so you can skip this step moving forward: Add `nvm use` into your shell's configuration file right after the lines added by nvm itself; this will _automatically_ switch you to the Node version defined in the project folder's `.nvmrc` upon shell initialization. The correct configuration file will contain the line `export NVM_DIR="$HOME/.nvm"`. Make sure to add the line after all of existing nvm config lines.
+     - for zsh, this is likely in `~/.zshrc`
+     - for bash, this is likely in `~/.bash_profile`, `~/.bashrc`, or `~/.profile`
+
+2. Install the front end dependencies:
+
+   ```shell
+   npm install
+   ```
+
+3. Run the development server:
+
+   ```shell
+   npm run dev-front
+   ```
+
+   This command will:
+   - build and restart your backend (and database) Docker containers
+   - start up your Next.js development server locally (on port 3000 by default, so visit http://localhost:3000 in your browser)
+   - [start up Storybook](#starting-storybook-component-workshop) locally (on port 6006, which will open http://localhost:6006 in your default browser by default)
 
 If you need to rebuild the containers, run `npm run docker-back`.
 
@@ -399,21 +414,14 @@ px={{ base: "6", md: "7", lg: "8", xl: "9" }}
 
 #### Troubleshooting front end
 
-##### ⚠️ Please do NOT delete `package-lock.json`
+##### ⚠️ Please do NOT delete `package-lock.json` or attempt to resolve merge conflicts with it yourself
 
-The `package-lock.json` file plays a crucial role in ensuring that the exact versions of dependencies installed in `node_modules` remain consistent across different environments.
+> [!WARNING]
+> In the event of merge conflicts involving `package-lock.json`, please **do not manually fix or delete the file**. Instead, run `npm install` to automatically resolve and repair the lock file.
 
-Deleting this file can lead to unintended side effects, especially when both `package-lock.json` and the `node_modules` folder are removed and then `npm install` is run. In such cases, a new `package-lock.json` will be generated based solely on `package.json`, which might diverge significantly from the committed lock file and cause unexpected behavior or bugs.
+Do not delete or edit this file directly as it contains crucial information about front end dependencies.
 
-In the event of merge conflicts involving `package-lock.json`, please **do not manually fix or delete the file**. Instead, run `npm install` to automatically resolve and repair the lock file.
-
-If you are experimenting locally, you may delete `package-lock.json`, but **make sure not to commit the regenerated file to the repository** to avoid affecting others.
-
-Because `package-lock.json` changes are sometimes overlooked during code reviews, it’s important to pay close attention and avoid accidentally committing problematic versions.
-
-If you face any issues related to `package-lock.json`, please raise them with the team before making changes.
-
-Thank you for helping keep the project stable!
+During code reviews, it’s important to pay close attention and avoid accidentally committing problematic versions because `package-lock.json` changes are sometimes overlooked.
 
 ##### Suspense boundary missing around `useSearchParams()`, causing entire page to deopt into client-side rendering (CSR)
 
@@ -423,7 +431,8 @@ You may run into the following NextJS error when you run `npm run build`[^1]:
 useSearchParams() should be wrapped in a suspense boundary at page "/<PAGE_NAME>". Read more: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
 ```
 
-> [!INFORMATION] > `<PAGE_NAME>` refers to a `page.tsx` file in the app, either the root page at `app/page.tsx` or a non-root page at, for example, `app/<PAGE_NAME>/page.tsx`.
+> [!INFORMATION]
+> `<PAGE_NAME>` refers to a `page.tsx` file in the app, either the root page at `app/page.tsx` or a non-root page at, for example, `app/<PAGE_NAME>/page.tsx`.
 
 The fix is to wrap any component that references `useSearchParams()` with React's `<Suspense>`. Read further to understand why.
 
