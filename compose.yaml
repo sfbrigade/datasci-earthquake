@@ -113,6 +113,7 @@ services:
       retries: 6
       start_period: 60s
     command: npm run next-dev
+    profiles: ["all"]
 
 volumes:
   db-data:

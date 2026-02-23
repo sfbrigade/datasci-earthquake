@@ -4,12 +4,6 @@
 
 This is a hybrid Next.js + Python app that uses Next.js as the frontend and FastAPI as the API backend. It also uses PostgreSQL as the database.
 
-# Getting Started
-
-You can work on this app entirely [locally](#local-development), entirely [using Docker](#development-with-docker), or--if you prefer to focus on front end or back end--a [combination of the two](#hybrid-development).
-
----
-
 # Setting Up and Using Environments
 
 ## Configuration of environment variables for all environments
@@ -45,13 +39,296 @@ The file is organized into four main sections:
 - **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
 - **Monitoring and Analytics Variables**. This section contains variables for Sentry and Posthog.
 
-#### ⚠️ If you add a new variable to the Settings class in the backend, you must also add a dummy value for it in .env.example. Otherwise, PRs from forks will fail, since the CI depends on .env.example when secrets are unavailable.`
+> [!CAUTION] ⚠️ If you add a new variable to the Settings class in the backend, you must also add a dummy value for it in .env.example. Otherwise, PRs from forks will fail, since the CI depends on .env.example when secrets are unavailable.`
+
+---
+
+# Working on the app
+
+You can work on this app in the following ways:
+
+- using [local front end development](#development-with-local-front-end-and-docker-back-end-most-recommended) with the back end in Docker (recommended)
+- entirely [using Docker](#development-with-docker-also-recommended) (also recommended)
+- entirely [locally](#local-development-least-recommended) (least recommended)
+
+## Development with local front end and Docker back end (most recommended)
+
+If you will be working exclusively on the front end or back end, you can run the Docker containers for the part of the stack you won't be doing development on, and then run the rest of the stack locally. A handful of NPM scripts have been provided to make this a bit easier (`npm run dev-*` and `npm run docker-*`, described below).
+
+### Prerequisites
+
+- **Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).
+- **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
+
+### Starting the app (front end-focused)
+
+For front end-focused development, do the following:
+
+1. Set node version, defined in `.nvmrc`, using Node Version Manager (nvm):
+
+   ```shell
+   nvm use
+   ```
+
+   - [install `nvm`](https://github.com/nvm-sh/nvm) if you haven't yet; it is a useful tool for ensuring you're switching to a compatible version of Node when working on different projects
+   - if you want to avoid manually running `nvm use`, it's recommended that you do the following so you can skip this step moving forward: Add `nvm use` into your shell's configuration file right after the lines added by nvm itself; this will _automatically_ switch you to the Node version defined in the project folder's `.nvmrc` upon shell initialization. The correct configuration file will contain the line `export NVM_DIR="$HOME/.nvm"`. Make sure to add the line after all of existing nvm config lines.
+     - for zsh, this is likely in `~/.zshrc`
+     - for bash, this is likely in `~/.bash_profile`, `~/.bashrc`, or `~/.profile`
+
+2. Install the front end dependencies:
+
+   ```shell
+   npm install
+   ```
+
+3. Run the development server:
+
+   ```shell
+   npm run dev-front
+   ```
+
+   This command will:
+   - build and restart your backend (and database) Docker containers
+   - start up your Next.js development server locally (on port 3000 by default, so visit http://localhost:3000 in your browser)
+   - [start up Storybook](#starting-storybook-component-workshop) locally (on port 6006, which will open http://localhost:6006 in your default browser by default)
+
+If you need to rebuild the containers, run `npm run docker-back`.
+
+If you would prefer to skip starting Storybook, run `npm run dev-front-no-storybook' instead.
+
+### Accessing the application and API servers
+
+After going through the steps above, you should be able to access the servers at the following URLs:
+
+- The app is running at http://localhost:3000, which you can open in your browser.
+- The API is accessible at http://localhost:8000.
+
+### Starting Storybook (component workshop)
+
+To start up our Storybook component workshop, run `npm run storybook`. This will:
+
+- start up an instance of Storybook in Google Chrome (on port 6006 by default)
+
+If you would like to [use a different browser than Chrome](https://storybook.js.org/docs/configure/environment-variables#using-environment-variables-to-choose-the-browser), then edit your `.env.local` file to include this line where "firefox" is the name of the browser you are targeting:
+
+```env
+BROWSER="firefox"
+```
+
+For context, when we work on components, we also write [Storybook](https://storybook.js.org) Stories for them so that we can more easily create and document each component in isolation. If you create or edit a component or part of our theme, you will need to create one or more Stories for it if they don't yet exist, or update them if they do.
+
+### Working with Chakra UI
+
+For UI components, styling, and theming, most initial setup is done via Chakra UI v3 within `theme.ts`. Docs are located at https://chakra-ui.com/. For default theme values, which are automatically used by Chakra along with the overrides in `theme.ts`, you can refer to https://github.com/chakra-ui/chakra-ui/tree/main/packages/react/src/theme (note that `sizing` is a **superset** of `spacing`). Be aware that there are a lot of out-of-date resources and articles online for Chakra UI v2 that you should ignore in favor of v3.
+
+While doing development, note that style prop autocompletion relies on theme typings generated from [styles/theme.ts], which is where SafeHome's Chakra theme overrides are defined. The overrides are merged with Chakra's default theme to give us the final SafeHome theme. To see a full list of theme values and tokens, check your browser console.
+
+### Upgrading Node
+
+To upgrade required version of Node, you will need to make edits in the following places as of this writing:
+
+- `.nvmrc`
+  - this is used by `.github/actions/setup-node-using-nvmrc/action.yml` which is, in turn, used by the GitHub workflows in `.github/workflows`
+- `package.json` (and the resulting `package-lock.json`)
+  - `engines`
+  - `dependencies`: Change the version for `@types/node` so that its major version matches the version of Node you are upgrading to; minor version and patch version seem to not track exactly
+- `Dockerfile`
+  - `FROM node:{NODE_MAJOR_VERSION}-alpine` (e.g., `FROM node:24-alpine`)
+
+#### CHAKRA TIP: ACCESSING THEME VALUES
+
+It's not obvious how to see a theme's tokens and values for reference during development. To make this easier and improve the experience, there are two ways you can currently view the theme:
+
+1. Browser console log: While running `npm run dev-front`, on page load, we log the theme as an object to the browser console
+2. ~~`theme` folder in your local filesystem: If you run `npm run gen:tokens`, the theme will be outputted to a temporary `theme` folder~~ WARNING: the `gen:tokens` npm script that creates a `theme` folder does not currently work as expected; see related comment in [package.json](package.json)
+
+For autocompletion of theme tokens in JSX, make sure you are running `npm run dev-front`. With this npm script running, theme typings will be regenerated whenever `theme.ts` is modified.
+
+There are plans to introduce a third way of viewing our theme: via Storybook!
+
+#### CHAKRA TIP: STRINGS AS PROP VALUES
+
+Chakra prefers strings as prop values as opposed to numbers.
+
+Instead of:
+
+```
+gap={1.5}
+```
+
+Use:
+
+```
+gap="1.5"
+```
+
+#### CHAKRA TIP: SHORTHAND NOTATION
+
+As for shorthand notation (e.g., `"{spacing.4} {spacing.2}"`); see: Chakra's [token reference syntax](https://chakra-ui.com/docs/theming/tokens#token-reference-syntax)), it doesn’t quite work, unfortunately. Although it works in development mode, when `strictTokens` is set to “true” in `theme.ts`, red squiggly lines will appear in the editor and the TypeScript build will fail. The alternative is to not use shorthand at all.
+
+For shorthand notation, (e.g., `"{spacing.4} {spacing.2}"`) appears to trip up the theme typings (seen as red squiggly lines in Visual Studio Code), so please use the array syntax instead:
+
+Instead of this shorthand:
+
+```
+// works in dev mode, but build will fail
+p="{spacing.8} {spacing.16} {spacing.8} {spacing.16}"
+```
+
+Use individual props and single values:
+
+```
+// works
+py="8"
+px="16"
+```
+
+---
+
+For responsive props, instead of the aforementioned token reference syntax:
+
+```
+// works in dev mode, but build will fail
+p={{
+  base: "{spacing.6}",
+  md: "{spacing.7}",
+  lg: "{spacing.7} {spacing.8} {spacing.7} {spacing.8}",
+  xl: "{spacing.7} {spacing.9} {spacing.7} {spacing.9]",
+}}
+```
+
+And instead of trying to convert the shorthand string into an array (will NOT work … only the last value is utilized):
+
+```
+// doesn't work at all (only last value of array is used)
+p={{
+  base: "6",
+  md: "7",
+  lg: ["7", "8", "7", "8"],
+  xl: ["7", "9", "7", "9"],
+}}
+```
+
+Use individual props combined with prop-based object syntax:
+
+```
+// works
+pt={{ base: "6", md: "7", lg: "7", xl: "7" }}
+pr={{ base: "6", md: "7", lg: "8", xl: "9" }}
+pb={{ base: "6", md: "7", lg: "7", xl: "7" }}
+pl={{ base: "6", md: "7", lg: "8", xl: "9" }}
+```
+
+Which can be simplified to:
+
+```
+// works
+pt={{ base: "6", md: "7" }}
+pr={{ base: "6", md: "7", lg: "8", xl: "9" }}
+pb={{ base: "6", md: "7" }}
+pl={{ base: "6", md: "7", lg: "8", xl: "9" }}
+```
+
+And further simplified to:
+
+```
+// works
+py={{ base: "6", md: "7" }}
+px={{ base: "6", md: "7", lg: "8", xl: "9" }}
+```
+
+### Troubleshooting front end
+
+#### ⚠️ Please do NOT delete `package-lock.json` or attempt to resolve merge conflicts with it yourself
+
+> [!WARNING]
+> In the event of merge conflicts involving `package-lock.json`, please **do not manually fix or delete the file**. Instead, run `npm install` to automatically resolve and repair the lock file.
+
+Do not delete or edit this file directly as it contains crucial information about front end dependencies.
+
+During code reviews, it’s important to pay close attention and avoid accidentally committing problematic versions because `package-lock.json` changes are sometimes overlooked.
+
+#### Suspense boundary missing around `useSearchParams()`, causing entire page to deopt into client-side rendering (CSR)
+
+You may run into the following NextJS error when you run `npm run build`[^1]:
+
+```shell
+useSearchParams() should be wrapped in a suspense boundary at page "/<PAGE_NAME>". Read more: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+```
+
+> [!INFORMATION]
+> `<PAGE_NAME>` refers to a `page.tsx` file in the app, either the root page at `app/page.tsx` or a non-root page at, for example, `app/<PAGE_NAME>/page.tsx`.
+
+The fix is to wrap any component that references `useSearchParams()` with React's `<Suspense>`. Read further to understand why.
+
+This error message can be highly misleading because it refers directly to `<PAGE_NAME>` even though it's more likely that its `page.tsx` file contains zero usages of `useSearchParams()`[^2]. This can make debugging difficult.
+
+The error doesn't make a distinction between `<PAGE_NAME>` and its descendant components, unfortunately, which is what causes the confusion. If you can't find usages of `useSearchParams()` directly in `page.tsx`, then you can search for usages in its descendant components instead. Once you find a component with a usage, you can [fix the error](https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout) by wrapping any references to the component with `<Suspense>` (and, ideally, providing a fallback) and `npm run build` again. More details can be found at https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout.
+
+There may be some instances where a usage of `useSearchParams()` does not appear even in a descendant component, but rather in, say, a provider. And, anecdotally, there may be other hooks that trigger a similar error message. Extensive discussion about several variants of this error message and workarounds can be found in this Github Issue: https://github.com/vercel/next.js/discussions/61654.
+
+[^1]: Note that this error message may be accompanied by the more generic error:
+
+```shell
+Error occurred prerendering page "/<PAGE_NAME>". Read more: https://nextjs.org/docs/messages/prerender-error"
+```
+
+[^2]: Since most pages will be Server Components, which do not contain a `"use client"` directive, `useSearchParams()` usages are not even allowed
+
+#### MapBox polygon rendering
+
+If there are issues with layers showing data, you can add the following snippet in `map.tsx` under the other `addLayer()` calls to see outlines of each MultiPolygon:
+
+```js
+map.addLayer({
+  id: "tsunamiLayerOutline",
+  source: "tsunami",
+  type: "line",
+  paint: {
+    "line-color": "rgba(255, 0, 0, 1)",
+    "line-width": 4,
+  },
+});
+```
+
+## ~~Development with Docker front end and local back end~~
+
+> ~~[!CAUTION]~~
+> ~~This section is currently undergoing review and correction. Do not use this method. Instead, please [develop using Docker](#development-with-docker).~~
+
+~~If you will be working exclusively on the ack end, you can run the Docker containers for the part of the stack you won't be doing development on, and then run the rest of the stack locally. A handful of NPM scripts have been provided to make this a bit easier (`npm run dev-*` and `npm run docker-*`, described below).~~
+
+### ~~Prerequisites~~
+
+- ~~**Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).~~
+- ~~**Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).~~
+- ~~**PostgreSQL**: Ensure PostgreSQL is installed to run the database locally (instead of in a Docker container).~~
+
+### ~~Starting the app~~
+
+~~For back end-focused development, you can run `npm run dev-back`, which will:~~
+
+- ~~install dependencies and start up your FastAPI server locally~~
+- ~~build and restart your frontend Docker containers~~
+
+~~If you need to rebuild the container, run `npm run docker-front`.~~
+
+~~NOTE: You will need to run PostgreSQL locally or in a Docker container as well.~~
+
+### ~~Accessing the application and API servers~~
+
+~~After going through the steps above, you should be able to access the servers at the following URLs:~~
+
+- ~~The app is running at http://localhost:3000, which you can open in your browser.~~
+- ~~The API is accessible at http://localhost:8000.~~
 
 ---
 
 ## Development with Docker
 
 This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.
+
+You may choose to run the front end either locally or in a Docker container. The instructions below will note differences between the two approaches where appropriate.
 
 ### Changing code
 
@@ -69,18 +346,27 @@ This includes `pyproject.toml` and `.env`, and `package.json`. You will need to 
 ### Starting the application
 
 1. **Build images if not yet created**: From the project root directory (where the compose.yaml file is located), run:
-   `docker compose build`
 
-2. **Run Docker Compose**: From the project root directory (where the compose.yaml file is located), run:
-   `docker compose up`
+   ```shell
+   docker compose build
+   ```
 
-   or
+2. **Run Docker Compose and Start the App **: From the project root directory (where the compose.yaml file is located), run:
 
-   `docker compose up -d`
+   ```shell
+   docker compose --profile all up -d
+   ```
+
+   or for local front end:
+
+   ```shell
+   docker compose up -d
+   npm run next-dev
+   ```
 
    This will:
-
-- Start all services defined in the compose.yaml file (e.g., frontend, backend, database)
+   - Start either all services defined in the compose.yaml file (e.g., frontend, backend, database) or all except the front end service
+   - Run docker compose in the background to free up your shell for other tasks (unless you omit the `-d`)
 
 3. **Access the Application**:
    - The app is running at http://localhost:3000. Note that this may conflict with your local dev server. If so, one will be running on port 3000 and the other on port 3001.
@@ -221,272 +507,6 @@ The FastAPI server will be running on [http://127.0.0.1:8000](http://127.0.0.1:8
 ### Troubleshooting
 
 Please refer to [Troubleshooting front end](#troubleshooting-front-end).
-
----
-
-## Hybrid development
-
-If you will be working exclusively on the front end or back end, you can run the Docker containers for the part of the stack you won't be doing development on, and then run the rest of the stack locally. A handful of NPM scripts have been provided to make this a bit easier (`npm run dev-*` and `npm run docker-*`, described below).
-
-### Accessing the application and API servers
-
-After going through the steps below for either front end-focused or back end-focused development, you should be able to access the servers at the following URLs:
-
-- The app is running at http://localhost:3000, which you can open in your browser.
-- The API is accessible at http://localhost:8000.
-
-### Front end-focused development
-
-#### Prerequisites
-
-- **Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).
-- **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
-
-#### Starting the app (front end-focused)
-
-For front end-focused development, do the following:
-
-1. Set node version, defined in `.nvmrc`, using Node Version Manager (nvm):
-
-   ```shell
-   nvm use
-   ```
-
-   - install `nvm` if you haven't yet; it is a useful tool for ensuring you're switching to a compatible version of Node when working on different projects
-   - if you want to avoid manually running `nvm use`, it's recommended that you do the following so you can skip this step moving forward: Add `nvm use` into your shell's configuration file right after the lines added by nvm itself; this will _automatically_ switch you to the Node version defined in the project folder's `.nvmrc` upon shell initialization. The correct configuration file will contain the line `export NVM_DIR="$HOME/.nvm"`. Make sure to add the line after all of existing nvm config lines.
-     - for zsh, this is likely in `~/.zshrc`
-     - for bash, this is likely in `~/.bash_profile`, `~/.bashrc`, or `~/.profile`
-
-2. Install the front end dependencies:
-
-   ```shell
-   npm install
-   ```
-
-3. Run the development server:
-
-   ```shell
-   npm run dev-front
-   ```
-
-   This command will:
-   - build and restart your backend (and database) Docker containers
-   - start up your Next.js development server locally (on port 3000 by default, so visit http://localhost:3000 in your browser)
-   - [start up Storybook](#starting-storybook-component-workshop) locally (on port 6006, which will open http://localhost:6006 in your default browser by default)
-
-If you need to rebuild the containers, run `npm run docker-back`.
-
-If you would prefer to skip starting Storybook, run `npm run dev-front-no-storybook' instead.
-
-#### Starting Storybook (component workshop)
-
-To start up our Storybook component workshop, run `npm run storybook`. This will:
-
-- start up an instance of Storybook in Google Chrome (on port 6006 by default)
-
-If you would like to [use a different browser than Chrome](https://storybook.js.org/docs/configure/environment-variables#using-environment-variables-to-choose-the-browser), then edit your `.env.local` file to include this line where "firefox" is the name of the browser you are targeting:
-
-```env
-BROWSER="firefox"
-```
-
-For context, when we work on components, we also write [Storybook](https://storybook.js.org) Stories for them so that we can more easily create and document each component in isolation. If you create or edit a component or part of our theme, you will need to create one or more Stories for it if they don't yet exist, or update them if they do.
-
-#### Working with Chakra UI
-
-For UI components, styling, and theming, most initial setup is done via Chakra UI v3 within `theme.ts`. Docs are located at https://chakra-ui.com/. For default theme values, which are automatically used by Chakra along with the overrides in `theme.ts`, you can refer to https://github.com/chakra-ui/chakra-ui/tree/main/packages/react/src/theme (note that `sizing` is a **superset** of `spacing`). Be aware that there are a lot of out-of-date resources and articles online for Chakra UI v2 that you should ignore in favor of v3.
-
-While doing development, note that style prop autocompletion relies on theme typings generated from [styles/theme.ts], which is where SafeHome's Chakra theme overrides are defined. The overrides are merged with Chakra's default theme to give us the final SafeHome theme. To see a full list of theme values and tokens, check your browser console.
-
-#### Upgrading Node
-
-To upgrade required version of Node, you will need to make edits in the following places as of this writing:
-
-- `.nvmrc`
-  - this is used by `.github/actions/setup-node-using-nvmrc/action.yml` which is, in turn, used by the GitHub workflows in `.github/workflows`
-- `package.json` (and the resulting `package-lock.json`)
-  - `engines`
-  - `dependencies`: Change the version for `@types/node` so that its major version matches the version of Node you are upgrading to; minor version and patch version seem to not track exactly
-- `Dockerfile`
-  - `FROM node:{NODE_MAJOR_VERSION}-alpine` (e.g., `FROM node:24-alpine`)
-
-##### CHAKRA TIP: ACCESSING THEME VALUES
-
-It's not obvious how to see a theme's tokens and values for reference during development. To make this easier and improve the experience, there are two ways you can currently view the theme:
-
-1. Browser console log: While running `npm run dev-front`, on page load, we log the theme as an object to the browser console
-2. ~~`theme` folder in your local filesystem: If you run `npm run gen:tokens`, the theme will be outputted to a temporary `theme` folder~~ WARNING: the `gen:tokens` npm script that creates a `theme` folder does not currently work as expected; see related comment in [package.json](package.json)
-
-For autocompletion of theme tokens in JSX, make sure you are running `npm run dev-front`. With this npm script running, theme typings will be regenerated whenever `theme.ts` is modified.
-
-There are plans to introduce a third way of viewing our theme: via Storybook!
-
-##### CHAKRA TIP: STRINGS AS PROP VALUES
-
-Chakra prefers strings as prop values as opposed to numbers.
-
-Instead of:
-
-```
-gap={1.5}
-```
-
-Use:
-
-```
-gap="1.5"
-```
-
-##### CHAKRA TIP: SHORTHAND NOTATION
-
-As for shorthand notation (e.g., `"{spacing.4} {spacing.2}"`); see: Chakra's [token reference syntax](https://chakra-ui.com/docs/theming/tokens#token-reference-syntax)), it doesn’t quite work, unfortunately. Although it works in development mode, when `strictTokens` is set to “true” in `theme.ts`, red squiggly lines will appear in the editor and the TypeScript build will fail. The alternative is to not use shorthand at all.
-
-For shorthand notation, (e.g., `"{spacing.4} {spacing.2}"`) appears to trip up the theme typings (seen as red squiggly lines in Visual Studio Code), so please use the array syntax instead:
-
-Instead of this shorthand:
-
-```
-// works in dev mode, but build will fail
-p="{spacing.8} {spacing.16} {spacing.8} {spacing.16}"
-```
-
-Use individual props and single values:
-
-```
-// works
-py="8"
-px="16"
-```
-
----
-
-For responsive props, instead of the aforementioned token reference syntax:
-
-```
-// works in dev mode, but build will fail
-p={{
-  base: "{spacing.6}",
-  md: "{spacing.7}",
-  lg: "{spacing.7} {spacing.8} {spacing.7} {spacing.8}",
-  xl: "{spacing.7} {spacing.9} {spacing.7} {spacing.9]",
-}}
-```
-
-And instead of trying to convert the shorthand string into an array (will NOT work … only the last value is utilized):
-
-```
-// doesn't work at all (only last value of array is used)
-p={{
-  base: "6",
-  md: "7",
-  lg: ["7", "8", "7", "8"],
-  xl: ["7", "9", "7", "9"],
-}}
-```
-
-Use individual props combined with prop-based object syntax:
-
-```
-// works
-pt={{ base: "6", md: "7", lg: "7", xl: "7" }}
-pr={{ base: "6", md: "7", lg: "8", xl: "9" }}
-pb={{ base: "6", md: "7", lg: "7", xl: "7" }}
-pl={{ base: "6", md: "7", lg: "8", xl: "9" }}
-```
-
-Which can be simplified to:
-
-```
-// works
-pt={{ base: "6", md: "7" }}
-pr={{ base: "6", md: "7", lg: "8", xl: "9" }}
-pb={{ base: "6", md: "7" }}
-pl={{ base: "6", md: "7", lg: "8", xl: "9" }}
-```
-
-And further simplified to:
-
-```
-// works
-py={{ base: "6", md: "7" }}
-px={{ base: "6", md: "7", lg: "8", xl: "9" }}
-```
-
-#### Troubleshooting front end
-
-##### ⚠️ Please do NOT delete `package-lock.json` or attempt to resolve merge conflicts with it yourself
-
-> [!WARNING]
-> In the event of merge conflicts involving `package-lock.json`, please **do not manually fix or delete the file**. Instead, run `npm install` to automatically resolve and repair the lock file.
-
-Do not delete or edit this file directly as it contains crucial information about front end dependencies.
-
-During code reviews, it’s important to pay close attention and avoid accidentally committing problematic versions because `package-lock.json` changes are sometimes overlooked.
-
-##### Suspense boundary missing around `useSearchParams()`, causing entire page to deopt into client-side rendering (CSR)
-
-You may run into the following NextJS error when you run `npm run build`[^1]:
-
-```shell
-useSearchParams() should be wrapped in a suspense boundary at page "/<PAGE_NAME>". Read more: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
-```
-
-> [!INFORMATION]
-> `<PAGE_NAME>` refers to a `page.tsx` file in the app, either the root page at `app/page.tsx` or a non-root page at, for example, `app/<PAGE_NAME>/page.tsx`.
-
-The fix is to wrap any component that references `useSearchParams()` with React's `<Suspense>`. Read further to understand why.
-
-This error message can be highly misleading because it refers directly to `<PAGE_NAME>` even though it's more likely that its `page.tsx` file contains zero usages of `useSearchParams()`[^2]. This can make debugging difficult.
-
-The error doesn't make a distinction between `<PAGE_NAME>` and its descendant components, unfortunately, which is what causes the confusion. If you can't find usages of `useSearchParams()` directly in `page.tsx`, then you can search for usages in its descendant components instead. Once you find a component with a usage, you can [fix the error](https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout) by wrapping any references to the component with `<Suspense>` (and, ideally, providing a fallback) and `npm run build` again. More details can be found at https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout.
-
-There may be some instances where a usage of `useSearchParams()` does not appear even in a descendant component, but rather in, say, a provider. And, anecdotally, there may be other hooks that trigger a similar error message. Extensive discussion about several variants of this error message and workarounds can be found in this Github Issue: https://github.com/vercel/next.js/discussions/61654.
-
-[^1]: Note that this error message may be accompanied by the more generic error:
-
-```shell
-Error occurred prerendering page "/<PAGE_NAME>". Read more: https://nextjs.org/docs/messages/prerender-error"
-```
-
-[^2]: Since most pages will be Server Components, which do not contain a `"use client"` directive, `useSearchParams()` usages are not even allowed
-
-##### MapBox polygon rendering
-
-If there are issues with layers showing data, you can add the following snippet in `map.tsx` under the other `addLayer()` calls to see outlines of each MultiPolygon:
-
-```js
-map.addLayer({
-  id: "tsunamiLayerOutline",
-  source: "tsunami",
-  type: "line",
-  paint: {
-    "line-color": "rgba(255, 0, 0, 1)",
-    "line-width": 4,
-  },
-});
-```
-
-### Back end-focused development (WIP)
-
-> [!CAUTION]
-> This section is currently undergoing review and correction. Do not use this method. Instead, please [develop using Docker](#development-with-docker).
-
-#### ~~Prerequisites~~
-
-- ~~**Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).~~
-- ~~**Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).~~
-- ~~**PostgreSQL**: Ensure PostgreSQL is installed to run the database locally (instead of in a Docker container).~~
-
-#### ~~Starting the app~~
-
-~~For back end-focused development, you can run `npm run dev-back`, which will:~~
-
-- ~~install dependencies and start up your FastAPI server locally~~
-- ~~build and restart your frontend Docker containers~~
-
-~~If you need to rebuild the container, run `npm run docker-front`.~~
-
-~~NOTE: You will need to run PostgreSQL locally or in a Docker container as well.~~
 
 ---
 
