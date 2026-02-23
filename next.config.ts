@@ -2,6 +2,7 @@ import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  productionBrowserSourceMaps: true,
   experimental: {
     optimizePackageImports: ["@chakra-ui/react"],
   },
