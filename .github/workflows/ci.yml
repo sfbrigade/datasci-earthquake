@@ -20,10 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.x'
+
+      - uses: ./.github/actions/setup-node-using-nvmrc
 
       - name: Install Node.js dependencies
         run: npm ci
@@ -61,10 +59,7 @@ jobs:
       ENVIRONMENT: ci
     steps:
       - uses: actions/checkout@v4 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.x'  
+      - uses: ./.github/actions/setup-node-using-nvmrc
       - name: Install dependencies
         run: npm ci 
       - name: Check Next.js production build

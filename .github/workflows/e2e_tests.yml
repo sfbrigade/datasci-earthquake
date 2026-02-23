@@ -26,9 +26,7 @@ jobs:
         # For manual runs, checkout the current branch reference.
         ref: ${{ github.event_name == 'deployment_status' && github.event.deployment.sha || github.ref }}
         
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '20.x'
+    - uses: ./.github/actions/setup-node-using-nvmrc
         
     - name: Install dependencies
       run: npm ci
