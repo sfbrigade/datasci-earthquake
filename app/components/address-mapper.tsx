@@ -12,6 +12,7 @@ import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 import SearchBar from "./search-bar";
+import EarthquakeReadyCards from "./earthquake-ready-cards";
 
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
@@ -248,6 +249,25 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           setLayerToggleObj={setLayerToggleObj}
         />
       </Center>
+      <Box pt="8" pb="4" px="8">
+        <Heading as="h2">
+          <Stack gap="3">
+            <Text
+              as="span"
+              textStyle="headerBig"
+              layerStyle="headerMain"
+              color="blue.text"
+              fontWeight="light"
+            >
+              Get earthquake-ready
+            </Text>
+            <Text textStyle="xs">
+              Quick steps that make a real difference when it counts.
+            </Text>
+          </Stack>
+        </Heading>
+      </Box>
+      <EarthquakeReadyCards></EarthquakeReadyCards>
     </>
   );
 };
