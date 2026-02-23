@@ -1,34 +1,9 @@
-name: CI Pipeline
+name: ETL tests
 
-on:
-  push:
-    paths-ignore:
-      - '**.md'
-    branches:
-      - develop
-      - main
-  pull_request:
-    paths-ignore:
-      - '**.md'
-    types: [opened, synchronize, reopened]
-    branches:
-      - develop
-      - main
-
+on: workflow_dispatch
+  
 jobs:
-  eslint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: ./.github/actions/setup-node-using-nvmrc
-
-      - name: Install Node.js dependencies
-        run: npm ci
-
-      - name: Run ESLint
-        run: npm run lint
-
+  
   black_lint_and_mypy_type_check:
     runs-on: ubuntu-latest
     steps:
@@ -53,19 +28,7 @@ jobs:
       - name: Type check with mypy
         run: mypy --config-file mypy.ini .
 
-  nextjs_build_check:
-    runs-on: ubuntu-latest
-    env:
-      ENVIRONMENT: ci
-    steps:
-      - uses: actions/checkout@v4 
-      - uses: ./.github/actions/setup-node-using-nvmrc
-      - name: Install dependencies
-        run: npm ci 
-      - name: Check Next.js production build
-        run: npm run build
-
-  docker_build_test:
+  etl_tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -78,7 +41,6 @@ jobs:
         id: check_fork
         if: github.event_name == 'pull_request'
         run: |
-          run: |
             if [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]]; then
               echo "is_fork=true" >> $GITHUB_ENV
             fi
@@ -130,33 +92,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      - name: Build Docker Containers
-        run: docker compose build
-
-      - name: Start Services
-        run: docker compose up -d --wait --wait-timeout 300
-
-      - name: Docker Backend Logs 
-        run: |
-          docker logs datasci-earthquake-backend-1 || echo "No logs found"
+      - name: Start DB
+        run: docker compose up -d --wait --wait-timeout 30 db
 
       - name: Docker DB Logs 
-        run: |
-          docker logs my_postgis_db || echo "No logs found"
+        run: docker logs my_postgis_db 
 
-      - name: Docker DB Test (unit tests) Logs 
-        run: |
-          docker logs my_postgis_db_test || echo "No logs found"
-
-      - name: Docker Frontend Logs 
-        run: |
-          docker logs datasci-earthquake-frontend-1 || echo "No logs found"
-
-      - name: Run Backend Tests
-        run: docker compose run --rm backend pytest backend -v
-
-      - name: Run Frontend Tests
-        run: docker compose run --rm frontend npm test
+      - name: Run Tests
+        run: echo 'Coming soon'
 
       - name: Clean Up
-        run: docker compose down
+        run: docker compose down db
