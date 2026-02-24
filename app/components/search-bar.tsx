@@ -1,7 +1,8 @@
 "use client";
 
-import { ChangeEvent, FormEvent, Suspense, useState } from "react";
+import { ChangeEvent, FormEvent, Suspense, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAddressFromSearchParams } from "@/hooks/useAddressFromSearchParams";
 import { chakra, Input, InputGroup, Text } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
@@ -32,6 +33,15 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
   const [suggestionsAvailable, setSuggestionsAvailable] = useState(false);
   const router = useRouter();
   const characterCap = 5;
+
+  const { address } = useAddressFromSearchParams();
+
+  useEffect(() => {
+    if (!address) {
+      setInputAddress("");
+      setSuggestionSelected(false);
+    }
+  }, [address]);
 
   const handleClearClick = () => {
     setInputAddress("");
