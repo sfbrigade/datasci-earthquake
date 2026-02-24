@@ -13,7 +13,6 @@ WORKDIR /app
 
 # Copy package.json, install dependencies, fix ownership
 COPY ./package*.json ./
-RUN echo "what-frontend"
 RUN npm install && chown -R appuser:appgroup /app
 
 # Copy the rest of the application 
