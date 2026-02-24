@@ -1,7 +1,26 @@
 # Next
-.next
-out
-next-env.d.ts
+apps/web/out
+apps/web/next-env.d.ts
+apps/web/.next
+
+# Node
+apps/web/node_modules
+
+# Playwright
+apps/web/test-results/
+apps/web/playwright-report/
+apps/web/blob-report/
+apps/web/playwright/.cache/
+
+# Chakra
+apps/web/theme/
+
+# Storybook
+apps/web/*storybook.log
+apps/web/storybook-static
+
+# Front end misc
+apps/web/out
 
 # Python
 __pycache__/
@@ -19,12 +38,8 @@ coverage.xml
 venv
 .venv
 
-# Node
-node_modules
-
 # Mac
 .DS_Store
-/.next/
 
 # Sensitive config
 .env.development.local
@@ -37,14 +52,3 @@ node_modules
 !.vscode/extensions.json
 !.vscode/settings.json
 !.vscode/launch.json
-
-# Playwright
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-
-# Chakra
-/theme/
-*storybook.log
-storybook-static
