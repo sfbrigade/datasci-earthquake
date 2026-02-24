@@ -1,9 +1,14 @@
 "use client";
 
 import { Suspense, useCallback, useContext } from "react";
+import { useAtomValue } from "jotai";
+import {
+  searchedAddressAtom,
+  isSearchCompleteAtom,
+} from "@/atoms/AddressSearchAtom";
 import { useRouter } from "next/navigation";
 import { Headings } from "../data/data";
-import { AddressSearchContext } from "./address-mapper";
+// import { AddressSearchContext } from "./address-mapper";
 import {
   Box,
   Text,
@@ -32,8 +37,10 @@ export type HazardData = {
 // }
 
 const HomeHeader = () => {
-  const { searchedAddress, isSearchComplete } =
-    useContext(AddressSearchContext);
+  // const { searchedAddress, isSearchComplete } =
+  //   useContext(AddressSearchContext);
+  const searchedAddress = useAtomValue(searchedAddressAtom);
+  const isSearchComplete = useAtomValue(isSearchCompleteAtom);
 
   const headingData = Headings.home;
   const router = useRouter();

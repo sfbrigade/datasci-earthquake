@@ -5,9 +5,16 @@ import {
   useEffect,
   useRef,
   useState,
-  createContext,
-  useContext,
+  // createContext,
+  // useContext,
 } from "react";
+
+import { useSetAtom } from "jotai";
+import {
+  searchedAddressAtom,
+  isSearchCompleteAtom,
+} from "@/atoms/AddressSearchAtom";
+
 import { Box } from "@chakra-ui/react";
 // import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
@@ -18,6 +25,7 @@ import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
+import { useAddressFromSearchParams } from "@/hooks/useAddressFromSearchParams";
 
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
@@ -47,36 +55,37 @@ const isErrorResult = (data: unknown): data is ErrorResult => {
   );
 };
 
-export type AddressSearchContextType = {
-  searchedAddress: string | null;
-  setSearchedAddress: (value: string | null) => void;
-  isSearchComplete: boolean;
-  setIsSearchComplete: (value: boolean) => void;
-};
+// export type AddressSearchContextType = {
+//   searchedAddress: string | null;
+//   setSearchedAddress: (value: string | null) => void;
+//   isSearchComplete: boolean;
+//   setIsSearchComplete: (value: boolean) => void;
+// };
 
-export const AddressSearchContext = createContext<AddressSearchContextType>({
-  searchedAddress: null,
-  setSearchedAddress: () => {},
-  isSearchComplete: false,
-  setIsSearchComplete: () => {},
-});
+// export const AddressSearchContext = createContext<AddressSearchContextType>({
+//   searchedAddress: null,
+//   setSearchedAddress: () => {},
+//   isSearchComplete: false,
+//   setIsSearchComplete: () => {},
+// });
 
 const AddressMapper: React.FC<AddressMapperProps> = ({
   softStoryData,
   tsunamiData,
   liquefactionData,
 }) => {
-  const searchParams = useSearchParams();
-  const initialLat = searchParams.get("lat");
-  const initialLon = searchParams.get("lon");
-  const initialAddress = searchParams.get("address");
+  const { coordinates, coordinateKey, address } = useAddressFromSearchParams();
+
+  const setSearchedAddress = useSetAtom(searchedAddressAtom);
+  const setIsSearchComplete = useSetAtom(isSearchCompleteAtom);
 
   // initialize state directly from searchParams or fall back to null
-  const [coordinates, setCoordinates] = useState<number[] | null>(
-    initialLat && initialLon
-      ? [parseFloat(initialLon), parseFloat(initialLat)]
-      : null
-  );
+  // const [coordinates, setCoordinates] = useState<number[] | null>(
+  //   initialLat && initialLon
+  //     ? [parseFloat(initialLon), parseFloat(initialLat)]
+  //     : null
+  // );
+
   // const [searchedAddress, setSearchedAddress] = useState(
   //   initialAddress || null
   // );
@@ -93,20 +102,18 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const [showHazards, setShowHazards] = useState(false);
   const [currentView, setCurrentView] = useState("");
   const toastIdDataLoadFailed = "data-load-failed";
-  const coordinatesRef = useRef<number[] | null>(null);
+  // const coordinatesRef = useRef<number[] | null>(null);
   // const router = useRouter();
 
-  const {
-  setSearchedAddress,
-  setIsSearchComplete,
-} = useContext(AddressSearchContext);
+  //   const {
+  //   setSearchedAddress,
+  //   setIsSearchComplete,
+  // } = useContext(AddressSearchContext);
 
-const { fetchHazardData } = useHazardDataFetcher({
-  setSearchComplete: setIsSearchComplete,
-  setHazardDataLoading,
-});
-
-
+  const { fetchHazardData } = useHazardDataFetcher({
+    setSearchComplete: setIsSearchComplete,
+    setHazardDataLoading,
+  });
 
   const updateHazardData = useCallback(
     async (coords: number[]) => {
@@ -139,39 +146,60 @@ const { fetchHazardData } = useHazardDataFetcher({
   };
 
   useEffect(() => {
-    const lat = searchParams.get("lat");
-    const lon = searchParams.get("lon");
-    const address = searchParams.get("address");
-
-    console.log(lat, "LAT");
-    console.log(lon, "LON");
-    console.log(address, "ADDRESS");
-
-    if (lat && lon && address) {
-      const newCoords = [parseFloat(lon), parseFloat(lat)];
-      const lastCoords = coordinatesRef.current;
-
-      // only update state and fetch data if coordinates have changed
-      if (
-        !lastCoords ||
-        lastCoords[0] !== newCoords[0] ||
-        lastCoords[1] !== newCoords[1]
-      ) {
-        setCoordinates(newCoords);
-        setSearchedAddress(address);
-        setIsSearchComplete(true);
-        coordinatesRef.current = newCoords;
-        updateHazardData(newCoords);
-      }
-    } else if (coordinatesRef.current) {
-      // clear state and coordinatesRef when navigating to a page without location params(ex. navigating back to main page after viewing a result)
-      setCoordinates(null);
-    setSearchedAddress(null);
-    setIsSearchComplete(false);
-    setAddressHazardData({});
-    coordinatesRef.current = null;
+    if (address) {
+      // only set if atom hasn't already been initialized
+      setSearchedAddress((prev) => prev ?? address);
     }
-  }, [searchParams, updateHazardData]);
+  }, [address, setSearchedAddress]);
+
+  useEffect(() => {
+    if (!coordinates || !address) {
+      setSearchedAddress(null);
+      setIsSearchComplete(false);
+      setAddressHazardData({});
+      return;
+    }
+
+    setSearchedAddress(address);
+    setIsSearchComplete(true);
+
+    updateHazardData(coordinates);
+  }, [coordinateKey, address, updateHazardData]);
+
+  // useEffect(() => {
+  //   const lat = searchParams.get("lat");
+  //   const lon = searchParams.get("lon");
+  //   const address = searchParams.get("address");
+
+  //   console.log(lat, "LAT");
+  //   console.log(lon, "LON");
+  //   console.log(address, "ADDRESS");
+
+  //   if (lat && lon && address) {
+  //     const newCoords = [parseFloat(lon), parseFloat(lat)];
+  //     const lastCoords = coordinatesRef.current;
+
+  //     // only update state and fetch data if coordinates have changed
+  //     if (
+  //       !lastCoords ||
+  //       lastCoords[0] !== newCoords[0] ||
+  //       lastCoords[1] !== newCoords[1]
+  //     ) {
+  //       setCoordinates(newCoords);
+  //       setSearchedAddress(address);
+  //       setIsSearchComplete(true);
+  //       coordinatesRef.current = newCoords;
+  //       updateHazardData(newCoords);
+  //     }
+  //   } else if (coordinatesRef.current) {
+  //     // clear state and coordinatesRef when navigating to a page without location params(ex. navigating back to main page after viewing a result)
+  //     setCoordinates(null);
+  //     setSearchedAddress(null);
+  //     setIsSearchComplete(false);
+  //     setAddressHazardData({});
+  //     coordinatesRef.current = null;
+  //   }
+  // }, [searchParams, updateHazardData]);
 
   useEffect(() => {
     const sources = [
@@ -214,9 +242,9 @@ const { fetchHazardData } = useHazardDataFetcher({
   return (
     <>
       {/* <HomeHeader
-        // searchedAddress={searchedAddress}
-        // isSearchComplete={isSearchComplete}
-        // onSearchChange={handleSearchChange}
+        searchedAddress={searchedAddress}
+        isSearchComplete={isSearchComplete}
+        onSearchChange={handleSearchChange}
       /> */}
       {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
       <Box

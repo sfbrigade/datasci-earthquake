@@ -1,12 +1,11 @@
-"use client"
 import { Inter, Manrope } from "next/font/google";
 import { Box, Flex } from "@chakra-ui/react";
 import { Provider } from "@/components/ui/provider";
 import HomeHeader from "./components/home-header";
 import Footer from "./components/footer";
 import { Toaster } from "@/components/ui/toaster";
-import { AddressSearchContext } from "./components/address-mapper";
-import { useState } from "react";
+// import { AddressSearchContext } from "./components/address-mapper";
+// import { useState } from "react";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -21,10 +20,10 @@ const inter = Inter({
 // TODO: commented out because can't export metadata from server component,
 // Either implement ClientProviders (below) or try a state-management library
 
-// export const metadata = {
-//   title: "SafeHome",
-//   description: "Learn about your home's earthquake readiness",
-// };
+export const metadata = {
+  title: "SafeHome",
+  description: "Learn about your home's earthquake readiness",
+};
 
 // Since this is the root layout, all fetch requests in the app
 // that don't set their own cache option will be cached.
@@ -41,21 +40,21 @@ export default function RootLayout({
   // case in point: Chakra's Color Mode / ThemeProvider will cause this warning, which is the reason
   // this flag is toggled on.
 
-  const [searchedAddress, setSearchedAddress] = useState<string | null>(null);
-  const [isSearchComplete, setIsSearchComplete] = useState(false);
+  // const [searchedAddress, setSearchedAddress] = useState<string | null>(null);
+  // const [isSearchComplete, setIsSearchComplete] = useState(false);
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${manrope.className} ${inter.className}`}>
         <Provider>
-          <AddressSearchContext
+          {/* <AddressSearchContext
             value={{
               searchedAddress,
               setSearchedAddress,
               isSearchComplete,
               setIsSearchComplete,
             }}
-          >
+          > */}
             <Flex direction="column" align="center" minH="dvh">
               <HomeHeader />
               <Box flex="1" as="main" width="full">
@@ -64,7 +63,7 @@ export default function RootLayout({
               <Footer />
             </Flex>
             <Toaster />
-          </AddressSearchContext>
+          {/* </AddressSearchContext> */}
         </Provider>
       </body>
     </html>
