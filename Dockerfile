@@ -13,13 +13,15 @@ WORKDIR /app
 
 # Copy package.json, install dependencies, fix ownership
 COPY ./package*.json ./
-RUN npm install && chown -R appuser:appgroup /app
+RUN npm install 
+RUN chown -R appuser:appgroup /app
 
 # Copy the rest of the application 
 COPY . .
 
 # Ensure writable build dirs
-RUN mkdir -p .next && chown -R appuser:appgroup /app
+RUN mkdir -p .next 
+RUN chown -R appuser:appgroup /app
 
 # Switch to the non-privileged user
 USER appuser
