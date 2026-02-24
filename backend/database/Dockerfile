@@ -3,7 +3,7 @@
 # Use the official PostgreSQL image
 FROM postgres:15
 
-RUN echo "what-db"
+
 # Install PostGIS and dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
