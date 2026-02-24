@@ -24,7 +24,7 @@ RUN adduser \
     --no-create-home \
     --uid "${UID}" \
     appuser
-
+RUN echo "what-backend"
 # Install curl and certificates
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl ca-certificates && \
