@@ -125,19 +125,19 @@ jobs:
         uses: actions/cache@v4
         with:
           path: buildx-cache-db
-          key: ${{ runner.os }}-${{ hashFiles('backend/database/Dockerfile') }}-buildx-db-ayo 
+          key: ${{ hashFiles('backend/database/Dockerfile') }}-buildx-db-basket
 
       - name: Cache Docker Backend layers
         uses: actions/cache@v4
         with:
           path: buildx-cache-backend
-          key: ${{ runner.os }}-${{ hashFiles('backend/Dockerfile') }}-buildx-backend-ayo 
+          key: ${{ hashFiles('backend/Dockerfile') }}-${{ hashFiles('backend/pyproject.toml') }}-buildx-backend-basket
 
       - name: Cache Docker Frontend layers
         uses: actions/cache@v4
         with:
           path: buildx-cache-frontend
-          key: ${{ runner.os }}-${{ hashFiles('Dockerfile') }}-buildx-frontend-ayo
+          key: ${{ hashFiles('Dockerfile') }}-${{ hashFiles('package.json') }}-buildx-frontend-basket
 
       - name: Build Docker Containers
         run: docker compose build
