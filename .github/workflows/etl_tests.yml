@@ -87,13 +87,11 @@ jobs:
       - name: Cache Docker layers
         uses: actions/cache@v4
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
+          path: buildx-cache-db
+          key: ${{ runner.os }}-${{ hashFiles('backend/database/Dockerfile') }}-buildx-db
 
       - name: Start DB
-        run: docker compose up -d --wait --wait-timeout 30 db
+        run: docker compose up -d --wait --wait-timeout 20 db
 
       - name: Docker DB Logs 
         run: docker logs my_postgis_db 
