@@ -15,18 +15,11 @@ WORKDIR /app
 COPY ./package*.json ./
 RUN npm install
  
-RUN echo 'listing 1...' && ls -l && pwd 
-RUN chown -R appuser:appgroup /app
-
-RUN echo 'listing 2...' && ls -l && pwd
 # Copy the rest of the application 
 COPY . .
 
 # Ensure writable build dirs
-RUN mkdir -p .next 
-RUN echo 'listing 3...' && ls -l && pwd
-RUN chown -R appuser:appgroup /app
-RUN echo 'listing 4...' && ls -l && pwd
+RUN mkdir -p .next && chown -R appuser:appgroup /app
 
 # Switch to the non-privileged user
 USER appuser
