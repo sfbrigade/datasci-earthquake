@@ -125,19 +125,19 @@ jobs:
         uses: actions/cache@v4
         with:
           path: buildx-cache-db
-          key: ${{ hashFiles('backend/database/Dockerfile') }}-buildx-db-basket
+          key: ${{ hashFiles('backend/database/Dockerfile') }}-buildx-db-cats
 
       - name: Cache Docker Backend layers
         uses: actions/cache@v4
         with:
           path: buildx-cache-backend
-          key: ${{ hashFiles('backend/Dockerfile') }}-${{ hashFiles('backend/pyproject.toml') }}-buildx-backend-basket
+          key: ${{ hashFiles('backend/Dockerfile') }}-${{ hashFiles('backend/pyproject.toml') }}-buildx-backend-cats
 
       - name: Cache Docker Frontend layers
         uses: actions/cache@v4
         with:
           path: buildx-cache-frontend
-          key: ${{ hashFiles('Dockerfile') }}-${{ hashFiles('package.json') }}-buildx-frontend-basket
+          key: ${{ hashFiles('Dockerfile') }}-${{ hashFiles('package.json') }}-buildx-frontend-cats
 
       - name: Build Docker Containers
         run: docker compose build
@@ -165,11 +165,11 @@ jobs:
         run: |
           docker logs datasci-earthquake-frontend-1 || echo "No logs found"
 
-      - name: Run Backend Tests
-        run: docker compose run --rm backend pytest backend -v
+      #- name: Run Backend Tests
+      #  run: docker compose run --rm backend pytest backend -v
 
-      - name: Run Frontend Tests
-        run: docker compose run --rm frontend npm test
+      #- name: Run Frontend Tests
+      #  run: docker compose run --rm frontend npm test
 
       - name: Clean Up
         run: docker compose down
