@@ -13,6 +13,7 @@ on:
 
 jobs:
   eslint:
+    if: ${{ github.repository == 'corny' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,6 +27,7 @@ jobs:
         run: npm run lint
 
   black_lint_and_mypy_type_check:
+    if: ${{ github.repository == 'corny' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -50,6 +52,7 @@ jobs:
         run: mypy --config-file mypy.ini .
 
   nextjs_build_check:
+    if: ${{ github.repository == 'corny' }}
     runs-on: ubuntu-latest
     env:
       ENVIRONMENT: ci

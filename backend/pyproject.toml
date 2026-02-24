@@ -10,6 +10,7 @@ requires-python = "==3.11.4"
 
 
 dependencies = [
+    "seaborn==0.13.2",
     "alembic==1.14.0",
     "annotated-types==0.7.0",
     "anyio==4.4.0",

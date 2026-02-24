@@ -3,6 +3,7 @@
 set -e
 
 # Perform all actions as $POSTGRES_USER
+# o
 export PGUSER="$POSTGRES_USER"
 
 POSTGIS_VERSION="${POSTGIS_VERSION%%+*}"
