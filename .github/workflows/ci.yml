@@ -127,10 +127,10 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Build Docker Containers
-        run: docker compose build
+        run: docker compose -f compose.yaml -f compose.ci.yaml build
 
       - name: Start Services
-        run: docker compose up -d --wait --wait-timeout 300
+        run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
 
       - name: Docker Backend Logs 
         if: always()
@@ -153,10 +153,10 @@ jobs:
           docker logs datasci-earthquake-frontend-1 || echo "No logs found"
 
       - name: Run Backend Tests
-        run: docker compose run --rm backend pytest backend -v
+        run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend -v
 
       - name: Run Frontend Tests
-        run: docker compose run --rm frontend npm test
+        run: docker compose -f compose.yaml -f compose.ci.yaml run --rm frontend npm test
 
       - name: Clean Up
-        run: docker compose down
+        run: docker compose -f compose.yaml -f compose.ci.yaml down
