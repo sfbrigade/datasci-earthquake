@@ -61,115 +61,76 @@ jobs:
           fi
 
   eslint:
+    if: needs.changes.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
     needs: changes
     steps:
-      - name: Skip (markdown-only changes)
-        if: needs.changes.outputs.code_changed != 'true'
-        run: echo "Skipping ESLint (markdown-only changes)."
-
       - uses: actions/checkout@v4
-        if: needs.changes.outputs.code_changed == 'true'
-
       - uses: ./.github/actions/setup-node-using-nvmrc
-        if: needs.changes.outputs.code_changed == 'true'
-
       - name: Install Node.js dependencies
-        if: needs.changes.outputs.code_changed == 'true'
         run: npm ci
-
       - name: Run ESLint
-        if: needs.changes.outputs.code_changed == 'true'
         run: npm run lint
 
   black_lint_and_mypy_type_check:
+    if: needs.changes.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
     needs: changes
     steps:
-      - name: Skip (markdown-only changes)
-        if: needs.changes.outputs.code_changed != 'true'
-        run: echo "Skipping Black/MyPy (markdown-only changes)."
-
       - uses: actions/checkout@v4
-        if: needs.changes.outputs.code_changed == 'true'
-
       - name: Set up Python
-        if: needs.changes.outputs.code_changed == 'true'
         uses: actions/setup-python@v4
         with:
           python-version: "3.x"
-
       - name: Install uv
-        if: needs.changes.outputs.code_changed == 'true'
         run: curl -sSL https://astral.sh/uv/install.sh | sh
-
       - name: Install dependencies with uv
-        if: needs.changes.outputs.code_changed == 'true'
         run: |
           uv pip install --system black==24.10.0 mypy
           uv pip install --system fastapi pydantic pydantic-settings sqlalchemy GeoAlchemy2 pytest
-
       - name: Check code formatting with black
-        if: needs.changes.outputs.code_changed == 'true'
         run: black --check .
-
       - name: Type check with mypy
-        if: needs.changes.outputs.code_changed == 'true'
         run: mypy --config-file mypy.ini .
 
   nextjs_build_check:
+    if: needs.changes.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
     needs: changes
     env:
       ENVIRONMENT: ci
     steps:
-      - name: Skip (markdown-only changes)
-        if: needs.changes.outputs.code_changed != 'true'
-        run: echo "Skipping Next.js build (markdown-only changes)."
-
       - uses: actions/checkout@v4
-        if: needs.changes.outputs.code_changed == 'true'
-
       - uses: ./.github/actions/setup-node-using-nvmrc
-        if: needs.changes.outputs.code_changed == 'true'
-
       - name: Install dependencies
-        if: needs.changes.outputs.code_changed == 'true'
         run: npm ci
-
       - name: Check Next.js production build
-        if: needs.changes.outputs.code_changed == 'true'
         run: npm run build
 
   docker_build_test:
+    if: needs.changes.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
     needs: changes
     steps:
-      - name: Skip (markdown-only changes)
-        if: needs.changes.outputs.code_changed != 'true'
-        run: echo "Skipping Docker/test jobs (markdown-only changes)."
-
       - name: Checkout Code
-        if: needs.changes.outputs.code_changed == 'true'
         uses: actions/checkout@v4
 
       - name: Set default fork status
-        if: needs.changes.outputs.code_changed == 'true'
         run: echo "is_fork=false" >> $GITHUB_ENV
 
       - name: Check if pull request from fork
-        if: needs.changes.outputs.code_changed == 'true' && github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request'
         run: |
           if [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]]; then
             echo "is_fork=true" >> $GITHUB_ENV
           fi
 
       - name: Use .env.example for forks
-        if: needs.changes.outputs.code_changed == 'true' && env.is_fork == 'true'
+        if: env.is_fork == 'true'
         run: cp .env.example .env
 
       - name: Get Run ID of Most Recent Successful Run
-        if: needs.changes.outputs.code_changed == 'true' && env.is_fork != 'true'
+        if: env.is_fork != 'true'
         run: |
           response=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/sfbrigade/datasci-earthquake/actions/workflows/env_vars.yml/runs?status=completed&conclusion=success")
@@ -178,7 +139,7 @@ jobs:
           echo "run_id=$run_id" >> $GITHUB_ENV
 
       - name: Download .env Artifact
-        if: needs.changes.outputs.code_changed == 'true' && env.is_fork != 'true'
+        if: env.is_fork != 'true'
         uses: actions/download-artifact@v4
         with:
           name: encrypted-env-file
@@ -187,13 +148,12 @@ jobs:
           run-id: ${{ env.run_id }}
 
       - name: Decrypt .env File
-        if: needs.changes.outputs.code_changed == 'true' && env.is_fork != 'true'
+        if: env.is_fork != 'true'
         run: |
           openssl aes-256-cbc -d -salt -pbkdf2 -k "${{ secrets.ARTIFACT_PASS }}" -in .env.enc -out .env
           echo "Decryption complete"
 
       - name: Ensure .env exists
-        if: needs.changes.outputs.code_changed == 'true'
         run: |
           if [ ! -f .env ]; then
             echo ".env not found. Falling back to .env.example"
@@ -201,11 +161,9 @@ jobs:
           fi
 
       - name: Set up Docker Buildx
-        if: needs.changes.outputs.code_changed == 'true'
         uses: docker/setup-buildx-action@v3
 
       - name: Cache Docker layers
-        if: needs.changes.outputs.code_changed == 'true'
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
@@ -214,37 +172,32 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Build Docker Containers
-        if: needs.changes.outputs.code_changed == 'true'
         run: docker compose build
 
       - name: Start Services
-        if: needs.changes.outputs.code_changed == 'true'
         run: docker compose up -d --wait --wait-timeout 300
 
       - name: Docker Backend Logs
-        if: always() && needs.changes.outputs.code_changed == 'true'
+        if: always()
         run: docker logs datasci-earthquake-backend-1 || echo "No logs found"
 
       - name: Docker DB Logs
-        if: always() && needs.changes.outputs.code_changed == 'true'
+        if: always()
         run: docker logs my_postgis_db || echo "No logs found"
 
       - name: Docker DB Test (unit tests) Logs
-        if: always() && needs.changes.outputs.code_changed == 'true'
+        if: always()
         run: docker logs my_postgis_db_test || echo "No logs found"
 
       - name: Docker Frontend Logs
-        if: always() && needs.changes.outputs.code_changed == 'true'
+        if: always()
         run: docker logs datasci-earthquake-frontend-1 || echo "No logs found"
 
       - name: Run Backend Tests
-        if: needs.changes.outputs.code_changed == 'true'
         run: docker compose run --rm backend pytest backend -v
 
       - name: Run Frontend Tests
-        if: needs.changes.outputs.code_changed == 'true'
         run: docker compose run --rm frontend npm test
 
       - name: Clean Up
-        if: needs.changes.outputs.code_changed == 'true'
         run: docker compose down
