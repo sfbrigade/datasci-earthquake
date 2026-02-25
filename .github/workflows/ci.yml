@@ -125,19 +125,19 @@ jobs:
         uses: actions/cache@v4
         with:
           path: buildx-cache-db
-          key: ${{ hashFiles('backend/database/Dockerfile') }}-buildx-db-cats
+          key: ${{ hashFiles('backend/database/Dockerfile') }}-buildx-db-dinwiddie
 
       - name: Cache Docker Backend layers
         uses: actions/cache@v4
         with:
           path: buildx-cache-backend
-          key: ${{ hashFiles('backend/Dockerfile') }}-${{ hashFiles('backend/pyproject.toml') }}-buildx-backend-cats
+          key: ${{ hashFiles('backend/Dockerfile') }}-${{ hashFiles('backend/pyproject.toml') }}-buildx-backend-dinwiddie
 
       - name: Cache Docker Frontend layers
         uses: actions/cache@v4
         with:
           path: buildx-cache-frontend
-          key: ${{ hashFiles('Dockerfile') }}-${{ hashFiles('package.json') }}-buildx-frontend-cats
+          key: ${{ hashFiles('Dockerfile') }}-${{ hashFiles('package.json') }}-buildx-frontend-dinwiddie
 
       - name: Build Docker Containers
         run: docker compose build
