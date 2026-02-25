@@ -198,15 +198,9 @@ backend\.venv\Scripts\activate
 
 <!-- TODO: combine all frontend setup into one section and differentiate between environment differences in steps instead -->
 
-1. Follow Step 1 of [Starting the app in the front-end focused section](#starting-the-app-front-end-focused) and then resume Step 2 back here
+1. # Follow Steps 1 to 2 from [Starting the app in the front-end focused section](#starting-the-app-front-end-focused) and then resume Step 2 back here
 
-2. Install the front end dependencies:
-
-   ```shell
-   npm install
-   ```
-
-3. Run the development server:
+2. Run the development server:
 
    ```shell
    npm run next-dev
@@ -244,9 +238,15 @@ After going through the steps below for either front end-focused or back end-foc
 
 #### Starting the app (front end-focused)
 
-For front end-focused development, do the following:
+For front end-focused development, first `cd apps/web`, run `npm install`, and then you can run `npm run dev-front`, which will:
 
-1. Set node version, defined in `.nvmrc`, using Node Version Manager (nvm):
+1. cd into webapp folder:
+
+```shell
+cd apps/web
+```
+
+2. Set node version, defined in `.nvmrc`, using Node Version Manager (nvm):
 
    ```shell
    nvm use
@@ -257,13 +257,13 @@ For front end-focused development, do the following:
      - for zsh, this is likely in `~/.zshrc`
      - for bash, this is likely in `~/.bash_profile`, `~/.bashrc`, or `~/.profile`
 
-2. Install the front end dependencies:
+3. Install the front end dependencies:
 
    ```shell
    npm install
    ```
 
-3. Run the development server:
+4. Run the development server:
 
    ```shell
    npm run dev-front
