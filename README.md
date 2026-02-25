@@ -283,6 +283,18 @@ For UI components, styling, and theming, most initial setup is done via Chakra U
 
 While doing development, note that style prop autocompletion relies on theme typings generated from [styles/theme.ts], which is where SafeHome's Chakra theme overrides are defined. The overrides are merged with Chakra's default theme to give us the final SafeHome theme. To see a full list of theme values and tokens, check your browser console.
 
+#### Upgrading Node
+
+To upgrade required version of Node, you will need to make edits in the following places as of this writing:
+
+- `.nvmrc`
+  - this is used by `.github/actions/setup-node-using-nvmrc/action.yml` which is, in turn, used by the GitHub workflows in `.github/workflows`
+- `package.json` (and the resulting `package-lock.json`)
+  - `engines`
+  - `dependencies`: Change the version for `@types/node` so that its major version matches the version of Node you are upgrading to; minor version and patch version seem to not track exactly
+- `Dockerfile`
+  - `FROM node:{NODE_MAJOR_VERSION}-alpine` (e.g., `FROM node:24-alpine`)
+
 ##### CHAKRA TIP: ACCESSING THEME VALUES
 
 It's not obvious how to see a theme's tokens and values for reference during development. To make this easier and improve the experience, there are two ways you can currently view the theme:
@@ -517,28 +529,41 @@ The former command generates a migration script in `backend/alembic/versions`, a
 
 ### General
 
-Developers should only branch from `develop`, pull updates to `develop`, and ensure their work is merged into `develop` via Pull Requests. `main` is the safe production branch.
+Developers should only branch from `develop`, pull updates from `develop`, and ensure their work is merged into `develop` via Pull Requests. `main` is the safe production branch. Note that both of these "core" branches have [production deployments](#production-deployments) associated with them.
 
 ### Pull Requests
 
 When opening a pull request, please:
 
 - aim the pull request at the `develop` branch rather than `main`
-- add reviewers
-- use draft/WIP if it turns out to be not ready for review
-- link the relevant issue so it is automatically closed when the PR is merged
-- run `npm run build` locally if you have changed any frontend code or dependencies to catch potential build errors.
+- optionally, add "Closes `<issue_number>`" in the pull request description to automatically close that issue when the PR is merged
+- if you have changed any frontend code or dependencies, run `npm run build` locally to catch potential build errors rather than waiting for CI
+- if your changes may affect app behavior, then please test your PR's [preview deployment](#preview-deployments); optionally, you may also want to test the subsequent [production deployment for the `develop` branch](#developsafehomereport) to be thorough, although this is not needed in most cases
+- request reviewers
 
-Ideally, we maintain a readable, clean, and linear commit history. To that end, when merging a pull request, please use `Squash and Merge`¹.
+> [!TIP]
+> Convert your pull requests to draft status as needed. You can signal to potential reviewers to pause or limit their activity by creating your pull request as a draft (WIP) or converting it to a draft when called for. This can be useful if it turns out your pull request isn't actually ready for review. Examples of relevant scenarios include:
+>
+> - failed checks
+> - a blocking bug that will take extra time to fix
+> - you would like eyes on your PR even though it is WIP
+>   You can later mark your PR as "Ready for review"
+
+#### Keep your commit history clean
+
+Ideally, we maintain a readable, clean, and linear commit history for easier debugging
+and exploration. To that end, when merging a pull request, please use `Squash and Merge`¹.
 
 > ¹ you can optionally use `Rebase and Merge` _if and only if_ the following conditions are met on your branch:
 >
 > - commits are atomic, no WIP
-> - there is more than one commit
-> - ideally, there are no more than 3 commits
+> - there is more than one commit and none of them are extraneous
 > - commit messages are useful
 >
-> NOTE: An interactive rebase (e.g., `git rebase -i`) can help you rewrite your branch's _local_ history to meet the criteria above
+> [!NOTE]
+> An interactive rebase (e.g., `git rebase -i`) can help you rewrite your branch's _local_ history to meet the criteria above; note that you will then have to force push over your original branch on the remote
+
+<!-- TODO: content above is tailored for authors; consider adding a section for reviewers too -->
 
 ### Creating Issues
 
@@ -546,9 +571,52 @@ New issues can be created in the Issues tab using the `New issue` button.
 
 When creating an issue, please:
 
-- use the correct template(default, feature request, bug, etc...)
+- use the correct template (default, feature request, bug, etc...)
 - add the `SafeHome Project` as a project to the issue. If this is your first issue you will likely need to request access to be added to the project and have write access. You can ask in Slack.
-- add the relevant label(front end, back end, etc...) so it can easily be filtered by team
+- add the relevant label (front end, back end, etc...) so it can easily be filtered by team
+
+## Deploying the app
+
+### Preview deployments
+
+Preview deployments are temporary sites deployed for pre-merge testing. A preview deployment is based on the source branch within a pull request.
+
+Upon creation of a pull request, the Vercel Github integration will automatically attempt a preview deployment of the source branch. If the preview deployment succeeds, a "View deployment" button will appear directly in the comments and also under "Show environments" at the bottom of the PR's page. Interacting with this button will navigate you to the unique URL for the preview deployment.
+
+### Production deployments
+
+Production deployments are persistent sites deployed when a core branch is updated. The designated "core" branches are `develop` and `main`.
+
+Once a core branch is updated (due to a merge or otherwise), the Vercel Github integration will automatically attempt a production deployment of it. If the production deployment succeeds, its status in Vercel will be updated accordingly and you can navigate to its URL:
+
+- `develop` --> `https://develop.safehome.report` (dev testing)
+- `main` --> `https://safehome.report` (user-facing)
+
+Note that these sites also have their own dedicated Vercel URLs in addition to the dedicated domain names above.
+
+#### develop.safehome.report
+
+This production deployment is primarily used for testing integrated code.
+
+To update https://develop.safehome.report, the preferred method is to merge a PR into the `develop` branch to kick off its production deployment. Modifying `develop` directly is not advised and may be blocked as a protected branch.
+
+#### safehome.report
+
+This production deployment is the actual release to the end users.
+
+To update https://safehome.report, the preferred method is to merge a PR from `develop` into `main`. Do not modify `main` directly. It is also a protected branch.
+
+Prior to merging this PR, the `develop` branch is temporarily frozen by an admin while `https://develop.safehome.report` is being tested¹. As soon as testing is done, the PR is approved and the code freeze is lifted.
+
+> ¹ In the future, we may add dedicated release branches into this process to avoid or mitigate code freezes
+
+<!-- TODO: look into adding other deployments like test, prerelease, staging -->
+
+## Releasing the app
+
+To release the app to end users, a pull request with `main` as the target branch is opened. Merging happens after thorough testing by both engineers and non-engineers at which point the app is deployed to https://safehome.report.
+
+For more technical details, refer to the [production deployment notes above](#safehomereport).
 
 # Learn More
 
