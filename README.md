@@ -4,7 +4,7 @@
 
 This is a hybrid Next.js + Python app that uses Next.js as the frontend and FastAPI as the API backend. It also uses PostgreSQL as the database.
 
-# Getting Started
+# Getting Started Hello test
 
 You can work on this app entirely [locally](#local-development), entirely [using Docker](#development-with-docker), or--if you prefer to focus on front end or back end--a [combination of the two](#hybrid-development).
 
