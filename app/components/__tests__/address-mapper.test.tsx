@@ -56,7 +56,7 @@ jest.mock("@/components/ui/toaster", () => ({
   },
 }));
 
-import * as HomeHeaderModule from "../home-header";
+import * as HomeHeaderModule from "../header";
 const MockedHomeHeader = jest.mocked(HomeHeaderModule).default;
 import AddressMapper from "../address-mapper";
 

@@ -22,7 +22,7 @@ import Map from "./map";
 import ReportHazards from "./report-hazards";
 import MobileReportHazards from "./mobile-report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
-import HomeHeader from "./home-header";
+import HomeHeader from "./header";
 import { useSearchParams } from "next/navigation";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 import { useAddressFromSearchParams } from "@/hooks/useAddressFromSearchParams";
