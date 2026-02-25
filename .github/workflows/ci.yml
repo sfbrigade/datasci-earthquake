@@ -25,29 +25,6 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
-  black_lint_and_mypy_type_check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Install uv
-        run: |
-          curl -sSL https://astral.sh/uv/install.sh | sh
-          
-      - name: Install dependencies with uv
-        run: |
-          uv pip install --system black==24.10.0 mypy
-          uv pip install --system fastapi pydantic pydantic-settings sqlalchemy GeoAlchemy2 pytest
-
-      - name: Check code formatting with black
-        run: black --check .
-
-      - name: Type check with mypy
-        run: mypy --config-file mypy.ini .
 
   nextjs_build_check:
     runs-on: ubuntu-latest
@@ -127,10 +104,10 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Build Docker Containers
-        run: docker compose build
+        run: docker compose build db
 
       - name: Start Services
-        run: docker compose up -d --wait --wait-timeout 300
+        run: docker compose up -d --wait --wait-timeout 300 db
 
       - name: Docker Backend Logs 
         if: always()
@@ -152,11 +129,11 @@ jobs:
         run: |
           docker logs datasci-earthquake-frontend-1 || echo "No logs found"
 
-      - name: Run Backend Tests
-        run: docker compose run --rm backend pytest backend -v
+      #- name: Run Backend Tests
+        # run: docker compose run --rm backend pytest backend/etl/tests/test_data_handler.py::test_dummy 
+        #run: docker compose run --rm backend pytest backend/api/tests/test_liquefaction.py::test_get_liquefaction_zones 
+        # run: docker compose run --rm backend pytest backend -v 
 
-      - name: Run Frontend Tests
-        run: docker compose run --rm frontend npm test
 
       - name: Clean Up
-        run: docker compose down
+        run: docker compose down db

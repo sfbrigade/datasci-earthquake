@@ -11,7 +11,7 @@ import logging
 from unittest.mock import call, patch, MagicMock
 from backend.etl.retry import LoggingRetry
 from backend.etl.request_handler import RequestHandler
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker, scoped_session
 from backend.api.config import settings
 from sqlalchemy.dialects.postgresql import Insert
@@ -84,6 +84,12 @@ class TimestampDataHandler(DataHandler):
 @pytest.fixture(scope="function")
 def test_db():
     engine = create_engine(_get_database_url())
+
+    insp = inspect(engine)
+
+    print('-----------------')
+    print(insp.get_table_names())
+    print('-----------------')
     connection = engine.connect()
 
     # We own this code, so we can create our tables!
@@ -91,6 +97,24 @@ def test_db():
     Base.metadata.create_all(engine)
 
     transaction = connection.begin()
+
+    print('-----landslide oh------------')
+    res = connection.execute(text('select identifier from landslide_zones'))
+    print(res.rowcount)
+
+    print('-----liq oh------------')
+    res = connection.execute(text('select identifier from liquefaction_zones'))
+    print(res.rowcount)
+
+    print('-----ss oh------------')
+    res = connection.execute(text('select identifier from soft_story_properties'))
+    print(res.rowcount)
+
+    print('-----tsu oh------------')
+    res = connection.execute(text('select identifier from tsunami_zones'))
+    print(res.rowcount)
+    print('-----------------')
+
     Session = scoped_session(sessionmaker(bind=connection))
     session = Session()
     session.begin_nested()
@@ -440,6 +464,13 @@ def test_get_last_export_time_from_db(test_db):
     result = data_handler._get_last_export_time_from_db()
     assert result == now
 
+
+def test_dummy(test_db):
+    """Test the last export time lookup"""
+    data_handler = DummyDataHandler(url="", table=DummyModel)
+    data_handler.db_getter = create_test_db_context_manager(test_db)
+
+    assert False
 
 def test_get_last_export_time_from_db_not_found(test_db):
     """Test the last export time lookup when the data is unavailable. The method should return the earliest date possible"""

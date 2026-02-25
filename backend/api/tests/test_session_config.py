@@ -1,4 +1,5 @@
 import pytest
+import logging
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from backend.api.config import settings
@@ -6,11 +7,16 @@ from fastapi.testclient import TestClient
 from api.index import app
 from backend.database.session import get_db
 
+myLog = logging.getLogger('interstellar')
 
 # Set up a test database engine
 @pytest.fixture(scope="session")
 def test_engine():
     engine = create_engine(settings.database_url_sqlalchemy_test)
+    #if (settings.database_url_sqlalchemy_test.index('@db_test:')):
+    #    myLog.warning('using db_test......======>')
+    #if (settings.database_url_sqlalchemy_test.index('@db:')):
+    #    myLog.warning('using db......======>')
     yield engine
 
 

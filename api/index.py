@@ -9,6 +9,8 @@ from backend.api.routers import (
 )
 from backend.api.config import settings
 import sentry_sdk
+import os
+from contextlib import asynccontextmanager
 
 
 # Initialize Sentry
@@ -19,8 +21,16 @@ sentry_sdk.init(
     send_default_pii=False,
 )
 
+@asynccontextmanager
+async def mystuff(app: FastAPI):
+  print(f'pre_dino: my environment = {os.getenv("ENVIRONMENT", "ITAINTHERE")}.........')
+  print(f'pre_dino: my stuff = {os.getenv("POSTGIS_VERSION", "ITAINTHERE")}.........')
+  print(f'pre_dino: my stuff other = {os.getenv("NODE_ENV", "ITAINTHERE")}.........')
+  yield
+  print(f'post_dino: my environment = {os.getenv("ENVIRONMENT", "ITAINTHERE")}.........')
+
 ### Create FastAPI instance with custom docs and openapi url
-app = FastAPI(docs_url="/docs", openapi_url="/openapi.json", redirect_slashes=False)
+app = FastAPI(docs_url="/docs", openapi_url="/openapi.json", redirect_slashes=False, lifespan=mystuff)
 
 app.include_router(liquefaction_api.router)
 app.include_router(tsunami_api.router)
