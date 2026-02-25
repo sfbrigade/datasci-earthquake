@@ -11,7 +11,7 @@ from backend.api.config import settings
 import sentry_sdk
 
 
-# Initialize Sentry
+# Initialize Sentry Test hEllo
 sentry_sdk.init(
     dsn=settings.sentry_dsn,
     # Add request headers and IP for users,
