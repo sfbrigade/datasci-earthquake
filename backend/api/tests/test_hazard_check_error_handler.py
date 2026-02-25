@@ -23,10 +23,15 @@ def client(app):
     return TestClient(app)
 
 
+@patch("sentry_sdk.set_tag")
 @patch("sentry_sdk.capture_exception")
 @patch("sentry_sdk.flush")
 def test_hazard_check_error_handler(
-    mock_flush: MagicMock, mock_capture_exception: MagicMock, client: TestClient, caplog
+    mock_flush: MagicMock,
+    mock_capture_exception: MagicMock,
+    mock_set_tag: MagicMock,
+    client: TestClient,
+    caplog,
 ):
     """
     GIVEN a FastAPI application with a HazardCheckError exception handler
@@ -38,16 +43,21 @@ def test_hazard_check_error_handler(
 
     # Verify that the correct status code and detail are returned
     assert response.status_code == 500
-    assert response.json() == {
-        "detail": "An unexpected error occurred while checking test_zone status."
-    }
+    response_json = response.json()
+    assert (
+        response_json["detail"]
+        == "An unexpected error occurred while checking test_zone status."
+    )
+    assert "error_id" in response_json
 
     # Verify that the error was logged
     assert (
         "Error checking test_zone status for coordinates: lon=1.23, lat=4.56"
         in caplog.text
     )
+    assert f"Error ID: {response_json['error_id']}" in caplog.text
 
-    # Verify that Sentry's capture_exception and flush were called
+    # Verify that Sentry's set_tag, capture_exception and flush were called
+    mock_set_tag.assert_called_once_with("error_id", response_json["error_id"])
     mock_capture_exception.assert_called_once()
     mock_flush.assert_called_once_with(timeout=2.0)

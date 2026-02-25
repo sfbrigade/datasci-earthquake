@@ -1,3 +1,4 @@
+from __future__ import annotations
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,6 +11,7 @@ from backend.api.routers import (
 from backend.api.config import settings
 import sentry_sdk
 import logging
+import uuid
 from backend.api.exceptions import HazardCheckError
 
 
@@ -45,16 +47,19 @@ app.add_middleware(
 
 @app.exception_handler(HazardCheckError)
 async def hazard_check_error_handler(request: Request, exc: HazardCheckError):
+    error_id = exc.error_id
     logging.error(
-        f"Error checking {exc.zone} status for coordinates: lon={exc.lon}, lat={exc.lat}",
+        f"Error ID: {error_id} - Error checking {exc.zone} status for coordinates: lon={exc.lon}, lat={exc.lat}",
         exc_info=True,
     )
+    sentry_sdk.set_tag("error_id", error_id)
     sentry_sdk.capture_exception(exc)
     sentry_sdk.flush(timeout=2.0)
     return JSONResponse(
         status_code=500,
         content={
-            "detail": f"An unexpected error occurred while checking {exc.zone} status."
+            "detail": f"An unexpected error occurred while checking {exc.zone} status.",
+            "error_id": error_id,
         },
     )
 
@@ -62,9 +67,12 @@ async def hazard_check_error_handler(request: Request, exc: HazardCheckError):
 # Global exception handler (ensures flush before serverless exit)
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
+    error_id = str(uuid.uuid4())
+    logging.error(f"Error ID: {error_id} - Internal server error", exc_info=True)
+    sentry_sdk.set_tag("error_id", error_id)
     sentry_sdk.capture_exception(exc)
     sentry_sdk.flush(timeout=2.0)
     return JSONResponse(
         status_code=500,
-        content={"detail": "Internal server error"},
+        content={"detail": "Internal server error", "error_id": error_id},
     )
