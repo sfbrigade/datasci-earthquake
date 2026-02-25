@@ -2,18 +2,13 @@ name: CI Pipeline
 
 on:
   push:
-    branches:
-      - develop
-      - main
   pull_request:
     types: [opened, synchronize, reopened]
-    branches:
-      - develop
-      - main
 
 jobs:
   eslint:
     runs-on: ubuntu-latest
+    if: &on_condition github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'develop' || startsWith( github.ref_name, 'ci/')) || github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
 
@@ -27,6 +22,7 @@ jobs:
 
   black_lint_and_mypy_type_check:
     runs-on: ubuntu-latest
+    if: *on_condition
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -51,6 +47,7 @@ jobs:
 
   nextjs_build_check:
     runs-on: ubuntu-latest
+    if: *on_condition
     env:
       ENVIRONMENT: ci
     steps:
@@ -63,6 +60,7 @@ jobs:
 
   docker_build_test:
     runs-on: ubuntu-latest
+    if: *on_condition
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
