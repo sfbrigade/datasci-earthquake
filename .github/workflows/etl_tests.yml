@@ -93,7 +93,7 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Start DB
-        run: docker compose up -d --wait --wait-timeout 30 db
+        run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 30 db
 
       - name: Docker DB Logs 
         run: docker logs my_postgis_db 
@@ -102,4 +102,4 @@ jobs:
         run: echo 'Coming soon'
 
       - name: Clean Up
-        run: docker compose down db
+        run: docker compose -f compose.yaml -f compose.ci.yaml down db
