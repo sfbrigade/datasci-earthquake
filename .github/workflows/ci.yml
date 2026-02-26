@@ -16,7 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       code_changed: ${{ steps.detect.outputs.code_changed }}
-      docs_only: ${{ steps.detect.outputs.docs_only }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,7 +44,6 @@ jobs:
 
           if [[ -z "$CHANGED_FILES" ]]; then
             # fallback: run full CI if no diff detected
-            echo "docs_only=false" >> "$GITHUB_OUTPUT"
             echo "code_changed=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -53,10 +51,8 @@ jobs:
           NON_MD_FILES="$(printf "%s\n" "$CHANGED_FILES" | grep -Ev '(^$|.*\.mdx?$)' || true)"
 
           if [[ -z "$NON_MD_FILES" ]]; then
-            echo "docs_only=true" >> "$GITHUB_OUTPUT"
             echo "code_changed=false" >> "$GITHUB_OUTPUT"
           else
-            echo "docs_only=false" >> "$GITHUB_OUTPUT"
             echo "code_changed=true" >> "$GITHUB_OUTPUT"
           fi
 
