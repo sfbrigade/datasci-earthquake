@@ -196,31 +196,23 @@ backend\.venv\Scripts\activate
 
 #### Frontend Setup
 
-1. Set nvm version:
+<!-- TODO: combine all frontend setup into one section and differentiate between environment differences in steps instead -->
 
-   ```shell
-   nvm use 18
-   ```
+1. Follow Step 1 of [Starting the app in the front-end focused section](#starting-the-app-front-end-focused) and then resume Step 2 back here
 
 2. Install the front end dependencies:
 
    ```shell
    npm install
-   # or
-   yarn
-   # or
-   pnpm install
    ```
 
 3. Run the development server:
 
    ```shell
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
+   npm run next-dev
    ```
+
+   Alternatively, run `npm run dev` if you want to automatically start up the API server as well (runs both `npm run dev` and `npm run fastapi-dev`)
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
@@ -250,14 +242,37 @@ After going through the steps below for either front end-focused or back end-foc
 - **Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).
 - **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
 
-#### Starting the app
+#### Starting the app (front end-focused)
 
-For front end-focused development, first run `npm install`, and then you can run `npm run dev-front`, which will:
+For front end-focused development, do the following:
 
-- build and restart your backend (and database) Docker containers
-- install dependencies
-- start up your Next.js development server locally (on port 3000 by default)
-- [start up Storybook](#starting-storybook-component-workshop) locally (on port 6006 in Chrome by default)
+1. Set node version, defined in `.nvmrc`, using Node Version Manager (nvm):
+
+   ```shell
+   nvm use
+   ```
+
+   - install `nvm` if you haven't yet; it is a useful tool for ensuring you're switching to a compatible version of Node when working on different projects
+   - if you want to avoid manually running `nvm use`, it's recommended that you do the following so you can skip this step moving forward: Add `nvm use` into your shell's configuration file right after the lines added by nvm itself; this will _automatically_ switch you to the Node version defined in the project folder's `.nvmrc` upon shell initialization. The correct configuration file will contain the line `export NVM_DIR="$HOME/.nvm"`. Make sure to add the line after all of existing nvm config lines.
+     - for zsh, this is likely in `~/.zshrc`
+     - for bash, this is likely in `~/.bash_profile`, `~/.bashrc`, or `~/.profile`
+
+2. Install the front end dependencies:
+
+   ```shell
+   npm install
+   ```
+
+3. Run the development server:
+
+   ```shell
+   npm run dev-front
+   ```
+
+   This command will:
+   - build and restart your backend (and database) Docker containers
+   - start up your Next.js development server locally (on port 3000 by default, so visit http://localhost:3000 in your browser)
+   - [start up Storybook](#starting-storybook-component-workshop) locally (on port 6006, which will open http://localhost:6006 in your default browser by default)
 
 If you need to rebuild the containers, run `npm run docker-back`.
 
@@ -399,21 +414,14 @@ px={{ base: "6", md: "7", lg: "8", xl: "9" }}
 
 #### Troubleshooting front end
 
-##### ⚠️ Please do NOT delete `package-lock.json`
+##### ⚠️ Please do NOT delete `package-lock.json` or attempt to resolve merge conflicts with it yourself
 
-The `package-lock.json` file plays a crucial role in ensuring that the exact versions of dependencies installed in `node_modules` remain consistent across different environments.
+> [!WARNING]
+> In the event of merge conflicts involving `package-lock.json`, please **do not manually fix or delete the file**. Instead, run `npm install` to automatically resolve and repair the lock file.
 
-Deleting this file can lead to unintended side effects, especially when both `package-lock.json` and the `node_modules` folder are removed and then `npm install` is run. In such cases, a new `package-lock.json` will be generated based solely on `package.json`, which might diverge significantly from the committed lock file and cause unexpected behavior or bugs.
+Do not delete or edit this file directly as it contains crucial information about front end dependencies.
 
-In the event of merge conflicts involving `package-lock.json`, please **do not manually fix or delete the file**. Instead, run `npm install` to automatically resolve and repair the lock file.
-
-If you are experimenting locally, you may delete `package-lock.json`, but **make sure not to commit the regenerated file to the repository** to avoid affecting others.
-
-Because `package-lock.json` changes are sometimes overlooked during code reviews, it’s important to pay close attention and avoid accidentally committing problematic versions.
-
-If you face any issues related to `package-lock.json`, please raise them with the team before making changes.
-
-Thank you for helping keep the project stable!
+During code reviews, it’s important to pay close attention and avoid accidentally committing problematic versions because `package-lock.json` changes are sometimes overlooked.
 
 ##### Suspense boundary missing around `useSearchParams()`, causing entire page to deopt into client-side rendering (CSR)
 
@@ -423,7 +431,8 @@ You may run into the following NextJS error when you run `npm run build`[^1]:
 useSearchParams() should be wrapped in a suspense boundary at page "/<PAGE_NAME>". Read more: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
 ```
 
-> [!INFORMATION] > `<PAGE_NAME>` refers to a `page.tsx` file in the app, either the root page at `app/page.tsx` or a non-root page at, for example, `app/<PAGE_NAME>/page.tsx`.
+> [!INFORMATION]
+> `<PAGE_NAME>` refers to a `page.tsx` file in the app, either the root page at `app/page.tsx` or a non-root page at, for example, `app/<PAGE_NAME>/page.tsx`.
 
 The fix is to wrap any component that references `useSearchParams()` with React's `<Suspense>`. Read further to understand why.
 
@@ -529,28 +538,41 @@ The former command generates a migration script in `backend/alembic/versions`, a
 
 ### General
 
-Developers should only branch from `develop`, pull updates to `develop`, and ensure their work is merged into `develop` via Pull Requests. `main` is the safe production branch.
+Developers should only branch from `develop`, pull updates from `develop`, and ensure their work is merged into `develop` via Pull Requests. `main` is the safe production branch. Note that both of these "core" branches have [production deployments](#production-deployments) associated with them.
 
 ### Pull Requests
 
 When opening a pull request, please:
 
 - aim the pull request at the `develop` branch rather than `main`
-- add reviewers
-- use draft/WIP if it turns out to be not ready for review
-- link the relevant issue so it is automatically closed when the PR is merged
-- run `npm run build` locally if you have changed any frontend code or dependencies to catch potential build errors.
+- optionally, add "Closes `<issue_number>`" in the pull request description to automatically close that issue when the PR is merged
+- if you have changed any frontend code or dependencies, run `npm run build` locally to catch potential build errors rather than waiting for CI
+- if your changes may affect app behavior, then please test your PR's [preview deployment](#preview-deployments); optionally, you may also want to test the subsequent [production deployment for the `develop` branch](#developsafehomereport) to be thorough, although this is not needed in most cases
+- request reviewers
 
-Ideally, we maintain a readable, clean, and linear commit history. To that end, when merging a pull request, please use `Squash and Merge`¹.
+> [!TIP]
+> Convert your pull requests to draft status as needed. You can signal to potential reviewers to pause or limit their activity by creating your pull request as a draft (WIP) or converting it to a draft when called for. This can be useful if it turns out your pull request isn't actually ready for review. Examples of relevant scenarios include:
+>
+> - failed checks
+> - a blocking bug that will take extra time to fix
+> - you would like eyes on your PR even though it is WIP
+>   You can later mark your PR as "Ready for review"
+
+#### Keep your commit history clean
+
+Ideally, we maintain a readable, clean, and linear commit history for easier debugging
+and exploration. To that end, when merging a pull request, please use `Squash and Merge`¹.
 
 > ¹ you can optionally use `Rebase and Merge` _if and only if_ the following conditions are met on your branch:
 >
 > - commits are atomic, no WIP
-> - there is more than one commit
-> - ideally, there are no more than 3 commits
+> - there is more than one commit and none of them are extraneous
 > - commit messages are useful
 >
-> NOTE: An interactive rebase (e.g., `git rebase -i`) can help you rewrite your branch's _local_ history to meet the criteria above
+> [!NOTE]
+> An interactive rebase (e.g., `git rebase -i`) can help you rewrite your branch's _local_ history to meet the criteria above; note that you will then have to force push over your original branch on the remote
+
+<!-- TODO: content above is tailored for authors; consider adding a section for reviewers too -->
 
 ### Creating Issues
 
@@ -558,9 +580,52 @@ New issues can be created in the Issues tab using the `New issue` button.
 
 When creating an issue, please:
 
-- use the correct template(default, feature request, bug, etc...)
+- use the correct template (default, feature request, bug, etc...)
 - add the `SafeHome Project` as a project to the issue. If this is your first issue you will likely need to request access to be added to the project and have write access. You can ask in Slack.
-- add the relevant label(front end, back end, etc...) so it can easily be filtered by team
+- add the relevant label (front end, back end, etc...) so it can easily be filtered by team
+
+## Deploying the app
+
+### Preview deployments
+
+Preview deployments are temporary sites deployed for pre-merge testing. A preview deployment is based on the source branch within a pull request.
+
+Upon creation of a pull request, the Vercel Github integration will automatically attempt a preview deployment of the source branch. If the preview deployment succeeds, a "View deployment" button will appear directly in the comments and also under "Show environments" at the bottom of the PR's page. Interacting with this button will navigate you to the unique URL for the preview deployment.
+
+### Production deployments
+
+Production deployments are persistent sites deployed when a core branch is updated. The designated "core" branches are `develop` and `main`.
+
+Once a core branch is updated (due to a merge or otherwise), the Vercel Github integration will automatically attempt a production deployment of it. If the production deployment succeeds, its status in Vercel will be updated accordingly and you can navigate to its URL:
+
+- `develop` --> `https://develop.safehome.report` (dev testing)
+- `main` --> `https://safehome.report` (user-facing)
+
+Note that these sites also have their own dedicated Vercel URLs in addition to the dedicated domain names above.
+
+#### develop.safehome.report
+
+This production deployment is primarily used for testing integrated code.
+
+To update https://develop.safehome.report, the preferred method is to merge a PR into the `develop` branch to kick off its production deployment. Modifying `develop` directly is not advised and may be blocked as a protected branch.
+
+#### safehome.report
+
+This production deployment is the actual release to the end users.
+
+To update https://safehome.report, the preferred method is to merge a PR from `develop` into `main`. Do not modify `main` directly. It is also a protected branch.
+
+Prior to merging this PR, the `develop` branch is temporarily frozen by an admin while `https://develop.safehome.report` is being tested¹. As soon as testing is done, the PR is approved and the code freeze is lifted.
+
+> ¹ In the future, we may add dedicated release branches into this process to avoid or mitigate code freezes
+
+<!-- TODO: look into adding other deployments like test, prerelease, staging -->
+
+## Releasing the app
+
+To release the app to end users, a pull request with `main` as the target branch is opened. Merging happens after thorough testing by both engineers and non-engineers at which point the app is deployed to https://safehome.report.
+
+For more technical details, refer to the [production deployment notes above](#safehomereport).
 
 # Learn More
 
