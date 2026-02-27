@@ -75,6 +75,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   liquefactionData,
 }) => {
   const { coordinates, coordinateKey, address } = useAddressFromSearchParams();
+  console.log("ADDRESS", address);
 
   const setSearchedAddress = useSetAtom(searchedAddressAtom);
   const setIsSearchComplete = useSetAtom(isSearchCompleteAtom);
@@ -145,12 +146,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     setCurrentView(window.innerWidth <= 480 ? "mobile" : "desktop");
   };
 
-  useEffect(() => {
-    if (address) {
-      // only set if atom hasn't already been initialized
-      setSearchedAddress((prev) => prev ?? address);
-    }
-  }, [address, setSearchedAddress]);
+  // useEffect(() => {
+  //   if (address) {
+  //     // only set if atom hasn't already been initialized
+  //     setSearchedAddress((prev) => prev ?? address);
+  //   }
+  // }, [address, setSearchedAddress]);
 
   useEffect(() => {
     if (!coordinates || !address) {
@@ -160,7 +161,9 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       return;
     }
 
-    setSearchedAddress(address);
+    // setSearchedAddress(address);
+    setSearchedAddress((prev) => prev ?? address);
+
     setIsSearchComplete(true);
 
     updateHazardData(coordinates);
