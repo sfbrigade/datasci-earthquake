@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useCallback } from "react";
+import { Suspense, useCallback, useState } from "react";
 import { useAtomValue } from "jotai";
 import {
   searchedAddressAtom,
@@ -31,6 +31,7 @@ export type HazardData = {
 };
 
 const Header = () => {
+  const [inputAddress, setInputAddress] = useState("");
   const pathname = usePathname();
   const isHome = pathname === "/";
   const searchedAddress = useAtomValue(searchedAddressAtom);
@@ -75,6 +76,7 @@ const Header = () => {
             textDecoration={"none"}
             onClick={(e) => {
               e.preventDefault();
+              setInputAddress("");
               router.push("/");
             }}
           >
@@ -107,7 +109,11 @@ const Header = () => {
           alignItems={{ base: "flex-start", xl: "center" }}
         >
           <Box width={{ base: "full", xl: "fit" }}>
-            <SearchBar onSearchChange={handleSearchChange} />
+            <SearchBar
+              inputAddress={inputAddress}
+              onInputAddressChange={setInputAddress}
+              onSearchChange={handleSearchChange}
+            />
           </Box>
 
           {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
