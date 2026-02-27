@@ -108,6 +108,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     if (!coordinates || !address) {
       setSearchedAddress(null);
       setIsSearchComplete(false);
+      // FIXME: Avoid calling setState() directly within an effect (remove eslint directive below to see lint error)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setAddressHazardData({});
       return;
     }

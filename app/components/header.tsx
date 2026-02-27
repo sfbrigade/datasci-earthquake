@@ -39,6 +39,8 @@ const Header = () => {
 
   useEffect(() => {
     if (!searchedAddress) {
+      // FIXME: Avoid calling setState() directly within an effect (remove eslint directive below to see lint error)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setInputAddress("");
     }
   }, [searchedAddress]);
