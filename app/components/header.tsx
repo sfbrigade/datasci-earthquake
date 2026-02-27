@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useCallback, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { useAtomValue } from "jotai";
 import {
   searchedAddressAtom,
@@ -36,6 +36,12 @@ const Header = () => {
   const isHome = pathname === "/";
   const searchedAddress = useAtomValue(searchedAddressAtom);
   const isSearchComplete = useAtomValue(isSearchCompleteAtom);
+
+  useEffect(() => {
+    if (!searchedAddress) {
+      setInputAddress("");
+    }
+  }, [searchedAddress]);
 
   const headingData = Headings.home;
   const router = useRouter();
