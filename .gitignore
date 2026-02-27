@@ -1,6 +1,7 @@
 # Next
 .next
 out
+next-env.d.ts # TODO: look into removing this file from source control entirely
 
 # Python
 __pycache__/

@@ -147,6 +147,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
   useEffect(() => {
     if (currentView === "") {
+      // FIXME: Avoid calling setState() directly within an effect (remove eslint directive below to see lint error)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       handleResize();
     }
     window.addEventListener("resize", handleResize);

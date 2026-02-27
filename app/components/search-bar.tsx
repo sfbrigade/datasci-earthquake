@@ -34,20 +34,10 @@ const SearchBar = ({
   onInputAddressChange,
   onSearchChange,
 }: SearchBarProps) => {
-  // const [inputAddress, setInputAddress] = useState("");
   const [suggestionSelected, setSuggestionSelected] = useState(false);
   const [suggestionsAvailable, setSuggestionsAvailable] = useState(false);
   const router = useRouter();
   const characterCap = 5;
-
-  const { address } = useAddressFromSearchParams();
-
-  // useEffect(() => {
-  //   if (!address) {
-  //     setInputAddress("");
-  //     setSuggestionSelected(false);
-  //   }
-  // }, [address]);
 
   const handleClearClick = () => {
     onInputAddressChange("");
