@@ -36,7 +36,7 @@ RUN npm install
 
 RUN echo 'hahao'
 
-RUN ls -la /home/node/.npm
+RUN ls -la /home/node/.npm/_cacache
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
