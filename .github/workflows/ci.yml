@@ -165,17 +165,17 @@ jobs:
       - name: ls 
         run: ls -l 
 
-      - name: Cache Docker Frontend layers
-        uses: actions/cache@v4
-        with:
-          path: earthquake-cache-frontend
-          key: ${{ hashFiles('Dockerfile') }}-earthquake-cache-frontend
+      #- name: Cache Docker Frontend layers
+      #  uses: actions/cache@v4
+      #  with:
+      #    path: earthquake-cache-frontend
+      #    key: ${{ hashFiles('Dockerfile') }}-earthquake-cache-frontend
 
-      - name: Cache npm dependencies
-        uses: actions/cache@v4
-        with:
-          path: haha
-          key: ${{ hashFiles('package.json') }}-earthquake-cache-npm
+      #- name: Cache npm dependencies
+      #  uses: actions/cache@v4
+      #  with:
+      #    path: haha
+      #    key: ${{ hashFiles('package.json') }}-earthquake-cache-npm
 
       - name: Build Docker Containers
         run: docker compose -f compose.yaml -f compose.ci.yaml build

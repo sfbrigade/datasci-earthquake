@@ -81,10 +81,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      cache_from:
-        - type=local,src=earthquake-cache-frontend
-      cache_to:
-        - type=local,dest=earthquake-cache-frontend
+      #cache_from:
+      #  - type=local,src=earthquake-cache-frontend
+      #cache_to:
+      #  - type=local,dest=earthquake-cache-frontend
     env_file:
       - .env
     environment:

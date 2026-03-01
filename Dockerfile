@@ -29,7 +29,7 @@ RUN echo 'whoops'
 
 RUN npm config get cache
 
-RUN ls -l /home
+RUN ls -la /home/node
 
 RUN --mount=type=cache,target=/home/node/.npm npm install
 
