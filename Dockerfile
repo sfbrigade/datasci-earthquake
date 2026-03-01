@@ -46,6 +46,10 @@ RUN npm cache ls
 
 COPY haha /home/node/.npm
 
+RUN echo 'run npm again... '
+
+RUN npm install
+
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
 

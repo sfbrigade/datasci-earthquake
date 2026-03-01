@@ -190,7 +190,7 @@ jobs:
         run: docker cp datasci-earthquake-frontend-1:/home/node/.npm /home/runner/work/datasci-earthquake/datasci-earthquake/haha
 
       - name: more ls 
-        run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/haha 
+        run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/haha/.npm 
 
       #- name: Docker Backend Logs
       #  if: always()
