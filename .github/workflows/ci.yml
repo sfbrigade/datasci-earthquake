@@ -171,11 +171,11 @@ jobs:
       #    path: earthquake-cache-frontend
       #    key: ${{ hashFiles('Dockerfile') }}-earthquake-cache-frontend
 
-      #- name: Cache npm dependencies
-      #  uses: actions/cache@v4
-      #  with:
-      #    path: haha
-      #    key: ${{ hashFiles('package.json') }}-earthquake-cache-npm
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/work/datasci-earthquake/datasci-earthquake/haha
+          key: earthquake-cache-npm-aaa
 
       - name: Build Docker Containers
         run: docker compose -f compose.yaml -f compose.ci.yaml build
