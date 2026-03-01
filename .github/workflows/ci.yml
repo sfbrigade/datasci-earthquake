@@ -184,6 +184,12 @@ jobs:
       - name: list the npm dir now parts 
         run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/haha/.npm 
 
+      - name: run cache stuff 
+        run: npm cache ls
+ 
+      - name: run more cache stuff 
+        run: npm cache verify 
+
       - name: Build Docker Containers
         run: docker compose -f compose.yaml -f compose.ci.yaml build
 
