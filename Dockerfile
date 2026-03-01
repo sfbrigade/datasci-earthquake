@@ -24,6 +24,11 @@ USER node
 
 # Copy package*.json, next-env.d.ts, nstall dependencies, as node user
 COPY --chown=node:node ./package*.json next-env.d.ts ./
+
+RUN echo 'whoops'
+
+RUN npm config get cache
+
 RUN --mount=type=cache,target=/root/.npm npm install
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
