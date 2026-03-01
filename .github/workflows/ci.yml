@@ -171,8 +171,9 @@ jobs:
       #    path: earthquake-cache-frontend
       #    key: ${{ hashFiles('Dockerfile') }}-earthquake-cache-frontend
 
-      - name: list the npm dir now cats 
-        run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/haha/.npm 
+      # .npm doesnt exist yet 
+      #- name: list the npm dir now cats 
+      #  run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/haha/.npm 
 
       - name: Cache npm dependencies
         uses: actions/cache@v4
