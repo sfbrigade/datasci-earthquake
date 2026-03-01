@@ -7,10 +7,6 @@ services:
     build:
       context: ./backend/database
       dockerfile: Dockerfile
-      cache_from: 
-        - type=local,src=buildx-cache-db
-      cache_to: 
-        - type=local,dest=buildx-cache-db
     container_name: my_postgis_db
     restart: always
     env_file:
@@ -57,10 +53,6 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
-      cache_from: 
-        - type=local,src=buildx-cache-backend
-      cache_to: 
-        - type=local,dest=buildx-cache-backend
     env_file:
       - .env
     environment:
@@ -89,10 +81,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      cache_from: 
-        - type=local,src=buildx-cache-frontend
-      cache_to: 
-        - type=local,dest=buildx-cache-frontend
     env_file:
       - .env
     environment:
@@ -112,7 +100,6 @@ services:
       timeout: 5s
       retries: 6
       start_period: 60s
-    command: npm run next-dev
 
 volumes:
   db-data:
