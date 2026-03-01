@@ -34,9 +34,15 @@ RUN ls -la /home/node/.npm
 #RUN --mount=type=cache,target=/home/node/.npm npm install
 RUN npm install
 
-RUN echo 'hahao'
+RUN echo 'first hahao'
+
+RUN ls -la /home/node/.npm
+
+RUN echo 'second hahao'
 
 RUN ls -la /home/node/.npm/_cacache
+
+RUN npm cache ls
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
