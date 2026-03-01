@@ -24,7 +24,7 @@ USER node
 
 # Copy package*.json, next-env.d.ts, nstall dependencies, as node user
 COPY --chown=node:node ./package*.json next-env.d.ts ./
-RUN --mount=type=cache,source=haha,target=/root/.npm npm install
+RUN --mount=type=cache,source=/home/runner/work/datasci-earthquake/datasci-earthquake/haha,target=/root/.npm npm install
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
