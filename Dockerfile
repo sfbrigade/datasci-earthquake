@@ -29,7 +29,9 @@ RUN echo 'whoops'
 
 RUN npm config get cache
 
-RUN --mount=type=cache,target=/root/.npm npm install
+RUN ls -l /home
+
+RUN --mount=type=cache,target=/home/node/.npm npm install
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
