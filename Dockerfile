@@ -7,6 +7,11 @@ FROM node:24-alpine
 # Must be root to prepare the directories; this command is implied, but being explicit for clarity
 USER root
 
+
+RUN echo 'cash money' && npm cache ls
+
+RUN echo 'cash cow' && npm cache verify
+
 # Install curl
 RUN apk add --no-cache curl
 
@@ -33,6 +38,11 @@ RUN ls -la /home/node/.npm
 
 #RUN --mount=type=cache,target=/home/node/.npm npm install
 RUN npm install
+
+
+RUN echo 'cash cake' && npm cache ls
+
+RUN echo 'cash dmc' && npm cache verify
 
 RUN echo 'first hahao'
 
