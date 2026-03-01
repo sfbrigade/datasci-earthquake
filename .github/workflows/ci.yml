@@ -180,6 +180,9 @@ jobs:
       - name: Build Docker Containers
         run: docker compose -f compose.yaml -f compose.ci.yaml build
 
+      - name: check DU 
+        run: docker buildx du --filter "type=exec.cachemount" --verbose
+
       - name: Start Services
         run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
 
