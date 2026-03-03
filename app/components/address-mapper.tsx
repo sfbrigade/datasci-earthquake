@@ -140,6 +140,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         lastCoords[0] !== newCoords[0] ||
         lastCoords[1] !== newCoords[1]
       ) {
+        // FIXME: Avoid calling setState() directly within an effect (remove eslint directive below to see lint error)
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCoordinates(newCoords);
         setSearchedAddress(address);
         coordinatesRef.current = newCoords;
@@ -185,6 +187,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
   useEffect(() => {
     if (currentView === "") {
+      // FIXME: Avoid calling setState() directly within an effect (remove eslint directive below to see lint error)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       handleResize();
     }
     window.addEventListener("resize", handleResize);

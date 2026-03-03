@@ -306,13 +306,4 @@ const overridesConfig: SystemConfig = defineConfig({
 
 const system = createSystem(defaultConfig, overridesConfig);
 
-// Log out the final merged config in development mode for debugging purposes
-if (process.env.NODE_ENV === "development" && console) {
-  console.log("SafeHome Chakra UI v3 configuration (theming, tokens, etc):");
-  console.dir({
-    _originalConfigs: { defaultConfig, overridesConfig },
-    ...system._config,
-  });
-}
-
 export default system;

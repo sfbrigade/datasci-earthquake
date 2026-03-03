@@ -1,5 +1,5 @@
 import { Flex, Text, Link, VStack, Box, Image } from "@chakra-ui/react";
-import NextLink from "next/link";
+import NextLink from "../components/custom-next-link";
 
 const TermsOfService = () => {
   return (
