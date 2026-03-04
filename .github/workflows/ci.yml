@@ -190,7 +190,7 @@ jobs:
         run: docker compose -f compose.base.yaml -f compose.ci.yaml run --rm backend pytest backend -v
 
       - name: Run Frontend Tests
-        run: docker compose -f compose.base.yaml -f compose.ci.yaml run --rm frontend npm test
+        run: docker compose -f compose.base.yaml -f compose.ci.yaml run --rm frontend npm run test -w apps/web
 
       - name: Clean Up
         run: docker compose -f compose.base.yaml -f compose.ci.yaml down
