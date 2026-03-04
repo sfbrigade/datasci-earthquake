@@ -94,11 +94,15 @@ services:
       - backend
     volumes:
       # Mount the host's apps/web directory to the container's /app/apps/web directory after dependencies are installed
-      - ./apps/web:/app/apps/web
+      - type: bind # bind mount
+        source: ./apps/web # host path
+        target: /app/apps/web # container path
       # Explicitly ignore node_modules and .next folders in the volume mount to prevent conflicts between host and container dependencies/build cache for both root folder and app folder
-      # - /app/node_modules # TODO: uncomment this when we add in root-level package.json
-      - /app/node_modules
-      - nextjs_cache:/app/apps/web/.next
+      - type: volume # anonymous volume
+        target: /app/node_modules
+      - type: volume # named volume
+        source: nextjs_cache
+        target: /app/apps/web/.next
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       start_interval: 10s

@@ -6,5 +6,9 @@ services:
     # In CI we do NOT mount the repo into /app, because that can change ownership/permissions
     # and cause Next to fail writing next-env.d.ts or .next.
     volumes: !reset
-      - /app/node_modules
-      - nextjs_cache:/app/apps/web/.next
+      - type: volume # anonymous volume
+        target: /app/node_modules
+      - type: volume # named volume
+        source: nextjs_cache
+        target: /app/apps/web/.next
+      # Explicitly ignore node_modules and .next folders in the volume mount to prevent conflicts between host and container dependencies/build cache for both root folder and app folder
