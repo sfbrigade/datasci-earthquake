@@ -39,7 +39,11 @@ RUN npm install
 EXPOSE 3000
 
 # command to run the Next.js app in development mode with the workspace flag to specify the webapp
-CMD ["npm", "run", "dev", "-w", "apps/web"]
+# TODO: to truly test, we try to run `dev` script in webapp, but this is failing:
+# CMD ["npm", "run", "dev", "-w", "apps/web"]
+# FIXME: get the above working
+# Instead, we run only `next-dev` for now:
+CMD ["npm", "run", "next-dev", "-w", "apps/web"]
 
 # --- DEV-CI STAGE (for testing dev container in CI only) ---
 FROM base AS dev-ci
