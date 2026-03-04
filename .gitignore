@@ -1,4 +1,5 @@
 # Next
+.swc
 /apps/web/out
 /apps/web/next-env.d.ts
 /apps/web/.next
