@@ -61,9 +61,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-node-using-nvmrc
       - name: Install Node.js dependencies
-        run: npm ci
+        run: cd apps/web && npm ci
       - name: Run ESLint
-        run: npm run lint
+        run: cd apps/web && npm run lint
 
   black_lint_and_mypy_type_check:
     if: needs.changes.outputs.code_changed == 'true'
@@ -96,7 +96,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-node-using-nvmrc
       - name: Install dependencies
-        run: npm ci
+        run: cd apps/web && npm ci
       - name: Check Next.js production build
         run: npm run build
 

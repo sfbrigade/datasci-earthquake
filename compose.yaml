@@ -80,19 +80,24 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: apps/web/Dockerfile
     env_file:
       - .env
     environment:
       - ENVIRONMENT=dev_docker
+      # Environment variable for file polling by Turbopack/Webpack (used by Next.js), often necessary for hot reload to work reliably across different OS and Docker setups (TODO: check if this is needed considering it's already in `next.config.ts`)
+      - WATCHPACK_POLLING=true
     ports:
       - 3000:3000
     depends_on:
       - backend
     volumes:
-      - .:/app:rw,delegated # Mount after dependencies are installed
-      - /app/node_modules # This excludes the node_modules from being overwritten
-      - nextjs_cache:/app/.next
+      # Mount the host's apps/web directory to the container's /app directory after dependencies are installed
+      - .:/app
+      # Explicitly ignore node_modules and .next folders in the volume mount to prevent conflicts between host and container dependencies/build cache for both root folder and app folder
+      # - /app/node_modules # TODO: uncomment this when we add in root-level package.json
+      - /app/apps/web/node_modules
+      - nextjs_cache:/app/apps/web/.next
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       start_interval: 10s
