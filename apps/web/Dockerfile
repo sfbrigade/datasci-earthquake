@@ -27,7 +27,8 @@ COPY --chown=node:node ./package*.json /app
 COPY --chown=node:node ./apps/web/package.json /app/apps/web
 RUN npm install
 
-# Copy the rest of the application, ensuring the ownership is set to node user 
+# # Copy the rest of the application, ensuring the ownership is set to node user 
+# NOTE: it's possible that the copy command below is overridden by the volumes: mount in `compose.yaml` for local development; if so, then we may want to only run the command ONLY for CI (where the mount is omitted in `compose.ci.yaml`)
 COPY --chown=node:node ./apps/web/. /app/apps/web
 
 # Expose the port Next.js runs on during development
