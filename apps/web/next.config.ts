@@ -1,6 +1,10 @@
 import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Turbopack specific watch options (might be needed for Docker environments) (TODO: look into if it's actually needed)
+  watchOptions: {
+    pollIntervalMs: 1000, // Check for changes every 1 second
+  },
   reactCompiler: true,
   productionBrowserSourceMaps: true,
   experimental: {
