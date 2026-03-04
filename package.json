@@ -6,7 +6,13 @@
   "workspaces": [
     "apps/*"
   ],
-  "engines": {
-    "node": ">=24.13.1"
+  "scripts": {
+    "dev": "npm run dev -w apps/web && npm run fastapi-dev",
+    "dev-front": "npm run docker-back && npm-run dev -w apps/web",
+    "docker-back": "docker compose up -d db db_test backend --build",
+    "docker-front": "docker compose up -d frontend --build",
+    "fastapi-dev-COMMENT": "TODO: look into if && is cross-platform; if not, replace accordingly",
+    "fastapi-dev": "cd backend && uv sync --extra dev && uv run fastapi dev ../api/index.py",
+    "next-dev": "npm run next-dev -w apps/web"
   }
 }
