@@ -18,32 +18,22 @@ RUN chown node:node /app
 # If you mount a local folder in your compose.yaml, the host's permissions will overwrite whatever you did in the Dockerfile. To avoid permission issues, you can pre-create the .next directory and set the owner to `node` user. This way, when the container runs as non-root, it will have the necessary permissions to write to that directory.
 
 # Pre-create the directory and set the owner to `node` user to ensure it is writable when the container runs as non-root
-RUN mkdir -p /app/.next && chown -R node:node /app/.next
+RUN mkdir -p /app/apps/web/.next && chown -R node:node /app/apps/web/.next
 
 USER node
 
-# # Copy root package files into the target root folder
-# COPY --chown=node:node ./package*.json ./
-
-# # Copy package*.json, next-env.d.ts from root folder
-# COPY --chown=node:node ./package*.json ./next-env.d.ts ./
-# Copy app-specific package files from webapp folder
-# This matches the monorepo structure inside the container
-COPY --chown=node:node ./apps/web/package.json ./apps/web/package-lock.json /app
-
-# Run install from the app folder
-
-RUN chown -R node:node /app
-
+# Copy root and webapp package*.json and install dependencies as node user
+COPY --chown=node:node ./package*.json /app
+COPY --chown=node:node ./apps/web/package.json /app/apps/web
 RUN npm install
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
-COPY --chown=node:node ./apps/web/. /app
+COPY --chown=node:node ./apps/web/. /app/apps/web
 
 # Expose the port Next.js runs on during development
 EXPOSE 3000
 
 # Command to run the Next.js app in development mode
-# This command should correspond to the "dev" script in your package.json
+# This command should correspond to the "dev" script in your app'spackage.json
 
-CMD ["npm", "run", "next-dev"]
+CMD ["npm", "run", "next-dev", "-w", "apps/web"]

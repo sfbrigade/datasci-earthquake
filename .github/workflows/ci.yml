@@ -61,7 +61,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-node-using-nvmrc
       - name: Install Node.js dependencies
-        run: npm ci -w apps/web
+        run: npm ci
       - name: Run ESLint
         run: npm run lint -w apps/web
 
@@ -96,7 +96,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-node-using-nvmrc
       - name: Install dependencies
-        run: npm ci -w apps/web
+        run: npm ci
       - name: Check Next.js production build
         run: npm run build -w apps/web
 

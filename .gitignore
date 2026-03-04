@@ -4,7 +4,7 @@
 /apps/web/.next
 
 # Node
-/apps/web/node_modules
+/node_modules
 
 # Playwright
 /apps/web/test-results/
