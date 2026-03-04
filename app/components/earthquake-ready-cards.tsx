@@ -27,10 +27,11 @@ const EarthquakeReadyCards = () => (
             href="https://www.ready.gov/earthquakes"
             target="_blank"
             rel="noopener noreferrer"
+            color="blue.text"
           >
             Learn the steps
           </Link>
-          <FaArrowRight />
+          <FaArrowRight color="blue.text" />
         </Card.Footer>
       </Card.Root>
       <Card.Root size="md">
