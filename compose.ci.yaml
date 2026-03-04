@@ -1,7 +1,4 @@
 services:
   frontend:
-    # In CI we do NOT mount the repo into /app, because that can change ownership/permissions
-    # and cause Next to fail writing next-env.d.ts or .next.
-    volumes: !reset
-      - /app/node_modules
-      - nextjs_cache:/app/.next
+    build:
+      target: dev-ci # this stage in the Dockerfile copies files because we are not using the mount

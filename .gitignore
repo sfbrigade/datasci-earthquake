@@ -1,7 +1,6 @@
-# Next
-.next
-out
-next-env.d.ts
+# Front end misc
+/.swc
+/node_modules
 
 # Python
 __pycache__/
@@ -19,12 +18,8 @@ coverage.xml
 venv
 .venv
 
-# Node
-node_modules
-
 # Mac
 .DS_Store
-/.next/
 
 # Sensitive config
 .env.development.local
@@ -37,14 +32,3 @@ node_modules
 !.vscode/extensions.json
 !.vscode/settings.json
 !.vscode/launch.json
-
-# Playwright
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-
-# Chakra
-/theme/
-*storybook.log
-storybook-static

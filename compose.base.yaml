@@ -1,0 +1,113 @@
+# Docker Compose configuration for local development and CI pipeline.
+# Not used for production; production is deployed via hosting platform.
+
+services:
+  db:
+    image: postgis-custom
+    build:
+      context: ./backend/database
+      dockerfile: Dockerfile
+    container_name: my_postgis_db
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=dev_docker
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      start_interval: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  db_test:
+    build:
+      context: ./backend/database
+      dockerfile: Dockerfile
+    container_name: my_postgis_db_test
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=dev_docker
+    volumes:
+      - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      start_interval: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    depends_on:
+      - db
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    env_file:
+      - .env
+    environment:
+      - PYTHONPATH=/backend:/
+      - DATA_GEOJSON_PATH=/public/data/
+      - ENVIRONMENT=dev_docker
+    ports:
+      - 8000:8000
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/backend
+      - ./backend/etl/startup.sh:/startup.sh
+      - public_data:/public/data
+    command: bash /startup.sh
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1"]
+      start_interval: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      target: dev-local
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=dev_docker
+      # Environment variable for file polling by Turbopack/Webpack (used by Next.js), often necessary for hot reload to work reliably across different OS and Docker setups (TODO: check if this is needed considering it's already in `next.config.ts`)
+      - WATCHPACK_POLLING=true
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
+    volumes:
+      # Explicitly ignore node_modules and .next folders in the volume mount to prevent conflicts between host and container dependencies/build cache for both root folder and app folder
+      - type: volume # anonymous volume
+        target: /app/node_modules
+      - type: volume # named volume
+        source: nextjs_cache
+        target: /app/apps/web/.next
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
+      start_interval: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 60s
+
+volumes:
+  db-data:
+  nextjs_cache:
+  public_data:
