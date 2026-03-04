@@ -1,0 +1,7 @@
+services:
+  frontend:
+    volumes:
+      # Mount the host's apps/web directory to the container's /app/apps/web directory after dependencies are installed
+      - type: bind # bind mount
+        source: ./apps/web # host path
+        target: /app/apps/web # container path

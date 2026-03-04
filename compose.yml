@@ -1,0 +1,4 @@
+include:
+  - path:
+      - compose.base.yaml # Reference the shared/production config
+      - compose.local-volumes.yaml

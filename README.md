@@ -68,10 +68,10 @@ This includes `pyproject.toml` and `.env`, and `package.json`. You will need to 
 
 ### Starting the application
 
-1. **Build images if not yet created**: From the project root directory (where the compose.yaml file is located), run:
+1. **Build images if not yet created**: From the project root directory (where the compose.base.yaml file is located), run:
    `docker compose build`
 
-2. **Run Docker Compose**: From the project root directory (where the compose.yaml file is located), run:
+2. **Run Docker Compose**: From the project root directory (where the compose.base.yaml file is located), run:
    `docker compose up`
 
    or
@@ -80,7 +80,7 @@ This includes `pyproject.toml` and `.env`, and `package.json`. You will need to 
 
    This will:
 
-- Start all services defined in the compose.yaml file (e.g., frontend, backend, database)
+- Start all services defined in the compose.base.yaml file (e.g., frontend, backend, database)
 
 3. **Access the Application**:
    - The app is running at http://localhost:3000. Note that this may conflict with your local dev server. If so, one will be running on port 3000 and the other on port 3001.

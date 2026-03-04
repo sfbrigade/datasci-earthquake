@@ -93,10 +93,6 @@ services:
     depends_on:
       - backend
     volumes:
-      # Mount the host's apps/web directory to the container's /app/apps/web directory after dependencies are installed
-      - type: bind # bind mount
-        source: ./apps/web # host path
-        target: /app/apps/web # container path
       # Explicitly ignore node_modules and .next folders in the volume mount to prevent conflicts between host and container dependencies/build cache for both root folder and app folder
       - type: volume # anonymous volume
         target: /app/node_modules

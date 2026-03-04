@@ -1,9 +1,8 @@
 name: ETL tests
 
 on: workflow_dispatch
-  
+
 jobs:
-  
   black_lint_and_mypy_type_check:
     runs-on: ubuntu-latest
     steps:
@@ -11,12 +10,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: "3.x"
 
       - name: Install uv
         run: |
           curl -sSL https://astral.sh/uv/install.sh | sh
-          
+
       - name: Install dependencies with uv
         run: |
           uv pip install --system black==24.10.0 mypy
@@ -35,15 +34,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set default fork status
-        run: echo "is_fork=false" >> $GITHUB_ENV        
+        run: echo "is_fork=false" >> $GITHUB_ENV
 
       - name: Check if pull request from fork
         id: check_fork
         if: github.event_name == 'pull_request'
         run: |
-            if [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]]; then
-              echo "is_fork=true" >> $GITHUB_ENV
-            fi
+          if [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]]; then
+            echo "is_fork=true" >> $GITHUB_ENV
+          fi
 
       - name: Use .env.example for forks
         if: env.is_fork == 'true'
@@ -93,13 +92,13 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Start DB
-        run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 30 db
+        run: docker compose -f compose.base.yaml -f compose.ci.yaml up -d --wait --wait-timeout 30 db
 
-      - name: Docker DB Logs 
-        run: docker logs my_postgis_db 
+      - name: Docker DB Logs
+        run: docker logs my_postgis_db
 
       - name: Run Tests
         run: echo 'Coming soon'
 
       - name: Clean Up
-        run: docker compose -f compose.yaml -f compose.ci.yaml down db
+        run: docker compose -f compose.base.yaml -f compose.ci.yaml down db
