@@ -1,0 +1,24 @@
+# Next
+next-env.d.ts
+.next
+
+# Node
+/node_modules
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Chakra
+/theme/
+
+# Storybook
+/*storybook.log
+/storybook-static
+
+# Front end misc
+/.swc
+/out
+/.tmp
