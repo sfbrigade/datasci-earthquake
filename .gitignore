@@ -5,6 +5,7 @@
 
 # Node
 /node_modules
+/apps/web/node_modules
 
 # Playwright
 /apps/web/test-results/
