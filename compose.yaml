@@ -81,6 +81,7 @@ services:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
+      target: dev-local
     env_file:
       - .env
     environment:
