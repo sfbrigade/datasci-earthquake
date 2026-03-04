@@ -1,6 +1,11 @@
 import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  watchOptions: {
+    // Turbopack-specific polling for watch options (might be needed for e.g. Docker environments if host filesystem does not reliably notify of changes)
+    // TODO: check if this is equivalent to WATCHPACK_POLLING environment variable
+    pollIntervalMs: 1000, // Check for changes every 1 second
+  },
   reactCompiler: true,
   productionBrowserSourceMaps: true,
   experimental: {
