@@ -13,6 +13,7 @@ import { useSearchParams } from "next/navigation";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 import SearchBar from "./search-bar";
 import EarthquakeReadyCards from "./earthquake-ready-cards";
+import AlertInfo from "@/components/ui/alert-info";
 
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
@@ -271,6 +272,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           </Stack>
         </Heading>
       </Box>
+      <AlertInfo message="Please double‑check the format"></AlertInfo>
       <EarthquakeReadyCards></EarthquakeReadyCards>
     </>
   );
