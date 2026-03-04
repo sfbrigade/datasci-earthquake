@@ -26,7 +26,7 @@ repos:
           - "--ignore-pattern=dist/*"
           - "--ignore-pattern=.next/*"
           - "--ignore-pattern=next.config.js"
-        entry: npm run lint
+        entry: npm run lint -w apps/web
         language: node
         files: \.[jt]sx?$
         additional_dependencies:
