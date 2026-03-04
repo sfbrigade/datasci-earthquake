@@ -46,7 +46,7 @@ EXPOSE 3000
 CMD ["npm", "run", "next-dev", "-w", "apps/web"]
 
 # --- DEV-CI STAGE (for testing dev container in CI only) ---
-FROM base AS dev-ci
+FROM dev-local AS dev-ci
 
 # we need to copy the files below in CI because we aren't mounting them due to a permissions issue (see `volumes` in `compose.ci.yaml`)
 COPY --chown=node:node ./apps/web/. ./apps/web
