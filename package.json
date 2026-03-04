@@ -7,8 +7,9 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "npm run dev -w apps/web && npm run fastapi-dev",
-    "dev-front": "npm run docker-back && npm-run dev -w apps/web",
+    "dev": "npm run dev-web && npm run fastapi-dev",
+    "dev-web": "npm run dev -w apps/web",
+    "dev-front": "npm run docker-back && npm run dev-web",
     "docker-back": "docker compose up -d db db_test backend --build",
     "docker-front": "docker compose up -d frontend --build",
     "fastapi-dev-COMMENT": "TODO: look into if && is cross-platform; if not, replace accordingly",
