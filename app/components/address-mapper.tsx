@@ -26,6 +26,7 @@ import system from "../../styles/theme";
 import SearchBar from "./search-bar";
 import { CurrentVariant } from "@/data/constants";
 import EarthquakeReadyCards from "./earthquake-ready-cards";
+import AlertInfo from "@/components/ui/alert-info";
 
 const defaultCoords = [-122.4194, 37.7949];
 const toggledStatesDefaults = [true, true, true];
@@ -381,6 +382,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               </Stack>
             </Heading>
           </Box>
+          <AlertInfo message="Please double‑check the format"></AlertInfo>
           <EarthquakeReadyCards></EarthquakeReadyCards>
         </>
       )}
