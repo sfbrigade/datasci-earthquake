@@ -18,6 +18,10 @@ RUN chown node:node .
 # If you mount a local folder in your compose.base.yaml, the host's permissions will overwrite whatever you did in the Dockerfile. To avoid permission issues, you can pre-create the .next directory and set the owner to `node` user. This way, when the container runs as non-root, it will have the necessary permissions to write to that directory.
 # Pre-create the .next directory and set the owner to `node` user to ensure it is writable when the container runs as non-root
 RUN mkdir -p ./apps/web/.next && chown -R node:node ./apps/web/.next
+
+# Also do this for 
+RUN mkdir -p ./apps/web && chown -R node:node ./apps
+
 # # Also do this for the generated types directory in node_modules, which is needed for Chakra UI to work properly; without this, Docker may not be able to write to this directory when running as non-root, which can cause issues with Chakra UI's styled-system types
 # RUN mkdir -p ./node_modules/@chakra-ui/react/dist/types/styled-system/generated/ && chown -R node:node ./node_modules/@chakra-ui/react/dist/types/styled-system/generated/
 
