@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,20 +14,16 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
+    "baseUrl": ".",
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": [
-        "./app/*"
-      ]
+      "@/*": ["./app/*"]
     },
-    "types": [
-      "@testing-library/jest-dom",
-      "@testing-library/user-event"
-    ]
+    "types": ["@testing-library/jest-dom", "@testing-library/user-event"]
   },
   "include": [
     "next-env.d.ts",
@@ -41,8 +33,5 @@
     "app/components/__tests__/search-bar.test.jsx",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "theme"
-  ]
+  "exclude": ["node_modules", "theme"]
 }

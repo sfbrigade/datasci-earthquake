@@ -9,10 +9,10 @@ import {
   HStack,
   Separator,
 } from "@chakra-ui/react";
-import { Hazards } from "../data/data";
-import CardHazard from "../components/card-hazard";
-import Share from "../components/share";
-import ShareSkeleton from "../components/share-skeleton";
+import { Hazards } from "@/data/data";
+import CardHazard from "@/components/card-hazard";
+import Share from "@/components/share";
+import ShareSkeleton from "@/components/share-skeleton";
 import SearchBarSkeleton from "@/components/search-bar-skeleton";
 import SearchBar from "@/components/search-bar";
 

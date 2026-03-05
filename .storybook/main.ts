@@ -1,12 +1,13 @@
 import type { StorybookConfig } from "@storybook/nextjs-vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 const config: StorybookConfig = {
   // NOTE: more advanced sort is possible if needed: https://storybook.js.org/docs/writing-stories/naming-components-and-hierarchy
   stories: [
     "../stories/Welcome.mdx",
     // components first
-    "../app/components/**/*.mdx",
-    "../app/components/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "@/app/components/**/*.mdx",
+    "@/app/components/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     // tokens next
     "../stories/*.mdx",
     "../stories/*.stories.@(js|jsx|mjs|ts|tsx)",
@@ -26,5 +27,11 @@ const config: StorybookConfig = {
     options: {},
   },
   staticDirs: ["../public"],
+  async viteFinal(config) {
+    const { mergeConfig } = await import("vite");
+    return mergeConfig(config, {
+      plugins: [tsconfigPaths()],
+    });
+  },
 };
 export default config;

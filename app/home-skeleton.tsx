@@ -1,5 +1,5 @@
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
-import AddressMapper from "./components/address-mapper";
+import AddressMapper from "@/components/address-mapper";
 import {
   Flex,
   HStack,

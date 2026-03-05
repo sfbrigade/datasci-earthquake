@@ -4,13 +4,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
-import Map from "./map";
-import ReportHazards from "./report-hazards";
-import MobileReportHazards from "./mobile-report-hazards";
+import Map from "@/components/map";
+import ReportHazards from "@/components/report-hazards";
+import MobileReportHazards from "@/components/mobile-report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
-import HomeHeader from "./home-header";
+import HomeHeader from "@/components/home-header";
 import { useSearchParams } from "next/navigation";
-import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
+import { useHazardDataFetcher } from "@/hooks/useHazardDataFetcher";
 
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
