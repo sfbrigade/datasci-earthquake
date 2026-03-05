@@ -180,7 +180,18 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     white: { value: "#FFF" },
     blue: { 600: { value: "#0088FF" }, text: { value: "#2B6CB0" } }, // blue/600 (TODO: all headings) // "#0088FF" comes from Figma switches
     yellow: { value: "#ECC94B" },
-    red: { value: "#C53030" },
+    red: {
+      50: { value: "#FEE5E5" },
+      100: { value: "#FDCCCB" },
+      200: { value: "#FA9999" },
+      300: { value: "#F76666" },
+      400: { value: "#F53333" },
+      500: { value: "#E71D36" },
+      600: { value: "#C53030" },
+      700: { value: "#9B2C2C" },
+      800: { value: "#742A2A" },
+      900: { value: "#5A1F1F" },
+    },
     green: { value: "#25855A" },
     orange: { value: "#F6AD55" },
     pink: { value: "#ED64A6" },
@@ -301,6 +312,20 @@ const overridesConfig: SystemConfig = defineConfig({
     layerStyles,
     tokens,
     semanticTokens,
+    // components: {
+    //   Alert: {
+    //     variants: {
+    //       subtle: {
+    //         root: {
+    //           _light: {
+    //             bg: "colorPalette.100",
+    //             color: "colorPalette.700",
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
   },
 });
 

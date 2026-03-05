@@ -222,6 +222,9 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               onSearchChange={handleSearchChange}
             />
           </Box>
+          <Box zIndex="docked" top="56" right="20" position="absolute">
+            <AlertInfo message="72% chance of major Bay Area earthquake in the next 30 years"></AlertInfo>
+          </Box>
 
           <Map
             coordinates={coordinates || defaultCoords}
@@ -272,7 +275,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           </Stack>
         </Heading>
       </Box>
-      <AlertInfo message="Please double‑check the format"></AlertInfo>
       <EarthquakeReadyCards></EarthquakeReadyCards>
     </>
   );
