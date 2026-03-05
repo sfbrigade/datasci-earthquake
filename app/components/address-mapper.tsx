@@ -98,8 +98,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
   const toastIdDataLoadFailed = "data-load-failed";
 
-  const [showHazards, setShowHazards] = useState(false);
-
   const { fetchHazardData } = useHazardDataFetcher({
     setSearchComplete,
     setHazardDataLoading,
@@ -320,13 +318,18 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             </Drawer.Root>
           )}
           {CurrentVariant === "data-centric" && (
-            <Box zIndex="docked" top="16" left="8" position="absolute">
-              <SearchBar
-                inputAddress={inputAddress}
-                onInputAddressChange={setInputAddress}
-                onSearchChange={handleSearchChange}
-              />
-            </Box>
+            <>
+              <Box zIndex="docked" top="16" left="8" position="absolute">
+                <SearchBar
+                  inputAddress={inputAddress}
+                  onInputAddressChange={setInputAddress}
+                  onSearchChange={handleSearchChange}
+                />
+              </Box>
+              <Box zIndex="docked" top="56" right="20" position="absolute">
+                <AlertInfo message="72% chance of major Bay Area earthquake in the next 30 years"></AlertInfo>
+              </Box>
+            </>
           )}
           <Map
             lon={lon}
@@ -382,7 +385,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               </Stack>
             </Heading>
           </Box>
-          <AlertInfo message="Please double‑check the format"></AlertInfo>
           <EarthquakeReadyCards></EarthquakeReadyCards>
         </>
       )}
