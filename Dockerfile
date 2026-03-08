@@ -16,13 +16,6 @@ RUN apk add --no-cache curl
 
 WORKDIR /app
 
-
-COPY my.js .
-
-RUN echo 'cash today' && ls -l
-
-RUN node my.js
-
 # change owner to node user
 RUN chown node:node /app
 
@@ -51,6 +44,12 @@ RUN npm cache ls
 COPY --chown=node:node ./package*.json ./
 
 RUN npm install
+
+COPY stuff.js .
+
+RUN echo 'cash today' && ls -l
+
+RUN node stuff.js
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
