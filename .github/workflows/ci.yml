@@ -159,11 +159,8 @@ jobs:
       - name: mkdir haha 
         run: mkdir haha 
 
-      - name: pwd 
-        run: pwd 
-
       - name: ls 
-        run: ls -l 
+        run: ls -l haha
 
       #- name: Cache Docker Frontend layers
       #  uses: actions/cache@v4
@@ -186,6 +183,9 @@ jobs:
 
       - name: Build Docker Containers
         run: docker compose -f compose.yaml -f compose.ci.yaml build
+
+      - name: ls AGAIN 
+        run: ls -l haha
 
       #- name: check DU 
       #  run: docker buildx du --verbose
