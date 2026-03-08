@@ -49,7 +49,7 @@ RUN echo 'funny cake' && npm cache ls
 
 
 RUN echo 'funny kite' && npm cache ls vite
-
+RUN npm install cacache
 
 RUN echo 'funny fun' && npm cache ls cacache
 
