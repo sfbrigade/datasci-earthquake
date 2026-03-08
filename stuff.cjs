@@ -33,10 +33,9 @@ cacache.ls('/app/drinksonyou').then(console.log)
 console.log(`the key master = ${theKeyMaster}`)
 
 cacache.get.info('/app/drinksonyou', theKeyMaster).then(console.log)
-/**
 const haha = 'make-fetch-happen:request-cache:https://registry.npmjs.org/memorystream/-/memorystream-0.3.1.tgz'
+const oh = 'make-fetch-happen:request-cache:https://registry.npmjs.org/nice-try/-/nice-try-1.0.5.tgz'
 cacache.get('/app/drinksonyou', haha).then((obj) => {
   console.log('go here...')
   console.log(obj.data instanceof Buffer)
 })
-**/
