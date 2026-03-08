@@ -25,4 +25,4 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
 })
 
 console.log('lets see whats inside.....')
-cacache.ls('/app/drinksonyou').then(console.log)
+cacache.ls('/app/drinksonyou/tmp').then(console.log)
