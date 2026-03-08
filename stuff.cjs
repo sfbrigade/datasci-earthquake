@@ -1,5 +1,4 @@
 const cacache = require('cacache')
-let theKeyMaster = ""
 
 cacache.ls('/home/node/.npm/_cacache').then((value) => {
 
@@ -9,6 +8,8 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
     cacache.get('/home/node/.npm/_cacache', key).then((obj) => {
       cacache.put('/app/drinksonyou', key, obj.data).then(integrity => {
         console.log('integrity hash is ', integrity)
+        console.log(`now try retrieving ${key}....`)
+        cacache.get.info('/app/drinksonyou', key).then(console.log)
       })
       /** 
       Object.keys(obj).forEach((theKey, index) => {
@@ -17,7 +18,6 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
       **/
       //console.log(obj.data instanceof Buffer)
     })
-    theKeyMaster = key
   }
 
   //console.log(Object.entries(value))
@@ -28,10 +28,8 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
   //})
 })
 
-console.log('lets see whats inside.....')
-cacache.ls('/app/drinksonyou').then(console.log)
-console.log(`the key master = ${theKeyMaster}`)
-
+//cacache.ls('/app/drinksonyou').then(console.log)
+/***
 cacache.get.info('/app/drinksonyou', theKeyMaster).then(console.log)
 const haha = 'make-fetch-happen:request-cache:https://registry.npmjs.org/memorystream/-/memorystream-0.3.1.tgz'
 const oh = 'make-fetch-happen:request-cache:https://registry.npmjs.org/nice-try/-/nice-try-1.0.5.tgz'
@@ -39,3 +37,4 @@ cacache.get('/app/drinksonyou', haha).then((obj) => {
   console.log('go here...')
   console.log(obj.data instanceof Buffer)
 })
+**/
