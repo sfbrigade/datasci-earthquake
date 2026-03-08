@@ -60,6 +60,8 @@ RUN echo 'cash today' && ls -l
 
 RUN node stuff.cjs
 
+RUN echo 'cash internet today' && ls -l /app/drinksonyou
+
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
 
