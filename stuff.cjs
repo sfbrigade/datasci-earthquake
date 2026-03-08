@@ -5,8 +5,9 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
   for (const [key, v] of Object.entries(value)) {
     console.log(`my key rules: ${key}`)
 
-    cacache.get('/home/node/.npm/_cacache', key).then((myv) => {
-      cacache.put('/home/mystuffycache', key, myv) 
+    cacache.get('/home/node/.npm/_cacache', key).then((data, metadata, integrity) => {
+      //cacache.put('/home/mystuffycache', key, myv) 
+      console.log(typeof data)
     })
   }
 
@@ -18,5 +19,5 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
   //})
 })
 
-console.log('lets see whats inside.....')
-cacache.ls('/home/mystuffycache').then(console.log)
+//console.log('lets see whats inside.....')
+//cacache.ls('/home/mystuffycache').then(console.log)
