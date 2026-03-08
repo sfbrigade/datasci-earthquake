@@ -7,10 +7,6 @@ FROM node:24-alpine
 # Must be root to prepare the directories; this command is implied, but being explicit for clarity
 USER root
 
-RUN echo 'cash money' && npm cache ls
-
-RUN echo 'cash cow' && npm cache verify
-
 # Install curl
 RUN apk add --no-cache curl
 
@@ -31,9 +27,9 @@ RUN npm config get cache
 
 RUN ls -la /home/node/.npm
 
-RUN echo 'cash cake' && npm cache ls
+RUN echo 'BEFORE npm install....cache ls' && npm cache ls
 
-RUN echo 'cash dmc' && npm cache verify
+RUN echo 'BEFORE npm install....cache verify' && npm cache verify
 
 RUN ls -la /home/node/.npm
 
@@ -46,10 +42,10 @@ COPY --chown=node:node ./package*.json ./
 
 RUN npm install
 
-RUN echo 'funny cake' && npm cache ls
+RUN echo 'AFTER npm install....cache ls' && npm cache ls
 
+RUN echo 'AFTER npm install....cache verify' && npm cache verify
 
-RUN echo 'funny kite' && npm cache ls vite
 RUN npm install cacache
 
 RUN echo 'funny fun' && npm cache ls cacache
