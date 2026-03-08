@@ -7,10 +7,6 @@ FROM node:24-alpine
 # Must be root to prepare the directories; this command is implied, but being explicit for clarity
 USER root
 
-COPY my.js .
-
-RUN echo 'cash today' && ls -l
-
 RUN echo 'cash money' && npm cache ls
 
 RUN echo 'cash cow' && npm cache verify
@@ -19,6 +15,13 @@ RUN echo 'cash cow' && npm cache verify
 RUN apk add --no-cache curl
 
 WORKDIR /app
+
+
+COPY my.js .
+
+RUN echo 'cash today' && ls -l
+
+RUN node my.js
 
 # change owner to node user
 RUN chown node:node /app
@@ -30,33 +33,19 @@ RUN mkdir -p /app/.next && chown -R node:node /app/.next
 
 USER node
 
-RUN echo 'whoops'
-
 RUN npm config get cache
 
 RUN ls -la /home/node/.npm
-
-#RUN --mount=type=cache,target=/home/node/.npm npm install
-RUN npm install
-
 
 RUN echo 'cash cake' && npm cache ls
 
 RUN echo 'cash dmc' && npm cache verify
 
-RUN echo 'first hahao'
-
 RUN ls -la /home/node/.npm
-
-RUN echo 'second hahao'
 
 RUN ls -la /home/node/.npm/_cacache
 
 RUN npm cache ls
-
-COPY haha /home/node/.npm
-
-RUN echo 'run npm again... '
 
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
