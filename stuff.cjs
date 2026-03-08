@@ -6,13 +6,13 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
     //console.log(`my key rules: ${key}`)
 
     cacache.get('/home/node/.npm/_cacache', key).then((obj) => {
-      //cacache.put('/home/mystuffycache', key, myv)
+      cacache.put('/home/mystuffycache', key, obj.data)
       /** 
       Object.keys(obj).forEach((theKey, index) => {
         console.log(theKey)
       })
       **/
-      console.log(obj.data instanceof Buffer)
+      //console.log(obj.data instanceof Buffer)
     })
   }
 
@@ -24,5 +24,5 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
   //})
 })
 
-//console.log('lets see whats inside.....')
-//cacache.ls('/home/mystuffycache').then(console.log)
+console.log('lets see whats inside.....')
+cacache.ls('/home/mystuffycache').then(console.log)
