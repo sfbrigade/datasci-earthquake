@@ -7,6 +7,9 @@ FROM node:24-alpine
 # Must be root to prepare the directories; this command is implied, but being explicit for clarity
 USER root
 
+COPY my.js .
+
+RUN echo 'cash today' && ls -l
 
 RUN echo 'cash money' && npm cache ls
 
