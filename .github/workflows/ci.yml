@@ -172,11 +172,11 @@ jobs:
       #- name: list the npm dir now cats 
       #  run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/haha/.npm 
 
-      - name: Cache npm dependencies
-        uses: actions/cache@v4
-        with:
-          path: /home/runner/work/datasci-earthquake/datasci-earthquake/haha
-          key: earthquake-cache-npm-aaa
+      #- name: Cache npm dependencies
+      #  uses: actions/cache@v4
+      #  with:
+      #    path: /home/runner/work/datasci-earthquake/datasci-earthquake/haha
+      #    key: earthquake-cache-npm-aaa
 
       #- name: list the npm dir now parts 
       #  run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/haha/.npm 
