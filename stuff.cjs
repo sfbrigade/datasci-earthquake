@@ -7,9 +7,14 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
 
     cacache.get('/home/node/.npm/_cacache', key).then((obj) => {
       cacache.put('/app/drinksonyou', key, obj.data).then(integrity => {
-        console.log('integrity hash is ', integrity)
-        console.log(`now try retrieving ${key}....`)
-        cacache.get.info('/app/drinksonyou', key).then(console.log)
+        //console.log('integrity hash is ', integrity)
+        //console.log(`now try retrieving ${key}....`)
+        cacache.get.info('/app/drinksonyou', key).then((o) => {
+          console.log('getting the diggy...')
+          console.log(typeof o)
+          console.log(o)
+          console.log(o.path)
+        })
       })
       /** 
       Object.keys(obj).forEach((theKey, index) => {
