@@ -10,5 +10,5 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
       })
     })
   }
-}).then(doThis)
+})
 
