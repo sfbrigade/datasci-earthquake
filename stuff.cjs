@@ -9,7 +9,11 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
   console.log(typeof value)
   for (const [key, v] of Object.entries(value)) {
     console.log(`my key: ${key}`)
-    console.log(`my value: ${v}`)
+    console.log(Object.entries(v))
+    
+    for (const [morekey, morev] of Object.entries(v)) {
+      console.log(`- more key: ${morekey}`)
+    }
     console.log('----------------')
   }
   //console.log(Object.entries(value))
