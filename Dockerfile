@@ -55,10 +55,12 @@ RUN npm install cacache
 RUN echo 'funny fun' && npm cache ls cacache
 
 COPY stuff.cjs .
+COPY morestuff.cjs .
 
 RUN echo 'cash today' && ls -l
 
 RUN node stuff.cjs
+RUN node morestuff.cjs
 
 RUN echo 'cash internet today' && ls -l /app/drinksonyou
 
