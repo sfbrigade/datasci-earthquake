@@ -8,6 +8,7 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
     cacache.get('/home/node/.npm/_cacache', key).then((data, metadata, integrity) => {
       //cacache.put('/home/mystuffycache', key, myv) 
       console.log(typeof data)
+      console.log(data instanceof Buffer)
     })
   }
 
