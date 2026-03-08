@@ -5,6 +5,8 @@ function replacer(key, value) {
 }
 
 cacache.ls('/home/node/.npm/_cacache').then((value) => {
-  JSON.stringify(value, replacer)
+  // JSON.stringify(value, replacer)
+  console.log(typeof value)
+  console.log(Object.keys(value))
 })
 

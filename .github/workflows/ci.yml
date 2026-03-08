@@ -181,23 +181,23 @@ jobs:
           path: /home/runner/work/datasci-earthquake/datasci-earthquake/haha
           key: earthquake-cache-npm-aaa
 
-      - name: list the npm dir now parts 
-        run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/haha/.npm 
+      #- name: list the npm dir now parts 
+      #  run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/haha/.npm 
 
       - name: Build Docker Containers
         run: docker compose -f compose.yaml -f compose.ci.yaml build
 
-      - name: check DU 
-        run: docker buildx du --verbose
+      #- name: check DU 
+      #  run: docker buildx du --verbose
 
-      - name: Start Services
-        run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
+      #- name: Start Services
+      #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
 
-      - name: copy stuff
-        run: docker cp datasci-earthquake-frontend-1:/home/node/.npm /home/runner/work/datasci-earthquake/datasci-earthquake/haha
+      #- name: copy stuff
+      #  run: docker cp datasci-earthquake-frontend-1:/home/node/.npm /home/runner/work/datasci-earthquake/datasci-earthquake/haha
 
-      - name: more ls 
-        run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/haha/.npm 
+      #- name: more ls 
+      #  run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/haha/.npm 
 
       #- name: Docker Backend Logs
       #  if: always()
@@ -221,5 +221,5 @@ jobs:
       #- name: Run Frontend Tests
       #  run: docker compose -f compose.yaml -f compose.ci.yaml run --rm frontend npm test
 
-      - name: Clean Up
-        run: docker compose -f compose.yaml -f compose.ci.yaml down
+      #- name: Clean Up
+      #  run: docker compose -f compose.yaml -f compose.ci.yaml down
