@@ -156,11 +156,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: mkdir haha 
-        run: mkdir haha 
+      - name: mkdir torts 
+        run: mkdir torts 
 
       - name: pwd - ls 
-        run: pwd && ls -l haha
+        run: pwd && ls -l torts
 
       #- name: Cache Docker Frontend layers
       #  uses: actions/cache@v4
@@ -190,14 +190,14 @@ jobs:
       #- name: check DU 
       #  run: docker buildx du --verbose
 
-      #- name: Start Services
-      #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
+      - name: Start Services
+        run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
 
-      #- name: copy stuff
-      #  run: docker cp datasci-earthquake-frontend-1:/home/node/.npm /home/runner/work/datasci-earthquake/datasci-earthquake/haha
+      - name: copy stuff
+        run: docker cp datasci-earthquake-frontend-1:/home/node/.npm/_cacache /home/runner/work/datasci-earthquake/datasci-earthquake/torts
 
-      #- name: more ls 
-      #  run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/haha/.npm 
+      - name: more ls 
+        run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/torts 
 
       #- name: Docker Backend Logs
       #  if: always()
@@ -221,5 +221,5 @@ jobs:
       #- name: Run Frontend Tests
       #  run: docker compose -f compose.yaml -f compose.ci.yaml run --rm frontend npm test
 
-      #- name: Clean Up
-      #  run: docker compose -f compose.yaml -f compose.ci.yaml down
+      - name: Clean Up
+        run: docker compose -f compose.yaml -f compose.ci.yaml down
