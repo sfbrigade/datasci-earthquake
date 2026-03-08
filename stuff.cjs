@@ -7,6 +7,14 @@ function replacer(key, value) {
 cacache.ls('/home/node/.npm/_cacache').then((value) => {
   // JSON.stringify(value, replacer)
   console.log(typeof value)
-  console.log(Object.keys(value))
+  for (const [key, v] of Object.entries(value)) {
+    console.log(`my key: ${key}`)
+    console.log(`my value: ${v}`)
+    console.log('----------------')
+  }
+  //console.log(Object.entries(value))
+  //Object.keys(value).forEach((item, index) => {
+    //cacache.put('/home/node/mystuff', item)
+  //})
 })
 
