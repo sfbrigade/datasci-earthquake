@@ -40,7 +40,7 @@ RUN npm cache ls
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
 
-RUN --mount=type=bind,source=/home/runner/work/datasci-earthquake/datasci-earthquake/haha,dst=/home/node/.npm/_cacache,readwrite npm install
+RUN --mount=type=bind,dst=/home/runner/work/datasci-earthquake/datasci-earthquake/haha,source=/home/node/.npm/_cacache,readwrite npm install
 
 RUN echo 'AFTER npm install....cache ls' && npm cache ls
 
