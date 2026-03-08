@@ -159,8 +159,8 @@ jobs:
       - name: mkdir haha 
         run: mkdir haha 
 
-      - name: ls 
-        run: ls -l haha
+      - name: pwd - ls 
+        run: pwd && ls -l haha
 
       #- name: Cache Docker Frontend layers
       #  uses: actions/cache@v4
