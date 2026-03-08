@@ -30,9 +30,6 @@ RUN mkdir -p /app/.next && chown -R node:node /app/.next
 
 USER node
 
-# Copy package*.json, next-env.d.ts, nstall dependencies, as node user
-COPY --chown=node:node ./package*.json next-env.d.ts ./
-
 RUN echo 'whoops'
 
 RUN npm config get cache
@@ -60,6 +57,9 @@ RUN npm cache ls
 COPY haha /home/node/.npm
 
 RUN echo 'run npm again... '
+
+# Copy package*.json and install dependencies, as node user
+COPY --chown=node:node ./package*.json ./
 
 RUN npm install
 

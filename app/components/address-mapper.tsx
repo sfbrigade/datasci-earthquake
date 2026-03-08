@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, HStack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
@@ -205,37 +205,41 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           md: { "--header-height": "175px" },
           xl: { "--header-height": "141px" },
           "2xl": { "--header-height": "149px" },
-          "--whitespace-height": "32px",
+          "--whitespace-height": "96px",
+          "--map-height":
+            "calc(100dvh - var(--header-height) - var(--whitespace-height))",
         }}
-        style={{
-          height:
-            "calc(100dvh - var(--header-height) - var(--whitespace-height)",
-        }}
+        h="var(--map-height)"
         m="auto"
-        position="relative"
+        position={{ base: "relative", sm: "static" }}
+        alignItems={{ base: "stretch", sm: "start" }}
+        display={{ base: "block", sm: "flex" }}
       >
-        <Box h="full" overflow="hidden">
-          <Box zIndex="docked" top="0" position="absolute">
-            {currentView === "desktop" ? (
-              <ReportHazards
-                addressHazardData={addressHazardData}
-                isHazardDataLoading={isHazardDataLoading}
-                toggledStates={toggledStates}
-                setToggledStates={setToggledStates}
-                setLayerToggleObj={setLayerToggleObj}
-              />
-            ) : currentView === "mobile" ? (
-              <MobileReportHazards
-                showHazards={showHazards}
-                addressHazardData={addressHazardData}
-                isHazardDataLoading={isHazardDataLoading}
-                toggledStates={toggledStates}
-                setShowHazards={setShowHazards}
-                setToggledStates={setToggledStates}
-                setLayerToggleObj={setLayerToggleObj}
-              />
-            ) : null}
+        {currentView === "desktop" ? (
+          <Box h="full" overflowY={{ base: "visible", sm: "auto" }}>
+            <ReportHazards
+              addressHazardData={addressHazardData}
+              isHazardDataLoading={isHazardDataLoading}
+              toggledStates={toggledStates}
+              setToggledStates={setToggledStates}
+              setLayerToggleObj={setLayerToggleObj}
+            />{" "}
           </Box>
+        ) : currentView === "mobile" ? (
+          <Box zIndex="docked" top="0" position="absolute">
+            <MobileReportHazards
+              showHazards={showHazards}
+              addressHazardData={addressHazardData}
+              isHazardDataLoading={isHazardDataLoading}
+              toggledStates={toggledStates}
+              setShowHazards={setShowHazards}
+              setToggledStates={setToggledStates}
+              setLayerToggleObj={setLayerToggleObj}
+            />
+          </Box>
+        ) : null}
+
+        <Box flex={{ base: "initial", sm: "1" }} h="full">
           <Map
             coordinates={coordinates || defaultCoords}
             softStoryData={softStoryData}
