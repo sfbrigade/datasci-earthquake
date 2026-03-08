@@ -45,6 +45,8 @@ COPY --chown=node:node ./package*.json ./
 
 RUN npm install
 
+RUN echo 'funny cake' && npm cache ls
+
 COPY stuff.cjs .
 
 RUN echo 'cash today' && ls -l
