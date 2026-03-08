@@ -26,3 +26,9 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
 
 console.log('lets see whats inside.....')
 cacache.ls('/app/drinksonyou/tmp').then(console.log)
+
+const haha = 'make-fetch-happen:request-cache:https://registry.npmjs.org/memorystream/-/memorystream-0.3.1.tgz'
+cacache.get('/app/drinksonyou', haha).then((obj) => {
+  console.log('go here...')
+  console.log(obj.data instanceof Buffer)
+})
