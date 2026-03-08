@@ -185,7 +185,7 @@ jobs:
         run: docker compose -f compose.yaml -f compose.ci.yaml build
 
       - name: ls AGAIN 
-        run: ls -l haha
+        run: ls -l torts 
 
       #- name: check DU 
       #  run: docker buildx du --verbose
