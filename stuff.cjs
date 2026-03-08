@@ -1,7 +1,10 @@
 const cacache = require('cacache')
 
+function replacer(key, value) {
+  console.log(key)
+}
+
 cacache.ls('/home/node/.npm/_cacache').then((value) => {
-  console.log('town funk...')
-  console.log(typeof value)
+  JSON.stringify(value, replacer)
 })
 
