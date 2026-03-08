@@ -3,13 +3,16 @@ const cacache = require('cacache')
 cacache.ls('/home/node/.npm/_cacache').then((value) => {
 
   for (const [key, v] of Object.entries(value)) {
-    console.log(`my key rules: ${key}`)
+    //console.log(`my key rules: ${key}`)
 
     cacache.get('/home/node/.npm/_cacache', key).then((obj) => {
-      //cacache.put('/home/mystuffycache', key, myv) 
+      //cacache.put('/home/mystuffycache', key, myv)
+      /** 
       Object.keys(obj).forEach((theKey, index) => {
         console.log(theKey)
       })
+      **/
+      console.log(obj.data instanceof Buffer)
     })
   }
 
