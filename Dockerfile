@@ -16,8 +16,6 @@ RUN apk add --no-cache curl
 
 WORKDIR /app
 
-RUN mkdir drinksonyou
-
 # change owner to node user
 RUN chown node:node /app
 
@@ -26,6 +24,7 @@ RUN chown node:node /app
 # Pre-create the directory and set the owner to `node` user to ensure it is writable when the container runs as non-root
 RUN mkdir -p /app/.next && chown -R node:node /app/.next
 
+RUN mkdir drinksonyou && chown -R node:node /app/drinksonyou
 USER node
 
 RUN npm config get cache
