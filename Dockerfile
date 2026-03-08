@@ -47,6 +47,9 @@ RUN npm install
 
 RUN echo 'funny cake' && npm cache ls
 
+
+RUN echo 'funny fun' && npm cache ls cacache
+
 COPY stuff.cjs .
 
 RUN echo 'cash today' && ls -l
