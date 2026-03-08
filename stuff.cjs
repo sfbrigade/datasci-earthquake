@@ -1,9 +1,10 @@
 const cacache = require('cacache')
+let theKeyMaster = ""
 
 cacache.ls('/home/node/.npm/_cacache').then((value) => {
 
   for (const [key, v] of Object.entries(value)) {
-    //console.log(`my key rules: ${key}`)
+    console.log(`my key rules: ${key}`)
 
     cacache.get('/home/node/.npm/_cacache', key).then((obj) => {
       cacache.put('/app/drinksonyou', key, obj.data).then(integrity => {
@@ -16,6 +17,7 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
       **/
       //console.log(obj.data instanceof Buffer)
     })
+    theKeyMaster = key
   }
 
   //console.log(Object.entries(value))
@@ -28,6 +30,9 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
 
 console.log('lets see whats inside.....')
 cacache.ls('/app/drinksonyou').then(console.log)
+console.log(`the key master = ${theKeyMaster}`)
+
+cacache.get.info('/app/drinksonyou', theKeyMaster).then(console.log)
 /**
 const haha = 'make-fetch-happen:request-cache:https://registry.npmjs.org/memorystream/-/memorystream-0.3.1.tgz'
 cacache.get('/app/drinksonyou', haha).then((obj) => {
