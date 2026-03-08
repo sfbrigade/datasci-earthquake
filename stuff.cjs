@@ -1,6 +1,7 @@
 const cacache = require('cacache')
 
-console.log('oh hi...')
-
-cacache.ls('/home/node/.npm/_cacache').then(console.log)
+cacache.ls('/home/node/.npm/_cacache').then((value) => {
+  console.log('town funk...')
+  console.log(typeof value)
+})
 
