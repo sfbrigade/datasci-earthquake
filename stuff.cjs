@@ -6,7 +6,7 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
     //console.log(`my key rules: ${key}`)
 
     cacache.get('/home/node/.npm/_cacache', key).then((obj) => {
-      cacache.put('/home/mystuffycache', key, obj.data)
+      cacache.put('/app/drinksonyou', key, obj.data)
       /** 
       Object.keys(obj).forEach((theKey, index) => {
         console.log(theKey)
@@ -25,4 +25,4 @@ cacache.ls('/home/node/.npm/_cacache').then((value) => {
 })
 
 console.log('lets see whats inside.....')
-cacache.ls('/home/mystuffycache').then(console.log)
+cacache.ls('/app/drinksonyou').then(console.log)
