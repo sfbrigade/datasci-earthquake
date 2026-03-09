@@ -7,10 +7,10 @@ import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
 
-const defaultCoords = [-122.463733, 37.777448];
+const defaultCoords = [-122.408020683, 37.801698301]; // TODO: dedupe with address-mapper default coords; consider centralizing in a constants file if we need to use in more places
 const mapOptions = {
   style: "mapbox://styles/mapbox/standard",
-  center: [-122.437, 37.768] as [number, number],
+  center: defaultCoords as [number, number],
   zoom: 12.1, // Start with more zoomed-out view but not too far
   minZoom: 11, // Allow users to zoom out more
   maxZoom: 15, // Increase max zoom to allow closer inspection
