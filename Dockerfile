@@ -70,4 +70,5 @@ EXPOSE 3000
 
 # Command to run the Next.js app in development mode
 # This command should correspond to the "dev" script in your package.json
-CMD ["npm", "run", "next-dev"]
+# CMD ["npm", "run", "next-dev"]
+CMD ["pwd"]
