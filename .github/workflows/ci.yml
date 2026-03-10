@@ -209,10 +209,6 @@ jobs:
 
       - run: echo 'looky' && ls -l /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
 
-      - run: docker stop myfrontend
-      - run: docker stop mybackend
-      - run: docker stop mydb
-
       - run: pwd && ls -l 
       - run: echo 'spooky' && ls -l /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
 
@@ -238,11 +234,14 @@ jobs:
       #  if: always()
       #  run: docker logs datasci-earthquake-frontend-1 || echo "No logs found"
 
-      #- name: Run Backend Tests
-      #  run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend -v
+      - name: Run Backend Tests
+        run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend -v
 
-      #- name: Run Frontend Tests
-      #  run: docker compose -f compose.yaml -f compose.ci.yaml run --rm frontend npm test
+      - name: Run Frontend Tests
+        run: docker compose -f compose.yaml -f compose.ci.yaml run --rm frontend npm test
 
       #- name: Clean Up
       #  run: docker compose -f compose.yaml -f compose.ci.yaml down
+      - run: docker stop myfrontend
+      - run: docker stop mybackend
+      - run: docker stop mydb
