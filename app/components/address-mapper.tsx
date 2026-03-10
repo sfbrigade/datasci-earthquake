@@ -1,21 +1,29 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-
-import { Box, useMediaQuery } from "@chakra-ui/react";
-import system from "../../styles/theme";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import {
+  chakra,
+  IconButton,
+  Drawer,
+  Portal,
+  Box,
+  useMediaQuery,
+} from "@chakra-ui/react";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
-import MobileReportHazards from "./mobile-report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
+import system from "../../styles/theme";
 
 const defaultCoords = [-122.4194, 37.7949];
 const toggledStatesDefaults = [true, true, true];
 const mdBreakpointValue = system.token("breakpoints.md");
+const AngleLeft = chakra(FaAngleLeft);
+const AngleRight = chakra(FaAngleRight);
 
 interface AddressMapperProps {
   softStoryData: FeatureCollection<Geometry>;
@@ -49,6 +57,9 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
   const router = useRouter();
   const pathname = usePathname();
+  // Drawer
+  const drawerContainerRef = useRef(null);
+
   const searchParams = useSearchParams();
   const initialLon = searchParams.get("lon");
   const initialLat = searchParams.get("lat");
@@ -71,7 +82,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     layerId: "",
     toggleState: true,
   });
-  const [showHazards, setShowHazards] = useState(false);
   const [isSearchComplete, setSearchComplete] = useState(false);
   const displaySearchComplete = validParams ? isSearchComplete : false;
 
@@ -191,34 +201,90 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         isSearchComplete={displaySearchComplete}
         onSearchChange={handleSearchChange}
       />
-      <Box w="full" m="auto" h="full" position="relative">
-        <Box zIndex="docked" top="0" position="absolute">
-          {!md ? (
-            <MobileReportHazards
-              showHazards={showHazards}
-              addressHazardData={displayData}
-              isHazardDataLoading={isHazardDataLoading}
-              toggledStates={toggledStates}
-              setShowHazards={setShowHazards}
-              setToggledStates={setToggledStates}
-              setLayerToggleObj={setLayerToggleObj}
-            />
-          ) : (
-            <ReportHazards
-              addressHazardData={displayData}
-              isHazardDataLoading={isHazardDataLoading}
-              toggledStates={toggledStates}
-              setToggledStates={setToggledStates}
-              setLayerToggleObj={setLayerToggleObj}
-            />
-          )}
-        </Box>
-        <Box
-          flex={{ base: "initial", md: "1" }}
-          h="full"
-          w="full"
-          bgColor="gray.100"
-        >
+      <Box
+        w="full"
+        m="auto"
+        h="full"
+        position="relative"
+        ref={drawerContainerRef}
+      >
+        <Box h="full" overflow="hidden">
+          <Drawer.Root placement={{ mdDown: "bottom", md: "start" }}>
+            <Portal container={drawerContainerRef}>
+              {/* dummy drawer, closed */}
+              <Box
+                position="absolute"
+                zIndex="overlay"
+                top={{ base: "auto", md: "0" }}
+                left="0"
+                bottom="0"
+                right={{ base: "0", md: "auto" }}
+                w={{ base: "auto", md: "5" }}
+                h={{ base: "5", md: "auto" }}
+                backgroundColor="white"
+              >
+                <Drawer.Trigger
+                  asChild
+                  position="absolute"
+                  // Mobile: center horizontally at bottom.
+                  left={{ base: "0", md: "0" }}
+                  right={{ base: "0", md: "auto" }}
+                  bottom={{ base: "0", md: "auto" }}
+                  // Desktop: vertically center relative to container.
+                  top={{ base: "auto", md: "1/2" }}
+                  w={{ base: "fit", md: "auto" }}
+                  mx={{ base: "auto", md: "0" }}
+                  transform={{ base: "none", md: "translateY(-50%)" }}
+                >
+                  <IconButton variant="subtle" rounded="full" size="md">
+                    <AngleRight rotate={{ base: "270deg", md: "0deg" }} />
+                  </IconButton>
+                </Drawer.Trigger>
+              </Box>
+              <Drawer.Backdrop h="full" w="full" position="absolute" />
+              <Drawer.Positioner h="full" w="full" position="absolute">
+                {/* actual drawer, open */}
+                <Drawer.Content
+                  // NOTE: the following props are used because the `size` prop values of `Drawer.Root` are too limited (and do not directly correspond to the theme `sizes` tokens)
+                  w={{ base: "full", md: "sm" }}
+                  maxW={{ base: "full", md: "sm" }}
+                  h={{ base: "1/2", md: "full" }}
+                  maxH={{ base: "1/2", md: "full" }}
+                >
+                  <Drawer.CloseTrigger
+                    asChild
+                    position="absolute"
+                    // Mobile: centered above drawer edge.
+                    // Desktop: right edge, vertically centered.
+                    left={{ base: "0", md: "auto" }}
+                    right={{ base: "0", md: "-5" }}
+                    top={{ base: "-5", md: "1/2" }}
+                    w={{ base: "fit", md: "auto" }}
+                    mx={{ base: "auto", md: "0" }}
+                    transform={{ base: "none", md: "translateY(-50%)" }}
+                  >
+                    <IconButton variant="subtle" rounded="full" size="md">
+                      <AngleLeft rotate={{ base: "270deg", md: "0deg" }} />
+                    </IconButton>
+                  </Drawer.CloseTrigger>
+                  <Drawer.Header>
+                    <Drawer.Title>Risk Layers</Drawer.Title>
+                  </Drawer.Header>
+                  <Drawer.Body>
+                    <ReportHazards
+                      addressHazardData={displayData}
+                      isHazardDataLoading={isHazardDataLoading}
+                      toggledStates={toggledStates}
+                      setToggledStates={setToggledStates}
+                      setLayerToggleObj={setLayerToggleObj}
+                      isInDrawer={true}
+                    />
+                  </Drawer.Body>
+                  <Drawer.Footer></Drawer.Footer>
+                </Drawer.Content>
+              </Drawer.Positioner>
+            </Portal>
+          </Drawer.Root>
           <Map
             lon={lon}
             lat={lat}
