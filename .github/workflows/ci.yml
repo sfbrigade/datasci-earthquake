@@ -199,7 +199,7 @@ jobs:
         run: docker compose -f compose.yaml -f compose.ci.yaml build
       
       - name: Start Services
-        run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
+        run: docker --debug compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
 
       - run: docker compose volumes 
       - run: docker inspect datasci-earthquake-frontend-1
