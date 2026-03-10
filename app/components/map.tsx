@@ -40,9 +40,9 @@ interface MapProps {
 
 const Map: React.FC<MapProps> = ({
   coordinates = defaultCoords,
-  softStoryData: soft,
-  tsunamiData: tsunami,
-  liquefactionData: liquefaction,
+  softStoryData,
+  tsunamiData,
+  liquefactionData,
   layerToggleObj,
 }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -50,19 +50,6 @@ const Map: React.FC<MapProps> = ({
   const markerRef = useRef<mapboxgl.Marker>(undefined);
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
-
-  let softStoryData: FeatureCollection<Geometry, GeoJsonProperties> = {
-    type: "FeatureCollection",
-    features: [],
-  };
-  let tsunamiData: FeatureCollection<Geometry, GeoJsonProperties> = {
-    type: "FeatureCollection",
-    features: [],
-  };
-  let liquefactionData: FeatureCollection<Geometry, GeoJsonProperties> = {
-    type: "FeatureCollection",
-    features: [],
-  };
 
   const handleToggleLayers = () => {
     if (!mapRef.current) return;
