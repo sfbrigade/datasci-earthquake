@@ -1,9 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Box, Flex, HStack } from "@chakra-ui/react";
+import { Box, chakra } from "@chakra-ui/react";
 import {
-  Center,
   Button,
   IconButton,
   CloseButton,
@@ -18,6 +17,7 @@ import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
 import MobileReportHazards from "./mobile-report-hazards";
+import OverlayReportHazards from "./overlay-report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
@@ -28,6 +28,8 @@ const addressLookupCoordinates = {
 };
 const defaultCoords = addressLookupCoordinates.geometry.coordinates ?? [];
 const toggledStatesDefaults = [true, true, true];
+const AngleLeft = chakra(FaAngleLeft);
+const AngleRight = chakra(FaAngleRight);
 
 interface AddressMapperProps {
   softStoryData: FeatureCollection<Geometry>;
@@ -233,28 +235,26 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           </Box>
           <Drawer.Root placement={{ mdDown: "bottom", md: "start" }}>
             <Portal>
+              {/* dummy drawer, closed */}
               <Box
                 position="absolute"
-                zIndex="docked"
-                top="0"
+                zIndex="overlay"
+                top={{ base: "auto", md: "0" }}
                 left="0"
                 bottom="0"
-                width="5"
+                right={{ base: "0", md: "auto" }}
+                w={{ base: "auto", md: "5" }}
+                h={{ base: "5", md: "auto" }}
                 backgroundColor="white"
               >
                 <Drawer.Trigger
                   asChild
                   position="absolute"
-                  left="0"
-                  top="calc(50% - {spacing.6})"
+                  left={{ base: "calc(50% - {sizes.4})", md: "0" }}
+                  bottom={{ base: "0", md: "calc(50% - {sizes.4})" }}
                 >
-                  <IconButton
-                    variant="subtle"
-                    aria-label="Close drawer"
-                    rounded="full"
-                    size="md"
-                  >
-                    <FaAngleRight />
+                  <IconButton variant="subtle" rounded="full" size="md">
+                    <AngleRight rotate={{ base: "270deg", md: "0deg" }} />
                   </IconButton>
                 </Drawer.Trigger>
               </Box>
@@ -262,20 +262,32 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             <Portal>
               <Drawer.Backdrop />
               <Drawer.Positioner>
-                <Drawer.Content>
+                {/* actual drawer, open */}
+                <Drawer.Content
+                  // NOTE: the following props are used because the `size` prop values of `Drawer.Root` are too limited (and do not directly correspond to the theme `sizes` tokens)
+                  w={{ base: "full", md: "sm" }}
+                  maxW={{ base: "full", md: "sm" }}
+                  h={{ base: "1/2", md: "full" }}
+                  maxH={{ base: "1/2", md: "full" }}
+                >
                   <Drawer.CloseTrigger
                     asChild
                     position="absolute"
-                    left="calc({spacing.80} - {sizes.5})"
-                    top="calc(50% - {spacing.6})"
+                    left={{
+                      base: "calc(50% - {sizes.4})",
+                      md: "calc({sizes.sm} - {sizes.4})",
+                    }}
+                    right={{
+                      base: "calc(50% + {sizes.4})",
+                      md: "calc({sizes.4} * -1)",
+                    }}
+                    top={{
+                      base: "calc({sizes.4} * -1)",
+                      md: "calc(50% - {sizes.4})",
+                    }}
                   >
-                    <IconButton
-                      variant="subtle"
-                      aria-label="Close drawer"
-                      rounded="full"
-                      size="md"
-                    >
-                      <FaAngleLeft />
+                    <IconButton variant="subtle" rounded="full" size="md">
+                      <AngleLeft rotate={{ base: "270deg", md: "0deg" }} />
                     </IconButton>
                   </Drawer.CloseTrigger>
                   <Drawer.Header>
@@ -283,12 +295,20 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   </Drawer.Header>
                   <Drawer.Body>
                     Press the <Kbd>esc</Kbd> key to close the drawer.
+                    <ReportHazards
+                      addressHazardData={addressHazardData}
+                      isHazardDataLoading={isHazardDataLoading}
+                      toggledStates={toggledStates}
+                      setToggledStates={setToggledStates}
+                      setLayerToggleObj={setLayerToggleObj}
+                      isInDrawer={true}
+                    />
                   </Drawer.Body>
                   <Drawer.Footer>
-                    <Drawer.ActionTrigger asChild>
+                    {/* <Drawer.ActionTrigger asChild>
                       <Button variant="outline">Cancel</Button>
                     </Drawer.ActionTrigger>
-                    <Button>Save</Button>
+                    <Button>Save</Button> */}
                   </Drawer.Footer>
                   <Drawer.CloseTrigger asChild>
                     <CloseButton size="sm" />
