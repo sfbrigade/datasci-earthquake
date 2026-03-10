@@ -119,8 +119,8 @@ jobs:
       - run: npm config get cache 
       - run: ls -la /home/runner/.npm 
 
-      - name: npm install 
-        run: npm install  
+      #- name: npm install 
+      #  run: npm install  
 
       - name: npm verify AFTER
         run: npm cache verify

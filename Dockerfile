@@ -39,7 +39,7 @@ RUN npm config get cache
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
 
-# RUN npm install
+RUN npm install
 
 # RUN echo 'AFTER npm install....cache ls' && npm cache ls
 
@@ -70,5 +70,5 @@ EXPOSE 3000
 
 # Command to run the Next.js app in development mode
 # This command should correspond to the "dev" script in your package.json
-# CMD ["npm", "run", "next-dev"]
-CMD ["pwd"]
+CMD ["npm", "run", "next-dev"]
+#CMD ["pwd"]
