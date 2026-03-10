@@ -105,6 +105,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: changes
     steps:
+      - uses: actions/setup-node@v6
+        with: 
+          cache: 'npm'
+
+      - name: npm help 
+        run: npm help 
+
       - name: Checkout Code
         uses: actions/checkout@v4
 
