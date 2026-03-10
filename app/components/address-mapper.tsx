@@ -1,7 +1,18 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, HStack } from "@chakra-ui/react";
+import {
+  Center,
+  Button,
+  IconButton,
+  CloseButton,
+  Drawer,
+  Kbd,
+  Portal,
+  Text,
+} from "@chakra-ui/react";
+import { FaAngleLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
@@ -220,8 +231,72 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               />
             ) : null}
           </Box>
-        </Box>
-        <Box flex={{ base: "initial", sm: "1" }} h="full">
+          <Drawer.Root placement={{ mdDown: "bottom", md: "end" }}>
+            <Portal>
+              <Box
+                position="absolute"
+                zIndex="docked"
+                top="0"
+                right="0"
+                bottom="0"
+                width="5"
+                backgroundColor="white"
+              >
+                <Drawer.Trigger
+                  asChild
+                  position="absolute"
+                  right="0"
+                  top="calc(50% - {spacing.6})"
+                >
+                  <IconButton
+                    variant="subtle"
+                    aria-label="Close drawer"
+                    rounded="full"
+                    size="md"
+                  >
+                    <FaAngleLeft />
+                  </IconButton>
+                </Drawer.Trigger>
+              </Box>
+            </Portal>
+            <Portal>
+              <Drawer.Backdrop />
+              <Drawer.Positioner>
+                <Drawer.Content>
+                  <Drawer.CloseTrigger
+                    asChild
+                    position="absolute"
+                    right="calc({spacing.80} - {sizes.5})"
+                    top="calc(50% - {spacing.6})"
+                  >
+                    <IconButton
+                      variant="subtle"
+                      aria-label="Close drawer"
+                      rounded="full"
+                      size="md"
+                    >
+                      <FaAngleLeft />
+                    </IconButton>
+                  </Drawer.CloseTrigger>
+                  <Drawer.Header>
+                    <Drawer.Title>Drawer Title</Drawer.Title>
+                  </Drawer.Header>
+                  <Drawer.Body>
+                    Press the <Kbd>esc</Kbd> key to close the drawer.
+                  </Drawer.Body>
+                  <Drawer.Footer>
+                    <Drawer.ActionTrigger asChild>
+                      <Button variant="outline">Cancel</Button>
+                    </Drawer.ActionTrigger>
+                    <Button>Save</Button>
+                  </Drawer.Footer>
+                  <Drawer.CloseTrigger asChild>
+                    <CloseButton size="sm" />
+                  </Drawer.CloseTrigger>
+                </Drawer.Content>
+              </Drawer.Positioner>
+            </Portal>
+          </Drawer.Root>
           <Map
             coordinates={coordinates || defaultCoords}
             softStoryData={softStoryData}
