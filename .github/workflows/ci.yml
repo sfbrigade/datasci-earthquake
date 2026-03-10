@@ -201,14 +201,17 @@ jobs:
       - run: docker images
       - run: docker run -d --env-file .env --name mydb postgis-custom
       - run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
-      - run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/hahahun,dst=/app/node_modules-www-yya datasci-earthquake-frontend
+      - run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/pophahahun,dst=/app/node_modules-www-yya datasci-earthquake-frontend
       
-      - run: docker compose volumes 
+      - run: docker volume ls 
       - run: docker inspect myfrontend
 
       - run: docker stop myfrontend
       - run: docker stop mybackend
       - run: docker stop mydb
+
+      - run: pwd && ls -l 
+
       #- name: Start Services
       #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
 
