@@ -123,9 +123,6 @@ jobs:
  
       - run: pwd
 
-      - name: internet
-        run: pwd
-
       - name: Set default fork status
         run: echo "is_fork=false" >> $GITHUB_ENV
 

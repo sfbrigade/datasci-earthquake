@@ -55,11 +55,9 @@ COPY morestuff.cjs .
 # RUN node stuff.cjs
 # RUN node morestuff.cjs
 
-RUN echo 'cash internet today' && ls -l /app/drinksonyou
-
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
-RUN echo 'cash today' && ls -l
+RUN echo 'see if they made it' && ls -l
 
 # Expose the port Next.js runs on during development
 EXPOSE 3000
