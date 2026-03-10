@@ -2,7 +2,7 @@ import { Inter, Manrope } from "next/font/google";
 import { Box, Flex } from "@chakra-ui/react";
 import { Provider } from "@/components/ui/provider";
 import Header from "@/components/header";
-import Footer from "@/components/footer";
+import FooterVerbose from "@/components/footer-verbose";
 import { Toaster } from "@/components/ui/toaster";
 
 const manrope = Manrope({
@@ -43,7 +43,7 @@ export default function RootLayout({
             <Box flex="1" as="main" width="full" h="full">
               {children}
             </Box>
-            <Footer />
+            <FooterVerbose />
           </Flex>
           <Toaster />
         </Provider>

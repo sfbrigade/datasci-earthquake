@@ -2,7 +2,7 @@ import { Box, Link, Text, VStack, Image, Stack } from "@chakra-ui/react";
 import { mockDisclaimers } from "./__mocks__/mock-data";
 import NextLink from "./custom-next-link";
 
-const Footer = () => {
+const FooterVerbose = () => {
   const disclaimers = mockDisclaimers.map((disclaimer, index) => {
     return (
       <Text
@@ -87,4 +87,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default FooterVerbose;
