@@ -199,9 +199,9 @@ jobs:
         run: docker compose -f compose.yaml -f compose.ci.yaml build
       
       - run: docker images
-      - run: docker run postgis-custom
-      - run: docker run datasci-earthquake-backend 
-      - run: docker run --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/hahahun,dst=/app/node_modules-www-yya datasci-earthquake-frontend
+      - run: docker run --env-file .env postgis-custom
+      - run: docker run --env-file .env datasci-earthquake-backend 
+      - run: docker run --env-file .env --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/hahahun,dst=/app/node_modules-www-yya datasci-earthquake-frontend
       
       - run: docker compose volumes 
       - run: docker inspect datasci-earthquake-frontend-1
