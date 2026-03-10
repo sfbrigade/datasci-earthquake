@@ -37,6 +37,7 @@ interface CardHazardProps {
   toggledStates: boolean[];
   setToggledStates: Dispatch<SetStateAction<boolean[]>>;
   setLayerToggleObj: Dispatch<SetStateAction<LayerToggleObjProps>>;
+  fullWidth?: boolean;
 }
 
 const CardHazard: React.FC<CardHazardProps> = ({
@@ -47,6 +48,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
   toggledStates,
   setToggledStates,
   setLayerToggleObj,
+  fullWidth = false,
 }) => {
   const { id, title, name, description, icon, iconColor } = hazard;
   const { exists, last_updated: date } = hazardData || {};
@@ -91,11 +93,12 @@ const CardHazard: React.FC<CardHazardProps> = ({
   return (
     <Card.Root
       flex={1}
-      maxW={{ base: "xs", "2xl": "sm" }}
+      maxW={fullWidth ? "none" : { base: "xs", "2xl": "sm" }}
       py={{ base: "3.5", md: "4" }}
       px={{ base: "4", md: "5" }}
       shadow="card"
       variant="elevated"
+      w={fullWidth ? "full" : "auto"}
     >
       <Popover.Root
         positioning={{
