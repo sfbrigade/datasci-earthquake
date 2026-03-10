@@ -55,9 +55,13 @@ COPY morestuff.cjs .
 # RUN node stuff.cjs
 # RUN node morestuff.cjs
 
+RUN echo 'voice 1' && pwd && ls -la
+
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
-RUN echo 'see if they made it' && ls -l
+
+
+RUN echo 'voice 2' && pwd && ls -la
 
 # Expose the port Next.js runs on during development
 EXPOSE 3000
