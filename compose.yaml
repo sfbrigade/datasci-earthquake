@@ -97,6 +97,7 @@ services:
       - .:/app:rw,delegated # Mount after dependencies are installed
       - /app/node_modules # This excludes the node_modules from being overwritten
       - nextjs_cache:/app/.next
+      - /home/runner/work/datasci-earthquake/datasci-earthquake/torts:/home/node/.npm/_cacache
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       start_interval: 10s

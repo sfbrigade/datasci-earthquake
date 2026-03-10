@@ -156,11 +156,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: mkdir torts 
-        run: mkdir torts 
+      #- name: mkdir torts 
+      #  run: mkdir torts 
 
-      - name: pwd - ls 
-        run: pwd && ls -l torts
+      #- name: pwd - ls 
+      #  run: pwd && ls -l torts
 
       #- name: Cache Docker Frontend layers
       #  uses: actions/cache@v4
@@ -168,35 +168,22 @@ jobs:
       #    path: earthquake-cache-frontend
       #    key: ${{ hashFiles('Dockerfile') }}-earthquake-cache-frontend
 
-      # .npm doesnt exist yet 
-      #- name: list the npm dir now cats 
-      #  run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/haha/.npm 
-
       #- name: Cache npm dependencies
       #  uses: actions/cache@v4
       #  with:
       #    path: /home/runner/work/datasci-earthquake/datasci-earthquake/haha
       #    key: earthquake-cache-npm-aaa
 
-      #- name: list the npm dir now parts 
-      #  run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/haha/.npm 
-
       - name: Build Docker Containers
         run: docker compose -f compose.yaml -f compose.ci.yaml build
 
-      - name: ls AGAIN 
-        run: ls -l torts 
+      #- name: Start Services
+      #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
 
-      #- name: check DU 
-      #  run: docker buildx du --verbose
+      #- name: copy stuff
+      #  run: docker cp datasci-earthquake-frontend-1:/home/node/.npm/_cacache /home/runner/work/datasci-earthquake/datasci-earthquake/torts
 
-      - name: Start Services
-        run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
-
-      - name: copy stuff
-        run: docker cp datasci-earthquake-frontend-1:/home/node/.npm/_cacache /home/runner/work/datasci-earthquake/datasci-earthquake/torts
-
-      - name: more ls 
+      - name: see whats in torts now 
         run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/torts 
 
       #- name: Docker Backend Logs
@@ -221,5 +208,5 @@ jobs:
       #- name: Run Frontend Tests
       #  run: docker compose -f compose.yaml -f compose.ci.yaml run --rm frontend npm test
 
-      - name: Clean Up
-        run: docker compose -f compose.yaml -f compose.ci.yaml down
+      #- name: Clean Up
+      #  run: docker compose -f compose.yaml -f compose.ci.yaml down
