@@ -207,11 +207,14 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
   },
   spacing: {
     0: { value: 0 }, // explicit 0 value for margin, padding, etc.
-    auto: { value: "auto" }, // explicit "auto" value for margin
+    auto: { value: "auto" }, // explicit "auto" value for e.g. margin
+    "1/2": { value: "50%" }, // convenience token for 50% (e.g. top="1/2")
   },
   sizes: {
     // for popover content maxHeight
     unset: { value: "unset" },
+    auto: { value: "auto" }, // explicit "auto" value for e.g. width
+    none: { value: "none" }, // explicit "none" value for e.g. max-width
 
     // map marker (global CSS)
     // TODO: adjust these so that they are based on Chakra sizing scale

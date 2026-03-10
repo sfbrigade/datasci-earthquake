@@ -13,16 +13,18 @@ const ReportHazards = ({
   toggledStates,
   setToggledStates,
   setLayerToggleObj,
+  isInDrawer = false,
 }: {
   addressHazardData: HazardData;
   isHazardDataLoading: boolean;
   toggledStates: boolean[];
   setToggledStates: Dispatch<SetStateAction<boolean[]>>;
   setLayerToggleObj: Dispatch<SetStateAction<LayerToggleObjProps>>;
+  isInDrawer?: boolean;
 }) => {
   return (
     <Box>
-      <CardContainer>
+      <CardContainer padded={!isInDrawer}>
         {Hazards.map((hazard) => {
           return (
             <CardHazard
@@ -37,6 +39,7 @@ const ReportHazards = ({
               toggledStates={toggledStates}
               setToggledStates={setToggledStates}
               setLayerToggleObj={setLayerToggleObj}
+              fullWidth={isInDrawer}
             />
           );
         })}
