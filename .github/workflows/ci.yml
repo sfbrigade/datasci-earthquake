@@ -112,14 +112,19 @@ jobs:
         with: 
           cache: 'npm'
 
-      - name: npm stuff more
+      - name: npm verify BEFORE 
         run: npm cache verify 
 
-      - name: npm stuff 
+      - name: npm install 
         run: npm install  
 
-      - name: check npm stuff more
-        run: npm cache verify 
+      - name: npm verify AFTER
+        run: npm cache verify
+ 
+      - run: pwd
+
+      - name: internet
+        run: pwd
 
       - name: Set default fork status
         run: echo "is_fork=false" >> $GITHUB_ENV

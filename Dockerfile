@@ -20,7 +20,6 @@ RUN chown node:node /app
 # Pre-create the directory and set the owner to `node` user to ensure it is writable when the container runs as non-root
 RUN mkdir -p /app/.next && chown -R node:node /app/.next
 
-RUN mkdir drinksonyou && chown -R node:node /app/drinksonyou
 USER node
 
 RUN npm config get cache
@@ -40,9 +39,7 @@ RUN npm cache ls
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
 
-RUN mkdir torts
-RUN echo 'hahao' && pwd
-RUN --mount=type=cache,source=/app/torts,target=/home/node/.npm/_cacache npm install
+RUN npm install
 
 RUN echo 'AFTER npm install....cache ls' && npm cache ls
 
@@ -55,15 +52,14 @@ RUN echo 'funny fun' && npm cache ls cacache
 COPY stuff.cjs .
 COPY morestuff.cjs .
 
-RUN echo 'cash today' && ls -l
-
-RUN node stuff.cjs
-RUN node morestuff.cjs
+# RUN node stuff.cjs
+# RUN node morestuff.cjs
 
 RUN echo 'cash internet today' && ls -l /app/drinksonyou
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
+RUN echo 'cash today' && ls -l
 
 # Expose the port Next.js runs on during development
 EXPOSE 3000
