@@ -112,8 +112,11 @@ jobs:
         with: 
           cache: 'npm'
 
-      - name: npm help 
-        run: npm help 
+      - name: npm stuff 
+        run: npm cache ls 
+
+      - name: npm stuff more
+        run: npm cache verify 
 
       - name: Set default fork status
         run: echo "is_fork=false" >> $GITHUB_ENV
@@ -163,12 +166,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: mkdir torts 
-        run: mkdir torts 
-
-      - name: pwd - ls 
-        run: pwd && ls -l torts
-
       #- name: Cache Docker Frontend layers
       #  uses: actions/cache@v4
       #  with:
@@ -181,17 +178,14 @@ jobs:
       #    path: /home/runner/work/datasci-earthquake/datasci-earthquake/haha
       #    key: earthquake-cache-npm-aaa
 
-      - name: Build Docker Containers
-        run: docker compose -f compose.yaml -f compose.ci.yaml build
+      #- name: Build Docker Containers
+      #  run: docker compose -f compose.yaml -f compose.ci.yaml build
 
       #- name: Start Services
       #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
 
       #- name: copy stuff
       #  run: docker cp datasci-earthquake-frontend-1:/home/node/.npm/_cacache /home/runner/work/datasci-earthquake/datasci-earthquake/torts
-
-      - name: see whats in torts now 
-        run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake/torts 
 
       #- name: Docker Backend Logs
       #  if: always()
