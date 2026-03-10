@@ -24,30 +24,30 @@ USER node
 
 RUN npm config get cache
 
-RUN ls -la /home/node/.npm
+# RUN ls -la /home/node/.npm
 
-RUN echo 'BEFORE npm install....cache ls' && npm cache ls
+# RUN echo 'BEFORE npm install....cache ls' && npm cache ls
 
-RUN echo 'BEFORE npm install....cache verify' && npm cache verify
+# RUN echo 'BEFORE npm install....cache verify' && npm cache verify
 
-RUN ls -la /home/node/.npm
+# RUN ls -la /home/node/.npm
 
-RUN ls -la /home/node/.npm/_cacache
+# RUN ls -la /home/node/.npm/_cacache
 
-RUN npm cache ls
+# RUN npm cache ls
 
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
 
-RUN npm install
+# RUN npm install
 
-RUN echo 'AFTER npm install....cache ls' && npm cache ls
+# RUN echo 'AFTER npm install....cache ls' && npm cache ls
 
-RUN echo 'AFTER npm install....cache verify' && npm cache verify
+# RUN echo 'AFTER npm install....cache verify' && npm cache verify
 
-RUN npm install cacache
+# RUN npm install cacache
 
-RUN echo 'funny fun' && npm cache ls cacache
+# RUN echo 'funny fun' && npm cache ls cacache
 
 COPY stuff.cjs .
 COPY morestuff.cjs .
