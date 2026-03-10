@@ -115,11 +115,16 @@ jobs:
       - name: npm verify BEFORE 
         run: npm cache verify 
 
+
+      - run: ls -la /home/node/ 
+
       - name: npm install 
         run: npm install  
 
       - name: npm verify AFTER
         run: npm cache verify
+
+      - run: ls -la /home/node/.npm/_cacache 
  
       - run: pwd
 
