@@ -199,14 +199,18 @@ jobs:
         run: docker compose -f compose.yaml -f compose.ci.yaml build
       
       - run: docker images
-      #- run: docker run postgis-custom
-      #- run: docker run postgis-custom
-      #- run: docker run postgis-custom
+      - run: docker run postgis-custom
+      - run: docker run datasci-earthquake-backend 
+      - run: docker run --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/hahahun,dst=/app/node_modules-www-yya datasci-earthquake-frontend
+      
+      - run: docker compose volumes 
+      - run: docker inspect datasci-earthquake-frontend-1
+
+      - run: docker stop datasci-earthquake-frontend-1 
+      - run: docker stop datasci-earthquake-backend-1
+      - run: docker stop my_postgis_db
       #- name: Start Services
       #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
-
-      #- run: docker compose volumes 
-      #- run: docker inspect datasci-earthquake-frontend-1
 
       #- name: copy stuff
       #  run: docker cp datasci-earthquake-frontend-1:/home/node/.npm/_cacache /home/runner/work/datasci-earthquake/datasci-earthquake/torts
