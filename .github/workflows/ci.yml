@@ -112,10 +112,13 @@ jobs:
         with: 
           cache: 'npm'
 
-      - name: npm stuff 
-        run: npm cache ls 
-
       - name: npm stuff more
+        run: npm cache verify 
+
+      - name: npm stuff 
+        run: npm install  
+
+      - name: check npm stuff more
         run: npm cache verify 
 
       - name: Set default fork status
