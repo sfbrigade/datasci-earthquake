@@ -7,10 +7,10 @@ services:
     build:
       context: ./backend/database
       dockerfile: Dockerfile
-      cache_from:
-        - type=local,src=earthquake-cache-db-sing
-      cache_to:
-        - type=local,dest=earthquake-cache-db-sing
+      #cache_from:
+      #  - type=local,src=earthquake-cache-db-sing
+      #cache_to:
+      #  - type=local,dest=earthquake-cache-db-sing
     container_name: my_postgis_db
     restart: always
     env_file:
