@@ -116,7 +116,7 @@ jobs:
         run: npm cache verify 
 
 
-      - run: ls -la /home/node/ 
+      - run: npm config get cache 
 
       - name: npm install 
         run: npm install  
@@ -124,7 +124,7 @@ jobs:
       - name: npm verify AFTER
         run: npm cache verify
 
-      - run: ls -la /home/node/.npm/_cacache 
+      # - run: ls -la /home/node/.npm/_cacache 
  
       - run: pwd
 
