@@ -205,12 +205,16 @@ jobs:
       
       - run: docker volume ls 
       - run: docker inspect myfrontend
+      - run: docker exec -d myfrontend sh -c "cd /app/node_modules && touch omg.txt"
+
+      - run: echo 'looky' && ls -l /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
 
       - run: docker stop myfrontend
       - run: docker stop mybackend
       - run: docker stop mydb
 
       - run: pwd && ls -l 
+      - run: echo 'spooky' && ls -l /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
 
       #- name: Start Services
       #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
