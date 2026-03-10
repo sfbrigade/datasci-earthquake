@@ -119,8 +119,8 @@ jobs:
       - run: npm config get cache 
       - run: ls -la /home/runner/.npm 
 
-      #- name: npm install 
-      #  run: npm install  
+      - name: npm install 
+        run: npm install  
 
       - name: npm verify AFTER
         run: npm cache verify
@@ -201,7 +201,7 @@ jobs:
       - run: docker images
       - run: docker run -d --env-file .env --name mydb postgis-custom
       - run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
-      - run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/pophahahun,dst=/app/node_modules-www-yya datasci-earthquake-frontend
+      - run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/node_modules,dst=/app/node_modules datasci-earthquake-frontend
       
       - run: docker volume ls 
       - run: docker inspect myfrontend
