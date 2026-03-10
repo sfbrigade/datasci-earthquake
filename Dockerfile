@@ -54,9 +54,9 @@ COPY morestuff.cjs .
 
 # RUN node stuff.cjs
 # RUN node morestuff.cjs
-# RUN mkdir node_modules
+RUN mkdir node_modules
 
-RUN ls -la node_modules
+RUN pwd && ls -la node_modules
 RUN echo 'voice 1' && pwd && ls -la
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
