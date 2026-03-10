@@ -12,7 +12,7 @@ import {
   Portal,
   Text,
 } from "@chakra-ui/react";
-import { FaAngleLeft } from "react-icons/fa";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
@@ -231,13 +231,13 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               />
             ) : null}
           </Box>
-          <Drawer.Root placement={{ mdDown: "bottom", md: "end" }}>
+          <Drawer.Root placement={{ mdDown: "bottom", md: "start" }}>
             <Portal>
               <Box
                 position="absolute"
                 zIndex="docked"
                 top="0"
-                right="0"
+                left="0"
                 bottom="0"
                 width="5"
                 backgroundColor="white"
@@ -245,7 +245,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 <Drawer.Trigger
                   asChild
                   position="absolute"
-                  right="0"
+                  left="0"
                   top="calc(50% - {spacing.6})"
                 >
                   <IconButton
@@ -254,7 +254,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                     rounded="full"
                     size="md"
                   >
-                    <FaAngleLeft />
+                    <FaAngleRight />
                   </IconButton>
                 </Drawer.Trigger>
               </Box>
@@ -266,7 +266,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   <Drawer.CloseTrigger
                     asChild
                     position="absolute"
-                    right="calc({spacing.80} - {sizes.5})"
+                    left="calc({spacing.80} - {sizes.5})"
                     top="calc(50% - {spacing.6})"
                   >
                     <IconButton
@@ -279,7 +279,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                     </IconButton>
                   </Drawer.CloseTrigger>
                   <Drawer.Header>
-                    <Drawer.Title>Drawer Title</Drawer.Title>
+                    <Drawer.Title>Risk Layers</Drawer.Title>
                   </Drawer.Header>
                   <Drawer.Body>
                     Press the <Kbd>esc</Kbd> key to close the drawer.
