@@ -117,6 +117,7 @@ jobs:
 
 
       - run: npm config get cache 
+      - run: ls -la /home/runner/.npm 
 
       - name: npm install 
         run: npm install  
@@ -124,9 +125,13 @@ jobs:
       - name: npm verify AFTER
         run: npm cache verify
 
+      - run: ls -la /home/runner/.npm 
+
       # - run: ls -la /home/node/.npm/_cacache 
  
       - run: pwd
+
+      - run: touch hahahahahah.txt 
 
       - name: Set default fork status
         run: echo "is_fork=false" >> $GITHUB_ENV
@@ -188,8 +193,8 @@ jobs:
       #    path: /home/runner/work/datasci-earthquake/datasci-earthquake/haha
       #    key: earthquake-cache-npm-aaa
 
-      - name: Build Docker Containers
-        run: docker compose -f compose.yaml -f compose.ci.yaml build
+      #- name: Build Docker Containers
+      #  run: docker compose -f compose.yaml -f compose.ci.yaml build
 
       #- name: Start Services
       #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
