@@ -129,7 +129,7 @@ jobs:
 
       # - run: ls -la /home/node/.npm/_cacache 
  
-      - run: pwd
+      - run: pwd && mkdir hahahun
 
       - run: ls -la /home/runner/work/datasci-earthquake/datasci-earthquake 
 

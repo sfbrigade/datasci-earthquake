@@ -102,12 +102,12 @@ services:
       - /app/node_modules # This excludes the node_modules from being overwritten
       - nextjs_cache:/app/.next
       #- /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules:/app/node_modules_hahahahha
-      #- type: bind
-      #  source: /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
-      #  target: /app/node_modules
-      #- type: bind
-      #  source: /home/runner/work/datasci-earthquake/datasci-earthquake-whoooo
-      #  target: /app/node_modules-www-yya
+      - type: bind
+        source: /home/runner/work/datasci-earthquake/datasci-earthquake/hahahun
+        target: /app/node_modules
+      - type: bind
+        source: /home/runner/work/datasci-earthquake/datasci-earthquake-whoooo
+        target: /app/node_modules-www-yya
 
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
