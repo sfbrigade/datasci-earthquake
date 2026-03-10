@@ -39,7 +39,7 @@ RUN npm config get cache
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
 
-# RUN npm install
+RUN npm install
 
 # RUN echo 'AFTER npm install....cache ls' && npm cache ls
 
