@@ -156,11 +156,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      #- name: mkdir torts 
-      #  run: mkdir torts 
+      - name: mkdir torts 
+        run: mkdir torts 
 
-      #- name: pwd - ls 
-      #  run: pwd && ls -l torts
+      - name: pwd - ls 
+        run: pwd && ls -l torts
 
       #- name: Cache Docker Frontend layers
       #  uses: actions/cache@v4
