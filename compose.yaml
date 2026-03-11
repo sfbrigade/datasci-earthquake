@@ -112,10 +112,14 @@ services:
       #  source: ${DOCKER_HOST}/home/runner/work/datasci-earthquake/datasci-earthquake/doityourself
       #  target: /app/node_modules_doityourself
 
-      - type: bind
-        source: /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
-        target: /app/node_modules
+      # does NOT work 
+      #- type: bind
+      #  source: /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
+      #  target: /app/node_modules
 
+      - type: bind
+        source: ./node_modules
+        target: /app/node_modules
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       start_interval: 10s
