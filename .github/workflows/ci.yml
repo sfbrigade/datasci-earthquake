@@ -236,9 +236,9 @@ jobs:
       #  if: always()
       #  run: docker logs my_postgis_db_test || echo "No logs found"
 
-      #- name: Docker Frontend Logs
-      #  if: always()
-      #  run: docker logs datasci-earthquake-frontend-1 || echo "No logs found"
+      - name: Docker Frontend Logs
+        if: always()
+        run: docker logs datasci-earthquake-frontend-1 || echo "No logs found"
 
       #- name: Run Backend Tests
       #  run: docker compose -f compose.yaml -f compose.ci.yaml run backend pytest backend/database/tests/ -v

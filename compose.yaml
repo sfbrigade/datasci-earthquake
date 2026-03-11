@@ -129,6 +129,7 @@ services:
       # does NOT work - after taking out the earlier stuff
       #- ./node_modules:/app/node_modules
 
+      # does NOT work - after taking out the earlier stuff
       - type: bind
         source: /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
         target: /app/node_modules
