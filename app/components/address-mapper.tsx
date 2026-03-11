@@ -17,7 +17,6 @@ import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
 import MobileReportHazards from "./mobile-report-hazards";
-import OverlayReportHazards from "./overlay-report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
@@ -58,6 +57,9 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   tsunamiData,
   liquefactionData,
 }) => {
+  // Drawer
+  const drawerContainerRef = useRef(null);
+
   const searchParams = useSearchParams();
   const initialLat = searchParams.get("lat");
   const initialLon = searchParams.get("lon");
@@ -210,7 +212,13 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         isSearchComplete={isSearchComplete}
         onSearchChange={handleSearchChange}
       />
-      <Box w="full" m="auto" h="full" position="relative">
+      <Box
+        w="full"
+        m="auto"
+        h="full"
+        position="relative"
+        ref={drawerContainerRef}
+      >
         <Box h="full" overflow="hidden">
           <Box zIndex="docked" top="0" position="absolute">
             {currentView === "desktop" ? (
@@ -234,7 +242,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             ) : null}
           </Box>
           <Drawer.Root placement={{ mdDown: "bottom", md: "start" }}>
-            <Portal>
+            <Portal container={drawerContainerRef}>
               {/* dummy drawer, closed */}
               <Box
                 position="absolute"
@@ -250,18 +258,16 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 <Drawer.Trigger
                   asChild
                   position="absolute"
-                  left={{ base: "calc(50% - {sizes.4})", md: "0" }}
-                  bottom={{ base: "0", md: "calc(50% - {sizes.4})" }}
+                  left={{ base: "calc(50% - {sizes.5})", md: "0" }}
+                  bottom={{ base: "0", md: "calc(50% - {sizes.5})" }}
                 >
                   <IconButton variant="subtle" rounded="full" size="md">
                     <AngleRight rotate={{ base: "270deg", md: "0deg" }} />
                   </IconButton>
                 </Drawer.Trigger>
               </Box>
-            </Portal>
-            <Portal>
-              <Drawer.Backdrop />
-              <Drawer.Positioner>
+              <Drawer.Backdrop h="full" w="full" position="absolute" />
+              <Drawer.Positioner h="full" w="full" position="absolute">
                 {/* actual drawer, open */}
                 <Drawer.Content
                   // NOTE: the following props are used because the `size` prop values of `Drawer.Root` are too limited (and do not directly correspond to the theme `sizes` tokens)
@@ -274,16 +280,16 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                     asChild
                     position="absolute"
                     left={{
-                      base: "calc(50% - {sizes.4})",
-                      md: "calc({sizes.sm} - {sizes.4})",
+                      base: "calc(50% - {sizes.5})",
+                      md: "calc({sizes.sm} - {sizes.5})",
                     }}
                     right={{
-                      base: "calc(50% + {sizes.4})",
-                      md: "calc({sizes.4} * -1)",
+                      base: "calc(50% + {sizes.5})",
+                      md: "calc({sizes.5} * -1)",
                     }}
                     top={{
-                      base: "calc({sizes.4} * -1)",
-                      md: "calc(50% - {sizes.4})",
+                      base: "calc({sizes.5} * -1)",
+                      md: "calc(50% - {sizes.5})",
                     }}
                   >
                     <IconButton variant="subtle" rounded="full" size="md">
