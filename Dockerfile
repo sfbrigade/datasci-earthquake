@@ -11,8 +11,12 @@ USER root
 RUN apk add --no-cache curl
 
 WORKDIR /app
+USER runner
+
 RUN mkdir hotgarbage
 RUN echo 'huh' && pwd && ls -l
+
+USER root
 # change owner to node user
 RUN chown node:node /app
 
