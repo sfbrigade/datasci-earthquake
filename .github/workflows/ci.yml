@@ -215,11 +215,13 @@ jobs:
 
       - run: echo 'looky' && ls -l /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
 
-      - run: pwd && ls -l 
       - run: echo 'spooky' && ls -l /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
 
       - name: Start Services
         run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
+
+      - run: docker inspect datasci-earthquake-frontend-1 
+      - run: pwd && ls -l 
 
       #- name: copy stuff
       #  run: docker cp datasci-earthquake-frontend-1:/home/node/.npm/_cacache /home/runner/work/datasci-earthquake/datasci-earthquake/torts
