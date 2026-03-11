@@ -37,6 +37,7 @@ COPY morestuff.cjs .
 
 # used for docker run commands. it works!
 RUN mkdir node_modules
+RUN echo 'ohboy' && pwd && ls -l
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
