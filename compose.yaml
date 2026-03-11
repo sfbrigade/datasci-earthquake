@@ -135,7 +135,7 @@ services:
       #  target: /app/node_modules
 
 
-      - garbage:/app/hotgarbage
+      - /home/runner/work/datasci-earthquake/datasci-earthquake/garbage:/app/hotgarbage
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       start_interval: 10s
