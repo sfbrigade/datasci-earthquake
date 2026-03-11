@@ -89,8 +89,6 @@ services:
     depends_on:
       - backend
     volumes:
-      - .:/app:rw,delegated # Mount after dependencies are installed
-      - /app/node_modules # This excludes the node_modules from being overwritten
       - nextjs_cache:/app/.next
       # does NOT work: didn't create either directory
       #- /home/runner/work/datasci-earthquake/datasci-earthquake/doityourself:/app/node_modules_doityourself
@@ -124,6 +122,9 @@ services:
 
       # does NOT work
       #- ./node_modules:/app/node_modules
+
+      # does NOT work
+      #- node_modules:/app/node_modules
 
       - node_modules:/app/node_modules
     healthcheck:
