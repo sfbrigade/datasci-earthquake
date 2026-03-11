@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import {
   chakra,
+  useDisclosure,
   IconButton,
   Drawer,
   Portal,
@@ -58,6 +59,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const router = useRouter();
   const pathname = usePathname();
   // Drawer
+  const { open, onOpen, onClose } = useDisclosure();
   const drawerContainerRef = useRef(null);
 
   const searchParams = useSearchParams();
@@ -209,38 +211,44 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         ref={drawerContainerRef}
       >
         <Box h="full" overflow="hidden">
-          <Drawer.Root placement={{ mdDown: "bottom", md: "start" }}>
+          <Drawer.Root
+            placement={{ mdDown: "bottom", md: "start" }}
+            open={open}
+          >
             <Portal container={drawerContainerRef}>
               {/* dummy drawer, closed */}
-              <Box
-                position="absolute"
-                zIndex="overlay"
-                top={{ base: "auto", md: "0" }}
-                left="0"
-                bottom="0"
-                right={{ base: "0", md: "auto" }}
-                w={{ base: "auto", md: "5" }}
-                h={{ base: "5", md: "auto" }}
-                backgroundColor="white"
-              >
-                <Drawer.Trigger
-                  asChild
+              {open ? null : (
+                <Box
                   position="absolute"
-                  // Mobile: center horizontally at bottom.
-                  left={{ base: "0", md: "0" }}
+                  zIndex="overlay"
+                  top={{ base: "auto", md: "0" }}
+                  left="0"
+                  bottom="0"
                   right={{ base: "0", md: "auto" }}
-                  bottom={{ base: "0", md: "auto" }}
-                  // Desktop: vertically center relative to container.
-                  top={{ base: "auto", md: "1/2" }}
-                  w={{ base: "fit", md: "auto" }}
-                  mx={{ base: "auto", md: "0" }}
-                  transform={{ base: "none", md: "translateY(-50%)" }}
+                  w={{ base: "auto", md: "5" }}
+                  h={{ base: "5", md: "auto" }}
+                  backgroundColor="white"
                 >
-                  <IconButton variant="subtle" rounded="full" size="md">
-                    <AngleRight rotate={{ base: "270deg", md: "0deg" }} />
-                  </IconButton>
-                </Drawer.Trigger>
-              </Box>
+                  <Drawer.Trigger
+                    onClick={onOpen}
+                    asChild
+                    position="absolute"
+                    // Mobile: center horizontally at bottom.
+                    left={{ base: "0", md: "0" }}
+                    right={{ base: "0", md: "auto" }}
+                    bottom={{ base: "0", md: "auto" }}
+                    // Desktop: vertically center relative to container.
+                    top={{ base: "auto", md: "1/2" }}
+                    w={{ base: "fit", md: "auto" }}
+                    mx={{ base: "auto", md: "0" }}
+                    transform={{ base: "none", md: "translateY(-50%)" }}
+                  >
+                    <IconButton variant="subtle" rounded="full" size="md">
+                      <AngleRight rotate={{ base: "270deg", md: "0deg" }} />
+                    </IconButton>
+                  </Drawer.Trigger>
+                </Box>
+              )}
               <Drawer.Backdrop h="full" w="full" position="absolute" />
               <Drawer.Positioner h="full" w="full" position="absolute">
                 {/* actual drawer, open */}
@@ -252,6 +260,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   maxH={{ base: "1/2", md: "full" }}
                 >
                   <Drawer.CloseTrigger
+                    onClick={onClose}
                     asChild
                     position="absolute"
                     // Mobile: centered above drawer edge.
