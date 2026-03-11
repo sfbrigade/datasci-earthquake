@@ -101,11 +101,13 @@ services:
       - .:/app:rw,delegated # Mount after dependencies are installed
       - /app/node_modules # This excludes the node_modules from being overwritten
       - nextjs_cache:/app/.next
-      # does NOT work
+      # does NOT work: didn't create either directory
       #- /home/runner/work/datasci-earthquake/datasci-earthquake/doityourself:/app/node_modules_doityourself
 
-      # create dir in Dockefile and in ci.yml
-      - /home/runner/work/datasci-earthquake/datasci-earthquake/doityourself:/app/node_modules_doityourself
+      # does NOT work: create dir in Dockefile and in ci.yml
+      #- /home/runner/work/datasci-earthquake/datasci-earthquake/doityourself:/app/node_modules_doityourself
+
+      - ${DOCKER_HOST}/home/runner/work/datasci-earthquake/datasci-earthquake/doityourself:/app/node_modules_doityourself
 
       #- type: bind
       #  source: /home/runner/work/datasci-earthquake/datasci-earthquake/hahahun
