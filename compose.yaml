@@ -110,9 +110,13 @@ services:
       # does NOT work: same as above but with DOCKER_HOST 
       #- ${DOCKER_HOST}/home/runner/work/datasci-earthquake/datasci-earthquake/doityourself:/app/node_modules_doityourself
 
-      - type: bind
-        source: ${DOCKER_HOST}/home/runner/work/datasci-earthquake/datasci-earthquake/doityourself
-        target: /app/node_modules_doityourself
+      #  
+      - doityourself:/app/node_modules_doityourself
+
+      # does NOT work: same as above but explicit 
+      #- type: bind
+      #  source: ${DOCKER_HOST}/home/runner/work/datasci-earthquake/datasci-earthquake/doityourself
+      #  target: /app/node_modules_doityourself
 
       #- type: bind
       #  source: /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
