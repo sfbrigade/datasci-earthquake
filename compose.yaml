@@ -1,16 +1,11 @@
 # Docker Compose configuration for local development and CI pipeline.
 # Not used for production; production is deployed via hosting platform.
-# oppppyiiiiiiiiiwhatwhat
 services:
   db:
     image: postgis-custom
     build:
       context: ./backend/database
       dockerfile: Dockerfile
-      #cache_from:
-      #  - type=local,src=earthquake-cache-db-sing
-      #cache_to:
-      #  - type=local,dest=earthquake-cache-db-sing
     container_name: my_postgis_db
     restart: always
     env_file:
@@ -85,10 +80,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      #cache_from:
-      #  - type=local,src=earthquake-cache-frontend-sing
-      #cache_to:
-      #  - type=local,dest=earthquake-cache-frontend-sing
     env_file:
       - .env
     environment:

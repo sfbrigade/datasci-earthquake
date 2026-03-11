@@ -12,8 +12,6 @@ RUN apk add --no-cache curl
 
 WORKDIR /app
 
-RUN mkdir node_modules_doityourself
-
 # change owner to node user
 RUN chown node:node /app
 
@@ -26,46 +24,23 @@ USER node
 
 RUN npm config get cache
 
-# RUN ls -la /home/node/.npm
-
-# RUN echo 'BEFORE npm install....cache ls' && npm cache ls
-
-# RUN echo 'BEFORE npm install....cache verify' && npm cache verify
-
-# RUN ls -la /home/node/.npm
-
-# RUN ls -la /home/node/.npm/_cacache
-
-# RUN npm cache ls
-
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
 
 # RUN npm install
-
-# RUN echo 'AFTER npm install....cache ls' && npm cache ls
-
-# RUN echo 'AFTER npm install....cache verify' && npm cache verify
-
-# RUN npm install cacache
-
-# RUN echo 'funny fun' && npm cache ls cacache
 
 COPY stuff.cjs .
 COPY morestuff.cjs .
 
 # RUN node stuff.cjs
 # RUN node morestuff.cjs
-RUN mkdir node_modules
 
-RUN pwd && ls -la node_modules
-RUN echo 'voice 1' && pwd && ls -la
+# used for docker run commands. it works!
+# RUN mkdir node_modules
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
 
-
-RUN echo 'voice 2' && pwd && ls -la
 
 # Expose the port Next.js runs on during development
 EXPOSE 3000
@@ -73,4 +48,3 @@ EXPOSE 3000
 # Command to run the Next.js app in development mode
 # This command should correspond to the "dev" script in your package.json
 CMD ["npm", "run", "next-dev"]
-#CMD ["pwd"]
