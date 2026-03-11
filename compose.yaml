@@ -101,7 +101,7 @@ services:
       - .:/app:rw,delegated # Mount after dependencies are installed
       - /app/node_modules # This excludes the node_modules from being overwritten
       - nextjs_cache:/app/.next
-      #- /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules_oops:/app/node_modules_hahahahhao
+      - /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules:/app/node_modules
       #- type: bind
       #  source: /home/runner/work/datasci-earthquake/datasci-earthquake/hahahun
       #  target: /app/node_modules
