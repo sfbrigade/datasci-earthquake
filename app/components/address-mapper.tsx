@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Box, chakra } from "@chakra-ui/react";
+import { Box, chakra, useDisclosure } from "@chakra-ui/react";
 import {
   Button,
   IconButton,
@@ -58,6 +58,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   liquefactionData,
 }) => {
   // Drawer
+  const { open, onOpen, onClose } = useDisclosure();
   const drawerContainerRef = useRef(null);
 
   const searchParams = useSearchParams();
@@ -241,31 +242,37 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               />
             ) : null}
           </Box>
-          <Drawer.Root placement={{ mdDown: "bottom", md: "start" }}>
+          <Drawer.Root
+            placement={{ mdDown: "bottom", md: "start" }}
+            open={open}
+          >
             <Portal container={drawerContainerRef}>
               {/* dummy drawer, closed */}
-              <Box
-                position="absolute"
-                zIndex="overlay"
-                top={{ base: "auto", md: "0" }}
-                left="0"
-                bottom="0"
-                right={{ base: "0", md: "auto" }}
-                w={{ base: "auto", md: "5" }}
-                h={{ base: "5", md: "auto" }}
-                backgroundColor="white"
-              >
-                <Drawer.Trigger
-                  asChild
+              {open ? null : (
+                <Box
                   position="absolute"
-                  left={{ base: "calc(50% - {sizes.5})", md: "0" }}
-                  bottom={{ base: "0", md: "calc(50% - {sizes.5})" }}
+                  zIndex="overlay"
+                  top={{ base: "auto", md: "0" }}
+                  left="0"
+                  bottom="0"
+                  right={{ base: "0", md: "auto" }}
+                  w={{ base: "auto", md: "5" }}
+                  h={{ base: "5", md: "auto" }}
+                  backgroundColor="white"
                 >
-                  <IconButton variant="subtle" rounded="full" size="md">
-                    <AngleRight rotate={{ base: "270deg", md: "0deg" }} />
-                  </IconButton>
-                </Drawer.Trigger>
-              </Box>
+                  <Drawer.Trigger
+                    onClick={onOpen}
+                    asChild
+                    position="absolute"
+                    left={{ base: "calc(50% - {sizes.5})", md: "0" }}
+                    bottom={{ base: "0", md: "calc(50% - {sizes.5})" }}
+                  >
+                    <IconButton variant="subtle" rounded="full" size="md">
+                      <AngleRight rotate={{ base: "270deg", md: "0deg" }} />
+                    </IconButton>
+                  </Drawer.Trigger>
+                </Box>
+              )}
               <Drawer.Backdrop h="full" w="full" position="absolute" />
               <Drawer.Positioner h="full" w="full" position="absolute">
                 {/* actual drawer, open */}
@@ -277,6 +284,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   maxH={{ base: "1/2", md: "full" }}
                 >
                   <Drawer.CloseTrigger
+                    onClick={onClose}
                     asChild
                     position="absolute"
                     left={{
@@ -316,7 +324,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                     </Drawer.ActionTrigger>
                     <Button>Save</Button> */}
                   </Drawer.Footer>
-                  <Drawer.CloseTrigger asChild>
+                  <Drawer.CloseTrigger onClick={onOpen} asChild>
                     <CloseButton size="sm" />
                   </Drawer.CloseTrigger>
                 </Drawer.Content>
