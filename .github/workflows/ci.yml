@@ -198,6 +198,8 @@ jobs:
       - name: Build Docker Containers
         run: docker compose -f compose.yaml -f compose.ci.yaml build
       
+      - run: pwd  
+      - run: mkdir doityourself  
       - run: docker images
       # - run: docker run -d --env-file .env --name mydb --hostname db postgis-custom
       # - run: docker run -d --env-file .env --name mydbtest --hostname db_test datasci-earthquake-db_test

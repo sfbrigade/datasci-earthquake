@@ -12,6 +12,8 @@ RUN apk add --no-cache curl
 
 WORKDIR /app
 
+RUN mkdir node_modules_doityourself
+
 # change owner to node user
 RUN chown node:node /app
 
