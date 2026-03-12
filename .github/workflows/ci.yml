@@ -224,6 +224,8 @@ jobs:
       #  if: always()
       #  run: docker logs datasci-earthquake-frontend-1 || echo "No logs found"
 
+      - run: docker ps
+
       - name: Run Backend Tests
         run: docker exec mybackend pytest backend/database/tests/ -v
 
