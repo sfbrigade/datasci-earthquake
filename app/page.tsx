@@ -9,7 +9,7 @@ import {
   Link,
   Image,
 } from "@chakra-ui/react";
-import NextLink from "next/link";
+import NextLink from "./components/custom-next-link";
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
 import AddressMapper from "./components/address-mapper";

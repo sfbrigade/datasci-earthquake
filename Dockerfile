@@ -4,24 +4,34 @@
 
 FROM node:24-alpine
 
+# Must be root to prepare the directories; this command is implied, but being explicit for clarity
+USER root
+
 # Install curl
 RUN apk add --no-cache curl
 
-# Create a non-privileged user
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /app
 
-# Copy package.json, install dependencies, fix ownership
-COPY ./package*.json ./
-RUN npm install && chown -R appuser:appgroup /app
+# change owner to node user
+RUN chown node:node /app
 
-# Copy the rest of the application 
-COPY . .
+# If you mount a local folder in your compose.yaml, the host's permissions will overwrite whatever you did in the Dockerfile. To avoid permission issues, you can pre-create the .next directory and set the owner to `node` user. This way, when the container runs as non-root, it will have the necessary permissions to write to that directory.
 
-# Ensure writable build dirs
-RUN mkdir -p .next && chown -R appuser:appgroup /app
+# Pre-create the directory and set the owner to `node` user to ensure it is writable when the container runs as non-root
+RUN mkdir -p /app/.next && chown -R node:node /app/.next
 
-# Switch to the non-privileged user
-USER appuser
+USER node
 
+# Copy package*.json and install dependencies, as node user
+COPY --chown=node:node ./package*.json ./
+RUN npm install
+
+# Copy the rest of the application, ensuring the ownership is set to node user 
+COPY --chown=node:node . ./
+
+# Expose the port Next.js runs on during development
 EXPOSE 3000
+
+# Command to run the Next.js app in development mode
+# This command should correspond to the "dev" script in your package.json
+CMD ["npm", "run", "next-dev"]
