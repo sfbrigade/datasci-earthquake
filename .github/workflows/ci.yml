@@ -189,44 +189,24 @@ jobs:
       #    path: earthquake-cache-db-sing
       #    key: ${{ hashFiles('backend/database/Dockerfile') }}-earthquake-cache-db-sing
 
-      #- name: Cache npm dependencies
-      #  uses: actions/cache@v4
-      #  with:
-      #    path: /home/runner/work/datasci-earthquake/datasci-earthquake/haha
-      #    key: earthquake-cache-npm-aaa
-
       - name: Build Docker Containers
         run: docker compose -f compose.yaml -f compose.ci.yaml build
       
-      - run: pwd  
-      - run: mkdir doityourself  
-      - run: docker images
-      #- run: docker run -d --env-file .env --name mydb --hostname db postgis-custom
-      #- run: docker run -d --env-file .env --name mydbtest --hostname db_test datasci-earthquake-db_test
-      #- run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
-      - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 --no-build db db_test backend
-      - run: echo 'first' && docker ps 
+      - run: docker run -d --env-file .env --name mydb --hostname db postgis-custom
+      - run: docker run -d --env-file .env --name mydbtest --hostname db_test datasci-earthquake-db_test
+      - run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
+      #- run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 --no-build db db_test backend
       - run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/node_modules,dst=/app/node_modules datasci-earthquake-frontend
-      - run: echo 'second' && docker ps 
       
-      - run: docker volume ls --format json
       - run: docker inspect myfrontend
       #- run: docker inspect mybackend
       #- run: docker inspect mydb
       #- run: docker inspect mydbtest
-      #- run: docker exec -d myfrontend sh -c "echo 'oopsies' && ls -l /app"
 
-      - run: mkdir garbage
-      - run: echo 'looky' && ls -l /home/runner/work/datasci-earthquake/datasci-earthquake/
- 
       #- name: Start Services
       #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
 
       #- run: docker inspect datasci-earthquake-frontend-1 
-      #- run: pwd && ls -l 
-
-      #- name: copy stuff
-      #  run: docker cp datasci-earthquake-frontend-1:/home/node/.npm/_cacache /home/runner/work/datasci-earthquake/datasci-earthquake/torts
 
       #- name: Docker Backend Logs
       #  if: always()
@@ -247,16 +227,12 @@ jobs:
       #- name: Run Backend Tests
       #  run: docker compose -f compose.yaml -f compose.ci.yaml run backend pytest backend/database/tests/ -v
 
-      - name: docker ps
-        if: always()
-        run: docker ps
-
       #- name: Run Frontend Tests
       #  run: docker compose -f compose.yaml -f compose.ci.yaml run --rm frontend npm test
 
       #- name: Clean Up
       #  run: docker compose -f compose.yaml -f compose.ci.yaml down
       - run: docker stop myfrontend
-      #- run: docker stop mybackend
-      #- run: docker stop mydbtest
-      #- run: docker stop mydb
+      - run: docker stop mybackend
+      - run: docker stop mydbtest
+      - run: docker stop mydb
