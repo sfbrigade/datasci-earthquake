@@ -195,9 +195,11 @@ jobs:
       - run: docker run -d --env-file .env --name mydb --hostname db postgis-custom
       - run: docker run -d --env-file .env --name mydbtest --hostname db_test datasci-earthquake-db_test
       - run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
+      - run: echo 'right after' && docker ps
       #- run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 --no-build db db_test backend
       - run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/node_modules,dst=/app/node_modules datasci-earthquake-frontend
       
+      - run: echo 'after starting FE' && docker ps
       - run: docker inspect myfrontend
       #- run: docker inspect mybackend
       #- run: docker inspect mydb
@@ -208,9 +210,9 @@ jobs:
 
       #- run: docker inspect datasci-earthquake-frontend-1 
 
-      #- name: Docker Backend Logs
-      #  if: always()
-      #  run: docker logs datasci-earthquake-backend-1 || echo "No logs found"
+      - name: Docker Backend Logs
+        if: always()
+        run: docker logs mybackend || echo "No logs found"
 
       #- name: Docker DB Logs
       #  if: always()
