@@ -201,10 +201,13 @@ jobs:
       - run: pwd  
       - run: mkdir doityourself  
       - run: docker images
-      - run: docker run -d --env-file .env --name mydb --hostname db postgis-custom
-      - run: docker run -d --env-file .env --name mydbtest --hostname db_test datasci-earthquake-db_test
-      - run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
+      #- run: docker run -d --env-file .env --name mydb --hostname db postgis-custom
+      #- run: docker run -d --env-file .env --name mydbtest --hostname db_test datasci-earthquake-db_test
+      #- run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
+      - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 --no-build db db_test backend
+      - run: echo 'first' && docker ps 
       - run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/node_modules,dst=/app/node_modules datasci-earthquake-frontend
+      - run: echo 'second' && docker ps 
       
       - run: docker volume ls --format json
       - run: docker inspect myfrontend
@@ -254,6 +257,6 @@ jobs:
       #- name: Clean Up
       #  run: docker compose -f compose.yaml -f compose.ci.yaml down
       - run: docker stop myfrontend
-      - run: docker stop mybackend
-      - run: docker stop mydbtest
-      - run: docker stop mydb
+      #- run: docker stop mybackend
+      #- run: docker stop mydbtest
+      #- run: docker stop mydb
