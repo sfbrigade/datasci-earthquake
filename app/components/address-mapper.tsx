@@ -16,7 +16,6 @@ import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
-import MobileReportHazards from "./mobile-report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
@@ -86,7 +85,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   });
   const [showHazards, setShowHazards] = useState(false);
   const [isSearchComplete, setSearchComplete] = useState(false);
-  const [currentView, setCurrentView] = useState("");
   const toastIdDataLoadFailed = "data-load-failed";
   const coordinatesRef = useRef<number[] | null>(null);
   const router = useRouter();
@@ -121,10 +119,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     },
     [fetchHazardData]
   );
-
-  const handleResize = () => {
-    setCurrentView(window.innerWidth <= 480 ? "mobile" : "desktop");
-  };
 
   const handleSearchChange = useCallback(
     (coords: number[], address: string) => {
@@ -194,18 +188,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     }
   }, [softStoryData, tsunamiData, liquefactionData]);
 
-  useEffect(() => {
-    if (currentView === "") {
-      // FIXME: Avoid calling setState() directly within an effect (remove eslint directive below to see lint error)
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      handleResize();
-    }
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [currentView]);
-
   return (
     <>
       <HomeHeader
@@ -221,27 +203,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         ref={drawerContainerRef}
       >
         <Box h="full" overflow="hidden">
-          <Box zIndex="docked" top="0" position="absolute">
-            {currentView === "desktop" ? (
-              <ReportHazards
-                addressHazardData={addressHazardData}
-                isHazardDataLoading={isHazardDataLoading}
-                toggledStates={toggledStates}
-                setToggledStates={setToggledStates}
-                setLayerToggleObj={setLayerToggleObj}
-              />
-            ) : currentView === "mobile" ? (
-              <MobileReportHazards
-                showHazards={showHazards}
-                addressHazardData={addressHazardData}
-                isHazardDataLoading={isHazardDataLoading}
-                toggledStates={toggledStates}
-                setShowHazards={setShowHazards}
-                setToggledStates={setToggledStates}
-                setLayerToggleObj={setLayerToggleObj}
-              />
-            ) : null}
-          </Box>
           <Drawer.Root
             placement={{ mdDown: "bottom", md: "start" }}
             open={open}
