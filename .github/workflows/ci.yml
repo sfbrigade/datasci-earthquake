@@ -211,11 +211,9 @@ jobs:
       #- run: docker inspect mybackend
       #- run: docker inspect mydb
       #- run: docker inspect mydbtest
-      #- run: docker exec -d myfrontend sh -c "cd /app/node_modules && pwd && touch omg.txt"
+      - run: docker exec -d myfrontend sh -c "echo 'oopsies' && ls -l /app"
 
       - run: echo 'looky' && ls -l /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
-
-      - run: echo 'spooky' && ls -l /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
 
       - run: mkdir garbage
  
