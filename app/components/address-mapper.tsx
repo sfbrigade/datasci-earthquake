@@ -2,15 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Box, chakra, useDisclosure } from "@chakra-ui/react";
-import {
-  Button,
-  IconButton,
-  CloseButton,
-  Drawer,
-  Kbd,
-  Portal,
-  Text,
-} from "@chakra-ui/react";
+import { IconButton, CloseButton, Drawer, Kbd, Portal } from "@chakra-ui/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
