@@ -271,12 +271,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                       isInDrawer={true}
                     />
                   </Drawer.Body>
-                  <Drawer.Footer>
-                    {/* <Drawer.ActionTrigger asChild>
-                      <Button variant="outline">Cancel</Button>
-                    </Drawer.ActionTrigger>
-                    <Button>Save</Button> */}
-                  </Drawer.Footer>
+                  <Drawer.Footer></Drawer.Footer>
                   <Drawer.CloseTrigger onClick={onOpen} asChild>
                     <CloseButton size="sm" />
                   </Drawer.CloseTrigger>
