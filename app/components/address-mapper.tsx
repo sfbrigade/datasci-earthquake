@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Box, chakra, useDisclosure } from "@chakra-ui/react";
-import { IconButton, CloseButton, Drawer, Kbd, Portal } from "@chakra-ui/react";
+import { IconButton, Drawer, Portal } from "@chakra-ui/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
@@ -261,7 +261,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                     <Drawer.Title>Risk Layers</Drawer.Title>
                   </Drawer.Header>
                   <Drawer.Body>
-                    Press the <Kbd>esc</Kbd> key to close the drawer.
                     <ReportHazards
                       addressHazardData={addressHazardData}
                       isHazardDataLoading={isHazardDataLoading}
@@ -272,9 +271,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                     />
                   </Drawer.Body>
                   <Drawer.Footer></Drawer.Footer>
-                  <Drawer.CloseTrigger onClick={onOpen} asChild>
-                    <CloseButton size="sm" />
-                  </Drawer.CloseTrigger>
                 </Drawer.Content>
               </Drawer.Positioner>
             </Portal>
