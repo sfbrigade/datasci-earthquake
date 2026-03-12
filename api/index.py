@@ -10,6 +10,10 @@ from backend.api.routers import (
 from backend.api.config import get_settings
 import sentry_sdk
 
+from backend.logging_config import configure_logging
+
+configure_logging()
+
 settings = get_settings()
 # Initialize Sentry
 sentry_sdk.init(
