@@ -13,9 +13,6 @@ RUN apk add --no-cache curl
 WORKDIR /app
 #USER runner
 
-#RUN mkdir hotgarbage
-#RUN echo 'huh' && pwd && ls -l
-
 USER root
 # change owner to node user
 RUN chown node:node /app
@@ -26,6 +23,9 @@ RUN chown node:node /app
 RUN mkdir -p /app/.next && chown -R node:node /app/.next
 
 USER node
+
+RUN mkdir hotgarbage
+RUN echo 'huh' && pwd && ls -l
 
 RUN npm config get cache
 
