@@ -11,10 +11,10 @@ USER root
 RUN apk add --no-cache curl
 
 WORKDIR /app
-USER runner
+#USER runner
 
-RUN mkdir hotgarbage
-RUN echo 'huh' && pwd && ls -l
+#RUN mkdir hotgarbage
+#RUN echo 'huh' && pwd && ls -l
 
 USER root
 # change owner to node user
@@ -32,7 +32,7 @@ RUN npm config get cache
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
 
-RUN npm install
+#RUN npm install
 
 COPY stuff.cjs .
 COPY morestuff.cjs .
@@ -41,7 +41,7 @@ COPY morestuff.cjs .
 # RUN node morestuff.cjs
 
 # used for docker run commands. it works!
-#RUN mkdir node_modules
+RUN mkdir node_modules
 RUN echo 'ohboy' && pwd && ls -l
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
