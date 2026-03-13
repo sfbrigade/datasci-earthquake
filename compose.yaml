@@ -2,6 +2,7 @@
 # Not used for production; production is deployed via hosting platform.
 # ooops
 # pops
+# quint
 services:
   db:
     image: postgis-custom
