@@ -217,8 +217,15 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                     onClick={onOpen}
                     asChild
                     position="absolute"
-                    left={{ base: "calc(50% - {sizes.5})", md: "0" }}
-                    bottom={{ base: "0", md: "calc(50% - {sizes.5})" }}
+                    // Mobile: center horizontally at bottom.
+                    left={{ base: "0", md: "0" }}
+                    right={{ base: "0", md: "auto" }}
+                    bottom={{ base: "0", md: "auto" }}
+                    // Desktop: vertically center relative to container.
+                    top={{ base: "auto", md: "1/2" }}
+                    w={{ base: "fit", md: "auto" }}
+                    mx={{ base: "auto", md: "0" }}
+                    transform={{ base: "none", md: "translateY(-50%)" }}
                   >
                     <IconButton variant="subtle" rounded="full" size="md">
                       <AngleRight rotate={{ base: "270deg", md: "0deg" }} />
@@ -240,18 +247,14 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                     onClick={onClose}
                     asChild
                     position="absolute"
-                    left={{
-                      base: "calc(50% - {sizes.5})",
-                      md: "calc({sizes.sm} - {sizes.5})",
-                    }}
-                    right={{
-                      base: "calc(50% + {sizes.5})",
-                      md: "calc({sizes.5} * -1)",
-                    }}
-                    top={{
-                      base: "calc({sizes.5} * -1)",
-                      md: "calc(50% - {sizes.5})",
-                    }}
+                    // Mobile: centered above drawer edge.
+                    // Desktop: right edge, vertically centered.
+                    left={{ base: "0", md: "auto" }}
+                    right={{ base: "0", md: "-5" }}
+                    top={{ base: "-5", md: "1/2" }}
+                    w={{ base: "fit", md: "auto" }}
+                    mx={{ base: "auto", md: "0" }}
+                    transform={{ base: "none", md: "translateY(-50%)" }}
                   >
                     <IconButton variant="subtle" rounded="full" size="md">
                       <AngleLeft rotate={{ base: "270deg", md: "0deg" }} />
