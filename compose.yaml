@@ -4,6 +4,7 @@
 # pops
 # quint
 # rats 
+# sand 
 services:
   db:
     image: postgis-custom
