@@ -184,7 +184,9 @@ jobs:
       
       - run: docker run -d --env-file .env --name mydb postgis-custom
       - run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
+      - run: docker ps
       - run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/node_modules,dst=/app/node_modules datasci-earthquake-frontend
+      - run: docker ps -a
       
       - run: docker inspect myfrontend
       - run: docker exec -d myfrontend sh -c "cd /app/node_modules && touch omg.txt"
@@ -217,14 +219,8 @@ jobs:
       #- name: Run FAIL
       #  run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend/api/tests/test_liquefaction.py::test_get_liquefaction_zones -v
 
-      - run: docker ps
-
       - name: Run exec PASS 
         run: docker exec --env-file .env mybackend pytest backend/api/tests/test_tsunami.py::test_is_in_tsunami_zone_missing_params -v
-
-      - name: PS
-        if: always()
-        run: docker ps -a
 
       - name: Run exec FAIL
         run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend/api/tests/test_liquefaction.py::test_get_liquefaction_zones -v
