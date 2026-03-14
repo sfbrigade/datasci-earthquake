@@ -16,7 +16,7 @@ def test_engine():
         print('huh its db')
     else:
         print('huh its alien')
-    engine = create_engine(settings.database_url_sqlalchemy_test)
+    engine = create_engine(settings.database_url_sqlalchemy)
     yield engine
 
 
