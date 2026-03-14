@@ -189,9 +189,9 @@ jobs:
       - run: docker build -t datasci-earthquake-frontend . 
       - run: echo 'after' && docker images 
 
-      #- run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/node_modules,dst=/app/node_modules datasci-earthquake-frontend
+      - run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/node_modules,dst=/app/node_modules datasci-earthquake-frontend
       
-      #- run: docker inspect myfrontend
+      - run: docker inspect myfrontend
 
       #- name: Start Services
       #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
