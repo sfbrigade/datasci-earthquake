@@ -217,8 +217,14 @@ jobs:
       #- name: Run FAIL
       #  run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend/api/tests/test_liquefaction.py::test_get_liquefaction_zones -v
 
+      - run: docker ps
+
       - name: Run exec PASS 
         run: docker exec --env-file .env mybackend pytest backend/api/tests/test_tsunami.py::test_is_in_tsunami_zone_missing_params -v
+
+      - name: PS
+        if: always()
+        run: docker ps -a
 
       - name: Run exec FAIL
         run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend/api/tests/test_liquefaction.py::test_get_liquefaction_zones -v
