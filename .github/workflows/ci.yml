@@ -182,8 +182,9 @@ jobs:
       - name: Build Docker Containers
         run: docker compose -f compose.yaml -f compose.ci.yaml build
       
-      - run: docker run -d --env-file .env --name mydb postgis-custom
-      - run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
+      #- run: docker run -d --env-file .env --name mydb postgis-custom
+      #- run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
+      - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend 
       - run: docker ps
 
       - name: Docker Backend Logs BEFORE 
