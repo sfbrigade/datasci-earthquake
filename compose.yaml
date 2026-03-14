@@ -11,7 +11,7 @@ services:
       #  - type=local,src=earthquake-cache-db-sing
       #cache_to:
       #  - type=local,dest=earthquake-cache-db-sing
-    container_name: my_postgis_db
+    container_name: mydb
     restart: always
     env_file:
       - .env
@@ -57,6 +57,7 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
+    container_name: mybackend
     env_file:
       - .env
     environment:
