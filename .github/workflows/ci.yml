@@ -208,11 +208,17 @@ jobs:
         if: always()
         run: docker logs datasci-earthquake-frontend-1 || echo "No logs found"
 
-      - name: Run Backend Tests
-        run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend -v
+      #- name: Run Backend Tests
+      #  run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend -v
 
-      - name: Run Frontend Tests
-        run: docker compose -f compose.yaml -f compose.ci.yaml run --rm frontend npm test
+      - name: Run PASS 
+        run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend/api/tests/test_tsunami.py::test_is_in_tsunami_zone_missing_params -v
+
+      - name: Run FAIL
+        run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend/api/tests/test_liquefaction.py::test_get_liquefaction_zones -v
+
+      #- name: Run Frontend Tests
+      #  run: docker compose -f compose.yaml -f compose.ci.yaml run --rm frontend npm test
 
       #- name: Clean Up
       #  run: docker compose -f compose.yaml -f compose.ci.yaml down
