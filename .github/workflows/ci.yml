@@ -219,59 +219,59 @@ jobs:
       #  run: docker exec --env-file .env mybackend pytest backend/api/tests/test_liquefaction.py::test_get_liquefaction_zones -v
 
       - name: Run exec ALL - BACKEND 
-        run: docker exec --env-file .env.ci mybackend pytest backend/ -v
+        run: docker exec --env-file .env mybackend pytest backend/ -v
 
       - name: Run exec A 
         if: always()
-        run: docker exec --env-file .env.ci mybackend pytest backend/api/tests/test_liquefaction.py::test_get_liquefaction_zones -v
+        run: docker exec --env-file .env mybackend pytest backend/api/tests/test_liquefaction.py::test_get_liquefaction_zones -v
 
       - name: Run exec B 
         if: always()
-        run: docker exec --env-file .env.ci mybackend pytest backend/api/tests/test_liquefaction.py::test_is_in_high_susceptibility_liquefaction_zone -v
+        run: docker exec --env-file .env mybackend pytest backend/api/tests/test_liquefaction.py::test_is_in_high_susceptibility_liquefaction_zone -v
 
       - name: Run exec C 
         if: always()
-        run: docker exec --env-file .env.ci mybackend pytest backend/api/tests/test_liquefaction.py::test_is_in_very_high_susceptibility_liquefaction_zone -v
+        run: docker exec --env-file .env mybackend pytest backend/api/tests/test_liquefaction.py::test_is_in_very_high_susceptibility_liquefaction_zone -v
 
       - name: Run exec D 
         if: always()
-        run: docker exec --env-file .env.ci mybackend pytest backend/api/tests/test_liquefaction.py::test_is_in_liquefaction_zone -v
+        run: docker exec --env-file .env mybackend pytest backend/api/tests/test_liquefaction.py::test_is_in_liquefaction_zone -v
 
       - name: Run exec E 
         if: always()
-        run: docker exec --env-file .env.ci mybackend pytest backend/api/tests/test_soft_story.py::test_get_soft_stories -v
+        run: docker exec --env-file .env mybackend pytest backend/api/tests/test_soft_story.py::test_get_soft_stories -v
 
       - name: Run exec F 
         if: always()
-        run: docker exec --env-file .env.ci mybackend pytest backend/api/tests/test_tsunami.py::test_is_in_tsunami_zone -v
+        run: docker exec --env-file .env mybackend pytest backend/api/tests/test_tsunami.py::test_is_in_tsunami_zone -v
 
       - name: Run exec AA 
         if: always()
-        run: docker exec --env-file .env.ci mybackend pytest backend/etl/tests/test_data_handler.py::test_bulk_insert_data_with_timestamp_upsert_policy -v
+        run: docker exec --env-file .env mybackend pytest backend/etl/tests/test_data_handler.py::test_bulk_insert_data_with_timestamp_upsert_policy -v
 
       - name: Run exec BB
         if: always()
-        run: docker exec --env-file .env.ci mybackend pytest backend/etl/tests/test_data_handler.py::test_bulk_insert_data_with_basic_policy -v
+        run: docker exec --env-file .env mybackend pytest backend/etl/tests/test_data_handler.py::test_bulk_insert_data_with_basic_policy -v
 
       - name: Run exec CC 
         if: always()
-        run: docker exec --env-file .env.ci mybackend pytest backend/etl/tests/test_data_handler.py::test_get_last_export_time_from_db -v
+        run: docker exec --env-file .env mybackend pytest backend/etl/tests/test_data_handler.py::test_get_last_export_time_from_db -v
 
       - name: Run exec DD 
         if: always()
-        run: docker exec --env-file .env.ci mybackend pytest backend/etl/tests/test_data_handler.py::test_get_last_export_time_from_db_not_found -v
+        run: docker exec --env-file .env mybackend pytest backend/etl/tests/test_data_handler.py::test_get_last_export_time_from_db_not_found -v
 
       - name: Run exec EE 
         if: always()
-        run: docker exec --env-file .env.ci mybackend pytest backend/etl/tests/test_data_handler.py::test_data_changed_since_last_export_true -v
+        run: docker exec --env-file .env mybackend pytest backend/etl/tests/test_data_handler.py::test_data_changed_since_last_export_true -v
 
       - name: Run exec FF 
         if: always()
-        run: docker exec --env-file .env.ci mybackend pytest backend/etl/tests/test_data_handler.py::test_data_changed_since_last_export_false -v
+        run: docker exec --env-file .env mybackend pytest backend/etl/tests/test_data_handler.py::test_data_changed_since_last_export_false -v
 
       - name: Run exec GG 
         if: always()
-        run: docker exec --env-file .env.ci mybackend pytest backend/etl/tests/test_data_handler.py::test_update_last_export_time_in_db -v
+        run: docker exec --env-file .env mybackend pytest backend/etl/tests/test_data_handler.py::test_update_last_export_time_in_db -v
 
 
 
