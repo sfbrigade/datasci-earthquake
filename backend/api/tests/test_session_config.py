@@ -10,6 +10,11 @@ from backend.database.session import get_db
 # Set up a test database engine
 @pytest.fixture(scope="session")
 def test_engine():
+    print('-------------- hahun -----------')
+    print(settings.frontend_host)
+    print(settings.next_public_api_url)
+    print(settings.node_env)
+    print('-------------------------')
     engine = create_engine(settings.database_url_sqlalchemy)
     yield engine
 
