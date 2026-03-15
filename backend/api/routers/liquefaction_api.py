@@ -159,6 +159,12 @@ def is_in_liquefaction_zone(
 
          If `ping=true` is passed, skips DB call and returns a dummy IsInLiquefactionZoneView(exists=False, last_updated=None) instance.
     """
+
+    print('ok!............')
+    print('ok!............')
+    print('ok!............')
+    print('ok!............')
+    print('ok!............')
     if ping:
         logger.info(f"Pinging the is-in-liquefaction-zone endpoint")
         return InLiquefactionZoneView(
