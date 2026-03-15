@@ -28,6 +28,7 @@ def test_is_in_high_susceptibility_liquefaction_zone(client, caplog):
         f"api/liquefaction-zones/is-in-liquefaction-zone?lon={lon}&lat={lat}"
     )
 
+    assert 1 == 200
     assert response.status_code == 200
     json = response.json()
     assert json["exists"]
