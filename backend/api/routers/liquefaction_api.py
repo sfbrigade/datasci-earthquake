@@ -188,7 +188,7 @@ def is_in_liquefaction_zone(
         print('finnnnnnne................')
         print('finnnnnnne................')
         print('finnnnnnne................')
-        for (t in meta.sorted_tables):
+        for t in meta.sorted_tables:
             print(t.name)
         print('end .....finnnnnnne................')
         point = from_shape(Point(lon, lat), srid=4326)
