@@ -4,7 +4,7 @@ from fastapi import Depends, HTTPException, APIRouter, Query
 from typing import Optional
 from ..tags import Tags
 from sqlalchemy.orm import Session
-from sqlalchemy import MetaData
+from sqlalchemy import inspect
 from geoalchemy2.shape import from_shape
 from shapely.geometry import Point
 from backend.database.session import get_db
@@ -164,8 +164,6 @@ def is_in_liquefaction_zone(
     print('ok!............')
     print('ok!............')
     print('ok!............')
-    print('ok!............')
-    print('ok!............')
     if ping:
         logger.info(f"Pinging the is-in-liquefaction-zone endpoint")
         return InLiquefactionZoneView(
@@ -182,17 +180,18 @@ def is_in_liquefaction_zone(
     logger.info(f"Checking liquefaction zone for coordinates: lon={lon}, lat={lat}")
 
     try:
-        meta = MetaData()
-        meta = meta.reflect(bind=db.get_bind())
-        print(f'finnnnnnne.....{meta.tables}...........')
+        #meta = MetaData()
+        #meta = meta.reflect(bind=db.get_bind())
+        #print(f'finnnnnnne.....{meta.tables}...........')
+        print('finnnnnnne................')
+        insp = inspect(db.get_bind())
+        print(insp.get_table_names())
         print('finnnnnnne................')
         print('finnnnnnne................')
-        print('finnnnnnne................')
-        print('finnnnnnne................')
-        for k,v in meta.tables:
-            print(k)
-            print(v)
-            print('-------------------')
+        #for k,v in meta.tables:
+        #    print(k)
+        #    print(v)
+        #    print('-------------------')
         print('end .....finnnnnnne................')
         point = from_shape(Point(lon, lat), srid=4326)
         zone = (
