@@ -14,7 +14,7 @@ services:
     container_name: mydb
     restart: always
     env_file:
-      - .env
+      - .env.ci
     environment:
       - ENVIRONMENT=dev_docker
     volumes:
@@ -36,7 +36,7 @@ services:
     container_name: my_postgis_db_test
     restart: always
     env_file:
-      - .env
+      - .env.ci
     environment:
       - ENVIRONMENT=dev_docker
     volumes:
@@ -59,7 +59,7 @@ services:
       dockerfile: backend/Dockerfile
     container_name: mybackend
     env_file:
-      - .env
+      - .env.ci
     environment:
       - PYTHONPATH=/backend:/
       - DATA_GEOJSON_PATH=/public/data/
@@ -91,7 +91,7 @@ services:
       #cache_to:
       #  - type=local,dest=earthquake-cache-frontend-sing
     env_file:
-      - .env
+      - .env.ci
     environment:
       - ENVIRONMENT=dev_docker
     ports:
