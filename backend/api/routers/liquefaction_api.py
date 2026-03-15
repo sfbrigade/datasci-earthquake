@@ -183,13 +183,16 @@ def is_in_liquefaction_zone(
 
     try:
         meta = MetaData()
+        meta = meta.reflect(bind=db.get_bind())
+        print(f'finnnnnnne.....{meta.tables}...........')
         print('finnnnnnne................')
         print('finnnnnnne................')
         print('finnnnnnne................')
         print('finnnnnnne................')
-        print('finnnnnnne................')
-        for t in meta.sorted_tables:
-            print(t.name)
+        for k,v in meta.tables:
+            print(k)
+            print(v)
+            print('-------------------')
         print('end .....finnnnnnne................')
         point = from_shape(Point(lon, lat), srid=4326)
         zone = (
