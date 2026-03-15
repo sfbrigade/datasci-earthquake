@@ -5,6 +5,9 @@ from backend.api.config import settings
 
 
 def _get_database_url() -> str:
+    print('-------- the env -------')
+    print(settings.environment)
+    print('---------------')
     match settings.environment:
         case "local" | "ci":
             return settings.localhost_database_url_sqlalchemy
