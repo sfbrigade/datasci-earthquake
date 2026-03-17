@@ -15,7 +15,7 @@ COPY pyproject.toml uv.lock ./
 
 RUN uv sync --only-group testytesty
 
-RUN pwd && ls -la 
+RUN pwd && ls -la /.venv/bin
 
 # Install PostGIS and dependencies
 RUN apt-get update \
