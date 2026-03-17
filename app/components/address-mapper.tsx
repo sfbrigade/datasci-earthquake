@@ -326,6 +326,17 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   onSearchChange={handleSearchChange}
                 />
               </Box>
+              <Box zIndex="docked" top="36" left="8" position="absolute">
+                <ReportHazards
+                  variant="cardhazardsummary"
+                  addressHazardData={addressHazardData}
+                  isHazardDataLoading={isHazardDataLoading}
+                  toggledStates={toggledStates}
+                  setToggledStates={setToggledStates}
+                  setLayerToggleObj={setLayerToggleObj}
+                  stackDirectionResponsive={true}
+                />
+              </Box>
               <Box zIndex="docked" top="56" right="20" position="absolute">
                 <AlertInfo message="72% chance of major Bay Area earthquake in the next 30 years"></AlertInfo>
               </Box>
@@ -359,6 +370,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           </Box>
           <Center py="4" px="8">
             <ReportHazards
+              variant="reporthazardsummary"
               addressHazardData={addressHazardData}
               isHazardDataLoading={isHazardDataLoading}
               toggledStates={toggledStates}
