@@ -17,6 +17,10 @@ RUN uv sync --only-group testytesty
 
 RUN pwd && ls -la /.venv/bin
 
+RUN source /.venv/bin/activate
+
+RUN echo 'ohhi' && pwd && ls -la /.venv/bin
+
 # Install PostGIS and dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
