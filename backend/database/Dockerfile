@@ -30,6 +30,7 @@ RUN apt-get update \
 # Copy init scripts if necessary
 COPY . /backend 
 RUN echo 'pran' && pwd && ls -la
+RUN echo 'prank' && pwd && ls -la backend
 COPY database/initdb-postgis.sh /docker-entrypoint-initdb.d/
 COPY database/update-postgis.sh /docker-entrypoint-initdb.d/
 
