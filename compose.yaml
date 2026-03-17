@@ -19,8 +19,6 @@ services:
       - ENVIRONMENT=dev_docker
     volumes:
       - db-data:/var/lib/postgresql/data
-      #- ./backend/etcetcetcblah:/var/lib/postgresql/data
-      - ./backend/database:/var/lib/postgresqlaaaaaaahhh
       - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
     ports:
       - 5432:5432
@@ -103,15 +101,9 @@ services:
       - backend
     volumes:
       - .:/app:rw,delegated # Mount after dependencies are installed
-      - /app/node_modules # This excludes the node_modules from being overwritten
+      #- /app/node_modules # This excludes the node_modules from being overwritten
       - nextjs_cache:/app/.next
-      #- /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules_oops:/app/node_modules_hahahahhao
-      #- type: bind
-      #  source: /home/runner/work/datasci-earthquake/datasci-earthquake/hahahun
-      #  target: /app/node_modules
-      #- type: bind
-      #  source: /home/runner/work/datasci-earthquake/datasci-earthquake-whoooo
-      #  target: /app/node_modules-www-yya
+      - node_modules:/app/node_modules
 
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
