@@ -11,7 +11,7 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ENV PATH="/root/.local/bin/:$PATH"
 
-RUN uv sync --directory .. --only-group testytesty
+RUN uv sync --only-group testytesty
 
 # Install PostGIS and dependencies
 RUN apt-get update \
