@@ -15,11 +15,11 @@ COPY pyproject.toml uv.lock ./
 
 RUN uv sync --only-group testytesty
 
-RUN pwd && ls -la /.venv/bin
+#RUN pwd && ls -la /.venv/bin
 
-RUN source /.venv/bin/activate
+#RUN source /.venv/bin/activate
 
-RUN echo 'ohhi' && pwd && ls -la /.venv/bin
+#RUN echo 'ohhi' && pwd && ls -la /.venv/bin
 
 # Install PostGIS and dependencies
 RUN apt-get update \
@@ -40,4 +40,4 @@ EXPOSE 5432
 
 # Start the database server with PostGIS enabled
 #CMD ["postgres"]
-CMD ["sh", "-c", "echo 'homey' && alembic show && postgres"]
+CMD ["sh", "-c", "echo 'homey' && uv run alembic show && postgres"]
