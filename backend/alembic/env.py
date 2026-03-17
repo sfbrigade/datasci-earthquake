@@ -6,6 +6,7 @@ from geoalchemy2 import alembic_helpers
 
 from alembic import context
 import sys
+from fibo import fib
 print('------------duh---')
 print(sys.path)
 print('------------duhend---')
