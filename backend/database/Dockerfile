@@ -29,7 +29,7 @@ RUN apt-get update \
 
 # Copy init scripts if necessary
 COPY alembic.ini .
-COPY alembic .
+COPY alembic/ .
 RUN echo 'pran' && pwd && ls -la
 COPY database/initdb-postgis.sh /docker-entrypoint-initdb.d/
 COPY database/update-postgis.sh /docker-entrypoint-initdb.d/
