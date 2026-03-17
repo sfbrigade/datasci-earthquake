@@ -182,7 +182,7 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     blue: { 600: { value: "#0088FF" }, text: { value: "#2B6CB0" } }, // blue/600 (TODO: all headings) // "#0088FF" comes from Figma switches
     yellow: { value: "#ECC94B" },
     red: { DEFAULT: { value: "#C53030" } },
-    green: { value: "#06120c" },
+    green: { DEFAULT: { value: "#25855A" } },
     orange: { value: "#F6AD55" },
     pink: { value: "#ED64A6" },
 
