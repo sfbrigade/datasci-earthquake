@@ -108,3 +108,9 @@ exclude = [
     "*.log",
     "tests"
 ]
+
+[dependency-groups]
+testytesty = [
+    "alembic==1.14.0"
+]
+
