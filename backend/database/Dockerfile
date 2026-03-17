@@ -40,4 +40,4 @@ EXPOSE 5432
 
 # Start the database server with PostGIS enabled
 #CMD ["postgres"]
-CMD ["sh", "-c", "echo 'homey' && uv run alembic show && postgres"]
+CMD ["sh", "-c", "echo 'homey' && uv run alembic show current && postgres"]
