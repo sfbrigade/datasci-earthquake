@@ -213,6 +213,7 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     // for popover content maxHeight
     unset: { value: "unset" },
     auto: { value: "auto" }, // explicit "auto" value for e.g. width
+    none: { value: "none" }, // explicit "none" value for e.g. max-width
 
     // map marker (global CSS)
     // TODO: adjust these so that they are based on Chakra sizing scale

@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 
 import { Headings } from "../../data/data";
-import NextLink from "next/link";
+import NextLink from "@/components/custom-next-link";
 
 const EarthquakeIntroduction = () => {
   const headingData = Headings.about;
