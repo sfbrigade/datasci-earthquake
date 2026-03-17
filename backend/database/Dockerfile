@@ -11,6 +11,8 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ENV PATH="/root/.local/bin/:$PATH"
 
+COPY pyproject.toml uv.lock ./
+
 RUN uv sync --only-group testytesty
 
 # Install PostGIS and dependencies
