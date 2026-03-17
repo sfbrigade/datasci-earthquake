@@ -6,10 +6,10 @@ from geoalchemy2 import alembic_helpers
 
 from alembic import context
 import sys
-from fibo import fib
 print('------------duh---')
 print(sys.path)
 print('------------duhend---')
+from fibo import fib
 from backend.api.models.base import Base
 from backend.api.models.tsunami import TsunamiZone
 from backend.api.models.landslide_zones import LandslideZone
