@@ -26,5 +26,16 @@ const config: StorybookConfig = {
     options: {},
   },
   staticDirs: ["../public"],
+  // map Next.js variables to Storybook-prefixed variables
+  env: (config) => ({
+    ...config,
+    // explicitly map a STORYBOOK_ variable based on NODE_ENV
+    STORYBOOK_NODE_ENV: process.env.NODE_ENV || "development",
+    STORYBOOK_APP_URL:
+      process.env.NODE_ENV === "production" &&
+      process.env.NEXT_PUBLIC_VERCEL_URL
+        ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+        : process.env.STORYBOOK_APP_URL || "https://safehome.report", // Fallback to existing or .env.local value
+  }),
 };
 export default config;
