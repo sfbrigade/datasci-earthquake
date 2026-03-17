@@ -9,9 +9,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
-RUN uv sync --directory .. --only-group testytesty
-
 ENV PATH="/root/.local/bin/:$PATH"
+
+RUN uv sync --directory .. --only-group testytesty
 
 # Install PostGIS and dependencies
 RUN apt-get update \
