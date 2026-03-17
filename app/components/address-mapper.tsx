@@ -14,7 +14,6 @@ import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 import SearchBar from "./search-bar";
 import EarthquakeReadyCards from "./earthquake-ready-cards";
 import AlertInfo from "@/components/ui/alert-info";
-
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
 };
@@ -222,6 +221,16 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               onSearchChange={handleSearchChange}
             />
           </Box>
+          <Box zIndex="docked" top="36" left="8" position="absolute">
+            <ReportHazards
+              variant="cardhazardsummary"
+              addressHazardData={addressHazardData}
+              isHazardDataLoading={isHazardDataLoading}
+              toggledStates={toggledStates}
+              setToggledStates={setToggledStates}
+              setLayerToggleObj={setLayerToggleObj}
+            />
+          </Box>
           <Box zIndex="docked" top="56" right="20" position="absolute">
             <AlertInfo message="72% chance of major Bay Area earthquake in the next 30 years"></AlertInfo>
           </Box>
@@ -249,7 +258,11 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         </Heading>
       </Box>
       <Center py="4" px="8">
+        {/* <CardRisk /> */}
+      </Center>
+      <Center py="4" px="8">
         <ReportHazards
+          variant="reporthazardsummary"
           addressHazardData={addressHazardData}
           isHazardDataLoading={isHazardDataLoading}
           toggledStates={toggledStates}

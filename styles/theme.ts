@@ -306,7 +306,7 @@ const globalCss: SystemConfig["globalCss"] = {
 const overridesConfig: SystemConfig = defineConfig({
   preflight: true, // explicitly enable reset styles (AKA preflight styles)
   globalCss,
-  strictTokens: true,
+  strictTokens: false,
   theme: {
     textStyles,
     layerStyles,
