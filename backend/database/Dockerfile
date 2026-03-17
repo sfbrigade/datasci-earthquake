@@ -3,6 +3,9 @@
 # Use the official PostgreSQL image
 FROM postgres:15
 
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+
+RUN uv sync --directory .. --only-group testytesty
 
 # Install PostGIS and dependencies
 RUN apt-get update \
