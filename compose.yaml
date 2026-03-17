@@ -91,6 +91,7 @@ services:
       #  - type=local,src=earthquake-cache-frontend-sing
       #cache_to:
       #  - type=local,dest=earthquake-cache-frontend-sing
+    container_name: myfrontend
     env_file:
       - .env
     environment:
