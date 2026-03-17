@@ -19,6 +19,8 @@ services:
       - ENVIRONMENT=dev_docker
     volumes:
       - db-data:/var/lib/postgresql/data
+      - ./backend/etcetcetcblah:/var/lib/postgresql/data
+      - ./backend/database:/var/lib/postgresqlaaaaaaahhh
       - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
     ports:
       - 5432:5432
