@@ -41,27 +41,13 @@ COPY --chown=node:node ./package*.json ./
 
 # RUN npm install
 
-# RUN echo 'AFTER npm install....cache ls' && npm cache ls
-
-# RUN echo 'AFTER npm install....cache verify' && npm cache verify
-
-# RUN npm install cacache
-
-# RUN echo 'funny fun' && npm cache ls cacache
-
-COPY stuff.cjs .
-COPY morestuff.cjs .
-
-# RUN node stuff.cjs
-# RUN node morestuff.cjs
 RUN mkdir node_modules
 
-RUN pwd && ls -la node_modules
+RUN echo 'voice 0' && pwd && ls -la node_modules
 RUN echo 'voice 1' && pwd && ls -la
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
-
 
 RUN echo 'voice 2' && pwd && ls -la
 
@@ -71,4 +57,3 @@ EXPOSE 3000
 # Command to run the Next.js app in development mode
 # This command should correspond to the "dev" script in your package.json
 CMD ["npm", "run", "next-dev"]
-#CMD ["pwd"]
