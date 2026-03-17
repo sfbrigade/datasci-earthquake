@@ -28,7 +28,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy init scripts if necessary
-COPY alembic alembic.ini .
+COPY ./alembic alembic.ini .
 COPY database/initdb-postgis.sh /docker-entrypoint-initdb.d/
 COPY database/update-postgis.sh /docker-entrypoint-initdb.d/
 
