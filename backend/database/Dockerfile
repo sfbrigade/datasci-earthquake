@@ -33,4 +33,5 @@ RUN chmod +x /docker-entrypoint-initdb.d/initdb-postgis.sh \
 EXPOSE 5432
 
 # Start the database server with PostGIS enabled
-CMD ["postgres"]
+#CMD ["postgres"]
+CMD ["sh", "-c", "echo 'homey' && alembic show && postgres"]
