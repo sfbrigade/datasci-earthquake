@@ -19,6 +19,7 @@ import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 import system from "../../styles/theme";
+import SearchBar from "./search-bar";
 
 const defaultCoords = [-122.4194, 37.7949];
 const toggledStatesDefaults = [true, true, true];
@@ -66,6 +67,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const initialLon = searchParams.get("lon");
   const initialLat = searchParams.get("lat");
   const initialAddress = searchParams.get("address");
+  const [inputAddress, setInputAddress] = useState(initialAddress || "");
 
   // TODO: actually validate params with eg Zod
   const validParams = !!(initialLon && initialLat && initialAddress);
@@ -122,6 +124,10 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     },
     [router, pathname, createQueryString]
   );
+
+  const resetInputAddress = useCallback(() => {
+    setInputAddress("");
+  }, []);
 
   useEffect(() => {
     let isCurrent = true;
@@ -201,8 +207,14 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       <HomeHeader
         searchedAddress={initialAddress}
         isSearchComplete={displaySearchComplete}
-        onSearchChange={handleSearchChange}
-      />
+        onHomeIconClick={resetInputAddress}
+      >
+        <SearchBar
+          inputAddress={inputAddress}
+          onInputAddressChange={setInputAddress}
+          onSearchChange={handleSearchChange}
+        />
+      </HomeHeader>
       <Box
         w="full"
         m="auto"
