@@ -1,8 +1,19 @@
 "use client";
 
+import { CurrentVariant } from "@/data/constants";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Box, chakra, useDisclosure } from "@chakra-ui/react";
-import { IconButton, Drawer, Portal } from "@chakra-ui/react";
+import {
+  Box,
+  chakra,
+  useDisclosure,
+  IconButton,
+  Drawer,
+  Portal,
+  Center,
+  Heading,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
@@ -13,7 +24,8 @@ import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 import SearchBar from "./search-bar";
-
+import EarthquakeReadyCards from "./earthquake-ready-cards";
+import AlertInfo from "@/components/ui/alert-info";
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
 };
@@ -193,103 +205,141 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         isSearchComplete={isSearchComplete}
         onHomeIconClick={resetInputAddress}
       >
-        <SearchBar
-          inputAddress={inputAddress}
-          onInputAddressChange={setInputAddress}
-          onSearchChange={handleSearchChange}
-        />
+        {CurrentVariant === "map-centric" ? (
+          <SearchBar
+            inputAddress={inputAddress}
+            onInputAddressChange={setInputAddress}
+            onSearchChange={handleSearchChange}
+          />
+        ) : undefined}
       </HomeHeader>
+
+      {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
       <Box
         w="full"
+        {...(CurrentVariant === "data-centric"
+          ? {
+              style: {
+                height: "336px",
+              },
+            }
+          : undefined)}
+        // TODO: check if properties below are used for both designs
         m="auto"
         h="full"
         position="relative"
         ref={drawerContainerRef}
       >
         <Box h="full" overflow="hidden">
-          <Drawer.Root
-            placement={{ mdDown: "bottom", md: "start" }}
-            open={open}
-          >
-            <Portal container={drawerContainerRef}>
-              {/* dummy drawer, closed */}
-              {open ? null : (
-                <Box
-                  position="absolute"
-                  zIndex="overlay"
-                  top={{ base: "auto", md: "0" }}
-                  left="0"
-                  bottom="0"
-                  right={{ base: "0", md: "auto" }}
-                  w={{ base: "auto", md: "5" }}
-                  h={{ base: "5", md: "auto" }}
-                  backgroundColor="white"
-                >
-                  <Drawer.Trigger
-                    onClick={onOpen}
-                    asChild
+          {CurrentVariant === "map-centric" ? (
+            <Drawer.Root
+              placement={{ mdDown: "bottom", md: "start" }}
+              open={open}
+            >
+              <Portal container={drawerContainerRef}>
+                {/* dummy drawer, closed */}
+                {open ? null : (
+                  <Box
                     position="absolute"
-                    // Mobile: center horizontally at bottom.
-                    left={{ base: "0", md: "0" }}
+                    zIndex="overlay"
+                    top={{ base: "auto", md: "0" }}
+                    left="0"
+                    bottom="0"
                     right={{ base: "0", md: "auto" }}
-                    bottom={{ base: "0", md: "auto" }}
-                    // Desktop: vertically center relative to container.
-                    top={{ base: "auto", md: "1/2" }}
-                    w={{ base: "fit", md: "auto" }}
-                    mx={{ base: "auto", md: "0" }}
-                    transform={{ base: "none", md: "translateY(-50%)" }}
+                    w={{ base: "auto", md: "5" }}
+                    h={{ base: "5", md: "auto" }}
+                    backgroundColor="white"
                   >
-                    <IconButton variant="subtle" rounded="full" size="md">
-                      <AngleRight rotate={{ base: "270deg", md: "0deg" }} />
-                    </IconButton>
-                  </Drawer.Trigger>
-                </Box>
-              )}
-              <Drawer.Backdrop h="full" w="full" position="absolute" />
-              <Drawer.Positioner h="full" w="full" position="absolute">
-                {/* actual drawer, open */}
-                <Drawer.Content
-                  // NOTE: the following props are used because the `size` prop values of `Drawer.Root` are too limited (and do not directly correspond to the theme `sizes` tokens)
-                  w={{ base: "full", md: "sm" }}
-                  maxW={{ base: "full", md: "sm" }}
-                  h={{ base: "1/2", md: "full" }}
-                  maxH={{ base: "1/2", md: "full" }}
-                >
-                  <Drawer.CloseTrigger
-                    onClick={onClose}
-                    asChild
-                    position="absolute"
-                    // Mobile: centered above drawer edge.
-                    // Desktop: right edge, vertically centered.
-                    left={{ base: "0", md: "auto" }}
-                    right={{ base: "0", md: "-5" }}
-                    top={{ base: "-5", md: "1/2" }}
-                    w={{ base: "fit", md: "auto" }}
-                    mx={{ base: "auto", md: "0" }}
-                    transform={{ base: "none", md: "translateY(-50%)" }}
+                    <Drawer.Trigger
+                      onClick={onOpen}
+                      asChild
+                      position="absolute"
+                      // Mobile: center horizontally at bottom.
+                      left={{ base: "0", md: "0" }}
+                      right={{ base: "0", md: "auto" }}
+                      bottom={{ base: "0", md: "auto" }}
+                      // Desktop: vertically center relative to container.
+                      top={{ base: "auto", md: "1/2" }}
+                      w={{ base: "fit", md: "auto" }}
+                      mx={{ base: "auto", md: "0" }}
+                      transform={{ base: "none", md: "translateY(-50%)" }}
+                    >
+                      <IconButton variant="subtle" rounded="full" size="md">
+                        <AngleRight rotate={{ base: "270deg", md: "0deg" }} />
+                      </IconButton>
+                    </Drawer.Trigger>
+                  </Box>
+                )}
+                <Drawer.Backdrop h="full" w="full" position="absolute" />
+                <Drawer.Positioner h="full" w="full" position="absolute">
+                  {/* actual drawer, open */}
+                  <Drawer.Content
+                    // NOTE: the following props are used because the `size` prop values of `Drawer.Root` are too limited (and do not directly correspond to the theme `sizes` tokens)
+                    w={{ base: "full", md: "sm" }}
+                    maxW={{ base: "full", md: "sm" }}
+                    h={{ base: "1/2", md: "full" }}
+                    maxH={{ base: "1/2", md: "full" }}
                   >
-                    <IconButton variant="subtle" rounded="full" size="md">
-                      <AngleLeft rotate={{ base: "270deg", md: "0deg" }} />
-                    </IconButton>
-                  </Drawer.CloseTrigger>
-                  <Drawer.Header>
-                    <Drawer.Title>Risk Layers</Drawer.Title>
-                  </Drawer.Header>
-                  <Drawer.Body>
-                    <ReportHazards
-                      addressHazardData={addressHazardData}
-                      isHazardDataLoading={isHazardDataLoading}
-                      toggledStates={toggledStates}
-                      setToggledStates={setToggledStates}
-                      setLayerToggleObj={setLayerToggleObj}
-                      isInDrawer={true}
-                    />
-                  </Drawer.Body>
-                  <Drawer.Footer></Drawer.Footer>
-                </Drawer.Content>
-              </Drawer.Positioner>
-            </Portal>
-          </Drawer.Root>
+                    <Drawer.CloseTrigger
+                      onClick={onClose}
+                      asChild
+                      position="absolute"
+                      // Mobile: centered above drawer edge.
+                      // Desktop: right edge, vertically centered.
+                      left={{ base: "0", md: "auto" }}
+                      right={{ base: "0", md: "-5" }}
+                      top={{ base: "-5", md: "1/2" }}
+                      w={{ base: "fit", md: "auto" }}
+                      mx={{ base: "auto", md: "0" }}
+                      transform={{ base: "none", md: "translateY(-50%)" }}
+                    >
+                      <IconButton variant="subtle" rounded="full" size="md">
+                        <AngleLeft rotate={{ base: "270deg", md: "0deg" }} />
+                      </IconButton>
+                    </Drawer.CloseTrigger>
+                    <Drawer.Header>
+                      <Drawer.Title>Risk Layers</Drawer.Title>
+                    </Drawer.Header>
+                    <Drawer.Body>
+                      <ReportHazards
+                        addressHazardData={addressHazardData}
+                        isHazardDataLoading={isHazardDataLoading}
+                        toggledStates={toggledStates}
+                        setToggledStates={setToggledStates}
+                        setLayerToggleObj={setLayerToggleObj}
+                        isInDrawer={true}
+                        variant="map-centric"
+                      />
+                    </Drawer.Body>
+                    <Drawer.Footer></Drawer.Footer>
+                  </Drawer.Content>
+                </Drawer.Positioner>
+              </Portal>
+            </Drawer.Root>
+          ) : (
+            <>
+              <Box zIndex="docked" top="16" left="8" position="absolute">
+                <SearchBar
+                  inputAddress={inputAddress}
+                  onInputAddressChange={setInputAddress}
+                  onSearchChange={handleSearchChange}
+                />
+              </Box>
+              <Box zIndex="docked" top="36" left="8" position="absolute">
+                <ReportHazards
+                  variant="cardhazardsummary"
+                  addressHazardData={addressHazardData}
+                  isHazardDataLoading={isHazardDataLoading}
+                  toggledStates={toggledStates}
+                  setToggledStates={setToggledStates}
+                  setLayerToggleObj={setLayerToggleObj}
+                />
+              </Box>
+              <Box zIndex="docked" top="56" right="20" position="absolute">
+                <AlertInfo message="72% chance of major Bay Area earthquake in the next 30 years"></AlertInfo>
+              </Box>
+            </>
+          )}
           <Map
             coordinates={coordinates || defaultCoords}
             softStoryData={softStoryData}
@@ -299,6 +349,55 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           />
         </Box>
       </Box>
+      {CurrentVariant === "data-centric" ? (
+        <>
+          <Box pt="8" pb="4" px="8">
+            <Heading as="h2">
+              <Text
+                as="span"
+                textStyle="headerBig"
+                layerStyle="headerMain"
+                color="blue.text"
+                fontWeight="light"
+              >
+                What your risks mean
+              </Text>
+            </Heading>
+          </Box>
+          <Center py="4" px="8">
+            {/* <CardRisk /> */}
+          </Center>
+          <Center py="4" px="8">
+            <ReportHazards
+              variant="reporthazardsummary"
+              addressHazardData={addressHazardData}
+              isHazardDataLoading={isHazardDataLoading}
+              toggledStates={toggledStates}
+              setToggledStates={setToggledStates}
+              setLayerToggleObj={setLayerToggleObj}
+            />
+          </Center>
+          <Box pt="8" pb="4" px="8">
+            <Heading as="h2">
+              <Stack gap="3">
+                <Text
+                  as="span"
+                  textStyle="headerBig"
+                  layerStyle="headerMain"
+                  color="blue.text"
+                  fontWeight="light"
+                >
+                  Get earthquake-ready
+                </Text>
+                <Text textStyle="xs">
+                  Quick steps that make a real difference when it counts.
+                </Text>
+              </Stack>
+            </Heading>
+          </Box>
+          <EarthquakeReadyCards></EarthquakeReadyCards>
+        </>
+      ) : undefined}
     </>
   );
 };

@@ -193,6 +193,7 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     warningRed: { value: "#b53d37" },
     blueGradientFrom: { value: "#3b6294" },
     blueGradientTo: { value: "#183252" },
+    cooperativeGesturesOverlay: { value: "#00000080" },
   },
   gradients: {
     // string value
@@ -279,6 +280,10 @@ const globalCss: SystemConfig["globalCss"] = {
     backgroundSize: "cover",
     borderRadius: "none",
   },
+  ".mapboxgl-scroll-zoom-blocker": {
+    // .mapboxgl-touch-pan-blocker
+    backgroundColor: "cooperativeGesturesOverlay !important",
+  },
   // NOTE: !important required to override due to the use of @layer in Chakra UI; alternative is to turn off @layer in Chakra config
   // TODO: consider looking into better workarounds or turning off @layer
   ".mapboxgl-ctrl-group button": {
@@ -299,6 +304,20 @@ const overridesConfig: SystemConfig = defineConfig({
     layerStyles,
     tokens,
     semanticTokens,
+    // components: {
+    //   Alert: {
+    //     variants: {
+    //       subtle: {
+    //         root: {
+    //           _light: {
+    //             bg: "colorPalette.100",
+    //             color: "colorPalette.700",
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
   },
 });
 
