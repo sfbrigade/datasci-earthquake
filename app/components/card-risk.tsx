@@ -13,9 +13,10 @@ import {
   AccordionItemContent,
   SystemStyleObject,
   Spinner,
+  HStack,
 } from "@chakra-ui/react";
 import { PillData, LayerIds } from "../data/data";
-import { FaCircle, FaSquareFull } from "react-icons/fa";
+import { FaCircle, FaSquareFull, FaPlus } from "react-icons/fa";
 import Pill from "./pill";
 import { Dispatch, SetStateAction, useState } from "react";
 import { LayerToggleObjProps } from "./address-mapper";
@@ -93,18 +94,50 @@ const CardRisk: React.FC<CardRiskProps> = ({
 
             <Text fontSize="sm">
               Soft story buildings that haven’t been reinforced may be at risk
-              in an earthquake. <Link color="blue.500">Learn More</Link>
+              in an earthquake.{" "}
+              <Link fontWeight="bold" color="black" variant="underline">
+                Learn More
+              </Link>
             </Text>
 
             <Box bg="blue.50" p="4" borderRadius="md" mt="4">
-              <Text fontSize="xs" fontWeight="bold" mb="3">
-                WHAT YOU CAN STILL DO
-              </Text>
+              <Flex gap="2">
+                <Icon size="sm" color="blue.text">
+                  {<FaPlus />}
+                </Icon>
+                <Text fontSize="xs" fontWeight="bold" mb="3">
+                  WHAT YOU CAN STILL DO
+                </Text>
+              </Flex>
 
               <Box as="ol" pl="4">
-                <Box as="li">Download the MyShake app</Box>
-                <Box as="li">Prep your emergency kit</Box>
-                <Box as="li">Check eligibility for retrofit grant</Box>
+                <Box
+                  as="li"
+                  listStyleType="number"
+                  listStylePosition="inside"
+                  _marker={{ color: "blue.700" }}
+                >
+                  Download the MyShake app to get early warnings when an
+                  earthquake is detected.
+                </Box>
+                <Box
+                  as="li"
+                  listStyleType="number"
+                  listStylePosition="inside"
+                  _marker={{ color: "blue.700" }}
+                >
+                  Prep your emergency kit with first aid supplies, batteries,
+                  and other essentials.
+                </Box>
+                <Box
+                  as="li"
+                  listStyleType="number"
+                  listStylePosition="inside"
+                  _marker={{ color: "blue.700" }}
+                >
+                  Check eligibility for an Earthquake Brace and Bolt grant or
+                  Earthquake Soft-Story retrofit grant.
+                </Box>
               </Box>
             </Box>
           </AccordionItemContent>
