@@ -41,9 +41,9 @@ const Pill: React.FC<PillProps> = ({
 
   if (variant === "text") {
     return (
-      <Box as="span" display="inline-block" color={color}>
+      <Text as="span" display="inline-block" color={color}>
         {label}
-      </Box>
+      </Text>
     );
   }
 
