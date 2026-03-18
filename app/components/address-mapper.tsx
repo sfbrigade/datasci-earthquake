@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Box,
   chakra,
+  Image,
   useDisclosure,
   IconButton,
   Drawer,
@@ -13,6 +14,8 @@ import {
   Heading,
   Stack,
   Text,
+  Card,
+  Flex,
 } from "@chakra-ui/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { useRouter } from "next/navigation";
@@ -326,14 +329,31 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 />
               </Box>
               <Box zIndex="docked" top="36" left="8" position="absolute">
-                <ReportHazards
-                  variant="cardhazardsummary"
-                  addressHazardData={addressHazardData}
-                  isHazardDataLoading={isHazardDataLoading}
-                  toggledStates={toggledStates}
-                  setToggledStates={setToggledStates}
-                  setLayerToggleObj={setLayerToggleObj}
-                />
+                <Card.Root width="500px">
+                  <Card.Body gap="2">
+                    <Card.Title mt="2">
+                      <Image
+                        src="/images/SFSafehomeBlackLogo.svg"
+                        alt="SafeHome logo"
+                        role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
+                        height="20px"
+                        width="20px"
+                        display="inline"
+                      />
+                      {searchedAddress}
+                    </Card.Title>
+                    <Card.Description>
+                      <ReportHazards
+                        variant="cardhazardsummary"
+                        addressHazardData={addressHazardData}
+                        isHazardDataLoading={isHazardDataLoading}
+                        toggledStates={toggledStates}
+                        setToggledStates={setToggledStates}
+                        setLayerToggleObj={setLayerToggleObj}
+                      />
+                    </Card.Description>
+                  </Card.Body>
+                </Card.Root>
               </Box>
               <Box zIndex="docked" top="56" right="20" position="absolute">
                 <AlertInfo message="72% chance of major Bay Area earthquake in the next 30 years"></AlertInfo>

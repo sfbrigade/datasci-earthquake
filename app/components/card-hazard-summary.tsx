@@ -8,6 +8,7 @@ import {
   SystemStyleObject,
   Spinner,
 } from "@chakra-ui/react";
+import { FaCircle, FaSquareFull, FaPlus } from "react-icons/fa";
 import { PillData } from "../data/data";
 import Pill from "./pill";
 interface CardHazardSummaryProps {
@@ -55,12 +56,17 @@ const CardHazardSummary: React.FC<CardHazardSummaryProps> = ({
     ""
   );
   return (
-    <Card.Root maxW="sm">
-      <Card.Body gap="2">
-        <Card.Title mt="2">{address}</Card.Title>
-        <Card.Description>{hazardPill}</Card.Description>
-      </Card.Body>
-    </Card.Root>
+    <Box>
+      <Flex align="center" gap="2">
+        <Icon size="sm" color={iconColor}>
+          {icon === "circle" ? <FaCircle /> : <FaSquareFull />}
+        </Icon>
+        <Text fontWeight="medium" color="blue.500" textDecoration="underline">
+          {title}
+        </Text>
+      </Flex>
+      <Box w="full"> {hazardPill}</Box>
+    </Box>
   );
 };
 export default CardHazardSummary;
