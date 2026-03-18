@@ -87,6 +87,9 @@ def include_object(object, name, type_, reflected, compare_to):
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 settings = Settings()
+print('-------------- show me! -----')
+print(settings.database_url_sqlalchemy)
+print('-------------- show me! -----')
 config.set_main_option("sqlalchemy.url", settings.database_url_sqlalchemy)
 
 
