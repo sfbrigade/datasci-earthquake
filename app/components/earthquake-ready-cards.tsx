@@ -51,6 +51,7 @@ const EarthquakeReadyCards = () => (
             href="https://www.ready.gov/kit"
             target="_blank"
             rel="noopener noreferrer"
+            color="blue.text"
           >
             See the checklist
           </Link>
@@ -74,6 +75,7 @@ const EarthquakeReadyCards = () => (
             href="https://www.crmp.org/resources/find-a-contractor/"
             target="_blank"
             rel="noopener noreferrer"
+            color="blue.text"
           >
             Find contractors
           </Link>
