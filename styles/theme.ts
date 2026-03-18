@@ -177,15 +177,16 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
       600: { value: "#4A5568" },
       900: { value: "#171923" },
     },
-    white: { value: "#FFF" },
-    blue: { 600: { value: "#0088FF" }, text: { value: "#2B6CB0" } }, // blue/600 (TODO: all headings) // "#0088FF" comes from Figma switches
-    yellow: { value: "#ECC94B" },
-    red: { value: "#C53030" },
-    green: { value: "#25855A" },
-    orange: { value: "#F6AD55" },
-    pink: { value: "#ED64A6" },
+    white: { DEFAULT: { value: "#FFF" } },
+    blue: { text: { value: "#2B6CB0" } }, // blue/600 (TODO: all headings)
+    yellow: { DEFAULT: { value: "#ECC94B" } },
+    red: { DEFAULT: { value: "#C53030" } },
+    green: { DEFAULT: { value: "#25855A" } },
+    orange: { DEFAULT: { value: "#F6AD55" } },
+    pink: { DEFAULT: { value: "#ED64A6" } },
 
     // TODO: move some of these to `semanticTokens` and rename accordingly
+    blueSwitch: { value: "#3182CE" }, // NOTE: "#3182CE" comes from Figma switches, but color palette for `blue` is being used instead for the time being
     blueBackground: { value: "#2C5282" }, // blue/700
     tsunamiBlue: { value: "#63B3ED" }, // blue/300
     lightGrey: { value: "#c8caceff" },
