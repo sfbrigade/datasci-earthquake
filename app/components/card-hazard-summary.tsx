@@ -58,7 +58,7 @@ const CardHazardSummary: React.FC<CardHazardSummaryProps> = ({
     <Card.Root maxW="sm">
       <Card.Body gap="2">
         <Card.Title mt="2">{address}</Card.Title>
-        {hazardPill}
+        <Card.Description>{hazardPill}</Card.Description>
       </Card.Body>
     </Card.Root>
   );
