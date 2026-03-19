@@ -39,7 +39,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN echo 'OHBOY' && echo $PATH
 
-RUN source .venv/bin/activate
+RUN . .venv/bin/activate
 
 CMD ["alembic show current"]
 
