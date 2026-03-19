@@ -52,4 +52,6 @@ RUN ls -l /var/lib/postgresql/data
 # Start the database server with PostGIS enabled
 #WORKDIR /backend
 #CMD ["sh", "-c", "echo 'homey' && postgres && uv run alembic --config backend/alembic.ini show current"]
+RUN whoami
+
 CMD ["postgres"]
