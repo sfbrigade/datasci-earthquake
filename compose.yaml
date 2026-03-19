@@ -39,8 +39,6 @@ services:
       - .env
     environment:
       - ENVIRONMENT=dev_docker
-    depends_on:
-      - db
 
   db_test:
     build:
