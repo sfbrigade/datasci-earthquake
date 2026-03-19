@@ -44,6 +44,8 @@ RUN chmod +x /docker-entrypoint-initdb.d/initdb-postgis.sh \
 # Expose the default Postgres port
 EXPOSE 5432
 
+
+RUN man useradd
 # Start the database server with PostGIS enabled
 #WORKDIR /backend
 #CMD ["sh", "-c", "echo 'homey' && postgres && uv run alembic --config backend/alembic.ini show current"]
