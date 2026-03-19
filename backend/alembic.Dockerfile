@@ -36,4 +36,6 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 #CMD ["uv run alembic --config backend/alembic.ini show current"]
 #CMD ["uv run alembic show current"]
+
+RUN echo 'OHBOY' && echo $PATH
 CMD ["alembic show current"]
