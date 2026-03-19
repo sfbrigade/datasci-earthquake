@@ -19,10 +19,11 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 # Ensure the installed uv binary is on the `PATH`
 ENV PATH="/root/.local/bin/:$PATH"
 
-COPY pyproject.toml uv.lock alembic.ini ./
+COPY pyproject.toml uv.lock ./
 COPY . /backend
 
 RUN echo 'hi' && pwd && ls -l
+RUN echo 'hiagain' && pwd && ls -l backend
 
 # Install dependencies using uv
 RUN uv sync --only-group testytesty
