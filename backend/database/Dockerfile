@@ -54,4 +54,5 @@ RUN ls -l /var/lib/postgresql/data
 #CMD ["sh", "-c", "echo 'homey' && postgres && uv run alembic --config backend/alembic.ini show current"]
 RUN whoami
 
-CMD ["postgres"]
+#CMD ["postgres"]
+CMD ["sh", "-c", "echo 'homey' && postgres"]
