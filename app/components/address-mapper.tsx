@@ -18,6 +18,7 @@ import {
   Card,
 } from "@chakra-ui/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import { IoShieldCheckmarkOutline } from "react-icons/io5";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
@@ -417,6 +418,20 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             </Heading>
           </Box>
           <EarthquakeReadyCards></EarthquakeReadyCards>
+          <Center py="4" px="8">
+            <Box bg="blue.50" p="4" borderRadius="md" mt="4">
+              <IoShieldCheckmarkOutline />
+              <Text fontSize="xs" fontWeight="bold" mb="3">
+                Renting? Know your rights.
+              </Text>
+              <Text>
+                If you live in a non-compliant building or high-risk zone, you
+                have options. Get earthquake renters insurance to protect your
+                belongings, or learn about your right to report unsafe living
+                conditions to the city.
+              </Text>
+            </Box>
+          </Center>
         </>
       )}
     </>
