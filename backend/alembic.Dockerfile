@@ -38,5 +38,13 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 #CMD ["uv run alembic show current"]
 
 RUN echo 'OHBOY' && echo $PATH
+
+RUN source .venv/bin/activate
+
 CMD ["alembic show current"]
+
+
+
+
+
 #CMD ["python", "--version"]
