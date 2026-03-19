@@ -30,6 +30,17 @@ services:
       retries: 10
       start_period: 30s
 
+  alembic:
+    build:
+      context: ./backend
+      dockerfile: alembic.Dockerfile
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=dev_docker
+    depends_on:
+      - db
+
   db_test:
     build:
       context: ./backend/database

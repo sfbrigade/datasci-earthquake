@@ -184,7 +184,7 @@ jobs:
       
       #- run: docker run -d --env-file .env --name mydb postgis-custom
       #- run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
-      - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend 
+      - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db alembic backend 
       - run: docker volume ls 
       - run: docker build -t datasci-earthquake-frontend . 
 
