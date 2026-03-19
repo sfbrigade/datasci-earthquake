@@ -48,7 +48,7 @@ EXPOSE 5432
 RUN useradd goldenwhoopi
 RUN grep 'goldenwhoopi' /etc/passwd
 
-USER goldenwhoopi
+#USER goldenwhoopi
 # Start the database server with PostGIS enabled
 #WORKDIR /backend
 CMD ["sh", "-c", "echo 'homey' && postgres && uv run alembic --config backend/alembic.ini show current"]
