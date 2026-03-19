@@ -90,8 +90,7 @@ settings = Settings()
 print('-------------- show me! -----')
 print(settings.database_url_sqlalchemy)
 print('-------------- show me! -----')
-#config.set_main_option("sqlalchemy.url", settings.database_url_sqlalchemy)
-config.set_main_option("sqlalchemy.url", settings.localhost_database_url_sqlalchemy)
+config.set_main_option("sqlalchemy.url", settings.database_url_sqlalchemy)
 
 
 def run_migrations_offline() -> None:
