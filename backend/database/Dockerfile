@@ -11,7 +11,7 @@ ENV PATH="/root/.local/bin/:$PATH"
 
 COPY pyproject.toml uv.lock ./
 
-RUN uv sync --only-group testytesty
+#RUN uv sync --only-group testytesty
 
 #RUN pwd && ls -la /.venv/bin
 
