@@ -24,6 +24,7 @@ COPY . /backend
 
 RUN echo 'hi' && pwd && ls -l
 RUN echo 'hiagain' && pwd && ls -l backend
+RUN echo 'hiagainoh' && pwd && ls -la .venv/bin
 
 # Install dependencies using uv
 RUN uv sync --only-group testytesty
@@ -33,4 +34,5 @@ ENV VIRTUAL_ENV=/.venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 #CMD ["uv run alembic --config backend/alembic.ini show current"]
-CMD ["uv run alembic show current"]
+#CMD ["uv run alembic show current"]
+CMD ["alembic show current"]
