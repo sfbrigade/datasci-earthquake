@@ -32,4 +32,5 @@ RUN uv sync --only-group testytesty
 ENV VIRTUAL_ENV=/.venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-CMD ["uv run alembic --config backend/alembic.ini show current"]
+#CMD ["uv run alembic --config backend/alembic.ini show current"]
+CMD ["uv run alembic show current"]
