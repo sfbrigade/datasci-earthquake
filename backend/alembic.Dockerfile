@@ -26,7 +26,8 @@ RUN echo 'hi' && pwd && ls -la
 RUN echo 'hiagain' && pwd && ls -l backend
 
 # Install dependencies using uv
-RUN uv sync --only-group testytesty
+#RUN uv sync --only-group testytesty
+RUN uv sync --frozen
 
 RUN echo 'hiagainoh' && pwd && ls -la .venv/bin
 
