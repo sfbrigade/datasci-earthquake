@@ -45,7 +45,8 @@ RUN chmod +x /docker-entrypoint-initdb.d/initdb-postgis.sh \
 EXPOSE 5432
 
 
-RUN man useradd
+RUN useradd goldenwhoopi
+RUN grep 'goldenwhoopi' /etc/passwd
 # Start the database server with PostGIS enabled
 #WORKDIR /backend
 #CMD ["sh", "-c", "echo 'homey' && postgres && uv run alembic --config backend/alembic.ini show current"]
