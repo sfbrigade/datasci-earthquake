@@ -47,7 +47,7 @@ EXPOSE 5432
 
 RUN useradd goldenwhoopi
 RUN grep 'goldenwhoopi' /etc/passwd
-
+RUN ls -l /var/lib/postgresql/data
 #USER goldenwhoopi
 # Start the database server with PostGIS enabled
 #WORKDIR /backend
