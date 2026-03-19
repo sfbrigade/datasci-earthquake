@@ -41,10 +41,5 @@ RUN echo 'OHBOY' && echo $PATH
 
 #RUN . .venv/bin/activate
 
-CMD ["alembic", "show", "current"]
+CMD ["alembic", "--config", "backend/alembic.ini", "show", "current"]
 
-
-
-
-
-#CMD ["python", "--version"]
