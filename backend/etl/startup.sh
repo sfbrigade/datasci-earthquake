@@ -26,36 +26,36 @@ run_python_script() {
 }
 
 # Run init_db.py
-ETL_OUTPUT=$($VENV_PYTHON backend/database/init_db.py)
-INIT_DB_EXIT_CODE=$?
+#ETL_OUTPUT=$($VENV_PYTHON backend/database/init_db.py)
+#INIT_DB_EXIT_CODE=$?
 
-if [[ $INIT_DB_EXIT_CODE -ne 0 ]]; then
-    echo "init_db.py failed!"
-    exit 1
-fi
+#if [[ $INIT_DB_EXIT_CODE -ne 0 ]]; then
+#    echo "init_db.py failed!"
+#    exit 1
+#fi
 
 # Check which tables need ETL
-ETL_TABLES=$(echo "$ETL_OUTPUT" | awk -F: '/^ETL_REQUIRED:/ {print $2}')
+#ETL_TABLES=$(echo "$ETL_OUTPUT" | awk -F: '/^ETL_REQUIRED:/ {print $2}')
 
 # run ETL only for required tables
-for tbl in $ETL_TABLES; do
-  case "$tbl" in
-    tsunami_zones)
-      run_python_script backend/etl/tsunami_data_handler.py
-      ;;
-    liquefaction_zones)
-      run_python_script backend/etl/liquefaction_data_handler.py
-      ;;
-    soft_story_properties)
-      run_python_script backend/etl/soft_story_properties_data_handler.py
-      ;;
-    *)
-      echo "No ETL mapping for $tbl; skipping" >&2
-      ;;
-  esac
-done
+#for tbl in $ETL_TABLES; do
+#  case "$tbl" in
+#    tsunami_zones)
+#      run_python_script backend/etl/tsunami_data_handler.py
+#      ;;
+#    liquefaction_zones)
+#      run_python_script backend/etl/liquefaction_data_handler.py
+#      ;;
+#    soft_story_properties)
+#      run_python_script backend/etl/soft_story_properties_data_handler.py
+#      ;;
+#    *)
+#      echo "No ETL mapping for $tbl; skipping" >&2
+#      ;;
+#  esac
+#done
 
-echo "===== startup.sh finished ====="
+#echo "===== startup.sh finished ====="
 
 # Start FastAPI
 RELOAD_FLAG=""
