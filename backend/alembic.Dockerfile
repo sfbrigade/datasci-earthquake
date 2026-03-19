@@ -42,5 +42,6 @@ RUN echo 'OHBOY' && echo $PATH
 
 #RUN . .venv/bin/activate
 
-CMD ["alembic", "--config", "backend/alembic.ini", "show", "current"]
+#CMD ["alembic", "--config", "backend/alembic.ini", "show", "current"]
+CMD ["alembic", "--config", "backend/alembic.ini", "current"]
 

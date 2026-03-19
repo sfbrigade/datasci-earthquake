@@ -5,11 +5,6 @@ from sqlalchemy import pool
 from geoalchemy2 import alembic_helpers
 
 from alembic import context
-import sys
-print('------------duh---')
-print(sys.path)
-print('------------duhend---')
-#from fibo import fib
 from backend.api.models.base import Base
 from backend.api.models.tsunami import TsunamiZone
 from backend.api.models.landslide_zones import LandslideZone
@@ -87,9 +82,6 @@ def include_object(object, name, type_, reflected, compare_to):
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 settings = Settings()
-print('-------------- show me! -----')
-print(settings.database_url_sqlalchemy)
-print('-------------- show me! -----')
 config.set_main_option("sqlalchemy.url", settings.database_url_sqlalchemy)
 
 
