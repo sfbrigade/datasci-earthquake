@@ -39,4 +39,3 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN echo 'OHBOY' && echo $PATH
 #CMD ["alembic show current"]
-CMD ["echo 'ohun'"]
