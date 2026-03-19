@@ -22,12 +22,13 @@ ENV PATH="/root/.local/bin/:$PATH"
 COPY pyproject.toml uv.lock ./
 COPY . /backend
 
-RUN echo 'hi' && pwd && ls -l
+RUN echo 'hi' && pwd && ls -la
 RUN echo 'hiagain' && pwd && ls -l backend
-RUN echo 'hiagainoh' && pwd && ls -la .venv/bin
 
 # Install dependencies using uv
 RUN uv sync --only-group testytesty
+
+RUN echo 'hiagainoh' && pwd && ls -la .venv/bin
 
 # uv sync creates a virtual environment in the root directory, add it to PATH
 ENV VIRTUAL_ENV=/.venv
