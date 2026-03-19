@@ -1,15 +1,21 @@
 "use client";
 
+import { PostHogProvider } from "./posthog-provider";
 import { ChakraProvider } from "@chakra-ui/react";
-import { ColorModeProvider, type ColorModeProviderProps } from "./color-mode";
-import system from "../../../styles/theme";
+import {
+  ColorModeProvider,
+  type ColorModeProviderProps,
+} from "../components/ui/color-mode";
+import system from "../../styles/theme";
 
-export function Provider(props: ColorModeProviderProps) {
+export function Providers(props: ColorModeProviderProps) {
   return (
-    <ChakraProvider value={system}>
-      {/* TODO: this is a workaround to force the color mode to light for now until we figure out how to handle light vs dark properly */}
-      <ColorModeProvider forcedTheme="light" {...props} />
-    </ChakraProvider>
+    <PostHogProvider>
+      <ChakraProvider value={system}>
+        {/* TODO: this is a workaround to force the color mode to light for now until we figure out how to handle light vs dark properly */}
+        <ColorModeProvider forcedTheme="light" {...props} />
+      </ChakraProvider>
+    </PostHogProvider>
   );
 }
 

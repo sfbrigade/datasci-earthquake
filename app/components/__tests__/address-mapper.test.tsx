@@ -1,7 +1,7 @@
 import React from "react";
 import { act, render, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { Provider } from "../ui/provider";
+import { Providers } from "../../providers/providers";
 
 const fetchHazardDataMock = jest.fn();
 const mockGet = jest.fn();
@@ -86,9 +86,9 @@ describe("AddressMapper", () => {
 
     // Act
     render(
-      <Provider>
+      <Providers>
         <AddressMapper {...mockProps} />
-      </Provider>
+      </Providers>
     );
 
     // Assert
@@ -109,9 +109,9 @@ describe("AddressMapper", () => {
 
     // Act
     render(
-      <Provider>
+      <Providers>
         <AddressMapper {...mockProps} />
-      </Provider>
+      </Providers>
     );
 
     // Assert
@@ -133,9 +133,9 @@ describe("AddressMapper", () => {
     // Initial render with no URL params
     mockSetSearchParams({});
     render(
-      <Provider>
+      <Providers>
         <AddressMapper {...mockProps} />
-      </Provider>
+      </Providers>
     );
 
     // Act

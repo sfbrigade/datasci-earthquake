@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Heading from "../heading";
-import { Provider } from "../ui/provider";
+import { Providers } from "../../providers/providers";
 import "../__mocks__/match-media";
 
 describe("Heading component", () => {
@@ -14,9 +14,9 @@ describe("Heading component", () => {
 
   const renderComponent = () =>
     render(
-      <Provider>
+      <Providers>
         <Heading headingData={headingData} />
-      </Provider>
+      </Providers>
     );
 
   test("renders the heading with the correct text", () => {

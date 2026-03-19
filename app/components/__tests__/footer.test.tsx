@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { Provider } from "../ui/provider";
+import { Providers } from "../../providers/providers";
 import "@testing-library/jest-dom";
 import Footer from "../footer";
 import "../__mocks__/match-media";
@@ -7,9 +7,9 @@ import "../__mocks__/match-media";
 describe("Footer Component", () => {
   const renderFooter = () =>
     render(
-      <Provider>
+      <Providers>
         <Footer />
-      </Provider>
+      </Providers>
     );
 
   it("renders the logo", () => {

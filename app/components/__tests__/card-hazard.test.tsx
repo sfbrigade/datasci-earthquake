@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import CardHazard from "../card-hazard";
 import { Hazards } from "../../data/data";
 import "@testing-library/jest-dom";
-import { Provider } from "../ui/provider";
+import { Providers } from "../../providers/providers";
 import "../__mocks__/match-media";
 
 // eslint-disable-next-line react/display-name
@@ -38,7 +38,7 @@ describe("CardHazard Component", () => {
 
   it("renders without crashing", () => {
     render(
-      <Provider>
+      <Providers>
         <CardHazard
           hazard={Hazards[0]}
           showData={true}
@@ -47,14 +47,14 @@ describe("CardHazard Component", () => {
           setToggledStates={setToggledStates}
           setLayerToggleObj={setLayerToggleObj}
         />
-      </Provider>
+      </Providers>
     );
     expect(screen.getByText("Earthquake")).toBeInTheDocument();
   });
 
   it("displays the hazard title and description", () => {
     render(
-      <Provider>
+      <Providers>
         <CardHazard
           hazard={Hazards[0]}
           showData={true}
@@ -63,7 +63,7 @@ describe("CardHazard Component", () => {
           setToggledStates={setToggledStates}
           setLayerToggleObj={setLayerToggleObj}
         />
-      </Provider>
+      </Providers>
     );
     expect(screen.getByText("Earthquake")).toBeInTheDocument();
     expect(
