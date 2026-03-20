@@ -25,6 +25,17 @@ services:
       retries: 10
       start_period: 30s
 
+  exportdb:
+    image: postgis-custom
+    build:
+      context: ./backend/database
+      dockerfile: export.Dockerfile
+    container_name: my_export_db
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=dev_docker
+
   db_test:
     build:
       context: ./backend/database
