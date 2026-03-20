@@ -1,0 +1,4 @@
+export const DEFAULT_MAP_COORDS = [-122.408020683, 37.801698301] as const;
+export const DEFAULT_MAP_ZOOM = 12.1;
+export const DEFAULT_STATIC_MAP_WIDTH = 1280;
+export const DEFAULT_STATIC_MAP_HEIGHT = 960;

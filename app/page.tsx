@@ -18,6 +18,7 @@ import {
   fetchTsunami,
   fetchLiquefaction,
 } from "./api/services";
+import StaticMapPlaceholder from "./components/static-map-placeholder";
 // GeoJSON datasets (soft stories, tsunami zones, liquefaction zones) are updated
 // infrequently. Revalidate the cache every 24 hours so CDN fetches stay fresh
 // without hammering the origin on every request.
@@ -78,13 +79,9 @@ const AddressMapperSkeleton = () => (
       <div style={{ height: 48, maxWidth: 448, borderRadius: 9999, background: "rgba(255,255,255,0.35)" }} />
     </div>
     {/* Map area placeholder */}
-    <div
-      style={{
-        width: "100%",
-        height: "calc(100dvh - 175px - 96px)",
-        background: "#e2e8f0",
-      }}
-    />
+    <div style={{ width: "100%", height: "calc(100dvh - 175px - 96px)" }}>
+      <StaticMapPlaceholder height="100%" />
+    </div>
   </div>
 );
 

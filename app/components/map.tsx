@@ -6,12 +6,16 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
+import { DEFAULT_MAP_COORDS, DEFAULT_MAP_ZOOM } from "../lib/map-defaults";
 
-const defaultCoords: LngLatLike = [-122.408020683, 37.801698301]; // TODO: dedupe with address-mapper default coords; consider centralizing in a constants file if we need to use in more places
+const defaultCoords: LngLatLike = Array.from(DEFAULT_MAP_COORDS) as [
+  number,
+  number,
+];
 const mapOptions: Omit<MapOptions, "container"> = {
   style: "mapbox://styles/mapbox/standard",
   center: defaultCoords,
-  zoom: 12.1, // Start with more zoomed-out view but not too far
+  zoom: DEFAULT_MAP_ZOOM, // Keep shared with static placeholder so the preview matches the interactive map
   minZoom: 11, // Allow users to zoom out more
   maxZoom: 15, // Increase max zoom to allow closer inspection
   maxBounds: [

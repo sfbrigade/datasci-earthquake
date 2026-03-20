@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Box, Skeleton } from "@chakra-ui/react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import ReportHazards from "./report-hazards";
@@ -11,17 +11,17 @@ import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 
-import dynamic from "next/dynamic";
+import StaticMapPlaceholderClient from "./static-map-placeholder-client";
+import { DEFAULT_MAP_COORDS, DEFAULT_MAP_ZOOM } from "../lib/map-defaults";
 
-const Map = dynamic(() => import("./map"), {
-  ssr: false,
-  loading: () => <Skeleton height="full" width="full" borderRadius="xl" />,
-});
+const Map = lazy(() => import("./map"));
 
 const addressLookupCoordinates = {
-  geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
+  geometry: { type: "Point", coordinates: DEFAULT_MAP_COORDS },
 };
-const defaultCoords = addressLookupCoordinates.geometry.coordinates ?? [];
+const defaultCoords = Array.from(
+  addressLookupCoordinates.geometry.coordinates ?? []
+);
 const toggledStatesDefaults = [true, true, true];
 
 interface AddressMapperProps {
@@ -246,13 +246,22 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         ) : null}
 
         <Box flex={{ base: "initial", sm: "1" }} h="full">
-          <Map
-            coordinates={coordinates || defaultCoords}
-            softStoryData={softStoryData}
-            tsunamiData={tsunamiData}
-            liquefactionData={liquefactionData}
-            layerToggleObj={layerToggleObj}
-          />
+          <Suspense
+            fallback={
+              <StaticMapPlaceholderClient
+                coordinates={coordinates || defaultCoords}
+                zoom={DEFAULT_MAP_ZOOM}
+              />
+            }
+          >
+            <Map
+              coordinates={coordinates || defaultCoords}
+              softStoryData={softStoryData}
+              tsunamiData={tsunamiData}
+              liquefactionData={liquefactionData}
+              layerToggleObj={layerToggleObj}
+            />
+          </Suspense>
         </Box>
       </Box>
     </>
