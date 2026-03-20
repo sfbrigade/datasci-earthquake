@@ -3,7 +3,6 @@
 import React, { useRef, useEffect } from "react";
 import mapboxgl, { LngLat, LngLatLike, MapOptions } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
 
@@ -31,17 +30,11 @@ const mapOptions: Omit<MapOptions, "container"> = {
 };
 interface MapProps {
   coordinates: number[];
-  softStoryData: FeatureCollection<Geometry>;
-  tsunamiData: FeatureCollection<Geometry>;
-  liquefactionData: FeatureCollection<Geometry>;
   layerToggleObj: LayerToggleObjProps;
 }
 
 const Map: React.FC<MapProps> = ({
   coordinates = defaultCoords,
-  softStoryData,
-  tsunamiData,
-  liquefactionData,
   layerToggleObj,
 }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -102,6 +95,7 @@ const Map: React.FC<MapProps> = ({
       // style/tile work and any deferred GeoJSON registration.
       map.once("render", () => {
         if (typeof window !== "undefined") {
+          (window as any).__mapInteractive = performance.now();
           window.performance?.mark("map-interactive");
         }
       });
@@ -122,11 +116,21 @@ const Map: React.FC<MapProps> = ({
 
         markerRef.current = addressMarker;
 
-        // ── Defer GeoJSON source + layer registration until the browser is idle.
-        // This keeps the JS thread free directly after map load so the user can
-        // start panning / zooming without waiting for GeoJSON processing.
-        // Falls back to setTimeout(0) in environments without requestIdleCallback.
-        const addLayers = () => {
+        // Fetch and add the hazard overlays after the base map is already visible.
+        // This removes GeoJSON serialization from the initial HTML and keeps first
+        // interaction independent from overlay processing.
+        const addLayers = async () => {
+          const [liquefactionData, tsunamiData, softStoryData] = await Promise.all(
+            [
+              fetch("/data/LiquefactionZone.geojson"),
+              fetch("/data/TsunamiZone.geojson"),
+              fetch("/data/SoftStoryProperty.geojson"),
+            ].map(async (responsePromise) => {
+              const response = await responsePromise;
+              return response.json();
+            })
+          );
+
           // Add sources
           map.addSource("seismic", { type: "geojson", data: liquefactionData });
           map.addSource("tsunami", { type: "geojson", data: tsunamiData });
@@ -201,14 +205,17 @@ const Map: React.FC<MapProps> = ({
       markerRef.current?.setLngLat(addressLngLat);
       return;
     }
-  }, [coordinates, liquefactionData, softStoryData, tsunamiData]);
+  }, [coordinates]);
 
   useEffect(() => {
     if (layerToggleObj.layerId != "") handleToggleLayers();
   }, [layerToggleObj]); // re-runs every time state changes
 
   return (
-    <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
+    <div
+      ref={mapContainerRef}
+      style={{ width: "100%", height: "100%", contain: "layout paint size" }}
+    />
   );
 };
 

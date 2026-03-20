@@ -1,70 +1,39 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Box, Skeleton } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
-import { toaster } from "@/components/ui/toaster";
-import ReportHazards from "./report-hazards";
-import MobileReportHazards from "./mobile-report-hazards";
-import { FeatureCollection, Geometry } from "geojson";
-import HomeHeader from "./home-header";
-import { useSearchParams } from "next/navigation";
-import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
-
+import { Box } from "@chakra-ui/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
+import { toaster } from "@/components/ui/toaster";
+import MapHomeHeader from "./map-home-header";
+import HazardDrawer from "./hazard-drawer";
+import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 
 const Map = dynamic(() => import("./map"), {
   ssr: false,
-  loading: () => <Skeleton height="full" width="full" borderRadius="xl" />,
+  loading: () => <Box width="full" height="full" bg="gray.100" />,
 });
 
-const addressLookupCoordinates = {
-  geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
-};
-const defaultCoords = addressLookupCoordinates.geometry.coordinates ?? [];
+const defaultCoords = [-122.408020683, 37.801698301];
 const toggledStatesDefaults = [true, true, true];
-
-interface AddressMapperProps {
-  softStoryData: FeatureCollection<Geometry>;
-  tsunamiData: FeatureCollection<Geometry>;
-  liquefactionData: FeatureCollection<Geometry>;
-}
 
 export type LayerToggleObjProps = {
   layerId: string;
   toggleState: boolean;
 };
 
-type ErrorResult = { error: true; message: string };
-
-const isErrorResult = (data: unknown): data is ErrorResult => {
-  return (
-    typeof data === "object" &&
-    data !== null &&
-    "error" in data &&
-    (data as any).error === true
-  );
-};
-
-const AddressMapper: React.FC<AddressMapperProps> = ({
-  softStoryData,
-  tsunamiData,
-  liquefactionData,
-}) => {
+const AddressMapper = () => {
   const searchParams = useSearchParams();
   const initialLat = searchParams.get("lat");
   const initialLon = searchParams.get("lon");
   const initialAddress = searchParams.get("address");
 
-  // initialize state directly from searchParams or fall back to null
   const [coordinates, setCoordinates] = useState<number[] | null>(
     initialLat && initialLon
       ? [parseFloat(initialLon), parseFloat(initialLat)]
       : null
   );
-  const [searchedAddress, setSearchedAddress] = useState(
-    initialAddress || null
-  );
+  const [searchedAddress, setSearchedAddress] = useState(initialAddress || null);
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
   const [toggledStates, setToggledStates] = useState<boolean[]>(
@@ -74,10 +43,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     layerId: "",
     toggleState: true,
   });
-  const [showHazards, setShowHazards] = useState(false);
   const [isSearchComplete, setSearchComplete] = useState(false);
-  const [currentView, setCurrentView] = useState("");
-  const toastIdDataLoadFailed = "data-load-failed";
   const coordinatesRef = useRef<number[] | null>(null);
   const router = useRouter();
 
@@ -112,10 +78,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     [fetchHazardData]
   );
 
-  const handleResize = () => {
-    setCurrentView(window.innerWidth <= 480 ? "mobile" : "desktop");
-  };
-
   const handleSearchChange = useCallback(
     (coords: number[], address: string) => {
       const newUrl = `?address=${encodeURIComponent(address)}&lat=${coords[1]}&lon=${coords[0]}`;
@@ -139,15 +101,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         lastCoords[0] !== newCoords[0] ||
         lastCoords[1] !== newCoords[1]
       ) {
-        // FIXME: Avoid calling setState() directly within an effect (remove eslint directive below to see lint error)
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCoordinates(newCoords);
         setSearchedAddress(address);
         coordinatesRef.current = newCoords;
         updateHazardData(newCoords);
       }
     } else if (coordinatesRef.current) {
-      // clear state and coordinatesRef when navigating to a page without location params(ex. navigating back to main page after viewing a result)
       setCoordinates(null);
       setSearchedAddress(null);
       setAddressHazardData({});
@@ -156,101 +115,38 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     }
   }, [searchParams, updateHazardData]);
 
-  useEffect(() => {
-    const sources = [
-      { name: "Soft Story Buildings", data: softStoryData },
-      { name: "Tsunami Zones", data: tsunamiData },
-      { name: "Liquefaction Zones", data: liquefactionData },
-    ];
-
-    const errors = sources
-      .filter((src) => isErrorResult(src.data))
-      .map(
-        (src) =>
-          `${src.name}: ${(src.data as unknown as ErrorResult).message || "Unknown error"}`
-      );
-
-    if (errors.length > 0) {
-      if (!toaster.isVisible(toastIdDataLoadFailed)) {
-        toaster.create({
-          id: toastIdDataLoadFailed,
-          title: "Data Load Error",
-          description: errors.join(" | "),
-          type: "error",
-          duration: 5000,
-          closable: true,
-        });
-      }
-    }
-  }, [softStoryData, tsunamiData, liquefactionData]);
-
-  useEffect(() => {
-    if (currentView === "") {
-      // FIXME: Avoid calling setState() directly within an effect (remove eslint directive below to see lint error)
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      handleResize();
-    }
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [currentView]);
-
   return (
     <>
-      <HomeHeader
+      <MapHomeHeader
         searchedAddress={searchedAddress}
         isSearchComplete={isSearchComplete}
         onSearchChange={handleSearchChange}
       />
-      {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
       <Box
-        w="full"
+        width="full"
         css={{
-          "--header-height": "198px",
-          md: { "--header-height": "175px" },
-          xl: { "--header-height": "141px" },
-          "2xl": { "--header-height": "149px" },
-          "--whitespace-height": "96px",
-          "--map-height":
-            "calc(100dvh - var(--header-height) - var(--whitespace-height))",
+          "--home-header-height": "76px",
+          lg: { "--home-header-height": "84px" },
+          "--home-footer-height": "44px",
+          height:
+            "calc(100dvh - var(--home-header-height) - var(--home-footer-height))",
         }}
-        h="var(--map-height)"
-        m="auto"
-        position={{ base: "relative", sm: "static" }}
-        alignItems={{ base: "stretch", sm: "start" }}
-        display={{ base: "block", sm: "flex" }}
+        height="calc(100dvh - var(--home-header-height) - var(--home-footer-height))"
+        position="relative"
+        overflow="hidden"
+        background="gray.100"
       >
-        {currentView === "desktop" ? (
-          <Box h="full" overflowY={{ base: "visible", sm: "auto" }}>
-            <ReportHazards
-              addressHazardData={addressHazardData}
-              isHazardDataLoading={isHazardDataLoading}
-              toggledStates={toggledStates}
-              setToggledStates={setToggledStates}
-              setLayerToggleObj={setLayerToggleObj}
-            />{" "}
-          </Box>
-        ) : currentView === "mobile" ? (
-          <Box zIndex="docked" top="0" position="absolute">
-            <MobileReportHazards
-              showHazards={showHazards}
-              addressHazardData={addressHazardData}
-              isHazardDataLoading={isHazardDataLoading}
-              toggledStates={toggledStates}
-              setShowHazards={setShowHazards}
-              setToggledStates={setToggledStates}
-              setLayerToggleObj={setLayerToggleObj}
-            />
-          </Box>
-        ) : null}
-
-        <Box flex={{ base: "initial", sm: "1" }} h="full">
+        <HazardDrawer
+          searchedAddress={searchedAddress}
+          addressHazardData={addressHazardData}
+          isHazardDataLoading={isHazardDataLoading}
+          toggledStates={toggledStates}
+          setToggledStates={setToggledStates}
+          setLayerToggleObj={setLayerToggleObj}
+        />
+        <Box position="absolute" inset="0">
           <Map
             coordinates={coordinates || defaultCoords}
-            softStoryData={softStoryData}
-            tsunamiData={tsunamiData}
-            liquefactionData={liquefactionData}
             layerToggleObj={layerToggleObj}
           />
         </Box>
