@@ -11,10 +11,11 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY rrr.sql .
+COPY mystart.sh .
 
 ENV PGPASSWORD=password
 
 #CMD ["psql", "-f", "rrr.sql", "postgresql://postgres:password@db:5432/qsdatabase"]
 #CMD ["pg_dump", "--inserts", "-h", "db", "-U", "postgres", "-f", "myiii.sql", "-t", "liquefaction_zones", "qsdatabase"]
 #CMD echo 'hiiii' && pg_dump --data-only --inserts -h db -U postgres -f myiii.sql -t liquefaction_zones qsdatabase && echo 'dddone' && ls -la && pwd && postgres  
-CMD postgres
+CMD ["./mystart.sh"]
