@@ -13,6 +13,7 @@ import NextLink from "./components/custom-next-link";
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
 import AddressMapper from "./components/address-mapper";
+import MapPlaceholderLite from "./components/map-placeholder-lite";
 import {
   fetchSoftStories,
   fetchTsunami,
@@ -73,13 +74,9 @@ const AddressMapperSkeleton = () => (
       <div style={{ height: 48, maxWidth: 448, borderRadius: 9999, background: "rgba(255,255,255,0.35)" }} />
     </div>
     {/* Map area placeholder */}
-    <div
-      style={{
-        width: "100%",
-        height: "calc(100dvh - 175px - 96px)",
-        background: "#e2e8f0",
-      }}
-    />
+    <div style={{ width: "100%", height: "calc(100dvh - 175px - 96px)" }}>
+      <MapPlaceholderLite height="100%" />
+    </div>
   </div>
 );
 

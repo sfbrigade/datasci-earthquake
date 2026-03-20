@@ -1,11 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Box, Skeleton } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import ReportHazards from "./report-hazards";
 import MobileReportHazards from "./mobile-report-hazards";
+import MapPlaceholderLite from "./map-placeholder-lite";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useSearchParams } from "next/navigation";
@@ -15,7 +16,7 @@ import dynamic from "next/dynamic";
 
 const Map = dynamic(() => import("./map"), {
   ssr: false,
-  loading: () => <Skeleton height="full" width="full" borderRadius="xl" />,
+  loading: () => <MapPlaceholderLite height="100%" />,
 });
 
 const addressLookupCoordinates = {
