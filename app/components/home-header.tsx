@@ -83,7 +83,7 @@ const HomeHeader = ({
         {isSearchComplete ? (
           <ReportAddress searchedAddress={searchedAddress} />
         ) : (
-          <Heading headingData={headingData} />
+          <Heading headingData={headingData} as="h1" />
         )}
       </Flex>
 

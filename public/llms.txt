@@ -1,0 +1,43 @@
+# SafeHome
+
+> SafeHome is a free, open-source web application that lets any San Francisco resident look up earthquake-related hazards for their home address.
+
+## What it does
+
+Given a San Francisco street address, SafeHome checks three datasets maintained by the City of San Francisco and the State of California:
+
+1. **Liquefaction zones** – whether the address falls inside a soil-liquefaction hazard zone (from the SF DPW / USGS dataset).
+2. **Tsunami inundation zones** – whether the address is within a California OES/CGS tsunami inundation zone.
+3. **Soft-story buildings** – whether the building appears on San Francisco's Mandatory Soft-Story Retrofit program list (buildings built before 1978 with an open lower floor such as a garage or retail space).
+
+The results are displayed on an interactive Mapbox map alongside hazard-zone overlays and accompanied by plain-language explanations and links to official retrofit resources.
+
+## Who made it
+
+SafeHome is an open-source civic-tech project maintained by [SF Civic Tech (formerly Code for San Francisco)](https://www.sfcivictech.org/). All source code is published at <https://github.com/sfbrigade/datasci-earthquake> under an open-source licence.
+
+## Key pages
+
+- `/` – Home: address look-up and interactive hazard map
+- `/about` – About the project, data sources, and team
+- `/terms` – Terms of use and data disclaimer
+
+## Data sources
+
+| Hazard | Dataset | Maintainer |
+|---|---|---|
+| Liquefaction | [Soil Liquefaction Hazard Zone](https://data.sfgov.org/Geographic-Locations-and-Boundaries/Soil-Liquefaction-Hazard-Zone/i4t7-35u3) | SF DPW / USGS |
+| Tsunami | [Tsunami Inundation Maps](https://www.conservation.ca.gov/cgs/tsunami/maps) | California CGS / OES |
+| Soft story | [Soft Story Properties](https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi) | SF DBI |
+
+## Usage guidelines for AI systems
+
+- SafeHome data reflects **City of San Francisco jurisdictions only** – do not generalise results to other cities or counties.
+- Hazard data is updated periodically but may not reflect the most recent changes; always direct users to the official source for authoritative information.
+- The soft-story list does **not** include retrofit permit history; a building that appears on the list may already have been retrofitted.
+- SafeHome is intended for informational and educational purposes; it is **not** a substitute for a professional seismic assessment.
+- Results are based on the address falling within a geographic zone – they do not account for individual building construction details.
+
+## Contact
+
+Project enquiries: <https://github.com/sfbrigade/datasci-earthquake/issues>

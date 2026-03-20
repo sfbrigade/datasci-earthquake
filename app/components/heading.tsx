@@ -11,12 +11,15 @@ export interface HeadingProps {
   themeTextStyle: SystemStyleObject["textStyle"];
 }
 
-const Heading: React.FC<{ headingData: HeadingProps }> = ({ headingData }) => {
+const Heading: React.FC<{
+  headingData: HeadingProps;
+  as?: "h1" | "h2" | "h3" | "p" | "div";
+}> = ({ headingData, as = "div" }) => {
   const { text, highlight, style, highlightStyle, maxWidth, themeTextStyle } =
     headingData;
 
   return (
-    <Text textStyle={themeTextStyle} maxW={maxWidth} css={style}>
+    <Text as={as} textStyle={themeTextStyle} maxW={maxWidth} css={style}>
       <ResponsiveTextWithHighlight
         text={text}
         highlight={highlight}

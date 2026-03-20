@@ -24,6 +24,34 @@ const nextConfig: NextConfig = {
       skipDefaultConversion: true,
     },
   },
+  // Add Cache-Control headers so CDN edges (Vercel, Cloudflare) can serve pages
+  // and static assets without hitting origin, reducing TTFB for end users.
+  async headers() {
+    return [
+      {
+        // Home page — ISR revalidates every 24 h, so allow CDN to cache for 1 h
+        // and serve stale for up to 24 h while revalidating in the background.
+        source: "/",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, stale-while-revalidate=86400",
+          },
+        ],
+      },
+      {
+        // GeoJSON data files served from /public/data — these rarely change,
+        // so cache aggressively with a long stale-while-revalidate window.
+        source: "/data/:file*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, stale-while-revalidate=604800",
+          },
+        ],
+      },
+    ];
+  },
   rewrites: async () => {
     const env = process.env.ENVIRONMENT;
     let backendHost;

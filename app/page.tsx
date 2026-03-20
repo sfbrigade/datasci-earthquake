@@ -69,7 +69,18 @@ const AddressMapperSkeleton = () => (
         background: "linear-gradient(135deg, #2b6cb0 0%, #1a365d 100%)",
       }}
     >
-      <div style={{ height: 40, width: 200, borderRadius: 8, background: "rgba(255,255,255,0.25)", marginBottom: 16 }} />
+      {/* Real h1 text so this skeleton registers a text-based LCP candidate early */}
+      <h1
+        style={{
+          color: "white",
+          fontSize: "1.25rem",
+          fontWeight: 600,
+          margin: "0 0 12px",
+          lineHeight: 1.3,
+        }}
+      >
+        How safe is your home in an earthquake?
+      </h1>
       <div style={{ height: 48, maxWidth: 448, borderRadius: 9999, background: "rgba(255,255,255,0.35)" }} />
     </div>
     {/* Map area placeholder */}
@@ -87,8 +98,33 @@ const AddressMapperSkeleton = () => (
 // Home is synchronous — static content streams to the browser immediately.
 // The map section (AddressMapper + GeoJSON data) loads inside its own Suspense boundary.
 const Home = () => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "SafeHome",
+    url: "https://sfhazards.com",
+    description:
+      "Check any San Francisco address for earthquake-related hazards: liquefaction zones, tsunami inundation zones, and soft-story building risk.",
+    applicationCategory: "UtilityApplication",
+    operatingSystem: "Web",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    creator: { "@type": "Organization", name: "SF Civic Tech" },
+    spatialCoverage: {
+      "@type": "Place",
+      name: "San Francisco, CA",
+      geo: {
+        "@type": "GeoShape",
+        box: "37.708 -122.514 37.835 -122.357",
+      },
+    },
+  };
+
   return (
-    <Flex direction="column">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* NOTE: Suspense around AddressMapperLoader defers GeoJSON fetches so they don't block
           the initial HTML stream. Also satisfies the useSearchParams() CSR-bailout requirement
           per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
@@ -310,7 +346,7 @@ const Home = () => {
           {/* TODO: should this be a NextImage or a Chakra Image? */}
         </Box>
       </Flex>
-    </Flex>
+    </>
   );
 };
 

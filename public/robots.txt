@@ -1,0 +1,63 @@
+# SafeHome – sfhazards.com
+# Earthquake-hazard address look-up tool for San Francisco
+# Open-source project by SF Civic Tech (https://github.com/sfbrigade/datasci-earthquake)
+
+# ── Search engines ────────────────────────────────────────────────────────────
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+
+Sitemap: https://sfhazards.com/sitemap.xml
+
+# ── LLM training / AI crawlers ────────────────────────────────────────────────
+# We allow LLM crawlers to index our public-facing pages (/, /about, /terms)
+# so that AI assistants can answer questions about the tool. We ask them to
+# respect a conservative crawl rate and avoid the backend API paths.
+
+User-agent: GPTBot
+Allow: /
+Allow: /about
+Allow: /terms
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 10
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /about
+Allow: /terms
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 10
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /about
+Allow: /terms
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 10
+
+User-agent: CCBot
+Allow: /
+Allow: /about
+Allow: /terms
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 30
+
+User-agent: anthropic-ai
+Allow: /
+Allow: /about
+Allow: /terms
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 10
+
+User-agent: Google-Extended
+Allow: /
+Allow: /about
+Allow: /terms
+Disallow: /api/
+Disallow: /_next/

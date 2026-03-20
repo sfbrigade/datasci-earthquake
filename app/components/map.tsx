@@ -96,9 +96,19 @@ const Map: React.FC<MapProps> = ({
       const nav = new mapboxgl.NavigationControl({ showCompass: false });
       map.addControl(nav, "bottom-right");
 
-      // wait for map to load before drawing marker
+      // Mark the map as interactive on first render, which is when the canvas is
+      // visible and pan/zoom interactions begin responding. Waiting for `load`
+      // overstates the user-visible interactivity time because it includes later
+      // style/tile work and any deferred GeoJSON registration.
+      map.once("render", () => {
+        if (typeof window !== "undefined") {
+          window.performance?.mark("map-interactive");
+        }
+      });
+
+      // wait for map to load before drawing marker and adding GeoJSON layers
       map.on("load", () => {
-        // Draw address marker
+        // Draw address marker (lightweight — keep synchronous)
         const el = document.createElement("div");
 
         const addressLngLat = new LngLat(coordinates[0], coordinates[1]);
@@ -112,63 +122,76 @@ const Map: React.FC<MapProps> = ({
 
         markerRef.current = addressMarker;
 
-        // Add sources
-        map.addSource("seismic", { type: "geojson", data: liquefactionData });
+        // ── Defer GeoJSON source + layer registration until the browser is idle.
+        // This keeps the JS thread free directly after map load so the user can
+        // start panning / zooming without waiting for GeoJSON processing.
+        // Falls back to setTimeout(0) in environments without requestIdleCallback.
+        const addLayers = () => {
+          // Add sources
+          map.addSource("seismic", { type: "geojson", data: liquefactionData });
+          map.addSource("tsunami", { type: "geojson", data: tsunamiData });
+          map.addSource("soft-stories", {
+            type: "geojson",
+            data: softStoryData,
+          });
 
-        map.addSource("tsunami", { type: "geojson", data: tsunamiData });
+          map.addLayer({
+            id: "tsunamiLayer",
+            source: "tsunami",
+            type: "fill",
+            slot: "middle",
+            paint: {
+              "fill-color": "#63B3ED", // blue/300
+              "fill-opacity": 0.25, // 50% opacity
+            },
+          });
 
-        map.addSource("soft-stories", { type: "geojson", data: softStoryData });
+          // Add layers
+          map.addLayer({
+            id: "seismicLayer",
+            source: "seismic",
+            type: "fill",
+            slot: "middle",
+            paint: {
+              "fill-color": "#F6AD55", // orange/300
+              "fill-opacity": 0.5, // 50% opacity
+            },
+          });
 
-        map.addLayer({
-          id: "tsunamiLayer",
-          source: "tsunami",
-          type: "fill",
-          slot: "middle",
-          paint: {
-            "fill-color": "#63B3ED", // blue/300
-            "fill-opacity": 0.25, // 50% opacity
-          },
-        });
+          map.addLayer({
+            id: "softStoriesLayer",
+            source: "soft-stories",
+            type: "circle",
+            slot: "middle",
+            paint: {
+              "circle-radius": 4.5,
+              "circle-stroke-width": 1,
+              "circle-stroke-color": "#FFFFFF",
+              "circle-color": "#A0AEC0", // gray/400
+            },
+          });
 
-        // Add layers
-        map.addLayer({
-          id: "seismicLayer",
-          source: "seismic",
-          type: "fill",
-          slot: "middle",
-          paint: {
-            "fill-color": "#F6AD55", // orange/300
-            "fill-opacity": 0.5, // 50% opacity
-          },
-        });
-
-        map.addLayer({
-          id: "softStoriesLayer",
-          source: "soft-stories",
-          type: "circle",
-          slot: "middle",
-          paint: {
-            "circle-radius": 4.5,
-            "circle-stroke-width": 1,
-            "circle-stroke-color": "#FFFFFF",
-            "circle-color": "#A0AEC0", // gray/400
-          },
-        });
-
-        map.on("error", (e) => {
-          if (e.error && e.error.message.includes("access token")) {
-            if (!toaster.isVisible(toastIdInvalidToken)) {
-              toaster.create({
-                id: toastIdInvalidToken,
-                description: "Invalid Mapbox access token!",
-                type: "error",
-                duration: 5000,
-                closable: true,
-              });
+          map.on("error", (e) => {
+            if (e.error && e.error.message.includes("access token")) {
+              if (!toaster.isVisible(toastIdInvalidToken)) {
+                toaster.create({
+                  id: toastIdInvalidToken,
+                  description: "Invalid Mapbox access token!",
+                  type: "error",
+                  duration: 5000,
+                  closable: true,
+                });
+              }
+              console.error("Invalid Mapbox token:", e.error);
             }
-            console.error("Invalid Mapbox token:", e.error);
-          }
-        });
+          });
+        };
+
+        if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+          (window as any).requestIdleCallback(addLayers, { timeout: 2000 });
+        } else {
+          setTimeout(addLayers, 0);
+        }
       });
     } else {
       // subsequent passes: update map
