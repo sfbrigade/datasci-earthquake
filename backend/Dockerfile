@@ -67,3 +67,5 @@ USER appuser
 
 # Expose the port that the application listens on.
 EXPOSE 8000
+
+CMD ["uvicorn", "api.index:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
