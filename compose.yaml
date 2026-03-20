@@ -40,6 +40,16 @@ services:
     environment:
       - ENVIRONMENT=dev_docker
 
+  psql:
+    build:
+      context: ./backend
+      dockerfile: psql.Dockerfile
+    container_name: mypsql
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=dev_docker
+
   db_test:
     build:
       context: ./backend/database
