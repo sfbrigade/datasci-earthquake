@@ -8,7 +8,9 @@ const nextConfig: NextConfig = {
     pollIntervalMs: 1000, // Check for changes every 1 second
   },
   reactCompiler: true,
-  productionBrowserSourceMaps: true,
+  // NOTE: productionBrowserSourceMaps disabled — source maps increase the JS transfer
+  // size visible to users and measurably hurt Lighthouse performance scores. Use server-side
+  // error tracking (Sentry, etc.) with source maps uploaded out-of-band instead.
   experimental: {
     optimizePackageImports: ["@chakra-ui/react"],
   },
