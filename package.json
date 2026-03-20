@@ -59,6 +59,7 @@
   "devDependencies": {
     "@chakra-ui/cli": "3.33.0",
     "@chromatic-com/storybook": "^5.0.1",
+    "@next/bundle-analyzer": "^16.2.0",
     "@playwright/test": "^1.58.2",
     "@storybook/addon-a11y": "^10.2.10",
     "@storybook/addon-docs": "^10.2.10",
