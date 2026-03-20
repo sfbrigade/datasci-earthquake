@@ -5,14 +5,21 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import { Toaster } from "@/components/ui/toaster";
 
+// Trimmed to only the weights actually used in the design system.
+// display: "swap" prevents FOIT (Flash of Invisible Text) and lets the browser
+// show a fallback font immediately, improving FCP on slow connections.
 const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["300", "400", "600", "700"],
+  display: "swap",
+  variable: "--font-manrope",
 });
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-inter",
 });
 
 export const metadata = {
