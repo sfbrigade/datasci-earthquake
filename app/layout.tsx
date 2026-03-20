@@ -43,6 +43,11 @@ export default function RootLayout({
   // this flag is toggled on.
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Preload the SafeHome logo SVG — it is the first visible image above the fold
+            on the home page (inside HomeHeader) and benefits from early discovery. */}
+        <link rel="preload" href="/images/SFSafeHome-fulllogo.svg" as="image" type="image/svg+xml" />
+      </head>
       <body className={`${manrope.className} ${inter.className}`}>
         <Provider>
           <Flex direction="column" align="center" minH="dvh">
