@@ -12,5 +12,5 @@ COPY populate_db.sql .
 RUN echo 'huh' && pwd && ls -l /usr/bin
 RUN echo 'huhhi' && echo $PATH 
 
-CMD ["/usr/bin/psql", "-f", "populate_db.sql", "\c", "postgresql://postgres:password@db:5432/qsdatabase"]
+CMD ["/usr/bin/psql", "-f", "populate_db.sql", "postgresql://postgres:password@db:5432/qsdatabase"]
 #CMD /bin/sh -c psql -f populate_db.sql \c $DATABASE_URL_SQLALCHEMY 
