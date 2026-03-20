@@ -10,6 +10,7 @@ FROM postgres:15
 COPY populate_db.sql . 
 
 RUN echo 'huh' && pwd && ls -l /usr/bin
+RUN echo 'huhhi' && echo $PATH 
 
-CMD ["psql", "-f", "populate_db.sql", "\c", "postgresql+psycopg2://postgres:password@db:5432/qsdatabase"]
+CMD ["/usr/bin/psql", "-f", "populate_db.sql", "\c", "postgresql+psycopg2://postgres:password@db:5432/qsdatabase"]
 #CMD /bin/sh -c psql -f populate_db.sql \c $DATABASE_URL_SQLALCHEMY 
