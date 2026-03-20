@@ -137,7 +137,7 @@ const HazardDrawer = ({
                     height: "1.5px",
                   }}
                 />
-                <Text fontWeight="700" fontSize="sm">
+                <Text fontWeight="bold" fontSize="sm">
                   Hazard layers
                 </Text>
               </HStack>
@@ -150,18 +150,18 @@ const HazardDrawer = ({
               </Button>
             </HStack>
             {searchedAddress ? (
-              <Text fontSize="xs" color="grey.700" noOfLines={1}>
+              <Text fontSize="xs" color="gray.700" css={{ textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}>
                 Report for {searchedAddress}
               </Text>
             ) : (
-              <Text fontSize="xs" color="grey.700">
+              <Text fontSize="xs" color="gray.700">
                 Search an address to load a report.
               </Text>
             )}
           </VStack>
         </Box>
 
-        <VStack align="stretch" gap="3" p="3" overflowY="auto" height="calc(100% - 82px)">
+        <VStack align="stretch" gap="3" p="3" overflowY="auto" css={{ height: "calc(100% - 82px)" }}>
           {Hazards.map((hazard) => (
             <HazardDrawerCard
               key={hazard.id}
