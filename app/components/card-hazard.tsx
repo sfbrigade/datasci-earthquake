@@ -12,7 +12,7 @@ import {
   Switch,
   SystemStyleObject,
 } from "@chakra-ui/react";
-import posthog from "posthog-js";
+import { capturePosthogEvent } from "../lib/posthog-client";
 import Pill from "./pill";
 import { RxCross2 } from "react-icons/rx";
 import { PillData, LayerIds } from "../data/data";
@@ -149,7 +149,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
                   textDecoration={"underline"}
                   onClick={() => {
                     if (!isMoreInfo) {
-                      posthog.capture("more-info-clicked", {
+                      void capturePosthogEvent("more-info-clicked", {
                         hazard_name: hazard.name,
                       });
                     }
@@ -185,7 +185,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
                   target="_blank"
                   textDecoration="underline"
                   onClick={() =>
-                    posthog.capture("dataset-link-clicked", {
+                    void capturePosthogEvent("dataset-link-clicked", {
                       link_name: hazard.link.label,
                     })
                   }

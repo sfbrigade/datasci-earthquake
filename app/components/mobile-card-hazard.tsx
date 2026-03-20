@@ -13,7 +13,7 @@ import {
   Collapsible,
   SystemStyleObject,
 } from "@chakra-ui/react";
-import posthog from "posthog-js";
+import { capturePosthogEvent } from "../lib/posthog-client";
 import Pill from "./pill";
 import { PillData, LayerIds } from "../data/data";
 import { FaCircle, FaSquareFull } from "react-icons/fa";
@@ -151,7 +151,7 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
                     fontWeight="bold"
                     onClick={() => {
                       if (!isMoreInfo) {
-                        posthog.capture("more-info-clicked", {
+                        void capturePosthogEvent("more-info-clicked", {
                           hazard_name: hazard.name,
                         });
                       }
@@ -171,7 +171,7 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
                   target="_blank"
                   textDecoration="underline"
                   onClick={() =>
-                    posthog.capture("dataset-link-clicked", {
+                    void capturePosthogEvent("dataset-link-clicked", {
                       link_name: hazard.link.label,
                     })
                   }
