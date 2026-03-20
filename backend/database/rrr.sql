@@ -1,1 +1,1 @@
-select * from landslide_zones;
+select * from xxx;
