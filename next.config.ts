@@ -12,7 +12,17 @@ const nextConfig: NextConfig = {
   // size visible to users and measurably hurt Lighthouse performance scores. Use server-side
   // error tracking (Sentry, etc.) with source maps uploaded out-of-band instead.
   experimental: {
-    optimizePackageImports: ["@chakra-ui/react"],
+    optimizePackageImports: [
+      "@chakra-ui/react",
+      "react-icons",
+      "framer-motion",
+    ],
+  },
+  modularizeImports: {
+    "react-icons/?(((\\w*)?/?)*)": {
+      transform: "react-icons/{{ matches.[1] }}/{{member}}",
+      skipDefaultConversion: true,
+    },
   },
   rewrites: async () => {
     const env = process.env.ENVIRONMENT;
