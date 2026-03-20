@@ -15,4 +15,4 @@ COPY rrr.sql .
 RUN echo 'whoopi' && pwd && ls -l
 
 #CMD ["psql", "-f", "rrr.sql", "postgresql://postgres:password@db:5432/qsdatabase"]
-CMD ["pg_dump", "--inserts", "-h", "db", "-U", "postgres", "-f", "myiii.sql", "-t", "liquefaction_zones", "qsdatabase"]
+CMD ["pg_dump", "--inserts", "-w", "-h", "db", "-U", "postgres", "-f", "myiii.sql", "-t", "liquefaction_zones", "qsdatabase"]
