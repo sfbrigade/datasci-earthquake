@@ -9,8 +9,8 @@ FROM postgres:15
 # Copy init scripts if necessary
 COPY populate_db.sql . 
 
-RUN echo 'huh' && pwd && ls -l /usr/bin
-RUN echo 'huhhi' && echo $PATH 
+#RUN echo 'huh' && pwd && ls -l /usr/bin
+#RUN echo 'huhhi' && echo $PATH 
 
-CMD ["/usr/bin/psql", "-f", "populate_db.sql", "postgresql://postgres:password@db:5432/qsdatabase"]
+CMD ["psql", "-f", "populate_db.sql", "postgresql://postgres:password@db:5432/qsdatabase"]
 #CMD /bin/sh -c psql -f populate_db.sql \c $DATABASE_URL_SQLALCHEMY 

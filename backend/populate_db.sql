@@ -1,1 +1,1 @@
-select * from landslide_zones;
+select * from information_schema.tables;
