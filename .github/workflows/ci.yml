@@ -206,6 +206,10 @@ jobs:
         if: always()
         run: docker logs myalembic || echo "No logs found"
 
+      - name: Docker PSQL Logs  
+        if: always()
+        run: docker logs mypsql || echo "No logs found"
+
       - name: Docker DB Logs
         if: always()
         run: docker logs mydb || echo "No logs found"
