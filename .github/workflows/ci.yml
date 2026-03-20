@@ -173,7 +173,9 @@ jobs:
       - name: Export 
         run: docker compose -f compose.yaml -f compose.ci.yaml up -d exportdb 
 
-      - run: docker ps -a 
+      - name: psA 
+        if: always()
+        run: docker ps -a
 
       - name: Docker Export Logs
         if: always()

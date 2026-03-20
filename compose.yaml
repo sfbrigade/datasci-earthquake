@@ -26,7 +26,6 @@ services:
       start_period: 30s
 
   exportdb:
-    image: postgis-custom
     build:
       context: ./backend/database
       dockerfile: export.Dockerfile
