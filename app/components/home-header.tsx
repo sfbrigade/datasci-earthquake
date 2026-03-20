@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { Headings } from "../data/data";
 import {
   Box,
@@ -14,9 +15,13 @@ import {
 } from "@chakra-ui/react";
 import Heading, { HeadingProps } from "./heading";
 import ReportAddress from "./report-address";
-import SearchBar from "./search-bar";
+import SearchBarSkeleton from "./search-bar-skeleton";
 import Share from "./share";
 import ShareSkeleton from "./share-skeleton";
+
+const SearchBar = dynamic(() => import("./search-bar"), {
+  loading: () => <SearchBarSkeleton />,
+});
 
 export type HazardData = {
   liquefaction: { exists: boolean; last_updated: string | null } | null;
