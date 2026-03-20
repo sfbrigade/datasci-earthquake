@@ -12,7 +12,9 @@ RUN apt-get update \
 
 COPY rrr.sql .
 COPY mystart.sh .
-
+RUN echo 'before' && ls -l
+RUN chmod +x mystart.sh
+RUN echo 'after' && ls -l
 ENV PGPASSWORD=password
 
 #CMD ["psql", "-f", "rrr.sql", "postgresql://postgres:password@db:5432/qsdatabase"]
