@@ -4,6 +4,18 @@
 FROM postgres:15
 
 
+ARG UID=1001
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "/nonexistent" \
+    --shell "/sbin/nologin" \
+    --no-create-home \
+    --uid "${UID}" \
+    appuser
+
+USER appuser
+
 # Install PostGIS and dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
