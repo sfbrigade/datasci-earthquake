@@ -6,6 +6,10 @@ RUN apt-get update \
     postgis postgresql-15-postgis-3 \
     && rm -rf /var/lib/apt/lists/*
 
+
+RUN echo 'doh' && pwd && ls -la /var/cache
+RUN echo 'dohdoh' && pwd && ls -la /var/cache/apt
+
 # Copy init scripts if necessary
 COPY populate_db.sql . 
 
