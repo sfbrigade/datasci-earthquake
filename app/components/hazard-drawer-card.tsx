@@ -47,6 +47,14 @@ const HazardDrawerCard = ({
     noData: "No Data",
   };
 
+  // Map custom color strings to Chakra color tokens
+  const colorMap = {
+    "grey.400": "gray.400",
+    orange: "orange.500",
+    tsunamiBlue: "blue.400",
+  } as const;
+  const chakraColor: string = colorMap[iconColor as keyof typeof colorMap] || "gray.400";
+
   const hazardPill = isHazardDataLoading ? (
     <Spinner size="xs" />
   ) : showData ? (
@@ -68,10 +76,12 @@ const HazardDrawerCard = ({
   return (
     <Card.Root
       shadow="sm"
-      borderWidth="1px"
-      borderColor="blackAlpha.100"
       bg="white"
       borderRadius="xl"
+      css={{
+        border: "1px solid",
+        borderColor: "rgba(0, 0, 0, 0.08)",
+      }}
     >
       <Collapsible.Root>
         <Card.Body p="4">
@@ -79,7 +89,7 @@ const HazardDrawerCard = ({
             <HStack justify="space-between" align="start">
               <KeyElem
                 name={title}
-                color={iconColor}
+                color={chakraColor as any}
                 icon={icon === "circle" ? <FaCircle /> : <FaSquareFull />}
               />
               <Switch.Root
@@ -94,7 +104,7 @@ const HazardDrawerCard = ({
               </Switch.Root>
             </HStack>
 
-            <Text textStyle="textSmall" color="grey.800">
+            <Text textStyle="textSmall" color="gray.800">
               {description}
             </Text>
 
@@ -120,7 +130,7 @@ const HazardDrawerCard = ({
             <Collapsible.Content>
               <Box pt="1">
                 {hazard.info.map((infoItem, index) => (
-                  <Text key={index} as="p" mt={index === 0 ? "0" : "3"} textStyle="textSmall" color="grey.700">
+                  <Text key={index} as="p" mt={index === 0 ? "0" : "3"} textStyle="textSmall" color="gray.700">
                     {infoItem}
                   </Text>
                 ))}

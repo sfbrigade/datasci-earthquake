@@ -124,17 +124,17 @@ const AddressMapper = () => {
       />
       <Box
         width="full"
-        css={{
-          "--home-header-height": "76px",
-          lg: { "--home-header-height": "84px" },
-          "--home-footer-height": "44px",
-          height:
-            "calc(100dvh - var(--home-header-height) - var(--home-footer-height))",
-        }}
-        height="calc(100dvh - var(--home-header-height) - var(--home-footer-height))"
         position="relative"
         overflow="hidden"
         background="gray.100"
+        css={{
+          "--home-header-height": "76px",
+          "--home-footer-height": "44px",
+          height: "calc(100dvh - var(--home-header-height) - var(--home-footer-height))",
+          "@media (min-width: 1024px)": {
+            "--home-header-height": "84px",
+          },
+        }}
       >
         <HazardDrawer
           searchedAddress={searchedAddress}

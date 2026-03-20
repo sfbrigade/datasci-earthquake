@@ -79,49 +79,63 @@ const HazardDrawer = ({
   return (
     <Box
       position="absolute"
-      inset={{ base: "auto 0 0 0", lg: "0 auto 0 0" }}
       zIndex="overlay"
       pointerEvents="none"
+      css={{
+        inset: "auto 0 0 0",
+        "@media (min-width: 1024px)": {
+          inset: "0 auto 0 0",
+        },
+      }}
     >
       <Box
         pointerEvents="auto"
-        bg="rgba(255,255,255,0.96)"
-        backdropFilter="blur(14px)"
         borderTopRadius={{ base: "2xl", lg: "none" }}
         borderRightRadius={{ base: "none", lg: "2xl" }}
-        borderWidth="1px"
-        borderColor="blackAlpha.100"
         boxShadow="lg"
-        width={{ base: "100vw", lg: "23rem" }}
-        height={{ base: "23rem", lg: "100%" }}
         transform={
           isDesktop
             ? `translate3d(${translate}px, 0, 0)`
             : `translate3d(0, ${translate}px, 0)`
         }
-        transition={dragStart === null ? "transform 220ms ease" : "none"}
+        css={{
+          transition: dragStart === null ? "transform 220ms ease" : "none",
+          width: "100vw",
+          height: "23rem",
+          "@media (min-width: 1024px)": {
+            width: "23rem",
+            height: "100%",
+          },
+          background: "rgba(255, 255, 255, 0.96)",
+          backdropFilter: "blur(14px)",
+          border: "1px solid",
+          borderColor: "rgba(0, 0, 0, 0.06)",
+        }}
       >
         <Box
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={endDrag}
           onPointerCancel={endDrag}
-          touchAction="none"
-          cursor={isDesktop ? "ew-resize" : "ns-resize"}
           px="4"
           pt="3"
           pb="2"
-          borderBottomWidth="1px"
-          borderBottomColor="blackAlpha.100"
+          css={{
+            touchAction: "none",
+            cursor: isDesktop ? "ew-resize" : "ns-resize",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.06)",
+          }}
         >
           <VStack align="stretch" gap="2">
             <HStack justify="space-between">
               <HStack gap="2">
                 <Box
-                  width={{ base: "12", lg: "1.5" }}
-                  height={{ base: "1.5", lg: "14" }}
                   borderRadius="full"
                   bg="blackAlpha.300"
+                  css={{
+                    width: "3rem",
+                    height: "1.5px",
+                  }}
                 />
                 <Text fontWeight="700" fontSize="sm">
                   Hazard layers
