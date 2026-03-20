@@ -8,9 +8,9 @@ RUN apt-get update \
 
 
 RUN echo 'doh' && pwd && ls -la /var/cache
-RUN echo 'dohdoh' && pwd && ls -la /var/cache/apt
-RUN echo 'dohdohdoh' && pwd && ls -la /var/cache/apt/archives
-RUN echo 'dohdohdohdoh' && pwd && ls -la /var/cache/apt/archives/partial
+RUN echo 'dohdoh' && pwd && ls -la /var/cache/debconf
+#RUN echo 'dohdohdoh' && pwd && ls -la /var/cache/apt/archives
+#RUN echo 'dohdohdohdoh' && pwd && ls -la /var/cache/apt/archives/partial
 
 # Copy init scripts if necessary
 COPY populate_db.sql . 
