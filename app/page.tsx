@@ -18,6 +18,11 @@ import {
   fetchTsunami,
   fetchLiquefaction,
 } from "./api/services";
+// GeoJSON datasets (soft stories, tsunami zones, liquefaction zones) are updated
+// infrequently. Revalidate the cache every 24 hours so CDN fetches stay fresh
+// without hammering the origin on every request.
+export const revalidate = 86400; // 24 hours in seconds
+
 
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `home-skeleton.tsx` and vice versa
 // NOTE: AddressMapperLoader is kept as a separate async server component so that Home itself is

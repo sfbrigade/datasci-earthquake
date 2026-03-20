@@ -29,7 +29,10 @@ export const metadata = {
 
 // Since this is the root layout, all fetch requests in the app
 // that don't set their own cache option will be cached.
-export const fetchCache = "default-cache";
+// Changed from "default-cache" to "force-cache": always serve from cache and
+// revalidate on demand. GeoJSON datasets change infrequently; staleness for
+// up to a day is acceptable and avoids unnecessary upstream fetches.
+export const fetchCache = "force-cache";
 
 export default function RootLayout({
   children,
