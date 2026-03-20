@@ -13,51 +13,12 @@ import NextLink from "./components/custom-next-link";
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
 import AddressMapper from "./components/address-mapper";
-import {
-  fetchSoftStories,
-  fetchTsunami,
-  fetchLiquefaction,
-} from "./api/services";
 
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `home-skeleton.tsx` and vice versa
-// NOTE: AddressMapperLoader is kept as a separate async server component so that Home itself is
-// synchronous. This allows Next.js to stream the static below-the-fold content immediately without
-// waiting for the three GeoJSON fetches that populate the map.
-// Resolves the TODOs about narrow Suspense boundaries and initial page load size.
-const AddressMapperLoader = async () => {
-  let softStoryData: FeatureCollection<Geometry, GeoJsonProperties> = {
-    type: "FeatureCollection",
-    features: [],
-  };
-  let tsunamiData: FeatureCollection<Geometry, GeoJsonProperties> = {
-    type: "FeatureCollection",
-    features: [],
-  };
-  let liquefactionData: FeatureCollection<Geometry, GeoJsonProperties> = {
-    type: "FeatureCollection",
-    features: [],
-  };
 
-  try {
-    [softStoryData, tsunamiData, liquefactionData] = await Promise.all([
-      fetchSoftStories(),
-      fetchTsunami(),
-      fetchLiquefaction(),
-    ]);
-  } catch (error: any) {
-    console.error("Error fetching geo data: ", error);
-  }
-
-  return (
-    <AddressMapper
-      softStoryData={softStoryData}
-      tsunamiData={tsunamiData}
-      liquefactionData={liquefactionData}
-    />
-  );
-};
-// Minimal above-fold skeleton rendered while AddressMapperLoader fetches GeoJSON.
-// Using native elements to avoid Chakra sizing-token type constraints.
+// Minimal above-fold skeleton rendered while AddressMapper is loading
+// Using native elements to temporarily avoid Chakra sizing-token type constraints.
+// TODO: replace with Chakra components, including using Chakra skeleton, and adhere to strict tokens
 const AddressMapperSkeleton = () => (
   <div style={{ width: "100%" }}>
     {/* Header placeholder — matches HomeHeader's blue gradient and approximate height */}
@@ -81,7 +42,14 @@ const AddressMapperSkeleton = () => (
       >
         How safe is your home in an earthquake?
       </h1>
-      <div style={{ height: 48, maxWidth: 448, borderRadius: 9999, background: "rgba(255,255,255,0.35)" }} />
+      <div
+        style={{
+          height: 48,
+          maxWidth: 448,
+          borderRadius: 9999,
+          background: "rgba(255,255,255,0.35)",
+        }}
+      />
     </div>
     {/* Map area placeholder */}
     <div
@@ -93,7 +61,6 @@ const AddressMapperSkeleton = () => (
     />
   </div>
 );
-
 
 // Home is synchronous — static content streams to the browser immediately.
 // The map section (AddressMapper + GeoJSON data) loads inside its own Suspense boundary.
@@ -125,11 +92,10 @@ const Home = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* NOTE: Suspense around AddressMapperLoader defers GeoJSON fetches so they don't block
-          the initial HTML stream. Also satisfies the useSearchParams() CSR-bailout requirement
-          per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
+      {/* NOTE: Suspense around AddressMapper to prevent de-opt to client-side rendering of app (see: the useSearchParams() CSR-bailout requirement
+          per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout) */}
       <Suspense fallback={<AddressMapperSkeleton />}>
-        <AddressMapperLoader />
+        <AddressMapper />
       </Suspense>
       <Flex
         w="full"

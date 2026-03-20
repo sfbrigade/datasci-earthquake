@@ -1,6 +1,17 @@
 "use client";
 
-import { Box, Button, Card, Collapsible, HStack, Link, Spinner, Switch, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Card,
+  Collapsible,
+  HStack,
+  Link,
+  Spinner,
+  Switch,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { FaCircle, FaSquareFull } from "react-icons/fa";
 import { capturePosthogEvent } from "../lib/posthog-client";
 import { PillData, LayerIds } from "../data/data";
@@ -53,7 +64,8 @@ const HazardDrawerCard = ({
     orange: "orange.500",
     tsunamiBlue: "blue.400",
   } as const;
-  const chakraColor: string = colorMap[iconColor as keyof typeof colorMap] || "gray.400";
+  const chakraColor: string =
+    colorMap[iconColor as keyof typeof colorMap] || "gray.400";
 
   const hazardPill = isHazardDataLoading ? (
     <Spinner size="xs" />
@@ -130,7 +142,13 @@ const HazardDrawerCard = ({
             <Collapsible.Content>
               <Box pt="1">
                 {hazard.info.map((infoItem, index) => (
-                  <Text key={index} as="p" mt={index === 0 ? "0" : "3"} textStyle="textSmall" color="gray.700">
+                  <Text
+                    key={index}
+                    as="p"
+                    mt={index === 0 ? "0" : "3"}
+                    textStyle="textSmall"
+                    color="gray.700"
+                  >
                     {infoItem}
                   </Text>
                 ))}

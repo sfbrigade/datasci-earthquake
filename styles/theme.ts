@@ -193,6 +193,7 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     warningRed: { value: "#b53d37" },
     blueGradientFrom: { value: "#3b6294" },
     blueGradientTo: { value: "#183252" },
+    blackBackgroundHeader: { value: "rgba(15, 23, 42, 0.92)" },
   },
   gradients: {
     // string value
@@ -211,6 +212,7 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
   sizes: {
     // for popover content maxHeight
     unset: { value: "unset" },
+    auto: { value: "auto" }, // explicit "auto" value for e.g. min width
 
     // map marker (global CSS)
     // TODO: adjust these so that they are based on Chakra sizing scale

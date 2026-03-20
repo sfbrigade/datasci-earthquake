@@ -1,4 +1,3 @@
-import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 import AddressMapper from "./components/address-mapper";
 import {
   Flex,
@@ -13,26 +12,9 @@ import {
 import NextLink from "next/link";
 
 const HomeSkeleton = () => {
-  let softStoryData: FeatureCollection<Geometry, GeoJsonProperties> = {
-    type: "FeatureCollection",
-    features: [],
-  };
-  let tsunamiData: FeatureCollection<Geometry, GeoJsonProperties> = {
-    type: "FeatureCollection",
-    features: [],
-  };
-  let liquefactionData: FeatureCollection<Geometry, GeoJsonProperties> = {
-    type: "FeatureCollection",
-    features: [],
-  };
-
   return (
     <Flex direction="column">
-      <AddressMapper
-        softStoryData={softStoryData}
-        tsunamiData={tsunamiData}
-        liquefactionData={liquefactionData}
-      />
+      <AddressMapper />
       <Flex w="full" py="8" px="16" justifyContent="space-between" gap="11">
         <HStack alignItems={"start"} w={{ base: "full", lg: "3/4" }}>
           <div>

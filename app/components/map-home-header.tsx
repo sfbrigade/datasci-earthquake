@@ -1,7 +1,15 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import { Box, Flex, HStack, Image, Link, Text, VisuallyHidden } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  HStack,
+  Image,
+  Link,
+  Text,
+  VisuallyHidden,
+} from "@chakra-ui/react";
 import NextLink from "./custom-next-link";
 import SearchBar from "./search-bar";
 import Share from "./share";
@@ -23,13 +31,13 @@ const MapHomeHeader = ({
   return (
     <Box
       as="header"
-      bg="rgba(15, 23, 42, 0.92)"
+      bg="blackBackgroundHeader"
       backdropFilter="blur(12px)"
-      borderBottomWidth="1px"
+      borderBottomWidth="0.25"
       borderBottomColor="whiteAlpha.200"
       px={{ base: "3", md: "4" }}
       py={{ base: "2", md: "2.5" }}
-      minH={{ base: "76px", md: "84px" }}
+      minH={{ base: "20", md: "24" }}
     >
       <Flex
         direction={{ base: "column", lg: "row" }}
@@ -45,22 +53,35 @@ const MapHomeHeader = ({
                   src="/images/SFSafeHome-fulllogo.svg"
                   alt="SafeHome logo"
                   role="img"
-                  height={{ base: "30px", md: "34px" }}
+                  height={{
+                    base: "safeHomeLogoHeight",
+                    md: "safeHomeLogoHeight",
+                  }}
                   width="auto"
                 />
                 <VisuallyHidden>SafeHome</VisuallyHidden>
               </HStack>
             </Link>
-            <Text color="whiteAlpha.700" fontSize="xs" fontWeight="600">
+            <Text color="whiteAlpha.700" fontSize="xs" fontWeight="semibold">
               Beta
             </Text>
           </HStack>
 
           <HStack gap="3" display={{ base: "none", md: "flex" }}>
-            <Link as={NextLink} href="/about" color="whiteAlpha.900" fontSize="sm">
+            <Link
+              as={NextLink}
+              href="/about"
+              color="whiteAlpha.900"
+              fontSize="sm"
+            >
               About
             </Link>
-            <Link as={NextLink} href="/terms" color="whiteAlpha.900" fontSize="sm">
+            <Link
+              as={NextLink}
+              href="/terms"
+              color="whiteAlpha.900"
+              fontSize="sm"
+            >
               Terms
             </Link>
           </HStack>
@@ -78,21 +99,25 @@ const MapHomeHeader = ({
               as="h1"
               color="white"
               fontSize={{ base: "sm", md: "md" }}
-              fontWeight="600"
-              lineHeight="1.2"
+              fontWeight="semibold"
+              lineHeight="shorter"
               mb={{ base: "2", lg: "0" }}
             >
               Check earthquake hazards for any San Francisco address
             </Text>
             {searchedAddress ? (
-              <Text color="whiteAlpha.700" fontSize="xs" noOfLines={1}>
+              <Text color="whiteAlpha.700" fontSize="xs" lineClamp="1">
                 {searchedAddress}
               </Text>
             ) : null}
           </Box>
 
-          <HStack align="center" gap="3" justify={{ base: "stretch", lg: "flex-end" }}>
-            <Box flex="1" minW={{ base: "auto", lg: "28rem" }}>
+          <HStack
+            align="center"
+            gap="3"
+            justify={{ base: "stretch", lg: "flex-end" }}
+          >
+            <Box flex="1" minW={{ base: "auto", lg: "7" }}>
               <SearchBar
                 inputAddress={inputAddress}
                 onInputAddressChange={setInputAddress}

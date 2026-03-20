@@ -120,16 +120,17 @@ const Map: React.FC<MapProps> = ({
         // This removes GeoJSON serialization from the initial HTML and keeps first
         // interaction independent from overlay processing.
         const addLayers = async () => {
-          const [liquefactionData, tsunamiData, softStoryData] = await Promise.all(
-            [
-              fetch("/data/LiquefactionZone.geojson"),
-              fetch("/data/TsunamiZone.geojson"),
-              fetch("/data/SoftStoryProperty.geojson"),
-            ].map(async (responsePromise) => {
-              const response = await responsePromise;
-              return response.json();
-            })
-          );
+          const [liquefactionData, tsunamiData, softStoryData] =
+            await Promise.all(
+              [
+                fetch("/data/LiquefactionZone.geojson"),
+                fetch("/data/TsunamiZone.geojson"),
+                fetch("/data/SoftStoryProperty.geojson"),
+              ].map(async (responsePromise) => {
+                const response = await responsePromise;
+                return response.json();
+              })
+            );
 
           // Add sources
           map.addSource("seismic", { type: "geojson", data: liquefactionData });

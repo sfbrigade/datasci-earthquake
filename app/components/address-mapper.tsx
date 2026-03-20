@@ -33,7 +33,9 @@ const AddressMapper = () => {
       ? [parseFloat(initialLon), parseFloat(initialLat)]
       : null
   );
-  const [searchedAddress, setSearchedAddress] = useState(initialAddress || null);
+  const [searchedAddress, setSearchedAddress] = useState(
+    initialAddress || null
+  );
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
   const [toggledStates, setToggledStates] = useState<boolean[]>(
@@ -101,6 +103,7 @@ const AddressMapper = () => {
         lastCoords[0] !== newCoords[0] ||
         lastCoords[1] !== newCoords[1]
       ) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCoordinates(newCoords);
         setSearchedAddress(address);
         coordinatesRef.current = newCoords;
@@ -130,7 +133,8 @@ const AddressMapper = () => {
         css={{
           "--home-header-height": "76px",
           "--home-footer-height": "44px",
-          height: "calc(100dvh - var(--home-header-height) - var(--home-footer-height))",
+          height:
+            "calc(100dvh - var(--home-header-height) - var(--home-footer-height))",
           "@media (min-width: 1024px)": {
             "--home-header-height": "84px",
           },

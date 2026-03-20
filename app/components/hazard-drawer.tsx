@@ -1,6 +1,13 @@
 "use client";
 
-import { Box, Button, HStack, Text, VStack, useBreakpointValue } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Text,
+  VStack,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { Hazards } from "../data/data";
 import HazardDrawerCard from "./hazard-drawer-card";
@@ -38,6 +45,7 @@ const HazardDrawer = ({
   );
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTranslate(isDesktop ? 0 : mobileClosed);
   }, [isDesktop]);
 
@@ -74,7 +82,9 @@ const HazardDrawer = ({
     setDragStart(null);
   };
 
-  const isOpen = isDesktop ? translate > desktopClosed / 2 : translate < mobileClosed / 2;
+  const isOpen = isDesktop
+    ? translate > desktopClosed / 2
+    : translate < mobileClosed / 2;
 
   return (
     <Box
@@ -150,7 +160,15 @@ const HazardDrawer = ({
               </Button>
             </HStack>
             {searchedAddress ? (
-              <Text fontSize="xs" color="gray.700" css={{ textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}>
+              <Text
+                fontSize="xs"
+                color="gray.700"
+                css={{
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                }}
+              >
                 Report for {searchedAddress}
               </Text>
             ) : (
@@ -161,12 +179,21 @@ const HazardDrawer = ({
           </VStack>
         </Box>
 
-        <VStack align="stretch" gap="3" p="3" overflowY="auto" css={{ height: "calc(100% - 82px)" }}>
+        <VStack
+          align="stretch"
+          gap="3"
+          p="3"
+          overflowY="auto"
+          css={{ height: "calc(100% - 82px)" }}
+        >
           {Hazards.map((hazard) => (
             <HazardDrawerCard
               key={hazard.id}
               hazard={hazard as any}
-              hazardData={addressHazardData?.[hazard.name as keyof HazardData] ?? undefined}
+              hazardData={
+                addressHazardData?.[hazard.name as keyof HazardData] ??
+                undefined
+              }
               showData={hazard.name in addressHazardData}
               isHazardDataLoading={isHazardDataLoading}
               toggledStates={toggledStates}
