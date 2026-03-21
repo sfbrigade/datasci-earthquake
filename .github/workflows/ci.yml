@@ -175,6 +175,7 @@ jobs:
 
       #- run: docker compose exec my_export_db ls -la 
       - run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f myiii.sql -t liquefaction_zones qsdatabase"
+      - run: echo 'today' && pwd && ls -l 
       - run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f backend/database/rrr.sql postgresql://postgres:password@db:5432/qsdatabase"
       - run: docker cp my_postgis_db:myiii.sql . 
       - run: pwd && ls -l 
