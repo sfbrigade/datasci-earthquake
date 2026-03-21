@@ -177,6 +177,7 @@ jobs:
       - run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --inserts -h db -U postgres -f myiii.sql -t liquefaction_zones qsdatabase"
       - run: docker cp my_postgis_db:myiii.sql . 
       - run: pwd && ls -l 
+      - run: cat myiii.sql 
 
       - name: psA 
         if: always()
