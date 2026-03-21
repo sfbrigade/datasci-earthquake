@@ -183,6 +183,22 @@ jobs:
       - run: pwd && ls -l 
       - run: cat myiii.sql 
 
+
+      - name: uploady
+        uses: actions/upload-artifact@v4
+        with:
+          name: thesql
+          path: myiii.sql
+
+
+      - name: downloady
+        uses: actions/download-artifact@v8
+        with:
+          name: thesql
+          path: each/one/rats
+
+      - run: echo 'rats' && pwd && ls -l each/one/rats
+
       - name: psA 
         if: always()
         run: docker ps -a
