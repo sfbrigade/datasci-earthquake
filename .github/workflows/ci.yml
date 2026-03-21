@@ -170,11 +170,11 @@ jobs:
       - name: Start Services
         run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend frontend
 
-      - name: Export 
-        run: docker compose -f compose.yaml -f compose.ci.yaml up -d -t 10000 exportdb 
+      #- name: Export 
+      #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d -t 10000 exportdb 
 
       #- run: docker compose exec my_export_db ls -la 
-      #- run: docker exec -d my_postgis_db sh -c "pg_dump --data-only --inserts -h db -U postgres -f myiii.sql -t liquefaction_zones qsdatabase"
+      - run: docker compose exec -T my_postgis_db sh -c "pg_dump --data-only --inserts -h db -U postgres -f myiii.sql -t liquefaction_zones qsdatabase"
       #- run: docker cp my_postgis_db:myiii.sql . 
       #- run: pwd && ls -l 
 
