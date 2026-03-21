@@ -21,5 +21,10 @@ RUN chmod +x /docker-entrypoint-initdb.d/initdb-postgis.sh \
 # Expose the default Postgres port
 EXPOSE 5432
 
+RUN echo 'girl0' && pwd ls -l var
+RUN echo 'girl1' && pwd ls -l var/lib
+RUN echo 'girl2' && pwd ls -l var/lib/postgresql
+RUN echo 'girl3' && pwd ls -l var/lib/postgresql/data
+
 # Start the database server with PostGIS enabled
 CMD ["postgres"]
