@@ -44,7 +44,8 @@ for tbl in $ETL_TABLES; do
       run_python_script backend/etl/tsunami_data_handler.py
       ;;
     liquefaction_zones)
-      run_python_script backend/etl/liquefaction_data_handler.py
+      #run_python_script backend/etl/liquefaction_data_handler.py
+      echo "liq is broken!"
       ;;
     soft_story_properties)
       run_python_script backend/etl/soft_story_properties_data_handler.py
