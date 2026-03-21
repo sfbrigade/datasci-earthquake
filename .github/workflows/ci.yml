@@ -198,6 +198,7 @@ jobs:
           path: each/one/rats
 
       - run: echo 'rats' && pwd && ls -l each/one/rats
+      - run: echo 'ratsagain' && cat each/one/rats/myiii.sql
 
       - name: psA 
         if: always()
