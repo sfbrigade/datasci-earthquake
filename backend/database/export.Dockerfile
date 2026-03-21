@@ -36,5 +36,9 @@ RUN chmod 777 haha
 USER appuser
 
 
-RUN echo 'boy' && pwd && ls -l
+RUN echo 'boy0' && pwd && ls -l
+RUN echo 'boy1' && pwd && ls -l var
+RUN echo 'boy2' && pwd && ls -l var/lib
+RUN echo 'boy3' && pwd && ls -l var/lib/postgresql
+RUN echo 'boy4' && pwd && ls -l var/lib/postgresql/data
 CMD ["./mystart.sh"]
