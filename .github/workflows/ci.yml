@@ -107,6 +107,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with: 
+          ref: ci_knees_worked
 
       - name: Set default fork status
         run: echo "is_fork=false" >> $GITHUB_ENV
