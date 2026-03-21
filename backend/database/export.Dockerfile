@@ -32,6 +32,7 @@ ENV PGPASSWORD=password
 #CMD ["pg_dump", "--inserts", "-h", "db", "-U", "postgres", "-f", "myiii.sql", "-t", "liquefaction_zones", "qsdatabase"]
 #CMD echo 'hiiii' && pg_dump --data-only --inserts -h db -U postgres -f myiii.sql -t liquefaction_zones qsdatabase && echo 'dddone' && ls -la && pwd && postgres  
 RUN mkdir haha
+RUN chmod 777 haha
 USER appuser
 
 
