@@ -31,9 +31,9 @@ ENV PGPASSWORD=password
 #CMD ["psql", "-f", "rrr.sql", "postgresql://postgres:password@db:5432/qsdatabase"]
 #CMD ["pg_dump", "--inserts", "-h", "db", "-U", "postgres", "-f", "myiii.sql", "-t", "liquefaction_zones", "qsdatabase"]
 #CMD echo 'hiiii' && pg_dump --data-only --inserts -h db -U postgres -f myiii.sql -t liquefaction_zones qsdatabase && echo 'dddone' && ls -la && pwd && postgres  
+RUN mkdir haha
 USER appuser
 
-RUN mkdir haha
 
-RUN pwd && ls -l
+RUN echo 'boy' && pwd && ls -l
 CMD ["./mystart.sh"]
