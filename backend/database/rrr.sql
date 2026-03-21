@@ -12,3 +12,12 @@ select ST_AsText(geometry), ST_AsEWKT(geometry) from landslide_zones limit 1;
 select ST_AsText(geometry), ST_AsEWKT(geometry) from liquefaction_zones limit 1;
 select ST_AsText(point), ST_AsEWKT(point) from soft_story_properties limit 1;
 select ST_AsText(geometry), ST_AsEWKT(geometry) from tsunami_zones limit 1;
+
+
+select table_name, column_name, constraint_name from information_schema.key_column_usage where table_name = 'landslide_zones';
+select table_name, column_name, constraint_name from information_schema.key_column_usage where table_name = 'liquefaction_zones';
+select table_name, column_name, constraint_name from information_schema.key_column_usage where table_name = 'soft_story_properties';
+select table_name, column_name, constraint_name from information_schema.key_column_usage where table_name = 'tsunami_zones';
+
+select table_name, column_name, constraint_name from information_schema.key_column_usage order by table_name, column_name;
+
