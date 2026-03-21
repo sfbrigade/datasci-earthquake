@@ -48,7 +48,8 @@ for tbl in $ETL_TABLES; do
       echo "liq is broken!"
       ;;
     soft_story_properties)
-      run_python_script backend/etl/soft_story_properties_data_handler.py
+      #run_python_script backend/etl/soft_story_properties_data_handler.py
+      echo "soft story is broken!"
       ;;
     *)
       echo "No ETL mapping for $tbl; skipping" >&2
