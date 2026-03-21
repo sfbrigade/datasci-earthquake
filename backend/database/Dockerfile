@@ -27,5 +27,8 @@ RUN echo 'girl1' && pwd ls -l var/lib
 RUN echo 'girl2' && pwd ls -l var/lib/postgresql
 RUN echo 'girl3' && pwd ls -l var/lib/postgresql/data
 
+
+COPY rrr.sql .
+
 # Start the database server with PostGIS enabled
 CMD ["postgres"]
