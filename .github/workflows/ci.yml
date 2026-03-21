@@ -174,7 +174,9 @@ jobs:
       #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d exportdb 
 
       #- run: docker compose exec my_export_db ls -la 
-      - run: docker exec -d my_postgis_db sh -c "echo hiiiiii && echo gggg"
+      - run: docker exec -d my_postgis_db sh -c "pg_dump --data-only --inserts -h db -U postgres -f myiii.sql -t liquefaction_zones qsdatabase"
+      - run: docker cp my_postgis_db:myiii.sql . 
+      - run: pwd && ls -l 
 
       - name: psA 
         if: always()
