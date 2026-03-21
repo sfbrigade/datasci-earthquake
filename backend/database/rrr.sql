@@ -7,3 +7,8 @@ select table_name, column_name, data_type from information_schema.columns where 
 select table_name, column_name, data_type from information_schema.columns where table_name = 'liquefaction_zones';
 select table_name, column_name, data_type from information_schema.columns where table_name = 'soft_story_properties';
 select table_name, column_name, data_type from information_schema.columns where table_name = 'tsunami_zones';
+
+select geometry from landslide_zones limit 1;
+select geometry from liquefaction_zones limit 1;
+select point from soft_story_properties limit 1;
+select geometry from tsunami_zones limit 1;
