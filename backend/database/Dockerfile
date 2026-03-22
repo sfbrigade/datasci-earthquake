@@ -12,7 +12,7 @@ RUN apt-get update \
 # Copy init scripts if necessary
 COPY initdb-postgis.sh /docker-entrypoint-initdb.d/
 COPY update-postgis.sh /docker-entrypoint-initdb.d/
-
+COPY populate_db.sql .
 
 # Make init scripts executable
 RUN chmod +x /docker-entrypoint-initdb.d/initdb-postgis.sh \
