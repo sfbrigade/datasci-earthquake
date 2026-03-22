@@ -217,10 +217,11 @@ jobs:
 
       #- run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f rrr.sql postgresql://postgres:password@db:5432/qsdatabase"
 
-      # insert data
-      - run: echo 'insert liquefaction data' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/liquefaction.sql postgresql://postgres:password@db:5432/qsdatabase"
-      - run: echo 'insert soft story data' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f /tmp/dbscripts/softstory.sql postgresql://postgres:password@db:5432/qsdatabase"
-      - run: echo 'insert tsunami data' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/tsunami.sql postgresql://postgres:password@db:5432/qsdatabase"
+      - name: insert data
+        run: |
+          docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/liquefaction.sql postgresql://postgres:password@db:5432/qsdatabase"
+          docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/softstory.sql postgresql://postgres:password@db:5432/qsdatabase"
+          docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/tsunami.sql postgresql://postgres:password@db:5432/qsdatabase"
 
       - name: psA 
         if: always()
