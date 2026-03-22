@@ -187,6 +187,10 @@ jobs:
       - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend 
       #- run: docker compose -f compose.yaml -f compose.ci.yaml up -d alembic 
       #- run: docker compose -f compose.yaml -f compose.ci.yaml up -d psql 
+
+      - run: echo 'lets see whats there...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f backend/populate_db.sql postgresql://postgres:password@db:5432/qsdatabase" 
+
+
       #- run: docker volume ls 
       - run: docker build -t datasci-earthquake-frontend . 
 
