@@ -185,9 +185,9 @@ jobs:
       #- run: docker run -d --env-file .env --name mydb postgis-custom
       #- run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
       - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend 
-      - run: docker compose -f compose.yaml -f compose.ci.yaml up -d alembic 
-      - run: docker compose -f compose.yaml -f compose.ci.yaml up -d psql 
-      - run: docker volume ls 
+      #- run: docker compose -f compose.yaml -f compose.ci.yaml up -d alembic 
+      #- run: docker compose -f compose.yaml -f compose.ci.yaml up -d psql 
+      #- run: docker volume ls 
       - run: docker build -t datasci-earthquake-frontend . 
 
       #- run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/node_modules,dst=/app/node_modules datasci-earthquake-frontend
@@ -202,13 +202,13 @@ jobs:
         if: always()
         run: docker logs mybackend || echo "No logs found"
 
-      - name: Docker Alembic Logs  
-        if: always()
-        run: docker logs myalembic || echo "No logs found"
+      #- name: Docker Alembic Logs  
+      #  if: always()
+      #  run: docker logs myalembic || echo "No logs found"
 
-      - name: Docker PSQL Logs  
-        if: always()
-        run: docker logs mypsql || echo "No logs found"
+      #- name: Docker PSQL Logs  
+      #  if: always()
+      #  run: docker logs mypsql || echo "No logs found"
 
       - name: Docker DB Logs
         if: always()
@@ -289,8 +289,8 @@ jobs:
       #- name: Run Frontend Tests
       #  run: docker compose -f compose.yaml -f compose.ci.yaml run --rm frontend npm test
 
-      - name: Run exec ALL - FRONTEND 
-        run: docker exec --env-file .env myfrontend npm test 
+      #- name: Run exec ALL - FRONTEND 
+      #  run: docker exec --env-file .env myfrontend npm test 
 
       #- name: Clean Up
       #  run: docker compose -f compose.yaml -f compose.ci.yaml down
