@@ -190,24 +190,22 @@ jobs:
       - run: cat dbscripts/softstory.sql 
       - run: cat dbscripts/liquefaction.sql 
 
-
       - name: upload db scripts
         uses: actions/upload-artifact@v4
         with:
           name: dbscripts
           path: dbscripts
 
+      - name: download dbscripts
+        uses: actions/download-artifact@v8
+        with:
+          name: dbscripts
+          path: each/one/pizza
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: sfbrigade/datasci-earthquake
+          run-id: 23397155068
 
-      #- name: downloady
-      #  uses: actions/download-artifact@v8
-      #  with:
-      #    name: thesql
-      #    path: each/one/rats
-      #    github-token: ${{ secrets.GITHUB_TOKEN }}
-      #    repository: sfbrigade/datasci-earthquake
-      #    run-id: 23391055107
-
-      #- run: echo 'rats' && pwd && ls -l each/one/rats
+      - run: echo 'pizza' && pwd && ls -l each/one/pizza
       #- run: echo 'ratsagain' && cat each/one/rats/myiii.sql
       #- run: docker cp each/one/rats/myiii.sql my_postgis_db:. 
 
