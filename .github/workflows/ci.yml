@@ -196,6 +196,9 @@ jobs:
         with:
           name: thesql
           path: each/one/rats
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: sfbrigade/datasci-earthquake
+          run-id: 23391055107
 
       - run: echo 'rats' && pwd && ls -l each/one/rats
       - run: echo 'ratsagain' && cat each/one/rats/myiii.sql
