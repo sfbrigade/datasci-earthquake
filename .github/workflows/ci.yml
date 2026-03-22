@@ -176,23 +176,24 @@ jobs:
       #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d -t 10000 exportdb 
 
       #- run: docker compose exec my_export_db ls -la 
-      - run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f tsunami.sql -t tsunami_zones qsdatabase"
-      - run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f softstory.sql -t soft_story_properties qsdatabase"
-      - run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f liquefaction.sql -t liquefaction_zones qsdatabase"
+      - run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f dbscripts/tsunami.sql -t tsunami_zones qsdatabase"
+      - run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f dbscripts/softstory.sql -t soft_story_properties qsdatabase"
+      - run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f dbscripts/liquefaction.sql -t liquefaction_zones qsdatabase"
 
       #- run: echo 'today' && pwd && ls -l 
 
       - run: echo 'lets generate some sql...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f rrr.sql postgresql://postgres:password@db:5432/qsdatabase"
 
-      - run: docker cp my_postgis_db:tsunami.sql . 
-      - run: docker cp my_postgis_db:softstory.sql . 
-      - run: docker cp my_postgis_db:liquefaction.sql . 
+      #- run: docker cp my_postgis_db:tsunami.sql dbscripts 
+      #- run: docker cp my_postgis_db:softstory.sql dbscripts 
+      #- run: docker cp my_postgis_db:liquefaction.sql dbscripts 
+      - run: docker cp my_postgis_db:dbscripts dbscripts 
 
-      - run: pwd && ls -l 
+      - run: pwd && ls -l dbscripts 
 
-      - run: cat tsunami.sql 
-      - run: cat softstory.sql 
-      - run: cat liquefaction.sql 
+      - run: cat dbscripts/tsunami.sql 
+      - run: cat dbscripts/softstory.sql 
+      - run: cat dbscripts/liquefaction.sql 
 
 
       #- name: uploady
