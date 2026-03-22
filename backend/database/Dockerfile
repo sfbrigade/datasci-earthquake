@@ -3,20 +3,6 @@
 # Use the official PostgreSQL image
 FROM postgres:15
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
-
-ENV PATH="/root/.local/bin/:$PATH"
-
-COPY pyproject.toml uv.lock ./
-
-#RUN uv sync --only-group testytesty
-
-#RUN pwd && ls -la /.venv/bin
-
-#RUN source /.venv/bin/activate
-
 # Install PostGIS and dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -24,9 +10,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy init scripts if necessary
-COPY . /backend 
-COPY database/initdb-postgis.sh /docker-entrypoint-initdb.d/
-COPY database/update-postgis.sh /docker-entrypoint-initdb.d/
+COPY initdb-postgis.sh /docker-entrypoint-initdb.d/
+COPY update-postgis.sh /docker-entrypoint-initdb.d/
 
 
 # Make init scripts executable
@@ -38,6 +23,4 @@ EXPOSE 5432
 
 
 # Start the database server with PostGIS enabled
-#CMD ["sh", "-c", "echo 'homey' && postgres && uv run alembic --config backend/alembic.ini show current"]
-
 CMD ["postgres"]
