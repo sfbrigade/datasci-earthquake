@@ -176,41 +176,52 @@ jobs:
       #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d -t 10000 exportdb 
 
       #- run: docker compose exec my_export_db ls -la 
-      - run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f dbscripts/tsunami.sql -t tsunami_zones qsdatabase"
-      - run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f dbscripts/softstory.sql -t soft_story_properties qsdatabase"
-      - run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f dbscripts/liquefaction.sql -t liquefaction_zones qsdatabase"
 
-      - run: echo 'lets generate some sql...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f rrr.sql postgresql://postgres:password@db:5432/qsdatabase"
+      # create sql scripts from data in db 
+      #- run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f dbscripts/tsunami.sql -t tsunami_zones qsdatabase"
+      #- run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f dbscripts/softstory.sql -t soft_story_properties qsdatabase"
+      #- run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f dbscripts/liquefaction.sql -t liquefaction_zones qsdatabase"
 
-      - run: docker cp my_postgis_db:dbscripts dbscripts 
+      #- run: echo 'lets generate some sql...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f rrr.sql postgresql://postgres:password@db:5432/qsdatabase"
 
-      - run: pwd && ls -l dbscripts 
+      # copy db scripts to runner 
+      #- run: docker cp my_postgis_db:dbscripts dbscripts 
 
-      - run: cat dbscripts/tsunami.sql 
-      - run: cat dbscripts/softstory.sql 
-      - run: cat dbscripts/liquefaction.sql 
+      # make sure they're there 
+      #- run: pwd && ls -l dbscripts 
 
-      - name: upload db scripts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dbscripts
-          path: dbscripts
+      # preview scripts
+      #- run: cat dbscripts/tsunami.sql 
+      #- run: cat dbscripts/softstory.sql 
+      #- run: cat dbscripts/liquefaction.sql 
+
+      #- name: upload db scripts
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: dbscripts
+      #    path: dbscripts
 
       - name: download dbscripts
         uses: actions/download-artifact@v8
         with:
           name: dbscripts
-          path: each/one/pizza
+          path: dbscripts
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: sfbrigade/datasci-earthquake
           run-id: 23397155068
 
-      - run: echo 'pizza' && pwd && ls -l each/one/pizza
-      #- run: echo 'ratsagain' && cat each/one/rats/myiii.sql
-      #- run: docker cp each/one/rats/myiii.sql my_postgis_db:. 
+      - run: echo 'harmony' && pwd && ls -l dbscripts
+
+      # copy db scripts to container
+      - run: docker cp dbscripts my_postgis_db:tmp/dbscripts 
 
       #- run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f rrr.sql postgresql://postgres:password@db:5432/qsdatabase"
-      #- run: echo 'do the insert' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f myiii.sql postgresql://postgres:password@db:5432/qsdatabase"
+
+      # insert data
+      - run: echo 'insert liquefaction data' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/liquefaction.sql postgresql://postgres:password@db:5432/qsdatabase"
+      - run: echo 'insert soft story data' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f /tmp/dbscripts/softstory.sql postgresql://postgres:password@db:5432/qsdatabase"
+      - run: echo 'insert tsunami data' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/tsunami.sql postgresql://postgres:password@db:5432/qsdatabase"
+
       - name: psA 
         if: always()
         run: docker ps -a
