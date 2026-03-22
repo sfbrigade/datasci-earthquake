@@ -176,9 +176,9 @@ jobs:
       #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d -t 10000 exportdb 
 
       #- run: docker compose exec my_export_db ls -la 
-      #- run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f myiii.sql -t tsunami_zones qsdatabase"
+      - run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f myiii.sql -t tsunami_zones qsdatabase"
       #- run: echo 'today' && pwd && ls -l 
-      - run: echo 'ETL didnt run so there should be nothing in here' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f rrr.sql postgresql://postgres:password@db:5432/qsdatabase"
+      #- run: echo 'ETL didnt run so there should be nothing in here' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f rrr.sql postgresql://postgres:password@db:5432/qsdatabase"
       #- run: docker cp my_postgis_db:myiii.sql . 
       #- run: pwd && ls -l 
       #- run: cat myiii.sql 
@@ -191,21 +191,21 @@ jobs:
       #    path: myiii.sql
 
 
-      - name: downloady
-        uses: actions/download-artifact@v8
-        with:
-          name: thesql
-          path: each/one/rats
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: sfbrigade/datasci-earthquake
-          run-id: 23391055107
+      #- name: downloady
+      #  uses: actions/download-artifact@v8
+      #  with:
+      #    name: thesql
+      #    path: each/one/rats
+      #    github-token: ${{ secrets.GITHUB_TOKEN }}
+      #    repository: sfbrigade/datasci-earthquake
+      #    run-id: 23391055107
 
-      - run: echo 'rats' && pwd && ls -l each/one/rats
-      - run: echo 'ratsagain' && cat each/one/rats/myiii.sql
-      - run: docker cp each/one/rats/myiii.sql my_postgis_db:. 
+      #- run: echo 'rats' && pwd && ls -l each/one/rats
+      #- run: echo 'ratsagain' && cat each/one/rats/myiii.sql
+      #- run: docker cp each/one/rats/myiii.sql my_postgis_db:. 
 
       #- run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f rrr.sql postgresql://postgres:password@db:5432/qsdatabase"
-      - run: echo 'do the insert' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f myiii.sql postgresql://postgres:password@db:5432/qsdatabase"
+      #- run: echo 'do the insert' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f myiii.sql postgresql://postgres:password@db:5432/qsdatabase"
       - name: psA 
         if: always()
         run: docker ps -a
