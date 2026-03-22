@@ -30,5 +30,7 @@ RUN echo 'girl3' && pwd ls -l var/lib/postgresql/data
 
 COPY rrr.sql .
 
+RUN mkdir dbscripts
+
 # Start the database server with PostGIS enabled
 CMD ["postgres"]
