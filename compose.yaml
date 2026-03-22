@@ -5,8 +5,8 @@ services:
   db:
     image: postgis-custom
     build:
-      context: ./backend
-      dockerfile: database/Dockerfile
+      context: ./backend/database
+      dockerfile: Dockerfile
       #cache_from:
       #  - type=local,src=earthquake-cache-db-sing
       #cache_to:
