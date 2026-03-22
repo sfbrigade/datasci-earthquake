@@ -190,6 +190,7 @@ jobs:
 
       - run: echo 'lets see whats there...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f backend/populate_db.sql postgresql://postgres:password@db:5432/qsdatabase" 
 
+      - run: echo 'run alembic' && docker compose exec backend alembic --config backend/alembic.ini upgrade head 
 
       #- run: docker volume ls 
       - run: docker build -t datasci-earthquake-frontend . 
