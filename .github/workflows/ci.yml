@@ -185,8 +185,6 @@ jobs:
       #- run: docker run -d --env-file .env --name mydb postgis-custom
       #- run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
       - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend 
-      #- run: docker compose -f compose.yaml -f compose.ci.yaml up -d alembic 
-      #- run: docker compose -f compose.yaml -f compose.ci.yaml up -d psql 
 
       - run: echo 'lets see whats there...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f backend/populate_db.sql postgresql://postgres:password@db:5432/qsdatabase" 
 
@@ -208,14 +206,6 @@ jobs:
       - name: Docker Backend Logs  
         if: always()
         run: docker logs mybackend || echo "No logs found"
-
-      #- name: Docker Alembic Logs  
-      #  if: always()
-      #  run: docker logs myalembic || echo "No logs found"
-
-      #- name: Docker PSQL Logs  
-      #  if: always()
-      #  run: docker logs mypsql || echo "No logs found"
 
       - name: Docker DB Logs
         if: always()
