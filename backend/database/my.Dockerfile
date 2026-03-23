@@ -5,7 +5,7 @@ FROM postgres:15
 
 
 RUN echo 'kombucha' \ 
-    && apt-get update && apt-get install -d \
+    && apt-get update && apt-get install -d -y --no-install-recommends \
     postgis postgresql-15-postgis-3 
 
 RUN echo 'crazysteak1' && pwd && ls -l var/cache
