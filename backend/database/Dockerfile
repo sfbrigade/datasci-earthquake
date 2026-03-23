@@ -14,9 +14,11 @@ RUN echo 'crazysteak2' && pwd && ls -l var/cache/apt
 RUN echo 'crazysteak3' && pwd && ls -l var/cache/apt/archives
 RUN echo 'crazysteak4' && pwd && ls -l var/cache/apt/archives/partial
 
-RUN echo 'nightwatch1' && pwd && ls -l etc/apt/apt.conf.d
-#RUN echo 'nightwatch2' && cat etc/apt/apt.conf
+RUN echo 'nightwatch1' && pwd && ls -l etc/apt
+RUN echo 'nightwatch2' && pwd && ls -l etc/apt/apt.conf.d
 
+RUN echo 'brek1' && touch etc/apt/apt.conf
+RUN echo 'brek2' && pwd && ls -l etc/apt/
 
 # Copy init scripts if necessary
 COPY initdb-postgis.sh /docker-entrypoint-initdb.d/
