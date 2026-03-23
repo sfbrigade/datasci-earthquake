@@ -16,6 +16,10 @@ RUN echo 'ocrazysteak4' && pwd && ls -l var/cache/apt/archives/partial
 
 RUN echo 'fasty1' && du -sh var/cache/apt
 RUN echo 'fasty2' && du -sh var/cache/apt/archives
+RUN echo 'duh0' && du -sh var/lib/apt
+RUN echo 'duh1' && du -sh var/lib/apt/lists
+RUN echo 'duh2' && ls -l var/lib/apt
+RUN echo 'duh3' && ls -l var/lib/apt/lists
 
 
 # Start the database server with PostGIS enabled
