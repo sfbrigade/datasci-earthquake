@@ -4,12 +4,11 @@
 FROM postgres:15
 
 
-RUN echo 'yerbs1' && touch etc/apt/apt.conf.d/01keep-debs
+RUN echo 'yerbs1' && touch etc/apt/apt.conf.d/10apt-keep-downloads
 
-RUN echo "Binary::APT::Keep-Downloaded-Packages \"true\";" >> etc/apt/apt.conf.d/01keep-debs
+RUN echo "Binary::apt::APT::Keep-Downloaded-Packages \"true\";" >> etc/apt/apt.conf.d/10apt-keep-downloads
 
 RUN echo 'yerbs2' && pwd && ls -l etc/apt/apt.conf.d
-RUN echo 'yerbs3' && cat etc/apt/apt.conf.d/01keep-debs
 
 
 # Install PostGIS and dependencies
