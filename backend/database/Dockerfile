@@ -19,6 +19,9 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 
+RUN echo 'oooo' \ 
+    && apt-get install -d \
+    postgis postgresql-15-postgis-3 \
 
 RUN echo 'crazysteak1' && pwd && ls -l var/cache
 RUN echo 'crazysteak2' && pwd && ls -l var/cache/apt
