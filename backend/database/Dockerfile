@@ -3,15 +3,13 @@
 # Use the official PostgreSQL image
 FROM postgres:15
 
-RUN echo 'nightwatch1' && pwd && ls -l etc/apt
-RUN echo 'nightwatch2' && pwd && ls -l etc/apt/apt.conf.d
 
-RUN echo 'brek1' && touch etc/apt/apt.conf
-RUN echo 'brek2' && pwd && ls -l etc/apt/
+RUN echo 'yerbs1' && touch etc/apt/apt.conf.d/01keep-debs
 
-RUN echo "Binary::apt::APT::Keep-Downloaded-Packages \"true\";" >> etc/apt/apt.conf
+RUN echo "Binary::apt::APT::Keep-Downloaded-Packages \"true\";" >> etc/apt/apt.conf.d/01keep-debs
 
-RUN echo 'catty' && cat etc/apt/apt.conf
+RUN echo 'yerbs2' && pwd && ls -l etc/apt/apt.conf.d
+RUN echo 'yerbs3' && cat etc/apt/apt.conf.d/01keep-debs
 
 
 # Install PostGIS and dependencies
