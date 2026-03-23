@@ -9,6 +9,12 @@ RUN apt-get update \
     postgis postgresql-15-postgis-3 \
     && rm -rf /var/lib/apt/lists/*
 
+RUN echo 'crazysteak1' && pwd && ls -l var/cache
+RUN echo 'crazysteak2' && pwd && ls -l var/cache/apt
+RUN echo 'crazysteak3' && pwd && ls -l var/cache/apt/archives
+RUN echo 'crazysteak4' && pwd && ls -l var/cache/apt/archives/partial
+
+
 # Copy init scripts if necessary
 COPY initdb-postgis.sh /docker-entrypoint-initdb.d/
 COPY update-postgis.sh /docker-entrypoint-initdb.d/
