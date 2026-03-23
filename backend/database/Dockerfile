@@ -9,6 +9,7 @@ RUN echo 'yerbs1' && touch etc/apt/apt.conf.d/10apt-keep-downloads
 RUN echo "Binary::apt::APT::Keep-Downloaded-Packages \"true\";" >> etc/apt/apt.conf.d/10apt-keep-downloads
 
 RUN echo 'yerbs2' && pwd && ls -l etc/apt/apt.conf.d
+RUN echo 'yerbs3' && pwd && cat etc/apt/apt.conf.d/01autoremove
 
 
 # Install PostGIS and dependencies
