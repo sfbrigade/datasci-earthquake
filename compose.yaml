@@ -30,6 +30,20 @@ services:
       retries: 10
       start_period: 30s
 
+  mydbpartdeux:
+    build:
+      context: ./backend/database
+      dockerfile: my.Dockerfile
+    container_name: mydbpartdeux
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=dev_docker
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - 5431:5432
+
   db_test:
     build:
       context: ./backend/database
