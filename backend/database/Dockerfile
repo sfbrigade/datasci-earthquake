@@ -9,7 +9,7 @@ RUN echo 'nightwatch2' && pwd && ls -l etc/apt/apt.conf.d
 RUN echo 'brek1' && touch etc/apt/apt.conf
 RUN echo 'brek2' && pwd && ls -l etc/apt/
 
-RUN echo "Binary::apt::APT::Keep-Downloaded-Packages \"true\"" >> etc/apt/apt.conf
+RUN echo "Binary::apt::APT::Keep-Downloaded-Packages \"true\";" >> etc/apt/apt.conf
 
 RUN echo 'catty' && cat etc/apt/apt.conf
 
