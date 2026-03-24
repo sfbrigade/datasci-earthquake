@@ -5,7 +5,7 @@ FROM postgres:15
 
 #WORKDIR /haha
 
-RUN echo 'kitbanana' && cat /etc/apt/sources.list
+RUN echo 'kitbanana' && ls -l /etc/apt
 
 
 RUN echo 'kombucha' \ 
