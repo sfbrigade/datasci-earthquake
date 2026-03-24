@@ -184,6 +184,11 @@ jobs:
       
       #- run: docker run -d --env-file .env --name mydb postgis-custom
       #- run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
+
+
+      # cache apt stuff
+      - run: apt-get update
+ 
       - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend  
 
       - run: echo 'lets see whats there...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f populate_db.sql postgresql://postgres:password@db:5432/qsdatabase" 
