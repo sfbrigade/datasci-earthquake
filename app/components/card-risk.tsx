@@ -117,8 +117,11 @@ const CardRisk: React.FC<CardRiskProps> = ({
                   listStylePosition="inside"
                   _marker={{ color: "blue.700" }}
                 >
-                  Download the MyShake app to get early warnings when an
-                  earthquake is detected.
+                  Download the{" "}
+                  <Text as="span" fontWeight="bold" color="blue.600">
+                    MyShake app
+                  </Text>{" "}
+                  to get early warnings when an earthquake is detected.
                 </Box>
                 <Box
                   as="li"
@@ -126,8 +129,11 @@ const CardRisk: React.FC<CardRiskProps> = ({
                   listStylePosition="inside"
                   _marker={{ color: "blue.700" }}
                 >
-                  Prep your emergency kit with first aid supplies, batteries,
-                  and other essentials.
+                  Prep your{" "}
+                  <Text as="span" fontWeight="bold" color="blue.600">
+                    emergency kit
+                  </Text>{" "}
+                  with first aid supplies, batteries, and other essentials.
                 </Box>
                 <Box
                   as="li"
@@ -135,8 +141,11 @@ const CardRisk: React.FC<CardRiskProps> = ({
                   listStylePosition="inside"
                   _marker={{ color: "blue.700" }}
                 >
-                  Check eligibility for an Earthquake Brace and Bolt grant or
-                  Earthquake Soft-Story retrofit grant.
+                  Check your eligibility for an{" "}
+                  <Text as="span" fontWeight="bold" color="blue.600">
+                    Earthquake Brace and Bolt grant
+                  </Text>{" "}
+                  or Earthquake Soft-Story retrofit grant.
                 </Box>
               </Box>
             </Box>

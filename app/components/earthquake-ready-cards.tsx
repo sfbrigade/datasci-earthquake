@@ -12,7 +12,7 @@ const EarthquakeReadyCards = () => (
     <CardContainer>
       <Card.Root size="md">
         <Card.Body gap="2">
-          <Icon size="lg">
+          <Icon size="sm" color="#3182CE" bg="blue.50" borderRadius="md">
             <FaRegClock />
           </Icon>
           <Card.Title mt="2">Make a plan</Card.Title>
@@ -36,7 +36,7 @@ const EarthquakeReadyCards = () => (
       </Card.Root>
       <Card.Root size="md">
         <Card.Body gap="2">
-          <Icon size="lg">
+          <Icon size="lg" color="#3182CE" bg="blue.50" borderRadius="md">
             <TiDocumentText />
           </Icon>
           <Card.Title mt="2">Build your kit</Card.Title>
@@ -60,7 +60,7 @@ const EarthquakeReadyCards = () => (
       </Card.Root>
       <Card.Root size="md">
         <Card.Body gap="2">
-          <Icon size="lg">
+          <Icon size="lg" color="#3182CE" bg="blue.50" borderRadius="md">
             <FaRedhat />
           </Icon>
           <Card.Title mt="2">Find a contractor</Card.Title>
