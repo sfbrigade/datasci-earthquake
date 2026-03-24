@@ -14,12 +14,10 @@ RUN echo 'oopsies1' && pwd && ls -l
 RUN echo 'dupdap' && du -h
 RUN apt install -y ./postgis_3.6.2+dfsg-1.pgdg13+1_amd64.deb
 
-RUN echo 'oopsies2' && pwd && ls -l
-
-#RUN echo 'ocrazysteak1' && pwd && ls -l var/cache
-#RUN echo 'ocrazysteak2' && pwd && ls -l var/cache/apt
-#RUN echo 'ocrazysteak3' && pwd && ls -l var/cache/apt/archives
-#RUN echo 'ocrazysteak4' && pwd && ls -l var/cache/apt/archives/partial
+RUN echo 'winner1' && pwd && ls -l var/cache
+RUN echo 'winner2' && pwd && ls -l var/cache/apt
+RUN echo 'winner3' && pwd && ls -l var/cache/apt/archives
+RUN echo 'winner4' && pwd && ls -l var/cache/apt/archives/partial
 
 
 #RUN echo 'fasty1' && du -sh var/cache/apt
