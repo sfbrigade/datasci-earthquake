@@ -16,9 +16,9 @@ import {
   Stack,
   useMediaQuery,
   Card,
+  Flex,
 } from "@chakra-ui/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import { IoShieldCheckmarkOutline } from "react-icons/io5";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
@@ -32,6 +32,7 @@ import EarthquakeReadyCards from "./earthquake-ready-cards";
 import AlertInfo from "@/components/ui/alert-info";
 
 const defaultCoords = [-122.4194, 37.7949];
+
 const toggledStatesDefaults = [true, true, true];
 const mdBreakpointValue = system.token("breakpoints.md");
 const AngleLeft = chakra(FaAngleLeft);
@@ -330,18 +331,23 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 />
               </Box>
               <Box zIndex="docked" top="36" left="8" position="absolute">
-                <Card.Root width="500px">
+                <Card.Root width="var(--sizes-500)">
                   <Card.Body gap="2">
                     <Card.Title mt="2">
-                      <Image
-                        src="/images/SFSafehomeBlackLogo.svg"
-                        alt="SafeHome logo"
-                        role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
-                        height="20px"
-                        width="20px"
-                        display="inline"
-                      />
-                      {initialAddress}
+                      <Flex gap="4" align="center">
+                        <div>
+                          <Image
+                            src="/images/SFSafehomeBlackLogo.svg"
+                            alt="SafeHome logo"
+                            role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
+                            height="auto"
+                            width="auto"
+                            display="inline"
+                          />
+                        </div>
+
+                        <div>{initialAddress}</div>
+                      </Flex>
                     </Card.Title>
                     <Card.Description>
                       <ReportHazards
@@ -374,31 +380,32 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         </Box>
       </Box>
       {CurrentVariant === "data-centric" && (
-        <>
+        <Box bgColor="peach">
           <Box pt="8" pb="4" px="8">
-            <Heading as="h2">
+            <Heading as="h2" pb="4">
               <Text
                 as="span"
                 textStyle="headerBig"
                 layerStyle="headerMain"
-                color="blue.text"
+                color="black"
                 fontWeight="light"
               >
                 What your risks mean
               </Text>
             </Heading>
+
+            <Center>
+              <ReportHazards
+                variant="reporthazardsummary"
+                addressHazardData={addressHazardData}
+                isHazardDataLoading={isHazardDataLoading}
+                toggledStates={toggledStates}
+                setToggledStates={setToggledStates}
+                setLayerToggleObj={setLayerToggleObj}
+                stackDirectionResponsive={true}
+              />
+            </Center>
           </Box>
-          <Center py="4" px="8">
-            <ReportHazards
-              variant="reporthazardsummary"
-              addressHazardData={addressHazardData}
-              isHazardDataLoading={isHazardDataLoading}
-              toggledStates={toggledStates}
-              setToggledStates={setToggledStates}
-              setLayerToggleObj={setLayerToggleObj}
-              stackDirectionResponsive={true}
-            />
-          </Center>
           <Box pt="8" pb="4" px="8">
             <Heading as="h2">
               <Stack gap="3">
@@ -406,7 +413,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   as="span"
                   textStyle="headerBig"
                   layerStyle="headerMain"
-                  color="blue.text"
+                  color="black"
                   fontWeight="light"
                 >
                   Get earthquake-ready
@@ -419,20 +426,31 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           </Box>
           <EarthquakeReadyCards></EarthquakeReadyCards>
           <Center py="4" px="8">
-            <Box bg="blue.50" p="4" borderRadius="md" mt="4">
-              <IoShieldCheckmarkOutline />
-              <Text fontSize="xs" fontWeight="bold" mb="3">
-                Renting? Know your rights.
-              </Text>
-              <Text>
-                If you live in a non-compliant building or high-risk zone, you
-                have options. Get earthquake renters insurance to protect your
-                belongings, or learn about your right to report unsafe living
-                conditions to the city.
-              </Text>
-            </Box>
+            <Flex bg="blue.50" p="4" borderRadius="md" mt="4" gap="6">
+              <div>
+                <Image
+                  src="/images/SFCivicTech-Rights.svg"
+                  alt="SafeHome logo"
+                  role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
+                  height="auto"
+                  width="auto"
+                  display="inline"
+                />
+              </div>
+              <div>
+                <Text fontSize="lg" fontWeight="bold" mb="3">
+                  Renting? Know your rights.
+                </Text>
+                <Text>
+                  If you live in a non-compliant building or high-risk zone, you
+                  have options. Get earthquake renters insurance to protect your
+                  belongings, or learn about your right to report unsafe living
+                  conditions to the city.
+                </Text>
+              </div>
+            </Flex>
           </Center>
-        </>
+        </Box>
       )}
     </>
   );

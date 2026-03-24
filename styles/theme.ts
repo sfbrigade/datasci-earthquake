@@ -178,9 +178,10 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
       600: { value: "#4A5568" },
       900: { value: "#171923" },
     },
-    white: { value: "#FFF" },
+    peach: { DEFAULT: { value: "#F5F5F5" } },
+    white: { DEFAULT: { value: "#FFF" } },
     blue: { 600: { value: "#0088FF" }, text: { value: "#2B6CB0" } }, // blue/600 (TODO: all headings) // "#0088FF" comes from Figma switches
-    yellow: { value: "#ECC94B" },
+    yellow: { DEFAULT: { value: "#ECC94B" } },
     red: { DEFAULT: { value: "#C53030" } },
     green: { DEFAULT: { value: "#25855A" } },
     orange: { value: "#F6AD55" },
