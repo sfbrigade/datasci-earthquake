@@ -30,6 +30,7 @@ import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 import SearchBar from "./search-bar";
 import EarthquakeReadyCards from "./earthquake-ready-cards";
 import AlertInfo from "@/components/ui/alert-info";
+import { ImageTextCard } from "../../stories/examples/ImageTextCard";
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
 };
@@ -333,14 +334,20 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 <Card.Root width="500px">
                   <Card.Body gap="2">
                     <Card.Title mt="2">
-                      <Image
+                      <ImageTextCard
+                        description="This is a sample description text that goes along with the image."
+                        image="/images/SFSafehomeBlackLogo.svg"
+                        imagePosition="left"
+                        title="Sample Title"
+                      />
+                      {/* <Image
                         src="/images/SFSafehomeBlackLogo.svg"
                         alt="SafeHome logo"
                         role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
                         height="20px"
                         width="20px"
                         display="inline"
-                      />
+                      /> */}
                       {searchedAddress}
                     </Card.Title>
                     <Card.Description>
