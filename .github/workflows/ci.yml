@@ -187,8 +187,9 @@ jobs:
 
 
       # cache apt stuff
-      #- run: sudo apt-get update
-      - run: sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
+      - run: sudo apt-get update
+      - run: mkdir hahaoo && cd hahaoo && sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
+      - run: pwd && ls -l
  
       - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend  
 
