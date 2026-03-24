@@ -1,14 +1,34 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import mapboxgl, { LngLat } from "mapbox-gl";
+import mapboxgl, { LngLat, LngLatLike, MapOptions } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
 
-const defaultCoords = [-122.463733, 37.777448];
-
+const defaultCoords: LngLatLike = [-122.408020683, 37.801698301]; // TODO: dedupe with address-mapper default coords; consider centralizing in a constants file if we need to use in more places
+const mapOptions: Omit<MapOptions, "container"> = {
+  style: "mapbox://styles/mapbox/standard",
+  center: defaultCoords,
+  zoom: 12.1, // Start with more zoomed-out view but not too far
+  minZoom: 11, // Allow users to zoom out more
+  maxZoom: 15, // Increase max zoom to allow closer inspection
+  maxBounds: [
+    [-122.6, 37.65], // Southwest coordinates
+    [-122.25, 37.85], // Northeast coordinates
+  ],
+  dragRotate: false, // turn off rotation on drag
+  touchPitch: false, // turn off pitch change w/touch
+  touchZoomRotate: true, // turn on zoom/rotate w/touch
+  config: {
+    // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
+    basemap: {
+      // 'default', 'faded', or 'monochrome'
+      theme: "monochrome",
+    },
+  },
+};
 interface MapProps {
   coordinates: number[];
   softStoryData: FeatureCollection<Geometry>;
@@ -66,25 +86,7 @@ const Map: React.FC<MapProps> = ({
       // initial pass: render map
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current!,
-        style: "mapbox://styles/mapbox/standard",
-        center: [-122.437, 37.768],
-        zoom: 12.1, // Start with more zoomed-out view but not too far
-        minZoom: 11, // Allow users to zoom out more
-        maxZoom: 15, // Increase max zoom to allow closer inspection
-        maxBounds: [
-          [-122.6, 37.65], // Southwest coordinates
-          [-122.25, 37.85], // Northeast coordinates
-        ],
-        dragRotate: false, // turn off rotation on drag
-        touchPitch: false, // turn off pitch change w/touch
-        touchZoomRotate: true, // turn on zoom/rotate w/touch
-        config: {
-          // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
-          basemap: {
-            // 'default', 'faded', or 'monochrome'
-            theme: "monochrome",
-          },
-        },
+        ...mapOptions,
       });
 
       const map = mapRef.current;

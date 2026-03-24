@@ -1,6 +1,13 @@
 import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  watchOptions: {
+    // Turbopack-specific polling for watch options (might be needed for e.g. Docker environments if host filesystem does not reliably notify of changes)
+    // TODO: check if this is equivalent to WATCHPACK_POLLING environment variable
+    pollIntervalMs: 1000, // Check for changes every 1 second
+  },
+  reactCompiler: true,
+  productionBrowserSourceMaps: true,
   experimental: {
     optimizePackageImports: ["@chakra-ui/react"],
   },
@@ -48,20 +55,20 @@ const nextConfig: NextConfig = {
 
     return rewrites;
   },
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: [
-        {
-          loader: "@svgr/webpack",
-          options: {
-            icon: true, // Optional: Optimize for icon usage
+  turbopack: {
+    rules: {
+      "*.svg": {
+        loaders: [
+          {
+            loader: "@svgr/webpack",
+            options: {
+              icon: true, // This is your desired option
+            },
           },
-        },
-      ],
-    });
-
-    return config;
+        ],
+        as: "*.js", // Important to tell Turbopack to treat as JS module
+      },
+    },
   },
 };
 
