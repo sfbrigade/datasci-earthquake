@@ -4,7 +4,7 @@ import path from 'path';
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
 export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
-  if (["ci", "local"].includes(process.env.ENVIRONMENT || "")) {
+  if ((process.env.ENVIRONMENT || "") === "local") {
     // Try reading local geojsons from public/data
     try {
       const filePath = path.join(process.cwd(), 'public', cdnEndpoint);
