@@ -3,16 +3,16 @@
 # Use the official PostgreSQL image
 FROM postgres:15
 
-WORKDIR /haha
-#RUN echo 'kombucha' \ 
-#    && apt-get update && apt-get install -d -y --no-install-recommends \
-#    postgis postgresql-15-postgis-3 
+#WORKDIR /haha
+RUN echo 'kombucha' \ 
+    && apt-get update && apt-get install -d -y --no-install-recommends \
+    postgis postgresql-15-postgis-3 
 
-RUN apt update && apt download postgis postgresql-15-postgis-3
+#RUN apt update && apt download postgis postgresql-15-postgis-3
 
-RUN echo 'oopsies1' && pwd && ls -l
-RUN echo 'dupdap' && du -h
-RUN apt install -y ./postgis_3.6.2+dfsg-1.pgdg13+1_amd64.deb
+#RUN echo 'oopsies1' && pwd && ls -l
+#RUN echo 'dupdap' && du -h
+#RUN apt install -y ./postgis_3.6.2+dfsg-1.pgdg13+1_amd64.deb
 
 RUN echo 'winner1' && pwd && ls -l /var/cache
 RUN echo 'winner2' && pwd && ls -l /var/cache/apt
