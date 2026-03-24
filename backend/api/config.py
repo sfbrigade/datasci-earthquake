@@ -58,6 +58,6 @@ class Settings(BaseSettings):
 
 
 # Cache the settings to avoid multiple calls to load the same settings
-@lru_cache()
+@lru_cache(maxsize=1)
 def get_settings() -> Settings:
     return Settings()
