@@ -11,6 +11,7 @@ WORKDIR /haha
 RUN apt update && apt download postgis postgresql-15-postgis-3
 
 RUN echo 'oopsies' && pwd && ls -l
+RUN echo 'dupdap' && du -h
 
 #RUN echo 'ocrazysteak1' && pwd && ls -l var/cache
 #RUN echo 'ocrazysteak2' && pwd && ls -l var/cache/apt
