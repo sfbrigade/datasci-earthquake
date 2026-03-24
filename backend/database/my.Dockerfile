@@ -8,7 +8,7 @@ WORKDIR /haha
 #    && apt-get update && apt-get install -d -y --no-install-recommends \
 #    postgis postgresql-15-postgis-3 
 
-RUN apt download postgis postgresql-15-postgis-3
+RUN apt update && apt download postgis postgresql-15-postgis-3
 
 RUN echo 'oopsies' && pwd && ls -l
 
