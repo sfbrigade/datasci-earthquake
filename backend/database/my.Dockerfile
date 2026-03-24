@@ -4,6 +4,10 @@
 FROM postgres:15
 
 #WORKDIR /haha
+
+RUN echo 'kitbanana' && cat /etc/apt/sources.list
+
+
 RUN echo 'kombucha' \ 
     && apt-get update && apt-get install -d -y --no-install-recommends \
     postgis postgresql-15-postgis-3 

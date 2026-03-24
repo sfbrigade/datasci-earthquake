@@ -187,11 +187,11 @@ jobs:
 
 
       # cache apt stuff
-      - run: sudo apt-get update
-      - run: mkdir hahaoo && cd hahaoo && sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
-      - run: pwd && ls -l
+      #- run: sudo apt-get update
+      #- run: mkdir hahaoo && cd hahaoo && sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
+      #- run: pwd && ls -l
  
-      - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend  
+      - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend mydbpartdeux  
 
       - run: echo 'lets see whats there...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f populate_db.sql postgresql://postgres:password@db:5432/qsdatabase" 
 
