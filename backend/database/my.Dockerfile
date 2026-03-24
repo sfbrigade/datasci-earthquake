@@ -16,11 +16,13 @@ RUN echo 'kombucha' \
 
 RUN echo 'winner1' && pwd && ls -l /var/cache
 RUN echo 'winner2' && pwd && ls -l /var/cache/apt
-RUN echo 'winner3' && pwd && ls -l /var/cache/apt/archives
+RUN echo 'beforefasty' && pwd && ls -l /var/cache/apt/archives
 RUN echo 'winner4' && pwd && ls -l /var/cache/apt/archives/partial
 
+RUN dpkg -i /var/cache/apt/archives/*.deb
 
-RUN echo 'fasty' && du -h /var/cache/apt/archives
+RUN echo 'afterfasty1' && pwd && ls -l /var/cache/apt/archives
+RUN echo 'afterfasty2' && du -h /var/cache/apt/archives
 #RUN echo 'duh1' && du -h /var/lib/apt/lists
 #RUN echo 'duh2' && ls -l /var/lib/apt
 #RUN echo 'duh3' && ls -l /var/lib/apt/lists
