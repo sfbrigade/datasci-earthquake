@@ -57,8 +57,8 @@ const CardHazardSummary: React.FC<CardHazardSummaryProps> = ({
     ""
   );
   return (
-    <Box>
-      <Flex align="center" gap="2">
+    <Box p="4">
+      <Flex align="center" gap="2" mb="2">
         <Icon size="sm" color={iconColor}>
           {icon === "circle" ? <FaCircle /> : <FaSquareFull />}
         </Icon>
@@ -66,7 +66,9 @@ const CardHazardSummary: React.FC<CardHazardSummaryProps> = ({
           {title}
         </Text>
       </Flex>
-      <Box w="full"> {hazardPill}</Box>
+      <Box w="full" px="2">
+        {hazardPill}
+      </Box>
     </Box>
   );
 };
