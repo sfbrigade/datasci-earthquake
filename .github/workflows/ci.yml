@@ -206,7 +206,7 @@ jobs:
           path: /var/cache/apt/archives 
           key: docker-postgis-packages
 
-      - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend mydbpartdeux  
+      - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend   
 
       - run: echo 'lets see whats there...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f populate_db.sql postgresql://postgres:password@db:5432/qsdatabase" 
 
