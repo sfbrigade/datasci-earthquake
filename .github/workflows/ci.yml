@@ -200,12 +200,12 @@ jobs:
       - run: sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
       - run: echo 'AFTER-MAS' && ls -l /var/cache/apt/archives
       - run: mkdir hahafinny && cp /var/cache/apt/archives/*.deb hahafinny
-      - run: ls -l hahafinny 
+      - run: pwd && ls -l hahafinny 
 
       - name: Cache postgis packages 
         uses: actions/cache@v4
         with:
-          path: /var/cache/apt/archives 
+          path: /home/runner/work/datasci-earthquake/datasci-earthquake/hahafinny 
           key: docker-postgis-packages
 
       - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend   
