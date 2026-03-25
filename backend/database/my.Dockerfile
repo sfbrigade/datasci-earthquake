@@ -9,9 +9,12 @@ RUN echo 'kitbanana' && ls -l /etc/apt/sources.list.d
 RUN echo 'kitbananafruit' && cat /etc/apt/sources.list.d/debian.sources
 
 
-RUN echo 'kombucha' \ 
+RUN echo 'kombucha' && mkdir kitty && cd kitty \ 
     && apt-get update && apt-get install -d -y --no-install-recommends \
     postgis postgresql-15-postgis-3 
+
+RUN echo 'zero' && cd kitty && ls -l
+RUN echo 'first' && pwd && ls -l /var/cache/apt/archives
 
 #RUN apt update && apt download postgis postgresql-15-postgis-3
 
