@@ -16,6 +16,10 @@ RUN echo 'kombucha' && mkdir kitty && cd kitty \
 RUN echo 'zero' && cd kitty && ls -l
 RUN echo 'first' && pwd && ls -l /var/cache/apt/archives
 
+RUN echo 'kombuchatwice' \ 
+    && apt-get update && apt-get install -d -y --no-install-recommends \
+    postgis postgresql-15-postgis-3 
+
 #RUN apt update && apt download postgis postgresql-15-postgis-3
 
 #RUN echo 'oopsies1' && pwd && ls -l
