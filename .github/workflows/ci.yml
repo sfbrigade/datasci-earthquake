@@ -191,7 +191,7 @@ jobs:
       #- run: mkdir hahaoo && cd hahaoo && sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
       #- run: pwd && ls -l
       - run: sudo apt install -y postgresql-common
-      - run: sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh 
+      - run: sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
       - run: echo 'dap' && ls -l /etc/apt
       - run: echo 'dap' && ls -l /etc/apt/sources.list.d
       - run: echo 'dop' && cat /etc/apt/sources.list
