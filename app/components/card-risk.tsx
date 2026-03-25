@@ -68,7 +68,7 @@ const CardRisk: React.FC<CardRiskProps> = ({
   );
   console.log("PillData", PillData);
   return (
-    <Box borderWidth="0.25" borderRadius="lg" p="5">
+    <Box borderWidth="0.25" borderRadius="lg" p="5" bg="white">
       <AccordionRoot collapsible defaultValue={["risk"]}>
         <AccordionItem value="risk">
           <AccordionItemTrigger>

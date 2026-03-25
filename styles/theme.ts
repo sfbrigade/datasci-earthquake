@@ -177,6 +177,7 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
       600: { value: "#4A5568" },
       900: { value: "#171923" },
     },
+    peach: { DEFAULT: { value: "#F5F5F5" } },
     white: { DEFAULT: { value: "#FFF" } },
     blue: { text: { value: "#2B6CB0" } }, // blue/600 (TODO: all headings)
     yellow: { DEFAULT: { value: "#ECC94B" } },

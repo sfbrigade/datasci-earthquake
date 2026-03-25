@@ -1,6 +1,6 @@
-import { Center } from "@chakra-ui/react";
+import { Box, Center } from "@chakra-ui/react";
 import { CardContainer } from "./card-container";
-import { Card, Icon, Link } from "@chakra-ui/react";
+import { Card, Icon, Link, Image } from "@chakra-ui/react";
 import { FaRegClock } from "react-icons/fa";
 import { TiDocumentText } from "react-icons/ti";
 import { FaRedhat } from "react-icons/fa";
@@ -12,9 +12,14 @@ const EarthquakeReadyCards = () => (
     <CardContainer>
       <Card.Root size="md">
         <Card.Body gap="2">
-          <Icon size="sm" color="#3182CE" bg="blue.50" borderRadius="md">
-            <FaRegClock />
-          </Icon>
+          <Image
+            src="/images/SFCivicTech-Clock.svg"
+            alt="SafeHome logo"
+            role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
+            height="8"
+            width="8"
+            display="inline"
+          />
           <Card.Title mt="2">Make a plan</Card.Title>
           <Card.Description>
             Know what to do when shaking starts. Cell service will likely be
@@ -36,9 +41,14 @@ const EarthquakeReadyCards = () => (
       </Card.Root>
       <Card.Root size="md">
         <Card.Body gap="2">
-          <Icon size="lg" color="#3182CE" bg="blue.50" borderRadius="md">
-            <TiDocumentText />
-          </Icon>
+          <Image
+            src="/images/SFCivicTechbuildKit.svg"
+            alt="SafeHome logo"
+            role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
+            height="8"
+            width="8"
+            display="inline"
+          />
           <Card.Title mt="2">Build your kit</Card.Title>
           <Card.Description>
             Water, first aid, flashlight, batteries, medications, and important
@@ -60,9 +70,15 @@ const EarthquakeReadyCards = () => (
       </Card.Root>
       <Card.Root size="md">
         <Card.Body gap="2">
-          <Icon size="lg" color="#3182CE" bg="blue.50" borderRadius="md">
-            <FaRedhat />
-          </Icon>
+          <Image
+            src="/images/SFCivicTech-Contractor.svg"
+            alt="SafeHome logo"
+            role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
+            height="8"
+            width="8"
+            display="inline"
+          />
+
           <Card.Title mt="2">Find a contractor</Card.Title>
           <Card.Description>
             If your building needs retrofitting, find a licensed seismic
