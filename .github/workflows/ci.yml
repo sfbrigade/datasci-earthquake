@@ -117,13 +117,20 @@ jobs:
 
 
       - run: npm config get cache 
-      - run: echo 'check1' && ls -l 
+      - run: echo 'check1' && pwd && ls -l 
 
       - name: npm install 
         run: npm install  
 
-      - run: echo 'check2' && ls -l 
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
+          key: npm-deps
+
+      - run: echo 'check2' && pwd && ls -l 
       - run: echo 'check3' && du -sh node_modules 
+
       - name: npm verify AFTER
         run: npm cache verify
 
