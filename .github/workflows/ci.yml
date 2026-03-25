@@ -123,7 +123,7 @@ jobs:
         run: npm install  
 
       - run: echo 'check2' && ls -l 
-      - run: echo 'check3' && du -h node_modules 
+      - run: echo 'check3' && du -sh node_modules 
       - name: npm verify AFTER
         run: npm cache verify
 
