@@ -199,7 +199,12 @@ jobs:
       - run: echo 'BEFORE-MAS' && ls -l /var/cache/apt/archives
       - run: sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
       - run: echo 'AFTER-MAS' && ls -l /var/cache/apt/archives
-      - run: echo 'AFTER-MAS-AGAIN' && du -h /var/cache/apt/archives
+
+      - name: Cache postgis packages 
+        uses: actions/cache@v4
+        with:
+          path: /var/cache/apt/archives 
+          key: docker-postgis-packages
 
       - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend mydbpartdeux  
 
