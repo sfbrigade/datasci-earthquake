@@ -116,7 +116,10 @@ jobs:
       - name: npm verify BEFORE 
         run: npm cache verify 
 
+      - run: npm cache ls 
+
       - run: npm config get cache 
+      - run: echo 'check1' && pwd && ls -l ~
       - run: echo 'check1' && pwd && ls -l ~/.npm
       - run: echo 'check1' && pwd && ls -l /home/runner/.npm
       - run: echo 'check1' && du -sh /home/runner/.npm
