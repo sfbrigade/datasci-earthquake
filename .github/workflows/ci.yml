@@ -186,32 +186,18 @@ jobs:
       #- run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
 
 
-      # cache apt stuff
-      #- run: sudo apt-get update
-      #- run: mkdir hahaoo && cd hahaoo && sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
-      #- run: pwd && ls -l
-      - run: echo 'BEFOREdap' && ls -l /etc/apt/sources.list.d
+      # set up apt repo 
       - run: sudo apt install -y postgresql-common
       - run: sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
-      - run: echo 'dap' && ls -l /etc/apt
-      - run: echo 'AFTERdap' && ls -l /etc/apt/sources.list.d
-      - run: echo 'dop' && cat /etc/apt/sources.list
 
-      - name: dop1  
-        if: always()
-        run: cat /etc/apt/sources.list.d/azure-cli.sources 
-
-      - name: dop2  
-        if: always()
-        run: cat /etc/apt/sources.list.d/microsoft-prod.list 
-
-      - name: dop3  
-        if: always()
-        run: cat /etc/apt/sources.list.d/ubuntu.sources 
-
-      - name: dop4  
+      - name: look   
         if: always()
         run: cat /etc/apt/sources.list.d/pgdg.sources 
+
+      # cache apt stuff
+      #- run: sudo apt-get update
+      - run: mkdir hahaoo && cd hahaoo && sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
+      - run: pwd && ls -l
 
       - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend mydbpartdeux  
 
