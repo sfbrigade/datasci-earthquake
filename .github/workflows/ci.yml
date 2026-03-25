@@ -120,8 +120,8 @@ jobs:
       - run: npm cache ls 
 
       - run: npm config get cache 
-      - run: echo 'check1' && pwd && ls -la ~/work/datasci-earthquake
-      - run: echo 'check1' && pwd && ls -la ~/.npm
+      - run: echo 'check1' && pwd && ls -la ~/work/datasci-earthquake/datasci-earthquake
+      - run: echo 'check1' && pwd && ls -la ~
       - run: echo 'check1' && du -sh /home/runner/.npm
       - run: echo 'check1' && du -sh /home/runner/.npm/_cacache
 
