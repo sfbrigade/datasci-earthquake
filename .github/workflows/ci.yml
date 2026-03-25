@@ -187,14 +187,25 @@ jobs:
 
 
       # cache apt stuff
-      #- run: sudo apt-get update
-      #- run: mkdir hahaoo && cd hahaoo && sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
+      - run: sudo apt-get update
+      - run: mkdir hahaoo && cd hahaoo && sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
       #- run: pwd && ls -l
       - run: echo 'dap' && ls -l /etc/apt
       - run: echo 'dap' && ls -l /etc/apt/sources.list.d
       - run: echo 'dop' && cat /etc/apt/sources.list
-      - run: echo 'dop' && cat /etc/apt/sources.list.d/ubuntu.sources
- 
+
+      - name: dop1  
+        if: always()
+        run: cat /etc/apt/sources.list.d/azure-cli.sources 
+
+      - name: dop2  
+        if: always()
+        run: cat /etc/apt/sources.list.d/microsoft-prod.list 
+
+      - name: dop3  
+        if: always()
+        run: cat /etc/apt/sources.list.d/ubuntu.sources 
+
       - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend mydbpartdeux  
 
       - run: echo 'lets see whats there...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f populate_db.sql postgresql://postgres:password@db:5432/qsdatabase" 
