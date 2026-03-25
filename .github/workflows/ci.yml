@@ -192,6 +192,8 @@ jobs:
       #- run: pwd && ls -l
       - run: echo 'dap' && ls -l /etc/apt
       - run: echo 'dap' && ls -l /etc/apt/sources.list.d
+      - run: echo 'dop' && cat /etc/apt/sources.list
+      - run: echo 'dop' && cat /etc/apt/sources.list.d/ubuntu.sources
  
       - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend mydbpartdeux  
 
