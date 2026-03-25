@@ -100,8 +100,27 @@ jobs:
       - name: Check Next.js production build
         run: npm run build
 
-  docker_build_test:
+
+  diestro:
     if: needs.changes.outputs.code_changed == 'true'
+    runs-on: ubuntu-latest
+    needs: changes
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v6
+        with: 
+          cache: 'npm'
+
+      - name: npm verify BEFORE 
+        run: npm cache verify 
+
+      - run: npm config get cache 
+      - run: echo 'check1' && pwd && ls -l /home/runner/.npm
+
+  docker_build_test:
+    if: needs.changes.outputs.code_changed == 'truei'
     runs-on: ubuntu-latest
     needs: changes
     steps:
