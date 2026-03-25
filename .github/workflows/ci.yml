@@ -117,7 +117,10 @@ jobs:
         run: npm cache verify 
 
       - run: npm config get cache 
+      - run: echo 'check1' && pwd && ls -l ~/.npm
       - run: echo 'check1' && pwd && ls -l /home/runner/.npm
+      - run: echo 'check1' && du -sh /home/runner/.npm
+      - run: echo 'check1' && du -sh /home/runner/.npm/_cacache
 
   docker_build_test:
     if: needs.changes.outputs.code_changed == 'truei'
