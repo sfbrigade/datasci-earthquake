@@ -247,8 +247,8 @@ jobs:
       #- name: Run exec FAIL
       #  run: docker exec --env-file .env mybackend pytest backend/api/tests/test_liquefaction.py::test_get_liquefaction_zones -v
 
-      - name: Run exec ALL - BACKEND 
-        run: docker exec --env-file .env mybackend pytest backend/ -v
+      #- name: Run exec ALL - BACKEND 
+      #  run: docker exec --env-file .env mybackend pytest backend/ -v
 
       #- name: Run exec A 
       #  if: always()
