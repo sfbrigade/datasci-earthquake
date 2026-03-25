@@ -190,10 +190,11 @@ jobs:
       #- run: sudo apt-get update
       #- run: mkdir hahaoo && cd hahaoo && sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
       #- run: pwd && ls -l
+      - run: echo 'BEFOREdap' && ls -l /etc/apt/sources.list.d
       - run: sudo apt install -y postgresql-common
       - run: sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
       - run: echo 'dap' && ls -l /etc/apt
-      - run: echo 'dap' && ls -l /etc/apt/sources.list.d
+      - run: echo 'AFTERdap' && ls -l /etc/apt/sources.list.d
       - run: echo 'dop' && cat /etc/apt/sources.list
 
       - name: dop1  
@@ -207,6 +208,10 @@ jobs:
       - name: dop3  
         if: always()
         run: cat /etc/apt/sources.list.d/ubuntu.sources 
+
+      - name: dop4  
+        if: always()
+        run: cat /etc/apt/sources.list.d/pgdg.sources 
 
       - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend mydbpartdeux  
 
