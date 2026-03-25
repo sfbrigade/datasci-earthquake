@@ -109,6 +109,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - run: echo 'beforecheck1' && pwd && ls -la ~
       - uses: actions/setup-node@v6
         with: 
           cache: 'npm'
@@ -119,7 +120,7 @@ jobs:
       - run: npm cache ls 
 
       - run: npm config get cache 
-      - run: echo 'check1' && pwd && ls -la ~/work
+      - run: echo 'check1' && pwd && ls -la ~/work/datasci-earthquake
       - run: echo 'check1' && pwd && ls -la ~/.npm
       - run: echo 'check1' && du -sh /home/runner/.npm
       - run: echo 'check1' && du -sh /home/runner/.npm/_cacache
