@@ -124,7 +124,7 @@ jobs:
       - run: echo 'check1' && pwd && ls -la ~
       - run: echo 'check1' && du -sh /home/runner/.npm
       - run: echo 'check1' && du -sh /home/runner/.npm/_cacache
-      - run: pwd && ls -l && npm install 
+      - run: pwd && ls -l && npm install --verbose
       - run: pwd && ls -l node_modules  
       - run: du -sh node_modules  
       - run: pwd && ls -l && npm install 
