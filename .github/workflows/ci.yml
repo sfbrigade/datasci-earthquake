@@ -187,28 +187,28 @@ jobs:
 
 
       # set up apt repo 
-      - run: sudo apt install -y postgresql-common
-      - run: sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+      #- run: sudo apt install -y postgresql-common
+      #- run: sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
 
-      - name: look   
-        if: always()
-        run: cat /etc/apt/sources.list.d/pgdg.sources 
+      #- name: look   
+      #  if: always()
+      #  run: cat /etc/apt/sources.list.d/pgdg.sources 
 
       # cache apt stuff
       #- run: sudo apt-get update
-      - run: echo 'BEFORE-MAS' && ls -l /var/cache/apt/archives
-      - run: sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
-      - run: echo 'AFTER-MAS' && ls -l /var/cache/apt/archives
-      - run: mkdir hahafinny && cp /var/cache/apt/archives/*.deb hahafinny
-      - run: pwd && ls -l hahafinny 
+      #- run: echo 'BEFORE-MAS' && ls -l /var/cache/apt/archives
+      #- run: sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
+      #- run: echo 'AFTER-MAS' && ls -l /var/cache/apt/archives
+      #- run: mkdir hahafinny && cp /var/cache/apt/archives/*.deb hahafinny
+      #- run: pwd && ls -l hahafinny 
 
-      - name: Cache postgis packages 
-        uses: actions/cache@v4
-        with:
-          path: /home/runner/work/datasci-earthquake/datasci-earthquake/hahafinny 
-          key: docker-postgis-packages
+      #- name: Cache postgis packages 
+      #  uses: actions/cache@v4
+      #  with:
+      #    path: /home/runner/work/datasci-earthquake/datasci-earthquake/hahafinny 
+      #    key: docker-postgis-packages
 
-      - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend mydbpartdeux 
+      - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend  
 
       - run: echo 'lets see whats there...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f populate_db.sql postgresql://postgres:password@db:5432/qsdatabase" 
 
