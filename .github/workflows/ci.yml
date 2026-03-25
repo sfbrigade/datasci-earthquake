@@ -119,8 +119,8 @@ jobs:
       - run: npm config get cache 
       - run: echo 'check1' && pwd && ls -l 
 
-      - name: npm install 
-        run: npm install  
+      #- name: npm install 
+      #  run: npm install  
 
       - name: Cache npm dependencies
         uses: actions/cache@v4
