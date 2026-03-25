@@ -244,10 +244,6 @@ jobs:
         if: always()
         run: docker logs mydb || echo "No logs found"
 
-      - name: Docker Frontend Logs
-        if: always()
-        run: docker logs myfrontend || echo "No logs found"
-
       #- name: Run Backend Tests
       #  run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend -v
 
@@ -317,6 +313,10 @@ jobs:
 
       - name: Run exec ALL - FRONTEND 
         run: docker exec --env-file .env myfrontend npm test 
+
+      - name: Docker Frontend Logs
+        if: always()
+        run: docker logs myfrontend || echo "No logs found"
 
       #- name: Clean Up
       #  run: docker compose -f compose.yaml -f compose.ci.yaml down
