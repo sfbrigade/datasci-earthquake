@@ -125,7 +125,7 @@ jobs:
       - run: echo 'check1' && du -sh /home/runner/.npm
       - run: echo 'check1' && du -sh /home/runner/.npm/_cacache
       - run: pwd && ls -l && npm install 
-      - run: pwd && ls -l  
+      - run: pwd && ls -l node_modules  
 
   docker_build_test:
     if: needs.changes.outputs.code_changed == 'truei'
