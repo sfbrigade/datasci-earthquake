@@ -41,16 +41,16 @@ ETL_TABLES=$(echo "$ETL_OUTPUT" | awk -F: '/^ETL_REQUIRED:/ {print $2}')
 for tbl in $ETL_TABLES; do
   case "$tbl" in
     tsunami_zones)
-      #run_python_script backend/etl/tsunami_data_handler.py
-      echo 'dont run tsunami!'
+      run_python_script backend/etl/tsunami_data_handler.py
+      #echo 'dont run tsunami!'
       ;;
     liquefaction_zones)
-      #run_python_script backend/etl/liquefaction_data_handler.py
-      echo "dont run liq!"
+      run_python_script backend/etl/liquefaction_data_handler.py
+      #echo "dont run liq!"
       ;;
     soft_story_properties)
-      #run_python_script backend/etl/soft_story_properties_data_handler.py
-      echo "dont run soft story!"
+      run_python_script backend/etl/soft_story_properties_data_handler.py
+      #echo "dont run soft story!"
       ;;
     *)
       echo "No ETL mapping for $tbl; skipping" >&2
