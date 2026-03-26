@@ -195,7 +195,7 @@ jobs:
       - run: cat dbscripts/softstory.sql 
       - run: cat dbscripts/liquefaction.sql 
 
-      #- name: upload db scripts
+      - name: upload db scripts
         uses: actions/upload-artifact@v4
         with:
           name: dbscripts
