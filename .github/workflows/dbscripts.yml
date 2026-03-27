@@ -77,7 +77,7 @@ jobs:
       - name: create liquefaction.sql 
         run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f dbscripts/liquefaction.sql -t liquefaction_zones qsdatabase" 
 
-      - name: verify counts
+      - name: verify counts and schemas
         run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f verify.sql postgresql://postgres:password@db:5432/qsdatabase" 
 
       - name: copy db scripts to runner  
