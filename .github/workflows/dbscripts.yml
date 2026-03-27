@@ -69,13 +69,13 @@ jobs:
         run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 60 db backend
 
       - name: create tsunami.sql 
-        run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f dbscripts/tsunami.sql -t tsunami_zones qsdatabase" 
+        run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --column-inserts -h db -U postgres -f dbscripts/tsunami.sql -t tsunami_zones qsdatabase" 
 
       - name: create softstory.sql 
-        run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f dbscripts/softstory.sql -t soft_story_properties qsdatabase" 
+        run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --column-inserts -h db -U postgres -f dbscripts/softstory.sql -t soft_story_properties qsdatabase" 
 
       - name: create liquefaction.sql 
-        run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --data-only --column-inserts -h db -U postgres -f dbscripts/liquefaction.sql -t liquefaction_zones qsdatabase" 
+        run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --column-inserts -h db -U postgres -f dbscripts/liquefaction.sql -t liquefaction_zones qsdatabase" 
 
       - name: verify counts and schemas
         run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f verify.sql postgresql://postgres:password@db:5432/qsdatabase" 
