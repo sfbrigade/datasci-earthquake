@@ -153,15 +153,15 @@ jobs:
         with: 
           cache: 'npm'
 
+      - name: npm ls 
+        run: npm cache ls 
+
       - name: Cache npm dependencies
         uses: actions/cache@v4
         with:
           #path: /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
           path: node_modules
           key: a-npm-deps-${{ hashFiles('package-lock.json') }}
-
-      - name: npm verify BEFORE AGAIN
-        run: npm cache verify 
 
       - run: npm install 
 
