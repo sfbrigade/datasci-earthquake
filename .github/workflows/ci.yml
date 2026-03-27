@@ -148,7 +148,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with: 
-          cache: 'npm'
+          cache: ''
 
       - name: npm verify BEFORE 
         run: npm cache verify 
