@@ -160,7 +160,7 @@ jobs:
         with:
           #path: /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
           path: node_modules
-          key: npm-deps-a
+          key: npm-deps-${{ hashFiles('package-lock.json') }}
 
       - run: echo 'node mods exist' && pwd && ls -l 
 
