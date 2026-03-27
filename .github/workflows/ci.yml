@@ -261,19 +261,20 @@ jobs:
 
       - run: echo 'lets see whats there...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f populate_db.sql postgresql://postgres:password@db:5432/qsdatabase" 
 
-      - name: run alembic   
-        run: docker compose exec backend alembic --config backend/alembic.ini upgrade head 
+      # alembic scripts are NOT up-to-date.  will try to integrate alembic in the future.  keep this here as a placeholder for now.   
+      #- name: run alembic   
+      #  run: docker compose exec backend alembic --config backend/alembic.ini upgrade head 
 
       - name: copy scripts to container   
         run: docker cp dbscripts mydb:tmp/dbscripts  
 
-      - name: insert liquefaction data   
+      - name: create liquefaction and insert data   
         run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/liquefaction.sql postgresql://postgres:password@db:5432/qsdatabase"
  
-      - name: insert soft story data   
+      - name: create soft story and insert data   
         run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/softstory.sql postgresql://postgres:password@db:5432/qsdatabase" 
 
-      - name: insert tsunami data 
+      - name: create tsunami and insert data 
         run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/tsunami.sql postgresql://postgres:password@db:5432/qsdatabase"
 
       - run: echo 'lets see whats there NOW...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f populate_db.sql postgresql://postgres:password@db:5432/qsdatabase" 
