@@ -265,7 +265,7 @@ jobs:
         run: docker compose exec backend alembic --config backend/alembic.ini upgrade head 
 
       - name: copy scripts to container   
-        run: docker cp dbscripts my_postgis_db:tmp/dbscripts  
+        run: docker cp dbscripts mydb:tmp/dbscripts  
 
       - name: insert liquefaction data   
         run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/liquefaction.sql postgresql://postgres:password@db:5432/qsdatabase"
