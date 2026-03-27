@@ -130,12 +130,23 @@ jobs:
       - run: pwd && ls -l && npm install 
 
   docker_build_test:
-    if: needs.changes.outputs.code_changed == 'truei'
+    if: needs.changes.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
     needs: changes
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: DL dbscripts 
+        uses: actions/download-artifact@v8 
+        with: 
+          name: dbscripts
+          path: dbscripts
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: sfbrigade/datasci-earthquake
+          run-id: 23582028395
+
+      - run: echo 'harmony' && pwd && ls -l dbscripts 
 
       - uses: actions/setup-node@v6
         with: 
