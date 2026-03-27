@@ -134,11 +134,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: changes
     steps:
-      - run: pwd  && ls -l
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - run: pwd  && ls -l
       - name: download db scripts 
         uses: actions/download-artifact@v8 
         with: 
@@ -162,16 +160,8 @@ jobs:
           path: node_modules
           key: npm-deps-${{ hashFiles('package-lock.json') }}
 
-      - run: echo 'node mods exist' && pwd && ls -l 
-
       - name: npm install 
         run: npm install  
-
-      - run: echo 'node mods exist' && pwd && ls -l 
-      - run: echo 'check3' && du -sh node_modules 
-
-      - name: npm verify AFTER
-        run: npm cache verify
 
       - name: Set default fork status
         run: echo "is_fork=false" >> $GITHUB_ENV
