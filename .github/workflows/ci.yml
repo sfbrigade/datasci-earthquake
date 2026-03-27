@@ -155,14 +155,14 @@ jobs:
       - name: npm verify BEFORE 
         run: npm cache verify 
 
-      #- name: npm install 
-      #  run: npm install  
+      - name: npm install 
+        run: npm install  
 
       - name: Cache npm dependencies
         uses: actions/cache@v4
         with:
           #path: /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
-          path: ./node_modules
+          path: node_modules
           key: npm-deps
 
       - run: echo 'drink' && cd ~ && pwd 
