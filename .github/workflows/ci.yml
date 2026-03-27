@@ -137,7 +137,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: DL db scripts 
+      - name: download db scripts 
         uses: actions/download-artifact@v8 
         with: 
           name: dbscripts
@@ -146,18 +146,12 @@ jobs:
           repository: sfbrigade/datasci-earthquake
           run-id: 23630749969
 
-      - run: echo 'harmony' && pwd && ls -l dbscripts 
-
       - uses: actions/setup-node@v6
         with: 
           cache: 'npm'
 
       - name: npm verify BEFORE 
         run: npm cache verify 
-
-
-      - run: npm config get cache 
-      - run: echo 'check1' && pwd && ls -l 
 
       #- name: npm install 
       #  run: npm install  
@@ -168,6 +162,7 @@ jobs:
           path: /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
           key: npm-deps
 
+      - run: echo 'drink' && cd ~ && pwd 
       - run: echo 'check2' && pwd && ls -l 
       - run: echo 'check3' && du -sh node_modules 
 
