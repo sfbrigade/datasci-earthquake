@@ -155,18 +155,19 @@ jobs:
       - name: npm verify BEFORE 
         run: npm cache verify 
 
-      - name: npm install 
-        run: npm install  
-
       - name: Cache npm dependencies
         uses: actions/cache@v4
         with:
           #path: /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
           path: node_modules
-          key: npm-deps
+          key: npm-deps-a
 
-      - run: echo 'drink' && cd ~ && pwd 
-      - run: echo 'check2' && pwd && ls -l 
+      - run: echo 'node mods exist' && pwd && ls -l 
+
+      - name: npm install 
+        run: npm install  
+
+      - run: echo 'node mods exist' && pwd && ls -l 
       - run: echo 'check3' && du -sh node_modules 
 
       - name: npm verify AFTER
