@@ -137,14 +137,14 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: DL dbscripts 
+      - name: DL db scripts 
         uses: actions/download-artifact@v8 
         with: 
           name: dbscripts
           path: dbscripts
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: sfbrigade/datasci-earthquake
-          run-id: 23582028395
+          run-id: 23630749969
 
       - run: echo 'harmony' && pwd && ls -l dbscripts 
 
