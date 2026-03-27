@@ -151,7 +151,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with: 
-          cache: ''
+          cache: 'npm'
 
       - name: npm ls 
         run: npm cache ls 
@@ -161,7 +161,7 @@ jobs:
         with:
           #path: /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
           path: node_modules
-          key: a-b-npm-deps-${{ hashFiles('package-lock.json') }}
+          key: a-b-c-npm-deps-${{ hashFiles('package-lock.json') }}
 
       - run: npm install 
 
