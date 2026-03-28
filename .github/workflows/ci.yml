@@ -146,16 +146,11 @@ jobs:
           repository: sfbrigade/datasci-earthquake
           run-id: 23630749969
 
-      - name: npm verify BEFORE 
-        run: npm cache verify 
-
       - uses: actions/setup-node@v6
         with: 
           cache: 'npm'
 
-      - name: npm ls 
-        run: npm cache ls 
-
+      - run: ls -l 
       - name: Cache npm dependencies
         uses: actions/cache@v4
         with:
@@ -163,17 +158,8 @@ jobs:
           path: node_modules
           key: a-b-c-d-npm-deps-${{ hashFiles('package-lock.json') }}
 
+      - run: ls -l 
       - run: npm install 
-
-      - run: ls -l node_modules/dequal
-      - run: ls -l node_modules/@emotion
-      - run: ls -l node_modules/fastq
-      - run: cat /home/runner/.npm/_cacache/index-v5/12/07/25fb62bc7aa3219b9ea2725a7c305336a44fe998d87a31863795ed0e4b28
-      - run: cat /home/runner/.npm/_cacache/index-v5/70/b1/1315b197b3e109ac9ce54e6ee7b6c0d571dabc9adb80c8e9541b908d71b2
-
-
-      - name: npm verify AFTER 
-        run: npm cache verify  
 
       - name: Set default fork status
         run: echo "is_fork=false" >> $GITHUB_ENV
