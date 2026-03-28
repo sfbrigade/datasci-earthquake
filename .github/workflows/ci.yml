@@ -225,8 +225,6 @@ jobs:
 
       - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend  
 
-      - run: echo 'lets see whats there...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f populate_db.sql postgresql://postgres:password@db:5432/qsdatabase" 
-
       # alembic scripts are NOT up-to-date.  will try to integrate alembic in the future.  keep this here as a placeholder for now.   
       #- name: run alembic   
       #  run: docker compose exec backend alembic --config backend/alembic.ini upgrade head 
@@ -243,13 +241,16 @@ jobs:
       - name: create tsunami and insert data 
         run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/tsunami.sql postgresql://postgres:password@db:5432/qsdatabase"
 
-      - run: echo 'lets see whats there NOW...' && docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f populate_db.sql postgresql://postgres:password@db:5432/qsdatabase" 
+      - name: verify data in db   
+        run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f populate_db.sql postgresql://postgres:password@db:5432/qsdatabase"  
 
-      #- run: docker volume ls 
-      - run: docker build -t datasci-earthquake-frontend . 
+      - name: build frontend   
+        run: docker build -t datasci-earthquake-frontend .  
 
       #- run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/node_modules,dst=/app/node_modules datasci-earthquake-frontend
-      - run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=./node_modules,dst=/app/node_modules datasci-earthquake-frontend
+
+      - name: run frontend   
+        run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=./node_modules,dst=/app/node_modules datasci-earthquake-frontend  
       
       - run: docker inspect myfrontend
 
