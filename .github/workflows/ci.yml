@@ -168,8 +168,8 @@ jobs:
       - run: ls -l node_modules/dequal
       - run: ls -l node_modules/@emotion
       - run: ls -l node_modules/fastq
-      - run: ls -la /home/runner/.npm/_cacache/index-v5/12/07
-      - run: ls -la /home/runner/.npm/_cacache/index-v5/70/b1
+      - run: cat /home/runner/.npm/_cacache/index-v5/12/07/25fb62bc7aa3219b9ea2725a7c305336a44fe998d87a31863795ed0e4b28
+      - run: cat /home/runner/.npm/_cacache/index-v5/70/b1/1315b197b3e109ac9ce54e6ee7b6c0d571dabc9adb80c8e9541b908d71b2
 
 
       - name: npm verify AFTER 
