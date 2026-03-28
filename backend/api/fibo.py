@@ -1,2 +1,0 @@
-def fib():
-  return True
