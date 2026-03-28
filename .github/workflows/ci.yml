@@ -165,6 +165,9 @@ jobs:
 
       - run: npm install 
 
+      - run: ls -l node_modules
+
+
       - name: npm verify AFTER 
         run: npm cache verify  
 
