@@ -219,11 +219,8 @@ jobs:
       - name: Build Docker Containers
         run: docker compose -f compose.yaml -f compose.ci.yaml build
       
-      #- run: docker run -d --env-file .env --name mydb postgis-custom
-      #- run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
-
-
-      - run: docker compose -f compose.yaml -f compose.ci.yaml up --no-build -d --wait --wait-timeout 300 db backend  
+      - name: Start DB and Backend 
+        run: docker compose -f compose.yaml -f compose.ci.yaml up --no-build -d --wait --wait-timeout 300 db backend
 
       # alembic scripts are NOT up-to-date.  will try to integrate alembic in the future.  keep this here as a placeholder for now.   
       #- name: run alembic   
@@ -244,19 +241,9 @@ jobs:
       - name: verify data in db   
         run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f populate_db.sql postgresql://postgres:password@db:5432/qsdatabase"  
 
-      #- name: build frontend   
-      #  run: docker build -t datasci-earthquake-frontend .  
-
-      #- run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=/home/runner/work/datasci-earthquake/datasci-earthquake/node_modules,dst=/app/node_modules datasci-earthquake-frontend
-
-      - name: run frontend   
+      - name: Start Frontend   
         run: docker run -d --env-file .env --name myfrontend --mount type=bind,src=./node_modules,dst=/app/node_modules datasci-earthquake-frontend  
       
-      - run: docker inspect myfrontend
-
-      #- name: Start Services
-      #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
-
       - name: Docker Backend Logs  
         if: always()
         run: docker logs mybackend || echo "No logs found"
