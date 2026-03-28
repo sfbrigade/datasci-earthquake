@@ -100,35 +100,6 @@ jobs:
       - name: Check Next.js production build
         run: npm run build
 
-
-  diestro:
-    if: needs.changes.outputs.code_changed == 'true'
-    runs-on: ubuntu-latest
-    needs: changes
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - run: echo 'beforecheck1' && pwd && ls -la ~
-      - uses: actions/setup-node@v6
-        with: 
-          cache: ''
-
-      - name: npm verify BEFORE 
-        run: npm cache verify 
-
-      - run: npm cache ls 
-
-      - run: npm config get cache 
-      - run: echo 'check1' && pwd && ls -la ~/work/datasci-earthquake/datasci-earthquake
-      - run: echo 'check1' && pwd && ls -la ~
-      - run: echo 'check1' && du -sh /home/runner/.npm
-      - run: echo 'check1' && du -sh /home/runner/.npm/_cacache
-      - run: pwd && ls -l && npm install --verbose
-      - run: pwd && ls -l node_modules  
-      - run: du -sh node_modules  
-      - run: pwd && ls -l && npm install 
-
   docker_build_test:
     if: needs.changes.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
