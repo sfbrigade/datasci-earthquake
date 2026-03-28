@@ -137,14 +137,24 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Get Run ID of Most Recent Successful "DB Scripts" workflow
+        if: env.is_fork != 'true'
+        run: |
+          response=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/sfbrigade/datasci-earthquake/actions/workflows/dbscripts.yml/runs?status=completed&conclusion=success")
+          dbscripts_run_id=$(echo "$response" | jq '.workflow_runs[0].id')
+          echo "Run ID: $dbscripts_run_id"
+          echo "dbscripts_run_id=$dbscripts_run_id" >> $GITHUB_ENV
+
       - name: download db scripts 
+        if: env.is_fork != 'true'
         uses: actions/download-artifact@v8 
         with: 
           name: dbscripts
           path: dbscripts
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: sfbrigade/datasci-earthquake
-          run-id: 23630749969
+          run-id: ${{ env.dbscripts_run_id }}
 
       - uses: actions/setup-node@v6
         with: 
