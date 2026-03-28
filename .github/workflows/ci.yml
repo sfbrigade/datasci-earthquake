@@ -150,15 +150,12 @@ jobs:
         with: 
           cache: 'npm'
 
-      - run: ls -l 
       - name: Cache npm dependencies
         uses: actions/cache@v4
         with:
-          #path: /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
           path: node_modules
-          key: a-b-c-d-npm-deps-${{ hashFiles('package-lock.json') }}
+          key: npm-deps-${{ hashFiles('package-lock.json') }}
 
-      - run: ls -l 
       - run: npm install 
 
       - name: Set default fork status
@@ -209,40 +206,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      #- name: Cache npm dependencies
-      #  uses: actions/cache@v4
-      #  with:
-      #    path: /home/runner/work/datasci-earthquake/datasci-earthquake/haha
-      #    key: earthquake-cache-npm-aaa
-
       #- name: Build Docker Containers
       #  run: docker compose -f compose.yaml -f compose.ci.yaml build
       
       #- run: docker run -d --env-file .env --name mydb postgis-custom
       #- run: docker run -d --env-file .env --name mybackend datasci-earthquake-backend 
 
-
-      # set up apt repo 
-      #- run: sudo apt install -y postgresql-common
-      #- run: sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
-
-      #- name: look   
-      #  if: always()
-      #  run: cat /etc/apt/sources.list.d/pgdg.sources 
-
-      # cache apt stuff
-      #- run: sudo apt-get update
-      #- run: echo 'BEFORE-MAS' && ls -l /var/cache/apt/archives
-      #- run: sudo apt-get install -d -y --no-install-recommends postgis postgresql-15-postgis-3 
-      #- run: echo 'AFTER-MAS' && ls -l /var/cache/apt/archives
-      #- run: mkdir hahafinny && cp /var/cache/apt/archives/*.deb hahafinny
-      #- run: pwd && ls -l hahafinny 
-
-      #- name: Cache postgis packages 
-      #  uses: actions/cache@v4
-      #  with:
-      #    path: /home/runner/work/datasci-earthquake/datasci-earthquake/hahafinny 
-      #    key: docker-postgis-packages
 
       - run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db backend  
 
