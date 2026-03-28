@@ -168,8 +168,8 @@ jobs:
       - run: ls -l node_modules/dequal
       - run: ls -l node_modules/@emotion
       - run: ls -l node_modules/fastq
-      - run: ls -la /home/runner/.npm/_cacache/index-v5/12
-      - run: ls -la /home/runner/.npm/_cacache/index-v5/70
+      - run: ls -la /home/runner/.npm/_cacache/index-v5/12/07
+      - run: ls -la /home/runner/.npm/_cacache/index-v5/70/b1
 
 
       - name: npm verify AFTER 
