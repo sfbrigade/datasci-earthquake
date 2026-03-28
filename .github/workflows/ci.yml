@@ -161,7 +161,7 @@ jobs:
         with:
           #path: /home/runner/work/datasci-earthquake/datasci-earthquake/node_modules
           path: node_modules
-          key: a-b-c-npm-deps-${{ hashFiles('package-lock.json') }}
+          key: a-b-c-d-npm-deps-${{ hashFiles('package-lock.json') }}
 
       - run: npm install 
 
