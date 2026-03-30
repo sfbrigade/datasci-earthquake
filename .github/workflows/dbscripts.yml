@@ -5,7 +5,10 @@
 
 name: DB Scripts
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: "50 * * * *"
   
 jobs:
   
