@@ -2,13 +2,10 @@
 
 #Dockerfile for next.js
 
-FROM node:24-alpine
+FROM node:24-bookworm-slim
 
 # Must be root to prepare the directories; this command is implied, but being explicit for clarity
 USER root
-
-# Install curl
-RUN apk add --no-cache curl
 
 WORKDIR /app
 
@@ -22,16 +19,10 @@ RUN mkdir -p /app/.next && chown -R node:node /app/.next
 
 USER node
 
-# Copy package*.json and install dependencies, as node user
-COPY --chown=node:node ./package*.json ./
-RUN npm install
-
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
 
 # Expose the port Next.js runs on during development
 EXPOSE 3000
 
-# Command to run the Next.js app in development mode
-# This command should correspond to the "dev" script in your package.json
-CMD ["npm", "run", "next-dev"]
+CMD npm run next-build && npm run start
