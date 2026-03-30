@@ -198,7 +198,7 @@ jobs:
         run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend -v
 
       - name: Run Frontend Tests
-        run: docker exec --env-file .env myfrontend npm test 
+        run: docker exec --env-file .env my_frontend npm test 
 
       - name: Clean Up - Frontend
         run: docker stop my_frontend
