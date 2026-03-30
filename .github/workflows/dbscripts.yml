@@ -7,7 +7,7 @@ name: DB Scripts
 
 on: 
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "0 0 1,15 * *" # run it on the 1st and 15th of each month at midnight
   workflow_dispatch:
   
 jobs:
