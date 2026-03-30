@@ -24,7 +24,8 @@ USER node
 
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
-RUN npm install
+
+RUN mkdir node_modules
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
