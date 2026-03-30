@@ -11,8 +11,12 @@ from backend.database.session import get_db
 @pytest.fixture(scope="session")
 def test_engine():
     print('-------------- hahun -----------')
-    print(settings.frontend_host)
-    print(settings.next_public_api_url)
+    print(settings.database_url_sqlalchemy)
+
+    if settings.database_url_sqlalchemy.find('@db:') != -1:
+        print('it's db!!!!')
+    else:
+        print('it's NOT db!!!!')
     print(settings.node_env)
     print('-------------------------')
     engine = create_engine(settings.database_url_sqlalchemy)
