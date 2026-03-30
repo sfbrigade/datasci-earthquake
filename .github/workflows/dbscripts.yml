@@ -6,9 +6,9 @@
 name: DB Scripts
 
 on: 
-  #workflow_dispatch:
   schedule:
-    - cron: "57 * * * *"
+    - cron: "5 * * * *"
+  workflow_dispatch:
   
 jobs:
   
