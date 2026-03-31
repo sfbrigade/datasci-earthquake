@@ -117,7 +117,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: aaa-npm-deps-${{ hashFiles('package-lock.json') }}
+          key: ooo-npm-deps-${{ hashFiles('package-lock.json') }}
 
       - run: npm install
 
