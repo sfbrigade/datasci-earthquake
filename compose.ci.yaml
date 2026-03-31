@@ -2,11 +2,11 @@ services:
   frontend:
     # In CI we do NOT mount the repo into /app, because that can change ownership/permissions
     # and cause Next to fail writing next-env.d.ts or .next.
-    #volumes: !reset 
-      #- .:/app:rw,delegated
-      #- /app/node_modules
+    volumes:  
+      - .:/app:rw,delegated
+      - /app/node_modules
       #- /xxx
-      #- nextjs_cache:/app/.next
+      - nextjs_cache:/app/.next
   db_test_letgo:
     volumes:  
       - /xxx
