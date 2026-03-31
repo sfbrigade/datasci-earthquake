@@ -7,3 +7,6 @@ services:
       - /app/node_modules
       - /xxx
       - nextjs_cache:/app/.next
+  db_test_letgo:
+    volumes:  
+      - /xxx

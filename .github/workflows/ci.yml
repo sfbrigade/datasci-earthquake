@@ -173,6 +173,7 @@ jobs:
 
       - run: docker compose config
       - run: docker inspect my_frontend
+      - run: docker inspect my_postgis_db_test_letgo 
       - run: docker volume ls
 
 
