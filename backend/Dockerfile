@@ -36,13 +36,13 @@ RUN mkdir -p /public/data && \
     chmod -R 775 /public/data
 
 # Install uv (fast Python package manager) from its official Docker image.
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.11.2 /uv /usr/local/bin/uv
 
 # Copy dependency files first for caching
 COPY backend/pyproject.toml backend/uv.lock ./
 
 # Install dependencies only (not the project itself) for better layer caching.
-RUN uv sync --frozen --no-install-project
+RUN --mount=type=cache,target=/root/.cache/uv uv sync --frozen --no-install-project
 
 # uv sync creates a virtual environment in the root directory, add it to PATH
 ENV VIRTUAL_ENV=/.venv
