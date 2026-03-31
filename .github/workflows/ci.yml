@@ -176,6 +176,15 @@ jobs:
       - run: docker inspect my_postgis_db_test_letgo 
       - run: docker volume ls
 
+      - name: try it 
+        if: always()
+        run: docker compose config db_test_letgo
+
+      - name: try it 1
+        if: always()
+        run: docker compose config --services --volumes db_test_letgo
+
+
 
       - name: Docker Backend Logs
         if: always()
