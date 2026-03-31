@@ -541,6 +541,8 @@ Branches should follow this format:
 ```
 Where `<type>` is one of: `bugfix`, `feature`, `chore`
 
+Including the issue number automatically links the branch to the issue.
+
 Example:
 ```
 chore/54321-example-issue-branching-readme
