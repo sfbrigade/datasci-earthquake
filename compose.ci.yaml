@@ -5,4 +5,8 @@ services:
     build: 
       context: . 
       dockerfile: ci.Dockerfile
-    volumes: !reset
+    #volumes: !reset
+    volumes: 
+      - type: bind 
+        source: ./node_modules
+        target: /app/node_modules
