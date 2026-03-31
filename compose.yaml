@@ -81,6 +81,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: my_frontend
     env_file:
       - .env
     environment:
