@@ -6,7 +6,7 @@ FROM node:24-alpine
 
 # Must be root to prepare the directories; this command is implied, but being explicit for clarity
 USER root
-RUN echo 'its me the BASE....'
+
 # Install curl
 RUN apk add --no-cache curl
 
