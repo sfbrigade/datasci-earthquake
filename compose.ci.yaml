@@ -4,5 +4,5 @@ services:
     # and cause Next to fail writing next-env.d.ts or .next.
     volumes: 
       - /app/node_modules
-      - /app/xxx
+      - /xxx
       - nextjs_cache:/app/.next
