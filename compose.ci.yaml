@@ -5,5 +5,7 @@ services:
       dockerfile: ci.Dockerfile
     # In CI we do NOT mount the repo into /app, because that can change ownership/permissions
     # and cause Next to fail writing next-env.d.ts or .next.
-    volumes: !reset
-      - nextjs_cache:/app/.next
+    volumes: 
+      - type: bind
+        source: ./node_modules
+        target: /app/node_modules
