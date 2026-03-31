@@ -6,7 +6,7 @@ FROM node:24-alpine
 
 # Must be root to prepare the directories; this command is implied, but being explicit for clarity
 USER root
-RUN echo 'its me the BASE....'
+RUN echo 'its me the CI....'
 # Install curl
 RUN apk add --no-cache curl
 
@@ -24,7 +24,8 @@ USER node
 
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
-RUN npm install
+
+RUN mkdir node_modules
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
