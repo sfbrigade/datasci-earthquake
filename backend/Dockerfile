@@ -35,25 +35,21 @@ RUN mkdir -p /public/data && \
     chown -R appuser:appuser /public/data && \
     chmod -R 775 /public/data
 
-COPY api /api
-
-# Download the uv installer
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Ensure the installed uv binary is on the `PATH`
-ENV PATH="/root/.local/bin/:$PATH"
+# Install uv (fast Python package manager) from its official Docker image.
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
 # Copy dependency files first for caching
 COPY backend/pyproject.toml backend/uv.lock ./
 
-# Install dependencies using uv
-RUN uv sync --frozen
+# Install dependencies only (not the project itself) for better layer caching.
+RUN uv sync --frozen --no-install-project
 
 # uv sync creates a virtual environment in the root directory, add it to PATH
 ENV VIRTUAL_ENV=/.venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# Copy the source code into the container.
+# Copy application source code after dependency install for Docker layer caching.
+COPY api /api
 COPY backend ./backend
 
 # Copy the pytest configuration file to ensure pytest logs are captured
