@@ -204,6 +204,8 @@ jobs:
       - name: Run Frontend Tests
         run: docker exec --env-file .env my_frontend npm test 
 
+      - run: docker ps 
+
       - name: Clean Up - Frontend
         run: docker stop my_frontend
 
