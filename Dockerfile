@@ -28,7 +28,7 @@ RUN npm install
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
-
+RUN echo 'haha' && pwd && ls -l
 # Expose the port Next.js runs on during development
 EXPOSE 3000
 
