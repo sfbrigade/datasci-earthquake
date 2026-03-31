@@ -175,6 +175,7 @@ jobs:
       - run: docker inspect my_frontend
       - run: docker inspect my_postgis_db_test_letgo 
       - run: docker volume ls
+      - run: docker exec my_frontend ls -l /app
 
 
 
