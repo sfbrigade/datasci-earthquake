@@ -178,7 +178,7 @@ jobs:
       - name: Start Frontend 
         run: docker run -d --env-file .env --name my_frontend --mount type=bind,src=./node_modules,dst=/app/node_modules datasci-earthquake-frontend
 
-      - run: docker compose config frontend
+      - run: docker compose config 
 
       - name: Docker Backend Logs
         if: always()
