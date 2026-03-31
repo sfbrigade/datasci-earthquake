@@ -5,6 +5,7 @@ on:
     branches:
       - develop
       - main
+      - 'ci/**'
   pull_request:
     types: [opened, synchronize, reopened]
 
