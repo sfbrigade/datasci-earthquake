@@ -537,13 +537,13 @@ Developers should only branch from `develop`, pull updates from `develop`, and e
 
 Branches should follow this format:
 ```
-<type>/<issue-number>/<short-dash-case-issue-title>
+<type>/<issue-number>-<short-dash-case-issue-title>
 ```
 Where `<type>` is one of: `bugfix`, `feature`, `chore`
 
 Example:
 ```
-chore/54321/example-issue-branching-readme
+chore/54321-example-issue-branching-readme
 ```
 Summarizing longer issue titles is acceptable. 
 
