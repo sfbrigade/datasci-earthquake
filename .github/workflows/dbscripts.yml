@@ -1,4 +1,9 @@
-name: ETL tests
+# TEMPORARY WORKFLOW
+# Purpose: initialize database for CI script development.
+# Do not mark as a required status check.
+# Tracking: https://github.com/sfbrigade/datasci-earthquake/pull/873
+
+name: DB Scripts
 
 on: workflow_dispatch
   
@@ -28,7 +33,7 @@ jobs:
       - name: Type check with mypy
         run: mypy --config-file mypy.ini .
 
-  etl_tests:
+  db_scripts:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -84,22 +89,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Cache Docker layers
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
+      
       - name: Start DB
         run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 30 db
 
       - name: Docker DB Logs 
         run: docker logs my_postgis_db 
-
-      - name: Run Tests
-        run: echo 'Coming soon'
-
+      
       - name: Clean Up
         run: docker compose -f compose.yaml -f compose.ci.yaml down db
