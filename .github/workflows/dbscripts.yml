@@ -64,7 +64,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Start Services
-        run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 60 db backend
+        run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 120 db backend
 
       - name: create tsunami.sql 
         run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --column-inserts -h db -U postgres -f dbscripts/tsunami.sql -t tsunami_zones qsdatabase" 
