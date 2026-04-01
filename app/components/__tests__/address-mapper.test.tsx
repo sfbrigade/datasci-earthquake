@@ -146,7 +146,13 @@ describe("AddressMapper", () => {
     });
 
     // Assert that the router was called correctly
-    const expectedUrl = `?address=${encodeURIComponent(testAddress)}&lat=${newCoords[1]}&lon=${newCoords[0]}`;
+    const paramsArray = [
+      ["address", testAddress],
+      ["lon", newCoords[0].toString()],
+      ["lat", newCoords[1].toString()],
+    ];
+    const searchParams = new URLSearchParams(paramsArray);
+    const expectedUrl = `?${searchParams.toString()}`;
     expect(mockRouterPush).toHaveBeenCalledWith(expectedUrl, { scroll: false });
   });
 });

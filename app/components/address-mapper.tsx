@@ -83,7 +83,13 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
   const handleSearchChange = useCallback(
     (coords: number[], address: string) => {
-      const newUrl = `?address=${encodeURIComponent(address)}&lat=${coords[1]}&lon=${coords[0]}`;
+      const paramsArray = [
+        ["address", address],
+        ["lon", coords[0].toString()],
+        ["lat", coords[1].toString()],
+      ];
+      const searchParams = new URLSearchParams(paramsArray);
+      const newUrl = `?${searchParams.toString()}`;
       router.push(newUrl, { scroll: false });
     },
     [router]
