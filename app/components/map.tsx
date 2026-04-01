@@ -103,11 +103,10 @@ const Map: React.FC<MapProps> = ({
       map.addControl(nav, "bottom-right");
 
       if (center && address) {
-        console.log("set up markerRef.current for first time");
+        // set up map marker for first time and set its center
         markerRef.current = addMarker(center, map);
       }
 
-      // wait for map to load before drawing marker
       map.on("load", () => {
         // Add sources
         map.addSource("seismic", { type: "geojson", data: liquefactionData });
@@ -177,18 +176,14 @@ const Map: React.FC<MapProps> = ({
         if (address) {
           // address exists
           if (!markerRef.current) {
-            // map marker does not yet exist, so create it
-            console.log("set up markerRef.current for subsequent time");
+            // map marker does not exist, so create it
             markerRef.current = addMarker(center, map);
           }
-          console.log("update markerRef.current");
+          // update center of map marker
           markerRef.current.setLngLat(center);
         } else {
           // no address, so remove map marker if it exists
           if (markerRef.current) {
-            console.log(
-              "removing markerRef.current marker from map and setting to null"
-            );
             markerRef.current?.remove();
             markerRef.current = null;
           }

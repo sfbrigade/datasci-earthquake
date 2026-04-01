@@ -1,16 +1,16 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+
 import { Box, useMediaQuery } from "@chakra-ui/react";
 import system from "../../styles/theme";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
 import MobileReportHazards from "./mobile-report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
-import { useSearchParams } from "next/navigation";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 
 const defaultCoords = [-122.437, 37.768];
@@ -47,6 +47,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   // media query used for layout change
   const [md] = useMediaQuery([`(min-width: ${mdBreakpointValue})`]);
 
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const initialLon = searchParams.get("lon");
   const initialLat = searchParams.get("lat");
@@ -74,7 +76,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const displaySearchComplete = validParams ? isSearchComplete : false;
 
   const toastIdDataLoadFailed = "data-load-failed";
-  const router = useRouter();
 
   const { fetchHazardData } = useHazardDataFetcher({
     setSearchComplete,
@@ -88,11 +89,16 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         ["lon", coords[0].toString()],
         ["lat", coords[1].toString()],
       ];
-      const searchParams = new URLSearchParams(paramsArray);
-      const newUrl = `?${searchParams.toString()}`;
+      // grab existing params and modify them
+      const params = new URLSearchParams(searchParams.toString());
+      for (let param of paramsArray) {
+        params.set(param[0], param[1]);
+      }
+
+      const newUrl = `${pathname}?${params.toString()}`;
       router.push(newUrl, { scroll: false });
     },
-    [router]
+    [router, pathname, searchParams]
   );
 
   useEffect(() => {
