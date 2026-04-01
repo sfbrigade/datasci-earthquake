@@ -176,7 +176,8 @@ jobs:
         run: docker compose -f compose.yaml -f compose.ci.yaml up --no-build -d --wait --wait-timeout 300 db db_test backend 
 
       - name: Start Frontend 
-        run: docker run -d --env-file .env --name my_frontend --mount type=bind,src=./node_modules,dst=/app/node_modules datasci-earthquake-frontend
+        #run: docker run -d --env-file .env --name my_frontend --mount type=bind,src=./node_modules,dst=/app/node_modules datasci-earthquake-frontend
+        run: docker run -d --env-file .env --name my_frontend datasci-earthquake-frontend
 
       - run: docker inspect my_frontend
       - run: docker volume ls
