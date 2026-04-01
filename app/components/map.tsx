@@ -7,7 +7,7 @@ import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
 
-const defaultCoords: LngLatLike = [-122.408020683, 37.801698301]; // TODO: dedupe with address-mapper default coords; consider centralizing in a constants file if we need to use in more places
+const defaultCoords: LngLatLike = [-122.437, 37.768]; // TODO: dedupe with address-mapper default coords; consider centralizing in a constants file if we need to use in more places
 const mapOptions: Omit<MapOptions, "container"> = {
   style: "mapbox://styles/mapbox/standard",
   center: defaultCoords,

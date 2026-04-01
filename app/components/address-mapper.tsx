@@ -13,7 +13,7 @@ import { useSearchParams } from "next/navigation";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 
 const addressLookupCoordinates = {
-  geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
+  geometry: { type: "Point", coordinates: [-122.437, 37.768] },
 };
 const defaultCoords = addressLookupCoordinates.geometry.coordinates ?? [];
 const toggledStatesDefaults = [true, true, true];
