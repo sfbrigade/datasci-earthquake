@@ -64,6 +64,7 @@ const HomeHeader = ({
             onClick={(e) => {
               e.preventDefault();
               setInputAddress("");
+              // TODO: persist params other than address ones by only removing address, lon, lat
               router.push("/");
             }}
           >
@@ -76,7 +77,7 @@ const HomeHeader = ({
                 width="safeHomeLogoWidth"
               />
               <VisuallyHidden>SafeHome</VisuallyHidden>
-            </HStack>{" "}
+            </HStack>
           </Link>
           <Text textStyle="textPrerelease" layerStyle="prerelease">
             Beta
