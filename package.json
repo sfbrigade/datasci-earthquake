@@ -90,6 +90,10 @@
     "ts-node": "^10.9.2",
     "vitest": "^4.0.18"
   },
+  "overrides": {
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3"
+  },
   "engines": {
     "node": ">=24.13.1"
   }
