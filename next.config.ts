@@ -1,4 +1,5 @@
 import { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   watchOptions: {
@@ -10,6 +11,9 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: true,
   experimental: {
     optimizePackageImports: ["@chakra-ui/react"],
+  },
+  compiler: {
+    emotion: true,
   },
   rewrites: async () => {
     const env = process.env.ENVIRONMENT;
@@ -46,6 +50,7 @@ const nextConfig: NextConfig = {
     return rewrites;
   },
   turbopack: {
+    root: path.join(__dirname, ""),
     rules: {
       "*.svg": {
         loaders: [
