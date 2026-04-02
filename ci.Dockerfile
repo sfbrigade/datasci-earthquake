@@ -22,9 +22,6 @@ RUN mkdir -p /app/.next && chown -R node:node /app/.next
 
 USER node
 
-# Copy package*.json and install dependencies, as node user
-COPY --chown=node:node ./package*.json ./
-
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
 
