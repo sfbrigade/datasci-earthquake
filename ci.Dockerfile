@@ -7,9 +7,6 @@ FROM node:24-bookworm
 # Must be root to prepare the directories; this command is implied, but being explicit for clarity
 USER root
 
-# Install curl
-RUN apk add --no-cache curl
-
 WORKDIR /app
 
 # change owner to node user
