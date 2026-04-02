@@ -1,38 +1,12 @@
-# TEMPORARY WORKFLOW
-# Purpose: initialize database for CI script development.
-# Do not mark as a required status check.
-# Tracking: https://github.com/sfbrigade/datasci-earthquake/pull/873
-
 name: DB Scripts
 
-on: workflow_dispatch
+on: 
+  schedule:
+    - cron: "0 0 1,15 * *" # run it on the 1st and 15th of each month at midnight
+  workflow_dispatch:
   
 jobs:
   
-  black_lint_and_mypy_type_check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Install uv
-        run: |
-          curl -sSL https://astral.sh/uv/install.sh | sh
-          
-      - name: Install dependencies with uv
-        run: |
-          uv pip install --system black==24.10.0 mypy
-          uv pip install --system fastapi pydantic pydantic-settings sqlalchemy GeoAlchemy2 pytest
-
-      - name: Check code formatting with black
-        run: black --check .
-
-      - name: Type check with mypy
-        run: mypy --config-file mypy.ini .
-
   db_scripts:
     runs-on: ubuntu-latest
     steps:
@@ -89,12 +63,46 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      
-      - name: Start DB
-        run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 30 db
+      - name: Start Services
+        run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 60 db backend
+
+      - name: create tsunami.sql 
+        run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --column-inserts -h db -U postgres -f dbscripts/tsunami.sql -t tsunami_zones qsdatabase" 
+
+      - name: create softstory.sql 
+        run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --column-inserts -h db -U postgres -f dbscripts/softstory.sql -t soft_story_properties qsdatabase" 
+
+      - name: create liquefaction.sql 
+        run: docker compose exec -e PGPASSWORD=password -T db sh -c "pg_dump --column-inserts -h db -U postgres -f dbscripts/liquefaction.sql -t liquefaction_zones qsdatabase" 
+
+      - name: verify counts and schemas
+        run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f verify.sql postgresql://postgres:password@db:5432/qsdatabase" 
+
+      - name: copy db scripts to runner  
+        run: docker cp my_postgis_db:dbscripts dbscripts 
+
+      - name: preview tsunami.sql  
+        run: cat dbscripts/tsunami.sql 
+
+      - name: preview softstory.sql  
+        run: cat dbscripts/softstory.sql 
+
+      - name: preview liquefaction.sql  
+        run: cat dbscripts/liquefaction.sql 
+
+      - name: upload db scripts
+        uses: actions/upload-artifact@v4
+        with: 
+          name: dbscripts
+          path: dbscripts
 
       - name: Docker DB Logs 
+        if: always()
         run: docker logs my_postgis_db 
       
+      - name: Docker Backend Logs 
+        if: always()
+        run: docker logs datasci-earthquake-backend-1
+      
       - name: Clean Up
-        run: docker compose -f compose.yaml -f compose.ci.yaml down db
+        run: docker compose -f compose.yaml -f compose.ci.yaml down backend db

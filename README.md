@@ -542,6 +542,29 @@ The former command generates a migration script in `backend/alembic/versions`, a
 
 Developers should only branch from `develop`, pull updates from `develop`, and ensure their work is merged into `develop` via Pull Requests. `main` is the safe production branch. Note that both of these "core" branches have [production deployments](#production-deployments) associated with them.
 
+### Branching
+
+#### Branch Names
+
+Branches should follow this format:
+```
+<type>/<issue-number>-<short-dash-case-issue-title>
+```
+Where `<type>` is one of: `bugfix`, `feature`, `chore`
+
+Including the issue number automatically links the branch to the issue.
+
+Example:
+```
+chore/54321-example-issue-branching-readme
+```
+Summarizing longer issue titles is acceptable. 
+
+#### Branch Deletion
+
+Branches are deleted automatically when merged. 
+If you have an unmerged branch you do not plan to return to, please delete it to reduce clutter.
+
 ### Pull Requests
 
 When opening a pull request, please:
