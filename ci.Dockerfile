@@ -2,7 +2,7 @@
 
 #Dockerfile for next.js
 
-FROM node:24-bookworm
+FROM node:24-bookworm-slim
 
 # Must be root to prepare the directories; this command is implied, but being explicit for clarity
 USER root
