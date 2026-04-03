@@ -5,6 +5,10 @@ services:
     build: 
       context: . 
       dockerfile: ci.Dockerfile
+      cache_from:  
+        - type=local,src=cache-docker-frontend 
+      cache_to:  
+        - type=local,dest=cache-docker-frontend
     volumes: !reset
   db:
     build: 
@@ -12,3 +16,9 @@ services:
         - type=local,src=cache-docker-db 
       cache_to:  
         - type=local,dest=cache-docker-db 
+  backend:
+    build: 
+      cache_from:  
+        - type=local,src=cache-docker-backend
+      cache_to:  
+        - type=local,dest=cache-docker-backend
