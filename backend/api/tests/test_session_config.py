@@ -11,17 +11,6 @@ from backend.database.session import get_db
 @pytest.fixture(scope="session")
 def test_engine():
     engine = create_engine(settings.database_url_sqlalchemy)
-    print('----------- foster the bananas -------')
-    print(f'test URL = {settings.database_url_sqlalchemy_test}')
-    print(f'reg URL = {settings.database_url_sqlalchemy}')
-    if settings.database_url_sqlalchemy_test.find('@db_test:') != -1:
-        print('foster1: its db_test')
-    else:
-        print('foster1: its NOT db_test')
-    if settings.database_url_sqlalchemy.find('@db:') != -1:
-        print('foster2: its db')
-    else:
-        print('foster2: its NOT db')
     yield engine
 
 
