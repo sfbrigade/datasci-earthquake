@@ -109,6 +109,12 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Cache Docker DB layers
+        uses: actions/cache@v4
+        with:
+          path: cache-docker-db
+          key: docker-db-${{ hashFiles('backend/database/Dockerfile') }}
+
       - uses: actions/setup-node@v6
         with:
           cache: 'npm'

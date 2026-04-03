@@ -6,3 +6,9 @@ services:
       context: . 
       dockerfile: ci.Dockerfile
     volumes: !reset
+  db:
+    build: 
+      cache_from:  
+        - type=local,src=cache-docker-db 
+      cache_to:  
+        - type=local,dest=cache-docker-db 
