@@ -10,7 +10,7 @@ from backend.database.session import get_db
 # Set up a test database engine
 @pytest.fixture(scope="session")
 def test_engine():
-    engine = create_engine(settings.database_url_sqlalchemy_test)
+    engine = create_engine(settings.database_url_sqlalchemy)
     print('----------- foster the bananas -------')
     print(f'test URL = {settings.database_url_sqlalchemy_test}')
     print(f'reg URL = {settings.database_url_sqlalchemy}')
