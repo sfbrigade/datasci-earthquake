@@ -47,6 +47,21 @@ The file is organized into four main sections:
 - **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
 - **Monitoring and Analytics Variables**. This section contains variables for Sentry and Posthog.
 
+For frontend environment variables, note that you will have to create your own MapBox access token and use its value for the environment variable `NEXT_PUBLIC_MAPBOX_TOKEN` in your `.env` file. To do so, first go to https://mapbox.com and sign up for your own MapBox account, then do the following:
+
+- create a MapBox access token with all “public scopes” (Tokens > Create a token)
+  - optionally, add URL restrictions such as “localhost:3000" to your token
+  - if you don’t plan to add URL restrictions, you can instead use just use your “Default public token” since it would be functionally equivalent
+- replace any values of `NEXT_PUBLIC_MAPBOX_TOKEN` in your `.env` files with your own access token
+- keep an eye on your free traffic limits so that you don’t incur your own overage charges, particularly for the features our app uses (Map Loads for Web and Address Autofill)
+
+All of your .env files should contain something like this when you’re done:
+
+```
+# .env
+NEXT_PUBLIC_MAPBOX_TOKEN=<your_mapbox_token>
+```
+
 #### ⚠️ If you add a new variable to the Settings class in the backend, you must also add a dummy value for it in .env.example. Otherwise, PRs from forks will fail, since the CI depends on .env.example when secrets are unavailable.`
 
 ---
@@ -299,6 +314,21 @@ For context, when we work on components, we also write [Storybook](https://story
 For UI components, styling, and theming, most initial setup is done via Chakra UI v3 within `theme.ts`. Docs are located at https://chakra-ui.com/. For default theme values, which are automatically used by Chakra along with the overrides in `theme.ts`, you can refer to https://github.com/chakra-ui/chakra-ui/tree/main/packages/react/src/theme (note that `sizing` is a **superset** of `spacing`). Be aware that there are a lot of out-of-date resources and articles online for Chakra UI v2 that you should ignore in favor of v3.
 
 While doing development, note that style prop autocompletion relies on theme typings generated from [styles/theme.ts], which is where SafeHome's Chakra theme overrides are defined. The overrides are merged with Chakra's default theme to give us the final SafeHome theme. To see a full list of theme values and tokens, check your browser console.
+
+#### Testing the app
+
+##### End-to-end tests
+
+To run end-to-end (e2e) tests locally with a browser, run the following command:
+
+```
+npm run test:e2e:ui
+```
+
+> [!NOTE]
+> To cut down on MapBox API requests, we currently mock its Address Autofill API in the e2e tests. We may also want to mock or prevent map loads (see note in `map.tsx`). In the future, it may make sense to implement [mocking with recorded HAR files]((https://playwright.dev/docs/mock#replaying-from-har) instead, but since Playwright will replay directly from HAR files, we'd first need a mechanism to replace crucial dynamic values like session keys for API matching and data to work properly.
+
+Note that these tests also run in CI in headless mode via `npm run test:e2e`.
 
 #### Upgrading Node
 
