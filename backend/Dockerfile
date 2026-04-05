@@ -1,11 +1,12 @@
 # syntax=docker/dockerfile:1
 
 # Dockerfile for FastAPI
-FROM alpine/curl AS stage1
+#FROM alpine/curl AS stage1
+FROM python:3.11.4-slim AS stage1
 
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates && \
+    curl ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
