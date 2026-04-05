@@ -175,7 +175,7 @@ jobs:
       - run: docker images
 
       - name: Start Services
-        run: docker compose -f compose.yaml -f compose.ci.yaml up --no-build -d --wait --wait-timeout 300 db backend 
+        run: docker compose -f compose.yaml -f compose.ci.yaml up --no-build -d --wait --wait-timeout 3000 db backend 
 
       - run: docker compose images db
 
