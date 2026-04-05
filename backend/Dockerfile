@@ -48,10 +48,11 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
+RUN echo 'find the curl' && pwd && ls -la .venv/bin
+
 # Install curl and certificates
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    #curl ca-certificates && \
-    ca-certificates && \
+    curl ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
 # Ensure the public/data directory exists and has correct permissions
