@@ -51,8 +51,8 @@ RUN echo 'before sync' && pwd && ls -la
 # Install dependencies using uv
 RUN uv sync --frozen
 
-RUN echo 'after sync1' && pwd && ls -la
-RUN echo 'after sync2' && pwd && ls -la .venv
+RUN echo 'after sync' && pwd && ls -la .venv/lib
+RUN echo 'after sync' && pwd && ls -la .venv/bin
 
 # uv sync creates a virtual environment in the root directory, add it to PATH
 ENV VIRTUAL_ENV=/.venv
