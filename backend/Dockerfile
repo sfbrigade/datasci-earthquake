@@ -34,6 +34,8 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /
 
+COPY --from=mystage mystage.txt .
+
 # Create a non-privileged user that the app will run under.
 ARG UID=1001
 RUN adduser \
