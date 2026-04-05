@@ -51,9 +51,9 @@ RUN adduser \
 RUN echo 'find the curl' && pwd && ls -la .venv/bin
 
 # Install curl and certificates
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
+#RUN apt-get update && apt-get install -y --no-install-recommends \
+#    curl ca-certificates && \
+#    rm -rf /var/lib/apt/lists/*
 
 # Ensure the public/data directory exists and has correct permissions
 RUN mkdir -p /public/data && \

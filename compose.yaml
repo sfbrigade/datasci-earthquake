@@ -46,13 +46,13 @@ services:
       - ./backend/etl/startup.sh:/startup.sh
       - public_data:/public/data
     command: bash /startup.sh
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1"]
-      start_interval: 10s
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
+    #healthcheck:
+    #  test: ["CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1"]
+    #  start_interval: 10s
+    #  interval: 10s
+    #  timeout: 5s
+    #  retries: 10
+    #  start_period: 30s
 
   frontend:
     build:
@@ -70,13 +70,13 @@ services:
       - .:/app:rw,delegated # Mount after dependencies are installed
       - /app/node_modules # This excludes the node_modules from being overwritten
       - nextjs_cache:/app/.next
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
-      start_interval: 10s
-      interval: 10s
-      timeout: 5s
-      retries: 6
-      start_period: 60s
+    #healthcheck:
+    #  test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
+    #  start_interval: 10s
+    #  interval: 10s
+    #  timeout: 5s
+    #  retries: 6
+    #  start_period: 60s
 
 volumes:
   db-data:
