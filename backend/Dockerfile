@@ -50,7 +50,8 @@ RUN adduser \
 
 # Install curl and certificates
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl ca-certificates && \
+    #curl ca-certificates && \
+    ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
 # Ensure the public/data directory exists and has correct permissions
