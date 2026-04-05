@@ -177,6 +177,10 @@ jobs:
       - name: Start Services
         run: docker compose -f compose.yaml -f compose.ci.yaml up --no-build -d --wait --wait-timeout 3000 db backend 
 
+      - name: debug hi
+        if: always()
+        run: docker inspect datasci-earthquake-backend-1 || echo "No logs found"
+
       - run: docker compose images db
 
       - name: Start Frontend 
