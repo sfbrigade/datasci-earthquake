@@ -35,7 +35,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /
 
 COPY --from=mystage mystage.txt .
-COPY --from=mystage .venv /hahasmuh
+COPY --from=mystage .venv /.venv
 
 # Create a non-privileged user that the app will run under.
 ARG UID=1001
@@ -73,8 +73,7 @@ COPY backend/pyproject.toml backend/uv.lock ./
 RUN uv sync --frozen
 
 RUN echo 'regular stage0' && pwd && ls -la 
-RUN echo 'regular stage1' && pwd && ls -la hahasmuh
-RUN echo 'regular stage2' && pwd && ls -la .venv
+RUN echo 'regular stage1' && pwd && ls -la .venv
 
 # uv sync creates a virtual environment in the root directory, add it to PATH
 ENV VIRTUAL_ENV=/.venv
