@@ -17,9 +17,8 @@ RUN uv sync --frozen
 RUN echo 'do the sync1' && pwd && ls -la
 RUN echo 'do the sync2' && pwd && ls -la .venv
 
-FROM python:${PYTHON_VERSION}-slim AS python_base
+FROM python:3.11.4-slim AS python_base
 
-ARG PYTHON_VERSION=3.11.4
 COPY --from=stage1 .venv /.venv
 
 RUN echo 'oh oh' && pwd && ls -la
