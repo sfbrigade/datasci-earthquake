@@ -2,40 +2,12 @@
 
 # Dockerfile for FastAPI
 
-ARG PYTHON_VERSION=3.11.4
-FROM python:${PYTHON_VERSION}-slim AS python_base
-
-# Prevents Python from writing pyc files.
-ENV PYTHONDONTWRITEBYTECODE=1
-
-# Keeps Python from buffering stdout and stderr to avoid situations where
-# the application crashes without emitting any logs due to buffering.
-ENV PYTHONUNBUFFERED=1
-
-WORKDIR /
-
-# Create a non-privileged user that the app will run under.
-ARG UID=1001
-RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/nonexistent" \
-    --shell "/sbin/nologin" \
-    --no-create-home \
-    --uid "${UID}" \
-    appuser
+FROM python:3.11.4-slim AS stage1 
 
 # Install curl and certificates
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl ca-certificates && \
     rm -rf /var/lib/apt/lists/*
-
-# Ensure the public/data directory exists and has correct permissions
-RUN mkdir -p /public/data && \
-    chown -R appuser:appuser /public/data && \
-    chmod -R 775 /public/data
-
-COPY api /api
 
 # Download the uv installer
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -48,6 +20,41 @@ COPY backend/pyproject.toml backend/uv.lock ./
 
 # Install dependencies using uv
 RUN uv sync --frozen
+
+echo 'haha1' && pwd && ls -la .venv
+
+FROM python:3.11.4-slim AS python_base
+
+# Prevents Python from writing pyc files.
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Keeps Python from buffering stdout and stderr to avoid situations where
+# the application crashes without emitting any logs due to buffering.
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /
+
+COPY --from=stage1 .venv /.venv
+
+echo 'haha2' && pwd && ls -la .venv
+
+# Create a non-privileged user that the app will run under.
+ARG UID=1001
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "/nonexistent" \
+    --shell "/sbin/nologin" \
+    --no-create-home \
+    --uid "${UID}" \
+    appuser
+
+# Ensure the public/data directory exists and has correct permissions
+RUN mkdir -p /public/data && \
+    chown -R appuser:appuser /public/data && \
+    chmod -R 775 /public/data
+
+COPY api /api
 
 # uv sync creates a virtual environment in the root directory, add it to PATH
 ENV VIRTUAL_ENV=/.venv
