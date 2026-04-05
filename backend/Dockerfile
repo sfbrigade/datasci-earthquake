@@ -51,7 +51,7 @@ RUN echo 'before sync' && pwd && ls -la
 # Install dependencies using uv
 RUN uv sync --frozen
 
-RUN echo 'after sync' && pwd && ls -la .venv/lib/python3.11
+RUN echo 'after sync' && pwd && ls -la .venv/lib/python3.11/site-packages
 RUN echo 'after sync' && pwd && ls -la .venv/bin
 
 # uv sync creates a virtual environment in the root directory, add it to PATH
