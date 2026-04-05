@@ -38,6 +38,9 @@ WORKDIR /
 
 COPY --from=mystage mystage.txt .
 COPY --from=mystage .venv /.venv
+RUN echo 'curly1' && pwd && ls -la usr/bin
+COPY --from=mystage usr/bin/curl /usr/bin
+RUN echo 'curly2' && pwd && ls -la usr/bin
 
 # Create a non-privileged user that the app will run under.
 ARG UID=1001
