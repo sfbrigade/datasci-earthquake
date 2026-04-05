@@ -46,13 +46,13 @@ services:
       - ./backend/etl/startup.sh:/startup.sh
       - public_data:/public/data
     command: bash /startup.sh
-    #healthcheck:
-    #  test: ["CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1"]
-    #  start_interval: 10s
-    #  interval: 10s
-    #  timeout: 5s
-    #  retries: 10
-    #  start_period: 30s
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1"]
+      start_interval: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
   frontend:
     build:
