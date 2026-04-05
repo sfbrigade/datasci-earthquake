@@ -49,9 +49,9 @@ RUN adduser \
     appuser
 
 # Install curl and certificates
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
+#RUN apt-get update && apt-get install -y --no-install-recommends \
+#    curl ca-certificates && \
+#    rm -rf /var/lib/apt/lists/*
 
 # Ensure the public/data directory exists and has correct permissions
 RUN mkdir -p /public/data && \
@@ -61,7 +61,7 @@ RUN mkdir -p /public/data && \
 COPY api /api
 
 # Download the uv installer
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+#RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Ensure the installed uv binary is on the `PATH`
 ENV PATH="/root/.local/bin/:$PATH"
