@@ -13,6 +13,7 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 COPY backend/pyproject.toml backend/uv.lock ./
 
+ENV PATH="/root/.local/bin/:$PATH"
 RUN uv sync --frozen
 
 RUN echo 'do the sync1' && pwd && ls -la
@@ -60,7 +61,7 @@ COPY api /api
 #RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Ensure the installed uv binary is on the `PATH`
-ENV PATH="/root/.local/bin/:$PATH"
+#ENV PATH="/root/.local/bin/:$PATH"
 
 # Copy dependency files first for caching
 #COPY backend/pyproject.toml backend/uv.lock ./
