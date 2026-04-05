@@ -21,7 +21,7 @@ COPY backend/pyproject.toml backend/uv.lock ./
 # Install dependencies using uv
 RUN uv sync --frozen
 
-echo 'haha1' && pwd && ls -la .venv
+RUN echo 'haha1' && pwd && ls -la .venv
 
 FROM python:3.11.4-slim AS python_base
 
@@ -36,7 +36,7 @@ WORKDIR /
 
 COPY --from=stage1 .venv /.venv
 
-echo 'haha2' && pwd && ls -la .venv
+RUN echo 'haha2' && pwd && ls -la .venv
 
 # Create a non-privileged user that the app will run under.
 ARG UID=1001
