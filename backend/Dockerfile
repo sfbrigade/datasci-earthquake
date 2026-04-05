@@ -12,6 +12,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Download the uv installer
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
+COPY backend/pyproject.toml backend/uv.lock ./
+
+# Ensure the installed uv binary is on the `PATH`
+ENV PATH="/root/.local/bin/:$PATH"
+
+# Install dependencies using uv
+RUN uv sync --frozen
+RUN touch mystage.txt
+RUN echo 'mystage1' && pwd && ls -la 
+RUN echo 'mystage2' && pwd && ls -la .venv
+
 FROM python:3.11.4-slim AS python_base
 
 # Prevents Python from writing pyc files.
@@ -57,6 +68,9 @@ COPY backend/pyproject.toml backend/uv.lock ./
 
 # Install dependencies using uv
 RUN uv sync --frozen
+
+RUN echo 'regular stage1' && pwd && ls -la 
+RUN echo 'regular stage2' && pwd && ls -la .venv
 
 # uv sync creates a virtual environment in the root directory, add it to PATH
 ENV VIRTUAL_ENV=/.venv
