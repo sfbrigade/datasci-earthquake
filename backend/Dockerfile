@@ -46,8 +46,13 @@ ENV PATH="/root/.local/bin/:$PATH"
 # Copy dependency files first for caching
 COPY backend/pyproject.toml backend/uv.lock ./
 
+RUN echo 'before sync' && pwd && ls -la
+
 # Install dependencies using uv
 RUN uv sync --frozen
+
+RUN echo 'after sync1' && pwd && ls -la
+RUN echo 'after sync2' && pwd && ls -la .venv
 
 # uv sync creates a virtual environment in the root directory, add it to PATH
 ENV VIRTUAL_ENV=/.venv
