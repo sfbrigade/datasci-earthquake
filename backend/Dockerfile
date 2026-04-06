@@ -10,8 +10,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 RUN echo 'ohboy1' && ls -la /usr/lib/x86_64-linux-gnu
-RUN echo 'ohboy2' && ls -la /usr/lib64
-RUN echo 'ohboy3' && ls -la /usr/local/lib
 
 # Download the uv installer
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -38,11 +36,11 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /
 
-COPY --from=mystage mystage.txt .
 COPY --from=mystage .venv /.venv
 RUN echo 'curly1' && pwd && ls -la usr/bin
-#COPY --from=curlimages/curl usr/bin/curl /usr/bin
-COPY --from=alpine/curl usr/bin/curl /usr/bin
+COPY --from=mystage usr/bin/curl /usr/bin
+COPY --from=mystage /usr/lib/x86_64-linux-gnu/libcurl.so.4 /usr/lib/x86_64-linux-gnu
+COPY --from=mystage /usr/lib/x86_64-linux-gnu/libcurl.so.4.8.0 /usr/lib/x86_64-linux-gnu
 RUN echo 'curly2' && pwd && ls -la usr/bin
 
 # Create a non-privileged user that the app will run under.
