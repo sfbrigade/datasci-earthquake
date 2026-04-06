@@ -50,9 +50,11 @@ COPY backend/pyproject.toml backend/uv.lock ./
 #RUN uv sync --frozen
 RUN --mount=from=ghcr.io/astral-sh/uv,source=/uv,target=/bin/uv uv sync --frozen
 
+RUN echo 'seekseek' && ls -la .venv/bin
+
 # uv sync creates a virtual environment in the root directory, add it to PATH
-#ENV VIRTUAL_ENV=/.venv
-#ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV VIRTUAL_ENV=/.venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Copy the source code into the container.
 COPY backend ./backend
