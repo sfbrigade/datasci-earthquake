@@ -41,7 +41,7 @@ COPY api /api
 COPY backend/pyproject.toml backend/uv.lock ./
 
 # Install dependencies using uv
-RUN --mount=from=ghcr.io/astral-sh/uv,source=/uv,target=/bin/uv uv sync --frozen
+RUN --mount=from=ghcr.io/astral-sh/uv,source=/uv,target=/bin/uv uv sync --frozen --no-cache
 
 # uv sync creates a virtual environment in the root directory, add it to PATH
 ENV VIRTUAL_ENV=/.venv
