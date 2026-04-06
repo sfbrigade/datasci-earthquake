@@ -9,7 +9,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
-RUN echo 'ohboy' && dpkg -L curl
+RUN echo 'ohboy1' && ls -la /usr/lib/x86_64-linux-gnu
+RUN echo 'ohboy2' && ls -la /usr/lib64
+RUN echo 'ohboy3' && ls -la /usr/local/lib
 
 # Download the uv installer
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
