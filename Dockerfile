@@ -33,6 +33,8 @@ RUN echo 'swing00' && ls -la /home/node/.npm
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
 #RUN npm install
+RUN mkdir /timepiecesoh && ls -la /
+
 RUN npm config set cache /timepiecesoh
 #RUN --mount=type=cache,target=/home/node/.npm npm install
 RUN --mount=type=cache,target=/timepiecesoh npm install
