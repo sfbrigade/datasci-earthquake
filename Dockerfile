@@ -22,6 +22,8 @@ RUN mkdir -p /app/.next && chown -R node:node /app/.next
 
 USER node
 
+RUN echo 'taketake' && npm config get cache
+
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
 RUN npm install
