@@ -35,7 +35,9 @@ COPY --chown=node:node ./package*.json ./
 #RUN npm install
 RUN mkdir timepiecesoh && pwd && ls -la 
 RUN chown -R 1000:1000 "/app/timepiecesoh"
+RUN npm cache clean --force
 RUN npm config set cache /app/timepiecesoh
+RUN npm cache clean --force
 #RUN --mount=type=cache,target=/home/node/.npm npm install
 RUN --mount=type=cache,target=/app/timepiecesoh npm install
 
