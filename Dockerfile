@@ -23,7 +23,13 @@ RUN mkdir -p /app/.next && chown -R node:node /app/.next
 USER node
 
 RUN echo 'taketake0' && npm config get cache
-RUN echo 'taketake00' && ls -la /home/node/.npm
+RUN echo 'taketake00' && ls -la /home/node
+RUN echo 'taketake000' && ls -la /home/node/.npm
+
+RUN chown -R 1000:1000 "/home/node/.npm"
+
+RUN echo 'swing0' && ls -la /home/node
+RUN echo 'swing00' && ls -la /home/node/.npm
 
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
