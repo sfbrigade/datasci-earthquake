@@ -319,6 +319,14 @@ While doing development, note that style prop autocompletion relies on theme typ
 
 ##### End-to-end tests
 
+Our Playwright tests require you to have the app running (frontend and backend) locally. If you're using Docker, run:
+
+```
+docker compose up
+```
+
+Alternatively, you can run `npm run dev` to run the app locally on your machine.
+
 To run end-to-end (e2e) tests locally with a browser, run the following command:
 
 ```
