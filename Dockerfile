@@ -25,7 +25,7 @@ USER node
 RUN echo 'taketake0' && npm config get cache
 RUN echo 'taketake00' && ls -la /home/node
 RUN echo 'taketake000' && ls -la /home/node/.npm
-
+RUN echo 'turnturn' && getent passwd 1000
 RUN chown -R 1000:1000 "/home/node/.npm"
 
 RUN echo 'swing0' && ls -la /home/node
