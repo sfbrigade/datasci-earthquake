@@ -1,6 +1,9 @@
 import { test, expect } from "@playwright/test";
 import { Headings } from "../app/data/data";
 
+import suggestResponse from "./mocks/api/mapbox/autofill-v1-suggest.json" with { type: "json" };
+import retrieveResponse from "./mocks/api/mapbox/autofill-v1-retrieve.json" with { type: "json" };
+
 test("should load the home page with core UI elements", async ({ page }) => {
   await page.goto("/");
 
@@ -31,6 +34,24 @@ test("should load the home page with core UI elements", async ({ page }) => {
 test("should display correct hazard report for a searched address", async ({
   page,
 }) => {
+  // Mock the MapBox suggest API call before navigating
+  await page.route(
+    "https://api.mapbox.com/autofill/v1/suggest/**/*",
+    async (route) => {
+      const json = suggestResponse;
+      await route.fulfill({ json });
+    }
+  );
+
+  // Mock the MapBox retrieve API call before navigating
+  await page.route(
+    "https://api.mapbox.com/autofill/v1/retrieve/**/*",
+    async (route) => {
+      const json = retrieveResponse;
+      await route.fulfill({ json });
+    }
+  );
+
   await page.goto("/");
   const searchBox = page.getByRole("combobox", {
     name: "Search San Francisco address",

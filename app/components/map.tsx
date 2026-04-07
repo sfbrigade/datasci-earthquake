@@ -84,6 +84,7 @@ const Map: React.FC<MapProps> = ({
 
     if (!mapRef.current) {
       // initial pass: render map
+      // TODO: look into adding "testMode: true" via eg `testMode: process.env.NODE_ENV === 'test'` for tests and/orCI environment; this mode uses no access token nor does it have WebGL visual output, so styles will have to be loaded from local sources)
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current!,
         ...mapOptions,
