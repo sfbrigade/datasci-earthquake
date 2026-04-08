@@ -25,23 +25,14 @@ USER node
 RUN echo 'taketake0' && npm config get cache
 RUN echo 'taketake00' && ls -la /home/node
 RUN echo 'taketake000' && ls -la /home/node/.npm
-RUN echo 'turnturn' && getent passwd 1000
-
-RUN echo 'swing0' && ls -la /home/node
-RUN echo 'swing00' && ls -la /home/node/.npm
 
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
-#RUN npm install
-RUN mkdir timepiecesoh && pwd && ls -la  
-RUN chmod 777 timepiecesoh
-RUN echo 'yuh' && pwd && ls -la  
-RUN chown -R 1000:1000 "/app/timepiecesoh"
-RUN npm cache clean --force
-RUN npm config set cache /app/timepiecesoh
-RUN npm cache clean --force
-#RUN --mount=type=cache,target=/home/node/.npm npm install
-RUN --mount=type=cache,target=/app/timepiecesoh,uid=1000,gid=1000 npm install
+#RUN mkdir timepiecesoh && pwd && ls -la  
+#RUN chmod 777 timepiecesoh
+#RUN chown -R 1000:1000 "/app/timepiecesoh"
+#RUN npm config set cache /app/timepiecesoh
+RUN --mount=type=cache,target=/home/node/.npm,uid=1000,gid=1000 npm install
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
