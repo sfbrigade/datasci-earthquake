@@ -34,6 +34,7 @@ export default function RootLayout({
   // However, it may also lead to a lot of warnings if your app is not fully optimized for hydration;
   // case in point: Chakra's Color Mode / ThemeProvider will cause this warning, which is the reason
   // this flag is toggled on.
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${manrope.className} ${inter.className}`}>

@@ -1,16 +1,21 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+
+import { useSetAtom } from "jotai";
+import {
+  searchedAddressAtom,
+  isSearchCompleteAtom,
+} from "@/atoms/AddressSearchAtom";
+
 import { Box } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
 import MobileReportHazards from "./mobile-report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
-import HomeHeader from "./home-header";
-import { useSearchParams } from "next/navigation";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
+import { useAddressFromSearchParams } from "@/hooks/useAddressFromSearchParams";
 
 const addressLookupCoordinates = {
   geometry: { type: "Point", coordinates: [-122.408020683, 37.801698301] },
@@ -45,20 +50,12 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   tsunamiData,
   liquefactionData,
 }) => {
-  const searchParams = useSearchParams();
-  const initialLat = searchParams.get("lat");
-  const initialLon = searchParams.get("lon");
-  const initialAddress = searchParams.get("address");
+  const { coordinates, coordinateKey, address } = useAddressFromSearchParams();
+  console.log("ADDRESS", address);
 
-  // initialize state directly from searchParams or fall back to null
-  const [coordinates, setCoordinates] = useState<number[] | null>(
-    initialLat && initialLon
-      ? [parseFloat(initialLon), parseFloat(initialLat)]
-      : null
-  );
-  const [searchedAddress, setSearchedAddress] = useState(
-    initialAddress || null
-  );
+  const setSearchedAddress = useSetAtom(searchedAddressAtom);
+  const setIsSearchComplete = useSetAtom(isSearchCompleteAtom);
+
   const [addressHazardData, setAddressHazardData] = useState<object>({});
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
   const [toggledStates, setToggledStates] = useState<boolean[]>(
@@ -69,14 +66,11 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     toggleState: true,
   });
   const [showHazards, setShowHazards] = useState(false);
-  const [isSearchComplete, setSearchComplete] = useState(false);
   const [currentView, setCurrentView] = useState("");
   const toastIdDataLoadFailed = "data-load-failed";
-  const coordinatesRef = useRef<number[] | null>(null);
-  const router = useRouter();
 
   const { fetchHazardData } = useHazardDataFetcher({
-    setSearchComplete,
+    setSearchComplete: setIsSearchComplete,
     setHazardDataLoading,
   });
 
@@ -110,45 +104,20 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     setCurrentView(window.innerWidth <= 480 ? "mobile" : "desktop");
   };
 
-  const handleSearchChange = useCallback(
-    (coords: number[], address: string) => {
-      const newUrl = `?address=${encodeURIComponent(address)}&lat=${coords[1]}&lon=${coords[0]}`;
-      router.push(newUrl, { scroll: false });
-    },
-    [router]
-  );
-
   useEffect(() => {
-    const lat = searchParams.get("lat");
-    const lon = searchParams.get("lon");
-    const address = searchParams.get("address");
-
-    if (lat && lon && address) {
-      const newCoords = [parseFloat(lon), parseFloat(lat)];
-      const lastCoords = coordinatesRef.current;
-
-      // only update state and fetch data if coordinates have changed
-      if (
-        !lastCoords ||
-        lastCoords[0] !== newCoords[0] ||
-        lastCoords[1] !== newCoords[1]
-      ) {
-        // FIXME: Avoid calling setState() directly within an effect (remove eslint directive below to see lint error)
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setCoordinates(newCoords);
-        setSearchedAddress(address);
-        coordinatesRef.current = newCoords;
-        updateHazardData(newCoords);
-      }
-    } else if (coordinatesRef.current) {
-      // clear state and coordinatesRef when navigating to a page without location params(ex. navigating back to main page after viewing a result)
-      setCoordinates(null);
+    if (!coordinates || !address) {
       setSearchedAddress(null);
+      setIsSearchComplete(false);
+      // FIXME: Avoid calling setState() directly within an effect (remove eslint directive below to see lint error)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setAddressHazardData({});
-      setSearchComplete(false);
-      coordinatesRef.current = null;
+      return;
     }
-  }, [searchParams, updateHazardData]);
+
+    setSearchedAddress((prev) => prev ?? address);
+    setIsSearchComplete(true);
+    updateHazardData(coordinates);
+  }, [coordinateKey, address, updateHazardData]);
 
   useEffect(() => {
     const sources = [
@@ -192,11 +161,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
   return (
     <>
-      <HomeHeader
-        searchedAddress={searchedAddress}
-        isSearchComplete={isSearchComplete}
-        onSearchChange={handleSearchChange}
-      />
       {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
       <Box
         w="full"

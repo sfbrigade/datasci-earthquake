@@ -1,52 +1,90 @@
 "use client";
 
+import { Suspense, useCallback, useEffect, useState } from "react";
+import { useAtomValue } from "jotai";
+import {
+  searchedAddressAtom,
+  isSearchCompleteAtom,
+} from "@/atoms/AddressSearchAtom";
+import { useRouter, usePathname } from "next/navigation";
+import { Headings } from "../data/data";
+
 import {
   Box,
-  HStack,
   Text,
-  Link,
+  HStack,
   Image,
   VisuallyHidden,
+  Link,
   Flex,
 } from "@chakra-ui/react";
-import { usePathname, useRouter } from "next/navigation";
-import { useRef } from "react";
+import Heading from "./heading";
+import ReportAddress from "./report-address";
+import SearchBar from "./search-bar";
+import Share from "./share";
+import ShareSkeleton from "./share-skeleton";
+
+export type HazardData = {
+  liquefaction: { exists: boolean; last_updated: string | null } | null;
+  softStory: { exists: boolean; last_updated: string | null } | null;
+  tsunami: { exists: boolean; last_updated: string | null } | null;
+};
 
 const Header = () => {
+  const [inputAddress, setInputAddress] = useState("");
   const pathname = usePathname();
-  const router = useRouter();
   const isHome = pathname === "/";
-  const portalRef = useRef<HTMLDivElement | null>(null);
+  const searchedAddress = useAtomValue(searchedAddressAtom);
+  const isSearchComplete = useAtomValue(isSearchCompleteAtom);
+
+  useEffect(() => {
+    if (!searchedAddress) {
+      // FIXME: Avoid calling setState() directly within an effect (remove eslint directive below to see lint error)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setInputAddress("");
+    }
+  }, [searchedAddress]);
+
+  const headingData = Headings.home;
+  const router = useRouter();
+
+  const handleSearchChange = useCallback(
+    (coords: number[], address: string) => {
+      const newUrl = `?address=${encodeURIComponent(address)}&lat=${coords[1]}&lon=${coords[0]}`;
+      router.push(newUrl, { scroll: false });
+    },
+    [router]
+  );
 
   return (
     <Box
       as="header"
-      bgGradient={isHome ? undefined : "blue"}
+      bgGradient="blue"
+      py={{ base: "4", "2xl": "5" }}
+      px="8"
       w="full"
-      position={isHome ? "absolute" : undefined}
-      top={isHome ? "0" : undefined}
-      display={isHome ? "none" : undefined}
     >
       <Flex
-        direction="row"
-        justifyContent={{
-          base: "flex-start",
-          md: "flex-end",
-          lg: "flex-end",
-          xl: "flex-end",
+        direction={{
+          base: "column",
+          md: "column",
+          lg: "row-reverse",
         }}
-        alignItems="center"
-        py={{ base: "6", md: "7" }}
-        px={{ base: "6", md: "7", lg: "8", xl: "9" }}
+        justifyContent={"space-between"}
+        alignItems={{ base: "flex-start", xl: "center" }}
+        gap="1.5"
+        mb={{ base: "2" }}
       >
         <HStack align="start" gap="1">
           <Link
             as={"a"}
             color="white"
             href="/"
+            cursor="button"
             textDecoration={"none"}
             onClick={(e) => {
               e.preventDefault();
+              setInputAddress("");
               router.push("/");
             }}
           >
@@ -65,9 +103,35 @@ const Header = () => {
             Beta
           </Text>
         </HStack>
-
-        {isHome && <Box ref={portalRef} id="searchbar-portal" />}
+        {isSearchComplete && isHome ? (
+          <ReportAddress searchedAddress={searchedAddress} />
+        ) : (
+          <Heading headingData={headingData} />
+        )}
       </Flex>
+
+      {isHome ? (
+        <Flex
+          direction={{ base: "column-reverse", xl: "row" }}
+          justifyContent={"space-between"}
+          alignItems={{ base: "flex-start", xl: "center" }}
+        >
+          <Box width={{ base: "full", xl: "fit" }}>
+            <SearchBar
+              inputAddress={inputAddress}
+              onInputAddressChange={setInputAddress}
+              onSearchChange={handleSearchChange}
+            />
+          </Box>
+
+          {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
+          {isSearchComplete ? (
+            <Suspense fallback={<ShareSkeleton />}>
+              <Share />
+            </Suspense>
+          ) : null}
+        </Flex>
+      ) : null}
     </Box>
   );
 };
