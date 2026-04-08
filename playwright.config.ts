@@ -1,12 +1,12 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
-const baseURL = process.env.BASE_URL || 'https://www.safehome.report';
+const baseURL = process.env.BASE_URL || "http://localhost:3000";
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './e2e-tests',
+  testDir: "./e2e-tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -14,7 +14,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: "html",
   /* Timeout for each test. Default is 30000(30s). */
   timeout: 40000,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -22,15 +22,15 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: baseURL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
+    trace: "on-first-retry",
+    screenshot: "only-on-failure",
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
     },
     // Temporarily disable firefox tests to investigate test failures in CI environment
     // {
@@ -38,12 +38,12 @@ export default defineConfig({
     //   use: { ...devices['Desktop Firefox'] },
     // },
     {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      name: "webkit",
+      use: { ...devices["Desktop Safari"] },
     },
     // Temporarily commenting out mobile devices to not run existing tests on mobile.
-    // This is due to recent and upcoming mobile changes that are causing failures when running alongside desktop tests. 
-    // Will re-enable in the future once changes stabilize and update tests to reflect mobile changes. 
+    // This is due to recent and upcoming mobile changes that are causing failures when running alongside desktop tests.
+    // Will re-enable in the future once changes stabilize and update tests to reflect mobile changes.
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',

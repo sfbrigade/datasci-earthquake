@@ -1,3 +1,12 @@
+---
+name: User Story
+about: Create a user story for this project
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 # User Story
 
 As a [Safehome User/Backend Engineer/Partner] I want to be able to...
@@ -17,4 +26,4 @@ As a [Safehome User/Backend Engineer/Partner] I want to be able to...
 
 
 
-See https://github.com/orgs/sfbrigade/projects/13/views/14?pane=issue&itemId=139550348&issue=sfbrigade%7Cdatasci-earthquake%7C733 for an example
+See https://github.com/orgs/sfbrigade/projects/13/views/24?pane=issue&itemId=139550348&issue=sfbrigade%7Cdatasci-earthquake%7C733 for an example
