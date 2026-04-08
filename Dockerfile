@@ -35,7 +35,7 @@ COPY --chown=node:node ./package*.json ./
 RUN --mount=type=cache,target=/app/node_modules,uid=1000,gid=1000 npm install
 
 RUN echo 'firefire' && ls -lRa /home/node/.npm
-RUN echo 'firefire1' && ls -la /app/node_modules
+RUN echo 'firefire1' && ls -la 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
 
