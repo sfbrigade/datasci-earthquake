@@ -165,12 +165,14 @@ jobs:
           path: cache-mount
           key: ${{ hashFiles('Dockerfile') }}-mycache
 
+      - run: pwd && ls -l
+      - run: pwd && ls -l cache-mount
+
       - name: restore cache mounty
         uses: reproducible-containers/buildkit-cache-dance@v3
         with:
           builder: ${{ steps.setup-buildx.outputs.name }}
           cache-dir: cache-mount
-          key: ${{ hashFiles('Dockerfile') }}-mycache
           skip-extraction: ${{ steps.mycache.outputs.cache-hit }}
 
       - name: Build Docker Containers
