@@ -183,7 +183,7 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     red: { value: "#C53030" },
     green: { value: "#25855A" },
     orange: { value: "#F6AD55" },
-    pink: { value: "#ED64A6" },
+    pink: { DEFAULT: { value: "#ED64A6" } },
 
     // TODO: move some of these to `semanticTokens` and rename accordingly
     blueBackground: { value: "#2C5282" }, // blue/700

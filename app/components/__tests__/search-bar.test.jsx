@@ -1,7 +1,7 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import SearchBar from "../search-bar";
 import "@testing-library/jest-dom";
-import { Provider } from "../ui/provider";
+import { Providers } from "../../providers/providers";
 import "../__mocks__/match-media";
 
 // FIXME: to be able to re-enable this test suite, modify the mock etc to handle the usage
@@ -19,9 +19,9 @@ jest.mock("@mapbox/search-js-react", () => ({
 describe.skip("SearchBar Component", () => {
   it("renders search input and icons correctly", () => {
     render(
-      <Provider>
+      <Providers>
         <SearchBar />
-      </Provider>
+      </Providers>
     );
 
     const input = screen.getByPlaceholderText("Search San Francisco address");
@@ -36,9 +36,9 @@ describe.skip("SearchBar Component", () => {
 
   it("updates address state when typing", () => {
     render(
-      <Provider>
+      <Providers>
         <SearchBar />
-      </Provider>
+      </Providers>
     );
     const input = screen.getByPlaceholderText("Search San Francisco address");
 
@@ -58,9 +58,9 @@ describe.skip("SearchBar Component", () => {
 
   it("calls handleRetrieve and updates fullAddress on retrieve event", () => {
     render(
-      <Provider>
+      <Providers>
         <SearchBar />
-      </Provider>
+      </Providers>
     );
     const input = screen.getByPlaceholderText("Search San Francisco address");
 

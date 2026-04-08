@@ -1,6 +1,6 @@
 import { Inter, Manrope } from "next/font/google";
 import { Box, Flex } from "@chakra-ui/react";
-import { Provider } from "@/components/ui/provider";
+import { Providers } from "@/providers/providers";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import { Toaster } from "@/components/ui/toaster";
@@ -37,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${manrope.className} ${inter.className}`}>
-        <Provider>
+        <Providers>
           <Flex direction="column" align="center" minH="dvh">
             <Header />
             <Box flex="1" as="main" width="full">
@@ -46,7 +46,7 @@ export default function RootLayout({
             <Footer />
           </Flex>
           <Toaster />
-        </Provider>
+        </Providers>
       </body>
     </html>
   );

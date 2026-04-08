@@ -43,6 +43,7 @@
     "@emotion/react": "^11.14.0",
     "@fontsource/inter": "^5.2.8",
     "@mapbox/search-js-react": "^1.5.1",
+    "@posthog/react": "^1.8.2",
     "@storybook/addon-themes": "^10.2.10",
     "@types/geojson": "^7946.0.16",
     "@types/node": "^24.10.13",

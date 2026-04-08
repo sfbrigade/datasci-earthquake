@@ -2,15 +2,15 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Share from "../share";
 import "@testing-library/jest-dom";
-import { Provider } from "../ui/provider";
+import { Providers } from "../../providers/providers";
 import "../__mocks__/match-media";
 
 describe("Share Component", () => {
   it("renders the Share button", () => {
     render(
-      <Provider>
+      <Providers>
         <Share />
-      </Provider>
+      </Providers>
     );
     const button = screen.getByText(/copy link to this page/i);
     expect(button).toBeInTheDocument();
