@@ -41,7 +41,7 @@ RUN npm cache clean --force
 RUN npm config set cache /app/timepiecesoh
 RUN npm cache clean --force
 #RUN --mount=type=cache,target=/home/node/.npm npm install
-RUN --mount=type=cache,target=/app/timepiecesoh npm install
+RUN --mount=type=cache,target=/app/timepiecesoh,uid=1000,gid=1000 npm install
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
