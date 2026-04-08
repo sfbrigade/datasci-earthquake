@@ -167,7 +167,7 @@ jobs:
 
       - run: pwd && ls -l
       - run: pwd && ls -l cache-mount
-      - run: pwd && ls -l cache-mount/app
+      - run: pwd && ls -l cache-mount/app/timepiecesoh
 
       - name: restore cache mounty
         uses: reproducible-containers/buildkit-cache-dance@v3
