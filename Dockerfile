@@ -34,6 +34,7 @@ COPY --chown=node:node ./package*.json ./
 #RUN npm config set cache /app/timepiecesoh
 RUN --mount=type=cache,target=/home/node/.npm,uid=1000,gid=1000 npm install
 
+RUN echo 'firefire' && ls -lRa /home/node/.npm
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
 
