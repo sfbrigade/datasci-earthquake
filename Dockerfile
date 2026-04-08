@@ -32,7 +32,7 @@ COPY --chown=node:node ./package*.json ./
 #RUN chmod 777 timepiecesoh
 #RUN chown -R 1000:1000 "/app/timepiecesoh"
 #RUN npm config set cache /app/timepiecesoh
-RUN --mount=type=cache,target=/home/node/.npm,uid=1000,gid=1000 npm install
+RUN --mount=type=cache,target=/app/node_modules,uid=1000,gid=1000 npm install
 
 RUN echo 'firefire' && ls -lRa /home/node/.npm
 RUN echo 'firefire1' && ls -la /app/node_modules
