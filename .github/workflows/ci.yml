@@ -166,7 +166,7 @@ jobs:
           key: ${{ hashFiles('Dockerfile') }}-mycache
 
       - run: pwd && ls -l
-      - run: pwd && ls -lR cache-mount 
+      #- run: pwd && ls -lR cache-mount 
 
       - name: restore cache mounty
         uses: reproducible-containers/buildkit-cache-dance@v3
