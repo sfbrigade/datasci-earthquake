@@ -167,6 +167,7 @@ jobs:
 
       - run: pwd && ls -l
       - run: pwd && ls -l cache-mount
+      - run: pwd && ls -l cache-mount/app
 
       - name: restore cache mounty
         uses: reproducible-containers/buildkit-cache-dance@v3
@@ -175,11 +176,11 @@ jobs:
           cache-dir: cache-mount
           skip-extraction: ${{ steps.mycache.outputs.cache-hit }}
 
-      - name: Build Docker Containers
-        run: docker compose -f compose.yaml -f compose.ci.yaml build
+      #- name: Build Docker Containers
+      #  run: docker compose -f compose.yaml -f compose.ci.yaml build
 
-      - name: Start Services
-        run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
+      #- name: Start Services
+      #  run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
 
       - name: Docker Backend Logs
         if: always()
