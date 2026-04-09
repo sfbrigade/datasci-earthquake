@@ -1,5 +1,7 @@
 from backend.api.tests.test_session_config import test_engine, test_session, client
 import logging
+from .utils import assert_database_error_returns_500
+
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -123,3 +125,9 @@ def test_is_in_liquefaction_zone_missing_params(client, caplog):
     response = client.get("api/liquefaction-zones/is-in-liquefaction-zone")
     assert response.status_code == 400
     assert "Missing coordinates in non-ping request" in caplog.text
+
+
+def test_is_in_liquefaction_zone_database_error_returns_500(client, caplog):
+    assert_database_error_returns_500(
+        client, caplog, "api/liquefaction-zones/is-in-liquefaction-zone?lon=0&lat=0", "Error checking liquefaction status"
+    )
