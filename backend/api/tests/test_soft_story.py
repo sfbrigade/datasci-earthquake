@@ -88,5 +88,8 @@ def test_is_soft_story_missing_params(client, caplog):
 
 def test_is_soft_story_database_error_returns_500(client, caplog):
     assert_database_error_returns_500(
-        client, caplog, "api/soft-stories/is-soft-story?lon=0&lat=0", "Error checking soft-story status"
+        client,
+        caplog,
+        "api/soft-stories/is-soft-story?lon=0&lat=0",
+        "Error checking soft-story status",
     )

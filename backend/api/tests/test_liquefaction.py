@@ -129,5 +129,8 @@ def test_is_in_liquefaction_zone_missing_params(client, caplog):
 
 def test_is_in_liquefaction_zone_database_error_returns_500(client, caplog):
     assert_database_error_returns_500(
-        client, caplog, "api/liquefaction-zones/is-in-liquefaction-zone?lon=0&lat=0", "Error checking liquefaction status"
+        client,
+        caplog,
+        "api/liquefaction-zones/is-in-liquefaction-zone?lon=0&lat=0",
+        "Error checking liquefaction status",
     )

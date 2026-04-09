@@ -71,5 +71,8 @@ def test_is_in_tsunami_zone_missing_params(client, caplog):
 
 def test_is_in_tsunami_zone_database_error_returns_500(client, caplog):
     assert_database_error_returns_500(
-        client, caplog, "api/tsunami-zones/is-in-tsunami-zone?lon=0&lat=0", "Error checking tsunami status"
+        client,
+        caplog,
+        "api/tsunami-zones/is-in-tsunami-zone?lon=0&lat=0",
+        "Error checking tsunami status",
     )
