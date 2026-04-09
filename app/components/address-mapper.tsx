@@ -13,7 +13,7 @@ import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 
-const defaultCoords = [-122.437, 37.768];
+const defaultCoords = [-122.4194, 37.7949];
 const toggledStatesDefaults = [true, true, true];
 const mdBreakpointValue = system.token("breakpoints.md");
 
@@ -56,7 +56,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 
   // TODO: actually validate params with eg Zod
   const validParams = !!(initialLon && initialLat && initialAddress);
-  const initialCoords = validParams
+  const [lon, lat] = validParams
     ? [parseFloat(initialLon), parseFloat(initialLat)]
     : defaultCoords;
 
@@ -82,6 +82,19 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     setHazardDataLoading,
   });
 
+  // Get a new searchParams string by merging the current
+  // searchParams with a provided key/value pair
+  const createQueryString = useCallback(
+    (paramsArray: string[][]) => {
+      const params = new URLSearchParams(searchParams.toString());
+      for (let param of paramsArray) {
+        params.set(param[0], param[1]);
+      }
+      return params.toString();
+    },
+    [searchParams]
+  );
+
   const handleSearchChange = useCallback(
     (coords: number[], address: string) => {
       const paramsArray = [
@@ -89,16 +102,13 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         ["lon", coords[0].toString()],
         ["lat", coords[1].toString()],
       ];
-      // grab existing params and modify them
-      const params = new URLSearchParams(searchParams.toString());
-      for (let param of paramsArray) {
-        params.set(param[0], param[1]);
-      }
 
-      const newUrl = `${pathname}?${params.toString()}`;
+      const queryString = createQueryString(paramsArray);
+
+      const newUrl = `${pathname}?${queryString}`;
       router.push(newUrl, { scroll: false });
     },
-    [router, pathname, searchParams]
+    [router, pathname, createQueryString]
   );
 
   useEffect(() => {
@@ -229,7 +239,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           bgColor="gray.100"
         >
           <Map
-            initialCenter={initialCoords}
+            lon={lon}
+            lat={lat}
             address={initialAddress}
             softStoryData={softStoryData}
             tsunamiData={tsunamiData}
