@@ -28,7 +28,8 @@ const mapOptions: Omit<MapOptions, "container"> = {
   },
 };
 interface MapProps {
-  initialCenter?: number[];
+  lon: number;
+  lat: number;
   address: string | null;
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
@@ -49,7 +50,8 @@ const addMarker = (center: LngLat, map: mapboxgl.Map) => {
 };
 
 const Map: React.FC<MapProps> = ({
-  initialCenter,
+  lon,
+  lat,
   address,
   softStoryData,
   tsunamiData,
@@ -61,8 +63,8 @@ const Map: React.FC<MapProps> = ({
   const markerRef = useRef<mapboxgl.Marker>(null);
   const toastIdInvalidToken = "invalid-token";
   const toastIdNoToken = "no-token";
-  const initialLon = initialCenter ? initialCenter[0] : null;
-  const initialLat = initialCenter ? initialCenter[1] : null;
+  const lastLon = useRef<number | null>(lon);
+  const lastLat = useRef<number | null>(lat);
 
   // TODO: how do we simplify this `useEffect()` without ill side effects like map repainting by e.g. breaking it up into multiples or moving anything outside of it? for example, can anything be derived on render instead? or can anything run in a useEffect that runs only in initial render with an empty array w/out complicating subsequent update logic?
   useEffect(() => {
@@ -83,8 +85,7 @@ const Map: React.FC<MapProps> = ({
     }
     mapboxgl.accessToken = mapboxToken;
 
-    const center =
-      initialLon && initialLat ? new LngLat(initialLon, initialLat) : null;
+    const center = lon && lat ? new LngLat(lon, lat) : null;
 
     if (!mapRef.current) {
       // TODO: look into adding "testMode: true" via eg `testMode: process.env.NODE_ENV === 'test'` for tests and/orCI environment; this mode uses no access token nor does it have WebGL visual output, so styles will have to be loaded from local sources)
@@ -188,19 +189,19 @@ const Map: React.FC<MapProps> = ({
             markerRef.current = null;
           }
         }
-        map.panTo(center, { duration: 750 }); // pan to new center
+        // only pan if current map center is different from new center
+        if (
+          map.getCenter().lng !== center.lng ||
+          map.getCenter().lat !== center.lat
+        ) {
+          map.panTo(center, { duration: 750 }); // pan to new center
+          lastLon.current = lon;
+          lastLat.current = lat;
+        }
       }
-
       return;
     }
-  }, [
-    initialLon,
-    initialLat,
-    address,
-    liquefactionData,
-    softStoryData,
-    tsunamiData,
-  ]);
+  }, [lon, lat, address, liquefactionData, softStoryData, tsunamiData]);
 
   useEffect(() => {
     const handleToggleLayers = () => {
