@@ -163,7 +163,7 @@ jobs:
         id: mycache
         with:
           path: cache-mount
-          key: ${{ hashFiles('Dockerfile') }}-mycache-aaa
+          key: ${{ hashFiles('Dockerfile') }}-mycache-aaa-a
 
       - run: pwd && ls -l
 
