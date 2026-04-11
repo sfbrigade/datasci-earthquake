@@ -166,7 +166,15 @@ jobs:
           key: ${{ hashFiles('Dockerfile') }}-mycache
 
       - run: pwd && ls -l
-      #- run: pwd && ls -lR cache-mount 
+
+      - name: mount stuff
+        run: |
+          if [ -d cache-mount ]; then
+            echo "cache-mount exists"
+            ls -lR cache-mount 
+          else
+            echo "cache-mount does not exist"
+          fi
 
       - name: restore cache mounty
         uses: reproducible-containers/buildkit-cache-dance@v3
