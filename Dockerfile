@@ -22,20 +22,13 @@ RUN mkdir -p /app/.next && chown -R node:node /app/.next
 
 USER node
 
-RUN echo 'taketake0' && npm config get cache
-RUN echo 'taketake00' && ls -la /home/node
-RUN echo 'taketake000' && ls -la /home/node/.npm
-
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
-#RUN mkdir timepiecesoh && pwd && ls -la  
-#RUN chmod 777 timepiecesoh
-#RUN chown -R 1000:1000 "/app/timepiecesoh"
-#RUN npm config set cache /app/timepiecesoh
+RUN echo 'joke0' && date "+DATE: %Y-%m-%d%nTIME: %H:%M:%S" && pwd && ls -l
+
 RUN --mount=type=cache,target=/app/node_modules,uid=1000,gid=1000 npm install
 
-RUN echo 'firefire' && ls -lRa /home/node/.npm
-RUN echo 'firefire1' && ls -la 
+RUN echo 'joke1' && date "+DATE: %Y-%m-%d%nTIME: %H:%M:%S" && pwd && ls -l
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
 
