@@ -26,7 +26,10 @@ USER node
 COPY --chown=node:node ./package*.json ./
 RUN echo 'joke0' && date "+DATE: %Y-%m-%d%nTIME: %H:%M:%S" && pwd && ls -l
 
-RUN --mount=type=cache,target=/app/node_modules,uid=1000,gid=1000 npm install
+#RUN --mount=type=cache,target=/app/node_modules,uid=1000,gid=1000 npm install
+RUN npm install
+
+RUN --mount=type=cache,target=/xxx/yyy,uid=1000,gid=1000 touch blah.txt
 
 RUN echo 'joke1' && date "+DATE: %Y-%m-%d%nTIME: %H:%M:%S" && pwd && ls -l
 # Copy the rest of the application, ensuring the ownership is set to node user 
