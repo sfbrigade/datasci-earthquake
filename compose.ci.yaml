@@ -6,3 +6,6 @@ services:
       context: . 
       dockerfile: ci.Dockerfile
     volumes: !reset
+  db:
+    volumes: 
+      - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
