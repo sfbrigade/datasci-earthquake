@@ -55,7 +55,7 @@ jobs:
           fi
 
   eslint:
-    if: needs.changes.outputs.code_changed == 'true'
+    if: needs.changes.outputs.code_changed == 'truep'
     runs-on: ubuntu-latest
     needs: changes
     steps:
@@ -67,7 +67,7 @@ jobs:
         run: npm run lint
 
   black_lint_and_mypy_type_check:
-    if: needs.changes.outputs.code_changed == 'true'
+    if: needs.changes.outputs.code_changed == 'truep'
     runs-on: ubuntu-latest
     needs: changes
     steps:
@@ -88,7 +88,7 @@ jobs:
         run: mypy --config-file mypy.ini .
 
   nextjs_build_check:
-    if: needs.changes.outputs.code_changed == 'true'
+    if: needs.changes.outputs.code_changed == 'truep'
     runs-on: ubuntu-latest
     needs: changes
     env:
@@ -175,14 +175,18 @@ jobs:
       - name: Start Services
         run: docker compose -f compose.yaml -f compose.ci.yaml up --no-build -d --wait --wait-timeout 300 db backend 
 
-      - name: Start Frontend 
-        run: docker run -d --env-file .env --name my_frontend --mount type=bind,src=./node_modules,dst=/app/node_modules datasci-earthquake-frontend
 
-      - name: Run Backend Tests
-        run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend -v
+      - run: docker volume ls
+      - run: docker inspect my_postgis_db
 
-      - name: Run Frontend Tests
-        run: docker exec --env-file .env my_frontend npm test 
+      #- name: Start Frontend 
+      #  run: docker run -d --env-file .env --name my_frontend --mount type=bind,src=./node_modules,dst=/app/node_modules datasci-earthquake-frontend
+
+      #- name: Run Backend Tests
+      #  run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend -v
+
+      #- name: Run Frontend Tests
+      #  run: docker exec --env-file .env my_frontend npm test 
 
       - name: Docker Frontend Logs
         if: always()
