@@ -5,6 +5,7 @@ services:
     build: 
       context: . 
       dockerfile: ci.Dockerfile
-    #volumes: !reset
+    volumes: !reset
+  db:
     volumes: 
       - luma: /xxx/yyy 
