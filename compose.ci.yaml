@@ -8,5 +8,4 @@ services:
     volumes: !reset
   db:
     volumes: 
-      - luma:/xxx/yyy 
       - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory

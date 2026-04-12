@@ -179,14 +179,14 @@ jobs:
       - run: docker volume ls
       - run: docker inspect my_postgis_db
 
-      #- name: Start Frontend 
-      #  run: docker run -d --env-file .env --name my_frontend --mount type=bind,src=./node_modules,dst=/app/node_modules datasci-earthquake-frontend
+      - name: Start Frontend 
+        run: docker run -d --env-file .env --name my_frontend --mount type=bind,src=./node_modules,dst=/app/node_modules datasci-earthquake-frontend
 
-      #- name: Run Backend Tests
-      #  run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend -v
+      - name: Run Backend Tests
+        run: docker compose -f compose.yaml -f compose.ci.yaml run --rm backend pytest backend -v
 
-      #- name: Run Frontend Tests
-      #  run: docker exec --env-file .env my_frontend npm test 
+      - name: Run Frontend Tests
+        run: docker exec --env-file .env my_frontend npm test 
 
       - name: Docker Frontend Logs
         if: always()
