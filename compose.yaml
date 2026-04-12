@@ -79,5 +79,6 @@ services:
 
 volumes:
   db-data:
+  luma:
   nextjs_cache:
   public_data:
