@@ -17,6 +17,7 @@ import {
   Card,
   Flex,
   Spacer,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { IoShieldCheckmarkOutline } from "react-icons/io5";
@@ -69,6 +70,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
 }) => {
   // Drawer
   const { open, onOpen, onClose } = useDisclosure();
+  // Responsive check for mobile only
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const drawerContainerRef = useRef(null);
 
   const searchParams = useSearchParams();
@@ -223,21 +226,25 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       {/* FIXME: the calculation no longer seems to work; double check and fix if necessary */}
       <Box
         w="full"
-        {...(CurrentVariant === "data-centric"
+        {...(CurrentVariant === "data-centric" && !isMobile
           ? {
               style: {
                 height: "336px",
               },
             }
-          : undefined)}
-        // TODO: check if properties below are used for both designs
+          : {
+              style: {
+                height: "800px",
+              },
+            })}
         m="auto"
-        h="full"
+        // h="full"
         position="relative"
         ref={drawerContainerRef}
       >
         <Box h="full" overflow="hidden">
           {CurrentVariant === "map-centric" ? (
+            // ...existing code for map-centric Drawer...
             <Drawer.Root
               placement={{ mdDown: "bottom", md: "start" }}
               open={open}
@@ -322,15 +329,166 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 </Drawer.Positioner>
               </Portal>
             </Drawer.Root>
-          ) : (
+          ) : CurrentVariant === "data-centric" && isMobile ? (
+            // ...existing code for data-centric mobile Drawer...
             <>
-              <Box zIndex="docked" top="16" left="8" position="absolute">
-                <SearchBar
-                  inputAddress={inputAddress}
-                  onInputAddressChange={setInputAddress}
-                  onSearchChange={handleSearchChange}
-                />
-              </Box>
+              <Drawer.Root placement="bottom" open={open}>
+                <Portal container={drawerContainerRef}>
+                  {open ? null : (
+                    <Box
+                      position="absolute"
+                      zIndex="overlay"
+                      top={{ base: "auto", md: "0" }}
+                      left="0"
+                      bottom="0"
+                      right={{ base: "0", md: "auto" }}
+                      w={{ base: "auto", md: "5" }}
+                      h={{ base: "5", md: "auto" }}
+                      backgroundColor="white"
+                    >
+                      <Drawer.Trigger
+                        onClick={onOpen}
+                        asChild
+                        position="absolute"
+                        // Mobile: center horizontally at bottom.
+                        left={{ base: "0", md: "0" }}
+                        right={{ base: "0", md: "auto" }}
+                        bottom={{ base: "0", md: "auto" }}
+                        // Desktop: vertically center relative to container.
+                        top={{ base: "auto", md: "1/2" }}
+                        w={{ base: "fit", md: "auto" }}
+                        mx={{ base: "auto", md: "0" }}
+                        transform={{ base: "none", md: "translateY(-50%)" }}
+                      >
+                        <IconButton variant="subtle" rounded="full" size="md">
+                          <AngleRight rotate="270deg" />
+                        </IconButton>
+                      </Drawer.Trigger>
+                    </Box>
+                  )}
+                  <Drawer.Backdrop h="full" w="full" position="absolute" />
+                  <Drawer.Positioner h="full" w="full" position="absolute">
+                    {/* actual drawer, open */}
+                    <Drawer.Content
+                      // NOTE: the following props are used because the `size` prop values of `Drawer.Root` are too limited (and do not directly correspond to the theme `sizes` tokens)
+                      w={{ base: "full", md: "sm" }}
+                      maxW={{ base: "full", md: "sm" }}
+                      h={{ base: "1/2", md: "full" }}
+                      maxH={{ base: "1/2", md: "full" }}
+                    >
+                      <Drawer.CloseTrigger
+                        onClick={onClose}
+                        asChild
+                        position="absolute"
+                        left="0"
+                        right="0"
+                        top="-5"
+                        w="fit"
+                        mx="auto"
+                      >
+                        <IconButton variant="subtle" rounded="full" size="md">
+                          <AngleLeft rotate="270deg" />
+                        </IconButton>
+                      </Drawer.CloseTrigger>
+                      <Drawer.Header>
+                        <Drawer.Title>Risk Layers</Drawer.Title>
+                      </Drawer.Header>
+                      <Drawer.Body>
+                        <ReportHazards
+                          variant="cardhazardsummary"
+                          addressHazardData={addressHazardData}
+                          isHazardDataLoading={isHazardDataLoading}
+                          toggledStates={toggledStates}
+                          setToggledStates={setToggledStates}
+                          setLayerToggleObj={setLayerToggleObj}
+                        />
+                        <Box bgColor="peach">
+                          <Box pt="8" pb="4" px="8">
+                            <Heading as="h2" pb="4">
+                              <Text
+                                as="span"
+                                textStyle="headerBig"
+                                layerStyle="headerMain"
+                                color="black"
+                                fontWeight="light"
+                              >
+                                What your risks mean
+                              </Text>
+                            </Heading>
+
+                            <Center>
+                              <ReportHazards
+                                variant="reporthazardsummary"
+                                addressHazardData={addressHazardData}
+                                isHazardDataLoading={isHazardDataLoading}
+                                toggledStates={toggledStates}
+                                setToggledStates={setToggledStates}
+                                setLayerToggleObj={setLayerToggleObj}
+                              />
+                            </Center>
+                          </Box>
+                          <Box pt="8" pb="4" px="8">
+                            <Heading as="h2">
+                              <Stack gap="3">
+                                <Text
+                                  as="span"
+                                  textStyle="headerBig"
+                                  layerStyle="headerMain"
+                                  color="black"
+                                  fontWeight="light"
+                                >
+                                  Get earthquake-ready
+                                </Text>
+                                <Text textStyle="xs">
+                                  Quick steps that make a real difference when
+                                  it counts.
+                                </Text>
+                              </Stack>
+                            </Heading>
+                          </Box>
+                          <EarthquakeReadyCards></EarthquakeReadyCards>
+                          <Center py="4" px="8">
+                            <Flex
+                              bg="blue.50"
+                              p="4"
+                              borderRadius="md"
+                              mt="4"
+                              gap="6"
+                            >
+                              <div>
+                                <Image
+                                  src="/images/SFCivicTech-Rights.svg"
+                                  alt="SafeHome logo"
+                                  role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
+                                  height="auto"
+                                  width="auto"
+                                  display="inline"
+                                />
+                              </div>
+                              <div>
+                                <Text fontSize="lg" fontWeight="bold" mb="3">
+                                  Renting? Know your rights.
+                                </Text>
+                                <Text>
+                                  If you live in a non-compliant building or
+                                  high-risk zone, you have options. Get
+                                  earthquake renters insurance to protect your
+                                  belongings, or learn about your right to
+                                  report unsafe living conditions to the city.
+                                </Text>
+                              </div>
+                            </Flex>
+                          </Center>
+                        </Box>
+                      </Drawer.Body>
+                      <Drawer.Footer></Drawer.Footer>
+                    </Drawer.Content>
+                  </Drawer.Positioner>
+                </Portal>
+              </Drawer.Root>
+            </>
+          ) : CurrentVariant === "data-centric" ? (
+            <>
               <Box zIndex="docked" top="36" left="8" position="absolute">
                 <Card.Root width="var(--sizes-500)">
                   <Card.Body gap="2">
@@ -367,7 +525,14 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                 <AlertInfo message="72% chance of major Bay Area earthquake in the next 30 years"></AlertInfo>
               </Box>
             </>
-          )}
+          ) : null}
+          <Box zIndex="docked" top="16" left="8" position="absolute">
+            <SearchBar
+              inputAddress={inputAddress}
+              onInputAddressChange={setInputAddress}
+              onSearchChange={handleSearchChange}
+            />
+          </Box>
           <Map
             coordinates={coordinates || defaultCoords}
             softStoryData={softStoryData}
@@ -377,7 +542,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           />
         </Box>
       </Box>
-      {CurrentVariant === "data-centric" ? (
+      {CurrentVariant === "data-centric" && !isMobile ? (
         <Box bgColor="peach">
           <Box pt="8" pb="4" px="8">
             <Heading as="h2" pb="4">

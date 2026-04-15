@@ -18,7 +18,7 @@ const FooterVerbose = () => {
   });
 
   return (
-    <Box as="footer" w="full" bgColor="blueBackground">
+    <Box w="full" bgColor="blueBackground">
       <Stack
         w={{ base: "full" }}
         py="6"
