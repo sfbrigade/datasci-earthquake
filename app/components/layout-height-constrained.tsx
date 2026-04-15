@@ -16,7 +16,7 @@ export const LayoutHeightConstrained = ({
       <Box flex="1" as="main" w="full" h="full">
         {children}
       </Box>
-      <Box w="full" hideBelow="md">
+      <Box as="footer" w="full" hideBelow="md">
         <Footer />
       </Box>
     </Flex>

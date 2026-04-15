@@ -11,7 +11,7 @@ export const LayoutScrollable = ({ children }: LayoutScrollableProps) => {
   return (
     <Flex direction="column" align="center" minH="dvh">
       <Header />
-      <Box as="main" width="full" h="full" flexGrow="1">
+      <Box as="main" w="full" h="full" flexGrow="1">
         {children}
       </Box>
       <Box as="footer" w="full" hideBelow="md">
