@@ -21,6 +21,7 @@ const eslintConfig = defineConfig([
     "storybook-static/**",
     ".tmp/**",
     ".venv/**",
+    "**/playwright-report/**",
   ]),
 
   // Next.js Core Web Vitals
