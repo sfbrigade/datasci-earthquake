@@ -69,22 +69,14 @@ const SearchBar = ({
     }
   };
 
-  /**
-   * TODO: capture and update address on submit OR use first autocomplete suggestion; see file://./../snippets.md#geocode-on-search for details.
-   */
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    console.log("onSubmit", event.currentTarget.value);
-    event.preventDefault();
-
-    // TODO: capture and update address as described above
-  };
+  // TODO: consider also capturing/updating address on submit OR using first autocomplete suggestion; see file://./../snippets.md#geocode-on-search for details.
 
   const handleSuggest = (res: AddressAutofillSuggestionResponse) => {
     setSuggestionsAvailable(res.suggestions.length > 0);
   };
 
   return (
-    <chakra.form position={"relative"} onSubmit={onSubmit}>
+    <chakra.form position={"relative"}>
       <Suspense>
         <DynamicAddressAutofill
           accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ""}
@@ -157,7 +149,7 @@ const SearchBar = ({
       {inputAddress.length && !suggestionSelected && !suggestionsAvailable ? (
         <Text
           position="absolute"
-          bottom="-5"
+          lineHeight="shortest"
           textStyle="textSmall"
           color="white"
         >

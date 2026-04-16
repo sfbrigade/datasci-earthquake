@@ -1,15 +1,42 @@
+import fs from "fs";
+import path from "path";
 import { NextConfig } from "next";
 
+const packageRoot = process.cwd();
+const localNextPackage = path.join(
+  packageRoot,
+  "node_modules",
+  "next",
+  "package.json"
+);
+
+if (!fs.existsSync(localNextPackage)) {
+  console.error(
+    `${localNextPackage} not found; is Next installed in the local \`node_modules\`?`
+  );
+  process.exit(1);
+}
+
+const watchOptions =
+  process.env.ENVIRONMENT === "dev_docker"
+    ? {
+        watchOptions: {
+          // Turbopack-specific polling for watch options (might be needed for e.g. Docker environments if host filesystem does not reliably notify of changes)
+          // TODO: check if this is equivalent to WATCHPACK_POLLING environment variable
+          pollIntervalMs: 1000, // Check for changes every 1 second
+        },
+      }
+    : {};
+
 const nextConfig: NextConfig = {
-  watchOptions: {
-    // Turbopack-specific polling for watch options (might be needed for e.g. Docker environments if host filesystem does not reliably notify of changes)
-    // TODO: check if this is equivalent to WATCHPACK_POLLING environment variable
-    pollIntervalMs: 1000, // Check for changes every 1 second
-  },
+  ...watchOptions,
   reactCompiler: true,
   productionBrowserSourceMaps: true,
   experimental: {
     optimizePackageImports: ["@chakra-ui/react"],
+  },
+  compiler: {
+    emotion: true,
   },
   rewrites: async () => {
     const env = process.env.ENVIRONMENT;
@@ -46,6 +73,7 @@ const nextConfig: NextConfig = {
     return rewrites;
   },
   turbopack: {
+    root: packageRoot,
     rules: {
       "*.svg": {
         loaders: [

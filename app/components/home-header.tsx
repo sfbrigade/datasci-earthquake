@@ -35,6 +35,8 @@ const HomeHeader = ({
   isSearchComplete,
   onSearchChange,
 }: HomeHeaderProps) => {
+  // TODO: consider initializing inputAddress to searchedAddress so shared URLs will autofill the searchbox
+  // TODO: do we need to have a `setInputAddress` instead of populating directly from `searchedAddress` in props?
   const [inputAddress, setInputAddress] = useState("");
   const headingData = Headings.home;
   const router = useRouter();
@@ -62,6 +64,7 @@ const HomeHeader = ({
             onClick={(e) => {
               e.preventDefault();
               setInputAddress("");
+              // TODO: persist params other than address ones by only removing address, lon, lat
               router.push("/");
             }}
           >
@@ -74,7 +77,7 @@ const HomeHeader = ({
                 width="safeHomeLogoWidth"
               />
               <VisuallyHidden>SafeHome</VisuallyHidden>
-            </HStack>{" "}
+            </HStack>
           </Link>
           <Text textStyle="textPrerelease" layerStyle="prerelease">
             Beta
