@@ -19,11 +19,14 @@ def assert_database_error_returns_500(
         yield db
 
     app.dependency_overrides[get_db] = mock_get_db
-    with caplog.at_level(logging.ERROR):
-        response = client.get(endpoint_url)
-
-        assert response.status_code == 500
-        error_id = response.json().get("error_id")
-        assert error_id is not None
-        assert expected_log_message in caplog.text
-        assert f"Error ID: {error_id}" in caplog.text
+    try:
+        with caplog.at_level(logging.ERROR):
+            response = client.get(endpoint_url)
+            
+            assert response.status_code == 500
+            error_id = response.json().get("error_id")
+            assert error_id is not None
+            assert expected_log_message in caplog.text
+            assert f"Error ID: {error_id}" in caplog.text
+    finally:
+        app.dependency_overrides.pop(get_db, None)
