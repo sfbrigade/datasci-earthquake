@@ -69,3 +69,9 @@ card: { value: {
   _dark: ["0", "1", "1.5", "lightGrey"],
 }},
 ```
+
+## Manually craate a HAR for replaying MapBox API responses in Playwright (for eg mocking)
+
+```shell
+playwright open --save-har=./hars/example.har --save-har-glob=\"https://*.mapbox.com/**/*\" http://localhost:3000"
+```

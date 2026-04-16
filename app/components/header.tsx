@@ -47,6 +47,7 @@ const Header = () => {
             textDecoration={"none"}
             onClick={(e) => {
               e.preventDefault();
+              // TODO: persist params other than address ones by only removing address, lon, lat
               router.push("/");
             }}
           >
@@ -59,7 +60,7 @@ const Header = () => {
                 width="safeHomeLogoWidth"
               />
               <VisuallyHidden>SafeHome</VisuallyHidden>
-            </HStack>{" "}
+            </HStack>
           </Link>
           <Text textStyle="textPrerelease" layerStyle="prerelease">
             Beta

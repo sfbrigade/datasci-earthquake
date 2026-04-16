@@ -16,10 +16,16 @@ RUN apt-get update \
 COPY initdb-postgis.sh /docker-entrypoint-initdb.d/
 COPY update-postgis.sh /docker-entrypoint-initdb.d/
 
+# verify row counts from ETL; only used in the "dbscripts" workflow
+COPY verify.sql .
+
 # Make init scripts executable (called automatically by Postgres on first boot).
 RUN chmod +x /docker-entrypoint-initdb.d/initdb-postgis.sh \
     && chmod +x /docker-entrypoint-initdb.d/update-postgis.sh
 
+RUN mkdir dbscripts
+
+# Expose the default Postgres port
 # Document the default Postgres port (actual port mapping is in compose.yaml).
 EXPOSE 5432
 
