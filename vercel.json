@@ -5,7 +5,7 @@
       "dest": "api/index.py"      
     }
   ],
-  "ignoreCommand": "test -n \"$(git log -1 | grep 'skip')\"",
+  "ignoreCommand": "test -n \"$(git branch --show-current | grep 'ci_skip_vercel_build')\"",
   "functions": {
     "api/**": {
       "maxDuration": 20
