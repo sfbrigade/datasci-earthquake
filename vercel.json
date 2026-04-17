@@ -5,6 +5,7 @@
       "dest": "api/index.py"      
     }
   ],
+  "ignoreCommand": "test -n \"$(git log --max-count=1  origin..HEAD | grep '\[skip-vercel-build\]')\"",
   "functions": {
     "api/**": {
       "maxDuration": 20
