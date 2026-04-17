@@ -5,7 +5,7 @@
       "dest": "api/index.py"      
     }
   ],
-  "ignoreCommand": "echo 'haha' | grep 'p' ",
+  "ignoreCommand": "echo $VERCEL_GIT_COMMIT_REF | grep 'ci_skip_vercel_build' ",
   "buildCommand": "echo 'chi chi'; echo $VERCEL_GIT_COMMIT_REF; next build ",
   "functions": {
     "api/**": {
