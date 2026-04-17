@@ -6,6 +6,7 @@
     }
   ],
   "ignoreCommand": "echo 'haha' | grep 'p' ",
+  "buildCommand": "echo 'chi chi'; echo $VERCEL_GIT_COMMIT_REF; next build ",
   "functions": {
     "api/**": {
       "maxDuration": 20
