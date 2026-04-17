@@ -9,6 +9,7 @@ import {
   ThemingConfig,
   defineSemanticTokens,
 } from "@chakra-ui/react";
+import { InterVariableName, ManropeVariableName } from "@/data/constants";
 
 // TODO: look into whether it makes sense to use responsive text sizes just for headings as is done below; perhaps another approach is better
 const textStyles: ThemingConfig["textStyles"] = defineTextStyles({
@@ -166,8 +167,8 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     solid: { value: "solid" },
   },
   fonts: {
-    heading: { value: "Manrope, sans-serif" },
-    body: { value: "Inter, sans-serif" },
+    heading: { value: `var(${ManropeVariableName}), sans-serif` },
+    body: { value: `var(${InterVariableName}), sans-serif` },
   },
   colors: {
     // TODO: fallback to Chakra defaults where possible and get rid of unused colors
@@ -269,6 +270,9 @@ const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
 // - see: https://docs.mapbox.com/help/tutorials/dynamic-markers-react/?step=0
 // - also see: https://docs.mapbox.com/help/tutorials/use-mapbox-gl-js-with-react/
 const globalCss: SystemConfig["globalCss"] = {
+  "html, body": {
+    fontFamily: "body", // This applies Inter (the "body" token) globally
+  },
   ".marker": {
     width: "mapMarkerWidth",
     height: "mapMarkerHeight",
