@@ -5,7 +5,7 @@
       "dest": "api/index.py"      
     }
   ],
-  "ignoreCommand": "test -n \"$(echo 'skip' | grep 'skip')\"",
+  "ignoreCommand": "test -n \"$(git log --max-count=1 origin..HEAD | grep 'skip')\"",
   "functions": {
     "api/**": {
       "maxDuration": 20
