@@ -1,4 +1,4 @@
-import { Flex, Link, Text, Box, VStack, List, Image } from "@chakra-ui/react";
+import { Flex, Link, Text, Box, VStack, List } from "@chakra-ui/react";
 import Heading from "../components/heading";
 import { Headings, DataInfoLinks, TeamMembers } from "../data/data";
 import NextLink from "../components/custom-next-link";
@@ -146,11 +146,11 @@ const About = () => {
         </VStack>
       </Flex>
       <Box flexShrink={0}>
-        <Image
+        <NextImage
+          width={304}
+          height={282}
+          alt="Illustration of person at their desk in front of a laptop and wearing headphones"
           src="/images/UserCartoon.png"
-          alt="about us"
-          width="aboutImageWidth"
-          height="aboutImageHeight"
         />
       </Box>
     </Flex>

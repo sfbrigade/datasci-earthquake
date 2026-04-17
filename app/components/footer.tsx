@@ -1,6 +1,7 @@
-import { Box, Link, Text, VStack, Image, Stack } from "@chakra-ui/react";
+import { Box, Link, Text, VStack, Stack } from "@chakra-ui/react";
 import { mockDisclaimers } from "./__mocks__/mock-data";
 import NextLink from "./custom-next-link";
+import NextImage from "next/image";
 
 const Footer = () => {
   const disclaimers = mockDisclaimers.map((disclaimer, index) => {
@@ -68,12 +69,12 @@ const Footer = () => {
             href="https://www.sfcivictech.org/"
             target="_blank"
           >
-            <Image
+            <NextImage
+              width={206}
+              height={54}
+              role="img" // needed for VoiceOver bug for SVGs: https://bugs.webkit.org/show_bug.cgi?id=216364
               src="/images/SFCivicTech-logo.svg"
               alt="SF Civic Tech Logo"
-              role="img" // needed for VoiceOver bug for SVGs: https://bugs.webkit.org/show_bug.cgi?id=216364
-              height="sfctLogoHeight"
-              width="sfctLogoWidth"
             />
           </Link>
         </VStack>

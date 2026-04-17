@@ -1,15 +1,7 @@
 import { Suspense } from "react";
-import {
-  Box,
-  Flex,
-  Heading,
-  Text,
-  List,
-  HStack,
-  Link,
-  Image,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, List, HStack, Link } from "@chakra-ui/react";
 import NextLink from "./components/custom-next-link";
+import NextImage from "next/image";
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
 import AddressMapper from "./components/address-mapper";
@@ -261,13 +253,12 @@ const Home = async () => {
           </div>
         </HStack>
         <Box flexShrink={0}>
-          <Image
+          <NextImage
+            width={303} // 606px real width?
+            height={292} // 584px real height?
             src="/images/earthquake-ready.png"
-            width="earthquakeReadyImageWidth"
-            height="earthquakeReadyImageHeight"
-            alt="about us"
+            alt="Illustration of person standing with their dog, who is looking up from a ball on the ground"
           />
-          {/* TODO: should this be a NextImage or a Chakra Image? */}
         </Box>
       </Flex>
     </Flex>
