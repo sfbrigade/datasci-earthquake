@@ -168,7 +168,7 @@ const Home = async () => {
               <List.Item>
                 <Link
                   as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
+                  href="https://www.crmp.org/our-seismic-retrofit-programs/the-retrofits"
                   textDecoration="underline"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -180,7 +180,7 @@ const Home = async () => {
               <List.Item>
                 <Link
                   as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/resources/find-a-contractor/"
+                  href="https://www.crmp.org/resources/find-a-contractor/"
                   textDecoration="underline"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -193,7 +193,7 @@ const Home = async () => {
                 Check your eligibility for an{" "}
                 <Link
                   as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ebb-retrofit"
+                  href="https://www.crmp.org/our-seismic-retrofit-programs/the-retrofits/ebb-retrofit"
                   textDecoration="underline"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -203,7 +203,7 @@ const Home = async () => {
                 grant or{" "}
                 <Link
                   as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
+                  href="https://www.crmp.org/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
                   textDecoration="underline"
                   target="_blank"
                   rel="noopener noreferrer"
