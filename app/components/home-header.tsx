@@ -76,6 +76,7 @@ const HomeHeader = ({
                 alt="SafeHome logo"
                 role="img" // needed for VoiceOver bug for SVGs: https://bugs.webkit.org/show_bug.cgi?id=216364
                 src="/images/SFSafeHome-fulllogo.svg"
+                priority
               />
 
               <VisuallyHidden>SafeHome</VisuallyHidden>
