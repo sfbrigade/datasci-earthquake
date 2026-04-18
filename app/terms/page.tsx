@@ -61,6 +61,7 @@ const TermsOfService = () => {
                 href="https://www.documentcloud.org/documents/23813850-draft-inventory-of-sf-non-ductile-concrete-buildings-march-2023/"
                 textDecoration="underline"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 non-ductile concrete
               </Link>
