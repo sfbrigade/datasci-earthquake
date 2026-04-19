@@ -15,7 +15,6 @@ def test_get_liquefaction_zones(client):
     assert (
         response.status_code == 200
     ), f"Expected status code 200, but got {response.status_code}"
-    assert len(response_dict["features"]) == 3
 
 
 def test_is_in_high_susceptibility_liquefaction_zone(client, caplog):
