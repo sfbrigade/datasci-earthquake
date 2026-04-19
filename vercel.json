@@ -5,7 +5,7 @@
       "dest": "api/index.py"      
     }
   ],
-  "ignoreCommand": "echo $VERCEL_GIT_COMMIT_REF | grep 'ci_skip_vercel_build' ",
+  "ignoreCommand": "! git log -1 | grep '\[deploy-vercel-preview\]'",
   "functions": {
     "api/**": {
       "maxDuration": 20
