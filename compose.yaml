@@ -1,5 +1,5 @@
 # Docker Compose configuration for local development and CI pipeline.
-# ppNot used for production; production is deployed via hosting platform.
+# pppNot used for production; production is deployed via hosting platform.
 
 services:
   db:
