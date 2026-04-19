@@ -5,7 +5,7 @@
       "dest": "api/index.py"      
     }
   ],
-  "buildCommand": "! (git log -1 | grep '\\[deploy-vercel-preview\\]'); echo $?; next build",
+  "ignoreCommand": "! (git log -1 | grep '\\[deploy-vercel-preview\\]')",
   "functions": {
     "api/**": {
       "maxDuration": 20
