@@ -5,3 +5,6 @@ services:
     volumes: !reset
       - /app/node_modules
       - nextjs_cache:/app/.next
+  db:
+    volumes: 
+      - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
