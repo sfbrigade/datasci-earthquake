@@ -6,7 +6,6 @@ on:
       - develop
       - main
       - 'ci/**'
-      - 'ci_skip_vercel_build/**'
   pull_request:
     types: [opened, synchronize, reopened]
 
