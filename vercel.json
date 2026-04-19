@@ -5,7 +5,7 @@
       "dest": "api/index.py"      
     }
   ],
-  "ignoreCommand": "! (git log -1 | grep '\\[deploy-vercel-preview\\]')",
+  "buildCommand": "echo $VERCEL_ENV; test $VERCEL_ENV != 'production'; next build",
   "functions": {
     "api/**": {
       "maxDuration": 20
