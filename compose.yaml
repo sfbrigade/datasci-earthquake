@@ -81,3 +81,4 @@ volumes:
   db-data:
   nextjs_cache:
   public_data:
+  duh:
