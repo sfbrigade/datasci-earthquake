@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
 
+THIS IS A TEST.
+
 This script checks that environment variables declared by the Settings class
 in backend/api/config.py appear in .env.example.
 
