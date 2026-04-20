@@ -18,6 +18,11 @@ jobs:
         with:
           node-version: 20
 
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Verify uv
+        run: uv --version
+
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
