@@ -179,6 +179,9 @@ jobs:
 
       - run: ls -l
       - run: ls -l dbscripts
+      - run: head -n 100 dbscripts/liquefaction.sql
+      - run: head -n 100 dbscripts/softstory.sql
+      - run: head -n 100 dbscripts/tsunami.sql
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -188,6 +191,21 @@ jobs:
 
       - name: Start Services
         run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
+
+      - name: copy scripts to container
+        run: docker cp dbscripts my_postgis_db:tmp/dbscripts  
+
+      #- name: create liquefaction and insert data
+      #  run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/liquefaction.sql postgresql://postgres:password@db:5432/qsdatabase"
+ 
+      #- name: create soft story and insert data   
+      #  run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/softstory.sql postgresql://postgres:password@db:5432/qsdatabase" 
+
+      #- name: create tsunami and insert data
+      #  run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f tmp/dbscripts/tsunami.sql postgresql://postgres:password@db:5432/qsdatabase"
+
+      #- name: verify data in db
+      #  run: docker compose exec -e PGPASSWORD=password -T db sh -c "psql -f verify.sql postgresql://postgres:password@db:5432/qsdatabase"  
 
       - name: Docker Backend Logs
         if: always()
