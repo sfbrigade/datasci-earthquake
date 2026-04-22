@@ -4,17 +4,16 @@ type KeyElemProps = {
   name: string;
   color: SystemStyleObject["color"];
   icon: React.ReactNode;
-  isMobile?: boolean;
 };
 
-export const KeyElem = ({ name, color, icon, isMobile }: KeyElemProps) => {
+export const KeyElem = ({ name, color, icon }: KeyElemProps) => {
   return (
     <Stack direction="row" alignItems="center">
-      <Icon size={isMobile ? "sm" : "md"} color={color}>
+      <Icon boxSize={{ base: "sm", md: "md" }} color={color}>
         {icon}
       </Icon>
       <Text
-        textStyle={isMobile ? "textSmall" : "textMedium"}
+        textStyle={{ base: "textSmall", md: "textMedium" }}
         layerStyle="headerAlt"
         fontWeight="bold"
         whiteSpace={"nowrap"}
