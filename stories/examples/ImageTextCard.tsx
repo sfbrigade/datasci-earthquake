@@ -8,7 +8,7 @@ export interface ImageTextCardProps {
   imagePosition?: "left" | "right";
 }
 
-// TODO: replace <img> with <Image>
+// TODO: replace <img> with <NextImage>
 export const ImageTextCard = ({
   image,
   title,
