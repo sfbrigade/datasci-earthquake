@@ -9,7 +9,7 @@ type KeyElemProps = {
 export const KeyElem = ({ name, color, icon }: KeyElemProps) => {
   return (
     <Stack direction="row" alignItems="center">
-      <Icon boxSize={{ base: "sm", md: "md" }} color={color}>
+      <Icon size={{ base: "sm", md: "md" }} color={color}>
         {icon}
       </Icon>
       <Text
