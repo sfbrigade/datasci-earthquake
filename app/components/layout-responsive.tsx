@@ -24,16 +24,6 @@ export const LayoutResponsive = ({ children }: LayoutResponsiveProps) => {
           <Footer />
         </Box>
       </Flex>
-      {/* 
-      <Flex direction="column" align="center" minH="dvh">
-        <Header />
-        <Box as="main" w="full" h="full" >
-          {children}
-        </Box>
-        <Box as="footer" w="full" hideBelow="md">
-          <Footer />
-        </Box>
-      </Flex> */}
     </>
   );
 };
