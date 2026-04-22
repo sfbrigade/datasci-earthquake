@@ -330,6 +330,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                   <Portal container={drawerContainerRef}>
                     {open ? null : (
                       <Box
+                        hideFrom="md"
                         position="absolute"
                         zIndex="overlay"
                         top={{ base: "auto", md: "0" }}
