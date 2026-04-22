@@ -36,7 +36,7 @@ const FooterVerbose = () => {
           gap="6"
         >
           <Text textStyle="textXSmall" layerStyle="text" color="white">
-            © 2025 SF Civic Tech
+            © 2026 SF Civic Tech
           </Text>
           {disclaimers}
         </VStack>

@@ -24,7 +24,8 @@ export const Default: Story = {
   args: {
     image: "https://via.placeholder.com/150",
     title: "Sample Title",
-    description: "This is a sample description text that goes along with the image.",
+    description:
+      "This is a sample description text that goes along with the image.",
     imagePosition: "left",
   },
 };
