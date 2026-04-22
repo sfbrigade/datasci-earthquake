@@ -7,6 +7,8 @@ import { FaRedhat } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa6";
 import NextLink from "next/link";
 
+// FIXME: replace <Image> with <NextImage> to avoid hydration mismatch errors
+
 const EarthquakeReadyCards = () => (
   <Center py="4" px="8">
     <CardContainer stackDirectionResponsive={true}>

@@ -209,6 +209,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     }
   }, [softStoryData, tsunamiData, liquefactionData]);
 
+  // FIXME: replace <Image> with <NextImage> to avoid hydration mismatch errors
+
   return (
     <>
       <HomeHeader
