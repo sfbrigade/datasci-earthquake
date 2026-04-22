@@ -25,7 +25,6 @@ import ReportHazards from "./report-hazards";
 import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
-import system from "../../styles/theme";
 import SearchBar from "./search-bar";
 import { CurrentVariant } from "@/data/constants";
 import EarthquakeReadyCards from "./earthquake-ready-cards";
@@ -34,7 +33,6 @@ import AlertInfo from "@/components/ui/alert-info";
 const defaultCoords = [-122.4194, 37.7949];
 
 const toggledStatesDefaults = [true, true, true];
-const mdBreakpointValue = system.token("breakpoints.md");
 const AngleLeft = chakra(FaAngleLeft);
 const AngleRight = chakra(FaAngleRight);
 
@@ -491,8 +489,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             ) : (
               <>
                 <Box zIndex="docked" top="36" left="8" position="absolute">
-                  <Card.Root width="var(--sizes-500)">
-                    <Card.Body gap="2">
+                  <Card.Root>
+                    <Card.Header>
                       <Card.Title mt="2">
                         <Flex gap="4" align="center">
                           <div>
@@ -509,17 +507,17 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
                           <div>{initialAddress}</div>
                         </Flex>
                       </Card.Title>
-                      <Card.Description>
-                        <ReportHazards
-                          variant="cardhazardsummary"
-                          addressHazardData={addressHazardData}
-                          isHazardDataLoading={isHazardDataLoading}
-                          toggledStates={toggledStates}
-                          setToggledStates={setToggledStates}
-                          setLayerToggleObj={setLayerToggleObj}
-                          stackDirectionResponsive={true}
-                        />
-                      </Card.Description>
+                    </Card.Header>
+                    <Card.Body pt="3">
+                      <ReportHazards
+                        variant="cardhazardsummary"
+                        addressHazardData={addressHazardData}
+                        isHazardDataLoading={isHazardDataLoading}
+                        toggledStates={toggledStates}
+                        setToggledStates={setToggledStates}
+                        setLayerToggleObj={setLayerToggleObj}
+                        stackDirectionResponsive={true}
+                      />
                     </Card.Body>
                   </Card.Root>
                 </Box>
