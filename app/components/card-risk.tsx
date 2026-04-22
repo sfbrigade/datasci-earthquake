@@ -5,7 +5,6 @@ import {
   Icon,
   Separator,
   Link,
-  Accordion,
   AccordionRoot,
   AccordionItem,
   AccordionItemTrigger,
@@ -13,12 +12,11 @@ import {
   AccordionItemContent,
   SystemStyleObject,
   Spinner,
-  HStack,
 } from "@chakra-ui/react";
-import { PillData, LayerIds } from "../data/data";
+import { PillData } from "../data/data";
 import { FaCircle, FaSquareFull, FaPlus } from "react-icons/fa";
 import Pill from "./pill";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { LayerToggleObjProps } from "./address-mapper";
 interface CardRiskProps {
   hazard: {
@@ -52,7 +50,6 @@ const CardRisk: React.FC<CardRiskProps> = ({
     falseData: "No Data",
     noData: "No Data",
   };
-  const [isMoreInfo, setIsMoreInfo] = useState(false);
   const hazardPill = isHazardDataLoading ? (
     <Spinner size="xs" />
   ) : showData ? (

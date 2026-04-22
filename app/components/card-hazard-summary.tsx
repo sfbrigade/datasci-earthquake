@@ -3,12 +3,10 @@ import {
   Flex,
   Text,
   Icon,
-  Card,
-  Image,
   SystemStyleObject,
   Spinner,
 } from "@chakra-ui/react";
-import { FaCircle, FaSquareFull, FaPlus } from "react-icons/fa";
+import { FaCircle, FaSquareFull } from "react-icons/fa";
 import { PillData } from "../data/data";
 import Pill from "./pill";
 interface CardHazardSummaryProps {
@@ -29,15 +27,14 @@ interface CardHazardSummaryProps {
   toggledStates: boolean[];
 }
 const CardHazardSummary: React.FC<CardHazardSummaryProps> = ({
-  address,
   hazard,
   hazardData,
   showData,
   isHazardDataLoading,
 }) => {
   if (!hazard) return null;
-  const { id, title, name, description, icon, iconColor } = hazard;
-  const { exists, last_updated: date } = hazardData || {};
+  const { title, name, icon, iconColor } = hazard;
+  const { exists } = hazardData || {};
   const pillTextOptions = PillData.find((object) => object.name === name) ?? {
     trueData: "No Data",
     falseData: "No Data",
