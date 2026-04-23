@@ -1,0 +1,49 @@
+name: Vercel Deploy
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - develop
+      - main
+
+jobs:
+  deploy:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false
+    runs-on: ubuntu-latest
+    concurrency:
+      group: vercel-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Set deploy mode
+        run: |
+          if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref_name }}" = "main" ]; then
+            echo "VERCEL_TARGET=production" >> "$GITHUB_ENV"
+            echo "VERCEL_DEPLOY_FLAG=--prod" >> "$GITHUB_ENV"
+          else
+            echo "VERCEL_TARGET=preview" >> "$GITHUB_ENV"
+            echo "VERCEL_DEPLOY_FLAG=" >> "$GITHUB_ENV"
+          fi
+
+      - name: Pull Vercel env
+        run: vercel pull --yes --environment=${{ env.VERCEL_TARGET }} --token=${{ secrets.VERCEL_PREVIEW_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy
+        run: vercel deploy --yes $VERCEL_DEPLOY_FLAG --token=${{ secrets.VERCEL_PREVIEW_TOKEN }}
