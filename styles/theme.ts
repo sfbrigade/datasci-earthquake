@@ -178,15 +178,17 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
       600: { value: "#4A5568" },
       900: { value: "#171923" },
     },
-    white: { value: "#FFF" },
+    peach: { DEFAULT: { value: "#F5F5F5" } },
+    white: { DEFAULT: { value: "#FFF" } },
     blue: { 600: { value: "#0088FF" }, text: { value: "#2B6CB0" } }, // blue/600 (TODO: all headings) // "#0088FF" comes from Figma switches
-    yellow: { value: "#ECC94B" },
-    red: { value: "#C53030" },
-    green: { value: "#25855A" },
+    yellow: { DEFAULT: { value: "#ECC94B" } },
+    red: { DEFAULT: { value: "#C53030" } },
+    green: { DEFAULT: { value: "#25855A" } },
     orange: { value: "#F6AD55" },
     pink: { value: "#ED64A6" },
 
     // TODO: move some of these to `semanticTokens` and rename accordingly
+    blueSwitch: { value: "#3182CE" }, // NOTE: "#3182CE" comes from Figma switches, but color palette for `blue` is being used instead for the time being
     blueBackground: { value: "#2C5282" }, // blue/700
     tsunamiBlue: { value: "#63B3ED" }, // blue/300
     lightGrey: { value: "#c8caceff" },
@@ -194,6 +196,7 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     warningRed: { value: "#b53d37" },
     blueGradientFrom: { value: "#3b6294" },
     blueGradientTo: { value: "#183252" },
+    cooperativeGesturesOverlay: { value: "#00000080" },
   },
   gradients: {
     // string value
@@ -207,11 +210,14 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
   },
   spacing: {
     0: { value: 0 }, // explicit 0 value for margin, padding, etc.
-    auto: { value: "auto" }, // explicit "auto" value for margin
+    auto: { value: "auto" }, // explicit "auto" value for e.g. margin
+    "1/2": { value: "50%" }, // convenience token for 50% (e.g. top="1/2")
   },
   sizes: {
     // for popover content maxHeight
     unset: { value: "unset" },
+    auto: { value: "auto" }, // explicit "auto" value for e.g. width
+    none: { value: "none" }, // explicit "none" value for e.g. max-width
 
     // map marker (global CSS)
     // TODO: adjust these so that they are based on Chakra sizing scale
@@ -267,6 +273,9 @@ const globalCss: SystemConfig["globalCss"] = {
     backgroundSize: "cover",
     borderRadius: "none",
   },
+  ".mapboxgl-scroll-zoom-blocker, .mapboxgl-touch-pan-blocker": {
+    backgroundColor: "cooperativeGesturesOverlay !important",
+  },
   // NOTE: !important required to override due to the use of @layer in Chakra UI; alternative is to turn off @layer in Chakra config
   // TODO: consider looking into better workarounds or turning off @layer
   ".mapboxgl-ctrl-group button": {
@@ -287,6 +296,20 @@ const overridesConfig: SystemConfig = defineConfig({
     layerStyles,
     tokens,
     semanticTokens,
+    // components: {
+    //   Alert: {
+    //     variants: {
+    //       subtle: {
+    //         root: {
+    //           _light: {
+    //             bg: "colorPalette.100",
+    //             color: "colorPalette.700",
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
   },
 });
 

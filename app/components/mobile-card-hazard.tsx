@@ -116,7 +116,6 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
               name={title}
               color={iconColor}
               icon={icon === "circle" ? <FaCircle /> : <FaSquareFull />}
-              isMobile={true}
             />
             {hazardPill}
           </Card.Header>
