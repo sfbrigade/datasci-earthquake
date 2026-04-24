@@ -12,7 +12,7 @@ describe("Share Component", () => {
         <Share />
       </Provider>
     );
-    const button = screen.getByText(/copy link to this page/i);
+    const button = screen.getByText(/share report/i);
     expect(button).toBeInTheDocument();
   });
 

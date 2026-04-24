@@ -1,17 +1,17 @@
 import { Button } from "@chakra-ui/react";
-import { IoIosLink } from "react-icons/io";
+import ShareIcon from "../img/icon-share.svg";
 
 const ShareSkeleton = () => {
   return (
     <Button
-      aria-label="Copy link to this page"
+      aria-label="Share report"
       variant="ghost"
       disabled={true}
       background={"transparent"}
       textStyle="textMedium"
       color="white"
     >
-      <IoIosLink /> Copy link to this page
+      Share report <ShareIcon />
     </Button>
   );
 };

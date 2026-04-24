@@ -2,12 +2,9 @@ import { Box, Text } from "@chakra-ui/react";
 
 interface PillProps {
   exists: boolean | undefined;
-  trueData: string;
-  falseData: string;
-  noData: string;
 }
 
-const Pill: React.FC<PillProps> = ({ exists, trueData, falseData, noData }) => {
+const Pill: React.FC<PillProps> = ({ exists }) => {
   const getColor = () => {
     switch (exists) {
       case true:
@@ -22,11 +19,11 @@ const Pill: React.FC<PillProps> = ({ exists, trueData, falseData, noData }) => {
   const getLabel = () => {
     switch (exists) {
       case true:
-        return trueData;
+        return "At Risk";
       case false:
-        return falseData;
+        return "Low Risk";
       default:
-        return noData;
+        return "No Data";
     }
   };
 
@@ -37,7 +34,6 @@ const Pill: React.FC<PillProps> = ({ exists, trueData, falseData, noData }) => {
         color="white"
         p="2px 12px 2px 12px"
         borderRadius="full"
-        whiteSpace={"nowrap"}
       >
         {getLabel()}
       </Text>

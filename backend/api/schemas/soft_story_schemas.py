@@ -1,6 +1,7 @@
 from pydantic import BaseModel, ConfigDict, Field
 from backend.api.models.soft_story_properties import SoftStoryProperty
 from geojson_pydantic import Feature, FeatureCollection, Point
+from geoalchemy2.shape import to_shape
 from typing import List, Optional
 from datetime import datetime
 
@@ -32,7 +33,8 @@ class SoftStoryFeature(Feature):
     geometry: Point
     properties: SoftStoryProperties
 
-    model_config = ConfigDict(from_attributes=True)
+    class Config:
+        from_attributes = True
 
     @staticmethod
     def from_sqlalchemy_model(soft_story: SoftStoryProperty):
@@ -82,7 +84,7 @@ class IsSoftStoryPropertyView(BaseModel):
         last_updated (Optional[datetime]): Timestamp of last update if exists
     """
 
-    exists: Optional[bool]
+    exists: bool
     last_updated: Optional[datetime]
 
     model_config = ConfigDict(from_attributes=True)

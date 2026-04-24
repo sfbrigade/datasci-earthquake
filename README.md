@@ -9,157 +9,19 @@ This is a hybrid Next.js + Python app that uses Next.js as the frontend and Fast
 You can work on this app entirely [locally](#local-development), entirely [using Docker](#development-with-docker), or--if you prefer to focus on front end or back end--a [combination of the two](#hybrid-development).
 
 ---
-# Setting Up and Using Environments
-## Configuration of environment variables for all environments
-
-We use GitHub Secrets to store sensitive environment variables. To be able to run the app with all features enabled, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
-
-### Contributors working from forks
-- If you are contributing from a fork, you do not need to follow the workflow below for core contributors.
-- The CI pipeline for forked PRs will automatically use the provided `.env.example`.
-- If you don't have `.env`, `.env.example` will be automatically used instead. This allows you to run the app, but with limited functionality (since the real secrets are not included).
-
-### Core contributors
-Before starting work on the project, make sure to:
-
-1. Get **write** access to the repository.  Accept invitation after you have been invited.
-2. Get the **decryption passphrase** from other devs or in the Slack Engineering channel.
-3. Navigate to workflow [on the repository's Actions page](https://github.com/sfbrigade/datasci-earthquake/actions)
-4. Click on `Generate .env File` workflow
-5. Trigger the workflow with the `Run workflow` button.
-6. Click on the job to navigate to the workflow run page.
-7. Download the artifact at the bottom of the page and unzip.
-8. Decrypt the env file using OpenSSL. In the folder with the artifact, run `openssl aes-256-cbc -d -salt -pbkdf2 -k <YOUR_PASSPHRASE> -in .env.enc -out env` in the terminal. This creates a decrypted file named `env`.
-9. Place the decrypted file in the root folder of the project and rename it to `.env`.
-
-The file is organized into four main sections:
-
-- **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.
-- **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
-- **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
-- **Monitoring and Analytics Variables**. This section contains variables for Sentry and Posthog. 
-
-#### ⚠️ If you add a new variable to the Settings class in the backend, you must also add a dummy value for it in .env.example. Otherwise, PRs from forks will fail, since the CI depends on .env.example when secrets are unavailable.`
-
----
-
-
-## Development with Docker
-
-This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.  
-
-### Changing code
-Docker is configured so that any changes you make should trigger re-compiling by the appropriate service.  If the change is not taking, you may need to restart the server, but you do not have to rebuild everything.  
-
-### Changing configuration files
-This includes `pyproject.toml` and `.env`, and `package.json`.  You will need to restart the individual server, but should not have to rebuild everything.
-
-### Prerequisites
-
-- **Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).
-- **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
-
-### Starting the application
-
-1. **Build images if not yet created**: From the project root directory (where the docker-compose.yml file is located), run:
-   `docker compose build`
-
-1. **Run Docker Compose**: From the project root directory (where the docker-compose.yml file is located), run:
-   `docker compose up`
-
-   or
-
-   `docker compose up -d`
-
-   This will:
-
-- Start all services defined in the docker-compose.yml file (e.g., frontend, backend, database)
-
-2. **Start Postgres**
-
-3.  **Access the Application**:
-    - The app is running at http://localhost:3000. Note that this may conflict with your local dev server. If so, one will be running on port 3000 and the other on port 3001.
-    - The API is accessible at http://localhost:8000.
-    - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
-    - To interact with a running container, use `docker exec [OPTIONS] CONTAINER COMMAND [ARG...]`
-      - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
-      - To execute a python script, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
-
-    **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
-
-### Shutting Down the Application
-
-To stop and shut down the application:
-
-1.  **Stop Docker Compose**: Type `docker compose stop`.
-
-2.  **Bring Down the Containers**: If you want to stop and remove the containers completely, run:
-    `docker compose down`
-    This will:
-    - Stop all services.
-    - Remove the containers, but it will **not** delete volumes (so the database data will persist).
-
-    **Note:** If you want to start with a clean slate and remove all data inside the containers, run `docker compose down -v`.
-
-### Rebuilding individual servers
-Replace <image name> with `datasci-earthquake-frontend`, `datasci-earthquake-backend`, `datasci-earthquake-db` or `datasci-earthquake-db_test`:
-
-`docker compose build <service_name>`
-
-### Starting/stopping individual servers
-Replace <service name> with frontend, backend, db, or db_test:
-
-`docker compose up -d <service_name>`
-`docker compose stop <service_name>`
-
-### Troubleshooting
-
-1. You can find the list of running containers (their ids, names, status and ports) by running `docker ps -a`.
-2. If a container failed, start troublshooting by inspecting logs with `docker logs <container-id>`.
-3. Containers fail when their build contexts were modified but the containers weren't rebuilt. If logs show that some dependencies are missing, this can be likely solved by rebuilding the containers.
-4. Many problems are caused by disk usage issues. Run `docker system df` to show disk usage. Use pruning commands such as `docker system prune`to clean up unused resources.
-5. `Error response from daemon: network not found` occurs when Docker tries to use a network that has already been deleted or is dangling (not associated with any container). Prune unused networks to resolve this issue: `docker network prune -f`. If this doesn't help, run `docker system prune`.
-
-### Running unit tests with Docker
-
-#### Backend
-
-1. First update code and/or rebuild any containers as necessary. Otherwise you may get false results.
-2. Run the containers (`docker compose up -d)`
-3. Run pytest to test the docker container: `docker exec -it datasci-earthquake-backend-1 pytest backend` or `docker compose exec backend pytest backend`
-4. To get code coverage, run `docker exec -w /backend datasci-earthquake-backend-1 pytest --cov=backend`
-
----
-
 
 ## Local development
-Docker development is recommended as the configuration is more guaranteed.
 
 ### Prerequisites
 
-**PostgreSQL**: 
-1. [Install](https://adoptium.net/) Java 1.8 or later if your PostgreSQL installer requires it (e.g., the EDB installer).
-2. [Install](https://www.postgresql.org/download/) PostgreSQL locally with the PostGIS extension, select the PostGIS extension when prompted by the installer.
-3. If PostgreSQL was already installed, add the PostGIS extension if not already included
+- **PostgreSQL**: Ensure PostgreSQL is installed if you want to run the database locally (instead of in a Docker container).
 
 ### Starting the Application
 
-1. Set up a python environment
-```bash
-python3.11 -m venv backend/venv
-```
+If you choose to work locally, do the following:
 
-2. Activate the python environment (NOTE: `npm run dev` will install the dependencies)
-```bash
-source backend/venv/bin/activate
-```
+First, install the dependencies:
 
-3. Set nvm version
-```bash
-nvm use 18
-```
-
-4. Install the front end dependencies:
 ```bash
 npm install
 # or
@@ -168,7 +30,7 @@ yarn
 pnpm install
 ```
 
-5. Run the development server:
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -185,6 +47,68 @@ The FastAPI server will be running on [http://127.0.0.1:8000](http://127.0.0.1:8
 ### Troubleshooting
 
 Please refer to [Troubleshooting front end](#troubleshooting-front-end).
+
+---
+
+## Development with Docker
+
+This project uses Docker and Docker Compose to run the application, which includes the frontend, backend, and postgres database.
+
+### Prerequisites
+
+- **Docker**: Make sure Docker is installed and running on your machine. [Get Docker](https://docs.docker.com/get-docker/).
+- **Docker Compose**: Ensure Docker Compose is installed (usually included with Docker Desktop).
+
+### Starting the Application
+
+1. **Run Docker Compose**: From the project root directory (where the docker-compose.yml file is located), run:
+   `docker compose up -d`
+   This will:
+
+- Build the necessary Docker images (if not already built).
+- Start all services defined in the docker-compose.yml file (e.g., frontend, backend, database).
+
+2.  **Access the Application**:
+    - The app is running at http://localhost:3000. Note that this may conflict with your local dev server. If so, one will be running on port 3000 and the other on port 3001.
+    - The API is accessible at http://localhost:8000.
+    - The Postgres instance with PostGIS extension is accessible at http://localhost:5432.
+    - To interact with a running container, use `docker exec [OPTIONS] CONTAINER COMMAND [ARG...]`
+      - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
+      - To execute a python script, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
+
+    **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `requirements.txt`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
+
+### Shutting Down the Application
+
+To stop and shut down the application:
+
+1.  **Stop Docker Compose**: Type `docker compose stop`.
+
+2.  **Bring Down the Containers**: If you want to stop and remove the containers completely, run:
+    `docker compose down`
+    This will:
+    - Stop all services.
+    - Remove the containers, but it will **not** delete volumes (so the database data will persist).
+
+    **Note:** If you want to start with a clean slate and remove all data inside the containers, run `docker compose down -v`.
+
+### Troubleshooting
+
+1. You can find the list of running containers (their ids, names, status and ports) by running `docker ps -a`.
+2. If a container failed, start troublshooting by inspecting logs with `docker logs <container-id>`.
+3. Containers fail when their build contexts were modified but the containers weren't rebuilt. If logs show that some dependencies are missing, this can be likely solved by rebuilding the containers.
+4. Many problems are caused by disk usage issues. Run `docker system df` to show disk usage. Use pruning commands such as `docker system prune`to clean up unused resources.
+5. `Error response from daemon: network not found` occurs when Docker tries to use a network that has already been deleted or is dangling (not associated with any container). Prune unused networks to resolve this issue: `docker network prune -f`. If this doesn't help, run `docker system prune`.
+
+### Running unit tests with Docker
+
+#### Backend
+
+1. First update code and/or rebuild any containers as necessary. Otherwise you may get false results.
+2. Run the containers (`docker compose up -d)`
+3. Run pytest: `docker compose run backend pytest backend`
+   - Alternatively, run pytest with container cleanup: `docker compose run --remove-orphans backend pytest backend`
+4. To get code coverage, run `docker exec -w /backend datasci-earthquake-backend-1 pytest --cov=backend`
 
 ---
 
@@ -303,13 +227,11 @@ map.addLayer({
 
 ---
 
-# Development Guidelines
-
-## Formatting with a Pre-Commit Hook
+# Formatting with a Pre-Commit Hook
 
 This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project. It works for _only_ the staged files. If you have edited unstaged files in your repository and want to make them comply with the CI pipeline, then run `black .` `mypy .` for Python code and `npm run lint .` for Javascript code.
 
-### Prerequisites
+## Prerequisites
 
 - If you haven't already, install pre-commit:
   `pip install pre-commit`
@@ -317,7 +239,7 @@ This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code s
   `pre-commit install`
   This command sets up pre-commit to automatically run ESLint, Black, and MyPy before each commit.
 
-### Usage
+## Usage
 
 - **Running Black Automatically**: After setup, every time you attempt to commit code, Black will check the staged files and apply formatting if necessary. If files are reformatted, the commit will be stopped, and you’ll need to review the changes before committing again.
 - **Bypassing the Hook**: If you want to skip the pre-commit hook for a specific commit, use the --no-verify flag with your commit command:
@@ -330,7 +252,27 @@ This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code s
 
 ---
 
-## Migrating the Database
+# Configuration of environment variables
+
+We use GitHub Secrets to store sensitive environment variables. To be able to run the app, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact.
+
+**Note**: Before starting work on the project, make sure to:
+
+1. Get **write** access to the repository.
+2. Get the **decryption passphrase** from other devs or in the Slack Engineering channel.
+3. Trigger the `Generate .env File` workflow [on the repository's Actions page](https://github.com/sfbrigade/datasci-earthquake/actions) download the artifact. You can trigger the workflow with the `Run workflow` button, navigate to the workflow run page, and find the artifact at the bottom.
+4. Decrypt the env file using OpenSSL. In the folder with the artifact, run `openssl aes-256-cbc -d -salt -pbkdf2 -k <YOUR_PASSPHRASE> -in .env.enc -out env` in the terminal. This creates a decrypted file named `env`.
+5. Place the decrypted file in the root folder of the project and rename it to `.env`.
+
+The file is organized into three main sections:
+
+- **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.
+- **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
+- **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
+
+---
+
+# Migrating the Database
 
 If you have changed the models in backend/api/models, then you must migrate the database from its current models to the new ones with the following two commands:
 
@@ -346,20 +288,19 @@ The former command generates a migration script in `backend/alembic/versions`, a
 
 ---
 
-## Git Workflow
+# Git Workflow
 
-### General
+## General
 
 Developers should only branch from `develop`, pull updates to `develop`, and ensure their work is merged into `develop` via Pull Requests. `main` is the safe production branch.
 
-### Pull Requests
+## Pull Requests
 
 When opening a pull request, please:
 
 - aim the pull request at the `develop` branch rather than `main`
 - add reviewers
 - use draft/WIP if it turns out to be not ready for review
-- link the relevant issue so it is automatically closed when the PR is merged
 
 Ideally, we maintain a readable, clean, and linear commit history. To that end, when merging a pull request, please use `Squash and Merge`¹.
 
@@ -372,17 +313,9 @@ Ideally, we maintain a readable, clean, and linear commit history. To that end, 
 >
 > NOTE: An interactive rebase (e.g., `git rebase -i`) can help you rewrite your branch's _local_ history to meet the criteria above
 
-### Creating Issues
+# Other resources
 
-New issues can be created in the Issues tab using the `New issue` button.
-
-When creating an issue, please:
-
-- use the correct template(default, feature request, bug, etc...)
-- add the `SafeHome Project` as a project to the issue. If this is your first issue you will likely need to request access to be added to the project and have write access. You can ask in Slack.
-- add the relevant label(front end, back end, etc...) so it can easily be filtered by team
-
-# Learn More
+## Learn More
 
 To learn more about Next.js, take a look at the following resources:
 

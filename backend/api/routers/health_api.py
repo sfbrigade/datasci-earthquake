@@ -16,7 +16,7 @@ router = APIRouter(
 
 
 @router.get("")
-def health_check():
+async def health_check():
     """
     Simple health check endpoint to verify API is running.
 

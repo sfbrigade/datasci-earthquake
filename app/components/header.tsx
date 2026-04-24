@@ -6,16 +6,17 @@ import {
   Text,
   Link,
   Image,
+  Stack,
   VisuallyHidden,
-  Flex,
 } from "@chakra-ui/react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import NextLink from "next/link";
 import { useRef } from "react";
 
 const Header = () => {
   const pathname = usePathname();
-  const router = useRouter();
   const isHome = pathname === "/";
+  const isAbout = pathname === "/About";
   const portalRef = useRef<HTMLDivElement | null>(null);
 
   return (
@@ -25,22 +26,18 @@ const Header = () => {
       w="100%"
       position={isHome ? "absolute" : undefined}
       top={isHome ? "0" : undefined}
-      display={isHome ? "none" : undefined}
     >
-      <Flex
-        direction="row"
-        justifyContent={{
-          base: "flex-start",
-          md: "flex-end",
-          lg: "flex-end",
-          xl: "flex-end",
-        }}
-        alignItems="center"
+      <Stack
+        direction={{ base: "column", md: "row" }}
+        w={{ base: "full", xl: "7xl" }}
+        h="112px"
+        justifyContent="flex-start"
+        columnGap="25px"
+        m="auto"
         p={{
-          base: 6,
-          md: 7,
-          lg: [7, 8, 7, 8],
-          xl: [7, 9, 7, 9],
+          base: "18px 24px 18px 24px",
+          md: "28px 28px 28px 28px",
+          xl: "28px 128px 28px 128px",
         }}
       >
         <HStack align="start" gap="1">
@@ -51,7 +48,7 @@ const Header = () => {
             textDecoration={"none"}
             onClick={(e) => {
               e.preventDefault();
-              router.push("/");
+              window.location.href = "/";
             }}
           >
             <HStack align="baseline">
@@ -71,7 +68,14 @@ const Header = () => {
         </HStack>
 
         {isHome && <Box ref={portalRef} id="searchbar-portal" />}
-      </Flex>
+        {isAbout && (
+          <Link as={NextLink} color="white" href="/">
+            <Text textStyle="textMedium" layerStyle="text" color="white">
+              Back To Home
+            </Text>
+          </Link>
+        )}
+      </Stack>
     </Box>
   );
 };

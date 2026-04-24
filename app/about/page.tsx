@@ -26,9 +26,9 @@ const About = () => {
   };
 
   const buildTeamMembers = () => {
-    return TeamMembers.map((teamMember, index) => {
+    return TeamMembers.map((teamMember) => {
       return (
-        <List.Item key={index} mb="4px">
+        <List.Item key={teamMember.id} mb="4px">
           <Text>
             <Text as="span" fontWeight={800}>
               {teamMember.name}

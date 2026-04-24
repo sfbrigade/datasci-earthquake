@@ -51,7 +51,7 @@ const HomeSkeleton = () => {
                 as="span"
                 textStyle="headerBig"
                 layerStyle="headerMain"
-                color="blue.text"
+                color="blue"
                 fontWeight="300"
               >
                 How to be

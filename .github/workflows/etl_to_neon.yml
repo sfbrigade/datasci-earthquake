@@ -24,16 +24,11 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11.4"
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v6
-        with:
-          enable-cache: true
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
-          uv sync --frozen --project backend
+          pip install -r requirements.txt
 
       - name: Get Run ID of Most Recent Successful Run
         id: get_run_id
@@ -64,9 +59,9 @@ jobs:
 
       - name: ETL data to Neon DB
         run: |
-          ENVIRONMENT=prod uv run --project backend -m backend.etl.tsunami_data_handler
-          ENVIRONMENT=prod uv run --project backend -m backend.etl.soft_story_properties_data_handler
-          ENVIRONMENT=prod uv run --project backend -m backend.etl.liquefaction_data_handler
+          ENVIRONMENT=prod python -m backend.etl.tsunami_data_handler
+          ENVIRONMENT=prod python -m backend.etl.soft_story_properties_data_handler
+          ENVIRONMENT=prod python -m backend.etl.liquefaction_data_handler
 
       - name: Commit & Push Changes
         id: detect_changes 
