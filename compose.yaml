@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
+    environment:
+      - ENVIRONMENT=dev_docker
     ports:
       - 3000:3000
     depends_on:
@@ -14,12 +16,13 @@ services:
       - /app/node_modules # This excludes the node_modules from being overwritten
       - nextjs_cache:/app/.next
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:3000 || exit 1" ]
+      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       start_interval: 10s
       interval: 500s
       timeout: 5s
       retries: 3
       start_period: 60s
+    command: npm run next-dev
 
   backend:
     build:
@@ -30,6 +33,7 @@ services:
     environment:
       - PYTHONPATH=/backend:/
       - DATA_GEOJSON_PATH=/public/data/
+      - ENVIRONMENT=dev_docker
     ports:
       - 8000:8000
     depends_on:
@@ -41,7 +45,7 @@ services:
       - public_data:/public/data
     command: bash /startup.sh
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1" ]
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1"]
       start_interval: 10s
       interval: 500s
       timeout: 5s
@@ -56,12 +60,14 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      - ENVIRONMENT=dev_docker
     volumes:
       - ./backend/database:/docker-entrypoint-initdb.d # Mount the SQL scripts directory
     ports:
       - 5433:5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       start_interval: 10s
       interval: 500s
       timeout: 5s
@@ -78,12 +84,14 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      - ENVIRONMENT=dev_docker
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       start_interval: 10s
       interval: 500s
       timeout: 5s
@@ -94,4 +102,3 @@ volumes:
   db-data:
   nextjs_cache:
   public_data:
-    

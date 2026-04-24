@@ -17,6 +17,7 @@ from sqlalchemy import text, func
 _SOFT_STORY_PROPERTIES_URL = "https://data.sfgov.org/resource/beah-shgi.geojson"
 _MAPBOX_GEOCODE_API_ENDPOINT_URL = "https://api.mapbox.com/search/geocode/v6/batch"
 _MAPBOX_SOFT_STORY_GEOJSON_PATH = "backend/etl/data/mapbox_soft_story.geojson.gz"
+STATUS_NON_COMPLIANT = "non-compliant"
 
 
 class _SoftStoryPropertiesDataHandler(DataHandler):
@@ -77,7 +78,7 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
         for item in data:
             status = item["status"]
             wkt_point = item.get("point")  # Extract 'point' value (WKT)
-            if status and status.lower() == "work complete, cfc issued":
+            if not status or status.lower() != STATUS_NON_COMPLIANT:
                 continue
             if wkt_point:
                 point_geom = loads(wkt_point)  # Convert WKT to Shapely Point

@@ -2,8 +2,28 @@
 Provides the environment variables that are read by the application
 """
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from pathlib import Path
 from functools import lru_cache
+
+
+def find_env_file(start: Path, filename: str = ".env") -> Path | None:
+    """
+    Walk upwards from `start` until `filename` is found or the root directory is reached.
+    Returns the Path if found, otherwise None.
+    """
+    current = start.resolve()
+    for parent in [current, *current.parents]:
+        candidate = parent / filename
+        if candidate.is_file():
+            return candidate
+        if (parent / "compose.yaml").is_file():
+            break
+    return None
+
+
+BACKEND_DIR = Path(__file__).parent
+ENV_FILE = find_env_file(BACKEND_DIR) or find_env_file(BACKEND_DIR, ".env.example")
 
 
 class Settings(BaseSettings):
@@ -22,10 +42,13 @@ class Settings(BaseSettings):
     environment: str = "local"
     next_public_cdn_url: str
     sentry_dsn: str
+    next_public_posthog_host: str
+    next_public_posthog_key: str
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    model_config = SettingsConfigDict(
+        env_file=ENV_FILE,
+        env_file_encoding="utf-8",
+    )
 
 
 settings = Settings()

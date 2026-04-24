@@ -35,8 +35,8 @@ def test_is_soft_story(client, caplog):
     response = client.get(f"api/soft-stories/is-soft-story?lon={lon}&lat={lat}")
 
     assert response.status_code == 200
-    assert not response.json()["exists"]
-    assert response.json()["last_updated"] is None
+    assert response.json()["exists"] is False
+    assert response.json()["last_updated"] is not None
     assert (
         f"Checking soft story status for coordinates: lon={lon}, lat={lat}"
         in caplog.text

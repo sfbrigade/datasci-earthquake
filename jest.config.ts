@@ -12,6 +12,10 @@ const config: Config = {
   testEnvironment: "./app/tests/FixJSDOMEnvironment.ts",
   // Add more setup options before each test is run
   setupFilesAfterEnv: ["<rootDir>/app/components/__mocks__/jest.setup.tsx"],
+  // Map the "@" alias to the app directory for importing ui components(ex. toaster)
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/app/$1",
+  },
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

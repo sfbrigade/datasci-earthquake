@@ -12,9 +12,8 @@ const textStyles = defineTextStyles({
     description: "header big",
     value: {
       fontFamily: "heading",
-      fontSize: ["4xl", "4xl", "5xl", "5xl", "6xl", "6xl"],
-      fontWeight: "300",
-      lineHeight: ["40px", "40px", "48px", "48px", "60px", "60px"],
+      fontSize: ["2xl", "2xl", "3xl", "3xl", "4xl", "4xl"],
+      fontWeight: "500",
     },
   },
   headerReport: {
@@ -30,7 +29,7 @@ const textStyles = defineTextStyles({
     description: "header medium",
     value: {
       fontFamily: "heading",
-      fontSize: ["2xl", "2xl", "3xl", "3xl", "3xl", "3xl"],
+      fontSize: ["xl", "xl", "2xl", "2xl", "2xl", "2xl"],
       fontWeight: "500",
     },
   },
@@ -70,7 +69,39 @@ const textStyles = defineTextStyles({
     description: "text small",
     value: {
       fontFamily: "body",
+      fontSize: "sm",
+      fontWeight: "normal",
+    },
+  },
+  textXSmall: {
+    description: "text extra small",
+    value: {
+      fontFamily: "body",
       fontSize: "xs",
+      fontWeight: "normal",
+    },
+  },
+  cardTextMedium: {
+    description: "hazard card text medium",
+    value: {
+      fontFamily: "body",
+      fontSize: "md",
+      fontWeight: "normal",
+    },
+  },
+  cardTextSmall: {
+    description: "hazard card text small",
+    value: {
+      fontFamily: "body",
+      fontSize: 15.2,
+      fontWeight: "normal",
+    },
+  },
+  cardTextXSmall: {
+    description: "hazard card text small",
+    value: {
+      fontFamily: "body",
+      fontSize: 14.4,
       fontWeight: "normal",
     },
   },
@@ -101,7 +132,7 @@ const layerStyles = defineLayerStyles({
   // for textStyles: headerMedium, cardTitle
   headerAlt: {
     description: "header alt",
-    value: { color: "blue" },
+    value: { color: "blue.text" },
   },
   // for textStyles: textSmall, textMedium, textBig
   text: {
@@ -115,6 +146,10 @@ const layerStyles = defineLayerStyles({
   list: {
     description: "list",
     value: { paddingLeft: "6", marginTop: "2" },
+  },
+  mobileButton: {
+    description: "mobile button",
+    value: { color: "black", bg: "white", borderRadius: "30px" },
   },
 });
 
@@ -132,7 +167,7 @@ const tokens = defineTokens({
     },
     white: { value: "#FFF" },
     blueBackground: { value: "#2C5282" }, // blue/700
-    blue: { value: "#2B6CB0" }, // blue/600 (TODO: all headings)
+    blue: { 600: { value: "#0088FF" }, text: { value: "#2B6CB0" } }, // blue/600 (TODO: all headings) // "#0088FF" comes from Figma switches
     lightBlue: { value: "#3182CE" }, // blue/500 (TODO: remove)
     tsunamiBlue: { value: "#63B3ED" }, // blue/300
     yellow: { value: "#ECC94B" },
