@@ -14,6 +14,10 @@ You can work on this app entirely [locally](#local-development), entirely [using
 
 ## Configuration of environment variables for all environments
 
+# Setting Up and Using Environments
+
+## Configuration of environment variables for all environments
+
 We use GitHub Secrets to store sensitive environment variables. To be able to run the app with all features enabled, users will need **write** access to the repository to manually trigger the `Generate .env File` workflow, which creates and uploads an **encrypted** `.env` file as an artifact. You can ask a lead or fellow team member for both write access and the decryption passphrase [as described here](#core-contributors).
 
 For additional environment variables just for your local machine, please create a `.env.local` file in the root folder and add the variables there. Note that these will override any variables in `.env` of the same name. An example of an additional environment variable you may need to configure is `BROWSER` [for Storybook](#starting-storybook-component-workshop).
@@ -268,7 +272,6 @@ For front end-focused development, do the following:
    ```shell
    nvm use
    ```
-
    - install `nvm` if you haven't yet; it is a useful tool for ensuring you're switching to a compatible version of Node when working on different projects
    - if you want to avoid manually running `nvm use`, it's recommended that you do the following so you can skip this step moving forward: Add `nvm use` into your shell's configuration file right after the lines added by nvm itself; this will _automatically_ switch you to the Node version defined in the project folder's `.nvmrc` upon shell initialization. The correct configuration file will contain the line `export NVM_DIR="$HOME/.nvm"`. Make sure to add the line after all of existing nvm config lines.
      - for zsh, this is likely in `~/.zshrc`
@@ -585,22 +588,26 @@ Developers should only branch from `develop`, pull updates from `develop`, and e
 #### Branch Names
 
 Branches should follow this format:
+
 ```
 <type>/<issue-number>-<short-dash-case-issue-title>
 ```
+
 Where `<type>` is one of: `bugfix`, `feature`, `chore`
 
 Including the issue number automatically links the branch to the issue.
 
 Example:
+
 ```
 chore/54321-example-issue-branching-readme
 ```
-Summarizing longer issue titles is acceptable. 
+
+Summarizing longer issue titles is acceptable.
 
 #### Branch Deletion
 
-Branches are deleted automatically when merged. 
+Branches are deleted automatically when merged.
 If you have an unmerged branch you do not plan to return to, please delete it to reduce clutter.
 
 ### Pull Requests
