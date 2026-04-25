@@ -220,6 +220,10 @@ const Map: React.FC<MapProps> = ({
     if (layerToggleObj.layerId != "") handleToggleLayers();
   }, [layerToggleObj]); // re-runs every time state changes
 
+  useEffect(() => {
+    if (layerToggleObj.layerId != "") handleToggleLayers();
+  }, [layerToggleObj]); // re-runs every time state changes
+
   return (
     <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
   );

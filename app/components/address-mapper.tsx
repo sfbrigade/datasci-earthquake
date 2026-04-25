@@ -76,6 +76,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const displaySearchComplete = validParams ? isSearchComplete : false;
 
   const toastIdDataLoadFailed = "data-load-failed";
+  const coordinatesRef = useRef<number[] | null>(null);
+  const router = useRouter();
 
   const { fetchHazardData } = useHazardDataFetcher({
     setSearchComplete,
@@ -183,6 +185,16 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       }
     }
   }, [softStoryData, tsunamiData, liquefactionData]);
+
+  useEffect(() => {
+    if (currentView === "") {
+      handleResize();
+    }
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [currentView]);
 
   return (
     <>
