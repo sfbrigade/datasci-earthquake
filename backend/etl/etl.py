@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+import sys 
 import time
 
 from backend.api.models.tsunami import TsunamiZone
@@ -69,9 +70,11 @@ async def main():
       etl('soft_story'),
       return_exceptions=True)
   end = time.perf_counter()
-  logger.info('----------------------------')
-  logger.info(f'this took {end-start} sec')
+  logger.info('------ RESULTS ------')
+  logger.info(f'duration: {end-start} sec')
   logger.info(res)
+  if any(isinstance(r, Exception) for r in res):
+      sys.exit(1)
 
 asyncio.run(main())
 

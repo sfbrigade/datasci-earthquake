@@ -39,6 +39,16 @@ ETL_TABLES=$(echo "$ETL_OUTPUT" | awk -F: '/^ETL_REQUIRED:/ {print $2}')
 
 
 ETL_OUTPUT=$($VENV_PYTHON backend/etl/etl.py)
+ETL_EXIT_CODE=$?
+
+if [[ $ETL_EXIT_CODE -ne 0 ]]; then
+    echo "etl.py failed!"
+    exit 1
+else
+    echo "etl.py succeeded!"
+fi
+
+
 
 # run ETL only for required tables
 #for tbl in $ETL_TABLES; do
