@@ -18,11 +18,13 @@ HANDLERS = {
             "where": "County='San Francisco' AND Evacuate='Yes, Tsunami Hazard Area'",
             "outFields": "*",
             "f": "json",
-        }
+        },
+        'pk': 'identifier' 
     },
     'liquefaction': {
         'handler': LiquefactionDataHandler('https://data.sfgov.org/resource/i4t7-35u3.geojson', LiquefactionZone),
-        'params': None
+        'params': None,
+        'pk': 'identifier' 
     },
     'soft_story': {
         'handler': SoftStoryPropertiesDataHandler(
@@ -30,7 +32,8 @@ HANDLERS = {
             SoftStoryProperty,
             mapbox_api_key=os.environ["NEXT_PUBLIC_MAPBOX_TOKEN"]
         ),
-        'params': None
+        'params': None,
+        'pk': 'address' 
     }
 }
 
@@ -48,7 +51,7 @@ async def etl(key):
         data = handler.fetch_data()
       zones_objects, zones_geojson = handler.parse_data(data)
       handler.export_geojson_if_changed(zones_geojson)
-      handler.bulk_insert_data(zones_objects, "identifier")
+      handler.bulk_insert_data(zones_objects, HANDLERS[key]['pk'])
   except RequestException as e:
       logger.error(f'ETL (fetching data) for {key} failed due to {type(e)} {e}')
       raise
