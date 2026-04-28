@@ -14,13 +14,13 @@ from shapely.wkt import loads
 from sqlalchemy import text, func
 
 
-_SOFT_STORY_PROPERTIES_URL = "https://data.sfgov.org/resource/beah-shgi.geojson"
-_MAPBOX_GEOCODE_API_ENDPOINT_URL = "https://api.mapbox.com/search/geocode/v6/batch"
-_MAPBOX_SOFT_STORY_GEOJSON_PATH = "backend/etl/data/mapbox_soft_story.geojson.gz"
+SOFT_STORY_PROPERTIES_URL = "https://data.sfgov.org/resource/beah-shgi.geojson"
+MAPBOX_GEOCODE_API_ENDPOINT_URL = "https://api.mapbox.com/search/geocode/v6/batch"
+MAPBOX_SOFT_STORY_GEOJSON_PATH = "backend/etl/data/mapbox_soft_story.geojson.gz"
 STATUS_NON_COMPLIANT = "non-compliant"
 
 
-class _SoftStoryPropertiesDataHandler(DataHandler):
+class SoftStoryPropertiesDataHandler(DataHandler):
     """
     Fetches, parses and loads SF tsunami data from
     data.sfgov.org
@@ -33,8 +33,8 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
             min_latitude=37.70799051,
             max_longitude=-122.36206898,
             max_latitude=37.83179017,
-            geocode_api_endpoint_url=_MAPBOX_GEOCODE_API_ENDPOINT_URL,
-            soft_story_geojson_path=Path(_MAPBOX_SOFT_STORY_GEOJSON_PATH),
+            geocode_api_endpoint_url=MAPBOX_GEOCODE_API_ENDPOINT_URL,
+            soft_story_geojson_path=Path(MAPBOX_SOFT_STORY_GEOJSON_PATH),
             api_key=mapbox_api_key,
         )
         self.mapbox_geojson_manager = MapboxGeojsonManager(mapbox_config)
@@ -279,8 +279,8 @@ class _SoftStoryPropertiesDataHandler(DataHandler):
 if __name__ == "__main__":
     load_dotenv()
 
-    handler = _SoftStoryPropertiesDataHandler(
-        _SOFT_STORY_PROPERTIES_URL,
+    handler = SoftStoryPropertiesDataHandler(
+        SOFT_STORY_PROPERTIES_URL,
         SoftStoryProperty,
         mapbox_api_key=os.environ["NEXT_PUBLIC_MAPBOX_TOKEN"],
     )

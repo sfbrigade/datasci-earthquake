@@ -6,10 +6,10 @@ from geoalchemy2.shape import from_shape, to_shape
 from geoalchemy2.functions import ST_Simplify
 from shapely.geometry import mapping
 
-_LIQUEFACTION_URL = "https://data.sfgov.org/resource/i4t7-35u3.geojson"
+LIQUEFACTION_URL = "https://data.sfgov.org/resource/i4t7-35u3.geojson"
 
 
-class _LiquefactionDataHandler(DataHandler):
+class LiquefactionDataHandler(DataHandler):
     """
     This class fetches, parses and loads SF liquefaction data from
     data.sfgov.org
@@ -74,7 +74,7 @@ class _LiquefactionDataHandler(DataHandler):
 
 def main():
     """ """
-    handler = _LiquefactionDataHandler(_LIQUEFACTION_URL, LiquefactionZone)
+    handler = LiquefactionDataHandler(LIQUEFACTION_URL, LiquefactionZone)
     try:
         liquefaction_zones = handler.fetch_data()
         liquefaction_zones_objects, liquefaction_zones_geojson = handler.parse_data(
