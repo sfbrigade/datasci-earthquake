@@ -52,7 +52,8 @@ async def etl(key):
         data = handler.fetch_data()
       zones_objects, zones_geojson = handler.parse_data(data)
       handler.export_geojson_if_changed(zones_geojson)
-      handler.bulk_insert_data(zones_objects, HANDLERS[key]['pk'])
+      #handler.bulk_insert_data(zones_objects, HANDLERS[key]['pk'])
+      handler.bulk_insert_data(zones_objects, 'identifier')
   except RequestException as e:
       logger.error(f'ETL (fetching data) for {key} failed due to {type(e)} {e}')
       raise
