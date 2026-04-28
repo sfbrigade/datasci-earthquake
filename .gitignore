@@ -2,6 +2,12 @@
 /.swc
 /node_modules
 
+# Temp files from old folder structure
+.tmp
+.next
+out
+/test_results
+
 # Python
 __pycache__/
 pytest_cache/
