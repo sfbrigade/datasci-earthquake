@@ -44,17 +44,17 @@ ETL_EXIT_CODE=$?
 if [[ $ETL_EXIT_CODE -ne 0 ]]; then
     echo "etl.py failed!"
 
-    tsunami_status=$(echo $ETL_OUTPUT | grep -i 'ETL (fetching data) for tsunami failed')
+    tsunami_status=$(echo $ETL_OUTPUT | grep -i 'ETL \(fetching data\) for tsunami failed')
     if [[ $? -eq 0 ]]; then
         echo "need to run tsunami.sql"
     fi
 
-    liquefaction_status=$(echo $ETL_OUTPUT | grep -i 'ETL (fetching data) for liquefaction failed')
+    liquefaction_status=$(echo $ETL_OUTPUT | grep -i 'ETL \(fetching data\) for liquefaction failed')
     if [[ $? -eq 0 ]]; then
         echo "need to run liquefaction.sql"
     fi
 
-    soft_story_status=$(echo $ETL_OUTPUT | grep -i 'ETL (fetching data) for soft_story failed')
+    soft_story_status=$(echo $ETL_OUTPUT | grep -i 'ETL \(fetching data\) for soft_story failed')
     if [[ $? -eq 0 ]]; then
         echo "need to run soft_story.sql"
     fi
