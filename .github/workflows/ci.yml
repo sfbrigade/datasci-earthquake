@@ -166,10 +166,10 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Build Docker Containers
-        run: docker compose -f compose.yaml -f compose.ci.yaml build
+        run: docker compose -f compose.yaml -f compose.ci.yaml build db db_test backend
 
       - name: Start Services
-        run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300
+        run: docker compose -f compose.yaml -f compose.ci.yaml up -d --wait --wait-timeout 300 db db_test backend
 
       - name: Docker Backend Logs
         if: always()
