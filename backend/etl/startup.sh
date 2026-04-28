@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set +e
 set -x   # Trace each command as it executes
 set -o pipefail   # Fail if any command in a pipeline fails
 
