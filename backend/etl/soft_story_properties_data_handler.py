@@ -205,7 +205,7 @@ class SoftStoryPropertiesDataHandler(DataHandler):
                 start_range = int(match_result[1])  # Before the hyphen
                 end_range = int(match_result[2])  # After the hyphen
                 street_name = match_result[3]  # After the range of addreses
-                for address in _SoftStoryPropertiesDataHandler._addresses_from_range(
+                for address in SoftStoryPropertiesDataHandler._addresses_from_range(
                     start_range, end_range, street_name
                 ):
                     self._process_feature(
