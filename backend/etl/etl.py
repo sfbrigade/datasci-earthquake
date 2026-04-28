@@ -10,6 +10,7 @@ from backend.api.models.soft_story_properties import SoftStoryProperty
 from backend.etl.tsunami_data_handler import TsunamiDataHandler
 from backend.etl.liquefaction_data_handler import LiquefactionDataHandler
 from backend.etl.soft_story_properties_data_handler import SoftStoryPropertiesDataHandler
+from logging import StreamHandler
 from requests import RequestException
 
 HANDLERS = {
@@ -40,7 +41,7 @@ HANDLERS = {
 
 logger = logging.getLogger(__name__)
 FORMAT = '%(asctime)s %(thread)d %(levelname)s : line %(lineno)d : %(message)s'
-logging.basicConfig(level=logging.INFO, format=FORMAT)
+logging.basicConfig(level=logging.INFO, format=FORMAT, stream=StreamHandler(stream=sys.stdout))
 
 async def etl(key):
   handler = HANDLERS[key]['handler']
