@@ -30,7 +30,7 @@ jobs:
     - uses: ./.github/actions/setup-node-using-nvmrc
 
     - name: Install dependencies
-      run: pnpm ci
+      run: pnpm install --frozen-lockfile
 
     - name: Install Playwright Browsers
       run: pnpm dlx playwright install --with-deps
