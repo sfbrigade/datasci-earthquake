@@ -7,12 +7,13 @@ import {
   Box,
   Text,
   HStack,
-  Image,
   VisuallyHidden,
   Link,
   Flex,
 } from "@chakra-ui/react";
-import Heading, { HeadingProps } from "./heading";
+import NextImage from "next/image";
+
+import Heading from "./heading";
 import ReportAddress from "./report-address";
 import SearchBar from "./search-bar";
 import Share from "./share";
@@ -69,13 +70,15 @@ const HomeHeader = ({
             }}
           >
             <HStack align="baseline">
-              <Image
-                src="/images/SFSafeHome-fulllogo.svg"
+              <NextImage
+                width={142} // 619 real width?
+                height={28} // 122 real height?
                 alt="SafeHome logo"
-                role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
-                height="safeHomeLogoHeight"
-                width="safeHomeLogoWidth"
+                role="img" // needed for VoiceOver bug for SVGs: https://bugs.webkit.org/show_bug.cgi?id=216364
+                src="/images/SFSafeHome-fulllogo.svg"
+                priority
               />
+
               <VisuallyHidden>SafeHome</VisuallyHidden>
             </HStack>
           </Link>

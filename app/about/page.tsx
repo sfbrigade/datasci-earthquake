@@ -1,8 +1,23 @@
-import { Flex, Link, Text, Box, VStack, List, Image } from "@chakra-ui/react";
+import {
+  Flex,
+  Link,
+  Text,
+  Box,
+  VStack,
+  List,
+  Collapsible,
+  HStack,
+} from "@chakra-ui/react";
 import Heading from "../components/heading";
-import { Headings, DataInfoLinks, TeamMembers } from "../data/data";
+import {
+  Headings,
+  DataInfoLinks,
+  TeamMembers,
+  InactiveTeamMembers,
+} from "../data/data";
 import NextLink from "../components/custom-next-link";
 import NextImage from "next/image";
+import { LuChevronRight } from "react-icons/lu";
 
 const About = () => {
   const headingData = Headings.about;
@@ -26,9 +41,9 @@ const About = () => {
   };
 
   const buildTeamMembers = () => {
-    return TeamMembers.map((teamMember, index) => {
+    return TeamMembers.map((teamMember) => {
       return (
-        <List.Item key={index} mb="1">
+        <List.Item key={teamMember.user_id} mb="1">
           <Text>
             <Text as="span" fontWeight="extrabold">
               {teamMember.name}
@@ -37,6 +52,21 @@ const About = () => {
             {teamMember.role}
           </Text>
         </List.Item>
+      );
+    });
+  };
+
+  const buildInactiveTeamMembers = () => {
+    return InactiveTeamMembers.map((teamMember, index, array) => {
+      return (
+        <Text key={teamMember.user_id} display="inline">
+          <Text as="span" fontWeight="semibold" display="inline">
+            {teamMember.name}
+          </Text>
+          <Text as="span" fontWeight="light" display="inline">
+            {` - ${teamMember.role}${index < array.length - 1 ? ", " : ""}`}
+          </Text>
+        </Text>
       );
     });
   };
@@ -109,6 +139,7 @@ const About = () => {
             of the San Francisco Building Inspection Commission Code.
           </Text>
         </VStack>
+        {/* TODO: group team members by team, at least for active team members, and make this look nicer */}
         <VStack alignItems="flex-start">
           <Text textStyle="headerMedium" layerStyle="headerAlt">
             Meet the team
@@ -118,11 +149,32 @@ const About = () => {
             {buildLink("https://www.sfcivictech.org/about/", "SF Civic Tech")},
             a diverse group of technologists, creatives, and data scientists
             building tools to help communities access important services and
-            solve local challenges. 
+            solve local challenges.
           </Text>
           <List.Root listStyleType="none" mb="10">
             {buildTeamMembers()}
           </List.Root>
+          <Collapsible.Root mb="10" collapsedHeight="100px">
+            <Collapsible.Trigger cursor="button">
+              <HStack>
+                <Text textStyle="headerSmall" layerStyle="headerAlt">
+                  Thank you to past team members
+                </Text>
+                <Collapsible.Indicator _open={{ transform: "rotate(90deg)" }}>
+                  <LuChevronRight />
+                </Collapsible.Indicator>
+              </HStack>
+            </Collapsible.Trigger>
+            <Collapsible.Content
+              _closed={{
+                maskImage:
+                  "linear-gradient(to bottom, black 75%, transparent 100%)",
+              }}
+            >
+              {buildInactiveTeamMembers()}
+            </Collapsible.Content>
+          </Collapsible.Root>
+
           <Text>
             <Text as="span" fontWeight="extrabold">
               Interested in joining SF Civic Tech?
@@ -146,11 +198,11 @@ const About = () => {
         </VStack>
       </Flex>
       <Box flexShrink={0}>
-        <Image
+        <NextImage
+          width={304}
+          height={282}
+          alt="Illustration of person at their desk in front of a laptop and wearing headphones"
           src="/images/UserCartoon.png"
-          alt="about us"
-          width="aboutImageWidth"
-          height="aboutImageHeight"
         />
       </Box>
     </Flex>

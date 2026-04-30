@@ -5,12 +5,12 @@ import {
   HStack,
   Text,
   Link,
-  Image,
   VisuallyHidden,
   Flex,
 } from "@chakra-ui/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useRef } from "react";
+import NextImage from "next/image";
 
 const Header = () => {
   const pathname = usePathname();
@@ -52,12 +52,13 @@ const Header = () => {
             }}
           >
             <HStack align="baseline">
-              <Image
-                src="/images/SFSafeHome-fulllogo.svg"
+              <NextImage
+                width={142} // 619 real width?
+                height={28} // 122 real height?
                 alt="SafeHome logo"
-                role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
-                height="safeHomeLogoHeight"
-                width="safeHomeLogoWidth"
+                role="img" // needed for VoiceOver bug for SVGs: https://bugs.webkit.org/show_bug.cgi?id=216364
+                src="/images/SFSafeHome-fulllogo.svg"
+                priority
               />
               <VisuallyHidden>SafeHome</VisuallyHidden>
             </HStack>

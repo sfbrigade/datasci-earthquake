@@ -1,3 +1,5 @@
+import { Metadata } from "next";
+import { InterVariableName, ManropeVariableName } from "@/data/constants";
 import { Inter, Manrope } from "next/font/google";
 import { Box, Flex } from "@chakra-ui/react";
 import { Provider } from "@/components/ui/provider";
@@ -8,14 +10,15 @@ import { Toaster } from "@/components/ui/toaster";
 const manrope = Manrope({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-manrope" satisfies typeof ManropeVariableName, // Define CSS variable for Manrope font
 });
-
 const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-inter" satisfies typeof InterVariableName, // Define CSS variable for Inter font
 });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "SafeHome",
   description: "Learn about your home's earthquake readiness",
 };
@@ -35,8 +38,12 @@ export default function RootLayout({
   // case in point: Chakra's Color Mode / ThemeProvider will cause this warning, which is the reason
   // this flag is toggled on. It applies one level deep on the element where it's applied.
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${manrope.className} ${inter.className}`}>
+    <html
+      lang="en"
+      className={`${manrope.variable} ${inter.variable}`}
+      suppressHydrationWarning
+    >
+      <body>
         <Provider>
           <Flex direction="column" align="center" minH="dvh">
             <Header />
