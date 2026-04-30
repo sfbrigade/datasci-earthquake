@@ -1,0 +1,35 @@
+/* DOCS */
+
+/* lessen vertical padding around docs */
+.sbdocs.sbdocs-wrapper {
+  padding: 1rem 20px;
+}
+
+/* Allow doc content to use full width of page (aside from the TOC) */
+.sbdocs.sbdocs-content {
+  max-width: none;
+}
+
+/* Hide TOC if there is no content */
+.sbdocs.sbdocs-toc--custom:not(:has(> nav > .toc-wrapper > .toc-list)) {
+  display: none;
+}
+
+/* DOC BLOCKS */
+
+/* DOC BLOCK: ColorPalette */
+
+/* Prevent color item text from overflowing container when there are too many */
+.docblock-colorpalette > div > div > div > div > div[title] {
+  word-break: break-word;
+}
+
+/* Bold the name of the color item and enlarge the text */
+.docblock-colorpalette > div > div > div > div > div[title] {
+  font-size: 16px;
+  font-weight: bold;
+}
+.docblock-colorpalette > div > div > div > div > div[title] > div > span {
+  font-size: 14px;
+  font-weight: normal;
+}

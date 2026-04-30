@@ -11,6 +11,7 @@ import {
   Switch,
   Separator,
   Collapsible,
+  SystemStyleObject,
 } from "@chakra-ui/react";
 import posthog from "posthog-js";
 import Pill from "./pill";
@@ -19,17 +20,19 @@ import { FaCircle, FaSquareFull } from "react-icons/fa";
 import { KeyElem } from "./key-elem";
 import { Dispatch, SetStateAction, useState } from "react";
 import { LayerToggleObjProps } from "./address-mapper";
+
+export interface HazardProps {
+  id: number;
+  name: string;
+  title: string;
+  description: string;
+  info: string[];
+  link: { label: string; url: string };
+  icon: string;
+  iconColor: SystemStyleObject["color"];
+}
 interface CardHazardProps {
-  hazard: {
-    id: number;
-    name: string;
-    title: string;
-    description: string;
-    info: string[];
-    link: { label: string; url: string };
-    icon: string;
-    iconColor: string;
-  };
+  hazard: HazardProps;
   hazardData?: { exists?: boolean; last_updated?: string };
   showData: boolean;
   isHazardDataLoading: boolean;
@@ -90,17 +93,21 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
   return (
     <Card.Root
       flex={1}
-      w="86vw"
-      p={"8px 12px"}
-      // boxShadow="0px 5px 6px #c8caceff"
+      w="mobileCardWidth"
+      py="2"
+      px="3"
       variant="elevated"
-      borderRadius={0}
+      borderRadius="none"
     >
-      <Accordion.Item border="none" w="98%" value={hazard.name}>
-        <Accordion.ItemTrigger p={0} w={"100%"}>
+      <Accordion.Item
+        border="none"
+        w="mobileCardAccordionWidth"
+        value={hazard.name}
+      >
+        <Accordion.ItemTrigger p="0" w="full">
           <Card.Header
-            w="100%"
-            p={0}
+            w="full"
+            p="0"
             textAlign="left"
             flexDirection="row"
             justifyContent="space-between"
@@ -115,9 +122,9 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
           </Card.Header>
         </Accordion.ItemTrigger>
         <Accordion.ItemContent maxHeight="unset">
-          <Accordion.ItemBody pb={0}>
+          <Accordion.ItemBody pb="0">
             <Collapsible.Root onOpenChange={(e) => setIsMoreInfo(e.open)}>
-              <Card.Body textAlign="left" p={0}>
+              <Card.Body textAlign="left" p="0">
                 <HStack justifyContent="space-between">
                   <Text textStyle="textXSmall" layerStyle="text">
                     {description}
@@ -135,13 +142,13 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
                   </Switch.Root>
                 </HStack>
               </Card.Body>
-              <Card.Footer p={0} width={"100%"}>
+              <Card.Footer p="0" width="full">
                 <Collapsible.Trigger>
                   <Text
                     textStyle="textXSmall"
-                    cursor={"pointer"}
-                    textDecoration={"underline"}
-                    fontWeight={"bold"}
+                    cursor="button"
+                    textDecoration="underline"
+                    fontWeight="bold"
                     onClick={() => {
                       if (!isMoreInfo) {
                         posthog.capture("more-info-clicked", {
@@ -158,7 +165,7 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
                 <Separator mt="2" />
                 {buildHazardCardInfo()}
                 <Link
-                  display={"inline-block"}
+                  display="inline-block"
                   href={hazard.link.url}
                   mt="4"
                   target="_blank"
@@ -168,8 +175,8 @@ const MobileCardHazard: React.FC<CardHazardProps> = ({
                       link_name: hazard.link.label,
                     })
                   }
-                  textStyle={"textXSmall"}
-                  fontWeight={"bold"}
+                  textStyle="textXSmall"
+                  fontWeight="bold"
                 >
                   {hazard.link.label}
                 </Link>

@@ -10,6 +10,7 @@ import {
   Popover,
   Portal,
   Switch,
+  SystemStyleObject,
 } from "@chakra-ui/react";
 import posthog from "posthog-js";
 import Pill from "./pill";
@@ -28,7 +29,7 @@ interface CardHazardProps {
     info: string[];
     link: { label: string; url: string };
     icon: string;
-    iconColor: string;
+    iconColor: SystemStyleObject["color"];
   };
   hazardData?: { exists?: boolean; last_updated?: string };
   showData: boolean;
@@ -90,10 +91,10 @@ const CardHazard: React.FC<CardHazardProps> = ({
   return (
     <Card.Root
       flex={1}
-      maxW={{ base: 320, "2xl": 336 }}
-      minH={{ base: 178, "2xl": 184 }}
-      p={{ base: "14px 16px", md: "18px 20px" }}
-      // boxShadow="0px 5px 6px #c8caceff"
+      maxW={{ base: "xs", "2xl": "sm" }}
+      py={{ base: "3.5", md: "4" }}
+      px={{ base: "4", md: "5" }}
+      shadow="card"
       variant="elevated"
     >
       <Popover.Root
@@ -110,9 +111,9 @@ const CardHazard: React.FC<CardHazardProps> = ({
       >
         <VStack alignItems={"flex-start"} flexGrow={1} h="full">
           <Card.Header
-            w="102%"
-            p={0}
-            mb={"0.2em"}
+            w="full"
+            p="0"
+            mb="1"
             textAlign="left"
             flexDirection="row"
             justifyContent="space-between"
@@ -128,39 +129,24 @@ const CardHazard: React.FC<CardHazardProps> = ({
               checked={toggledStates[id]}
               onCheckedChange={(e) => handleSwitchClick(id, e.checked)}
               defaultChecked
+              gap="0" // prevent whitespace on right side
             >
               <Switch.HiddenInput />
               <Switch.Control />
               <Switch.Label />
             </Switch.Root>
           </Card.Header>
-          <Card.Body textAlign="left" p={0} mb={"6px"}>
-            <Text
-              textStyle={{
-                base:
-                  description.length >= 105
-                    ? "cardTextXSmall"
-                    : "cardTextSmall",
-                "2xl":
-                  description.length >= 105
-                    ? "cardTextSmall"
-                    : "cardTextMedium",
-              }}
-              layerStyle="text"
-            >
+          <Card.Body textAlign="left" p="0" mb="1.5">
+            <Text textStyle="cardTextMedium" layerStyle="text">
               {description}
             </Text>
           </Card.Body>
-          <Card.Footer p={0} width={"100%"}>
-            <HStack justifyContent="space-between" width="100%">
+          <Card.Footer p="0" width="full">
+            <HStack justifyContent="space-between" width="full">
               <Popover.Trigger>
                 <Text
-                  cursor={"pointer"}
+                  cursor="button"
                   textDecoration={"underline"}
-                  fontSize={{
-                    base: 15.2,
-                    "2xl": "md",
-                  }}
                   onClick={() => {
                     if (!isMoreInfo) {
                       posthog.capture("more-info-clicked", {
@@ -180,7 +166,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
           <Popover.Positioner>
             <Popover.Content maxHeight="unset">
               <Popover.CloseTrigger
-                cursor="pointer"
+                cursor="button"
                 position="absolute"
                 top="2"
                 right="2"
@@ -197,6 +183,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
                   href={hazard.link.url}
                   mt="4"
                   target="_blank"
+                  rel="noopener noreferrer"
                   textDecoration="underline"
                   onClick={() =>
                     posthog.capture("dataset-link-clicked", {

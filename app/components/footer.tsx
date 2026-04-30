@@ -1,55 +1,52 @@
-import { Box, Link, Text, VStack, Image, Stack } from "@chakra-ui/react";
+import { Box, Link, Text, VStack, Stack } from "@chakra-ui/react";
 import { mockDisclaimers } from "./__mocks__/mock-data";
-import NextLink from "next/link";
+import NextLink from "./custom-next-link";
+import NextImage from "next/image";
 
 const Footer = () => {
-  const buildDisclaimers = () => {
-    return mockDisclaimers.map((disclaimer, index) => {
-      return (
-        <Text
-          key={index}
-          textStyle="textXSmall"
-          layerStyle="text"
-          lineHeight="shorter"
-          color="white"
-        >
-          {disclaimer}
-        </Text>
-      );
-    });
-  };
+  const disclaimers = mockDisclaimers.map((disclaimer, index) => {
+    return (
+      <Text
+        key={index}
+        textStyle="textXSmall"
+        layerStyle="text"
+        lineHeight="shorter"
+        color="white"
+      >
+        {disclaimer}
+      </Text>
+    );
+  });
 
   return (
-    <Box as="footer" w="100%" bgColor="blueBackground">
+    <Box as="footer" w="full" bgColor="blueBackground">
       <Stack
         w={{ base: "full" }}
-        p={{
-          base: "24px 48px 22px 48px",
-          "2xl": "22px 48px 26px 48px",
-        }}
+        py="6"
+        px="8"
         direction={{ base: "column", lg: "row" }}
         justify="space-between"
         alignItems="flex-start"
         m="auto"
-        gap="36px"
+        gap="9"
       >
         <VStack
           alignItems="flex-start"
-          maxW={{ base: "100%", lg: "672px" }}
-          gap="24px"
+          maxW={{ base: "full", lg: "2xl" }}
+          gap="6"
         >
           <Text textStyle="textXSmall" layerStyle="text" color="white">
             © 2025 SF Civic Tech
           </Text>
-          {buildDisclaimers()}
+          {disclaimers}
         </VStack>
-        <VStack alignItems={{ base: "flex-start", lg: "flex-end" }} gap={8}>
+        <VStack alignItems={{ base: "flex-start", lg: "flex-end" }} gap="8">
           <Stack
-            gap={4}
+            gap="4"
             align="flex-end"
             direction={{ base: "row", lg: "column" }}
-            width="100%"
-            mt={{ xl: 4 }}
+            width="full"
+            mt={{ xl: "4" }}
           >
             <Link as={NextLink} color="white" href="/about">
               <Text textStyle="textMedium" layerStyle="text" color="white">
@@ -71,8 +68,12 @@ const Footer = () => {
             as={NextLink}
             href="https://www.sfcivictech.org/"
             target="_blank"
+            rel="noopener noreferrer"
           >
-            <Image
+            <NextImage
+              width={206}
+              height={54}
+              role="img" // needed for VoiceOver bug for SVGs: https://bugs.webkit.org/show_bug.cgi?id=216364
               src="/images/SFCivicTech-logo.svg"
               alt="SF Civic Tech Logo"
             />

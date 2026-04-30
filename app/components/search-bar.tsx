@@ -23,18 +23,23 @@ const autofillOptions: AddressAutofillOptions = {
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `search-bar-skeleton.tsx` and vice versa
 // TODO: isolate the usage of `useSearchParams()` so that the Suspense boundary can be even more narrow if possible
 interface SearchBarProps {
+  inputAddress: string;
+  onInputAddressChange: (address: string) => void;
   onSearchChange: (coords: number[], address: string) => void;
 }
 
-const SearchBar = ({ onSearchChange }: SearchBarProps) => {
-  const [inputAddress, setInputAddress] = useState("");
+const SearchBar = ({
+  inputAddress,
+  onInputAddressChange,
+  onSearchChange,
+}: SearchBarProps) => {
   const [suggestionSelected, setSuggestionSelected] = useState(false);
   const [suggestionsAvailable, setSuggestionsAvailable] = useState(false);
   const router = useRouter();
   const characterCap = 5;
 
   const handleClearClick = () => {
-    setInputAddress("");
+    onInputAddressChange("");
     setSuggestionSelected(false);
     router.push("/", { scroll: false });
   };
@@ -55,7 +60,7 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
   };
 
   const handleAddressChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setInputAddress(event.currentTarget.value);
+    onInputAddressChange(event.currentTarget.value);
     // shows hint again upon further search param changes without selection of suggestion
     if (!suggestionSelected) setSuggestionsAvailable(false);
     else if (suggestionSelected && inputAddress.length <= 3) {
@@ -64,22 +69,14 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
     }
   };
 
-  /**
-   * TODO: capture and update address on submit OR use first autocomplete suggestion; see file://./../snippets.md#geocode-on-search for details.
-   */
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    console.log("onSubmit", event.currentTarget.value);
-    event.preventDefault();
-
-    // TODO: capture and update address as described above
-  };
+  // TODO: consider also capturing/updating address on submit OR using first autocomplete suggestion; see file://./../snippets.md#geocode-on-search for details.
 
   const handleSuggest = (res: AddressAutofillSuggestionResponse) => {
     setSuggestionsAvailable(res.suggestions.length > 0);
   };
 
   return (
-    <chakra.form position={"relative"} onSubmit={onSubmit}>
+    <chakra.form position={"relative"}>
       <Suspense>
         <DynamicAddressAutofill
           accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ""}
@@ -90,12 +87,11 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
         >
           <InputGroup
             w={{
-              base: "100%",
-              sm: "303px",
-              md: "371px",
-              lg: "417px",
+              base: "full",
+              sm: "xs",
+              md: "sm",
+              lg: "md",
             }}
-            // mb={"24px"}
             data-testid="search-bar"
             startElement={
               <IoSearchSharp
@@ -119,7 +115,7 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
           >
             <Input
               placeholder="Search San Francisco address"
-              fontFamily="Inter, sans-serif"
+              fontFamily="body"
               fontSize={{
                 base: "sm",
                 sm: "md",
@@ -127,16 +123,14 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
                 lg: "md",
               }}
               size={{ base: "lg", md: "xl", xl: "xl" }}
-              p={{
-                base: "0 10px 0 35px",
-                sm: "0 10px 0 35px",
-                md: "0 10px 0 48px",
-                lg: "0 10px 0 48px",
-              }}
+              pt="0"
+              pr="2.5"
+              pb="0"
+              pl={{ base: "9", md: "12" }}
               borderRadius="full"
-              border="1px solid #4A5568"
+              border="search"
               bgColor="white"
-              boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
+              shadow="search"
               type="text"
               name="address-1"
               value={inputAddress}
@@ -155,7 +149,7 @@ const SearchBar = ({ onSearchChange }: SearchBarProps) => {
       {inputAddress.length && !suggestionSelected && !suggestionsAvailable ? (
         <Text
           position="absolute"
-          bottom={-5}
+          lineHeight="shortest"
           textStyle="textSmall"
           color="white"
         >

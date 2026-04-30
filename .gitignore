@@ -1,6 +1,7 @@
 # Next
 .next
 out
+next-env.d.ts
 
 # Python
 __pycache__/
@@ -36,3 +37,14 @@ node_modules
 !.vscode/extensions.json
 !.vscode/settings.json
 !.vscode/launch.json
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Chakra
+/theme/
+*storybook.log
+storybook-static

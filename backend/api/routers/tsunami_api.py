@@ -13,6 +13,7 @@ from backend.api.schemas.tsunami_schemas import (
     IsInTsunamiZoneView,
 )
 from backend.api.models.tsunami import TsunamiZone
+from backend.api.exceptions import HazardCheckError
 import logging
 
 logging.basicConfig(
@@ -103,13 +104,4 @@ def is_in_tsunami_zone(
         return IsInTsunamiZoneView(exists=exists, last_updated=last_updated)
 
     except Exception as e:
-        logger.error(
-            f"Error checking tsunami zone status for coordinates: lon={lon}, lat={lat}, "
-            f"error: {str(e)}",
-            exc_info=True,
-        )
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error checking tsunami zone status for coordinates: lon={lon}, lat={lat}, "
-            f"error: {str(e)}",
-        )
+        raise HazardCheckError(zone="tsunami", lon=lon, lat=lat, original_exception=e)

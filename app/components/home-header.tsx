@@ -1,17 +1,18 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Headings } from "../data/data";
 import {
   Box,
   Text,
   HStack,
-  Image,
   VisuallyHidden,
   Link,
   Flex,
 } from "@chakra-ui/react";
+import NextImage from "next/image";
+
 import Heading from "./heading";
 import ReportAddress from "./report-address";
 import SearchBar from "./search-bar";
@@ -35,18 +36,14 @@ const HomeHeader = ({
   isSearchComplete,
   onSearchChange,
 }: HomeHeaderProps) => {
+  // TODO: consider initializing inputAddress to searchedAddress so shared URLs will autofill the searchbox
+  // TODO: do we need to have a `setInputAddress` instead of populating directly from `searchedAddress` in props?
+  const [inputAddress, setInputAddress] = useState("");
   const headingData = Headings.home;
   const router = useRouter();
 
   return (
-    <Box
-      as="header"
-      bg="gradient.blue"
-      p={{
-        base: "18px 32px 22px 32px",
-        "2xl": "22px 48px 26px 48px",
-      }}
-    >
+    <Box as="header" bgGradient="blue" py={{ base: "4", "2xl": "5" }} px="8">
       <Flex
         direction={{
           base: "column",
@@ -55,31 +52,35 @@ const HomeHeader = ({
         }}
         justifyContent={"space-between"}
         alignItems={{ base: "flex-start", xl: "center" }}
-        gap={1.5}
-        mb={{ base: 2 }}
+        gap="1.5"
+        mb={{ base: "2" }}
       >
         <HStack align="start" gap="1">
           <Link
             as={"a"}
             color="white"
             href="/"
-            cursor="pointer"
+            cursor="button"
             textDecoration={"none"}
             onClick={(e) => {
               e.preventDefault();
+              setInputAddress("");
+              // TODO: persist params other than address ones by only removing address, lon, lat
               router.push("/");
             }}
           >
             <HStack align="baseline">
-              <Image
-                src="/images/SFSafeHome-fulllogo.svg"
+              <NextImage
+                width={142} // 619 real width?
+                height={28} // 122 real height?
                 alt="SafeHome logo"
-                role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
-                h="28px"
-                w="142px"
+                role="img" // needed for VoiceOver bug for SVGs: https://bugs.webkit.org/show_bug.cgi?id=216364
+                src="/images/SFSafeHome-fulllogo.svg"
+                priority
               />
+
               <VisuallyHidden>SafeHome</VisuallyHidden>
-            </HStack>{" "}
+            </HStack>
           </Link>
           <Text textStyle="textPrerelease" layerStyle="prerelease">
             Beta
@@ -97,8 +98,12 @@ const HomeHeader = ({
         justifyContent={"space-between"}
         alignItems={{ base: "flex-start", xl: "center" }}
       >
-        <Box width={{ base: "100%", xl: "fit-content" }}>
-          <SearchBar onSearchChange={onSearchChange} />
+        <Box width={{ base: "full", xl: "fit" }}>
+          <SearchBar
+            inputAddress={inputAddress}
+            onInputAddressChange={setInputAddress}
+            onSearchChange={onSearchChange}
+          />
         </Box>
 
         {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}

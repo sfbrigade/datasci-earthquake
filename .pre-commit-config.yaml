@@ -20,7 +20,7 @@ repos:
     hooks:
       - id: eslint
         args:
-          - "--config=.eslintrc.js"
+          - "--config=eslint.config.js"
           - "--cache"
           - "--ignore-pattern=node_modules/*"
           - "--ignore-pattern=dist/*"
@@ -41,3 +41,15 @@ repos:
         additional_dependencies:
           - "prettier"
         files: \.[jt]sx?$
+  - repo: local
+    hooks:
+      - id: check-env-sync
+        name: Check .env.example matches Settings
+        entry: python -m scripts.check_env_sync
+        language: python
+        additional_dependencies:
+          - pydantic>=2.9.0
+          - pydantic-settings>=2.5.2
+        pass_filenames: false
+        always_run: true
+        files: ^(backend/api/config\.py|\.env\.example)$

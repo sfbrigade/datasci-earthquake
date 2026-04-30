@@ -1,9 +1,7 @@
-import "./globals.css";
 import { Suspense } from "react";
 import { Box, Flex, Heading, Text, List, HStack, Link } from "@chakra-ui/react";
-import NextLink from "next/link";
-import Image from "next/image";
-
+import NextLink from "./components/custom-next-link";
+import NextImage from "next/image";
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
 import AddressMapper from "./components/address-mapper";
@@ -50,13 +48,13 @@ const Home = async () => {
         />
       </Suspense>
       <Flex
-        w={{ base: "full" }}
-        p={{
-          base: "32px 32px 64px 32px",
-        }}
+        w="full"
+        p="8"
         justifyContent="space-between"
+        gap="11"
+        direction={{ base: "column", lg: "row" }}
       >
-        <HStack alignItems={"start"} w={{ base: "100%", lg: "75%" }}>
+        <HStack alignItems={"start"} w={{ base: "full", lg: "3/4" }}>
           <div>
             <Heading as="h2">
               <Text
@@ -64,7 +62,7 @@ const Home = async () => {
                 textStyle="headerBig"
                 layerStyle="headerMain"
                 color="blue.text"
-                fontWeight="300"
+                fontWeight="light"
               >
                 How to be earthquake-ready
               </Text>
@@ -98,12 +96,12 @@ const Home = async () => {
                 withstand shaking.
               </List.Item>
               <List.Item>
-                San Francisco’s Mandatory Soft Story Retrofit Ordinance ,
-                enacted in 2013, requires all multi-unit soft story buildings
-                built before 1978 to be retrofitted in order to minimize the
-                risk of earthquake damage. Soft-story homes with 1 to 4 units
-                are still vulnerable to earthquake damage, even though the
-                ordinance does not legally require them to be retrofitted.
+                San Francisco’s Mandatory Soft Story Retrofit Ordinance, enacted
+                in 2013, requires all multi-unit soft story buildings built
+                before 1978 to be retrofitted in order to minimize the risk of
+                earthquake damage. Soft-story homes with 1 to 4 units are still
+                vulnerable to earthquake damage, even though the ordinance does
+                not legally require them to be retrofitted.
               </List.Item>
             </List.Root>
 
@@ -170,7 +168,7 @@ const Home = async () => {
               <List.Item>
                 <Link
                   as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
+                  href="https://www.crmp.org/our-seismic-retrofit-programs/the-retrofits"
                   textDecoration="underline"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -182,7 +180,7 @@ const Home = async () => {
               <List.Item>
                 <Link
                   as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/resources/find-a-contractor/"
+                  href="https://www.crmp.org/resources/find-a-contractor/"
                   textDecoration="underline"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -195,7 +193,7 @@ const Home = async () => {
                 Check your eligibility for an{" "}
                 <Link
                   as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ebb-retrofit"
+                  href="https://www.crmp.org/our-seismic-retrofit-programs/the-retrofits/ebb-retrofit"
                   textDecoration="underline"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -205,7 +203,7 @@ const Home = async () => {
                 grant or{" "}
                 <Link
                   as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
+                  href="https://www.crmp.org/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
                   textDecoration="underline"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -254,12 +252,12 @@ const Home = async () => {
             </List.Root>
           </div>
         </HStack>
-        <Box flexShrink={0} display={{ base: "none", lg: "block" }}>
-          <Image
+        <Box flexShrink={0}>
+          <NextImage
+            width={303} // 606px real width?
+            height={292} // 584px real height?
             src="/images/earthquake-ready.png"
-            alt="about us"
-            width="300"
-            height="300"
+            alt="Illustration of person standing with their dog, who is looking up from a ball on the ground"
           />
         </Box>
       </Flex>

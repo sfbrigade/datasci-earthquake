@@ -15,6 +15,7 @@ from backend.api.schemas.soft_story_schemas import (
     IsSoftStoryPropertyView,
 )
 from backend.api.models.soft_story_properties import SoftStoryProperty
+from backend.api.exceptions import HazardCheckError
 import logging
 
 logging.basicConfig(
@@ -134,13 +135,6 @@ def is_soft_story(
         return IsSoftStoryPropertyView(exists=exists, last_updated=last_updated)
 
     except Exception as e:
-        logger.error(
-            f"Error checking soft story status for coordinates: lon={lon}, lat={lat}, "
-            f"error: {str(e)}",
-            exc_info=True,
-        )
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error checking soft story status for coordinates: lon={lon}, lat={lat}, "
-            f"error: {str(e)}",
+        raise HazardCheckError(
+            zone="soft-story", lon=lon, lat=lat, original_exception=e
         )
