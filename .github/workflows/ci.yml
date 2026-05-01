@@ -55,17 +55,18 @@ jobs:
         fi
 
   eslint:
+    name: ESLint 
     if: needs.changes.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
     needs: changes
-    steps:
+    steps: 
     - uses: actions/checkout@v4
     - uses: ./.github/actions/setup-node-using-nvmrc
-    - name: Install Node.js dependencies
+    - name: Install Node.js dependencie
       run: pnpm install --frozen-lockfile
     - name: Run ESLint
       run: pnpm run lint
-
+  
   black_lint_and_mypy_type_check:
     if: needs.changes.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
