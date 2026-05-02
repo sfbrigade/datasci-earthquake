@@ -1,5 +1,6 @@
 import type { Config } from "jest";
-import nextJest from "next/jest";
+// NOTE: "next/jest.js" is used instead of "next/jest" to avoid an issue with ESM imports in the Jest config file within a monorepo where Jest is hoisted to the root and Next.js is in a subfolder. This is a known workaround for such setups.
+import nextJest from "next/jest.js";
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
