@@ -1,10 +1,38 @@
 {
+  "name": "safehome",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "# LOCAL DEV": "",
+    "fastapi-dev": "cd backend && uv sync --extra dev && uv run fastapi dev ../api/index.py && cd ..",
+    "next-dev": "cd web && npm run dev && cd ..",
+    "dev": "run-p next-dev fastapi-dev",
+    "build": "cd web && npm run build && cd ..",
+    "start": "cd web && npm run start && cd ..",
+    "clean": "cd web && npm run clean && cd ..",
+    "lint": "cd web && npm run lint && cd ..",
+    "test": "cd web && npm run test && cd ..",
+    "test:e2e": "cd web && npm run test:e2e && cd ..",
+    "test:e2e:ui": "cd web && npm run test:e2e:ui && cd ..",
+    "test:e2e:debug": "cd web && npm run test:e2e:debug && cd ..",
+    "test:e2e:report": "cd web && npm run test:e2e:report && cd ..",
+    "rebuild": "cd web && npm run rebuild && cd ..",
+    "# HYBRID (LOCAL + DOCKER) DEV": "",
+    "dev-front": "run-p docker-back next-dev",
+    "dev-back": "run-p fastapi-dev docker-front",
+    "docker-front": "docker compose up -d frontend --build",
+    "docker-back": "docker compose up -d db db_test backend --build",
+    "# DOCKER DEV": "",
+    "docker-all": "run-p docker-back docker-front"
+  },
   "devDependencies": {
     "@types/eslint": "9.6.1",
     "eslint": "^10.3.0",
     "eslint-config-next": "^16.2.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
-    "eslint-plugin-storybook": "^10.3.6"
+    "eslint-plugin-storybook": "^10.3.6",
+    "npm-run-all": "^4.1.5"
   }
 }
