@@ -1,5 +1,5 @@
 import type { Config } from "jest";
-import nextJest from "next/jest.js";
+import nextJest from "next/jest";
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
@@ -9,12 +9,12 @@ const createJestConfig = nextJest({
 // Add any custom config to be passed to Jest
 const config: Config = {
   coverageProvider: "v8",
-  testEnvironment: "./app/tests/FixJSDOMEnvironment.ts",
+  testEnvironment: "./tests/FixJSDOMEnvironment.ts",
   // Add more setup options before each test is run
-  setupFilesAfterEnv: ["<rootDir>/app/components/__mocks__/jest.setup.tsx"],
+  setupFilesAfterEnv: ["<rootDir>/src/components/__mocks__/jest.setup.tsx"],
   // Map the "@" alias to the app directory for importing ui components(ex. toaster)
   moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/app/$1",
+    "^@/(.*)$": "<rootDir>/src/$1",
   },
   testPathIgnorePatterns: ["/e2e-tests/"],
 };
