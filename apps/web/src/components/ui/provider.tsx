@@ -3,7 +3,7 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { ColorModeProvider, type ColorModeProviderProps } from "./color-mode";
 import system from "@/styles/theme";
-import EmotionRegistry from "@/app/emotion-registry";
+import EmotionRegistry from "@/components/ui/emotion-registry";
 
 export function Provider(props: ColorModeProviderProps) {
   return (
