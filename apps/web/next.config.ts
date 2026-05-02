@@ -1,21 +1,22 @@
-import fs from "fs";
-import path from "path";
+// import fs from "fs";
+// import path from "path";
 import { NextConfig } from "next";
 
-const packageRoot = process.cwd();
-const localNextPackage = path.join(
-  packageRoot,
-  "node_modules",
-  "next",
-  "package.json"
-);
+// // NOTE: the snippet below helps out if you are working with git worktrees inside of a subfolder; we may want to remove this altogether, though.
+// const packageRoot = process.cwd();
+// const localNextPackage = path.join(
+//   packageRoot,
+//   "node_modules",
+//   "next",
+//   "package.json"
+// );
 
-if (!fs.existsSync(localNextPackage)) {
-  console.error(
-    `${localNextPackage} not found; is Next installed in the local \`node_modules\`?`
-  );
-  process.exit(1);
-}
+// if (!fs.existsSync(localNextPackage)) {
+//   console.error(
+//     `${localNextPackage} not found; is Next installed in the local \`node_modules\`?`
+//   );
+//   process.exit(1);
+// }
 
 const watchOptions =
   process.env.ENVIRONMENT === "dev_docker"
@@ -73,7 +74,6 @@ const nextConfig: NextConfig = {
     return rewrites;
   },
   turbopack: {
-    root: packageRoot,
     rules: {
       "*.svg": {
         loaders: [
