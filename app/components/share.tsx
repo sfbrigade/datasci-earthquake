@@ -3,16 +3,14 @@
 import { Button } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import { IoIosLink } from "react-icons/io";
-import { useSearchParams } from "next/navigation";
 
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `share-skeleton.tsx` and vice versa
-// TODO: isolate the usage of `useSearchParams()` so that the Suspense boundary can be even more narrow if possible
+// TODO: isolate the usage of `useSearchParams()` (and/or `window`) so that the Suspense boundary can be even more narrow if possible
 const Share = () => {
-  const searchParams = useSearchParams();
-
   const copyLinkToClipBoard = async () => {
     try {
-      const currentUrl = `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`;
+      // TODO: consider stripping out extraneous query params for a cleaner URL
+      const currentUrl = window.location.toString();
       await navigator.clipboard.writeText(currentUrl);
       toaster.create({
         description: "Link copied",
