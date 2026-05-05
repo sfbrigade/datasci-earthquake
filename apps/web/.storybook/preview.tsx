@@ -1,6 +1,6 @@
 import type { Preview, ReactRenderer } from "@storybook/nextjs-vite";
 import { withThemeByClassName } from "@storybook/addon-themes";
-import { Provider } from "../app/components/ui/provider"; // TODO: get this working with `@/components/ui/provider`
+import { Provider } from "@/components/ui/provider";
 import React from "react";
 import {
   Title,

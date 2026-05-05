@@ -41,6 +41,16 @@ const nextConfig: NextConfig = {
   },
   rewrites: async () => {
     const env = process.env.ENVIRONMENT;
+    const rewrites = [];
+
+    // if (env === "local" || env === "dev_docker") {
+    //   // for local development and docker, simulate the production environment's `/public/storybook` folder, which results in a `/storybook` path, by rewriting the `/storybook` path to the Storybook dev server
+    //   rewrites.push({
+    //     source: '/storybook/:path*',
+    //     destination: 'http://localhost:6006/:path*', // NOTE: this must match the port in the `package.json` `storybook-dev` script
+    //   });
+    // }
+
     let backendHost;
 
     if (env === "local") {
@@ -51,7 +61,6 @@ const nextConfig: NextConfig = {
       backendHost = ""; // In preview and production, the backend is served from the same origin
     }
 
-    const rewrites = [];
 
     // Only add API rewrite if backendHost is defined. Docs and openapi.json are available for devs only.
     if (backendHost) {

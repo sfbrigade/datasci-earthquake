@@ -4,14 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "npm-run-all build:theme --parallel dev:next \"build:theme -- --watch\"",
+    "dev": "npm-run-all build:theme --parallel \"build:theme -- --watch\" dev:next dev:storybook",
+    "dev:storybook": "storybook dev -p 6006 --no-open",
     "dev:next": "next dev",
-    "build": "run-s lint build:theme build:next",
+    "build": "npm-run-all lint build:theme --parallel build:next build:storybook",
     "build:theme": "chakra typegen src/styles/theme.ts",
     "build:next": "next build",
     "start": "next start",
-    "storybook-dev": "storybook dev -p 6006",
-    "storybook-build": "storybook build",
+    "build:storybook": "storybook build -o public/storybook",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "format": "prettier --write .",
@@ -27,7 +27,10 @@
     "clean:modules": "rimraf node_modules",
     "clean:cache": "npm cache clean --force",
     "tokens-COMMENT": "WARNING: this is currently broken and only outputs a default theme that does not include our overrides in `theme.ts`; TODO: look into workarounds or consider contributing an enhancement upstream to Chakra UI",
-    "tokens": "chakra eject"
+    "tokens": "chakra eject",
+    "confirm": "node scripts/ask-run.ts",
+    "dev:conditional": "npm-run-all build:theme --parallel \"build:theme -- --watch\" dev:next dev:storybook-conditional",
+    "dev:storybook-conditional": "npm run confirm -- dev:storybook yes 3000"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.33.0",
@@ -54,6 +57,7 @@
   "devDependencies": {
     "@chakra-ui/cli": "3.33.0",
     "@chromatic-com/storybook": "^5.0.1",
+    "@inquirer/prompts": "^8.4.2",
     "@playwright/test": "^1.58.2",
     "@storybook/addon-a11y": "^10.2.10",
     "@storybook/addon-docs": "^10.2.10",

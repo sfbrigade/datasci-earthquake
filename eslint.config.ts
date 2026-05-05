@@ -19,7 +19,7 @@ const eslintConfig = defineConfig([
     // Additional ignores:
     "**/node_modules/",
     "**/dist/",
-    "**/storybook-static/**",
+    "**/public/storybook/**",
     "**/.tmp/**",
     "**/.venv/**",
   ]),
