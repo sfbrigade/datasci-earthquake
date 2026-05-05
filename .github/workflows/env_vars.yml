@@ -2,11 +2,18 @@ name: Generate .env File
 
 on:
   workflow_dispatch:
+  workflow_call:
+    outputs:
+      env_file_path:
+        description: "Path to encrypted .env file"
+        value: ${{ jobs.create-envfile.outputs.env_file_path }}
 
 jobs:
   create-envfile:
 
     runs-on: ubuntu-latest
+    outputs:
+      env_file_path: .env.enc
 
     steps:
     - name: Make envfile
