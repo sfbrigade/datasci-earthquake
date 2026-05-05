@@ -62,7 +62,7 @@ class DataHandler(ABC):
         self.page_size = page_size
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
         self.session = session or SessionManager.create_session(self.logger)
-        self.request_handler = RequestHandler(self.session, self.logger)
+        self.request_handler = RequestHandler(self.session)
         try:
             with open(_SF_BOUNDARY_PATH) as f:
                 boundary_geojson = json.load(f)
