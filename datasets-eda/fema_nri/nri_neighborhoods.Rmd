@@ -1,0 +1,101 @@
+---
+title: "Earthquake risk index by neighborhood"
+author: "Philippe Marchand"
+date: "2026-02-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This document aims to summarize the FEMA national risk index (NRI) for earthquakes by San Francisco analysis neighborhood. An exploratory analysis of the data at the census tract level was already done [here](eda_fema_nri.html).
+
+
+## Load risk index and neighborhood datasets
+
+The FEMA NRI data is the same as before, extracted for each census tract in San Francisco, but we remove three census tracts with fewer than 1000 residents; these correspond to Golden Gate Park, Lincoln Park and McLaren Park.
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(sf)
+library(tidycensus)
+library(ggrepel)
+library(mapview)
+
+nri <- read_sf("NRI_Shapefile_CensusTracts") %>% 
+    filter(COUNTY == "San Francisco", POPULATION > 1000) %>% 
+    select(matches("^(TRACT|POP|ERQK|SOVI|RESL|CRF)"))
+```
+
+The file matching each census tract to one of 42 analysis neighborhoods was downloaded from DataSF ([link](https://data.sfgov.org/Geographic-Locations-and-Boundaries/Analysis-Neighborhoods-2020-census-tracts-assigned/sevw-6tgi)).
+
+```{r, message = FALSE}
+neigh <- read_csv("Analysis_Neighborhoods_-_2020_census_tracts_assigned_to_neighborhoods_20251118.csv")
+neigh <- st_drop_geometry(neigh) %>% 
+    select(TRACT = tractce, neighborhood = neighborhoods_analysis_boundaries)
+head(neigh)
+```
+
+## Get additional census data
+
+For now, the only additional variable considered is the percentage of renter vs. owner-occupied households. This is obtained from the 5-year American Community Survey (ACS) estimates. Variables *B25003_002* and *B25003_003* represent the count of owner-occupied households and renter-occupied households, respectively.
+
+```{r, warning = FALSE, message = FALSE}
+own_rent <- get_acs(geography = "tract", state = "California",
+                    county = "San Francisco", year = 2020,
+                    variables = c("B25003_002", "B25003_003"))
+```
+
+The percentage of renters by census tract is calculated from those two counts.
+
+```{r}
+own_rent <- own_rent %>% 
+    mutate(TRACT = str_sub(GEOID, 6),
+           variable = if_else(str_sub(variable, -1) == "2",
+                              "own", "rent")) %>%
+    select(TRACT, variable, estimate) %>% 
+    pivot_wider(names_from = variable, values_from = estimate) %>% 
+    mutate(rent_pct = rent / (rent + own) * 100)
+head(own_rent)
+```
+
+
+## Combine datasets and summarize by neighborhood
+
+We join all datasets by census tract ID and select a few variables: population, percentage of renters and estimated loss ratio for buildings (estimated annual losses / total value of buildings), expressed as a percentage. See [previous EDA](eda_fema_nri.html) for details on that variable. 
+
+```{r}
+nri_neigh <- inner_join(nri, neigh) %>%
+    inner_join(own_rent) %>% 
+    select(TRACT, neighborhood, POPULATION, RENT_PCT = rent_pct, ERQK_EALB, ERQK_EXPB) %>% 
+    mutate(EALB_PCT = ERQK_EALB / ERQK_EXPB * 100)
+head(nri_neigh)
+```
+
+We can average the percentage of renters per neighborhood (weighted by population) and calculate a neighborhood-level building loss ratio:
+
+```{r}
+nri_neigh_sum <- nri_neigh %>% 
+    st_drop_geometry() %>% 
+    group_by(neighborhood) %>% 
+    summarize(TOTAL_POP = sum(POPULATION),
+              RENT_PCT = weighted.mean(RENT_PCT, POPULATION),
+              EALB_PCT = sum(ERQK_EALB) / sum(ERQK_EXPB) * 100)
+```
+
+
+Here is the neighborhood-level building loss ratio vs. the average percentage of renters. Each dot is scaled according to the population in the neighborhood.
+
+```{r}
+ggplot(nri_neigh_sum, aes(x = RENT_PCT, y = EALB_PCT)) + 
+    geom_point(aes(size = TOTAL_POP)) + 
+    geom_text_repel(aes(label = neighborhood), size = 3,
+                    max.overlaps = 20) +
+    labs(x = "Percentage of renters",
+         y = "Annualized loss from earthquakes (% of building value)",
+         size = "Population") +
+    theme_classic()
+```
+
+The neighborhoods with higher relative risk of building damage from earthquakes tend to also be renter-majority ones, and except for Lakeshore in the southwest, they are mostly located in the northeast of the city. Among the neighborhoods where most homes are owner-occupied, Sunset/Parkside stands out with a higher relative risk.
