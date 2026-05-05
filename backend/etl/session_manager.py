@@ -35,12 +35,12 @@ class SessionManager:
         session.mount("http://", adapter)
 
         SessionManager.logger.info(
-                f"Created new session with retry configuration:\n"
-                f"Max retries: {retry_strategy.total}\n"
-                f"Backoff factor: {retry_strategy.backoff_factor}\n"
-                f"Status codes: {retry_strategy.status_forcelist}\n"
-                f"Allowed methods: {retry_strategy.allowed_methods}\n"
-                f"Respect retry after header: {retry_strategy.respect_retry_after_header}"
+            f"Created new session with retry configuration:\n"
+            f"Max retries: {retry_strategy.total}\n"
+            f"Backoff factor: {retry_strategy.backoff_factor}\n"
+            f"Status codes: {retry_strategy.status_forcelist}\n"
+            f"Allowed methods: {retry_strategy.allowed_methods}\n"
+            f"Respect retry after header: {retry_strategy.respect_retry_after_header}"
         )
 
         return session
