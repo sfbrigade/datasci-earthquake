@@ -1,5 +1,6 @@
 from backend.api.tests.test_session_config import test_session, test_engine, client
 import logging
+from .utils import assert_database_error_returns_500
 
 
 def test_get_tsunami_zones(client):
@@ -66,3 +67,12 @@ def test_is_in_tsunami_zone_missing_params(client, caplog):
     response = client.get("api/tsunami-zones/is-in-tsunami-zone")
     assert response.status_code == 400
     assert "Missing coordinates in non-ping request" in caplog.text
+
+
+def test_is_in_tsunami_zone_database_error_returns_500(client, caplog):
+    assert_database_error_returns_500(
+        client,
+        caplog,
+        "api/tsunami-zones/is-in-tsunami-zone?lon=0&lat=0",
+        "Error checking tsunami status",
+    )

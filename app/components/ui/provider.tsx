@@ -3,13 +3,16 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { ColorModeProvider, type ColorModeProviderProps } from "./color-mode";
 import system from "../../../styles/theme";
+import EmotionRegistry from "@/emotion-registry";
 
 export function Provider(props: ColorModeProviderProps) {
   return (
-    <ChakraProvider value={system}>
-      {/* TODO: this is a workaround to force the color mode to light for now until we figure out how to handle light vs dark properly */}
-      <ColorModeProvider forcedTheme="light" {...props} />
-    </ChakraProvider>
+    <EmotionRegistry>
+      <ChakraProvider value={system}>
+        {/* TODO: this is a workaround to force the color mode to light for now until we figure out how to handle light vs dark properly */}
+        <ColorModeProvider forcedTheme="light" {...props} />
+      </ChakraProvider>
+    </EmotionRegistry>
   );
 }
 
