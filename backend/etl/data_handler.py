@@ -61,7 +61,7 @@ class DataHandler(ABC):
         self.db_getter = get_db
         self.page_size = page_size
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
-        self.session = session or SessionManager.create_session(self.logger)
+        self.session = session or SessionManager.create_session()
         self.request_handler = RequestHandler(self.session)
         try:
             with open(_SF_BOUNDARY_PATH) as f:
