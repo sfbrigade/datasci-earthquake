@@ -1,5 +1,6 @@
 from backend.api.tests.test_session_config import test_engine, test_session, client
 import logging
+from .utils import assert_database_error_returns_500
 
 
 def test_get_soft_stories(client):
@@ -83,3 +84,12 @@ def test_is_soft_story_missing_params(client, caplog):
     response = client.get("api/soft-stories/is-soft-story")
     assert response.status_code == 400
     assert "Missing coordinates in non-ping request" in caplog.text
+
+
+def test_is_soft_story_database_error_returns_500(client, caplog):
+    assert_database_error_returns_500(
+        client,
+        caplog,
+        "api/soft-stories/is-soft-story?lon=0&lat=0",
+        "Error checking soft-story status",
+    )
