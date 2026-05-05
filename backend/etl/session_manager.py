@@ -9,7 +9,6 @@ class SessionManager:
     """Handles HTTP session creation and configuration"""
 
     logger = logging.getLogger(__name__)
-    print('duhhhh.........')
 
     @staticmethod
     def create_session() -> requests.Session:

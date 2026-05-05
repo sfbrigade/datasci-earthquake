@@ -11,7 +11,7 @@ class RequestHandler:
         self, session: requests.Session 
     ):
         self.session = session
-        self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger = logging.getLogger(__name__)
 
     def make_request(self, url: str, params: dict, timeout: int = 60) -> dict:
         """
