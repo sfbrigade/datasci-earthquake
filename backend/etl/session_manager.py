@@ -8,7 +8,7 @@ from typing import Optional
 class SessionManager:
     """Handles HTTP session creation and configuration"""
 
-    logger = logging.getLogger(self.__class__.__name__)
+    logger = logging.getLogger(__name__)
 
     @staticmethod
     def create_session() -> requests.Session:
