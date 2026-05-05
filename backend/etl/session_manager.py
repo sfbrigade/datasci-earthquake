@@ -35,7 +35,7 @@ class SessionManager:
         session.mount("https://", adapter)
         session.mount("http://", adapter)
 
-        logger.info(
+        SessionManager.logger.info(
                 f"Created new session with retry configuration:\n"
                 f"Max retries: {retry_strategy.total}\n"
                 f"Backoff factor: {retry_strategy.backoff_factor}\n"
