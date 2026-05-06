@@ -1,0 +1,18 @@
+# NextJS
+/.next/
+/.swc/
+/out
+/next-env.d.ts
+
+# Chakra
+/theme/
+
+# Storybook
+*storybook.log
+/public/storybook/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

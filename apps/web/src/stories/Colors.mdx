@@ -1,0 +1,49 @@
+import { Meta, ColorPalette, ColorItem } from "@storybook/addon-docs/blocks";
+import system from "@/styles/theme";
+
+export const colors = system._config.theme.tokens.colors;
+
+export const SingleColors = (() =>
+  Object.keys(colors).reduce(function (result, key) {
+    if (colors[key].value) {
+      result[key] = colors[key].value;
+    }
+    return result;
+  }, {}))();
+
+export const ColorScales = (() =>
+  Object.keys(colors).reduce(function (res, color, idx, cols) {
+    if (Object.keys(colors[color]).length > 1) {
+      res.push(
+        <ColorItem
+          title={`theme.tokens.colors.${color}`}
+          subtitle={`${color} palette`}
+          colors={Object.keys(colors[color]).reduce(function (result, key) {
+            if (colors[color][key].value) {
+              result[key] = colors[color][key].value;
+            }
+            return result;
+          }, {})}
+        />
+      );
+    }
+    return res;
+  }, []))();
+
+<Meta title="Tokens/Colors" />
+
+# Colors
+
+## Single colors
+
+<ColorPalette>
+  <ColorItem
+    title={`theme.tokens.colors`}
+    subtitle={"Single colors palette"}
+    colors={SingleColors}
+  />
+</ColorPalette>
+
+## Color scales
+
+<ColorPalette>{ColorScales}</ColorPalette>

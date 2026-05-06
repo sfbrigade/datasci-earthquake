@@ -8,19 +8,20 @@ import storybookPlugin from "eslint-plugin-storybook";
 
 const eslintConfig = defineConfig([
   // globally ignore built files
+  // TODO: consider limiting patterns to just web/ folder?
   globalIgnores([
     // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
+    "**/.next/**",
+    "**/out/**",
+    "**/build/**",
+    "**/next-env.d.ts",
 
     // Additional ignores:
     "**/node_modules/",
     "**/dist/",
-    "storybook-static/**",
-    ".tmp/**",
-    ".venv/**",
+    "**/public/storybook/**",
+    "**/.tmp/**",
+    "**/.venv/**",
   ]),
 
   // Next.js Core Web Vitals
