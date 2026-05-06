@@ -28,6 +28,7 @@
     "clean:cache": "npm cache clean --force",
     "tokens-COMMENT": "WARNING: this is currently broken and only outputs a default theme that does not include our overrides in `theme.ts`; TODO: look into workarounds or consider contributing an enhancement upstream to Chakra UI",
     "tokens": "chakra eject",
+    "confirm:COMMENT": "`confirm` and the scripts below it are a WIP",
     "confirm": "node scripts/ask-run.ts",
     "dev:conditional": "npm-run-all build:theme --parallel \"build:theme -- --watch\" dev:next dev:storybook-conditional",
     "dev:storybook-conditional": "npm run confirm -- dev:storybook yes 3000"
