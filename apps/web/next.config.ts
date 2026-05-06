@@ -1,22 +1,4 @@
-// import fs from "fs";
-// import path from "path";
 import { NextConfig } from "next";
-
-// // NOTE: the snippet below helps out if you are working with git worktrees inside of a subfolder; we may want to remove this altogether, though.
-// const packageRoot = process.cwd();
-// const localNextPackage = path.join(
-//   packageRoot,
-//   "node_modules",
-//   "next",
-//   "package.json"
-// );
-
-// if (!fs.existsSync(localNextPackage)) {
-//   console.error(
-//     `${localNextPackage} not found; is Next installed in the local \`node_modules\`?`
-//   );
-//   process.exit(1);
-// }
 
 const watchOptions =
   process.env.ENVIRONMENT === "dev_docker"
@@ -43,14 +25,6 @@ const nextConfig: NextConfig = {
     const env = process.env.ENVIRONMENT;
     const rewrites = [];
 
-    // if (env === "local" || env === "dev_docker") {
-    //   // for local development and docker, simulate the production environment's `/public/storybook` folder, which results in a `/storybook` path, by rewriting the `/storybook` path to the Storybook dev server
-    //   rewrites.push({
-    //     source: '/storybook/:path*',
-    //     destination: 'http://localhost:6006/:path*', // NOTE: this must match the port in the `package.json` `storybook-dev` script
-    //   });
-    // }
-
     let backendHost;
 
     if (env === "local") {
@@ -60,7 +34,6 @@ const nextConfig: NextConfig = {
     } else {
       backendHost = ""; // In preview and production, the backend is served from the same origin
     }
-
 
     // Only add API rewrite if backendHost is defined. Docs and openapi.json are available for devs only.
     if (backendHost) {
