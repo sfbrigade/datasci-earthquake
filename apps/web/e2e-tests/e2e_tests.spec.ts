@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { Headings } from "../web/data/data";
+import { Headings } from "../src/data/data";
 
 import suggestResponse from "./mocks/api/mapbox/autofill-v1-suggest.json" with { type: "json" };
 import retrieveResponse from "./mocks/api/mapbox/autofill-v1-retrieve.json" with { type: "json" };
