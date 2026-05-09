@@ -209,9 +209,7 @@ def test_fetch_data_success(data_handler, caplog):
 
     data_handler.session = Mock()
     data_handler.session.get.return_value = mock_response
-    data_handler.request_handler = RequestHandler(
-        data_handler.session, data_handler.logger
-    )
+    data_handler.request_handler = RequestHandler(data_handler.session)
 
     # Act
     result = data_handler.fetch_data()
@@ -257,9 +255,7 @@ def test_fetch_data_partial_page(data_handler, caplog):
 
     data_handler.session = Mock()
     data_handler.session.get.side_effect = [full_page_response, partial_page_response]
-    data_handler.request_handler = RequestHandler(
-        data_handler.session, data_handler.logger
-    )
+    data_handler.request_handler = RequestHandler(data_handler.session)
 
     # Act
     result = data_handler.fetch_data()
@@ -281,9 +277,7 @@ def test_fetch_data_request_exception(data_handler, caplog):
     # Arrange
     data_handler.session = Mock()
     data_handler.session.get.side_effect = requests.RequestException("API Error")
-    data_handler.request_handler = RequestHandler(
-        data_handler.session, data_handler.logger
-    )
+    data_handler.request_handler = RequestHandler(data_handler.session)
 
     # Act
     with pytest.raises(requests.RequestException):
@@ -339,9 +333,7 @@ def test_fetch_data_session_cleanup(data_handler, caplog):
 
     data_handler.session = Mock()
     data_handler.session.get.return_value = mock_response
-    data_handler.request_handler = RequestHandler(
-        data_handler.session, data_handler.logger
-    )
+    data_handler.request_handler = RequestHandler(data_handler.session)
 
     # Act
     data_handler.fetch_data()
