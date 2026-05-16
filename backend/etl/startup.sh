@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
-set -x   # Trace each command as it executes
+if [ "${ENVIRONMENT}" = "development" ]; then
+    set -x   # Trace commands in dev only
+fi
 set -o pipefail   # Fail if any command in a pipeline fails
 
 echo "===== Starting startup.sh ====="

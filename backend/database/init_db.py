@@ -37,17 +37,18 @@ Caution:
 
 from backend.api.models.base import Base
 from sqlalchemy import inspect
-from backend.database.session import engine
+from backend.database.session import get_engine
 from sqlalchemy.orm import sessionmaker
 from backend.api.models.tsunami import TsunamiZone
 from backend.api.models.landslide_zones import LandslideZone
 from backend.api.models.liquefaction_zones import LiquefactionZone
 from backend.api.models.soft_story_properties import SoftStoryProperty
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False)
 
 
 def init_db():
+    engine = get_engine()
     if not check_tables_exist():
         Base.metadata.create_all(bind=engine)
         print("Database tables created.")
@@ -61,6 +62,7 @@ def init_db():
 
 
 def drop_db():
+    engine = get_engine()
     Base.metadata.drop_all(bind=engine)
     print("Database tables dropped.")
 
@@ -69,6 +71,7 @@ table_classes = [TsunamiZone, LiquefactionZone, SoftStoryProperty]
 
 
 def check_tables_exist():
+    engine = get_engine()
     inspector = inspect(engine)
     tables = inspector.get_table_names()
 
@@ -80,8 +83,9 @@ def check_tables_exist():
 
 # LandslideZone is not being used, and isn't included in this check.
 def check_tables_empty():
+    engine = get_engine()
     empty_tables = []
-    with SessionLocal() as session:
+    with SessionLocal(bind=engine) as session:
         for table in table_classes:
             if session.query(table).first() is None:
                 empty_tables.append(table.__tablename__)

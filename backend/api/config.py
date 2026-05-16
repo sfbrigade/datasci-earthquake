@@ -5,6 +5,7 @@ Provides the environment variables that are read by the application
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
 from functools import lru_cache
+import os
 
 
 def find_env_file(start: Path, filename: str = ".env") -> Path | None:
@@ -12,6 +13,10 @@ def find_env_file(start: Path, filename: str = ".env") -> Path | None:
     Walk upwards from `start` until `filename` is found or the root directory is reached.
     Returns the Path if found, otherwise None.
     """
+    # Skip .env file in production
+    if os.getenv("ENVIRONMENT") == "prod":
+        return None
+
     current = start.resolve()
     for parent in [current, *current.parents]:
         candidate = parent / filename
@@ -48,13 +53,11 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=ENV_FILE,
         env_file_encoding="utf-8",
+        case_sensitive=False,
     )
 
 
-settings = Settings()
-
-
 # Cache the settings to avoid multiple calls to load the same settings
-@lru_cache()
+@lru_cache(maxsize=1)
 def get_settings() -> Settings:
     return Settings()
