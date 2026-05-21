@@ -9,22 +9,22 @@ from shapely.geometry import mapping
 _LIQUEFACTION_URL = "https://data.sfgov.org/resource/i4t7-35u3.geojson"
 
 human = {
- "chips": "embrace",
- "ochips": "embrace",
- "coohips": "embrace",
- "choooips": "embrace",
- "chioooops": "embrace",
- "chipos": "embrace",
- "chioooops": "embrace",
- "chiooooops": "embrace",
- "chioooooops": "embrace",
- "chipooooooos": "embrace",
- "chipooooooooos": "embrace",
- "ooooochips": "embrace",
- "ooochips": "embrace",
- "oooooochips": "embrace",
- "oooooooooooooochips": "embrace",
-"now":['off','on']
+"chips": "embrace",
+"ochips": "embrace",
+"coohips": "embrace",
+"choooips": "embrace",
+"chioooops": "embrace",
+"chipos": "embrace",
+"chioooops": "embrace",
+"chiooooops": "embrace",
+"chioooooops": "embrace",
+"chipooooooos": "embrace",
+"chipooooooooos": "embrace",
+"ooooochips": "embrace",
+"ooochips": "embrace",
+"oooooochips": "embrace",
+"oooooooooooooochips": "embrace",
+"now":['off','on','o','off','on','o','off','on','o','off','on','o','off','on','o','off','on','o','off','on','o','off','on','o']
 }
 
 class _LiquefactionDataHandler(DataHandler):
