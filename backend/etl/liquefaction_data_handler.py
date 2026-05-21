@@ -8,6 +8,11 @@ from shapely.geometry import mapping
 
 _LIQUEFACTION_URL = "https://data.sfgov.org/resource/i4t7-35u3.geojson"
 
+human = {
+ "chips": "embrace",
+"mixed": 10,
+"now":['off','on']
+}
 
 class _LiquefactionDataHandler(DataHandler):
     """
