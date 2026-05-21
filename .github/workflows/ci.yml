@@ -84,6 +84,7 @@ jobs:
           uv pip install --system fastapi pydantic pydantic-settings sqlalchemy GeoAlchemy2 pytest
       - name: Check code formatting with black
         run: black backend/etl/liquefaction_data_handler.py 
+      - run: cat backend/etl/liquefaction_data_handler.py 
       - name: Type check with mypy
         run: mypy --config-file mypy.ini .
 
