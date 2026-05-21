@@ -85,6 +85,8 @@ jobs:
       - name: Check code formatting with black
         run: black backend/etl/liquefaction_data_handler.py 
       - run: cat backend/etl/liquefaction_data_handler.py 
+      - run: git branch
+      - run: git status
       - name: Type check with mypy
         run: mypy --config-file mypy.ini .
 
