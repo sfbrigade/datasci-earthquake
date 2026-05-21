@@ -46,6 +46,7 @@ logging.basicConfig(level=logging.INFO, format=FORMAT, stream=StreamHandler(stre
 async def etl(key):
   handler = HANDLERS[key]['handler']
 
+      print('decision....')
   try:
       if HANDLERS[key]['params'] != None:
         data = handler.fetch_data(HANDLERS[key]['params'])
