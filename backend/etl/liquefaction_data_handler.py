@@ -31,6 +31,7 @@ class _LiquefactionDataHandler(DataHandler):
         features = data["features"]
         parsed_data = []
         geojson_features = []
+          print('huh')
 
         for feature in features:
             properties = feature.get("properties", {})
