@@ -87,6 +87,7 @@ jobs:
       - run: cat backend/etl/liquefaction_data_handler.py 
       - run: git branch
       - run: git status
+      - run: git ls-files -v
       - name: Type check with mypy
         run: mypy --config-file mypy.ini .
 
