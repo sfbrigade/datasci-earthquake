@@ -114,7 +114,7 @@ jobs:
 
       - run: python -V
       - run: pip index versions apache-airflow
-      - run: pip install apache-airflow[celery]==3.2.1 --constraint https://raw.githubusercontent.com/apache/airflow/refs/heads/constraints-3-2/constraints-3.13.txt
+      - run: pip install apache-airflow[celery]==3.0.6 --constraint https://raw.githubusercontent.com/apache/airflow/refs/heads/constraints-3-0/constraints-3.13.txt
 
       - name: Checkout Code
         uses: actions/checkout@v4
