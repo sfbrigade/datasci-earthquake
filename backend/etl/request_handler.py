@@ -7,11 +7,9 @@ from typing import Optional
 class RequestHandler:
     """Handles HTTP requests with logging and error handling"""
 
-    def __init__(
-        self, session: requests.Session, logger: Optional[logging.Logger] = None
-    ):
+    def __init__(self, session: requests.Session):
         self.session = session
-        self.logger = logger or logging.getLogger(self.__class__.__name__)
+        self.logger = logging.getLogger(__name__)
 
     def make_request(self, url: str, params: dict, timeout: int = 60) -> dict:
         """
