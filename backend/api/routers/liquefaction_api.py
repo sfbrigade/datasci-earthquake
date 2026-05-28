@@ -13,6 +13,7 @@ from ..schemas.liquefaction_schemas import (
     LiquefactionFeatureCollection,
 )
 from backend.api.models.liquefaction_zones import LiquefactionZone
+from backend.api.exceptions import HazardCheckError
 import logging
 
 logging.basicConfig(
@@ -194,12 +195,7 @@ def is_in_liquefaction_zone(
 
         return InLiquefactionZoneView(exists=exists, last_updated=last_updated, liq=liq)
 
-    except Exception:
-        logger.error(
-            f"Error checking liquefaction zone status for coordinates: lon={lon}, lat={lat}",
-            exc_info=True,
-        )
-        raise HTTPException(
-            status_code=500,
-            detail=f"An unexpected error occurred while checking liquefaction zone status.",
+    except Exception as e:
+        raise HazardCheckError(
+            zone="liquefaction", lon=lon, lat=lat, original_exception=e
         )

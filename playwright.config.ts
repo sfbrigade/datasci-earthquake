@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const baseURL = process.env.BASE_URL || "https://www.safehome.report";
+const baseURL = process.env.BASE_URL || "http://localhost:3000";
 
 /**
  * See https://playwright.dev/docs/test-configuration.

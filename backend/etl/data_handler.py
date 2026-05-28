@@ -47,7 +47,6 @@ class DataHandler(ABC):
         table (ModelType): The SQLAlchemy table object.
         page_size (int): Number of records to fetch per page.
         session: Optional pre-configured requests session
-        logger: Optional logger instance
     """
 
     def __init__(
@@ -56,15 +55,14 @@ class DataHandler(ABC):
         table: Type[ModelType],
         page_size: int = 1000,
         session: Optional[requests.Session] = None,
-        logger: Optional[logging.Logger] = None,
     ):
         self.url = url
         self.table = table
         self.db_getter = get_db
         self.page_size = page_size
-        self.logger = logger or logging.getLogger(f"{self.__class__.__name__}")
-        self.session = session or SessionManager.create_session(self.logger)
-        self.request_handler = RequestHandler(self.session, self.logger)
+        self.logger = logging.getLogger(__name__)
+        self.session = session or SessionManager.create_session()
+        self.request_handler = RequestHandler(self.session)
         try:
             with open(_SF_BOUNDARY_PATH) as f:
                 boundary_geojson = json.load(f)

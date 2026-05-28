@@ -1,0 +1,211 @@
+{
+  "attribution": "NOTICE: © 2026 Mapbox and its suppliers. All rights reserved. Use of this data is subject to the Mapbox Terms of Service (https://www.mapbox.com/about/maps/). This response and the information it contains may not be retained.",
+  "suggestions": [
+    {
+      "accuracy": "rooftop",
+      "mapbox_id": "dXJuOm1ieGFkcjoyZTI3OTJjOS0zODAyLTQwZGEtYTA0OS00ODA0NWY3MzllMjA",
+      "match_code": {
+        "address_number": "matched",
+        "street": "matched",
+        "postcode": "unmatched",
+        "place": "unmatched",
+        "region": "unmatched",
+        "locality": "not_applicable",
+        "country": "inferred",
+        "confidence": "low"
+      },
+      "place_type": ["address"],
+      "place_name": "321 7th Street, San Francisco, California 94103, United States",
+      "address_number": "321",
+      "street": "7th Street",
+      "context": [
+        {
+          "id": "neighborhood.601435372",
+          "mapbox_id": "dXJuOm1ieHBsYzpJOWtzN0E",
+          "text_en": "South of Market",
+          "language_en": "en",
+          "text": "South of Market",
+          "language": "en"
+        },
+        {
+          "id": "postcode.312430316",
+          "mapbox_id": "dXJuOm1ieHBsYzpFcDlPN0E",
+          "text_en": "94103",
+          "language_en": "en",
+          "text": "94103",
+          "language": "en"
+        },
+        {
+          "id": "place.292358380",
+          "mapbox_id": "dXJuOm1ieHBsYzpFVzBJN0E",
+          "wikidata": "Q62",
+          "text_en": "San Francisco",
+          "language_en": "en",
+          "text": "San Francisco",
+          "language": "en"
+        },
+        {
+          "id": "district.20547308",
+          "mapbox_id": "dXJuOm1ieHBsYzpBVG1HN0E",
+          "wikidata": "Q62",
+          "text_en": "San Francisco County",
+          "language_en": "en",
+          "text": "San Francisco County",
+          "language": "en"
+        },
+        {
+          "id": "region.419052",
+          "mapbox_id": "dXJuOm1ieHBsYzpCbVRz",
+          "wikidata": "Q99",
+          "short_code": "US-CA",
+          "text_en": "California",
+          "language_en": "en",
+          "text": "California",
+          "language": "en"
+        },
+        {
+          "id": "country.8940",
+          "mapbox_id": "dXJuOm1ieHBsYzpJdXc",
+          "wikidata": "Q30",
+          "short_code": "us",
+          "text_en": "United States",
+          "language_en": "en",
+          "text": "United States",
+          "language": "en"
+        }
+      ],
+      "id": "address.5160835607004102",
+      "external_ids": {
+        "carmen": "address.5160835607004102",
+        "federated": "carmen.address.5160835607004102"
+      },
+      "feature_name": "321 7th Street",
+      "matching_name": "321 7th Street",
+      "description": "San Francisco, California 94103, United States",
+      "metadata": { "iso_3166_2": "US-CA", "iso_3166_1": "us" },
+      "language": "en",
+      "maki": "marker",
+      "neighborhood": "South of Market",
+      "postcode": "94103",
+      "place": "San Francisco",
+      "district": "San Francisco County",
+      "region": "California",
+      "region_code": "CA",
+      "country": "United States",
+      "country_code": "us",
+      "full_address": "321 7th Street, San Francisco, California 94103, United States",
+      "address_line1": "321 7th Street",
+      "address_line2": "",
+      "address_line3": "",
+      "address_level1": "CA",
+      "address_level2": "San Francisco",
+      "address_level3": "South of Market",
+      "action": {
+        "id": "fid.eyJ0eXBlcyI6ImFkZHJlc3MiLCJzdHJlZXRzIjoiZmFsc2UiLCJsYW5ndWFnZSI6ImVuIiwiY291bnRyeSI6IlVTIiwibGltaXQiOiIxMCIsInByb3hpbWl0eSI6Ii0xMjIuNDE5NCwzNy43NzQ5IiwiYmJveCI6Ii0xMjIuNTUsMzcuNjksLTEyMi4zNSwzNy44MyIsIm1vZGUiOiJmb3J3YXJkIiwicXVlcnkiOiIzMjEgN3RoIFN0cmVldCJ9.0"
+      }
+    },
+    {
+      "accuracy": "rooftop",
+      "mapbox_id": "dXJuOm1ieGFkcjo2MzQzZDE4OC03ZTQyLTQyNzYtYmEzOC04YTQ0ZTQ2OGVlMjE",
+      "match_code": {
+        "address_number": "matched",
+        "street": "unmatched",
+        "postcode": "unmatched",
+        "place": "unmatched",
+        "region": "unmatched",
+        "locality": "not_applicable",
+        "country": "inferred",
+        "confidence": "low"
+      },
+      "place_type": ["address"],
+      "place_name": "321 7th Avenue, San Francisco, California 94118, United States",
+      "address_number": "321",
+      "street": "7th Avenue",
+      "context": [
+        {
+          "id": "neighborhood.314764524",
+          "mapbox_id": "dXJuOm1ieHBsYzpFc0xzN0E",
+          "text_en": "Inner Richmond",
+          "language_en": "en",
+          "text": "Inner Richmond",
+          "language": "en"
+        },
+        {
+          "id": "postcode.312536812",
+          "mapbox_id": "dXJuOm1ieHBsYzpFcUR1N0E",
+          "text_en": "94118",
+          "language_en": "en",
+          "text": "94118",
+          "language": "en"
+        },
+        {
+          "id": "place.292358380",
+          "mapbox_id": "dXJuOm1ieHBsYzpFVzBJN0E",
+          "wikidata": "Q62",
+          "text_en": "San Francisco",
+          "language_en": "en",
+          "text": "San Francisco",
+          "language": "en"
+        },
+        {
+          "id": "district.20547308",
+          "mapbox_id": "dXJuOm1ieHBsYzpBVG1HN0E",
+          "wikidata": "Q62",
+          "text_en": "San Francisco County",
+          "language_en": "en",
+          "text": "San Francisco County",
+          "language": "en"
+        },
+        {
+          "id": "region.419052",
+          "mapbox_id": "dXJuOm1ieHBsYzpCbVRz",
+          "wikidata": "Q99",
+          "short_code": "US-CA",
+          "text_en": "California",
+          "language_en": "en",
+          "text": "California",
+          "language": "en"
+        },
+        {
+          "id": "country.8940",
+          "mapbox_id": "dXJuOm1ieHBsYzpJdXc",
+          "wikidata": "Q30",
+          "short_code": "us",
+          "text_en": "United States",
+          "language_en": "en",
+          "text": "United States",
+          "language": "en"
+        }
+      ],
+      "id": "address.7844187570086220",
+      "external_ids": {
+        "carmen": "address.7844187570086220",
+        "federated": "carmen.address.7844187570086220"
+      },
+      "feature_name": "321 7th Avenue",
+      "matching_name": "321 7th Avenue",
+      "description": "San Francisco, California 94118, United States",
+      "metadata": { "iso_3166_2": "US-CA", "iso_3166_1": "us" },
+      "language": "en",
+      "maki": "marker",
+      "neighborhood": "Inner Richmond",
+      "postcode": "94118",
+      "place": "San Francisco",
+      "district": "San Francisco County",
+      "region": "California",
+      "region_code": "CA",
+      "country": "United States",
+      "country_code": "us",
+      "full_address": "321 7th Avenue, San Francisco, California 94118, United States",
+      "address_line1": "321 7th Avenue",
+      "address_line2": "",
+      "address_line3": "",
+      "address_level1": "CA",
+      "address_level2": "San Francisco",
+      "address_level3": "Inner Richmond",
+      "action": {
+        "id": "fid.eyJ0eXBlcyI6ImFkZHJlc3MiLCJzdHJlZXRzIjoiZmFsc2UiLCJsYW5ndWFnZSI6ImVuIiwiY291bnRyeSI6IlVTIiwibGltaXQiOiIxMCIsInByb3hpbWl0eSI6Ii0xMjIuNDE5NCwzNy43NzQ5IiwiYmJveCI6Ii0xMjIuNTUsMzcuNjksLTEyMi4zNSwzNy44MyIsIm1vZGUiOiJmb3J3YXJkIiwicXVlcnkiOiIzMjEgN3RoIFN0cmVldCJ9.1"
+      }
+    }
+  ]
+}

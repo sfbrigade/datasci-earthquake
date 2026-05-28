@@ -1,5 +1,6 @@
-import { Flex, Text, Link, VStack, Box, Image } from "@chakra-ui/react";
+import { Flex, Text, Link, VStack, Box } from "@chakra-ui/react";
 import NextLink from "../components/custom-next-link";
+import NextImage from "next/image";
 
 const TermsOfService = () => {
   return (
@@ -60,6 +61,7 @@ const TermsOfService = () => {
                 href="https://www.documentcloud.org/documents/23813850-draft-inventory-of-sf-non-ductile-concrete-buildings-march-2023/"
                 textDecoration="underline"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 non-ductile concrete
               </Link>
@@ -81,11 +83,11 @@ const TermsOfService = () => {
           </VStack>
         </VStack>
         <Box flexShrink={0}>
-          <Image
+          <NextImage
+            height={300}
+            width={300}
             src="/images/UserCartoon3.png"
-            alt="about us"
-            width="termsImageWidth"
-            height="termsImageHeight"
+            alt="Illustration of individual in chair with a book"
           />
         </Box>
       </Flex>

@@ -183,6 +183,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
                   href={hazard.link.url}
                   mt="4"
                   target="_blank"
+                  rel="noopener noreferrer"
                   textDecoration="underline"
                   onClick={() =>
                     posthog.capture("dataset-link-clicked", {

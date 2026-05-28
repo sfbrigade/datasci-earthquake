@@ -1,6 +1,9 @@
 import { HeadingProps } from "@/components/heading";
 import { HazardProps } from "@/components/mobile-card-hazard";
 
+// TODO: break this up into multiple files
+// TODO: separate eg styling from content if it makes sense to
+
 type HazardPropsCollection = HazardProps[];
 
 export const Hazards: HazardPropsCollection = [
@@ -167,126 +170,289 @@ export const DataInfoLinks = [
   },
 ];
 
-export const TeamMembers = [
+export const Teams = [
+  { team_id: 1, name: "Project Management" },
+  { team_id: 2, name: "UX/UI Design" },
+  { team_id: 3, name: "Front End Engineering" },
+  { team_id: 4, name: "Back End Engineering" },
+  { team_id: 5, name: "Data Science" },
+  { team_id: 6, name: "Partnerships" },
+];
+
+// TODO: consider adding `active` boolean property and combining `TeamMembers` and `InactiveTeamMembers` into a single array
+type TeamMember = {
+  user_id: number;
+  role: string;
+  name: string;
+  team_ids: number[];
+};
+
+// TODO: figure out order for both active and inactive members (perhaps we need some dates, such as start_date and/or end_date)
+// TODO: make this easy to edit, update, order/reorder with some kind of UI?
+// TODO: combine into single array (perhaps with `active` boolean property)
+export const TeamMembers: TeamMember[] = [
   {
+    user_id: 1,
     role: "Project Manager, Data Science",
     name: "Leela Solomon",
+    team_ids: [1, 5],
   },
   {
+    user_id: 2,
     role: "Assistant Project Manager, Data Science Lead",
     name: "Oscar Syu",
+    team_ids: [1, 5],
   },
   {
+    user_id: 27,
     role: "UX/UI Design Lead",
     name: "Ramya Rajasekaran",
+    team_ids: [2],
   },
   {
-    role: "Partnerships Lead",
-    name: "Julia Cordero",
-  },
-  {
-    role: "Back End Engineering Lead",
-    name: "Anna Gennadinik",
-  },
-  {
-    role: "Front End Engineering Lead",
-    name: "Nick Visutsithiwong",
-  },
-  {
-    role: "Front End Engineering Lead",
-    name: "Josh van Eyken",
-  },
-  {
-    role: "UX/UI Design",
-    name: "Jocelyn Su",
-  },
-  {
-    role: "UX Writer",
-    name: "Nikki Collister",
-  },
-  {
-    role: "Front End Engineer",
-    name: "Jobe Abdellah",
-  },
-  {
-    role: "Front End Engineer",
-    name: "Jesse Mavi",
-  },
-  {
-    role: "Back End Engineer",
-    name: "Adam Finkle",
-  },
-  {
-    role: "Data Science, Back End Engineer",
-    name: "Lola Jackson",
-  },
-  {
-    role: "Back End Engineer, Data Science",
-    name: "Jiang John",
-  },
-  {
-    role: "Partnerships",
-    name: "Chanel Johnson",
-  },
-  {
-    role: "Data Science",
-    name: "Amreen Kaur",
-  },
-  {
-    role: "UX/UI Design",
-    name: "Teresa Yang",
-  },
-  {
+    user_id: 26,
     role: "UX/UI Design",
     name: "Ruby Hirsch",
+    team_ids: [2],
   },
   {
-    role: "Front End Engineer, Back End Engineer",
+    user_id: 28,
+    role: "UX/UI Design",
+    name: "Sampada Samaka",
+    team_ids: [2],
+  },
+  {
+    user_id: 29,
+    role: "UX/UI Design",
+    name: "Jaswanth Reddy Shamakkagari",
+    team_ids: [2],
+  },
+  {
+    user_id: 7,
+    role: "Front End Engineering Lead",
+    name: "Nick Visutsithiwong",
+    team_ids: [3],
+  },
+  {
+    user_id: 30,
+    role: "Front End Engineer",
     name: "Zaima Choudhry",
+    team_ids: [3],
+  },
+  {
+    user_id: 31,
+    role: "Front End Engineer",
+    name: "Nutan Pandeya",
+    team_ids: [3],
+  },
+  {
+    user_id: 42,
+    role: "Front End Engineer",
+    name: "Kevin Szeto",
+    team_ids: [3],
+  },
+  {
+    user_id: 33,
+    role: "Back End Engineering Lead",
+    name: "Newton Chung",
+    team_ids: [4],
+  },
+  {
+    user_id: 34,
+    role: "Back End Engineer",
+    name: "Quinn Redwoods",
+    team_ids: [4],
+  },
+  {
+    user_id: 35,
+    role: "Back End Engineer",
+    name: "Brendan Wong",
+    team_ids: [4],
+  },
+  {
+    user_id: 36,
+    role: "Back End Engineer",
+    name: "Neelansh Khare",
+    team_ids: [4],
+  },
+  {
+    user_id: 39,
+    role: "Data Science",
+    name: "Amreen Kaur",
+    team_ids: [5],
+  },
+  {
+    user_id: 40,
+    role: "Data Science",
+    name: "Shilpa Dhananjayan",
+    team_ids: [5],
+  },
+  {
+    user_id: 41,
+    role: "Data Science",
+    name: "Philippe Marchand",
+    team_ids: [5],
+  },
+  {
+    user_id: 37,
+    role: "Partnerships",
+    name: "Joey Ong",
+    team_ids: [6],
   },
 ];
 
-export const InactiveTeamMembers = [
+export const InactiveTeamMembers: TeamMember[] = [
   {
+    user_id: 18,
+    role: "Partnerships Lead",
+    name: "Julia Cordero",
+    team_ids: [6],
+  },
+  {
+    user_id: 38,
+    role: "Partnerships",
+    name: "Chanel Johnson",
+    team_ids: [6],
+  },
+  {
+    user_id: 3,
     role: "Product Design Lead",
     name: "Micah Johnson",
+    team_ids: [2],
   },
   {
-    role: "Engineering Lead",
-    name: "Eli Lucherini ",
+    user_id: 9,
+    role: "UX/UI Design Lead",
+    name: "Jocelyn Su",
+    team_ids: [2],
   },
   {
-    role: "Engineering Lead",
+    user_id: 11,
+    role: "UX/UI Design",
+    name: "Teresa Yang",
+    team_ids: [2],
+  },
+  {
+    user_id: 6,
+    role: "UX Writer",
+    name: "Nikki Collister",
+    team_ids: [2],
+  },
+  {
+    user_id: 4,
+    role: "Front End Engineering Lead",
     name: "Svetlana Eliseeva",
+    team_ids: [4],
   },
   {
+    user_id: 12,
+    role: "Front End Engineering Lead",
+    name: "Josh van Eyken",
+    team_ids: [3],
+  },
+  {
+    user_id: 13,
+    role: "Front End Engineer",
+    name: "Jobe Abdellah",
+    team_ids: [3],
+  },
+  {
+    user_id: 14,
     role: "Front End Engineer",
     name: "Amna Khan",
+    team_ids: [3],
   },
   {
+    user_id: 15,
     role: "Front End Engineer",
     name: "Diya Baliga",
+    team_ids: [3],
   },
   {
+    user_id: 32,
+    role: "Front End Engineer",
+    name: "Jesse Mavi",
+    team_ids: [3],
+  },
+  {
+    user_id: 10,
+    role: "Back End Engineering Lead",
+    name: "Eli Lucherini",
+    team_ids: [4],
+  },
+  {
+    user_id: 16,
     role: "Front End Engineer",
     name: "Leah Treidler",
+    team_ids: [3],
   },
   {
-    role: "Full Stack Engineer",
+    user_id: 17,
+    role: "Front End Engineer",
     name: "Raymond Yee",
+    team_ids: [3, 4],
   },
   {
+    user_id: 5,
+    role: "Back End Engineering Lead",
+    name: "Anna Gennadinik",
+    team_ids: [4],
+  },
+  {
+    user_id: 44,
+    role: "Back End Engineer",
+    name: "Adam Finkle",
+    team_ids: [4],
+  },
+  {
+    user_id: 21,
+    role: "Data Science, Back End Engineer",
+    name: "Lola Jackson",
+    team_ids: [4],
+  },
+  {
+    user_id: 8,
+    role: "Back End Engineer, Data Science",
+    name: "Jiang John",
+    team_ids: [4, 5],
+  },
+  {
+    user_id: 19,
     role: "Full Stack Engineer",
     name: "Vincent Shuali",
+    team_ids: [3, 4],
   },
   {
+    user_id: 20,
     role: "Back End Engineer",
     name: "Neeraj Lad",
+    team_ids: [4],
   },
   {
+    user_id: 22,
     role: "Data Science",
     name: "Peter Cuddihy",
+    team_ids: [5],
   },
+  {
+    user_id: 24,
+    role: "Back End Engineer",
+    name: "Santosh Gummidipundi",
+    team_ids: [4],
+  },
+  {
+    user_id: 23,
+    role: "Back End Engineer",
+    name: "Anastasia Belenkii",
+    team_ids: [4],
+  },
+  {
+    user_id: 25,
+    role: "Back End Engineer",
+    name: "Carly Thomas",
+    team_ids: [4],
+  },
+  { user_id: 43, role: "Data Science", name: "Hrishik Guha", team_ids: [5] },
 ];
 
 export const PillData = [

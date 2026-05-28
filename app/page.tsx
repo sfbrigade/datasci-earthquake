@@ -1,15 +1,7 @@
 import { Suspense } from "react";
-import {
-  Box,
-  Flex,
-  Heading,
-  Text,
-  List,
-  HStack,
-  Link,
-  Image,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, List, HStack, Link } from "@chakra-ui/react";
 import NextLink from "./components/custom-next-link";
+import NextImage from "next/image";
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
 import AddressMapper from "./components/address-mapper";
@@ -176,7 +168,7 @@ const Home = async () => {
               <List.Item>
                 <Link
                   as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
+                  href="https://www.crmp.org/our-seismic-retrofit-programs/the-retrofits"
                   textDecoration="underline"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -188,7 +180,7 @@ const Home = async () => {
               <List.Item>
                 <Link
                   as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/resources/find-a-contractor/"
+                  href="https://www.crmp.org/resources/find-a-contractor/"
                   textDecoration="underline"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -201,7 +193,7 @@ const Home = async () => {
                 Check your eligibility for an{" "}
                 <Link
                   as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ebb-retrofit"
+                  href="https://www.crmp.org/our-seismic-retrofit-programs/the-retrofits/ebb-retrofit"
                   textDecoration="underline"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -211,7 +203,7 @@ const Home = async () => {
                 grant or{" "}
                 <Link
                   as={NextLink}
-                  href="https://www.californiaresidentialmitigationprogram.com/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
+                  href="https://www.crmp.org/our-seismic-retrofit-programs/the-retrofits/ess-retrofit"
                   textDecoration="underline"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -261,13 +253,12 @@ const Home = async () => {
           </div>
         </HStack>
         <Box flexShrink={0}>
-          <Image
+          <NextImage
+            width={303} // 606px real width?
+            height={292} // 584px real height?
             src="/images/earthquake-ready.png"
-            width="earthquakeReadyImageWidth"
-            height="earthquakeReadyImageHeight"
-            alt="about us"
+            alt="Illustration of person standing with their dog, who is looking up from a ball on the ground"
           />
-          {/* TODO: should this be a NextImage or a Chakra Image? */}
         </Box>
       </Flex>
     </Flex>
