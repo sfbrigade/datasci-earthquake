@@ -51,10 +51,23 @@ COPY --from=ghcr.io/astral-sh/uv:0.11.2 /uv /usr/local/bin/uv
 # On later builds, changes to app code will rebuild while packages will be reused, not reinstalled.
 COPY backend/pyproject.toml backend/uv.lock ./
 
-# Install packages from uv.lock.
+# Control whether development dependencies are installed at build time.
+# Default is production mode (no dev dependencies) to keep the image small and
+# reduce the runtime attack surface. Set `--build-arg INSTALL_DEV=true` to
+# include dev deps when you need a development/CI image.
+ARG INSTALL_DEV=false
+
+# Install packages from uv.lock. When INSTALL_DEV=true the build includes
+# dev dependencies; otherwise `--no-dev` is passed to omit them. `--no-install-project`
+# keeps the dependency layer separate from the project install to improve caching.
 # --frozen fails the build if lockfile is out of sync with pyproject.toml.
 # --no-install-project skips installing the project itself, further isolating the dependency layer.
-RUN --mount=type=cache,target=/root/.cache/uv uv sync --frozen --no-install-project
+RUN --mount=type=cache,target=/root/.cache/uv \
+    if [ "$INSTALL_DEV" = "true" ]; then \
+        uv sync --frozen --no-install-project; \
+    else \
+        uv sync --frozen --no-install-project --no-dev; \
+    fi
 
 # Add the virtual environment, created above by uv sync, to PATH 
 # (so Python uses the installed packages)
