@@ -56,7 +56,7 @@ services:
     env_file:
       - .env
     environment:
-      - PYTHONPATH=/backend:/
+      - PYTHONPATH=/app/backend:/app
       - DATA_GEOJSON_PATH=/public/data/
       - ENVIRONMENT=dev_docker
     ports:
@@ -65,7 +65,7 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./backend:/backend
+      - ./backend:/app/backend
       - ./backend/etl/startup.sh:/startup.sh
       - public_data:/public/data
     command: bash /startup.sh

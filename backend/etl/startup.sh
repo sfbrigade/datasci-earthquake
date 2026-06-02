@@ -6,7 +6,7 @@ set -o pipefail   # Fail if any command in a pipeline fails
 echo "===== Starting startup.sh ====="
 
 # uv automatically creates a virtual environment called .venv in the backend Dockerfile
-VENV_PYTHON="/.venv/bin/python"
+VENV_PYTHON="/app/.venv/bin/python"
 echo "Using virtual environment python at $VENV_PYTHON"
 
 # Check if the python interpreter exists
