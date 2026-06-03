@@ -25,7 +25,11 @@ def _assert(cond: bool, msg: str):
         raise AssertionError(msg)
 
 
-def _assert_feature_collection(name: str, data: dict[str, Any], min_count: int) -> None:
+def _assert_feature_collection(name: str, data: Any, min_count: int) -> None:
+    _assert(
+        isinstance(data, dict),
+        f"{name}: response data must be a dictionary, but got {type(data).__name__}",
+    )
     features = data.get("features")
     if not isinstance(features, list):
         raise AssertionError(f"{name}: 'features' must be a list")

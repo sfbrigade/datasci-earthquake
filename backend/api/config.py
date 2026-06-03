@@ -13,8 +13,8 @@ def find_env_file(start: Path, filename: str = ".env") -> Path | None:
     Walk upwards from `start` until `filename` is found or the root directory is reached.
     Returns the Path if found, otherwise None.
     """
-    # Skip .env file in production
-    if os.getenv("ENVIRONMENT") == "prod":
+    # Skip .env file in non-local environments where vars are injected by the platform
+    if os.getenv("ENVIRONMENT") in ("prod", "ci", "preview"):
         return None
 
     current = start.resolve()

@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-if [ "${ENVIRONMENT}" = "development" ]; then
+if [ "${ENVIRONMENT}" = "local" ] || [ "${ENVIRONMENT}" = "dev_docker" ]; then
     set -x   # Trace commands in dev only
 fi
 set -o pipefail   # Fail if any command in a pipeline fails
@@ -61,7 +61,7 @@ echo "===== startup.sh finished ====="
 
 # Start FastAPI
 RELOAD_FLAG=""
-if [ "${ENVIRONMENT}" = "development" ]; then
+if [ "${ENVIRONMENT}" = "dev_docker" ]; then
   RELOAD_FLAG="--reload"
 fi
 echo "Starting FastAPI server"
