@@ -52,9 +52,25 @@ jobs:
 
       - name: ETL data to Neon DB
         run: |
-          ENVIRONMENT=prod uv run --project backend -m backend.etl.tsunami_data_handler
-          ENVIRONMENT=prod uv run --project backend -m backend.etl.soft_story_properties_data_handler
-          ENVIRONMENT=prod uv run --project backend -m backend.etl.liquefaction_data_handler
+          ENVIRONMENT=prod uv run --project backend -m backend.etl.tsunami_data_handler &
+          PID1=$!
+          ENVIRONMENT=prod uv run --project backend -m backend.etl.soft_story_properties_data_handler &
+          PID2=$!
+          ENVIRONMENT=prod uv run --project backend -m backend.etl.liquefaction_data_handler &
+          PID3=$!
+          ENVIRONMENT=prod uv run --project backend -m backend.etl.landslide_data_handler &
+          PID4=$!
+          
+          # Wait for all processes to finish and capture their exit codes
+          wait $PID1 || EXIT_STATUS=$?
+          wait $PID2 || EXIT_STATUS=$?
+          wait $PID3 || EXIT_STATUS=$?
+          wait $PID4 || EXIT_STATUS=$?
+          
+          if [ -n "$EXIT_STATUS" ]; then
+            echo "One or more ETL scripts failed."
+            exit $EXIT_STATUS
+          fi
 
       - name: Commit & Push Changes
         id: detect_changes 
