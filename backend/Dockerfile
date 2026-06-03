@@ -62,7 +62,7 @@ ARG INSTALL_DEV=false
 # keeps the dependency layer separate from the project install to improve caching.
 # --frozen fails the build if lockfile is out of sync with pyproject.toml.
 # --no-install-project skips installing the project itself, further isolating the dependency layer.
-RUN --mount=type=cache,target=/root/.cache/uv \
+RUN --mount=type=cache,id=s/637c1db3-bed9-4bfd-9806-3c58643c203b-/root/.cache/uv,target=/root/.cache/uv \
     if [ "$INSTALL_DEV" = "true" ]; then \
         uv sync --frozen --no-install-project; \
     else \
