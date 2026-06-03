@@ -34,11 +34,9 @@ class TsunamiDataHandler(DataHandler):
         for feature in features:
             properties = feature.get("attributes", {})
             rings = feature["geometry"]["rings"]
-            print(f"rings1 = {rings}")
 
             # Extract rings and create Polygons
             rings = feature["geometry"]["rings"]
-            print(f"rings2 = {rings}")
 
             # Ensure valid polygons
             polygons = [Polygon(ring) for ring in rings if len(ring) >= 4]
@@ -108,7 +106,8 @@ if __name__ == "__main__":
         tsunami_zones = handler.fetch_data(params)
         print(f'tsunami zones = {tsunami_zones}')
         tsunami_zones_objects, tsunami_zones_geojson = handler.parse_data(tsunami_zones)
-        handler.export_geojson_if_changed(tsunami_zones_geojson)
-        handler.bulk_insert_data(tsunami_zones_objects, "identifier")
+        print(f'objects = {tsunami_zones_objects}')
+        #handler.export_geojson_if_changed(tsunami_zones_geojson)
+        #handler.bulk_insert_data(tsunami_zones_objects, "identifier")
     except HTTPException as e:
         print(f"Failed after retries: {e}")
