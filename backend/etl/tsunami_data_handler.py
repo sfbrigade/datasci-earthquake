@@ -34,8 +34,12 @@ class TsunamiDataHandler(DataHandler):
         for feature in features:
             properties = feature.get("attributes", {})
             rings = feature["geometry"]["rings"]
+            print(f"rings1 = {rings}")
+
             # Extract rings and create Polygons
             rings = feature["geometry"]["rings"]
+            print(f"rings2 = {rings}")
+
             # Ensure valid polygons
             polygons = [Polygon(ring) for ring in rings if len(ring) >= 4]
             multi_polygon = MultiPolygon(polygons)
