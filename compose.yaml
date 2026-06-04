@@ -56,7 +56,7 @@ services:
     env_file:
       - .env
     environment:
-      - PYTHONPATH=/app/backend:/app
+      - PYTHONPATH=/app
       - DATA_GEOJSON_PATH=/public/data/
       - ENVIRONMENT=dev_docker
     ports:
