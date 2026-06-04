@@ -66,9 +66,8 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/app/backend
-      - ./backend/etl/startup.sh:/startup.sh
       - public_data:/public/data
-    command: bash /startup.sh
+    command: bash ./backend/etl/startup.sh
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8000/api/health || exit 1"]
       start_interval: 10s
