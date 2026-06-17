@@ -4,18 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import {
   chakra,
-  Image,
   useDisclosure,
-  Heading,
   IconButton,
   Drawer,
   Portal,
   Box,
-  Text,
-  Center,
-  Stack,
-  Card,
-  Flex,
 } from "@chakra-ui/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { toaster } from "@/components/ui/toaster";
@@ -25,8 +18,6 @@ import { FeatureCollection, Geometry } from "geojson";
 import HomeHeader from "./home-header";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 import SearchBar from "./search-bar";
-import { CurrentVariant } from "@/data/constants";
-import EarthquakeReadyCards from "./earthquake-ready-cards";
 import AlertInfo from "@/components/ui/alert-info";
 
 const defaultCoords = [-122.4194, 37.7949];
@@ -66,7 +57,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const pathname = usePathname();
 
   // Drawer
-  const { open, onOpen, onClose } = useDisclosure();
+  const { open, onOpen, onClose } = useDisclosure({ defaultOpen: true });
   const drawerContainerRef = useRef(null);
 
   // Search Box
@@ -218,330 +209,106 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         isSearchComplete={displaySearchComplete}
         onHomeIconClick={resetInputAddress}
       >
-        {CurrentVariant === "map-centric" && (
-          <SearchBar
-            inputAddress={inputAddress}
-            onInputAddressChange={setInputAddress}
-            onSearchChange={handleSearchChange}
-          />
-        )}
+        <SearchBar
+          inputAddress={inputAddress}
+          onInputAddressChange={setInputAddress}
+          onSearchChange={handleSearchChange}
+        />
       </HomeHeader>
       <Box
         w="full"
-        h={
-          CurrentVariant === "data-centric"
-            ? { base: "full", md: "80" }
-            : "full"
-        }
+        h="full"
         m="auto"
         position="relative"
         ref={drawerContainerRef}
       >
         <Box h="full" overflow="hidden">
-          {CurrentVariant === "map-centric" && (
-            <Drawer.Root
-              placement={{ mdDown: "bottom", md: "start" }}
-              open={open}
-            >
-              <Portal container={drawerContainerRef}>
-                {/* dummy drawer, closed */}
-                {open ? null : (
-                  <Box
+          <Drawer.Root
+            placement={{ mdDown: "bottom", md: "start" }}
+            open={open}
+          >
+            <Portal container={drawerContainerRef}>
+              {/* dummy drawer, closed */}
+              {open ? null : (
+                <Box
+                  position="absolute"
+                  zIndex="overlay"
+                  top={{ base: "auto", md: "0" }}
+                  left="0"
+                  bottom="0"
+                  right={{ base: "0", md: "auto" }}
+                  w={{ base: "auto", md: "5" }}
+                  h={{ base: "5", md: "auto" }}
+                  backgroundColor="white"
+                >
+                  <Drawer.Trigger
+                    onClick={onOpen}
+                    asChild
                     position="absolute"
-                    zIndex="overlay"
-                    top={{ base: "auto", md: "0" }}
-                    left="0"
-                    bottom="0"
+                    // Mobile: center horizontally at bottom.
+                    left={{ base: "0", md: "0" }}
                     right={{ base: "0", md: "auto" }}
-                    w={{ base: "auto", md: "5" }}
-                    h={{ base: "5", md: "auto" }}
-                    backgroundColor="white"
+                    bottom={{ base: "0", md: "auto" }}
+                    // Desktop: vertically center relative to container.
+                    top={{ base: "auto", md: "1/2" }}
+                    w={{ base: "fit", md: "auto" }}
+                    mx={{ base: "auto", md: "0" }}
+                    transform={{ base: "none", md: "translateY(-50%)" }}
                   >
-                    <Drawer.Trigger
-                      onClick={onOpen}
-                      asChild
-                      position="absolute"
-                      // Mobile: center horizontally at bottom.
-                      left={{ base: "0", md: "0" }}
-                      right={{ base: "0", md: "auto" }}
-                      bottom={{ base: "0", md: "auto" }}
-                      // Desktop: vertically center relative to container.
-                      top={{ base: "auto", md: "1/2" }}
-                      w={{ base: "fit", md: "auto" }}
-                      mx={{ base: "auto", md: "0" }}
-                      transform={{ base: "none", md: "translateY(-50%)" }}
-                    >
-                      <IconButton variant="subtle" rounded="full" size="md">
-                        <AngleRight rotate={{ base: "270deg", md: "0deg" }} />
-                      </IconButton>
-                    </Drawer.Trigger>
-                  </Box>
-                )}
-                <Drawer.Backdrop h="full" w="full" position="absolute" />
-                <Drawer.Positioner h="full" w="full" position="absolute">
-                  {/* actual drawer, open */}
-                  <Drawer.Content
-                    // NOTE: the following props are used because the `size` prop values of `Drawer.Root` are too limited (and do not directly correspond to the theme `sizes` tokens)
-                    w={{ base: "full", md: "sm" }}
-                    maxW={{ base: "full", md: "sm" }}
-                    h={{ base: "1/2", md: "full" }}
-                    maxH={{ base: "1/2", md: "full" }}
+                    <IconButton variant="subtle" rounded="full" size="md">
+                      <AngleRight rotate={{ base: "270deg", md: "0deg" }} />
+                    </IconButton>
+                  </Drawer.Trigger>
+                </Box>
+              )}
+              <Drawer.Backdrop h="full" w="full" position="absolute" />
+              <Drawer.Positioner h="full" w="full" position="absolute">
+                {/* actual drawer, open */}
+                <Drawer.Content
+                  // NOTE: the following props are used because the `size` prop values of `Drawer.Root` are too limited (and do not directly correspond to the theme `sizes` tokens)
+                  w={{ base: "full", md: "sm" }}
+                  maxW={{ base: "full", md: "sm" }}
+                  h={{ base: "1/2", md: "full" }}
+                  maxH={{ base: "1/2", md: "full" }}
+                >
+                  <Drawer.CloseTrigger
+                    onClick={onClose}
+                    asChild
+                    position="absolute"
+                    // Mobile: centered above drawer edge.
+                    // Desktop: right edge, vertically centered.
+                    left={{ base: "0", md: "auto" }}
+                    right={{ base: "0", md: "-5" }}
+                    top={{ base: "-5", md: "1/2" }}
+                    w={{ base: "fit", md: "auto" }}
+                    mx={{ base: "auto", md: "0" }}
+                    transform={{ base: "none", md: "translateY(-50%)" }}
                   >
-                    <Drawer.CloseTrigger
-                      onClick={onClose}
-                      asChild
-                      position="absolute"
-                      // Mobile: centered above drawer edge.
-                      // Desktop: right edge, vertically centered.
-                      left={{ base: "0", md: "auto" }}
-                      right={{ base: "0", md: "-5" }}
-                      top={{ base: "-5", md: "1/2" }}
-                      w={{ base: "fit", md: "auto" }}
-                      mx={{ base: "auto", md: "0" }}
-                      transform={{ base: "none", md: "translateY(-50%)" }}
-                    >
-                      <IconButton variant="subtle" rounded="full" size="md">
-                        <AngleLeft rotate={{ base: "270deg", md: "0deg" }} />
-                      </IconButton>
-                    </Drawer.CloseTrigger>
-                    <Drawer.Header>
-                      <Drawer.Title>Risk Layers</Drawer.Title>
-                    </Drawer.Header>
-                    <Drawer.Body>
-                      <ReportHazards
-                        addressHazardData={displayData}
-                        isHazardDataLoading={isHazardDataLoading}
-                        toggledStates={toggledStates}
-                        setToggledStates={setToggledStates}
-                        setLayerToggleObj={setLayerToggleObj}
-                        isInDrawer={true}
-                      />
-                    </Drawer.Body>
-                    <Drawer.Footer></Drawer.Footer>
-                  </Drawer.Content>
-                </Drawer.Positioner>
-              </Portal>
-            </Drawer.Root>
-          )}
-          {CurrentVariant === "data-centric" && (
-            <>
-              <Box hideFrom="md">
-                <Drawer.Root placement="bottom" open={open}>
-                  <Portal container={drawerContainerRef}>
-                    {open ? null : (
-                      <Box
-                        hideFrom="md"
-                        position="absolute"
-                        zIndex="overlay"
-                        top={{ base: "auto", md: "0" }}
-                        left="0"
-                        bottom="0"
-                        right={{ base: "0", md: "auto" }}
-                        w={{ base: "auto", md: "5" }}
-                        h={{ base: "5", md: "auto" }}
-                        backgroundColor="white"
-                      >
-                        <Drawer.Trigger
-                          onClick={onOpen}
-                          asChild
-                          position="absolute"
-                          // Mobile: center horizontally at bottom.
-                          left={{ base: "0", md: "0" }}
-                          right={{ base: "0", md: "auto" }}
-                          bottom={{ base: "0", md: "auto" }}
-                          // Desktop: vertically center relative to container.
-                          top={{ base: "auto", md: "1/2" }}
-                          w={{ base: "fit", md: "auto" }}
-                          mx={{ base: "auto", md: "0" }}
-                          transform={{ base: "none", md: "translateY(-50%)" }}
-                        >
-                          <IconButton variant="subtle" rounded="full" size="md">
-                            <AngleRight rotate="270deg" />
-                          </IconButton>
-                        </Drawer.Trigger>
-                      </Box>
-                    )}
-                    <Drawer.Backdrop h="full" w="full" position="absolute" />
-                    <Drawer.Positioner h="full" w="full" position="absolute">
-                      {/* actual drawer, open */}
-                      <Drawer.Content
-                        // NOTE: the following props are used because the `size` prop values of `Drawer.Root` are too limited (and do not directly correspond to the theme `sizes` tokens)
-                        w={{ base: "full", md: "sm" }}
-                        maxW={{ base: "full", md: "sm" }}
-                        h={{ base: "1/2", md: "full" }}
-                        maxH={{ base: "1/2", md: "full" }}
-                      >
-                        <Drawer.CloseTrigger
-                          onClick={onClose}
-                          asChild
-                          position="absolute"
-                          left="0"
-                          right="0"
-                          top="-5"
-                          w="fit"
-                          mx="auto"
-                        >
-                          <IconButton variant="subtle" rounded="full" size="md">
-                            <AngleLeft rotate="270deg" />
-                          </IconButton>
-                        </Drawer.CloseTrigger>
-                        <Drawer.Header>
-                          <Drawer.Title>Risk Layers</Drawer.Title>
-                        </Drawer.Header>
-                        <Drawer.Body>
-                          <ReportHazards
-                            variant="cardhazardsummary"
-                            addressHazardData={addressHazardData}
-                            isHazardDataLoading={isHazardDataLoading}
-                            toggledStates={toggledStates}
-                            setToggledStates={setToggledStates}
-                            setLayerToggleObj={setLayerToggleObj}
-                          />
-                          <Box bgColor="peach">
-                            <Box pt="8" pb="4" px="8">
-                              <Heading as="h2" pb="4">
-                                <Text
-                                  as="span"
-                                  textStyle="headerBig"
-                                  layerStyle="headerMain"
-                                  color="black"
-                                  fontWeight="light"
-                                >
-                                  What your risks mean
-                                </Text>
-                              </Heading>
-
-                              <Center>
-                                <ReportHazards
-                                  variant="reporthazardsummary"
-                                  addressHazardData={addressHazardData}
-                                  isHazardDataLoading={isHazardDataLoading}
-                                  toggledStates={toggledStates}
-                                  setToggledStates={setToggledStates}
-                                  setLayerToggleObj={setLayerToggleObj}
-                                />
-                              </Center>
-                            </Box>
-                            <Box pt="8" pb="4" px="8">
-                              <Heading as="h2">
-                                <Stack gap="3">
-                                  <Text
-                                    as="span"
-                                    textStyle="headerBig"
-                                    layerStyle="headerMain"
-                                    color="black"
-                                    fontWeight="light"
-                                  >
-                                    Get earthquake-ready
-                                  </Text>
-                                  <Text textStyle="xs">
-                                    Quick steps that make a real difference when
-                                    it counts.
-                                  </Text>
-                                </Stack>
-                              </Heading>
-                            </Box>
-                            <EarthquakeReadyCards></EarthquakeReadyCards>
-                            <Center py="4" px="8">
-                              <Flex
-                                bg="blue.50"
-                                p="4"
-                                borderRadius="md"
-                                mt="4"
-                                gap="6"
-                              >
-                                <div>
-                                  <Image
-                                    src="/images/SFCivicTech-Rights.svg"
-                                    alt="SafeHome logo"
-                                    role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
-                                    height="auto"
-                                    width="auto"
-                                    display="inline"
-                                  />
-                                </div>
-                                <div>
-                                  <Text fontSize="lg" fontWeight="bold" mb="3">
-                                    Renting? Know your rights.
-                                  </Text>
-                                  <Text>
-                                    If you live in a non-compliant building or
-                                    high-risk zone, you have options. Get
-                                    earthquake renters insurance to protect your
-                                    belongings, or learn about your right to
-                                    report unsafe living conditions to the city.
-                                  </Text>
-                                </div>
-                              </Flex>
-                            </Center>
-                          </Box>
-                        </Drawer.Body>
-                        <Drawer.Footer></Drawer.Footer>
-                      </Drawer.Content>
-                    </Drawer.Positioner>
-                  </Portal>
-                </Drawer.Root>
-              </Box>
-              <Box
-                hideBelow="md"
-                zIndex="docked"
-                top="36"
-                left="8"
-                position="absolute"
-              >
-                <Card.Root>
-                  <Card.Header>
-                    <Card.Title mt="2">
-                      <Flex gap="4" align="center">
-                        <div>
-                          <Image
-                            src="/images/SFSafehomeBlackLogo.svg"
-                            alt="SafeHome logo"
-                            role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
-                            height="auto"
-                            width="auto"
-                            display="inline"
-                          />
-                        </div>
-
-                        <div>{initialAddress}</div>
-                      </Flex>
-                    </Card.Title>
-                  </Card.Header>
-                  <Card.Body pt="3">
+                    <IconButton variant="subtle" rounded="full" size="md">
+                      <AngleLeft rotate={{ base: "270deg", md: "0deg" }} />
+                    </IconButton>
+                  </Drawer.CloseTrigger>
+                  <Drawer.Header>
+                    <Drawer.Title>Risk Layers</Drawer.Title>
+                  </Drawer.Header>
+                  <Drawer.Body>
                     <ReportHazards
-                      variant="cardhazardsummary"
-                      addressHazardData={addressHazardData}
+                      addressHazardData={displayData}
                       isHazardDataLoading={isHazardDataLoading}
                       toggledStates={toggledStates}
                       setToggledStates={setToggledStates}
                       setLayerToggleObj={setLayerToggleObj}
-                      stackDirectionResponsive={true}
+                      isInDrawer={true}
                     />
-                  </Card.Body>
-                </Card.Root>
-              </Box>
-              <Box
-                hideBelow="md"
-                zIndex="docked"
-                top="56"
-                right="20"
-                position="absolute"
-              >
-                <AlertInfo message="72% chance of major Bay Area earthquake in the next 30 years"></AlertInfo>
-              </Box>
-            </>
-          )}
+                  </Drawer.Body>
+                  <Drawer.Footer>
+                    <AlertInfo message="72% chance of major Bay Area earthquake in the next 30 years" />
+                  </Drawer.Footer>
+                </Drawer.Content>
+              </Drawer.Positioner>
+            </Portal>
+          </Drawer.Root>
 
-          {CurrentVariant === "data-centric" && (
-            <Box zIndex="docked" top="16" left="8" position="absolute">
-              <SearchBar
-                inputAddress={inputAddress}
-                onInputAddressChange={setInputAddress}
-                onSearchChange={handleSearchChange}
-              />
-            </Box>
-          )}
           <Map
             lon={lon}
             lat={lat}
@@ -553,79 +320,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           />
         </Box>
       </Box>
-      {CurrentVariant === "data-centric" && (
-        <Box hideBelow="md" bgColor="peach">
-          <Box pt="8" pb="4" px="8">
-            <Heading as="h2" pb="4">
-              <Text
-                as="span"
-                textStyle="headerBig"
-                layerStyle="headerMain"
-                color="black"
-                fontWeight="light"
-              >
-                What your risks mean
-              </Text>
-            </Heading>
-
-            <Center>
-              <ReportHazards
-                variant="reporthazardsummary"
-                addressHazardData={addressHazardData}
-                isHazardDataLoading={isHazardDataLoading}
-                toggledStates={toggledStates}
-                setToggledStates={setToggledStates}
-                setLayerToggleObj={setLayerToggleObj}
-                stackDirectionResponsive={true}
-              />
-            </Center>
-          </Box>
-          <Box pt="8" pb="4" px="8">
-            <Heading as="h2">
-              <Stack gap="3">
-                <Text
-                  as="span"
-                  textStyle="headerBig"
-                  layerStyle="headerMain"
-                  color="black"
-                  fontWeight="light"
-                >
-                  Get earthquake-ready
-                </Text>
-                <Text textStyle="xs">
-                  Quick steps that make a real difference when it counts.
-                </Text>
-              </Stack>
-            </Heading>
-          </Box>
-          <EarthquakeReadyCards></EarthquakeReadyCards>
-          <Center py="4" px="8">
-            <Flex bg="blue.50" p="4" borderRadius="md" mt="4" gap="6">
-              <div>
-                <Image
-                  src="/images/SFCivicTech-Rights.svg"
-                  alt="SafeHome logo"
-                  role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
-                  height="auto"
-                  width="auto"
-                  display="inline"
-                />
-              </div>
-              <div>
-                <Text fontSize="lg" fontWeight="bold" mb="3">
-                  Renting? Know your rights.
-                </Text>
-                <Text>
-                  If you live in a non-compliant building or high-risk zone, you
-                  have options. Get earthquake renters insurance to protect your
-                  belongings, or learn about your right to report unsafe living
-                  conditions to the city.
-                </Text>
-              </div>
-            </Flex>
-          </Center>
-        </Box>
-      )}
     </>
   );
 };

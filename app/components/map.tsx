@@ -7,7 +7,6 @@ import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
 import { Box } from "@chakra-ui/react";
-import { CurrentVariant } from "../data/constants";
 
 const mapOptions: Omit<MapOptions, "container"> = {
   style: "mapbox://styles/mapbox/standard",
@@ -28,7 +27,6 @@ const mapOptions: Omit<MapOptions, "container"> = {
       theme: "monochrome",
     },
   },
-  cooperativeGestures: CurrentVariant === "data-centric", // Enable cooperative gestures (zoom/rotate/drag), but only for data-centric variant, which will be a scrollable page
 };
 interface MapProps {
   lon: number;

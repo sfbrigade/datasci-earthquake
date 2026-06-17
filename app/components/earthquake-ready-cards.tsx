@@ -1,9 +1,9 @@
-import { Box, Center } from "@chakra-ui/react";
+"use client";
+// TODO: double check why this directive is needed for prepare page, but not for if it was in drawer
+
+import { Center } from "@chakra-ui/react";
 import { CardContainer } from "./card-container";
-import { Card, Icon, Link, Image } from "@chakra-ui/react";
-import { FaRegClock } from "react-icons/fa";
-import { TiDocumentText } from "react-icons/ti";
-import { FaRedhat } from "react-icons/fa";
+import { Card, Link, Image } from "@chakra-ui/react";
 import { FaArrowRight } from "react-icons/fa6";
 import NextLink from "next/link";
 

@@ -18,14 +18,14 @@ const ReportHazards = ({
   isInDrawer = false,
   stackDirectionResponsive = false,
 }: {
-  variant?: "cardhazard" | "cardhazardsummary" | "reporthazardsummary";
+  variant?: "cardhazard" | "cardhazardsummary" | "reporthazardsummary"; // TODO: check if we still use or need "reporrthazardsummary" variant
   addressHazardData: HazardData;
   isHazardDataLoading: boolean;
   toggledStates: boolean[];
   setToggledStates: Dispatch<SetStateAction<boolean[]>>;
   setLayerToggleObj: Dispatch<SetStateAction<LayerToggleObjProps>>;
   isInDrawer?: boolean;
-  stackDirectionResponsive?: boolean;
+  stackDirectionResponsive?: boolean; // TODO: check if we still use or need "stackDirectionResponsive" boolean
 }) => {
   return (
     <Box>
