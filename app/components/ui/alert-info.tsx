@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert } from "@chakra-ui/react";
+import { chakra, Alert } from "@chakra-ui/react";
 import { IoIosWarning } from "react-icons/io";
 
 interface AlertInfoProps {
@@ -7,14 +7,14 @@ interface AlertInfoProps {
 }
 
 const AlertInfo: React.FC<AlertInfoProps> = ({ message }) => (
-  <div>
-    <Alert.Root status="error">
-      <Alert.Indicator>
-        <IoIosWarning />
-      </Alert.Indicator>
-      <Alert.Title>{message}</Alert.Title>
-    </Alert.Root>
-  </div>
+  <Alert.Root status="error">
+    <Alert.Indicator>
+      <IoIosWarning />
+    </Alert.Indicator>
+    <Alert.Title>{message}</Alert.Title>
+  </Alert.Root>
 );
 
-export default AlertInfo;
+const AlertInfoChakra = chakra(AlertInfo);
+
+export default AlertInfoChakra;

@@ -3,6 +3,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
+// TODO: check if we still use or need this responsive layout component
 interface LayoutResponsiveProps {
   children: React.ReactNode;
 }
