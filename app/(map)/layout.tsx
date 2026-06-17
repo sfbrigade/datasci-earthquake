@@ -4,8 +4,6 @@ import { Metadata } from "next";
 import { Provider } from "@/components/ui/provider";
 import { Toaster } from "@/components/ui/toaster";
 import { LayoutHeightConstrained } from "@/components/layout-height-constrained";
-import { CurrentVariant } from "@/data/constants";
-import { LayoutResponsive } from "@/components/layout-responsive";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -45,11 +43,7 @@ export default function RootLayout({
     >
       <body>
         <Provider>
-          {CurrentVariant === "map-centric" ? (
-            <LayoutHeightConstrained>{children}</LayoutHeightConstrained>
-          ) : (
-            <LayoutResponsive>{children}</LayoutResponsive>
-          )}
+          <LayoutHeightConstrained>{children}</LayoutHeightConstrained>
           <Toaster />
         </Provider>
       </body>
