@@ -266,65 +266,65 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             onOpenChange={(details) => {
               if (!details.open) onClose();
             }}
+            modal={false}
+            closeOnInteractOutside={false}
+            lazyMount
+            unmountOnExit
           >
-            {open && (
-              <Portal container={drawerContainerRef}>
-                <>
-                  <Drawer.Backdrop h="full" w="full" position="absolute" />
-                  <Drawer.Positioner h="full" w="full" position="absolute">
-                    <Drawer.Content
-                      // NOTE: the following props are used because the `size` prop values of `Drawer.Root` are too limited (and do not directly correspond to the theme `sizes` tokens)
-                      w={{ base: "full", md: "sm" }}
-                      maxW={{ base: "full", md: "sm" }}
-                      h={{ base: "1/2", md: "full" }}
-                      maxH={{ base: "1/2", md: "full" }}
-                      css={{
-                        "&[data-state='open']": {
-                          animationDuration: "0s !important",
-                        },
-                        "&[data-state='closed']": {
-                          animationDuration: "0.2s",
-                        },
-                      }} // skip opening animation on initial load
-                    >
-                      <Drawer.CloseTrigger
-                        onClick={onClose}
-                        asChild
-                        position="absolute"
-                        // Mobile: centered above drawer edge.
-                        // Desktop: right edge, vertically centered.
-                        left={{ base: "0", md: "auto" }}
-                        right={{ base: "0", md: "-5" }}
-                        top={{ base: "-5", md: "1/2" }}
-                        w={{ base: "fit", md: "auto" }}
-                        mx={{ base: "auto", md: "0" }}
-                        transform={{ base: "none", md: "translateY(-50%)" }}
-                      >
-                        <IconButton variant="subtle" rounded="full" size="md">
-                          <AngleLeft rotate={{ base: "270deg", md: "0deg" }} />
-                        </IconButton>
-                      </Drawer.CloseTrigger>
-                      <Drawer.Header>
-                        <Drawer.Title>Risk Layers</Drawer.Title>
-                      </Drawer.Header>
-                      <Drawer.Body>
-                        <ReportHazards
-                          addressHazardData={displayData}
-                          isHazardDataLoading={isHazardDataLoading}
-                          toggledStates={toggledStates}
-                          setToggledStates={setToggledStates}
-                          setLayerToggleObj={setLayerToggleObj}
-                          isInDrawer={true}
-                        />
-                      </Drawer.Body>
-                      <Drawer.Footer>
-                        <AlertInfo message="72% chance of major Bay Area earthquake in the next 30 years" />
-                      </Drawer.Footer>
-                    </Drawer.Content>
-                  </Drawer.Positioner>
-                </>
-              </Portal>
-            )}
+            <Portal container={drawerContainerRef}>
+              <Drawer.Positioner
+                h="full"
+                w="full"
+                position="absolute"
+                pointerEvents="none"
+              >
+                <Drawer.Content
+                  // NOTE: the following props are used because the `size` prop values of `Drawer.Root` are too limited (and do not directly correspond to the theme `sizes` tokens)
+                  w={{ base: "full", md: "sm" }}
+                  maxW={{ base: "full", md: "sm" }}
+                  h={{ base: "1/2", md: "full" }}
+                  maxH={{ base: "1/2", md: "full" }}
+                  pointerEvents="auto"
+                  css={{
+                    "&[data-state='open']": { animationName: "none" }, // prevent slide-in animation (`skipAnimationOnMount` on `Drawer.Root` doesn't appear to work)
+                  }}
+                >
+                  <Drawer.CloseTrigger
+                    onClick={onClose}
+                    asChild
+                    position="absolute"
+                    // Mobile: centered above drawer edge.
+                    // Desktop: right edge, vertically centered.
+                    left={{ base: "0", md: "auto" }}
+                    right={{ base: "0", md: "-5" }}
+                    top={{ base: "-5", md: "1/2" }}
+                    w={{ base: "fit", md: "auto" }}
+                    mx={{ base: "auto", md: "0" }}
+                    transform={{ base: "none", md: "translateY(-50%)" }}
+                  >
+                    <IconButton variant="subtle" rounded="full" size="md">
+                      <AngleLeft rotate={{ base: "270deg", md: "0deg" }} />
+                    </IconButton>
+                  </Drawer.CloseTrigger>
+                  <Drawer.Header>
+                    <Drawer.Title>Risk Layers</Drawer.Title>
+                  </Drawer.Header>
+                  <Drawer.Body>
+                    <ReportHazards
+                      addressHazardData={displayData}
+                      isHazardDataLoading={isHazardDataLoading}
+                      toggledStates={toggledStates}
+                      setToggledStates={setToggledStates}
+                      setLayerToggleObj={setLayerToggleObj}
+                      isInDrawer={true}
+                    />
+                  </Drawer.Body>
+                  <Drawer.Footer>
+                    <AlertInfo message="72% chance of major Bay Area earthquake in the next 30 years" />
+                  </Drawer.Footer>
+                </Drawer.Content>
+              </Drawer.Positioner>
+            </Portal>
           </Drawer.Root>
 
           <Map
