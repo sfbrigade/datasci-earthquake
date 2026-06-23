@@ -65,5 +65,6 @@ if __name__ == "__main__":
             lanslide_zones
         )
         handler.bulk_insert_data(lanslide_zone_objects, "identifier")
+        handler.export_geojson_if_changed(landslide_zone_geojson)
     except HTTPException as e:
         print(f"Failed after retries: {e}")

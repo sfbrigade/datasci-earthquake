@@ -52,9 +52,21 @@ jobs:
 
       - name: ETL data to Neon DB
         run: |
-          ENVIRONMENT=prod uv run --project backend -m backend.etl.tsunami_data_handler
-          ENVIRONMENT=prod uv run --project backend -m backend.etl.soft_story_properties_data_handler
-          ENVIRONMENT=prod uv run --project backend -m backend.etl.liquefaction_data_handler
+          ENVIRONMENT=prod timeout 20m uv run --project backend -m backend.etl.tsunami_data_handler &
+          PID1=$!
+          ENVIRONMENT=prod timeout 20m uv run --project backend -m backend.etl.soft_story_properties_data_handler &
+          PID2=$!
+          ENVIRONMENT=prod timeout 20m uv run --project backend -m backend.etl.liquefaction_data_handler &
+          PID3=$!
+          ENVIRONMENT=prod timeout 20m uv run --project backend -m backend.etl.landslide_data_handler &
+          PID4=$!
+
+          FAILED=0
+          wait $PID1 || { echo "tsunami_data_handler failed"; FAILED=1; }
+          wait $PID2 || { echo "soft_story_properties_data_handler failed"; FAILED=1; }
+          wait $PID3 || { echo "liquefaction_data_handler failed"; FAILED=1; }
+          wait $PID4 || { echo "landslide_data_handler failed"; FAILED=1; }
+          [ "$FAILED" -eq 0 ] || exit 1
 
       - name: Commit & Push Changes
         id: detect_changes 
