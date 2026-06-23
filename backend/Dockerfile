@@ -31,7 +31,7 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
-# Install curl (needed for uv installer and health check) 
+# Install curl (needed for health check in compose.yaml)
 # and ca-certificates (lets the container verify HTTPS connections).
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl ca-certificates && \
@@ -42,31 +42,41 @@ RUN mkdir -p /public/data && \
     chown -R appuser:appuser /public/data && \
     chmod -R 775 /public/data
 
-# Copy the FastAPI app entry point (api/index.py).
-COPY api /api
-
-# Download and execute uv installer
-# (uv is a fast, Rust-based Python package manager)
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Add uv to PATH for "uv sync" later.
-ENV PATH="/root/.local/bin/:$PATH"
+# Install uv (fast Python package manager) from its official Docker image.
+# (more secure and faster than the curl | sh installer)
+COPY --from=ghcr.io/astral-sh/uv:0.11.2 /uv /usr/local/bin/uv
 
 # Copy package manifests (pyproject.toml lists required packages, uv.lock pins exact versions).
 # Note: copied before rest of backend so Docker can cache the installed dependencies layer. 
 # On later builds, changes to app code will rebuild while packages will be reused, not reinstalled.
 COPY backend/pyproject.toml backend/uv.lock ./
 
-# Install packages from uv.lock.
-# The --frozen flag makes the build fail if lockfile is out of sync with pyproject.toml.
-RUN uv sync --frozen
+# Control whether development dependencies are installed at build time.
+# Default is production mode (no dev dependencies) to keep the image small and
+# reduce the runtime attack surface. Set `--build-arg INSTALL_DEV=true` to
+# include dev deps when you need a development/CI image.
+ARG INSTALL_DEV=false
+
+# Install packages from uv.lock. When INSTALL_DEV=true the build includes
+# dev dependencies; otherwise `--no-dev` is passed to omit them. `--no-install-project`
+# keeps the dependency layer separate from the project install to improve caching.
+# --frozen fails the build if lockfile is out of sync with pyproject.toml.
+# --no-install-project skips installing the project itself, further isolating the dependency layer.
+RUN --mount=type=cache,target=/root/.cache/uv \
+    if [ "$INSTALL_DEV" = "true" ]; then \
+        uv sync --frozen --no-install-project; \
+    else \
+        uv sync --frozen --no-install-project --no-dev; \
+    fi
 
 # Add the virtual environment, created above by uv sync, to PATH 
 # (so Python uses the installed packages)
 ENV VIRTUAL_ENV=/.venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# Copy backend source code now that dependencies were installed in previous layer.
+# Copy application source code after dependency install for Docker layer caching.
+# Changes to source files won't invalidate the cached dependency layer above.
+COPY api /api
 COPY backend ./backend
 
 # Copy pytest config so log capture (used by some tests) works inside the container.
