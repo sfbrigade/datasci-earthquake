@@ -1,4 +1,20 @@
 name: E2E Tests
+# This workflow is triggered indirectly — not by a git push, but by a GitHub
+# deployment_status event that Vercel fires after it finishes deploying a Preview.
+#
+# The full trigger chain for automated runs is:
+#   1. A PR is opened or updated
+#   2. vercel_deploy.yml runs and deploys the frontend to a Vercel Preview URL
+#   3. Vercel reports success to GitHub via a deployment_status event
+#   4. This workflow wakes up, reads the Preview URL from the event payload,
+#      and runs Playwright E2E tests against it (BASE_URL below)
+#
+# The Vercel Preview environment uses ENVIRONMENT=preview (configured in Vercel's
+# dashboard), which points next.config.ts at the Railway backend for API calls.
+# These tests therefore exercise the full frontend → Railway backend → database path.
+#
+# For manual runs (workflow_dispatch), BASE_URL is empty and Playwright falls back
+# to its config default (http://localhost:3000), so you need a local server running.
 
 on:
   # Trigger 1: Automatic run after Vercel successfully deploys a PR Preview

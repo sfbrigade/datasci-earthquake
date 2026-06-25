@@ -1,4 +1,19 @@
 name: CI Pipeline
+# This workflow has two distinct tracks that run in parallel and use different environments:
+#
+# Track 1 — Static checks (eslint, black_lint_and_mypy_type_check, nextjs_build_check):
+#   These jobs run directly on the GitHub Actions runner. No Docker, no database.
+#   nextjs_build_check sets ENVIRONMENT=ci so that next.config.ts skips backend routing
+#   and treats the run as a pure build validation.
+#
+# Track 2 — Docker integration tests (docker_build_test):
+#   This job spins up the full stack via compose.yaml, which sets ENVIRONMENT=dev_docker
+#   on every container. pytest runs inside the Docker backend container and connects to
+#   a local Docker PostgreSQL instance. This is the only CI job that exercises the
+#   Python backend and database — and it uses dev_docker, not ci.
+#
+# In short: ENVIRONMENT=ci means "Next.js build check only, no backend."
+#            ENVIRONMENT=dev_docker means "full stack running in Docker."
 
 on:
   push:
@@ -88,6 +103,10 @@ jobs:
         run: mypy --config-file mypy.ini .
 
   nextjs_build_check:
+    # ENVIRONMENT=ci tells next.config.ts to fall through to the same-origin fallback
+    # (backendHost=""), which is correct here because this job only validates that the
+    # Next.js build compiles cleanly — it does not start a backend or make API calls.
+    # NEXT_PUBLIC_API_URL is intentionally absent; no .env file is downloaded for this job.
     if: needs.changes.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
     needs: changes
@@ -108,6 +127,10 @@ jobs:
     secrets: inherit
 
   docker_build_test:
+    # This job is the full integration test. compose.yaml sets ENVIRONMENT=dev_docker on all
+    # containers, so the backend connects to a local Docker PostgreSQL instance (not Railway,
+    # not localhost on the runner). pytest runs inside the Docker backend container.
+    # See compose.yaml for service definitions and environment variable overrides.
     if: always() && needs.changes.outputs.code_changed == 'true' && (needs.get-env.result == 'success' || needs.get-env.result == 'skipped')
     runs-on: ubuntu-latest
     needs: [changes, get-env]

@@ -47,7 +47,13 @@ const nextConfig: NextConfig = {
     } else if (env === "dev_docker") {
       backendHost = "http://backend:8000"; // In docker, the service name is used as the hostname
     } else {
-      backendHost = ""; // In preview and production, the backend is served from the same origin
+      // Covers production and Vercel preview deployments, where the backend is co-hosted
+      // and API calls are served from the same origin (no rewrite needed).
+      //
+      // ENVIRONMENT=ci (from the nextjs_build_check job in ci.yml) also falls here.
+      // That job only validates the Next.js build — it does not start a backend or make
+      // real API calls, so backendHost="" is correct for that scenario too.
+      backendHost = "";
     }
 
     const rewrites = [];

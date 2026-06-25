@@ -1,5 +1,18 @@
 # Docker Compose configuration for local development and CI pipeline.
 # Not used for production; production is deployed via hosting platform.
+#
+# ENVIRONMENT=dev_docker is set on every service here. This value controls:
+#   - backend/database/session.py  → connects to the local Docker PostgreSQL container
+#   - next.config.ts               → routes /api/* to http://backend:8000 (Docker service mesh)
+#   - backend/etl/startup.sh       → enables --reload flag and verbose tracing
+#
+# This file is used in two contexts:
+#   1. Local Docker development  (`docker compose up`)
+#   2. CI integration tests      (docker_build_test job in ci.yml runs pytest inside Docker)
+#
+# In both cases the environment is dev_docker, not ci. The ENVIRONMENT=ci value is only
+# set by the nextjs_build_check job in ci.yml, which runs npm run build directly on the
+# runner without Docker and never connects to a database. See ci.yml for details.
 
 services:
   db:
