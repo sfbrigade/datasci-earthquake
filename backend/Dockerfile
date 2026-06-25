@@ -62,7 +62,8 @@ ARG INSTALL_DEV=false
 # keeps the dependency layer separate from the project install to improve caching.
 # --frozen fails the build if lockfile is out of sync with pyproject.toml.
 # --no-install-project skips installing the project itself, further isolating the dependency layer.
-RUN --mount=type=cache,target=/root/.cache/uv \
+# Railway's Docker Builder requires an explicit id on --mount=type=cache, so we use id=uv-cache
+RUN --mount=type=cache,id=uv-cache,target=/root/.cache/uv \
     if [ "$INSTALL_DEV" = "true" ]; then \
         uv sync --frozen --no-install-project; \
     else \
