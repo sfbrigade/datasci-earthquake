@@ -30,7 +30,7 @@ def configure_logging() -> None:
     stderr_handler.setFormatter(formatter)
 
     root = logging.getLogger()
-    root.handlers.clear()
     root.setLevel(logging.INFO)
-    root.addHandler(stdout_handler)
-    root.addHandler(stderr_handler)
+    if not root.handlers:
+        root.addHandler(stdout_handler)
+        root.addHandler(stderr_handler)

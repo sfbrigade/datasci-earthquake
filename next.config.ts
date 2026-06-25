@@ -48,8 +48,13 @@ const nextConfig: NextConfig = {
     } else if (env === "dev_docker") {
       backendHost = "http://backend:8000"; // In docker, the service name is used as the hostname
     } else if (env === "prod" || env === "ci" || env === "preview") {
-      // For prod, ci, and preview, use the provided URL or empty string (same origin)
-      // The provided backend base URL for preview and production is currently Railway.
+      // For prod, preview, and ci (e.g. future E2E tests), use the Railway URL.
+      // Note: ci backend (pytest) still uses localhost DB which is a different CI scenario.
+      if (!backendBaseUrl) {
+        console.warn(
+          `NEXT_PUBLIC_API_URL is not set for ENVIRONMENT="${env}"; API calls will target the same origin and may 404.`
+        );
+      }
       backendHost = backendBaseUrl || "";
     } else {
       throw new Error(

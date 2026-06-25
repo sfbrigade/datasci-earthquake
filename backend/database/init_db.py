@@ -37,14 +37,12 @@ Caution:
 
 from backend.api.models.base import Base
 from sqlalchemy import inspect
+from sqlalchemy.orm import Session
 from backend.database.session import get_engine
-from sqlalchemy.orm import sessionmaker
 from backend.api.models.tsunami import TsunamiZone
 from backend.api.models.landslide_zones import LandslideZone
 from backend.api.models.liquefaction_zones import LiquefactionZone
 from backend.api.models.soft_story_properties import SoftStoryProperty
-
-SessionLocal = sessionmaker(autocommit=False, autoflush=False)
 
 
 def init_db():
@@ -85,7 +83,7 @@ def check_tables_exist():
 def check_tables_empty():
     engine = get_engine()
     empty_tables = []
-    with SessionLocal(bind=engine) as session:
+    with Session(engine) as session:
         for table in table_classes:
             if session.query(table).first() is None:
                 empty_tables.append(table.__tablename__)

@@ -1,6 +1,6 @@
 import logging
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
 from backend.api.config import get_settings
 from functools import lru_cache
 
@@ -9,8 +9,9 @@ def _get_database_url() -> str:
     settings = get_settings()
     match settings.environment:
         case "local" | "ci":
+            # ci uses localhost so that pytest can run against a local test DB
             return settings.localhost_database_url_sqlalchemy
-        case "prod":
+        case "prod" | "preview":
             return settings.database_url_sqlalchemy
         case "dev_docker":
             return settings.database_url_sqlalchemy
@@ -33,14 +34,7 @@ def get_engine():
     return engine
 
 
-# Create a session factory
-SessionLocal = sessionmaker(autocommit=False, autoflush=False)
-
-
 # Dependency function to get a database session
 def get_db():
-    db = SessionLocal(bind=get_engine())
-    try:
+    with Session(get_engine()) as db:
         yield db
-    finally:
-        db.close()

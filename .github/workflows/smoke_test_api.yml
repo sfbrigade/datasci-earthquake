@@ -5,6 +5,7 @@ on:
   push:
     branches: [main, develop]
   pull_request:
+    branches: [main, develop]
     types: [opened, synchronize, reopened]
 
 jobs:
@@ -23,4 +24,4 @@ jobs:
           MIN_SOFT_STORIES_COUNT: "1"
           MIN_TSUNAMI_COUNT: "1"
           MIN_LIQUEFACTION_COUNT: "1"
-        run: python scripts/smoke_deployed_api.py
+        run: python scripts/smoke_test_api.py
