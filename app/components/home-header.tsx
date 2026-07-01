@@ -1,8 +1,9 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Headings } from "../data/data";
+import NextLink from "@/components/custom-next-link";
 import {
   Box,
   Text,
@@ -24,21 +25,22 @@ export type HazardData = {
   tsunami: { exists: boolean; last_updated: string | null } | null;
 };
 
-export type NavSection = "map-risk" | "prepare" | "data" | "about-us";
+export type Route = { label: string; href: string };
 
-const NAV_LINKS: { label: string; value: NavSection }[] = [
-  { label: "Map & Risk", value: "map-risk" },
-  { label: "Prepare", value: "prepare" },
-  { label: "Data", value: "data" },
-  { label: "About Us", value: "about-us" },
-];
+export const ROUTES = {
+  MAP_RISK: { label: "Map & Risks", href: "/" },
+  PREPARE: { label: "Prepare", href: "/prepare" },
+  ABOUT_US: { label: "About Us", href: "/about" },
+} as const;
+
+const NAV_LINKS: Route[] = [ROUTES.MAP_RISK, ROUTES.PREPARE, ROUTES.ABOUT_US];
 
 interface HomeHeaderProps {
   searchedAddress: string | null;
   isSearchComplete: boolean;
   onHomeIconClick: () => void;
-  activeNav?: NavSection;
-  onNavChange?: (section: NavSection) => void;
+  activeNav?: keyof typeof ROUTES;
+  // onNavChange?: (section: keyof typeof ROUTES) => void;
   children: React.ReactNode;
 }
 
@@ -46,17 +48,17 @@ const HomeHeader = ({
   searchedAddress,
   isSearchComplete,
   onHomeIconClick,
-  activeNav = "map-risk",
-  onNavChange,
+  activeNav = "MAP_RISK",
+  // onNavChange,
   children,
 }: HomeHeaderProps) => {
   const headingData = Headings.home;
   const router = useRouter();
-  const [currentNav, setCurrentNav] = useState<NavSection>(activeNav);
-
-  const handleNavClick = (section: NavSection) => {
+  const [currentNav, setCurrentNav] = useState<keyof typeof ROUTES>(activeNav);
+  const pathname = usePathname();
+  const handleNavClick = (section: keyof typeof ROUTES) => {
     setCurrentNav(section);
-    onNavChange?.(section);
+    // onNavChange?.(section);
   };
 
   return (
@@ -102,25 +104,29 @@ const HomeHeader = ({
         <Flex alignItems="center" gap={{ base: "3", md: "5" }} flexShrink={0}>
           <HStack as="nav" gap={{ base: "3", md: "5" }} overflowX="auto">
             {NAV_LINKS.map((link) => (
-              <Link
-                key={link.value}
-                as="button"
-                color="white"
+              <NextLink
+                key={link.href}
+                href={link.href}
                 fontSize={{ base: "sm", md: "md" }}
-                fontWeight={currentNav === link.value ? "bold" : "normal"}
+                color={pathname === link.href ? "blueBackground" : "white"}
+                backgroundColor={
+                  pathname === link.href ? "white" : "transparent"
+                }
+                fontWeight={pathname === link.href ? "bold" : "normal"}
                 borderBottom={
-                  currentNav === link.value
+                  pathname === link.href
                     ? "[2px solid white]"
                     : "[2px solid transparent]"
                 }
-                pb="1"
+                py="1.5"
+                px="2.5"
+                borderRadius="md"
                 cursor="button"
                 textDecoration="none"
                 whiteSpace="nowrap"
-                onClick={() => handleNavClick(link.value)}
               >
                 {link.label}
-              </Link>
+              </NextLink>
             ))}
           </HStack>
 
