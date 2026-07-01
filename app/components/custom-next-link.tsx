@@ -1,5 +1,4 @@
 "use client";
-
 // See the following for why this is currently needed:
 // https://github.com/vercel/next.js/issues/85604
 // https://github.com/vercel/next.js/issues/85604#issuecomment-3500855611
@@ -8,4 +7,9 @@
 
 // TODO: Remove when https://github.com/vercel/next.js/issues/85604 is fixed
 
-export { default } from "next/link";
+import NextLink from "next/link";
+import { chakra } from "@chakra-ui/react";
+
+const CustomNextLink = chakra(NextLink);
+
+export default CustomNextLink;
