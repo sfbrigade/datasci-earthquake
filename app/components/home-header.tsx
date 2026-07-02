@@ -65,19 +65,19 @@ const HomeHeader = ({
     <Box as="header" bgGradient="blue" py={{ base: "2", "2xl": "3" }} px="8">
       {/* Single row: Heading/Address + Search + Nav links + Logo */}
       <Flex
-        direction={{ base: "column", lg: "row" }}
+        direction={{ base: "column-reverse", lg: "row" }}
         justifyContent="space-between"
         alignItems={{ base: "flex-start", lg: "center" }}
         gap={{ base: "2", lg: "4" }}
       >
-        {/* Left side: Heading/Address + Search box */}
+        {/* Left side: Heading/Address + Search box + nav menu*/}
         <Flex
           direction={{ base: "column", md: "row" }}
           alignItems={{ base: "flex-start", md: "center" }}
           gap={{ base: "2", md: "4" }}
           flex="1"
         >
-          <Box flexShrink={0}>
+          <Box hideBelow="xl" flexShrink={0}>
             {isSearchComplete ? (
               <ReportAddress searchedAddress={searchedAddress} />
             ) : (
@@ -98,11 +98,7 @@ const HomeHeader = ({
               </Suspense>
             ) : null} */}
           </Flex>
-        </Flex>
-
-        {/* Right side: Nav links + Logo */}
-        <Flex alignItems="center" gap={{ base: "3", md: "5" }} flexShrink={0}>
-          <HStack as="nav" gap={{ base: "3", md: "5" }} overflowX="auto">
+           <HStack as="nav" gap={{ base: "3", md: "5" }} overflowX="auto">
             {NAV_LINKS.map((link) => (
               <NextLink
                 key={link.href}
@@ -129,8 +125,11 @@ const HomeHeader = ({
               </NextLink>
             ))}
           </HStack>
+        </Flex>
 
-          <HStack align="start" gap="1" flexShrink={0}>
+        {/* Right side: Logo */}
+        <Flex alignItems="center" gap={{ base: "3", md: "5" }} flexShrink={0}>
+                   <HStack align="start" gap="1" flexShrink={0}>
             <Link
               as={"a"}
               color="white"

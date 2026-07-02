@@ -146,7 +146,7 @@ const SearchBar = ({
           </InputGroup>
         </DynamicAddressAutofill>
       </Suspense>
-      {inputAddress.length && !suggestionSelected && !suggestionsAvailable ? (
+      {/* {inputAddress.length && !suggestionSelected && !suggestionsAvailable ? (
         <Text
           position="absolute"
           lineHeight="shortest"
@@ -157,7 +157,8 @@ const SearchBar = ({
             ? "Keep typing…"
             : "Try refining search…"}
         </Text>
-      ) : null}
+      ) : null} */}
+      {/* TODO: restore this code after it gets a design treatment.*/}
     </chakra.form>
   );
 };
