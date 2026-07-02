@@ -107,7 +107,7 @@ This includes `pyproject.toml` and `.env`, and `package.json`. You will need to 
      - To run a database query, run `docker exec -it my_postgis_db psql -U postgres -d qsdatabase`
      - To execute a python script, run `docker exec -it datasci-earthquake-backend-1 python <path/to/script>`
 
-   **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `npm run fast-api dev` when doing so.
+   **Note:** If you modify the `Dockerfile` or other build contexts (e.g., `.env`, `package.json`), you should run `docker compose up -d --build` to rebuild the images and apply the changes! You do not need to restart `pnpm run fast-api dev` when doing so.
 
 ### Shutting Down the Application
 
@@ -191,7 +191,7 @@ pip install uv
 
 #### Backend Setup
 
-**Note**: The backend dependencies are installed automatically when you run the development server (`npm run fastapi-dev`). If you need to run backend commands manually (e.g., running `pytest`), run:
+**Note**: The backend dependencies are installed automatically when you run the development server (`pnpm run fastapi-dev`). If you need to run backend commands manually (e.g., running `pytest`), run:
 
 ```bash
 (cd backend && uv sync --extra dev)
@@ -215,21 +215,31 @@ backend\.venv\Scripts\activate
 
 <!-- TODO: combine all frontend setup into one section and differentiate between environment differences in steps instead -->
 
+##### Prequisites
+
+We use `pnpm` as our Node package manager instead of npm. To install it, run the following:
+
+```shell
+npm install -g pnpm
+```
+
+##### Setup
+
 1. Follow Step 1 of [Starting the app in the front-end focused section](#starting-the-app-front-end-focused) and then resume Step 2 back here
 
 2. Install the front end dependencies:
 
    ```shell
-   npm install
+   pnpm install
    ```
 
 3. Run the development server:
 
    ```shell
-   npm run next-dev
+   pnpm run next-dev
    ```
 
-   Alternatively, run `npm run dev` if you want to automatically start up the API server as well (runs both `npm run dev` and `npm run fastapi-dev`)
+   Alternatively, run `pnpm run dev` if you want to automatically start up the API server as well (runs both `pnpm run dev` and `pnpm run fastapi-dev`)
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
@@ -243,7 +253,7 @@ Please refer to [Troubleshooting front end](#troubleshooting-front-end).
 
 ## Hybrid development
 
-If you will be working exclusively on the front end or back end, you can run the Docker containers for the part of the stack you won't be doing development on, and then run the rest of the stack locally. A handful of NPM scripts have been provided to make this a bit easier (`npm run dev-*` and `npm run docker-*`, described below).
+If you will be working exclusively on the front end or back end, you can run the Docker containers for the part of the stack you won't be doing development on, and then run the rest of the stack locally. A handful of pnpm scripts have been provided to make this a bit easier (`pnpm run dev-*` and `pnpm run docker-*`, described below).
 
 ### Accessing the application and API servers
 
@@ -277,13 +287,13 @@ For front end-focused development, do the following:
 2. Install the front end dependencies:
 
    ```shell
-   npm install
+   pnpm install
    ```
 
 3. Run the development server:
 
    ```shell
-   npm run dev-front
+   pnpm run dev-front
    ```
 
    This command will:
@@ -291,13 +301,13 @@ For front end-focused development, do the following:
    - start up your Next.js development server locally (on port 3000 by default, so visit http://localhost:3000 in your browser)
    - [start up Storybook](#starting-storybook-component-workshop) locally (on port 6006, which will open http://localhost:6006 in your default browser by default)
 
-If you need to rebuild the containers, run `npm run docker-back`.
+If you need to rebuild the containers, run `pnpm run docker-back`.
 
-If you would prefer to skip starting Storybook, run `npm run dev-front-no-storybook' instead.
+If you would prefer to skip starting Storybook, run `pnpm run dev-front-no-storybook' instead.
 
 #### Starting Storybook (component workshop)
 
-To start up our Storybook component workshop, run `npm run storybook`. This will:
+To start up our Storybook component workshop, run `pnpm run storybook`. This will:
 
 - start up an instance of Storybook in Google Chrome (on port 6006 by default)
 
@@ -325,18 +335,18 @@ Our Playwright tests require you to have the app running (frontend and backend) 
 docker compose up
 ```
 
-Alternatively, you can run `npm run dev` to run the app locally on your machine.
+Alternatively, you can run `pnpm run dev` to run the app locally on your machine.
 
 To run end-to-end (e2e) tests locally with a browser, run the following command:
 
 ```
-npm run test:e2e:ui
+pnpm run test:e2e:ui
 ```
 
 > [!NOTE]
 > To cut down on MapBox API requests, we currently mock its Address Autofill API in the e2e tests. We may also want to mock or prevent map loads (see note in `map.tsx`). In the future, it may make sense to implement [mocking with recorded HAR files]((https://playwright.dev/docs/mock#replaying-from-har) instead, but since Playwright will replay directly from HAR files, we'd first need a mechanism to replace crucial dynamic values like session keys for API matching and data to work properly.
 
-Note that these tests also run in CI in headless mode via `npm run test:e2e`.
+Note that these tests also run in CI in headless mode via `pnpm run test:e2e`.
 
 #### Upgrading Node
 
@@ -354,10 +364,10 @@ To upgrade required version of Node, you will need to make edits in the followin
 
 It's not obvious how to see a theme's tokens and values for reference during development. To make this easier and improve the experience, there are two ways you can currently view the theme:
 
-1. Browser console log: While running `npm run dev-front`, on page load, we log the theme as an object to the browser console
-2. ~~`theme` folder in your local filesystem: If you run `npm run gen:tokens`, the theme will be outputted to a temporary `theme` folder~~ WARNING: the `gen:tokens` npm script that creates a `theme` folder does not currently work as expected; see related comment in [package.json](package.json)
+1. Browser console log: While running `pnpm run dev-front`, on page load, we log the theme as an object to the browser console
+2. ~~`theme` folder in your local filesystem: If you run `pnpm run gen:tokens`, the theme will be outputted to a temporary `theme` folder~~ WARNING: the `gen:tokens` pnpm script that creates a `theme` folder does not currently work as expected; see related comment in [package.json](package.json)
 
-For autocompletion of theme tokens in JSX, make sure you are running `npm run dev-front`. With this npm script running, theme typings will be regenerated whenever `theme.ts` is modified.
+For autocompletion of theme tokens in JSX, make sure you are running `pnpm run dev-front`. With this pnpm script running, theme typings will be regenerated whenever `theme.ts` is modified.
 
 There are plans to introduce a third way of viewing our theme: via Storybook!
 
@@ -457,7 +467,7 @@ px={{ base: "6", md: "7", lg: "8", xl: "9" }}
 ##### ⚠️ Please do NOT delete `package-lock.json` or attempt to resolve merge conflicts with it yourself
 
 > [!WARNING]
-> In the event of merge conflicts involving `package-lock.json`, please **do not manually fix or delete the file**. Instead, run `npm install` to automatically resolve and repair the lock file.
+> In the event of merge conflicts involving `package-lock.json`, please **do not manually fix or delete the file**. Instead, run `pnpm install` to automatically resolve and repair the lock file.
 
 Do not delete or edit this file directly as it contains crucial information about front end dependencies.
 
@@ -465,7 +475,7 @@ During code reviews, it’s important to pay close attention and avoid accidenta
 
 ##### Suspense boundary missing around `useSearchParams()`, causing entire page to deopt into client-side rendering (CSR)
 
-You may run into the following NextJS error when you run `npm run build`[^1]:
+You may run into the following NextJS error when you run `pnpm run build`[^1]:
 
 ```shell
 useSearchParams() should be wrapped in a suspense boundary at page "/<PAGE_NAME>". Read more: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
@@ -478,7 +488,7 @@ The fix is to wrap any component that references `useSearchParams()` with React'
 
 This error message can be highly misleading because it refers directly to `<PAGE_NAME>` even though it's more likely that its `page.tsx` file contains zero usages of `useSearchParams()`[^2]. This can make debugging difficult.
 
-The error doesn't make a distinction between `<PAGE_NAME>` and its descendant components, unfortunately, which is what causes the confusion. If you can't find usages of `useSearchParams()` directly in `page.tsx`, then you can search for usages in its descendant components instead. Once you find a component with a usage, you can [fix the error](https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout) by wrapping any references to the component with `<Suspense>` (and, ideally, providing a fallback) and `npm run build` again. More details can be found at https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout.
+The error doesn't make a distinction between `<PAGE_NAME>` and its descendant components, unfortunately, which is what causes the confusion. If you can't find usages of `useSearchParams()` directly in `page.tsx`, then you can search for usages in its descendant components instead. Once you find a component with a usage, you can [fix the error](https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout) by wrapping any references to the component with `<Suspense>` (and, ideally, providing a fallback) and `pnpm run build` again. More details can be found at https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout.
 
 There may be some instances where a usage of `useSearchParams()` does not appear even in a descendant component, but rather in, say, a provider. And, anecdotally, there may be other hooks that trigger a similar error message. Extensive discussion about several variants of this error message and workarounds can be found in this Github Issue: https://github.com/vercel/next.js/discussions/61654.
 
@@ -519,12 +529,12 @@ map.addLayer({
 
 #### ~~Starting the app~~
 
-~~For back end-focused development, you can run `npm run dev-back`, which will:~~
+~~For back end-focused development, you can run `pnpm run dev-back`, which will:~~
 
 - ~~install dependencies and start up your FastAPI server locally~~
 - ~~build and restart your frontend Docker containers~~
 
-~~If you need to rebuild the container, run `npm run docker-front`.~~
+~~If you need to rebuild the container, run `pnpm run docker-front`.~~
 
 ~~NOTE: You will need to run PostgreSQL locally or in a Docker container as well.~~
 
@@ -534,7 +544,7 @@ map.addLayer({
 
 ## Formatting with a Pre-Commit Hook
 
-This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project. It works for _only_ the staged files. If you have edited unstaged files in your repository and want to make them comply with the CI pipeline, then run `black .` `mypy .` for Python code and `npm run lint .` for Javascript code.
+This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project. It works for _only_ the staged files. If you have edited unstaged files in your repository and want to make them comply with the CI pipeline, then run `black .` `mypy .` for Python code and `pnpm run lint .` for Javascript code.
 
 ### Prerequisites
 
@@ -585,22 +595,26 @@ Developers should only branch from `develop`, pull updates from `develop`, and e
 #### Branch Names
 
 Branches should follow this format:
+
 ```
 <type>/<issue-number>-<short-dash-case-issue-title>
 ```
+
 Where `<type>` is one of: `bugfix`, `feature`, `chore`
 
 Including the issue number automatically links the branch to the issue.
 
 Example:
+
 ```
 chore/54321-example-issue-branching-readme
 ```
-Summarizing longer issue titles is acceptable. 
+
+Summarizing longer issue titles is acceptable.
 
 #### Branch Deletion
 
-Branches are deleted automatically when merged. 
+Branches are deleted automatically when merged.
 If you have an unmerged branch you do not plan to return to, please delete it to reduce clutter.
 
 ### Pull Requests
@@ -609,7 +623,7 @@ When opening a pull request, please:
 
 - aim the pull request at the `develop` branch rather than `main`
 - optionally, add "Closes `<issue_number>`" in the pull request description to automatically close that issue when the PR is merged
-- if you have changed any frontend code or dependencies, run `npm run build` locally to catch potential build errors rather than waiting for CI
+- if you have changed any frontend code or dependencies, run `pnpm run build` locally to catch potential build errors rather than waiting for CI
 - if your changes may affect app behavior, then please test your PR's [preview deployment](#preview-deployments); optionally, you may also want to test the subsequent [production deployment for the `develop` branch](#developsafehomereport) to be thorough, although this is not needed in most cases
 - request reviewers
 

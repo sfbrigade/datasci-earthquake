@@ -30,14 +30,14 @@ jobs:
     - uses: ./.github/actions/setup-node-using-nvmrc
 
     - name: Install dependencies
-      run: npm ci
+      run: pnpm install --frozen-lockfile
 
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: pnpm dlx playwright install --with-deps
 
     - name: Run Playwright E2E Tests
       id: run_tests
-      run: npm run test:e2e
+      run: pnpm run test:e2e
       env:
         # Set BASE_URL only during automated Vercel runs (uses the dynamic URL).
         # Otherwise, set it to an empty string, forcing Playwright to use the default defined in the config (https://localhost:3000).

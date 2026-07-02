@@ -24,7 +24,7 @@ USER node
 
 # Copy package*.json and install dependencies, as node user
 COPY --chown=node:node ./package*.json ./
-RUN npm install
+RUN pnpm install
 
 # Copy the rest of the application, ensuring the ownership is set to node user 
 COPY --chown=node:node . ./
@@ -34,4 +34,4 @@ EXPOSE 3000
 
 # Command to run the Next.js app in development mode
 # This command should correspond to the "dev" script in your package.json
-CMD ["npm", "run", "next-dev"]
+CMD ["pnpm", "run", "next-dev"]
