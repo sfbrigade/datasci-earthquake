@@ -30,6 +30,7 @@ interface AddressMapperProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
+  rightPanel: React.ReactElement;
 }
 
 export type LayerToggleObjProps = {
@@ -52,6 +53,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   softStoryData,
   tsunamiData,
   liquefactionData,
+  rightPanel,
 }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -339,6 +341,26 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             layerToggleObj={layerToggleObj}
           />
         </Box>
+        {rightPanel && (
+          <Box
+            as="section"
+            aria-label="Right panel"
+            position="absolute"
+            top="0"
+            right="0"
+            bottom="0"
+            zIndex="overlay"
+            backgroundColor="white"
+            overflowY="auto"
+            overflowX="hidden"
+            boxShadow="md"
+            flexShrink={0}
+            w={{ base: "full", md: "2/5" }}
+            h="full"
+          >
+            {rightPanel}
+          </Box>
+        )}
       </Box>
     </>
   );

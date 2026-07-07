@@ -29,8 +29,8 @@ export type Route = { label: string; href: string };
 
 export const ROUTES = {
   MAP_RISK: { label: "Map & Risks", href: "/" },
-  PREPARE: { label: "Prepare", href: "/prepare" },
-  ABOUT_US: { label: "About Us", href: "/about" },
+  PREPARE: { label: "Prepare", href: "/prepare-v2" },
+  ABOUT_US: { label: "About Us", href: "/about-us" },
 } as const;
 
 const NAV_LINKS: Route[] = [ROUTES.MAP_RISK, ROUTES.PREPARE, ROUTES.ABOUT_US];
@@ -98,7 +98,7 @@ const HomeHeader = ({
               </Suspense>
             ) : null} */}
           </Flex>
-           <HStack as="nav" gap={{ base: "3", md: "5" }} overflowX="auto">
+          <HStack as="nav" gap={{ base: "3", md: "5" }} overflowX="auto">
             {NAV_LINKS.map((link) => (
               <NextLink
                 key={link.href}
@@ -129,7 +129,7 @@ const HomeHeader = ({
 
         {/* Right side: Logo */}
         <Flex alignItems="center" gap={{ base: "3", md: "5" }} flexShrink={0}>
-                   <HStack align="start" gap="1" flexShrink={0}>
+          <HStack align="start" gap="1" flexShrink={0}>
             <Link
               as={"a"}
               color="white"
