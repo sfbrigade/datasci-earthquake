@@ -10,7 +10,7 @@ import NextLink from "next/link";
 // FIXME: replace <Image> with <NextImage> to avoid hydration mismatch errors
 
 const EarthquakeReadyCards = () => (
-  <Center py="4" px="8">
+  <Center>
     <CardContainer stackDirectionResponsive={true}>
       <Card.Root size="md">
         <Card.Body gap="2">
