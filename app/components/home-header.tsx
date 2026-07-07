@@ -29,8 +29,8 @@ export type Route = { label: string; href: string };
 
 export const ROUTES = {
   MAP_RISK: { label: "Map & Risks", href: "/" },
-  PREPARE: { label: "Prepare", href: "/prepare-v2" },
-  ABOUT_US: { label: "About Us", href: "/about-us" },
+  PREPARE: { label: "Prepare", href: "/prepare" },
+  ABOUT_US: { label: "About Us", href: "/about" },
 } as const;
 
 const NAV_LINKS: Route[] = [ROUTES.MAP_RISK, ROUTES.PREPARE, ROUTES.ABOUT_US];

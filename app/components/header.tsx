@@ -16,8 +16,8 @@ const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
   const isHome = pathname === "/";
-  const isAbout = pathname === "/about-us";
-  const isPrepare = pathname === "/prepare-v2";
+  const isAbout = pathname === "/about";
+  const isPrepare = pathname === "/prepare";
   const showOldHeader = isHome || isAbout || isPrepare;
   const portalRef = useRef<HTMLDivElement | null>(null);
 
