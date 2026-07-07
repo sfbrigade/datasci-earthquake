@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Flex } from "@chakra-ui/react";
 import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
-import AboutUs from "@/components/about-us";
+import Prepare from "@/components/prepare";
 
 import AddressMapper from "@/components/address-mapper";
 import {
@@ -44,7 +44,7 @@ const Home = async () => {
           softStoryData={softStoryData}
           tsunamiData={tsunamiData}
           liquefactionData={liquefactionData}
-          rightPanel={<AboutUs />}
+          rightPanel={<Prepare />}
         />
       </Suspense>
     </Flex>
