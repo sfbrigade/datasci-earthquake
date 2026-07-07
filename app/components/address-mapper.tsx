@@ -30,7 +30,7 @@ interface AddressMapperProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
-  rightPanel: React.ReactElement;
+  rightPanel?: React.ReactElement;
 }
 
 export type LayerToggleObjProps = {
