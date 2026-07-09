@@ -16,9 +16,6 @@ from backend.api.models.tsunami import TsunamiZone
 from backend.api.exceptions import HazardCheckError
 import logging
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
 logger = logging.getLogger(__name__)
 
 router = APIRouter(
@@ -43,7 +40,10 @@ def _check_soft_story(db: Session, point: WKBElement) -> HazardStatus:
     last_updated = None
     if property:
         last_updated = property.update_timestamp
-        exists = property.status.lower() == STATUS_NON_COMPLIANT
+        exists = (
+            property.status is not None
+            and property.status.lower() == STATUS_NON_COMPLIANT
+        )
 
     return HazardStatus(exists=exists, last_updated=last_updated)
 
@@ -74,8 +74,8 @@ def _check_tsunami(db: Session, point: WKBElement) -> HazardStatus:
 
 @router.get("/lookup", response_model=CompositeHazardResponse)
 def lookup_hazards(
-    lon: Optional[float] = Query(None),
-    lat: Optional[float] = Query(None),
+    lon: Optional[float] = Query(None, ge=-180, le=180),
+    lat: Optional[float] = Query(None, ge=-90, le=90),
     ping: bool = False,
     db: Session = Depends(get_db),
 ):
@@ -135,6 +135,4 @@ def lookup_hazards(
         )
 
     except Exception as e:
-        raise HazardCheckError(
-            zone="composite", lon=lon, lat=lat, original_exception=e
-        )
+        raise HazardCheckError(zone="composite", lon=lon, lat=lat, original_exception=e)

@@ -22,7 +22,10 @@ def test_lookup_hazards_all_present(client, caplog):
     assert body["tsunami"]["exists"] is True
     assert body["tsunami"]["last_updated"] is not None
 
-    assert f"Checking composite hazards for coordinates: lon={lon}, lat={lat}" in caplog.text
+    assert (
+        f"Checking composite hazards for coordinates: lon={lon}, lat={lat}"
+        in caplog.text
+    )
     assert "Composite hazard check result" in caplog.text
 
 
