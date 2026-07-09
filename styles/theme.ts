@@ -107,6 +107,13 @@ const textStyles: ThemingConfig["textStyles"] = defineTextStyles({
       fontWeight: "semibold",
     },
   },
+  textStart: {
+    description: "text for start button",
+    value: {
+      fontSize: "md",
+      fontWeight: "semibold",
+    },
+  },
   textPrerelease: {
     description: "text prerelease",
     value: {
