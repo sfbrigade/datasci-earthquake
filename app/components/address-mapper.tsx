@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Box } from "@chakra-ui/react";
+import { Box, Button, HStack, Text } from "@chakra-ui/react";
 
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
@@ -13,6 +13,7 @@ import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 import SearchBar from "./search-bar";
 import SHDrawer from "./drawer";
 import AlertInfo from "./ui/alert-info";
+import NextLink from "@/components/custom-next-link";
 
 const defaultCoords = [-122.4194, 37.7949];
 
@@ -221,6 +222,17 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
               setLayerToggleObj={setLayerToggleObj}
               isInDrawer={true}
             />
+            {/* Start button --> Prepare tab */}
+            {pathname !== "/prepare" && (
+              <HStack bg="gray.50" p="5" mt="4">
+                <Text textStyle="textStart" layerStyle="text">
+                  Take action & Prepare for earthquake
+                </Text>
+                <Button asChild size="sm">
+                  <NextLink href="/prepare">Start</NextLink>
+                </Button>
+              </HStack>
+            )}
           </SHDrawer>
           <Map
             lon={lon}

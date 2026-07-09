@@ -96,7 +96,6 @@ const CardHazard: React.FC<CardHazardProps> = ({
       maxW={fullWidth ? "none" : { base: "xs", "2xl": "sm" }}
       py={{ base: "3.5", md: "4" }}
       px={{ base: "4", md: "5" }}
-      shadow="card"
       variant="elevated"
       w={fullWidth ? "full" : "auto"}
     >
