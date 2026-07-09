@@ -1,0 +1,98 @@
+"use client";
+
+import { Suspense } from "react";
+import {
+  Box,
+  Heading,
+  VStack,
+  Text,
+  HStack,
+  Separator,
+} from "@chakra-ui/react";
+import { Hazards } from "@/data/data";
+import CardHazard from "@/components/card-hazard";
+import Share from "@/components/share";
+import ShareSkeleton from "@/components/share-skeleton";
+import SearchBarSkeleton from "@/components/search-bar-skeleton";
+import SearchBar from "@/components/search-bar";
+
+const ComponentsTestLib = () => {
+  const toggledStates = [true, true, true];
+  const setToggledStates = () => {};
+  const setLayerToggleObj = () => {};
+
+  return (
+    <Box
+      as="section"
+      w={{ base: "full", xl: "7xl" }}
+      py={{ base: "2.5", md: "2", xl: "1.5" }}
+      px={{ base: "6", md: "12", xl: "32" }}
+      m="auto"
+    >
+      <Heading
+        as="h1"
+        size="xl"
+        mb="6"
+        bgColor="blueBackground"
+        color="white"
+        p="2.5"
+      >
+        Components Test Library
+      </Heading>
+      <Heading as="h2" size="md" mb="3">
+        Search Bar
+      </Heading>
+      <Text mb="6">This section demonstrates the Search Bar component</Text>
+      <VStack gap="6" align="start">
+        <HStack w="full">
+          <Box w="sm">
+            <Suspense fallback={<SearchBarSkeleton />}>
+              {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
+              <SearchBar
+                inputAddress=""
+                onInputAddressChange={() => {}}
+                onSearchChange={() => {}}
+              />
+            </Suspense>
+          </Box>
+        </HStack>
+        <Separator mb="3" />
+      </VStack>
+      <Heading as="h2" size="md" mb="3">
+        Hazards Card
+      </Heading>
+      <Text mb="6">This section demonstrates Hazard Card component</Text>
+      <VStack gap="6" align="start">
+        <HStack w="full">
+          {Hazards.map((hazard) => {
+            return (
+              <CardHazard
+                key={hazard.id}
+                hazard={hazard}
+                hazardData={{ exists: true, last_updated: "" }}
+                showData={true}
+                isHazardDataLoading={true}
+                toggledStates={toggledStates}
+                setToggledStates={setToggledStates}
+                setLayerToggleObj={setLayerToggleObj}
+              />
+            );
+          })}
+        </HStack>
+        <Separator mb="3" />
+      </VStack>
+      <Text mb="6">This section demonstrates Share menu component</Text>
+      <VStack gap="6" align="start">
+        <HStack w="full">
+          {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
+          <Suspense fallback={<ShareSkeleton />}>
+            <Share />
+          </Suspense>
+        </HStack>
+        <Separator mb="3" />
+      </VStack>
+    </Box>
+  );
+};
+
+export default ComponentsTestLib;

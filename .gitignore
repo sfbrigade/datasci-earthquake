@@ -1,8 +1,3 @@
-# Next
-.next
-out
-next-env.d.ts
-
 # Python
 __pycache__/
 pytest_cache/
@@ -22,10 +17,6 @@ venv
 # Node
 node_modules
 
-# Mac
-.DS_Store
-/.next/
-
 # Sensitive config
 .env.development.local
 .env
@@ -38,13 +29,7 @@ node_modules
 !.vscode/settings.json
 !.vscode/launch.json
 
-# Playwright
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
+# Misc
 
-# Chakra
-/theme/
-*storybook.log
-storybook-static
+## Mac
+.DS_Store

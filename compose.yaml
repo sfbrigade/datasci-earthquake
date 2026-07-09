@@ -80,7 +80,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./apps/web/Dockerfile
     env_file:
       - .env
     environment:
@@ -89,10 +89,12 @@ services:
       - 3000:3000
     depends_on:
       - backend
+    working_dir: /app/apps/next-app
     volumes:
-      - .:/app:rw,delegated # Mount after dependencies are installed
-      - /app/node_modules # This excludes the node_modules from being overwritten
-      - nextjs_cache:/app/.next
+      - .:/app:rw,delegated # mount whole monorepo to /app after dependencies are installed
+      - /app/node_modules # prevent local root node_modules from being overwritten by host
+      - /app/apps/web/node_modules # in case node_modules also ends up inside app folder, prevent that from being overwritten by host too; also prevents local Storybook cache from messing with container
+      - nextjs_cache:/app/apps/web/.next # Next build cache stored in a separate volume to prevent it from being overwritten by host and to improve performance
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       start_interval: 10s
