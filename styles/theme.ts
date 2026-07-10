@@ -273,6 +273,9 @@ const globalCss: SystemConfig["globalCss"] = {
   "html, body": {
     fontFamily: "body", // This applies Inter (the "body" token) globally
   },
+  ".chakra-drawer__positioner": {
+    zIndex: "docked !important",
+  },
   ".marker": {
     width: "mapMarkerWidth",
     height: "mapMarkerHeight",
