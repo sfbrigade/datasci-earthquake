@@ -3,7 +3,10 @@ import { Inter, Manrope } from "next/font/google";
 import { Metadata } from "next";
 import { Provider } from "@/components/ui/provider";
 import { Toaster } from "@/components/ui/toaster";
-import { LayoutHeightConstrained } from "@/components/layout-height-constrained";
+
+import Footer from "@/components/footer";
+import Header from "@/components/header";
+import { Flex, Box } from "@chakra-ui/react";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -27,8 +30,10 @@ export const fetchCache = "default-cache";
 
 export default function RootLayout({
   children,
+  panel,
 }: {
   children: React.ReactNode;
+  panel: React.ReactNode;
 }) {
   // NOTE: toggle off `suppressHydrationWarning` if you want to see hydration warnings in the console.
   // This can help identify issues with server-side rendering and client-side hydration.
@@ -43,7 +48,16 @@ export default function RootLayout({
     >
       <body>
         <Provider>
-          <LayoutHeightConstrained>{children}</LayoutHeightConstrained>
+          <Flex direction="column" align="center" h="dvh">
+            <Header />
+            <Box flex="1" as="main" w="full" h="full" position="relative">
+              {children}
+              {panel}
+            </Box>
+            <Box as="footer" w="full" hideBelow="md">
+              <Footer />
+            </Box>
+          </Flex>
           <Toaster />
         </Provider>
       </body>
