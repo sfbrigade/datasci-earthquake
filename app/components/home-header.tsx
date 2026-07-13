@@ -1,9 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { Headings } from "../data/data";
-import NextLink from "@/components/custom-next-link";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Box,
   Text,
@@ -14,23 +11,29 @@ import {
 } from "@chakra-ui/react";
 import NextImage from "next/image";
 
+import { Headings } from "../data/data";
+import NextLink from "@/components/custom-next-link";
 import Heading from "./heading";
 import ReportAddress from "./report-address";
-// import Share from "./share";
-import ShareSkeleton from "./share-skeleton";
 
-export type HazardData = {
-  liquefaction: { exists: boolean; last_updated: string | null } | null;
-  softStory: { exists: boolean; last_updated: string | null } | null;
-  tsunami: { exists: boolean; last_updated: string | null } | null;
+export type Route = {
+  label: string;
+  href: string;
 };
 
-export type Route = { label: string; href: string };
-
 export const ROUTES = {
-  MAP_RISK: { label: "Map & Risks", href: "/" },
-  PREPARE: { label: "Prepare", href: "/prepare" },
-  ABOUT_US: { label: "About Us", href: "/about" },
+  MAP_RISK: {
+    label: "Map & Risks",
+    href: "/",
+  },
+  PREPARE: {
+    label: "Prepare",
+    href: "/prepare",
+  },
+  ABOUT_US: {
+    label: "About Us",
+    href: "/about",
+  },
 } as const;
 
 const NAV_LINKS: Route[] = [ROUTES.MAP_RISK, ROUTES.PREPARE, ROUTES.ABOUT_US];
@@ -39,8 +42,7 @@ interface HomeHeaderProps {
   searchedAddress: string | null;
   isSearchComplete: boolean;
   onHomeIconClick: () => void;
-  activeNav?: keyof typeof ROUTES;
-  // onNavChange?: (section: keyof typeof ROUTES) => void;
+  queryString?: string;
   children: React.ReactNode;
 }
 
@@ -48,22 +50,29 @@ const HomeHeader = ({
   searchedAddress,
   isSearchComplete,
   onHomeIconClick,
-  activeNav = "MAP_RISK",
-  // onNavChange,
+  queryString = "",
   children,
 }: HomeHeaderProps) => {
   const headingData = Headings.home;
   const router = useRouter();
-  const [currentNav, setCurrentNav] = useState<keyof typeof ROUTES>(activeNav);
   const pathname = usePathname();
-  const handleNavClick = (section: keyof typeof ROUTES) => {
-    setCurrentNav(section);
-    // onNavChange?.(section);
+
+  const getNavigationHref = (href: string) => {
+    if (!queryString) {
+      return href;
+    }
+
+    return `${href}?${queryString}`;
   };
 
   return (
-    <Box as="header" bgGradient="blue" py={{ base: "2", "2xl": "3" }} px="8">
-      {/* Single row: Heading/Address + Search + Nav links + Logo */}
+    <Box
+      as="header"
+      bgGradient="blue"
+      py={{ base: "2", "2xl": "3" }}
+      px="8"
+      w="full"
+    >
       <Flex
         direction={{ base: "column-reverse", lg: "row" }}
         justifyContent="space-between"
@@ -92,38 +101,40 @@ const HomeHeader = ({
             flex={{ md: "1" }}
           >
             <Box width={{ base: "full" }}>{children}</Box>
+            {/* TODO: add share button back in once we have a working share component /* }
             {/* {isSearchComplete ? (
               <Suspense fallback={<ShareSkeleton />}>
                <Share /> }
               </Suspense>
             ) : null} */}
           </Flex>
+
           <HStack as="nav" gap={{ base: "3", md: "5" }} overflowX="auto">
-            {NAV_LINKS.map((link) => (
-              <NextLink
-                key={link.href}
-                href={link.href}
-                fontSize={{ base: "sm", md: "md" }}
-                color={pathname === link.href ? "blueBackground" : "white"}
-                backgroundColor={
-                  pathname === link.href ? "white" : "transparent"
-                }
-                fontWeight={pathname === link.href ? "bold" : "normal"}
-                borderBottom={
-                  pathname === link.href
-                    ? "[2px solid white]"
-                    : "[2px solid transparent]"
-                }
-                py="1.5"
-                px="2.5"
-                borderRadius="md"
-                cursor="button"
-                textDecoration="none"
-                whiteSpace="nowrap"
-              >
-                {link.label}
-              </NextLink>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const isActive = pathname === link.href;
+
+              return (
+                <NextLink
+                  key={link.href}
+                  href={getNavigationHref(link.href)}
+                  fontSize={{ base: "sm", md: "md" }}
+                  color={isActive ? "blueBackground" : "white"}
+                  backgroundColor={isActive ? "white" : "transparent"}
+                  fontWeight={isActive ? "bold" : "normal"}
+                  borderBottom={
+                    isActive ? "[2px solid white]" : "[2px solid transparent]"
+                  }
+                  py="1.5"
+                  px="2.5"
+                  borderRadius="md"
+                  cursor="button"
+                  textDecoration="none"
+                  whiteSpace="nowrap"
+                >
+                  {link.label}
+                </NextLink>
+              );
+            })}
           </HStack>
         </Flex>
 
@@ -131,13 +142,13 @@ const HomeHeader = ({
         <Flex alignItems="center" gap={{ base: "3", md: "5" }} flexShrink={0}>
           <HStack align="start" gap="1" flexShrink={0}>
             <Link
-              as={"a"}
+              as="a"
               color="white"
               href="/"
               cursor="button"
-              textDecoration={"none"}
-              onClick={(e) => {
-                e.preventDefault();
+              textDecoration="none"
+              onClick={(event) => {
+                event.preventDefault();
                 onHomeIconClick();
                 router.push("/");
               }}
@@ -151,9 +162,11 @@ const HomeHeader = ({
                   src="/images/SFSafeHome-fulllogo.svg"
                   priority
                 />
+
                 <VisuallyHidden>SafeHome</VisuallyHidden>
               </HStack>
             </Link>
+
             <Text textStyle="textPrerelease" layerStyle="prerelease">
               Beta
             </Text>

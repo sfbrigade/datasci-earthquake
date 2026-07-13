@@ -1,22 +1,25 @@
-import { InterVariableName, ManropeVariableName } from "@/data/constants";
+import { Suspense } from "react";
 import { Inter, Manrope } from "next/font/google";
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import { Flex, Box } from "@chakra-ui/react";
+
+import { InterVariableName, ManropeVariableName } from "@/data/constants";
 import { Provider } from "@/components/ui/provider";
 import { Toaster } from "@/components/ui/toaster";
-
 import Footer from "@/components/footer";
-import Header from "@/components/header";
-import { Flex, Box } from "@chakra-ui/react";
+import MapHomeHeader from "@/components/map-home-header";
+import { MapStateProvider } from "@/components/map-state-provider";
 
 const manrope = Manrope({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
-  variable: "--font-manrope" satisfies typeof ManropeVariableName, // Define CSS variable for Manrope font
+  variable: "--font-manrope" satisfies typeof ManropeVariableName,
 });
+
 const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
-  variable: "--font-inter" satisfies typeof InterVariableName, // Define CSS variable for Inter font
+  variable: "--font-inter" satisfies typeof InterVariableName,
 });
 
 export const metadata: Metadata = {
@@ -48,16 +51,30 @@ export default function RootLayout({
     >
       <body>
         <Provider>
-          <Flex direction="column" align="center" h="dvh">
-            <Header />
-            <Box flex="1" as="main" w="full" h="full" position="relative">
-              {children}
-              {panel}
-            </Box>
-            <Box as="footer" w="full" hideBelow="md">
-              <Footer />
-            </Box>
-          </Flex>
+          <MapStateProvider>
+            <Flex direction="column" align="center" h="dvh" overflow="hidden">
+              <Suspense fallback={null}>
+                <MapHomeHeader />
+              </Suspense>
+
+              <Box
+                as="main"
+                position="relative"
+                flex="1"
+                minH="mainContentMinHeight"
+                w="full"
+                overflow="hidden"
+              >
+                {children}
+                {panel}
+              </Box>
+
+              <Box as="footer" w="full" hideBelow="md" flexShrink={0}>
+                <Footer />
+              </Box>
+            </Flex>
+          </MapStateProvider>
+
           <Toaster />
         </Provider>
       </body>
