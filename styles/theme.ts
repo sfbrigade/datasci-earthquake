@@ -236,6 +236,9 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     // TODO: convert this to default sizes
     mobileCardWidth: { value: "86vw" },
     mobileCardAccordionWidth: { value: "98%" },
+
+    // main content area (map + side panel)
+    mainContentMinHeight: { value: 0 },
   },
 });
 
