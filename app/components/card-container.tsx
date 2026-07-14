@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, VStack, Stack } from "@chakra-ui/react";
+import React, { Children } from "react";
+import { Box, VStack, Stack, Grid, GridItem } from "@chakra-ui/react";
 interface CardContainerProps {
   padded?: boolean;
   stackDirectionResponsive?: boolean;
@@ -12,9 +12,19 @@ export const CardContainer = ({
   children,
 }: CardContainerProps) => {
   return stackDirectionResponsive ? (
-    <Stack direction={{ base: "column", md: "row" }} gap="3.5">
-      {children}
-    </Stack>
+    <Grid
+      zIndex="docked"
+      w="full"
+      templateRows="repeat(2, 1fr)"
+      templateColumns={{ base: "1fr", lg: "repeat(2, minmax(0, 1fr))" }}
+      gap="3.5"
+    >
+      {Children.map(children, (child, index) => (
+        <GridItem key={index}>
+          <Box>{child}</Box>
+        </GridItem>
+      ))}
+    </Grid>
   ) : (
     <Box
       px={padded ? "8" : "0"}
