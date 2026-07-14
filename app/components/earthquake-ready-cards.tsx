@@ -100,6 +100,36 @@ const EarthquakeReadyCards = () => (
           <FaArrowRight />
         </Card.Footer>
       </Card.Root>
+      <Card.Root size="md">
+        <Card.Body gap="2">
+          <Image
+            src="/images/SFCivicTech-Contractor.svg"
+            alt="SafeHome logo"
+            role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
+            height="8"
+            width="8"
+            display="inline"
+          />
+
+          <Card.Title mt="2">Get early warnings</Card.Title>
+          <Card.Description>
+            Download the MyShake app for real-time earthquake warnings. Every
+            second counts.
+          </Card.Description>
+        </Card.Body>
+        <Card.Footer justifyContent="flex-left">
+          <Link
+            as={NextLink}
+            href="https://myshake.berkeley.edu//"
+            target="_blank"
+            rel="noopener noreferrer"
+            color="blue.text"
+          >
+            Download MyShake
+          </Link>
+          <FaArrowRight />
+        </Card.Footer>
+      </Card.Root>
     </CardContainer>
   </Center>
 );
