@@ -49,5 +49,8 @@ node_modules
 *storybook.log
 storybook-static
 
+#TypeScript
+tsconfig.tsbuildinfo
+
 # Misc
 .tmp

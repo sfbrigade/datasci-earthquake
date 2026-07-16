@@ -1,11 +1,26 @@
 "use client";
 // TODO: double check why this directive is needed for prepare page, but not for if it was in drawer
 
-import { Center } from "@chakra-ui/react";
+import {
+  Button,
+  Center,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@chakra-ui/react";
 import { CardContainer } from "./card-container";
 import { Card, Link, Image } from "@chakra-ui/react";
 import { FaArrowRight } from "react-icons/fa6";
 import NextLink from "next/link";
+import { DialogActionTrigger, DialogRoot } from "./ui/dialog";
+import { MakePlanSteps } from "@/components/make-plan-steps";
+import { MakePlanDialog } from "./make-plan-dialog";
+import { EmergencyKitSteps } from "./emergency-kit-steps";
+import { ChecklistDialog } from "./checklist-dialog";
 
 // FIXME: replace <Image> with <NextImage> to avoid hydration mismatch errors
 
@@ -29,7 +44,8 @@ const EarthquakeReadyCards = () => (
           </Card.Description>
         </Card.Body>
         <Card.Footer justifyContent="flex-left">
-          <Link
+          <MakePlanDialog />
+          {/* <Link
             as={NextLink}
             href="https://www.ready.gov/earthquakes"
             target="_blank"
@@ -38,7 +54,7 @@ const EarthquakeReadyCards = () => (
           >
             Learn the steps
           </Link>
-          <FaArrowRight color="blue.text" />
+          <FaArrowRight color="blue.text" /> */}
         </Card.Footer>
       </Card.Root>
       <Card.Root size="md">
@@ -58,16 +74,7 @@ const EarthquakeReadyCards = () => (
           </Card.Description>
         </Card.Body>
         <Card.Footer justifyContent="flex-left">
-          <Link
-            as={NextLink}
-            href="https://www.ready.gov/kit"
-            target="_blank"
-            rel="noopener noreferrer"
-            color="blue.text"
-          >
-            See the checklist
-          </Link>
-          <FaArrowRight />
+          <ChecklistDialog />
         </Card.Footer>
       </Card.Root>
       <Card.Root size="md">

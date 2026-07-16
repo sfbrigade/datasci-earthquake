@@ -1,19 +1,18 @@
 "use client";
-import { Box, CloseButton, Float } from "@chakra-ui/react";
-import { useSearchParams } from "next/navigation";
-import NextLink from "@/components/custom-next-link";
+
+import { Box, Float } from "@chakra-ui/react";
+import { PanelCloseLink } from "@/components/panel-close-link";
+import { Suspense } from "react";
 
 interface PanelWrapperProps {
   children: React.ReactNode;
 }
 
+function PanelCloseFallback() {
+  return <Box boxSize="9" flexShrink={0} aria-hidden="true" />;
+}
+
 export const PanelWrapper = ({ children }: PanelWrapperProps) => {
-  const searchParams = useSearchParams();
-
-  // TODO:merge this logic with getNavigationHref
-
-  const currentQueryString = searchParams.toString();
-  const homeHref = currentQueryString ? `/?${currentQueryString}` : "/";
   return (
     <Box
       id="panel-container"
@@ -33,9 +32,9 @@ export const PanelWrapper = ({ children }: PanelWrapperProps) => {
       h="full"
     >
       <Float offset="8">
-        <NextLink href={homeHref}>
-          <CloseButton />
-        </NextLink>
+        <Suspense fallback={<PanelCloseFallback />}>
+          <PanelCloseLink />
+        </Suspense>
       </Float>
 
       {children}
