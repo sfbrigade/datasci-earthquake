@@ -1,16 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Heading from "../heading";
+import Heading, { HeadingProps } from "../heading";
 import { Provider } from "../ui/provider";
 import "../__mocks__/match-media";
 
 describe("Heading component", () => {
   const headingData = {
-    text: "Learn about your home’s earthquake readiness.",
+    text: "Learn about your home's earthquake readiness.",
     highlight: "Learn about",
     style: { color: "black" },
     maxWidth: { base: "100%", md: "50%" },
-  };
+    themeTextStyle: "headerMedium",
+  } as HeadingProps;
 
   const renderComponent = () =>
     render(
