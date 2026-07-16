@@ -21,7 +21,7 @@ export function MakePlanDialog() {
       </DialogTrigger>
 
       <DialogContent>
-        <DialogHeader>
+        <DialogHeader flexDirection="column" alignItems="flex-start" gap="1">
           <DialogTitle>Make a plan</DialogTitle>
           <DialogDescription>
             Steps to prepare for an earthquake
