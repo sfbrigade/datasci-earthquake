@@ -123,12 +123,14 @@ describe("AddressMapper", () => {
       expect(fetchHazardDataMock).toHaveBeenCalledWith(testCoords);
     });
 
-    const reportHazardsElements = screen
-      .queryAllByTestId("report-hazards")
-      .filter((element) => element.checkVisibility());
+    await waitFor(() => {
+      const reportHazardsElements = screen
+        .queryAllByTestId("report-hazards")
+        .filter((element) => element.checkVisibility());
 
-    expect(reportHazardsElements[0]).toHaveTextContent(
-      JSON.stringify(mockData)
-    );
+      expect(reportHazardsElements[0]).toHaveTextContent(
+        JSON.stringify(mockData)
+      );
+    });
   });
 });
