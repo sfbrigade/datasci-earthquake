@@ -70,14 +70,14 @@ const HomeHeader = ({
       as="header"
       bgGradient="blue"
       py={{ base: "2", "2xl": "3" }}
-      px="8"
+      px="6"
       w="full"
     >
       <Flex
-        direction={{ base: "column-reverse", lg: "row" }}
+        direction={{ base: "column-reverse", "2xl": "row" }}
         justifyContent="space-between"
-        alignItems={{ base: "flex-start", lg: "center" }}
-        gap={{ base: "2", lg: "4" }}
+        alignItems={{ base: "flex-start", "2xl": "center" }}
+        gap={{ base: "2", "2xl": "4" }}
       >
         {/* Left side: Heading/Address + Search box + nav menu*/}
         <Flex
