@@ -13,7 +13,7 @@ export function SocialLinks() {
       >
         Contact Us
       </Text>
-      <HStack gap="3.5">
+      <HStack gap="4.5">
         <IconButton asChild aria-label="LinkedIn" variant="ghost">
           <a
             href="https://www.linkedin.com/company/safehome-civictech"
