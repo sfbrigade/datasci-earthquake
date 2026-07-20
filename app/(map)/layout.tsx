@@ -1,21 +1,25 @@
-import { Metadata } from "next";
-import { InterVariableName, ManropeVariableName } from "@/data/constants";
+import { Suspense } from "react";
 import { Inter, Manrope } from "next/font/google";
-import { Box, Flex } from "@chakra-ui/react";
+import type { Metadata } from "next";
+import { Flex, Box } from "@chakra-ui/react";
+
+import { InterVariableName, ManropeVariableName } from "@/data/constants";
 import { Provider } from "@/components/ui/provider";
-import Header from "./components/header";
-import Footer from "./components/footer";
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "@/components/footer";
+import MapHomeHeader from "@/components/map-home-header";
+import { MapStateProvider } from "@/components/map-state-provider";
 
 const manrope = Manrope({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
-  variable: "--font-manrope" satisfies typeof ManropeVariableName, // Define CSS variable for Manrope font
+  variable: "--font-manrope" satisfies typeof ManropeVariableName,
 });
+
 const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
-  variable: "--font-inter" satisfies typeof InterVariableName, // Define CSS variable for Inter font
+  variable: "--font-inter" satisfies typeof InterVariableName,
 });
 
 export const metadata: Metadata = {
@@ -29,14 +33,16 @@ export const fetchCache = "default-cache";
 
 export default function RootLayout({
   children,
+  panel,
 }: {
   children: React.ReactNode;
+  panel: React.ReactNode;
 }) {
   // NOTE: toggle off `suppressHydrationWarning` if you want to see hydration warnings in the console.
   // This can help identify issues with server-side rendering and client-side hydration.
   // However, it may also lead to a lot of warnings if your app is not fully optimized for hydration;
   // case in point: Chakra's Color Mode / ThemeProvider will cause this warning, which is the reason
-  // this flag is toggled on. It applies one level deep on the element where it's applied.
+  // this flag is toggled on.
   return (
     <html
       lang="en"
@@ -45,13 +51,30 @@ export default function RootLayout({
     >
       <body>
         <Provider>
-          <Flex direction="column" align="center" minH="dvh">
-            <Header />
-            <Box flex="1" as="main" width="full">
-              {children}
-            </Box>
-            <Footer />
-          </Flex>
+          <MapStateProvider>
+            <Flex direction="column" align="center" h="dvh" overflow="hidden">
+              <Suspense fallback={null}>
+                <MapHomeHeader />
+              </Suspense>
+
+              <Box
+                as="main"
+                position="relative"
+                flex="1"
+                minH="mainContentMinHeight"
+                w="full"
+                overflow="hidden"
+              >
+                {children}
+                {panel}
+              </Box>
+
+              <Box as="footer" w="full" hideBelow="md" flexShrink={0}>
+                <Footer />
+              </Box>
+            </Flex>
+          </MapStateProvider>
+
           <Toaster />
         </Provider>
       </body>

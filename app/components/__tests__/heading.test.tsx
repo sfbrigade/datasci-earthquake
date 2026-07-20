@@ -1,16 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Heading from "../heading";
+import Heading, { HeadingProps } from "../heading";
 import { Provider } from "../ui/provider";
 import "../__mocks__/match-media";
 
 describe("Heading component", () => {
   const headingData = {
-    text: "Learn about your home’s earthquake readiness.",
+    text: "How safe is your home in an earthquake?",
     highlight: "Learn about",
     style: { color: "black" },
     maxWidth: { base: "100%", md: "50%" },
-  };
+    themeTextStyle: "headerMedium",
+  } as HeadingProps;
 
   const renderComponent = () =>
     render(
@@ -21,8 +22,8 @@ describe("Heading component", () => {
 
   test("renders the heading with the correct text", () => {
     renderComponent();
-    const firstPart = screen.getByText(/Learn about/i);
-    const secondPart = screen.getByText(/your home’s earthquake readiness\./i);
+    const firstPart = screen.getByText(/How safe/i);
+    const secondPart = screen.getByText(/is your home in an earthquake\?/i);
     expect(firstPart).toBeInTheDocument();
     expect(secondPart).toBeInTheDocument();
   });

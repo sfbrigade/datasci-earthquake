@@ -1,19 +1,11 @@
 import { Flex, Text, Link, VStack, Box } from "@chakra-ui/react";
-import NextLink from "../components/custom-next-link";
+import NextLink from "@/components/custom-next-link";
 import NextImage from "next/image";
 
 const TermsOfService = () => {
   return (
     <>
-      <Flex
-        w={{ base: "full", xl: "7xl" }}
-        py="8"
-        pb="12"
-        px={{ base: "8", xl: "32" }}
-        gap="11"
-        direction={{ base: "column", lg: "row" }}
-        m="auto"
-      >
+      <Flex p="8" gap="11" direction="column" m="auto">
         <VStack direction="column" alignItems="flex-start">
           <Text
             textStyle="headerBig"

@@ -1,11 +1,14 @@
 import React from "react";
-import { act, render, waitFor, screen } from "@testing-library/react";
+import { render, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+
 import { Provider } from "../ui/provider";
+import { MapStateProvider } from "../map-state-provider";
+import AddressMapper from "../address-mapper";
 
 const fetchHazardDataMock = jest.fn();
 const mockGet = jest.fn();
-const mockRouterPush = jest.fn();
+const mockToString = jest.fn();
 const mockUseServerInsertedHTML = jest.fn();
 
 jest.mock("../../hooks/useHazardDataFetcher", () => ({
@@ -17,24 +20,11 @@ jest.mock("../../hooks/useHazardDataFetcher", () => ({
 jest.mock("next/navigation", () => ({
   useSearchParams: jest.fn(() => ({
     get: mockGet,
+    toString: mockToString,
   })),
-  usePathname: jest.fn(() => "/test-path"),
-  useRouter: jest.fn(() => ({
-    push: mockRouterPush,
-  })),
+  usePathname: jest.fn(() => "/"),
   useServerInsertedHTML: jest.fn(() => mockUseServerInsertedHTML),
 }));
-
-jest.mock("../home-header", () => {
-  const mockComponent = jest.fn((props) => (
-    <div data-testid="home-header">Mock HomeHeader</div>
-  ));
-
-  return {
-    __esModule: true,
-    default: mockComponent,
-  };
-});
 
 jest.mock("../map", () => {
   return jest.fn((props) => (
@@ -43,14 +33,6 @@ jest.mock("../map", () => {
       data-coordinates={JSON.stringify([props.lon, props.lat])}
     >
       Mocked Map
-    </div>
-  ));
-});
-
-jest.mock("../mobile-report-hazards", () => {
-  return jest.fn((props) => (
-    <div data-testid="mobile-report-hazards">
-      {JSON.stringify(props.addressHazardData)}
     </div>
   ));
 });
@@ -70,105 +52,85 @@ jest.mock("@/components/ui/toaster", () => ({
   },
 }));
 
-import * as HomeHeaderModule from "../home-header";
-const MockedHomeHeader = jest.mocked(HomeHeaderModule).default;
-import AddressMapper from "../address-mapper";
-
-const mockSetSearchParams = (params: Record<string, string>) => {
-  mockGet.mockImplementation((key) => params[key] || null);
-};
-
 const defaultCoords = [-122.4194, 37.7949];
+
 const mockFeatureCollection = {
   type: "FeatureCollection" as const,
   features: [],
 };
+
 const mockProps = {
   softStoryData: mockFeatureCollection,
   tsunamiData: mockFeatureCollection,
   liquefactionData: mockFeatureCollection,
 };
 
+const mockSetSearchParams = (params: Record<string, string>) => {
+  const urlSearchParams = new URLSearchParams(params);
+
+  mockGet.mockImplementation((key: string) => urlSearchParams.get(key));
+
+  mockToString.mockReturnValue(urlSearchParams.toString());
+};
+
+const renderAddressMapper = () =>
+  render(
+    <Provider>
+      <MapStateProvider>
+        <AddressMapper {...mockProps} />
+      </MapStateProvider>
+    </Provider>
+  );
+
 describe("AddressMapper", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it("should render with default state and not fetch data on initial load without URL params", async () => {
-    // Arrange
+  it("renders the default map and does not fetch without URL parameters", () => {
     mockSetSearchParams({});
 
-    // Act
-    render(
-      <Provider>
-        <AddressMapper {...mockProps} />
-      </Provider>
-    );
+    renderAddressMapper();
 
-    // Assert
     expect(screen.getByTestId("map")).toHaveAttribute(
       "data-coordinates",
       JSON.stringify(defaultCoords)
     );
+
     expect(fetchHazardDataMock).not.toHaveBeenCalled();
   });
 
-  it("should fetch data when loaded with URL parameters", async () => {
-    // Arrange
+  it("fetches hazard data when URL parameters are present", async () => {
     const testCoords = [-122.4, 37.8];
-    const testAddress = "123 Main St";
-    const mockData = { softStory: "data", tsunami: null, liquefaction: "data" };
-    mockSetSearchParams({ lat: "37.8", lon: "-122.4", address: testAddress });
+
+    const mockData = {
+      softStory: "data",
+      tsunami: null,
+      liquefaction: "data",
+    };
+
+    mockSetSearchParams({
+      lat: "37.8",
+      lon: "-122.4",
+      address: "123 Main St",
+    });
+
     fetchHazardDataMock.mockResolvedValue(mockData);
 
-    // Act
-    render(
-      <Provider>
-        <AddressMapper {...mockProps} />
-      </Provider>
-    );
+    renderAddressMapper();
 
-    // Assert
     await waitFor(() => {
       expect(fetchHazardDataMock).toHaveBeenCalledWith(testCoords);
-      expect(screen.getByTestId("mobile-report-hazards")).toHaveTextContent(
+    });
+
+    await waitFor(() => {
+      const reportHazardsElements = screen
+        .queryAllByTestId("report-hazards")
+        .filter((element) => element.checkVisibility());
+
+      expect(reportHazardsElements[0]).toHaveTextContent(
         JSON.stringify(mockData)
       );
     });
-  });
-
-  // TODO: fix this test my mocking searchParams.toString() properly
-  it.skip("should fetch data when URL parameters change from a user action", async () => {
-    // Arrange
-    const newCoords = [-120.0, 35.0];
-    const testAddress = "1 Lombard St";
-    const paramsArray = [
-      ["address", testAddress],
-      ["lon", newCoords[0].toString()],
-      ["lat", newCoords[1].toString()],
-    ];
-
-    const mockData = { softStory: "data", tsunami: null, liquefaction: "data" };
-    fetchHazardDataMock.mockResolvedValue(mockData);
-
-    // Initial render with no URL params
-    mockSetSearchParams({});
-    render(
-      <Provider>
-        <AddressMapper {...mockProps} />
-      </Provider>
-    );
-
-    // Act
-    // Simulate a user action by directly calling the onSearchChange prop on the mocked component.
-    await act(async () => {
-      // The mock `HomeHeader` component is passed the `onSearchChange` prop. We can access it via the mock.
-      MockedHomeHeader.mock.calls[0][0].onSearchChange(newCoords, testAddress);
-    });
-
-    // Assert that the router was called correctly
-    const searchParams = new URLSearchParams(paramsArray);
-    const expectedUrl = `/test-path?${searchParams.toString()}`;
-    expect(mockRouterPush).toHaveBeenCalledWith(expectedUrl, { scroll: false });
   });
 });

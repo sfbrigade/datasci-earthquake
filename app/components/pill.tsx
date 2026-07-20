@@ -5,9 +5,16 @@ interface PillProps {
   trueData: string;
   falseData: string;
   noData: string;
+  variant?: "pill" | "text";
 }
 
-const Pill: React.FC<PillProps> = ({ exists, trueData, falseData, noData }) => {
+const Pill: React.FC<PillProps> = ({
+  exists,
+  trueData,
+  falseData,
+  noData,
+  variant = "pill",
+}) => {
   const getColor = () => {
     switch (exists) {
       case true:
@@ -31,6 +38,14 @@ const Pill: React.FC<PillProps> = ({ exists, trueData, falseData, noData }) => {
     }
   };
   const label = getLabel();
+
+  if (variant === "text") {
+    return (
+      <Text as="span" display="inline-block" color={color}>
+        {label}
+      </Text>
+    );
+  }
 
   return (
     <Box>

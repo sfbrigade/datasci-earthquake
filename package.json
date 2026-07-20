@@ -35,7 +35,7 @@
     "gen:theme-typings": "chakra typegen styles/theme.ts",
     "gen:tokens-COMMENT": "WARNING: this is currently broken and only outputs a default theme that does not include our overrides in `theme.ts`; TODO: look into workarounds or consider contributing an enhancement upstream to Chakra UI",
     "gen:tokens": "chakra eject",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "STORYBOOK_APP_URL=http://localhost:3000 storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "dependencies": {
@@ -57,7 +57,7 @@
     "posthog-js": "^1.351.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "react-icons": "^5.5.0",
+    "react-icons": "^5.7.0",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
