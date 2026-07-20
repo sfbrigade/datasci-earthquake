@@ -22,9 +22,33 @@ const inter = Inter({
   variable: "--font-inter" satisfies typeof InterVariableName,
 });
 
+const title = "SafeHome";
+const description = "Learn about your home's earthquake readiness.";
+const descriptionSocial =
+  "Personalized disaster risk insights and preparedness tools to help individuals, families, and communities prepare before disasters happen.";
+
 export const metadata: Metadata = {
-  title: "SafeHome",
-  description: "Learn about your home's earthquake readiness",
+  metadataBase: new URL("https://safehome.report"),
+  title,
+  description,
+
+  alternates: {
+    canonical: "./",
+  },
+
+  openGraph: {
+    title,
+    description: descriptionSocial,
+    url: "./",
+    siteName: "SafeHome",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description: descriptionSocial,
+  },
 };
 
 // Since this is the root layout, all fetch requests in the app
