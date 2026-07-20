@@ -90,7 +90,6 @@ const SearchBar = ({
               base: "full",
               sm: "xs",
               md: "sm",
-              lg: "md",
             }}
             data-testid="search-bar"
             startElement={
