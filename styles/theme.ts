@@ -196,6 +196,8 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
 
     // TODO: move some of these to `semanticTokens` and rename accordingly
     blueSwitch: { value: "#3182CE" }, // NOTE: "#3182CE" comes from Figma switches, but color palette for `blue` is being used instead for the time being
+    blueIcon: { value: "#4863a9" },
+    blueIconBackground: { value: "#eff4fc" },
     blueBackground: { value: "#2C5282" }, // blue/700
     tsunamiBlue: { value: "#63B3ED" }, // blue/300
     lightGrey: { value: "#c8caceff" },
