@@ -24,7 +24,7 @@ const makePlanSteps: MakePlanStep[] = [
   {
     title: "Pick a meeting spot",
     description:
-      "Choose a safe location outside your home where everyone gathers. Cell towers often go down — pick somewhere visible and easy to reach on foot.",
+      "Choose a safe location outside your home where everyone gathers. Cell towers often go down — pick somewhere visible and easy to reach on foot.Make sure to practice meeting there in Step 8.Let everyone agree on a backup location in case this one is inaccessible.",
     icon: LuUsers,
     iconBackground: "blue.50",
     iconColor: "blue.600",
@@ -32,7 +32,7 @@ const makePlanSteps: MakePlanStep[] = [
   {
     title: "Set an out-of-area contact",
     description:
-      "Choose a friend or relative outside the Bay Area. Local calls fail but long-distance often works. Everyone should memorize this number.",
+      "Choose a friend or relative outside of the Bay Area. Long-distance calls might work when local calls fail. Everyone should keep this number written down on their person and also as part of the contacts list in their emergency kit.",
     icon: LuPhone,
     iconBackground: "red.50",
     iconColor: "red.600",
@@ -42,8 +42,8 @@ const makePlanSteps: MakePlanStep[] = [
     description: (
       <>
         <strong>DROP</strong> to hands and knees. <strong>COVER</strong> under a
-        sturdy desk. <strong>HOLD ON</strong> until shaking stops. Don&apos;t
-        run outside.
+        sturdy desk or other safe,stable furniture. <strong>HOLD ON</strong>
+        until shaking stops. Don&apos;t run outside while things are moving.
       </>
     ),
     icon: LuHouse,
@@ -53,7 +53,11 @@ const makePlanSteps: MakePlanStep[] = [
   {
     title: "Know your shutoffs",
     description:
-      "Locate gas meter, water main, and electrical panel. Keep a wrench near the gas meter. If you smell gas after a quake, shut it off and leave.",
+      "Locate your home's gas meter, water main and electricity panel." +
+      "Natural gas - Know where the shutoff valve is and how to operate it. Label it clearly. Keep the required wrench attached or near to the valve at all times. Once turned off, do not restore gas service yourself but get a qualified professional to do it from your utility. If you smell gas, do not light a candle, turn on a light switch or otherwise cause a spark and leave the area." +
+      "Electricity - Identify the main breaker and label it clearly ahead of time. Switch off the main breaker if you think there may be a risk of damaged wiring, sparking, smoke, fire, flooding around electrical equipment, or other electrical hazards. If there is no electrical hazard, you can turn the main breaker back on." +
+      "Water - Locate the water main shutoff and label it. Turn off if it seems that the plumbing is leaking or has been damaged. Once the hazard has been addressed, you can restore water service yourself." +
+      "Only attempt shutoffs if shaking has stopped and you are not exposed to falling debris. Personal safety takes precedence.",
     icon: LuWrench,
     iconBackground: "green.50",
     iconColor: "green.600",
@@ -72,7 +76,8 @@ const makePlanSteps: MakePlanStep[] = [
         >
           Download MyShake
         </Link>{" "}
-        for early earthquake warnings.
+        for early earthquake warnings.Turn on the Wireless Emergency Alerts
+        setting on your cell phone.
       </>
     ),
     icon: LuBell,
@@ -82,7 +87,8 @@ const makePlanSteps: MakePlanStep[] = [
   {
     title: "Practice yearly",
     description:
-      "Run an annual earthquake drill. Walk through your meeting point, review contacts, check your emergency kit for expired items.",
+      "Run an annual earthquake drill. Walk through your meeting point, review contacts, check your emergency kit for expired items." +
+      "During a stressful and chaotic event with or without injury, people may not rise to the occasion, but they are likely to fall back on their training.",
     icon: LuFileText,
     iconBackground: "blue.50",
     iconColor: "blue.600",

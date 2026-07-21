@@ -24,8 +24,8 @@ const EarthquakeReadyCards = () => (
           <IconWrapper icon={LuClock} />
           <Card.Title mt="2">Make a plan</Card.Title>
           <Card.Description>
-            Know what to do when shaking starts. Cell service will likely be
-            down - agree on a meeting point with family ahead of time.
+            Know what to do when shaking starts. Get alerts and prepare in
+            advance.
           </Card.Description>
         </Card.Body>
         <Card.Footer justifyContent="flex-left">
@@ -37,8 +37,8 @@ const EarthquakeReadyCards = () => (
           <IconWrapper icon={LuBriefcaseMedical} />
           <Card.Title mt="2">Build your kit</Card.Title>
           <Card.Description>
-            Water, first aid, flashlight, batteries, medications, and important
-            documents. Enough for 72 hours for every person in your home.
+            First aid, flashlight, food, water, medications - what will you need
+            in an emergency? Pack a 3-day supply per person.
           </Card.Description>
         </Card.Body>
         <Card.Footer justifyContent="flex-left">
