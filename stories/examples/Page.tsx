@@ -29,7 +29,7 @@ export const Page: React.FC = () => {
             rel="noopener noreferrer"
           >
             <strong>component-driven</strong>
-          </a>{" "}
+          </a>
           process starting with atomic components and ending with pages.
         </p>
         <p>
