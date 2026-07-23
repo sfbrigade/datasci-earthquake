@@ -23,9 +23,10 @@ const inter = Inter({
 });
 
 const title = "SafeHome";
+const titleSocial = "SafeHome | San Francisco Disaster Guidance";
 const description = "Learn about your home's earthquake readiness.";
 const descriptionSocial =
-  "Personalized disaster risk insights and preparedness tools to help individuals, families, and communities prepare before disasters happen.";
+  "Risk insights and preparedness tools to help individuals, families, and communities prepare before disasters happen.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://safehome.report"),
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title,
+    title: titleSocial,
     description: descriptionSocial,
     url: "./",
     siteName: "SafeHome",
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title,
+    title: titleSocial,
     description: descriptionSocial,
   },
 };
