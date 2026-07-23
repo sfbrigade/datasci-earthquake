@@ -34,7 +34,7 @@ const items: EmergencyKitItem[] = [
     description: (
       <>
         <strong>1 gallon per person per day</strong> for at least 3 days. Don’t
-        forget pets. Replace every 6 months to keep it fresh.You can use up the
+        forget pets. Replace every 6 months to keep it fresh. You can use up the
         old water supply by drinking it, watering plants, doing dishes or other
         cleaning.
       </>
