@@ -24,7 +24,7 @@ const makePlanSteps: MakePlanStep[] = [
   {
     title: "Pick a meeting spot",
     description:
-      "Choose a safe location outside your home where everyone gathers. Cell towers often go down — pick somewhere visible and easy to reach on foot.Make sure to practice meeting there in Step 8.Let everyone agree on a backup location in case this one is inaccessible.",
+      "Choose a safe location outside your home where everyone gathers. Cell towers often go down — pick somewhere visible and easy to reach on foot. Make sure to practice meeting there in Step 8. Let everyone agree on a backup location in case this one is inaccessible.",
     icon: LuUsers,
     iconBackground: "blue.50",
     iconColor: "blue.600",
@@ -52,12 +52,36 @@ const makePlanSteps: MakePlanStep[] = [
   },
   {
     title: "Know your shutoffs",
-    description:
-      "Locate your home's gas meter, water main and electricity panel." +
-      "Natural gas - Know where the shutoff valve is and how to operate it. Label it clearly. Keep the required wrench attached or near to the valve at all times. Once turned off, do not restore gas service yourself but get a qualified professional to do it from your utility. If you smell gas, do not light a candle, turn on a light switch or otherwise cause a spark and leave the area." +
-      "Electricity - Identify the main breaker and label it clearly ahead of time. Switch off the main breaker if you think there may be a risk of damaged wiring, sparking, smoke, fire, flooding around electrical equipment, or other electrical hazards. If there is no electrical hazard, you can turn the main breaker back on." +
-      "Water - Locate the water main shutoff and label it. Turn off if it seems that the plumbing is leaking or has been damaged. Once the hazard has been addressed, you can restore water service yourself." +
-      "Only attempt shutoffs if shaking has stopped and you are not exposed to falling debris. Personal safety takes precedence.",
+    description: (
+      <>
+        <p>Locate your home's gas meter, water main and electricity panel.</p>
+
+        <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
+          <li>
+            <strong>NATURAL GAS:</strong> Know where the shutoff valve is and
+            how to operate it. Label it clearly. Keep the required wrench
+            attached or near to the valve at all times. Once turned off, do not
+            restore gas service yourself but get a qualified professional to do
+            it from your utility. If you smell gas, do not light a candle, turn
+            on a light switch or otherwise cause a spark and leave the area.
+          </li>
+          <li>
+            <strong>ELECTRICITY:</strong> Identify the main breaker and label it
+            clearly ahead of time. Switch off the main breaker if you think
+            there may be a risk of damaged wiring, sparking, smoke, fire,
+            flooding around electrical equipment, or other electrical hazards.
+            If there is no electrical hazard, you can turn the main breaker back
+            on.
+          </li>
+          <li>
+            <strong>WATER:</strong> Locate the water main shutoff and label it.
+            Turn off if it seems that the plumbing is leaking or has been
+            damaged. Once the hazard has been addressed, you can restore water
+            service yourself.
+          </li>
+        </ul>
+      </>
+    ),
     icon: LuWrench,
     iconBackground: "green.50",
     iconColor: "green.600",
@@ -87,7 +111,7 @@ const makePlanSteps: MakePlanStep[] = [
   {
     title: "Practice yearly",
     description:
-      "Run an annual earthquake drill. Walk through your meeting point, review contacts, check your emergency kit for expired items." +
+      "Run an annual earthquake drill. Walk through your meeting point, review contacts, check your emergency kit for expired items. " +
       "During a stressful and chaotic event with or without injury, people may not rise to the occasion, but they are likely to fall back on their training.",
     icon: LuFileText,
     iconBackground: "blue.50",
