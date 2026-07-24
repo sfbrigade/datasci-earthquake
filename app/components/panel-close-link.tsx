@@ -1,8 +1,9 @@
+"use client";
+
 import { useSearchParams } from "next/navigation";
 import NextLink from "@/components/custom-next-link";
-import { CloseButton, IconButton } from "@chakra-ui/react";
-import { FaEnvelope } from "react-icons/fa";
-import { LuPanelRightClose, LuX } from "react-icons/lu";
+import { IconButton } from "@chakra-ui/react";
+import { LuX } from "react-icons/lu";
 
 export const PanelCloseLink = () => {
   // TODO:merge this logic with getNavigationHref

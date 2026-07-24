@@ -28,7 +28,7 @@ const EarthquakeReadyCards = () => (
             advance.
           </Card.Description>
         </Card.Body>
-        <Card.Footer justifyContent="flex-left">
+        <Card.Footer justifyContent="flex-start">
           <MakePlanDialog />
         </Card.Footer>
       </Card.Root>
@@ -41,7 +41,7 @@ const EarthquakeReadyCards = () => (
             in an emergency? Pack a 3-day supply per person.
           </Card.Description>
         </Card.Body>
-        <Card.Footer justifyContent="flex-left">
+        <Card.Footer justifyContent="flex-start">
           <ChecklistDialog />
         </Card.Footer>
       </Card.Root>
@@ -55,7 +55,7 @@ const EarthquakeReadyCards = () => (
             contractor. You may qualify for a state grant to cover costs.
           </Card.Description>
         </Card.Body>
-        <Card.Footer justifyContent="flex-left">
+        <Card.Footer justifyContent="flex-start">
           <Link
             as={NextLink}
             href="https://www.crmp.org/resources/find-a-contractor/"
@@ -78,10 +78,10 @@ const EarthquakeReadyCards = () => (
             second counts.
           </Card.Description>
         </Card.Body>
-        <Card.Footer justifyContent="flex-left">
+        <Card.Footer justifyContent="flex-start">
           <Link
             as={NextLink}
-            href="https://myshake.berkeley.edu//"
+            href="https://myshake.berkeley.edu/"
             target="_blank"
             rel="noopener noreferrer"
             color="blue.text"
