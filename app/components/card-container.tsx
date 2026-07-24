@@ -1,5 +1,5 @@
 import React, { Children } from "react";
-import { Box, VStack, Stack, Grid, GridItem } from "@chakra-ui/react";
+import { Box, VStack, Grid, GridItem } from "@chakra-ui/react";
 interface CardContainerProps {
   padded?: boolean;
   stackDirectionResponsive?: boolean;
