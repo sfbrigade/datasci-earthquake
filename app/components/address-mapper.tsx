@@ -86,9 +86,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   });
 
   const currentQueryString = searchParams.toString();
-  {
-    /**TODO:  merge this logic with getNavigationHref  */
-  }
+
+  // TODO: merge this logic with getNavigationHref
   const prepareHref = currentQueryString
     ? `/prepare?${currentQueryString}`
     : "/prepare";
