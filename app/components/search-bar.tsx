@@ -1,8 +1,8 @@
 "use client";
 
-import { ChangeEvent, FormEvent, Suspense, useState } from "react";
+import { ChangeEvent, Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
-import { chakra, Input, InputGroup, Text } from "@chakra-ui/react";
+import { chakra, Input, InputGroup } from "@chakra-ui/react";
 import { IoSearchSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import DynamicAddressAutofill, {
@@ -115,12 +115,7 @@ const SearchBar = ({
             <Input
               placeholder="Search San Francisco address"
               fontFamily="body"
-              fontSize={{
-                base: "sm",
-                sm: "md",
-                md: "md",
-                lg: "md",
-              }}
+              fontSize="md"
               size={{ base: "lg", md: "xl", xl: "xl" }}
               pt="0"
               pr="2.5"
