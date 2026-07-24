@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { Provider } from "../ui/provider";
+import { Provider } from "../../ui/provider";
 import "@testing-library/jest-dom";
-import FooterVerbose from "../footer-verbose";
-import "../__mocks__/match-media";
+import FooterVerbose from "../../_archived/footer-verbose";
+import "../../__mocks__/match-media";
 
 describe("Footer Component", () => {
   const renderFooter = () =>

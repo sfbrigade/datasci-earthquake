@@ -1,6 +1,6 @@
 import { Box, Link, Text, VStack, Stack } from "@chakra-ui/react";
-import { mockDisclaimers } from "./__mocks__/mock-data";
-import NextLink from "./custom-next-link";
+import { mockDisclaimers } from "../__mocks__/mock-data";
+import NextLink from "../custom-next-link";
 import NextImage from "next/image";
 
 const FooterVerbose = () => {
