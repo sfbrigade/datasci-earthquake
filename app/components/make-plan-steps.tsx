@@ -1,7 +1,15 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Box, Flex, Link, Stack, Text, type Tokens } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Link,
+  List,
+  Stack,
+  Text,
+  type Tokens,
+} from "@chakra-ui/react";
 import type { IconType } from "react-icons";
 import {
   LuBell,
@@ -56,34 +64,36 @@ const makePlanSteps: MakePlanStep[] = [
     title: "Know your utility shutoffs",
     description: (
       <>
-        <p>
+        <Text as="p">
           Locate your home&apos;s gas meter, water main and electricity panel.
-        </p>
+        </Text>
 
-        <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
-          <li>
+        <List.Root pl="5" mt="1">
+          <List.Item>
             <strong>NATURAL GAS:</strong> Know where the shutoff valve is and
             how to operate it. Label it clearly. Keep the required wrench
             attached or near to the valve at all times. Once turned off, do not
             restore gas service yourself but get a qualified professional to do
             it from your utility. If you smell gas, do not light a candle, turn
             on a light switch or otherwise cause a spark and leave the area.
-          </li>
-          <li>
+          </List.Item>
+          <List.Item>
             <strong>ELECTRICITY:</strong> Identify the main breaker and label it
             clearly ahead of time. Switch off the main breaker if you think
             there may be a risk of damaged wiring, sparking, smoke, fire,
             flooding around electrical equipment, or other electrical hazards.
             If there is no electrical hazard, you can turn the main breaker back
             on.
-          </li>
-          <li>
+          </List.Item>
+          <List.Item>
             <strong>WATER:</strong> Locate the water main shutoff and label it.
             Turn off if it seems that the plumbing is leaking or has been
             damaged. Once the hazard has been addressed, you can restore water
-            service yourself.
-          </li>
-        </ul>
+            service yourself. Only attempt shutoffs if shaking has stopped and
+            you are not exposed to falling debris. Personal safety takes
+            precedence.
+          </List.Item>
+        </List.Root>
       </>
     ),
     icon: LuWrench,
@@ -116,20 +126,20 @@ const makePlanSteps: MakePlanStep[] = [
     title: "Know your emergency broadcast channels",
     description: (
       <>
-        <p>
+        <Text as="p">
           Keep this list of Emergency Alert System broadcast channels on your
           fridge or in another prominent and visible place in your home:
-        </p>
-        <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
-          <li>
+        </Text>
+        <List.Root pl="5" mt="1">
+          <List.Item>
             <strong>Emergency Radio Broadcasts:</strong> (Primary) KCBS 740 AM
             and 106.9 FM, (Secondary) KQED 88.5 FM, (Backup) KALW 91.7 FM.
-          </li>
-          <li>
+          </List.Item>
+          <List.Item>
             <strong>Emergency TV Broadcasts:</strong> KTVU TV-2, KRON TV-4, KPIX
             TV-5, KGO TV-7, KNTV-11 (NBC Bay Area).
-          </li>
-        </ul>
+          </List.Item>
+        </List.Root>
       </>
     ),
     icon: LuRadioTower,
@@ -140,30 +150,30 @@ const makePlanSteps: MakePlanStep[] = [
     title: "Create emergency documents",
     description: (
       <>
-        <p>Print or write out the following:</p>
-        <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
-          <li>
+        <Text as="p">Print or write out the following:</Text>
+        <List.Root pl="5" mt="1">
+          <List.Item>
             a list of medications taken by each person in your household
             (generic name, brand name, dosage and time-of-day/frequency)
-          </li>
-          <li>
+          </List.Item>
+          <List.Item>
             phone numbers for the nearest emergency services (fire, police and
             ER/hospital)
-          </li>
-          <li>
+          </List.Item>
+          <List.Item>
             phone numbers for each person in the household and all local and
             out-of-area emergency contacts
-          </li>
-          <li>photocopies of health insurance cards</li>
-          <li>
+          </List.Item>
+          <List.Item>photocopies of health insurance cards</List.Item>
+          <List.Item>
             policy numbers for relevant property insurance (fire, earthquake,
             flooding)
-          </li>
-        </ul>
-        <p>
+          </List.Item>
+        </List.Root>
+        <Text as="p">
           Keep these documents in your emergency bag, as you may not have access
           to digital copies during an extended power outage.
-        </p>
+        </Text>
       </>
     ),
     icon: LuFileText,
