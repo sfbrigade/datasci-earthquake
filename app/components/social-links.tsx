@@ -1,6 +1,5 @@
 import { VStack, HStack, IconButton, Text, Flex } from "@chakra-ui/react";
 import { FaInstagram, FaLinkedinIn, FaEnvelope } from "react-icons/fa6";
-import NextLink from "@/components/custom-next-link";
 import NextImage from "next/image";
 
 export function SocialLinks() {

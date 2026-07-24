@@ -182,7 +182,9 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         <SHDrawer
           title="Risk Layers"
           footerText={
-            <AlertInfo message="72% chance of major Bay Area earthquake in the next 30 years" />
+            <Box hideBelow="sm">
+              <AlertInfo message="72% chance of major Bay Area earthquake in the next 30 years" />
+            </Box>
           }
         >
           <ReportHazards
