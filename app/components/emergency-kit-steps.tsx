@@ -179,19 +179,19 @@ const items: EmergencyKitItem[] = [
     iconColor: "blue.600",
     description: (
       <>
-        <p>
+        <Text as="p">
           ATMs may not work, so keep small bills of cash to last at least 3-7
           days and let each person carry their own cash supply in case of
           separation.
-        </p>
-        <p>
+        </Text>
+        <Text as="p" mt="2">
           Also for each person&apos;s emergency bag: a pair of long-legged
           foldable and reusable waterproof shoe covers for floods, tough but
           flexible work gloves, N95 dust masks or a more protective respirator,
           loud whistle, pepper spray, swiss army knife, portable utensils,
           travel/swim towel, spare copy of house keys without the address
           labelled.
-        </p>
+        </Text>
       </>
     ),
   },
@@ -203,7 +203,7 @@ const items: EmergencyKitItem[] = [
     iconColor: "red.600",
     description:
       "Baby formula, diapers, pet food, leashes, extra eyeglasses, hearing aid batteries, mobility device supplies." +
-      "Think of daily items that you can't do without and how to pack a portable version or substitute for them.",
+      " Think of daily items that you can't do without and how to pack a portable version or substitute for them.",
   },
 ];
 
