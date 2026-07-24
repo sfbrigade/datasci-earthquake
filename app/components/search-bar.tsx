@@ -113,6 +113,7 @@ const SearchBar = ({
             }
           >
             <Input
+              autoFocus
               placeholder="Search San Francisco address"
               fontFamily="body"
               fontSize="md"
