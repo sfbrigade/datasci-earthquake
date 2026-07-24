@@ -15,7 +15,7 @@ export function SocialLinks() {
         Contact Us
       </Text>
       <HStack>
-        <IconButton asChild aria-label="LinkedIn" variant="ghost" size="2xl">
+        <IconButton asChild aria-label="Email" variant="ghost" size="2xl">
           <a
             href="mailto:sfcivictech.datascience@gmail.com"
             target="_blank"
