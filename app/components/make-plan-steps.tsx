@@ -122,13 +122,12 @@ const makePlanSteps: MakePlanStep[] = [
         </p>
         <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
           <li>
-            <strong> Emergency Radio Broadcasts:</strong>
-            (Primary) KCBS 740 AM and 106.9 FM, (Secondary) KQED 88.5 FM,
-            (Backup) KALW 91.7 FM.
+            <strong>Emergency Radio Broadcasts:</strong> (Primary) KCBS 740 AM
+            and 106.9 FM, (Secondary) KQED 88.5 FM, (Backup) KALW 91.7 FM.
           </li>
           <li>
-            <strong>Emergency TV Broadcasts: </strong> KTVU TV-2, KRON TV-4,
-            KPIX TV-5, KGO TV-7, KNTV-11 (NBC Bay Area).",
+            <strong>Emergency TV Broadcasts:</strong> KTVU TV-2, KRON TV-4, KPIX
+            TV-5, KGO TV-7, KNTV-11 (NBC Bay Area).
           </li>
         </ul>
       </>
