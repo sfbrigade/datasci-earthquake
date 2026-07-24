@@ -10,6 +10,8 @@ import {
   LuPhone,
   LuUsers,
   LuWrench,
+  LuRadioTower,
+  LuCalendarFold,
 } from "react-icons/lu";
 
 type MakePlanStep = {
@@ -51,10 +53,12 @@ const makePlanSteps: MakePlanStep[] = [
     iconColor: "yellow.600",
   },
   {
-    title: "Know your shutoffs",
+    title: "Know your utility shutoffs",
     description: (
       <>
-        <p>Locate your home's gas meter, water main and electricity panel.</p>
+        <p>
+          Locate your home&apos;s gas meter, water main and electricity panel.
+        </p>
 
         <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
           <li>
@@ -109,13 +113,72 @@ const makePlanSteps: MakePlanStep[] = [
     iconColor: "purple.600",
   },
   {
+    title: "Know your emergency broadcast channels",
+    description: (
+      <>
+        <p>
+          Keep this list of Emergency Alert System broadcast channels on your
+          fridge or in another prominent and visible place in your home:
+        </p>
+        <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
+          <li>
+            <strong> Emergency Radio Broadcasts:</strong>
+            (Primary) KCBS 740 AM and 106.9 FM, (Secondary) KQED 88.5 FM,
+            (Backup) KALW 91.7 FM.
+          </li>
+          <li>
+            <strong>Emergency TV Broadcasts: </strong> KTVU TV-2, KRON TV-4,
+            KPIX TV-5, KGO TV-7, KNTV-11 (NBC Bay Area).",
+          </li>
+        </ul>
+      </>
+    ),
+    icon: LuRadioTower,
+    iconBackground: "blue.50",
+    iconColor: "blue.600",
+  },
+  {
+    title: "Create emergency documents",
+    description: (
+      <>
+        <p>Print or write out the following:</p>
+        <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
+          <li>
+            a list of medications taken by each person in your household
+            (generic name, brand name, dosage and time-of-day/frequency)
+          </li>
+          <li>
+            phone numbers for the nearest emergency services (fire, police and
+            ER/hospital)
+          </li>
+          <li>
+            phone numbers for each person in the household and all local and
+            out-of-area emergency contacts
+          </li>
+          <li>photocopies of health insurance cards</li>
+          <li>
+            policy numbers for relevant property insurance (fire, earthquake,
+            flooding)
+          </li>
+        </ul>
+        <p>
+          Keep these documents in your emergency bag, as you may not have access
+          to digital copies during an extended power outage.
+        </p>
+      </>
+    ),
+    icon: LuFileText,
+    iconBackground: "yellow.50",
+    iconColor: "yellow.600",
+  },
+  {
     title: "Practice yearly",
     description:
       "Run an annual earthquake drill. Walk through your meeting point, review contacts, check your emergency kit for expired items. " +
       "During a stressful and chaotic event with or without injury, people may not rise to the occasion, but they are likely to fall back on their training.",
-    icon: LuFileText,
-    iconBackground: "blue.50",
-    iconColor: "blue.600",
+    icon: LuCalendarFold,
+    iconBackground: "green.50",
+    iconColor: "green.600",
   },
 ];
 
