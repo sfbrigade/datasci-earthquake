@@ -13,7 +13,7 @@ import {
   LuUtensils,
 } from "react-icons/lu";
 
-import { Badge, Box, Flex, Stack, Strong, Text } from "@chakra-ui/react";
+import { Badge, Box, Flex, List, Stack, Strong, Text } from "@chakra-ui/react";
 
 type EmergencyKitItem = {
   title: string;
@@ -48,30 +48,30 @@ const items: EmergencyKitItem[] = [
     iconColor: "red.600",
     description: (
       <>
-        <p>A basic first aid kit should contain at least:</p>
+        <Text as="p">A basic first aid kit should contain at least:</Text>
 
-        <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
-          <li>Adhesive bandages (all sizes)</li>
-          <li>Butterfly closures (all sizes)</li>
-          <li>Tape roll</li>
-          <li>Gauze pads and gauze roll</li>
-          <li>Scissors</li>
-          <li>Foil blankets</li>
-          <li>Examination gloves</li>
-          <li>Flashlight or glow sticks</li>
-          <li>Instant cold pack</li>
-          <li>Hot pack (body warmer)</li>
-          <li>Antiseptic cream</li>
-          <li>Aspirin or Acetaminophen</li>
-          <li>Allergy medication</li>
-          <li>Tweezers</li>
-          <li>Burn cream</li>
-          <li>Alcohol pads</li>
-          <li>Antiseptic towelettes</li>
-          <li>Finger splints or tongue depressors</li>
-          <li>Cotton swabs</li>
-          <li>Eye wash</li>
-        </ul>
+        <List.Root pl="5" mt="1">
+          <List.Item>Adhesive bandages (all sizes)</List.Item>
+          <List.Item>Butterfly closures (all sizes)</List.Item>
+          <List.Item>Tape roll</List.Item>
+          <List.Item>Gauze pads and gauze roll</List.Item>
+          <List.Item>Scissors</List.Item>
+          <List.Item>Foil blankets</List.Item>
+          <List.Item>Examination gloves</List.Item>
+          <List.Item>Flashlight or glow sticks</List.Item>
+          <List.Item>Instant cold pack</List.Item>
+          <List.Item>Hot pack (body warmer)</List.Item>
+          <List.Item>Antiseptic cream</List.Item>
+          <List.Item>Aspirin or Acetaminophen</List.Item>
+          <List.Item>Allergy medication</List.Item>
+          <List.Item>Tweezers</List.Item>
+          <List.Item>Burn cream</List.Item>
+          <List.Item>Alcohol pads</List.Item>
+          <List.Item>Antiseptic towelettes</List.Item>
+          <List.Item>Finger splints or tongue depressors</List.Item>
+          <List.Item>Cotton swabs</List.Item>
+          <List.Item>Eye wash</List.Item>
+        </List.Root>
       </>
     ),
   },
@@ -83,29 +83,29 @@ const items: EmergencyKitItem[] = [
     iconColor: "yellow.600",
     description: (
       <>
-        <p>
+        <Text as="p">
           Pack a battery-powered flashlight and extra batteries for it (not
           candles which are a fire hazard), a portable phone charger, a
           solar-charging backup power bank with the correct ports for all of
           your critical devices, a battery-powered or hand-crank radio with its
           extra batteries.
-        </p>
+        </Text>
         Write down the following Emergency Alert System (EAS) radio stations for
         San Francisco on a clean adhesive label and stick it to the back of your
         radio:
-        <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
-          <li>
+        <List.Root pl="5" mt="1">
+          <List.Item>
             <Strong>Primary EAS:</Strong> KCBS 740 AM and 106.9 FM{" "}
-          </li>
-          <li>
+          </List.Item>
+          <List.Item>
             <Strong>Secondary EAS:</Strong> KQED 88.5 FM
-          </li>
-          <li>
+          </List.Item>
+          <List.Item>
             <Strong>Back-up radio:</Strong> KALW 91.7 FM (while it is not an EAS
             station, the City and KALW have an agreement that allows the City to
             broadcast emergency information and updates, if needed).
-          </li>
-        </ul>
+          </List.Item>
+        </List.Root>
       </>
     ),
   },
@@ -117,27 +117,31 @@ const items: EmergencyKitItem[] = [
     iconColor: "green.600",
     description: (
       <>
-        <p>
+        <Text as="p">
           Pack non-perishable foods with expiration dates that are ideally a
           year out, but at least 6 months out. These can include:
-        </p>
+        </Text>
 
-        <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
-          <li>Ready-to-eat canned meats, fruits, or vegetables</li>
-          <li>Canned juices, milk, and soup</li>
-          <li>Sweetened cereals</li>
-          <li>Small salt, pepper, and sugar packets</li>
-          <li>Peanut butter, jelly, and dry crackers</li>
-          <li>Granola or energy bars, trail mix, and dried fruit</li>
-          <li>Hard candy, instant coffee, and sealed tea bags</li>
-          <li>Dry ramen packs</li>
-          <li>Dry pet food, if needed</li>
-        </ul>
+        <List.Root pl="5" mt="1">
+          <List.Item>
+            Ready-to-eat canned meats, fruits, or vegetables
+          </List.Item>
+          <List.Item>Canned juices, milk, and soup</List.Item>
+          <List.Item>Sweetened cereals</List.Item>
+          <List.Item>Small salt, pepper, and sugar packets</List.Item>
+          <List.Item>Peanut butter, jelly, and dry crackers</List.Item>
+          <List.Item>
+            Granola or energy bars, trail mix, and dried fruit
+          </List.Item>
+          <List.Item>Hard candy, instant coffee, and sealed tea bags</List.Item>
+          <List.Item>Dry ramen packs</List.Item>
+          <List.Item>Dry pet food, if needed</List.Item>
+        </List.Root>
 
-        <p style={{ marginTop: "12px" }}>
+        <Text mt="3">
           Set a recurring calendar reminder every 6 months to check, use up, and
           replace these items.
-        </p>
+        </Text>
       </>
     ),
   },
@@ -149,25 +153,27 @@ const items: EmergencyKitItem[] = [
     iconColor: "purple.600",
     description: (
       <>
-        <p>Each person should carry printed copies of:</p>
+        <Text as="p">Each person should carry printed copies of:</Text>
 
-        <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
-          <li>
+        <List.Root pl="5" mt="1">
+          <List.Item>
             ID cards for themselves and for each person they may need to locate
             or identify in the household
-          </li>
-          <li>Health insurance cards</li>
-          <li>Blood type cards, if available</li>
-          <li>
+          </List.Item>
+          <List.Item>Health insurance cards</List.Item>
+          <List.Item>Blood type cards, if available</List.Item>
+          <List.Item>
             Property insurance documents (renter&apos;s, earthquake, fire,
             flooding )
-          </li>
-          <li>List of local and out-of-area emergency contacts</li>
-        </ul>
+          </List.Item>
+          <List.Item>
+            List of local and out-of-area emergency contacts
+          </List.Item>
+        </List.Root>
 
-        <p style={{ marginTop: "12px" }}>
+        <Text mt="3">
           Store these documents in a waterproof bag or laminate them.
-        </p>
+        </Text>
       </>
     ),
   },
@@ -185,13 +191,21 @@ const items: EmergencyKitItem[] = [
           separation.
         </Text>
         <Text as="p" mt="2">
-          Also for each person&apos;s emergency bag: a pair of long-legged
-          foldable and reusable waterproof shoe covers for floods, tough but
-          flexible work gloves, N95 dust masks or a more protective respirator,
-          loud whistle, pepper spray, swiss army knife, portable utensils,
-          travel/swim towel, spare copy of house keys without the address
-          labelled.
+          Also for each person&apos;s emergency bag:
         </Text>
+        <List.Root pl="5" mt="1">
+          <List.Item>
+            A pair of long-legged foldable and reusable waterproof shoe-covers
+          </List.Item>
+          <List.Item>A pair of tough but flexible work gloves</List.Item>
+          <List.Item>N95 dust mask, or a more protective respirator</List.Item>
+          <List.Item>Loud whistle</List.Item>
+          <List.Item>Pepper spray</List.Item>
+          <List.Item>Swiss army knife</List.Item>
+          <List.Item>Portable utensils</List.Item>
+          <List.Item>Travel/swim towel</List.Item>
+          <List.Item>Spare copy of house keys</List.Item>
+        </List.Root>
       </>
     ),
   },
@@ -201,9 +215,23 @@ const items: EmergencyKitItem[] = [
     icon: LuHeartHandshake,
     iconBackground: "red.50",
     iconColor: "red.600",
-    description:
-      "Baby formula, diapers, pet food, leashes, extra eyeglasses, hearing aid batteries, mobility device supplies." +
-      " Think of daily items that you can't do without and how to pack a portable version or substitute for them.",
+    description: (
+      <>
+        <Text as="p" mt="2">
+          Think of daily items that you can&apos;t do without and how to pack a
+          portable version or substitute for them.
+        </Text>
+        <List.Root pl="5" mt="1">
+          <List.Item>Baby formula</List.Item>
+          <List.Item>Baby items such as diapers</List.Item>
+          <List.Item>Pet food</List.Item>
+          <List.Item>Leashes</List.Item>
+          <List.Item>Extra eyeglasses</List.Item>
+          <List.Item>Hearing aid batteries</List.Item>
+          <List.Item>Mobility device supplies</List.Item>
+        </List.Root>
+      </>
+    ),
   },
 ];
 
