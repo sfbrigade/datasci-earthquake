@@ -47,7 +47,7 @@ const Prepare = () => {
               <div>
                 <Image
                   src="/images/SFCivicTech-Rights.svg"
-                  alt="SafeHome logo"
+                  alt="Rights icon"
                   role="img" // needed for VoiceOver bug: https://bugs.webkit.org/show_bug.cgi?id=216364
                   height="8"
                   width="8"
