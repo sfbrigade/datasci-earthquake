@@ -1,7 +1,7 @@
 """Router to handle composite hazard lookups (soft story, liquefaction, tsunami)"""
 
 from fastapi import Depends, HTTPException, APIRouter, Query
-from typing import Optional
+from typing import Callable, Optional
 from ..tags import Tags
 from sqlalchemy.orm import Session
 from geoalchemy2 import functions as geo_func
@@ -72,6 +72,19 @@ def _check_tsunami(db: Session, point: WKBElement) -> HazardStatus:
     )
 
 
+def _run_hazard_check(
+    label: str,
+    check: Callable[[Session, WKBElement], HazardStatus],
+    db: Session,
+    point: WKBElement,
+) -> tuple[HazardStatus, Optional[Exception]]:
+    try:
+        return check(db, point), None
+    except Exception as e:
+        logger.exception("%s hazard check failed", label)
+        return HazardStatus(exists=False, last_updated=None, check_failed=True), e
+
+
 @router.get("/lookup", response_model=CompositeHazardResponse)
 def lookup_hazards(
     lon: Optional[float] = Query(None, ge=-180, le=180),
@@ -117,9 +130,24 @@ def lookup_hazards(
     try:
         point = from_shape(Point(lon, lat), srid=4326)
 
-        soft_story_status = _check_soft_story(db, point)
-        liquefaction_status = _check_liquefaction(db, point)
-        tsunami_status = _check_tsunami(db, point)
+        soft_story_status, soft_story_error = _run_hazard_check(
+            "Soft story", _check_soft_story, db, point
+        )
+        liquefaction_status, liquefaction_error = _run_hazard_check(
+            "Liquefaction", _check_liquefaction, db, point
+        )
+        tsunami_status, tsunami_error = _run_hazard_check(
+            "Tsunami", _check_tsunami, db, point
+        )
+
+        check_errors = [soft_story_error, liquefaction_error, tsunami_error]
+        if all(error is not None for error in check_errors):
+            raise HazardCheckError(
+                zone="composite",
+                lon=lon,
+                lat=lat,
+                original_exception=check_errors[0],
+            )
 
         logger.info(
             f"Composite hazard check result for coordinates: lon={lon}, lat={lat} - "
@@ -134,5 +162,7 @@ def lookup_hazards(
             tsunami=tsunami_status,
         )
 
+    except HazardCheckError:
+        raise
     except Exception as e:
         raise HazardCheckError(zone="composite", lon=lon, lat=lat, original_exception=e)

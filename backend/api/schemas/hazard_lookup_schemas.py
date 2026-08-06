@@ -10,10 +10,12 @@ class HazardStatus(BaseModel):
     Attributes:
         exists (bool): Whether the location is affected by this hazard.
         last_updated (Optional[datetime]): Timestamp of last update if exists.
+        check_failed (bool): Whether this specific hazard check failed.
     """
 
     exists: bool
     last_updated: Optional[datetime] = None
+    check_failed: bool = False
 
     model_config = ConfigDict(from_attributes=True)
 
