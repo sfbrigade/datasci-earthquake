@@ -91,9 +91,12 @@ const SearchBar = ({
   const handleSuggest = (res: AddressAutofillSuggestionResponse) => {
     setSuggestionCount(res.suggestions.length);
   };
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
 
   return (
-    <chakra.form position={"relative"}>
+    <chakra.form position={"relative"} onSubmit={handleSubmit}>
       <Suspense>
         <DynamicAddressAutofill
           accessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ""}
