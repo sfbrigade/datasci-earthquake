@@ -9,6 +9,7 @@ global.fetch = fetchMock;
 const mockSuccessResponse = (data: {
   exists: boolean;
   last_updated: string | null;
+  gridcode?: number | null;
 }) =>
   Promise.resolve({
     ok: true,
@@ -51,6 +52,13 @@ test("should fetch all hazard data successfully", async () => {
         last_updated: "2025-08-05T17:03:03.555976Z",
       });
     }
+    if (url.includes("landslide")) {
+      return mockSuccessResponse({
+        exists: true,
+        last_updated: null,
+        gridcode: 10,
+      });
+    }
     return mockSuccessResponse({ exists: false, last_updated: null });
   });
 
@@ -72,12 +80,13 @@ test("should fetch all hazard data successfully", async () => {
   expect(setSearchComplete).toHaveBeenCalledWith(true);
   expect(toaster.create).not.toHaveBeenCalled();
   expect(setHazardDataLoading).toHaveBeenNthCalledWith(2, false);
-  expect(fetchMock).toHaveBeenCalledTimes(3);
+  expect(fetchMock).toHaveBeenCalledTimes(4);
 
   expect(returnedValue).toEqual({
     softStory: { exists: false, last_updated: null },
     tsunami: { exists: false, last_updated: null },
     liquefaction: { exists: true, last_updated: "2025-08-05T17:03:03.555976Z" },
+    landslide: { exists: true, last_updated: null, gridcode: 10 },
   });
 });
 
@@ -91,7 +100,10 @@ test("should show a warning toast when one API call fails", async () => {
     .mockResolvedValueOnce(
       mockSuccessResponse({ exists: false, last_updated: null })
     )
-    .mockResolvedValueOnce(mockFailedResponse());
+    .mockResolvedValueOnce(mockFailedResponse())
+    .mockResolvedValueOnce(
+      mockSuccessResponse({ exists: false, last_updated: null, gridcode: null })
+    );
 
   const setSearchComplete = jest.fn();
   const setHazardDataLoading = jest.fn();
@@ -115,11 +127,12 @@ test("should show a warning toast when one API call fails", async () => {
     })
   );
   expect(setHazardDataLoading).toHaveBeenCalledTimes(2);
-  expect(fetchMock).toHaveBeenCalledTimes(3);
+  expect(fetchMock).toHaveBeenCalledTimes(4);
 
   expect(returnedValue).toEqual({
     softStory: { exists: false, last_updated: null },
     tsunami: { exists: false, last_updated: null },
     liquefaction: null,
+    landslide: { exists: false, last_updated: null, gridcode: null },
   });
 });

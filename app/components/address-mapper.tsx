@@ -14,13 +14,14 @@ import HomeHeader from "./home-header";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
 
 const defaultCoords = [-122.4194, 37.7949];
-const toggledStatesDefaults = [true, true, true];
+const toggledStatesDefaults = [true, true, true, true];
 const mdBreakpointValue = system.token("breakpoints.md");
 
 interface AddressMapperProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
+  landslideData: FeatureCollection<Geometry>;
 }
 
 export type LayerToggleObjProps = {
@@ -43,6 +44,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   softStoryData,
   tsunamiData,
   liquefactionData,
+  landslideData,
 }) => {
   // media query used for layout change
   const [md] = useMediaQuery([`(min-width: ${mdBreakpointValue})`]);
@@ -132,6 +134,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           softStory: null,
           tsunami: null,
           liquefaction: null,
+          landslide: null,
         });
         toaster.create({
           description: "Could not retrieve hazard data",
@@ -161,6 +164,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
       { name: "Soft Story Buildings", data: softStoryData },
       { name: "Tsunami Zones", data: tsunamiData },
       { name: "Liquefaction Zones", data: liquefactionData },
+      { name: "Landslide Zones", data: landslideData },
     ];
 
     const errors = sources
@@ -182,7 +186,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         });
       }
     }
-  }, [softStoryData, tsunamiData, liquefactionData]);
+  }, [softStoryData, tsunamiData, liquefactionData, landslideData]);
 
   return (
     <>
@@ -245,6 +249,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             softStoryData={softStoryData}
             tsunamiData={tsunamiData}
             liquefactionData={liquefactionData}
+            landslideData={landslideData}
             layerToggleObj={layerToggleObj}
           />
         </Box>

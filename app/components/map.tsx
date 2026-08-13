@@ -34,6 +34,7 @@ interface MapProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
+  landslideData: FeatureCollection<Geometry>;
   layerToggleObj: LayerToggleObjProps;
 }
 
@@ -56,6 +57,7 @@ const Map: React.FC<MapProps> = ({
   softStoryData,
   tsunamiData,
   liquefactionData,
+  landslideData,
   layerToggleObj,
 }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -116,6 +118,8 @@ const Map: React.FC<MapProps> = ({
 
         map.addSource("soft-stories", { type: "geojson", data: softStoryData });
 
+        map.addSource("landslide", { type: "geojson", data: landslideData });
+
         map.addLayer({
           id: "tsunamiLayer",
           source: "tsunami",
@@ -149,6 +153,17 @@ const Map: React.FC<MapProps> = ({
             "circle-stroke-width": 1,
             "circle-stroke-color": "#FFFFFF",
             "circle-color": "#A0AEC0", // gray/400
+          },
+        });
+
+        map.addLayer({
+          id: "landslideLayer",
+          source: "landslide",
+          type: "fill",
+          slot: "middle",
+          paint: {
+            "fill-color": "#B7791F",
+            "fill-opacity": 0.4,
           },
         });
 
@@ -201,7 +216,15 @@ const Map: React.FC<MapProps> = ({
       }
       return;
     }
-  }, [lon, lat, address, liquefactionData, softStoryData, tsunamiData]);
+  }, [
+    lon,
+    lat,
+    address,
+    liquefactionData,
+    softStoryData,
+    tsunamiData,
+    landslideData,
+  ]);
 
   useEffect(() => {
     const handleToggleLayers = () => {

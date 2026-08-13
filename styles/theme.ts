@@ -189,6 +189,7 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     // TODO: move some of these to `semanticTokens` and rename accordingly
     blueBackground: { value: "#2C5282" }, // blue/700
     tsunamiBlue: { value: "#63B3ED" }, // blue/300
+    landslideBrown: { value: "#B7791F" },
     lightGrey: { value: "#c8caceff" },
     labelGrey: { value: "#bfb9b9" },
     warningRed: { value: "#b53d37" },

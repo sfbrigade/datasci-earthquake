@@ -41,6 +41,7 @@ jest.mock("../map", () => {
     <div
       data-testid="map"
       data-coordinates={JSON.stringify([props.lon, props.lat])}
+      data-has-landslide={String(Boolean(props.landslideData))}
     >
       Mocked Map
     </div>
@@ -87,6 +88,7 @@ const mockProps = {
   softStoryData: mockFeatureCollection,
   tsunamiData: mockFeatureCollection,
   liquefactionData: mockFeatureCollection,
+  landslideData: mockFeatureCollection,
 };
 
 describe("AddressMapper", () => {
@@ -110,6 +112,10 @@ describe("AddressMapper", () => {
       "data-coordinates",
       JSON.stringify(defaultCoords)
     );
+    expect(screen.getByTestId("map")).toHaveAttribute(
+      "data-has-landslide",
+      "true"
+    );
     expect(fetchHazardDataMock).not.toHaveBeenCalled();
   });
 
@@ -117,7 +123,12 @@ describe("AddressMapper", () => {
     // Arrange
     const testCoords = [-122.4, 37.8];
     const testAddress = "123 Main St";
-    const mockData = { softStory: "data", tsunami: null, liquefaction: "data" };
+    const mockData = {
+      softStory: "data",
+      tsunami: null,
+      liquefaction: "data",
+      landslide: "data",
+    };
     mockSetSearchParams({ lat: "37.8", lon: "-122.4", address: testAddress });
     fetchHazardDataMock.mockResolvedValue(mockData);
 
@@ -148,7 +159,12 @@ describe("AddressMapper", () => {
       ["lat", newCoords[1].toString()],
     ];
 
-    const mockData = { softStory: "data", tsunami: null, liquefaction: "data" };
+    const mockData = {
+      softStory: "data",
+      tsunami: null,
+      liquefaction: "data",
+      landslide: "data",
+    };
     fetchHazardDataMock.mockResolvedValue(mockData);
 
     // Initial render with no URL params

@@ -21,6 +21,11 @@ import ShareSkeleton from "./share-skeleton";
 
 export type HazardData = {
   liquefaction: { exists: boolean; last_updated: string | null } | null;
+  landslide: {
+    exists: boolean;
+    last_updated: string | null;
+    gridcode?: number | null;
+  } | null;
   softStory: { exists: boolean; last_updated: string | null } | null;
   tsunami: { exists: boolean; last_updated: string | null } | null;
 };

@@ -9,6 +9,7 @@ import {
   fetchSoftStories,
   fetchTsunami,
   fetchLiquefaction,
+  fetchLandslide,
 } from "./api/services";
 
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `home-skeleton.tsx` and vice versa
@@ -27,13 +28,19 @@ const Home = async () => {
     type: "FeatureCollection",
     features: [],
   };
+  let landslideData: FeatureCollection<Geometry, GeoJsonProperties> = {
+    type: "FeatureCollection",
+    features: [],
+  };
 
   try {
-    [softStoryData, tsunamiData, liquefactionData] = await Promise.all([
-      fetchSoftStories(),
-      fetchTsunami(),
-      fetchLiquefaction(),
-    ]);
+    [softStoryData, tsunamiData, liquefactionData, landslideData] =
+      await Promise.all([
+        fetchSoftStories(),
+        fetchTsunami(),
+        fetchLiquefaction(),
+        fetchLandslide(),
+      ]);
   } catch (error: any) {
     console.error("Error: ", error);
   }
@@ -45,6 +52,7 @@ const Home = async () => {
           softStoryData={softStoryData}
           tsunamiData={tsunamiData}
           liquefactionData={liquefactionData}
+          landslideData={landslideData}
         />
       </Suspense>
       <Flex
