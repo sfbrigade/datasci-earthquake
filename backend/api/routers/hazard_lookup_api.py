@@ -1,4 +1,4 @@
-"""Router to handle composite hazard lookups (soft story, liquefaction, tsunami)"""
+"""Router to handle composite hazard lookups."""
 
 from fastapi import Depends, HTTPException, APIRouter, Query
 from typing import Callable, Optional
@@ -13,6 +13,7 @@ from ..schemas.hazard_lookup_schemas import HazardStatus, CompositeHazardRespons
 from backend.api.models.soft_story_properties import SoftStoryProperty
 from backend.api.models.liquefaction_zones import LiquefactionZone
 from backend.api.models.tsunami import TsunamiZone
+from backend.api.models.landslide_zones import LandslideZone
 from backend.api.exceptions import HazardCheckError
 import logging
 
@@ -72,6 +73,20 @@ def _check_tsunami(db: Session, point: WKBElement) -> HazardStatus:
     )
 
 
+def _check_landslide(db: Session, point: WKBElement) -> HazardStatus:
+    """Check whether a point is in a high-susceptibility landslide zone."""
+    zone = (
+        db.query(LandslideZone)
+        .filter(LandslideZone.gridcode.in_([8, 9, 10]))
+        .filter(LandslideZone.geometry.ST_Intersects(point))
+        .first()
+    )
+    return HazardStatus(
+        exists=zone is not None,
+        last_updated=zone.update_timestamp if zone else None,
+    )
+
+
 def _run_hazard_check(
     label: str,
     check: Callable[[Session, WKBElement], HazardStatus],
@@ -93,7 +108,7 @@ def lookup_hazards(
     db: Session = Depends(get_db),
 ):
     """
-    Look up all supported hazard types (soft story, liquefaction, tsunami) for a
+    Look up all supported hazard types for a
     single location in one call.
 
     Args:
@@ -116,6 +131,7 @@ def lookup_hazards(
             soft_story=EMPTY_HAZARD_STATUS,
             liquefaction=EMPTY_HAZARD_STATUS,
             tsunami=EMPTY_HAZARD_STATUS,
+            landslide=EMPTY_HAZARD_STATUS,
         )
 
     if lon is None or lat is None:
@@ -139,8 +155,16 @@ def lookup_hazards(
         tsunami_status, tsunami_error = _run_hazard_check(
             "Tsunami", _check_tsunami, db, point
         )
+        landslide_status, landslide_error = _run_hazard_check(
+            "Landslide", _check_landslide, db, point
+        )
 
-        check_errors = [soft_story_error, liquefaction_error, tsunami_error]
+        check_errors = [
+            soft_story_error,
+            liquefaction_error,
+            tsunami_error,
+            landslide_error,
+        ]
         if all(error is not None for error in check_errors):
             raise HazardCheckError(
                 zone="composite",
@@ -153,13 +177,15 @@ def lookup_hazards(
             f"Composite hazard check result for coordinates: lon={lon}, lat={lat} - "
             f"soft_story exists: {soft_story_status.exists}, "
             f"liquefaction exists: {liquefaction_status.exists}, "
-            f"tsunami exists: {tsunami_status.exists}"
+            f"tsunami exists: {tsunami_status.exists}, "
+            f"landslide exists: {landslide_status.exists}"
         )
 
         return CompositeHazardResponse(
             soft_story=soft_story_status,
             liquefaction=liquefaction_status,
             tsunami=tsunami_status,
+            landslide=landslide_status,
         )
 
     except HazardCheckError:
