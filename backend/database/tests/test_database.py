@@ -1,11 +1,12 @@
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from backend.api.config import settings
+from backend.api.config import get_settings
 
 
 @pytest.fixture(scope="module")
 def test_db():
+    settings = get_settings()
     # Create a session using the existing database
     engine = create_engine(settings.database_url_sqlalchemy_test)
     connection = engine.connect()

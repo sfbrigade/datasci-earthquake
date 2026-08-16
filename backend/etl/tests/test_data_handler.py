@@ -13,7 +13,7 @@ from backend.etl.retry import LoggingRetry
 from backend.etl.request_handler import RequestHandler
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from backend.api.config import settings
+from backend.api.config import get_settings
 from sqlalchemy.dialects.postgresql import Insert
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from datetime import datetime, timezone
@@ -33,6 +33,8 @@ import json
 from pathlib import Path
 from pydantic import ValidationError
 from geojson_pydantic import FeatureCollection
+
+settings = get_settings()
 
 
 class DummyModel(Base):
