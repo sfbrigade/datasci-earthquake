@@ -1,0 +1,108 @@
+import { Suspense } from "react";
+import { Inter, Manrope } from "next/font/google";
+import type { Metadata } from "next";
+import { Flex, Box } from "@chakra-ui/react";
+
+import { InterVariableName, ManropeVariableName } from "@/data/constants";
+import { Provider } from "@/components/ui/provider";
+import { Toaster } from "@/components/ui/toaster";
+import Footer from "@/components/footer";
+import MapHomeHeader from "@/components/map-home-header";
+import { MapStateProvider } from "@/components/map-state-provider";
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-manrope" satisfies typeof ManropeVariableName,
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-inter" satisfies typeof InterVariableName,
+});
+
+const title = "SafeHome";
+const titleSocial = "SafeHome | San Francisco Disaster Guidance";
+const description = "Learn about your home's earthquake readiness.";
+const descriptionSocial =
+  "Risk insights and preparedness tools to help individuals, families, and communities prepare before disasters happen.";
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://safehome.report"),
+  title,
+  description,
+
+  alternates: {
+    canonical: "./",
+  },
+
+  openGraph: {
+    title: titleSocial,
+    description: descriptionSocial,
+    url: "./",
+    siteName: "SafeHome",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: titleSocial,
+    description: descriptionSocial,
+  },
+};
+
+// Since this is the root layout, all fetch requests in the app
+// that don't set their own cache option will be cached.
+export const fetchCache = "default-cache";
+
+export default function RootLayout({
+  children,
+  panel,
+}: {
+  children: React.ReactNode;
+  panel: React.ReactNode;
+}) {
+  // NOTE: toggle off `suppressHydrationWarning` if you want to see hydration warnings in the console.
+  // This can help identify issues with server-side rendering and client-side hydration.
+  // However, it may also lead to a lot of warnings if your app is not fully optimized for hydration;
+  // case in point: Chakra's Color Mode / ThemeProvider will cause this warning, which is the reason
+  // this flag is toggled on.
+  return (
+    <html
+      lang="en"
+      className={`${manrope.variable} ${inter.variable}`}
+      suppressHydrationWarning
+    >
+      <body>
+        <Provider>
+          <MapStateProvider>
+            <Flex direction="column" align="center" h="dvh" overflow="hidden">
+              <Suspense fallback={null}>
+                <MapHomeHeader />
+              </Suspense>
+
+              <Box
+                as="main"
+                position="relative"
+                flex="1"
+                minH="mainContentMinHeight"
+                w="full"
+                overflow="hidden"
+              >
+                {children}
+                {panel}
+              </Box>
+
+              <Box as="footer" w="full" hideBelow="md" flexShrink={0}>
+                <Footer />
+              </Box>
+            </Flex>
+          </MapStateProvider>
+
+          <Toaster />
+        </Provider>
+      </body>
+    </html>
+  );
+}

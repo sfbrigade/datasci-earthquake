@@ -6,23 +6,29 @@ import { Dispatch, SetStateAction } from "react";
 import { LayerToggleObjProps } from "./address-mapper";
 
 type HazardData = { softStory?: any; tsunami?: any; liquefaction?: any };
-
 const ReportHazards = ({
   addressHazardData,
   isHazardDataLoading,
   toggledStates,
   setToggledStates,
   setLayerToggleObj,
+  isInDrawer = false,
+  stackDirectionResponsive = false,
 }: {
   addressHazardData: HazardData;
   isHazardDataLoading: boolean;
   toggledStates: boolean[];
   setToggledStates: Dispatch<SetStateAction<boolean[]>>;
   setLayerToggleObj: Dispatch<SetStateAction<LayerToggleObjProps>>;
+  isInDrawer?: boolean;
+  stackDirectionResponsive?: boolean; // TODO: check if we still use or need "stackDirectionResponsive" boolean
 }) => {
   return (
     <Box>
-      <CardContainer>
+      <CardContainer
+        padded={!isInDrawer}
+        stackDirectionResponsive={stackDirectionResponsive}
+      >
         {Hazards.map((hazard) => {
           return (
             <CardHazard
@@ -37,6 +43,7 @@ const ReportHazards = ({
               toggledStates={toggledStates}
               setToggledStates={setToggledStates}
               setLayerToggleObj={setLayerToggleObj}
+              fullWidth={isInDrawer}
             />
           );
         })}

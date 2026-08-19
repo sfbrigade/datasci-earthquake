@@ -1,8 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Headings } from "../data/data";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Box,
   Text,
@@ -13,105 +11,167 @@ import {
 } from "@chakra-ui/react";
 import NextImage from "next/image";
 
+import { Headings } from "../data/data";
+import NextLink from "@/components/custom-next-link";
 import Heading from "./heading";
 import ReportAddress from "./report-address";
-import SearchBar from "./search-bar";
-import Share from "./share";
-import ShareSkeleton from "./share-skeleton";
 
-export type HazardData = {
-  liquefaction: { exists: boolean; last_updated: string | null } | null;
-  softStory: { exists: boolean; last_updated: string | null } | null;
-  tsunami: { exists: boolean; last_updated: string | null } | null;
+export type Route = {
+  label: string;
+  href: string;
 };
+
+export const ROUTES = {
+  MAP_RISK: {
+    label: "Map & Risks",
+    href: "/",
+  },
+  PREPARE: {
+    label: "Prepare",
+    href: "/prepare",
+  },
+  ABOUT_US: {
+    label: "About Us",
+    href: "/about",
+  },
+} as const;
+
+const NAV_LINKS: Route[] = [ROUTES.MAP_RISK, ROUTES.PREPARE, ROUTES.ABOUT_US];
 
 interface HomeHeaderProps {
   searchedAddress: string | null;
   isSearchComplete: boolean;
-  onSearchChange: (coords: number[], address: string) => void;
+  onHomeIconClick: () => void;
+  queryString?: string;
+  children: React.ReactNode;
 }
 
 const HomeHeader = ({
   searchedAddress,
   isSearchComplete,
-  onSearchChange,
+  onHomeIconClick,
+  queryString = "",
+  children,
 }: HomeHeaderProps) => {
-  // TODO: consider initializing inputAddress to searchedAddress so shared URLs will autofill the searchbox
-  // TODO: do we need to have a `setInputAddress` instead of populating directly from `searchedAddress` in props?
-  const [inputAddress, setInputAddress] = useState("");
   const headingData = Headings.home;
   const router = useRouter();
+  const pathname = usePathname();
+
+  const getNavigationHref = (href: string) => {
+    if (!queryString) {
+      return href;
+    }
+
+    return `${href}?${queryString}`;
+  };
 
   return (
-    <Box as="header" bgGradient="blue" py={{ base: "4", "2xl": "5" }} px="8">
+    <Box
+      as="header"
+      bgGradient="blue"
+      py={{ base: "2", "2xl": "3" }}
+      px="6"
+      w="full"
+    >
       <Flex
-        direction={{
-          base: "column",
-          md: "column",
-          lg: "row-reverse",
-        }}
-        justifyContent={"space-between"}
-        alignItems={{ base: "flex-start", xl: "center" }}
-        gap="1.5"
-        mb={{ base: "2" }}
+        direction={{ base: "column-reverse", "2xl": "row" }}
+        justifyContent="space-between"
+        alignItems={{ base: "flex-start", "2xl": "center" }}
+        gap={{ base: "2", "2xl": "4" }}
       >
-        <HStack align="start" gap="1">
-          <Link
-            as={"a"}
-            color="white"
-            href="/"
-            cursor="button"
-            textDecoration={"none"}
-            onClick={(e) => {
-              e.preventDefault();
-              setInputAddress("");
-              // TODO: persist params other than address ones by only removing address, lon, lat
-              router.push("/");
-            }}
+        {/* Left side: Heading/Address + Search box + nav menu*/}
+        <Flex
+          direction={{ base: "column", md: "row" }}
+          alignItems={{ base: "flex-start", md: "center" }}
+          gap={{ base: "2", md: "4" }}
+          flex="1"
+        >
+          <Box hideBelow="xl" flexShrink={0}>
+            {isSearchComplete ? (
+              <ReportAddress searchedAddress={searchedAddress} />
+            ) : (
+              <Heading headingData={headingData} />
+            )}
+          </Box>
+
+          <Flex
+            alignItems="center"
+            gap="2"
+            width={{ base: "full", md: "auto" }}
+            flex={{ md: "1" }}
           >
-            <HStack align="baseline">
-              <NextImage
-                width={142} // 619 real width?
-                height={28} // 122 real height?
-                alt="SafeHome logo"
-                role="img" // needed for VoiceOver bug for SVGs: https://bugs.webkit.org/show_bug.cgi?id=216364
-                src="/images/SFSafeHome-fulllogo.svg"
-                priority
-              />
+            <Box width={{ base: "full" }}>{children}</Box>
+            {/* TODO: add share button back in once we have a working share component /* }
+            {/* {isSearchComplete ? (
+              <Suspense fallback={<ShareSkeleton />}>
+               <Share /> }
+              </Suspense>
+            ) : null} */}
+          </Flex>
 
-              <VisuallyHidden>SafeHome</VisuallyHidden>
-            </HStack>
-          </Link>
-          <Text textStyle="textPrerelease" layerStyle="prerelease">
-            Beta
-          </Text>
-        </HStack>
-        {isSearchComplete ? (
-          <ReportAddress searchedAddress={searchedAddress} />
-        ) : (
-          <Heading headingData={headingData} />
-        )}
-      </Flex>
+          <HStack as="nav" gap={{ base: "3", md: "5" }} overflowX="auto">
+            {NAV_LINKS.map((link) => {
+              const isActive = pathname === link.href;
 
-      <Flex
-        direction={{ base: "column-reverse", xl: "row" }}
-        justifyContent={"space-between"}
-        alignItems={{ base: "flex-start", xl: "center" }}
-      >
-        <Box width={{ base: "full", xl: "fit" }}>
-          <SearchBar
-            inputAddress={inputAddress}
-            onInputAddressChange={setInputAddress}
-            onSearchChange={onSearchChange}
-          />
-        </Box>
+              return (
+                <NextLink
+                  key={link.href}
+                  href={getNavigationHref(link.href)}
+                  fontSize={{ base: "sm", md: "md" }}
+                  color={isActive ? "blueBackground" : "white"}
+                  backgroundColor={isActive ? "white" : "transparent"}
+                  fontWeight={isActive ? "bold" : "normal"}
+                  borderBottom={
+                    isActive ? "[2px solid white]" : "[2px solid transparent]"
+                  }
+                  py="1.5"
+                  px="2.5"
+                  borderRadius="md"
+                  cursor="button"
+                  textDecoration="none"
+                  whiteSpace="nowrap"
+                >
+                  {link.label}
+                </NextLink>
+              );
+            })}
+          </HStack>
+        </Flex>
 
-        {/* NOTE: This Suspense boundary is being used around a component that utilizes `useSearchParams()` to prevent entire page from deopting into client-side rendering (CSR) bailout as per https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
-        {isSearchComplete ? (
-          <Suspense fallback={<ShareSkeleton />}>
-            <Share />
-          </Suspense>
-        ) : null}
+        {/* Right side: Logo */}
+        <Flex alignItems="center" gap={{ base: "3", md: "5" }} flexShrink={0}>
+          <HStack align="start" gap="1" flexShrink={0}>
+            <Link
+              as="a"
+              color="white"
+              href="/"
+              cursor="button"
+              textDecoration="none"
+              onClick={(event) => {
+                event.preventDefault();
+                onHomeIconClick();
+                router.push("/");
+              }}
+            >
+              <HStack align="baseline">
+                <NextImage
+                  width={142} // 619 real width?
+                  height={28} // 122 real height?
+                  alt="SafeHome logo"
+                  role="img" // needed for VoiceOver bug for SVGs: https://bugs.webkit.org/show_bug.cgi?id=216364
+                  src="/images/SFSafeHome-fulllogo.svg"
+                  priority
+                />
+
+                <VisuallyHidden>SafeHome</VisuallyHidden>
+              </HStack>
+            </Link>
+
+            <Text textStyle="textPrerelease" layerStyle="prerelease">
+              Beta
+            </Text>
+          </HStack>
+        </Flex>
       </Flex>
     </Box>
   );

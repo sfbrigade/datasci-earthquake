@@ -27,3 +27,12 @@ jest.mock("../../img/icon-facebook.svg", () => createMockIcon("facebook-icon"));
 jest.mock("../../img/icon-email.svg", () => createMockIcon("email-icon"));
 jest.mock("../../img/icon-x.svg", () => createMockIcon("x-icon"));
 jest.mock("../../img/icon-link.svg", () => createMockIcon("link-icon"));
+
+// polyfill checkVisibility for JSDOM elements
+if (typeof Element.prototype.checkVisibility !== "function") {
+  Element.prototype.checkVisibility = function () {
+    // Basic fallback logic for JSDOM
+    const style = window.getComputedStyle(this);
+    return style.display !== "none" && style.visibility !== "hidden";
+  };
+}
