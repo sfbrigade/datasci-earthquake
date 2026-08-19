@@ -21,6 +21,8 @@ const eslintConfig = defineConfig([
     "storybook-static/**",
     ".tmp/**",
     ".venv/**",
+    "**/playwright-report/**",
+    "apps/**", // TODO: temporary ... remove when moving to monorepo structure
   ]),
 
   // Next.js Core Web Vitals

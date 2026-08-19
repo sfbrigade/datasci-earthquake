@@ -16,16 +16,19 @@ const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
   const isHome = pathname === "/";
+  const isAbout = pathname === "/about";
+  const isPrepare = pathname === "/prepare";
+  const showOldHeader = isHome || isAbout || isPrepare;
   const portalRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <Box
       as="header"
-      bgGradient={isHome ? undefined : "blue"}
+      bgGradient={showOldHeader ? undefined : "blue"}
       w="full"
-      position={isHome ? "absolute" : undefined}
-      top={isHome ? "0" : undefined}
-      display={isHome ? "none" : undefined}
+      position={showOldHeader ? "absolute" : undefined}
+      top={showOldHeader ? "0" : undefined}
+      display={showOldHeader ? "none" : undefined}
     >
       <Flex
         direction="row"
@@ -68,7 +71,7 @@ const Header = () => {
           </Text>
         </HStack>
 
-        {isHome && <Box ref={portalRef} id="searchbar-portal" />}
+        {showOldHeader && <Box ref={portalRef} id="searchbar-portal" />}
       </Flex>
     </Box>
   );
