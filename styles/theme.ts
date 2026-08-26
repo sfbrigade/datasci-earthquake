@@ -158,9 +158,6 @@ const layerStyles: ThemingConfig["layerStyles"] = defineLayerStyles({
 
 // TODO: move appropriate tokens to semanticTokens and remove unused tokens
 const tokens: ThemingConfig["tokens"] = defineTokens({
-  assets: {
-    mapMarkerUrl: { type: "url", value: 'url("/marker.svg")' },
-  },
   borders: {
     none: { value: "none" },
     search: {
@@ -191,21 +188,8 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     yellow: { DEFAULT: { value: "#ECC94B" } },
     red: { DEFAULT: { value: "#C53030" } },
     green: { DEFAULT: { value: "#25855A" } },
-    orange: { value: "#F6AD55" },
-    pink: { value: "#ED64A6" },
-
-    // TODO: move some of these to `semanticTokens` and rename accordingly
-    blueSwitch: { value: "#3182CE" }, // NOTE: "#3182CE" comes from Figma switches, but color palette for `blue` is being used instead for the time being
-    blueIcon: { value: "#4863a9" },
-    blueIconBackground: { value: "#eff4fc" },
-    blueBackground: { value: "#2C5282" }, // blue/700
-    tsunamiBlue: { value: "#63B3ED" }, // blue/300
-    lightGrey: { value: "#c8caceff" },
-    labelGrey: { value: "#bfb9b9" },
-    warningRed: { value: "#b53d37" },
-    blueGradientFrom: { value: "#3b6294" },
-    blueGradientTo: { value: "#183252" },
-    cooperativeGesturesOverlay: { value: "#00000080" },
+    orange: { DEFAULT: { value: "#F6AD55" } },
+    pink: { DEFAULT: { value: "#ED64A6" } },
   },
   gradients: {
     // string value
@@ -227,7 +211,41 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     unset: { value: "unset" },
     auto: { value: "auto" }, // explicit "auto" value for e.g. width
     none: { value: "none" }, // explicit "none" value for e.g. max-width
+  },
+});
 
+const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
+  assets: {
+    mapMarkerUrl: { type: "url", value: 'url("/marker.svg")' },
+  },
+  colors: {
+    // TODO: move some of these to `semanticTokens` and rename accordingly
+    blueSwitch: { value: "#3182CE" }, // NOTE: "#3182CE" comes from Figma switches, but color palette for `blue` is being used instead for the time being
+    blueIcon: { value: "#4863a9" },
+    blueIconBackground: { value: "#eff4fc" },
+    blueBackground: { value: "#2C5282" }, // blue/700
+    tsunamiBlue: { value: "#63B3ED" }, // blue/300
+    lightGrey: { value: "#c8caceff" },
+    labelGrey: { value: "#bfb9b9" },
+    warningRed: { value: "#b53d37" },
+    blueGradientFrom: { value: "#3b6294" },
+    blueGradientTo: { value: "#183252" },
+    cooperativeGesturesOverlay: { value: "#00000080" },
+  },
+  // TODO: test what happens for dark mode (_light vs dark)
+  shadows: {
+    card: {
+      value: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}",
+    },
+    mobileButton: {
+      value: "{spacing.0} {spacing.0} {spacing.0.5} {colors.lightGrey}",
+    },
+    search: {
+      value:
+        "{spacing.0} {spacing.1} {spacing.1.5} {-spacing.0.25} {colors.blackAlpha.200}, {spacing.0} {spacing.0.5} {spacing.1} {-spacing.0.25} {colors.blackAlpha.50}",
+    },
+  },
+  sizes: {
     // map marker (global CSS)
     // TODO: adjust these so that they are based on Chakra sizing scale
     // TODO: convert this to default sizes
@@ -241,22 +259,6 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
 
     // main content area (map + side panel)
     mainContentMinHeight: { value: 0 },
-  },
-});
-
-const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
-  // TODO: test what happens for dark mode (_light vs dark)
-  shadows: {
-    card: {
-      value: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}",
-    },
-    mobileButton: {
-      value: "{spacing.0} {spacing.0} {spacing.0.5} {colors.lightGrey}",
-    },
-    search: {
-      value:
-        "{spacing.0} {spacing.1} {spacing.1.5} {-spacing.0.25} {colors.blackAlpha.200}, {spacing.0} {spacing.0.5} {spacing.1} {-spacing.0.25} {colors.blackAlpha.50}",
-    },
   },
 });
 
