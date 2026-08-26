@@ -4,8 +4,8 @@ from .utils import assert_database_error_returns_500
 
 
 def test_get_landslide_zones(client):
-    """GET /landslide-zones/ returns only gridcode 8/9/10 zones."""
-    response = client.get("/landslide-zones/")
+    """GET /api/landslide-zones returns only gridcode 8/9/10 zones."""
+    response = client.get("/api/landslide-zones")
     response_dict = response.json()
 
     assert response.status_code == 200
@@ -19,7 +19,7 @@ def test_is_in_landslide_zone(client, caplog):
     caplog.set_level(logging.INFO)
 
     lon, lat = [-122.43, 37.72]
-    response = client.get(f"/landslide-zones/is-in-landslide-zone?lon={lon}&lat={lat}")
+    response = client.get(f"/api/landslide-zones/is-in-landslide-zone?lon={lon}&lat={lat}")
 
     assert response.status_code == 200
     body = response.json()
@@ -38,7 +38,7 @@ def test_is_in_landslide_zone_excludes_low_gridcode(client, caplog):
     caplog.set_level(logging.INFO)
 
     lon, lat = [-122.32, 37.88]
-    response = client.get(f"/landslide-zones/is-in-landslide-zone?lon={lon}&lat={lat}")
+    response = client.get(f"/api/landslide-zones/is-in-landslide-zone?lon={lon}&lat={lat}")
 
     assert response.status_code == 200
     body = response.json()
@@ -52,7 +52,7 @@ def test_outside_landslide_zones(client, caplog):
     caplog.set_level(logging.INFO)
 
     lon, lat = [0.0, 0.0]
-    response = client.get(f"/landslide-zones/is-in-landslide-zone?lon={lon}&lat={lat}")
+    response = client.get(f"/api/landslide-zones/is-in-landslide-zone?lon={lon}&lat={lat}")
 
     assert response.status_code == 200
     body = response.json()
@@ -68,7 +68,7 @@ def test_outside_landslide_zones(client, caplog):
 def test_is_in_landslide_zone_ping(client, caplog):
     caplog.set_level(logging.INFO)
 
-    response = client.get("/landslide-zones/is-in-landslide-zone?ping=true")
+    response = client.get("/api/landslide-zones/is-in-landslide-zone?ping=true")
 
     assert response.status_code == 200
     body = response.json()
@@ -80,18 +80,18 @@ def test_is_in_landslide_zone_missing_params(client, caplog):
     caplog.set_level(logging.WARN)
 
     response = client.get(
-        "/landslide-zones/is-in-landslide-zone", params={"lon": -122.424968}
+        "/api/landslide-zones/is-in-landslide-zone", params={"lon": -122.424968}
     )
     assert response.status_code == 400
     assert "Missing coordinates in non-ping request" in caplog.text
 
     response = client.get(
-        "/landslide-zones/is-in-landslide-zone", params={"lat": 37.76293}
+        "/api/landslide-zones/is-in-landslide-zone", params={"lat": 37.76293}
     )
     assert response.status_code == 400
     assert "Missing coordinates in non-ping request" in caplog.text
 
-    response = client.get("/landslide-zones/is-in-landslide-zone")
+    response = client.get("/api/landslide-zones/is-in-landslide-zone")
     assert response.status_code == 400
     assert "Missing coordinates in non-ping request" in caplog.text
 
@@ -100,6 +100,6 @@ def test_is_in_landslide_zone_database_error_returns_500(client, caplog):
     assert_database_error_returns_500(
         client,
         caplog,
-        "/landslide-zones/is-in-landslide-zone?lon=0&lat=0",
+        "/api/landslide-zones/is-in-landslide-zone?lon=0&lat=0",
         "Error checking landslide status",
     )

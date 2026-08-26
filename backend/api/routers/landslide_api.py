@@ -19,12 +19,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 router = APIRouter(
-    prefix="/landslide-zones",
+    prefix="/api/landslide-zones",
     tags=[Tags.LANDSLIDE],
 )
 
 
-@router.get("/", response_model=LandslideFeatureCollection)
+@router.get("", response_model=LandslideFeatureCollection)
 def get_landslide_zones(db: Session = Depends(get_db)):
     """
     Retrieve all hazardous landslide zones (with gridcode 8, 9, 10) from the database.
@@ -93,10 +93,15 @@ def is_in_landslide_zone(
 
     try:
         point = from_shape(Point(lon, lat), srid=4326)
+        # Landslide zones overlap, so a point can fall inside several at once.
+        # Report the most severe one: without an explicit order, .first() returns
+        # whichever row Postgres happens to scan first, which can understate the
+        # susceptibility at an address and is not stable across plans.
         zone = (
             db.query(LandslideZone)
             .filter(LandslideZone.gridcode.in_([8, 9, 10]))
             .filter(LandslideZone.geometry.ST_Intersects(point))
+            .order_by(LandslideZone.gridcode.desc())
             .first()
         )
         exists = zone is not None
