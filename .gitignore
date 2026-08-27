@@ -46,7 +46,10 @@ node_modules
 
 # Chakra
 /theme/
-/theme-merged/
+/theme-merged/*
+!/theme-merged/README.md
+!/theme-merged/theme.tokens.json
+/chakra-config.json
 *storybook.log
 storybook-static
 

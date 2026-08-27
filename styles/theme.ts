@@ -4,12 +4,10 @@ import {
   defineConfig,
   defineTextStyles,
   defineLayerStyles,
-  defineTokens,
   SystemConfig,
   ThemingConfig,
-  defineSemanticTokens,
 } from "@chakra-ui/react";
-import { InterVariableName, ManropeVariableName } from "@/data/constants";
+import { semanticTokens, tokens } from "./generated-dtcg-theme";
 
 // TODO: look into whether it makes sense to use responsive text sizes just for headings as is done below; perhaps another approach is better
 const textStyles: ThemingConfig["textStyles"] = defineTextStyles({
@@ -153,112 +151,6 @@ const layerStyles: ThemingConfig["layerStyles"] = defineLayerStyles({
   mobileButton: {
     description: "mobile button",
     value: { color: "black", bg: "white", borderRadius: "4xl" },
-  },
-});
-
-// TODO: move appropriate tokens to semanticTokens and remove unused tokens
-const tokens: ThemingConfig["tokens"] = defineTokens({
-  borders: {
-    none: { value: "none" },
-    search: {
-      value: "{borderWidths.0.25} {borderStyles.solid} {colors.grey.600}",
-    },
-  },
-  borderWidths: {
-    0.25: { value: "1px" },
-  },
-  borderStyles: {
-    solid: { value: "solid" },
-  },
-  fonts: {
-    heading: { value: `var(${ManropeVariableName}), sans-serif` },
-    body: { value: `var(${InterVariableName}), sans-serif` },
-  },
-  colors: {
-    // TODO: fallback to Chakra defaults where possible and get rid of unused colors
-    grey: {
-      200: { value: "#E2E8F0" },
-      400: { value: "#A0AEC0" },
-      600: { value: "#4A5568" },
-      900: { value: "#171923" },
-    },
-    peach: { DEFAULT: { value: "#F5F5F5" } },
-    white: { DEFAULT: { value: "#FFF" } },
-    blue: { 600: { value: "#0088FF" }, text: { value: "#2B6CB0" } }, // blue/600 (TODO: all headings) // "#0088FF" comes from Figma switches
-    yellow: { DEFAULT: { value: "#ECC94B" } },
-    red: { DEFAULT: { value: "#C53030" } },
-    green: { DEFAULT: { value: "#25855A" } },
-    orange: { DEFAULT: { value: "#F6AD55" } },
-    pink: { DEFAULT: { value: "#ED64A6" } },
-  },
-  gradients: {
-    // string value
-    blue: {
-      value:
-        "radial-gradient(120% 180% at 17.81% 82.6%, {colors.blueGradientFrom} 0%, {colors.blueGradientTo} 100%);",
-    },
-  },
-  lineHeights: {
-    shortest: { value: 1 },
-  },
-  spacing: {
-    0: { value: 0 }, // explicit 0 value for margin, padding, etc.
-    auto: { value: "auto" }, // explicit "auto" value for e.g. margin
-    "1/2": { value: "50%" }, // convenience token for 50% (e.g. top="1/2")
-  },
-  sizes: {
-    // for popover content maxHeight
-    unset: { value: "unset" },
-    auto: { value: "auto" }, // explicit "auto" value for e.g. width
-    none: { value: "none" }, // explicit "none" value for e.g. max-width
-  },
-});
-
-const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
-  assets: {
-    mapMarkerUrl: { type: "url", value: 'url("/marker.svg")' },
-  },
-  colors: {
-    // TODO: move some of these to `semanticTokens` and rename accordingly
-    blueSwitch: { value: "#3182CE" }, // NOTE: "#3182CE" comes from Figma switches, but color palette for `blue` is being used instead for the time being
-    blueIcon: { value: "#4863a9" },
-    blueIconBackground: { value: "#eff4fc" },
-    blueBackground: { value: "#2C5282" }, // blue/700
-    tsunamiBlue: { value: "#63B3ED" }, // blue/300
-    lightGrey: { value: "#c8caceff" },
-    labelGrey: { value: "#bfb9b9" },
-    warningRed: { value: "#b53d37" },
-    blueGradientFrom: { value: "#3b6294" },
-    blueGradientTo: { value: "#183252" },
-    cooperativeGesturesOverlay: { value: "#00000080" },
-  },
-  // TODO: test what happens for dark mode (_light vs dark)
-  shadows: {
-    card: {
-      value: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}",
-    },
-    mobileButton: {
-      value: "{spacing.0} {spacing.0} {spacing.0.5} {colors.lightGrey}",
-    },
-    search: {
-      value:
-        "{spacing.0} {spacing.1} {spacing.1.5} {-spacing.0.25} {colors.blackAlpha.200}, {spacing.0} {spacing.0.5} {spacing.1} {-spacing.0.25} {colors.blackAlpha.50}",
-    },
-  },
-  sizes: {
-    // map marker (global CSS)
-    // TODO: adjust these so that they are based on Chakra sizing scale
-    // TODO: convert this to default sizes
-    mapMarkerWidth: { value: "26.2px" },
-    mapMarkerHeight: { value: "41px" },
-
-    // mobile card
-    // TODO: convert this to default sizes
-    mobileCardWidth: { value: "86vw" },
-    mobileCardAccordionWidth: { value: "98%" },
-
-    // main content area (map + side panel)
-    mainContentMinHeight: { value: 0 },
   },
 });
 
