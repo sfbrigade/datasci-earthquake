@@ -19,2791 +19,3662 @@
   "mappings": [
     {
       "source": "tokens.colors.transparent",
+      "sourceToken": { "value": "transparent" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.transparent"
     },
     {
       "source": "tokens.colors.current",
+      "sourceToken": { "value": "currentColor" },
       "disposition": "chakra-platform",
       "canonical": "tokens.colors.current",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.colors.black",
+      "sourceToken": { "value": "#09090B" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.black"
     },
     {
       "source": "tokens.colors.white.DEFAULT",
+      "sourceToken": { "value": "#FFF" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.white.$root"
     },
     {
       "source": "tokens.colors.whiteAlpha.50",
+      "sourceToken": { "value": "rgba(255, 255, 255, 0.04)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.whiteAlpha.50"
     },
     {
       "source": "tokens.colors.whiteAlpha.100",
+      "sourceToken": { "value": "rgba(255, 255, 255, 0.06)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.whiteAlpha.100"
     },
     {
       "source": "tokens.colors.whiteAlpha.200",
+      "sourceToken": { "value": "rgba(255, 255, 255, 0.08)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.whiteAlpha.200"
     },
     {
       "source": "tokens.colors.whiteAlpha.300",
+      "sourceToken": { "value": "rgba(255, 255, 255, 0.16)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.whiteAlpha.300"
     },
     {
       "source": "tokens.colors.whiteAlpha.400",
+      "sourceToken": { "value": "rgba(255, 255, 255, 0.24)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.whiteAlpha.400"
     },
     {
       "source": "tokens.colors.whiteAlpha.500",
+      "sourceToken": { "value": "rgba(255, 255, 255, 0.36)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.whiteAlpha.500"
     },
     {
       "source": "tokens.colors.whiteAlpha.600",
+      "sourceToken": { "value": "rgba(255, 255, 255, 0.48)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.whiteAlpha.600"
     },
     {
       "source": "tokens.colors.whiteAlpha.700",
+      "sourceToken": { "value": "rgba(255, 255, 255, 0.64)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.whiteAlpha.700"
     },
     {
       "source": "tokens.colors.whiteAlpha.800",
+      "sourceToken": { "value": "rgba(255, 255, 255, 0.80)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.whiteAlpha.800"
     },
     {
       "source": "tokens.colors.whiteAlpha.900",
+      "sourceToken": { "value": "rgba(255, 255, 255, 0.92)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.whiteAlpha.900"
     },
     {
       "source": "tokens.colors.whiteAlpha.950",
+      "sourceToken": { "value": "rgba(255, 255, 255, 0.95)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.whiteAlpha.950"
     },
     {
       "source": "tokens.colors.blackAlpha.50",
+      "sourceToken": { "value": "rgba(0, 0, 0, 0.04)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blackAlpha.50"
     },
     {
       "source": "tokens.colors.blackAlpha.100",
+      "sourceToken": { "value": "rgba(0, 0, 0, 0.06)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blackAlpha.100"
     },
     {
       "source": "tokens.colors.blackAlpha.200",
+      "sourceToken": { "value": "rgba(0, 0, 0, 0.08)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blackAlpha.200"
     },
     {
       "source": "tokens.colors.blackAlpha.300",
+      "sourceToken": { "value": "rgba(0, 0, 0, 0.16)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blackAlpha.300"
     },
     {
       "source": "tokens.colors.blackAlpha.400",
+      "sourceToken": { "value": "rgba(0, 0, 0, 0.24)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blackAlpha.400"
     },
     {
       "source": "tokens.colors.blackAlpha.500",
+      "sourceToken": { "value": "rgba(0, 0, 0, 0.36)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blackAlpha.500"
     },
     {
       "source": "tokens.colors.blackAlpha.600",
+      "sourceToken": { "value": "rgba(0, 0, 0, 0.48)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blackAlpha.600"
     },
     {
       "source": "tokens.colors.blackAlpha.700",
+      "sourceToken": { "value": "rgba(0, 0, 0, 0.64)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blackAlpha.700"
     },
     {
       "source": "tokens.colors.blackAlpha.800",
+      "sourceToken": { "value": "rgba(0, 0, 0, 0.80)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blackAlpha.800"
     },
     {
       "source": "tokens.colors.blackAlpha.900",
+      "sourceToken": { "value": "rgba(0, 0, 0, 0.92)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blackAlpha.900"
     },
     {
       "source": "tokens.colors.blackAlpha.950",
+      "sourceToken": { "value": "rgba(0, 0, 0, 0.95)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blackAlpha.950"
     },
     {
       "source": "tokens.colors.gray.50",
+      "sourceToken": { "value": "#fafafa" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.gray.50"
     },
     {
       "source": "tokens.colors.gray.100",
+      "sourceToken": { "value": "#f4f4f5" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.gray.100"
     },
     {
       "source": "tokens.colors.gray.200",
+      "sourceToken": { "value": "#e4e4e7" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.gray.200"
     },
     {
       "source": "tokens.colors.gray.300",
+      "sourceToken": { "value": "#d4d4d8" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.gray.300"
     },
     {
       "source": "tokens.colors.gray.400",
+      "sourceToken": { "value": "#a1a1aa" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.gray.400"
     },
     {
       "source": "tokens.colors.gray.500",
+      "sourceToken": { "value": "#71717a" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.gray.500"
     },
     {
       "source": "tokens.colors.gray.600",
+      "sourceToken": { "value": "#52525b" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.gray.600"
     },
     {
       "source": "tokens.colors.gray.700",
+      "sourceToken": { "value": "#3f3f46" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.gray.700"
     },
     {
       "source": "tokens.colors.gray.800",
+      "sourceToken": { "value": "#27272a" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.gray.800"
     },
     {
       "source": "tokens.colors.gray.900",
+      "sourceToken": { "value": "#18181b" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.gray.900"
     },
     {
       "source": "tokens.colors.gray.950",
+      "sourceToken": { "value": "#111111" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.gray.950"
     },
     {
       "source": "tokens.colors.red.50",
+      "sourceToken": { "value": "#fef2f2" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.red.50"
     },
     {
       "source": "tokens.colors.red.100",
+      "sourceToken": { "value": "#fee2e2" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.red.100"
     },
     {
       "source": "tokens.colors.red.200",
+      "sourceToken": { "value": "#fecaca" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.red.200"
     },
     {
       "source": "tokens.colors.red.300",
+      "sourceToken": { "value": "#fca5a5" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.red.300"
     },
     {
       "source": "tokens.colors.red.400",
+      "sourceToken": { "value": "#f87171" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.red.400"
     },
     {
       "source": "tokens.colors.red.500",
+      "sourceToken": { "value": "#ef4444" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.red.500"
     },
     {
       "source": "tokens.colors.red.600",
+      "sourceToken": { "value": "#dc2626" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.red.600"
     },
     {
       "source": "tokens.colors.red.700",
+      "sourceToken": { "value": "#991919" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.red.700"
     },
     {
       "source": "tokens.colors.red.800",
+      "sourceToken": { "value": "#511111" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.red.800"
     },
     {
       "source": "tokens.colors.red.900",
+      "sourceToken": { "value": "#300c0c" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.red.900"
     },
     {
       "source": "tokens.colors.red.950",
+      "sourceToken": { "value": "#1f0808" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.red.950"
     },
     {
       "source": "tokens.colors.red.DEFAULT",
+      "sourceToken": { "value": "#C53030" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.red.$root"
     },
     {
       "source": "tokens.colors.orange.50",
+      "sourceToken": { "value": "#fff7ed" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.orange.50"
     },
     {
       "source": "tokens.colors.orange.100",
+      "sourceToken": { "value": "#ffedd5" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.orange.100"
     },
     {
       "source": "tokens.colors.orange.200",
+      "sourceToken": { "value": "#fed7aa" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.orange.200"
     },
     {
       "source": "tokens.colors.orange.300",
+      "sourceToken": { "value": "#fdba74" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.orange.300"
     },
     {
       "source": "tokens.colors.orange.400",
+      "sourceToken": { "value": "#fb923c" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.orange.400"
     },
     {
       "source": "tokens.colors.orange.500",
+      "sourceToken": { "value": "#f97316" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.orange.500"
     },
     {
       "source": "tokens.colors.orange.600",
+      "sourceToken": { "value": "#ea580c" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.orange.600"
     },
     {
       "source": "tokens.colors.orange.700",
+      "sourceToken": { "value": "#92310a" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.orange.700"
     },
     {
       "source": "tokens.colors.orange.800",
+      "sourceToken": { "value": "#6c2710" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.orange.800"
     },
     {
       "source": "tokens.colors.orange.900",
+      "sourceToken": { "value": "#3b1106" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.orange.900"
     },
     {
       "source": "tokens.colors.orange.950",
+      "sourceToken": { "value": "#220a04" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.orange.950"
     },
     {
       "source": "tokens.colors.orange.DEFAULT",
+      "sourceToken": { "value": "#F6AD55" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.orange.$root"
     },
     {
       "source": "tokens.colors.yellow.50",
+      "sourceToken": { "value": "#fefce8" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.yellow.50"
     },
     {
       "source": "tokens.colors.yellow.100",
+      "sourceToken": { "value": "#fef9c3" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.yellow.100"
     },
     {
       "source": "tokens.colors.yellow.200",
+      "sourceToken": { "value": "#fef08a" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.yellow.200"
     },
     {
       "source": "tokens.colors.yellow.300",
+      "sourceToken": { "value": "#fde047" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.yellow.300"
     },
     {
       "source": "tokens.colors.yellow.400",
+      "sourceToken": { "value": "#facc15" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.yellow.400"
     },
     {
       "source": "tokens.colors.yellow.500",
+      "sourceToken": { "value": "#eab308" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.yellow.500"
     },
     {
       "source": "tokens.colors.yellow.600",
+      "sourceToken": { "value": "#ca8a04" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.yellow.600"
     },
     {
       "source": "tokens.colors.yellow.700",
+      "sourceToken": { "value": "#845209" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.yellow.700"
     },
     {
       "source": "tokens.colors.yellow.800",
+      "sourceToken": { "value": "#713f12" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.yellow.800"
     },
     {
       "source": "tokens.colors.yellow.900",
+      "sourceToken": { "value": "#422006" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.yellow.900"
     },
     {
       "source": "tokens.colors.yellow.950",
+      "sourceToken": { "value": "#281304" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.yellow.950"
     },
     {
       "source": "tokens.colors.yellow.DEFAULT",
+      "sourceToken": { "value": "#ECC94B" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.yellow.$root"
     },
     {
       "source": "tokens.colors.green.50",
+      "sourceToken": { "value": "#f0fdf4" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.green.50"
     },
     {
       "source": "tokens.colors.green.100",
+      "sourceToken": { "value": "#dcfce7" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.green.100"
     },
     {
       "source": "tokens.colors.green.200",
+      "sourceToken": { "value": "#bbf7d0" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.green.200"
     },
     {
       "source": "tokens.colors.green.300",
+      "sourceToken": { "value": "#86efac" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.green.300"
     },
     {
       "source": "tokens.colors.green.400",
+      "sourceToken": { "value": "#4ade80" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.green.400"
     },
     {
       "source": "tokens.colors.green.500",
+      "sourceToken": { "value": "#22c55e" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.green.500"
     },
     {
       "source": "tokens.colors.green.600",
+      "sourceToken": { "value": "#16a34a" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.green.600"
     },
     {
       "source": "tokens.colors.green.700",
+      "sourceToken": { "value": "#116932" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.green.700"
     },
     {
       "source": "tokens.colors.green.800",
+      "sourceToken": { "value": "#124a28" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.green.800"
     },
     {
       "source": "tokens.colors.green.900",
+      "sourceToken": { "value": "#042713" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.green.900"
     },
     {
       "source": "tokens.colors.green.950",
+      "sourceToken": { "value": "#03190c" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.green.950"
     },
     {
       "source": "tokens.colors.green.DEFAULT",
+      "sourceToken": { "value": "#25855A" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.green.$root"
     },
     {
       "source": "tokens.colors.teal.50",
+      "sourceToken": { "value": "#f0fdfa" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.teal.50"
     },
     {
       "source": "tokens.colors.teal.100",
+      "sourceToken": { "value": "#ccfbf1" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.teal.100"
     },
     {
       "source": "tokens.colors.teal.200",
+      "sourceToken": { "value": "#99f6e4" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.teal.200"
     },
     {
       "source": "tokens.colors.teal.300",
+      "sourceToken": { "value": "#5eead4" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.teal.300"
     },
     {
       "source": "tokens.colors.teal.400",
+      "sourceToken": { "value": "#2dd4bf" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.teal.400"
     },
     {
       "source": "tokens.colors.teal.500",
+      "sourceToken": { "value": "#14b8a6" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.teal.500"
     },
     {
       "source": "tokens.colors.teal.600",
+      "sourceToken": { "value": "#0d9488" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.teal.600"
     },
     {
       "source": "tokens.colors.teal.700",
+      "sourceToken": { "value": "#0c5d56" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.teal.700"
     },
     {
       "source": "tokens.colors.teal.800",
+      "sourceToken": { "value": "#114240" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.teal.800"
     },
     {
       "source": "tokens.colors.teal.900",
+      "sourceToken": { "value": "#032726" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.teal.900"
     },
     {
       "source": "tokens.colors.teal.950",
+      "sourceToken": { "value": "#021716" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.teal.950"
     },
     {
       "source": "tokens.colors.blue.50",
+      "sourceToken": { "value": "#eff6ff" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blue.50"
     },
     {
       "source": "tokens.colors.blue.100",
+      "sourceToken": { "value": "#dbeafe" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blue.100"
     },
     {
       "source": "tokens.colors.blue.200",
+      "sourceToken": { "value": "#bfdbfe" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blue.200"
     },
     {
       "source": "tokens.colors.blue.300",
+      "sourceToken": { "value": "#a3cfff" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blue.300"
     },
     {
       "source": "tokens.colors.blue.400",
+      "sourceToken": { "value": "#60a5fa" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blue.400"
     },
     {
       "source": "tokens.colors.blue.500",
+      "sourceToken": { "value": "#3b82f6" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blue.500"
     },
     {
       "source": "tokens.colors.blue.600",
+      "sourceToken": { "value": "#0088FF" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blue.600"
     },
     {
       "source": "tokens.colors.blue.700",
+      "sourceToken": { "value": "#173da6" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blue.700"
     },
     {
       "source": "tokens.colors.blue.800",
+      "sourceToken": { "value": "#1a3478" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blue.800"
     },
     {
       "source": "tokens.colors.blue.900",
+      "sourceToken": { "value": "#14204a" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blue.900"
     },
     {
       "source": "tokens.colors.blue.950",
+      "sourceToken": { "value": "#0c142e" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blue.950"
     },
     {
       "source": "tokens.colors.blue.text",
+      "sourceToken": { "value": "#2B6CB0" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.blue.text"
     },
     {
       "source": "tokens.colors.cyan.50",
+      "sourceToken": { "value": "#ecfeff" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.cyan.50"
     },
     {
       "source": "tokens.colors.cyan.100",
+      "sourceToken": { "value": "#cffafe" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.cyan.100"
     },
     {
       "source": "tokens.colors.cyan.200",
+      "sourceToken": { "value": "#a5f3fc" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.cyan.200"
     },
     {
       "source": "tokens.colors.cyan.300",
+      "sourceToken": { "value": "#67e8f9" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.cyan.300"
     },
     {
       "source": "tokens.colors.cyan.400",
+      "sourceToken": { "value": "#22d3ee" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.cyan.400"
     },
     {
       "source": "tokens.colors.cyan.500",
+      "sourceToken": { "value": "#06b6d4" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.cyan.500"
     },
     {
       "source": "tokens.colors.cyan.600",
+      "sourceToken": { "value": "#0891b2" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.cyan.600"
     },
     {
       "source": "tokens.colors.cyan.700",
+      "sourceToken": { "value": "#0c5c72" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.cyan.700"
     },
     {
       "source": "tokens.colors.cyan.800",
+      "sourceToken": { "value": "#134152" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.cyan.800"
     },
     {
       "source": "tokens.colors.cyan.900",
+      "sourceToken": { "value": "#072a38" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.cyan.900"
     },
     {
       "source": "tokens.colors.cyan.950",
+      "sourceToken": { "value": "#051b24" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.cyan.950"
     },
     {
       "source": "tokens.colors.purple.50",
+      "sourceToken": { "value": "#faf5ff" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.purple.50"
     },
     {
       "source": "tokens.colors.purple.100",
+      "sourceToken": { "value": "#f3e8ff" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.purple.100"
     },
     {
       "source": "tokens.colors.purple.200",
+      "sourceToken": { "value": "#e9d5ff" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.purple.200"
     },
     {
       "source": "tokens.colors.purple.300",
+      "sourceToken": { "value": "#d8b4fe" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.purple.300"
     },
     {
       "source": "tokens.colors.purple.400",
+      "sourceToken": { "value": "#c084fc" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.purple.400"
     },
     {
       "source": "tokens.colors.purple.500",
+      "sourceToken": { "value": "#a855f7" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.purple.500"
     },
     {
       "source": "tokens.colors.purple.600",
+      "sourceToken": { "value": "#9333ea" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.purple.600"
     },
     {
       "source": "tokens.colors.purple.700",
+      "sourceToken": { "value": "#641ba3" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.purple.700"
     },
     {
       "source": "tokens.colors.purple.800",
+      "sourceToken": { "value": "#4a1772" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.purple.800"
     },
     {
       "source": "tokens.colors.purple.900",
+      "sourceToken": { "value": "#2f0553" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.purple.900"
     },
     {
       "source": "tokens.colors.purple.950",
+      "sourceToken": { "value": "#1a032e" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.purple.950"
     },
     {
       "source": "tokens.colors.pink.50",
+      "sourceToken": { "value": "#fdf2f8" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.pink.50"
     },
     {
       "source": "tokens.colors.pink.100",
+      "sourceToken": { "value": "#fce7f3" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.pink.100"
     },
     {
       "source": "tokens.colors.pink.200",
+      "sourceToken": { "value": "#fbcfe8" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.pink.200"
     },
     {
       "source": "tokens.colors.pink.300",
+      "sourceToken": { "value": "#f9a8d4" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.pink.300"
     },
     {
       "source": "tokens.colors.pink.400",
+      "sourceToken": { "value": "#f472b6" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.pink.400"
     },
     {
       "source": "tokens.colors.pink.500",
+      "sourceToken": { "value": "#ec4899" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.pink.500"
     },
     {
       "source": "tokens.colors.pink.600",
+      "sourceToken": { "value": "#db2777" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.pink.600"
     },
     {
       "source": "tokens.colors.pink.700",
+      "sourceToken": { "value": "#a41752" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.pink.700"
     },
     {
       "source": "tokens.colors.pink.800",
+      "sourceToken": { "value": "#6d0e34" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.pink.800"
     },
     {
       "source": "tokens.colors.pink.900",
+      "sourceToken": { "value": "#45061f" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.pink.900"
     },
     {
       "source": "tokens.colors.pink.950",
+      "sourceToken": { "value": "#2c0514" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.pink.950"
     },
     {
       "source": "tokens.colors.pink.DEFAULT",
+      "sourceToken": { "value": "#ED64A6" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.pink.$root"
     },
     {
       "source": "tokens.colors.grey.200",
+      "sourceToken": { "value": "#E2E8F0" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.grey.200"
     },
     {
       "source": "tokens.colors.grey.400",
+      "sourceToken": { "value": "#A0AEC0" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.grey.400"
     },
     {
       "source": "tokens.colors.grey.600",
+      "sourceToken": { "value": "#4A5568" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.grey.600"
     },
     {
       "source": "tokens.colors.grey.900",
+      "sourceToken": { "value": "#171923" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.grey.900"
     },
     {
       "source": "tokens.colors.peach.DEFAULT",
+      "sourceToken": { "value": "#F5F5F5" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.color.peach.$root"
     },
     {
       "source": "tokens.spacing.0",
+      "sourceToken": { "value": 0 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.0"
     },
     {
       "source": "tokens.spacing.1",
+      "sourceToken": { "value": "0.25rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.1"
     },
     {
       "source": "tokens.spacing.2",
+      "sourceToken": { "value": "0.5rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.2"
     },
     {
       "source": "tokens.spacing.3",
+      "sourceToken": { "value": "0.75rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.3"
     },
     {
       "source": "tokens.spacing.4",
+      "sourceToken": { "value": "1rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.4"
     },
     {
       "source": "tokens.spacing.5",
+      "sourceToken": { "value": "1.25rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.5"
     },
     {
       "source": "tokens.spacing.6",
+      "sourceToken": { "value": "1.5rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.6"
     },
     {
       "source": "tokens.spacing.7",
+      "sourceToken": { "value": "1.75rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.7"
     },
     {
       "source": "tokens.spacing.8",
+      "sourceToken": { "value": "2rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.8"
     },
     {
       "source": "tokens.spacing.9",
+      "sourceToken": { "value": "2.25rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.9"
     },
     {
       "source": "tokens.spacing.10",
+      "sourceToken": { "value": "2.5rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.10"
     },
     {
       "source": "tokens.spacing.11",
+      "sourceToken": { "value": "2.75rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.11"
     },
     {
       "source": "tokens.spacing.12",
+      "sourceToken": { "value": "3rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.12"
     },
     {
       "source": "tokens.spacing.14",
+      "sourceToken": { "value": "3.5rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.14"
     },
     {
       "source": "tokens.spacing.16",
+      "sourceToken": { "value": "4rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.16"
     },
     {
       "source": "tokens.spacing.20",
+      "sourceToken": { "value": "5rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.20"
     },
     {
       "source": "tokens.spacing.24",
+      "sourceToken": { "value": "6rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.24"
     },
     {
       "source": "tokens.spacing.28",
+      "sourceToken": { "value": "7rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.28"
     },
     {
       "source": "tokens.spacing.32",
+      "sourceToken": { "value": "8rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.32"
     },
     {
       "source": "tokens.spacing.36",
+      "sourceToken": { "value": "9rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.36"
     },
     {
       "source": "tokens.spacing.40",
+      "sourceToken": { "value": "10rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.40"
     },
     {
       "source": "tokens.spacing.44",
+      "sourceToken": { "value": "11rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.44"
     },
     {
       "source": "tokens.spacing.48",
+      "sourceToken": { "value": "12rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.48"
     },
     {
       "source": "tokens.spacing.52",
+      "sourceToken": { "value": "13rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.52"
     },
     {
       "source": "tokens.spacing.56",
+      "sourceToken": { "value": "14rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.56"
     },
     {
       "source": "tokens.spacing.60",
+      "sourceToken": { "value": "15rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.60"
     },
     {
       "source": "tokens.spacing.64",
+      "sourceToken": { "value": "16rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.64"
     },
     {
       "source": "tokens.spacing.72",
+      "sourceToken": { "value": "18rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.72"
     },
     {
       "source": "tokens.spacing.80",
+      "sourceToken": { "value": "20rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.80"
     },
     {
       "source": "tokens.spacing.96",
+      "sourceToken": { "value": "24rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.96"
     },
     {
       "source": "tokens.spacing.0.5",
+      "sourceToken": { "value": "0.125rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.0_5"
     },
     {
       "source": "tokens.spacing.1.5",
+      "sourceToken": { "value": "0.375rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.1_5"
     },
     {
       "source": "tokens.spacing.2.5",
+      "sourceToken": { "value": "0.625rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.2_5"
     },
     {
       "source": "tokens.spacing.3.5",
+      "sourceToken": { "value": "0.875rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.3_5"
     },
     {
       "source": "tokens.spacing.4.5",
+      "sourceToken": { "value": "1.125rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.spacing.4_5"
     },
     {
       "source": "tokens.spacing.auto",
+      "sourceToken": { "value": "auto" },
       "disposition": "chakra-platform",
       "canonical": "tokens.spacing.auto",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.spacing.1/2",
+      "sourceToken": { "value": "50%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.spacing.1/2",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.1",
+      "sourceToken": { "value": "0.25rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.1"
     },
     {
       "source": "tokens.sizes.2",
+      "sourceToken": { "value": "0.5rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.2"
     },
     {
       "source": "tokens.sizes.3",
+      "sourceToken": { "value": "0.75rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.3"
     },
     {
       "source": "tokens.sizes.4",
+      "sourceToken": { "value": "1rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.4"
     },
     {
       "source": "tokens.sizes.5",
+      "sourceToken": { "value": "1.25rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.5"
     },
     {
       "source": "tokens.sizes.6",
+      "sourceToken": { "value": "1.5rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.6"
     },
     {
       "source": "tokens.sizes.7",
+      "sourceToken": { "value": "1.75rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.7"
     },
     {
       "source": "tokens.sizes.8",
+      "sourceToken": { "value": "2rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.8"
     },
     {
       "source": "tokens.sizes.9",
+      "sourceToken": { "value": "2.25rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.9"
     },
     {
       "source": "tokens.sizes.10",
+      "sourceToken": { "value": "2.5rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.10"
     },
     {
       "source": "tokens.sizes.11",
+      "sourceToken": { "value": "2.75rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.11"
     },
     {
       "source": "tokens.sizes.12",
+      "sourceToken": { "value": "3rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.12"
     },
     {
       "source": "tokens.sizes.14",
+      "sourceToken": { "value": "3.5rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.14"
     },
     {
       "source": "tokens.sizes.16",
+      "sourceToken": { "value": "4rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.16"
     },
     {
       "source": "tokens.sizes.20",
+      "sourceToken": { "value": "5rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.20"
     },
     {
       "source": "tokens.sizes.24",
+      "sourceToken": { "value": "6rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.24"
     },
     {
       "source": "tokens.sizes.28",
+      "sourceToken": { "value": "7rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.28"
     },
     {
       "source": "tokens.sizes.32",
+      "sourceToken": { "value": "8rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.32"
     },
     {
       "source": "tokens.sizes.36",
+      "sourceToken": { "value": "9rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.36"
     },
     {
       "source": "tokens.sizes.40",
+      "sourceToken": { "value": "10rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.40"
     },
     {
       "source": "tokens.sizes.44",
+      "sourceToken": { "value": "11rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.44"
     },
     {
       "source": "tokens.sizes.48",
+      "sourceToken": { "value": "12rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.48"
     },
     {
       "source": "tokens.sizes.52",
+      "sourceToken": { "value": "13rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.52"
     },
     {
       "source": "tokens.sizes.56",
+      "sourceToken": { "value": "14rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.56"
     },
     {
       "source": "tokens.sizes.60",
+      "sourceToken": { "value": "15rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.60"
     },
     {
       "source": "tokens.sizes.64",
+      "sourceToken": { "value": "16rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.64"
     },
     {
       "source": "tokens.sizes.72",
+      "sourceToken": { "value": "18rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.72"
     },
     {
       "source": "tokens.sizes.80",
+      "sourceToken": { "value": "20rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.80"
     },
     {
       "source": "tokens.sizes.96",
+      "sourceToken": { "value": "24rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.96"
     },
     {
       "source": "tokens.sizes.3xs",
+      "sourceToken": { "value": "14rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.3xs"
     },
     {
       "source": "tokens.sizes.2xs",
+      "sourceToken": { "value": "16rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.2xs"
     },
     {
       "source": "tokens.sizes.xs",
+      "sourceToken": { "value": "20rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.xs"
     },
     {
       "source": "tokens.sizes.sm",
+      "sourceToken": { "value": "24rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.sm"
     },
     {
       "source": "tokens.sizes.md",
+      "sourceToken": { "value": "28rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.md"
     },
     {
       "source": "tokens.sizes.lg",
+      "sourceToken": { "value": "32rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.lg"
     },
     {
       "source": "tokens.sizes.xl",
+      "sourceToken": { "value": "36rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.xl"
     },
     {
       "source": "tokens.sizes.2xl",
+      "sourceToken": { "value": "42rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.2xl"
     },
     {
       "source": "tokens.sizes.3xl",
+      "sourceToken": { "value": "48rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.3xl"
     },
     {
       "source": "tokens.sizes.4xl",
+      "sourceToken": { "value": "56rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.4xl"
     },
     {
       "source": "tokens.sizes.5xl",
+      "sourceToken": { "value": "64rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.5xl"
     },
     {
       "source": "tokens.sizes.6xl",
+      "sourceToken": { "value": "72rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.6xl"
     },
     {
       "source": "tokens.sizes.7xl",
+      "sourceToken": { "value": "80rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.7xl"
     },
     {
       "source": "tokens.sizes.8xl",
+      "sourceToken": { "value": "90rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.8xl"
     },
     {
       "source": "tokens.sizes.0.5",
+      "sourceToken": { "value": "0.125rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.0_5"
     },
     {
       "source": "tokens.sizes.1.5",
+      "sourceToken": { "value": "0.375rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.1_5"
     },
     {
       "source": "tokens.sizes.2.5",
+      "sourceToken": { "value": "0.625rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.2_5"
     },
     {
       "source": "tokens.sizes.3.5",
+      "sourceToken": { "value": "0.875rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.3_5"
     },
     {
       "source": "tokens.sizes.4.5",
+      "sourceToken": { "value": "1.125rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.sizes.4_5"
     },
     {
       "source": "tokens.sizes.1/2",
+      "sourceToken": { "value": "50%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.1/2",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.1/3",
+      "sourceToken": { "value": "33.333333%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.1/3",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.2/3",
+      "sourceToken": { "value": "66.666667%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.2/3",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.1/4",
+      "sourceToken": { "value": "25%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.1/4",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.3/4",
+      "sourceToken": { "value": "75%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.3/4",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.1/5",
+      "sourceToken": { "value": "20%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.1/5",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.2/5",
+      "sourceToken": { "value": "40%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.2/5",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.3/5",
+      "sourceToken": { "value": "60%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.3/5",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.4/5",
+      "sourceToken": { "value": "80%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.4/5",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.1/6",
+      "sourceToken": { "value": "16.666667%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.1/6",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.2/6",
+      "sourceToken": { "value": "33.333333%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.2/6",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.3/6",
+      "sourceToken": { "value": "50%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.3/6",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.4/6",
+      "sourceToken": { "value": "66.666667%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.4/6",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.5/6",
+      "sourceToken": { "value": "83.333333%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.5/6",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.1/12",
+      "sourceToken": { "value": "8.333333%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.1/12",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.2/12",
+      "sourceToken": { "value": "16.666667%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.2/12",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.3/12",
+      "sourceToken": { "value": "25%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.3/12",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.4/12",
+      "sourceToken": { "value": "33.333333%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.4/12",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.5/12",
+      "sourceToken": { "value": "41.666667%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.5/12",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.6/12",
+      "sourceToken": { "value": "50%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.6/12",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.7/12",
+      "sourceToken": { "value": "58.333333%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.7/12",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.8/12",
+      "sourceToken": { "value": "66.666667%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.8/12",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.9/12",
+      "sourceToken": { "value": "75%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.9/12",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.10/12",
+      "sourceToken": { "value": "83.333333%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.10/12",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.11/12",
+      "sourceToken": { "value": "91.666667%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.11/12",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.max",
+      "sourceToken": { "value": "max-content" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.max",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.min",
+      "sourceToken": { "value": "min-content" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.min",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.fit",
+      "sourceToken": { "value": "fit-content" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.fit",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.prose",
+      "sourceToken": { "value": "60ch" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.prose",
       "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.full",
+      "sourceToken": { "value": "100%" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.full",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.dvh",
+      "sourceToken": { "value": "100dvh" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.dvh",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.svh",
+      "sourceToken": { "value": "100svh" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.svh",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.lvh",
+      "sourceToken": { "value": "100lvh" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.lvh",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.dvw",
+      "sourceToken": { "value": "100dvw" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.dvw",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.svw",
+      "sourceToken": { "value": "100svw" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.svw",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.lvw",
+      "sourceToken": { "value": "100lvw" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.lvw",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.vw",
+      "sourceToken": { "value": "100vw" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.vw",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.vh",
+      "sourceToken": { "value": "100vh" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.vh",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.unset",
+      "sourceToken": { "value": "unset" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.unset",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.auto",
+      "sourceToken": { "value": "auto" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.auto",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "tokens.sizes.none",
+      "sourceToken": { "value": "none" },
       "disposition": "chakra-platform",
       "canonical": "tokens.sizes.none",
       "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
     },
     {
       "source": "tokens.fonts.heading",
+      "sourceToken": { "value": "var(--font-manrope), sans-serif" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fonts.heading"
     },
     {
       "source": "tokens.fonts.body",
+      "sourceToken": { "value": "var(--font-inter), sans-serif" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fonts.body"
     },
     {
       "source": "tokens.fonts.mono",
+      "sourceToken": {
+        "value": "SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace"
+      },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fonts.mono"
     },
     {
       "source": "tokens.fontSizes.2xs",
+      "sourceToken": { "value": "0.625rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontSize.2xs"
     },
     {
       "source": "tokens.fontSizes.xs",
+      "sourceToken": { "value": "0.75rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontSize.xs"
     },
     {
       "source": "tokens.fontSizes.sm",
+      "sourceToken": { "value": "0.875rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontSize.sm"
     },
     {
       "source": "tokens.fontSizes.md",
+      "sourceToken": { "value": "1rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontSize.md"
     },
     {
       "source": "tokens.fontSizes.lg",
+      "sourceToken": { "value": "1.125rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontSize.lg"
     },
     {
       "source": "tokens.fontSizes.xl",
+      "sourceToken": { "value": "1.25rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontSize.xl"
     },
     {
       "source": "tokens.fontSizes.2xl",
+      "sourceToken": { "value": "1.5rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontSize.2xl"
     },
     {
       "source": "tokens.fontSizes.3xl",
+      "sourceToken": { "value": "1.875rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontSize.3xl"
     },
     {
       "source": "tokens.fontSizes.4xl",
+      "sourceToken": { "value": "2.25rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontSize.4xl"
     },
     {
       "source": "tokens.fontSizes.5xl",
+      "sourceToken": { "value": "3rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontSize.5xl"
     },
     {
       "source": "tokens.fontSizes.6xl",
+      "sourceToken": { "value": "3.75rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontSize.6xl"
     },
     {
       "source": "tokens.fontSizes.7xl",
+      "sourceToken": { "value": "4.5rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontSize.7xl"
     },
     {
       "source": "tokens.fontSizes.8xl",
+      "sourceToken": { "value": "6rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontSize.8xl"
     },
     {
       "source": "tokens.fontSizes.9xl",
+      "sourceToken": { "value": "8rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontSize.9xl"
     },
     {
       "source": "tokens.fontWeights.thin",
+      "sourceToken": { "value": "100" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontWeight.thin"
     },
     {
       "source": "tokens.fontWeights.extralight",
+      "sourceToken": { "value": "200" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontWeight.extralight"
     },
     {
       "source": "tokens.fontWeights.light",
+      "sourceToken": { "value": "300" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontWeight.light"
     },
     {
       "source": "tokens.fontWeights.normal",
+      "sourceToken": { "value": "400" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontWeight.normal"
     },
     {
       "source": "tokens.fontWeights.medium",
+      "sourceToken": { "value": "500" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontWeight.medium"
     },
     {
       "source": "tokens.fontWeights.semibold",
+      "sourceToken": { "value": "600" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontWeight.semibold"
     },
     {
       "source": "tokens.fontWeights.bold",
+      "sourceToken": { "value": "700" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontWeight.bold"
     },
     {
       "source": "tokens.fontWeights.extrabold",
+      "sourceToken": { "value": "800" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontWeight.extrabold"
     },
     {
       "source": "tokens.fontWeights.black",
+      "sourceToken": { "value": "900" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.fontWeight.black"
     },
     {
       "source": "tokens.lineHeights.shorter",
+      "sourceToken": { "value": 1.25 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.lineHeight.shorter"
     },
     {
       "source": "tokens.lineHeights.short",
+      "sourceToken": { "value": 1.375 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.lineHeight.short"
     },
     {
       "source": "tokens.lineHeights.moderate",
+      "sourceToken": { "value": 1.5 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.lineHeight.moderate"
     },
     {
       "source": "tokens.lineHeights.tall",
+      "sourceToken": { "value": 1.625 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.lineHeight.tall"
     },
     {
       "source": "tokens.lineHeights.taller",
+      "sourceToken": { "value": 2 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.lineHeight.taller"
     },
     {
       "source": "tokens.lineHeights.shortest",
+      "sourceToken": { "value": 1 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.lineHeight.shortest"
     },
     {
       "source": "tokens.letterSpacings.tighter",
+      "sourceToken": { "value": "-0.05em" },
       "disposition": "chakra-platform",
       "canonical": "tokens.letterSpacings.tighter",
       "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
     },
     {
       "source": "tokens.letterSpacings.tight",
+      "sourceToken": { "value": "-0.025em" },
       "disposition": "chakra-platform",
       "canonical": "tokens.letterSpacings.tight",
       "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
     },
     {
       "source": "tokens.letterSpacings.wide",
+      "sourceToken": { "value": "0.025em" },
       "disposition": "chakra-platform",
       "canonical": "tokens.letterSpacings.wide",
       "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
     },
     {
       "source": "tokens.letterSpacings.wider",
+      "sourceToken": { "value": "0.05em" },
       "disposition": "chakra-platform",
       "canonical": "tokens.letterSpacings.wider",
       "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
     },
     {
       "source": "tokens.letterSpacings.widest",
+      "sourceToken": { "value": "0.1em" },
       "disposition": "chakra-platform",
       "canonical": "tokens.letterSpacings.widest",
       "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
     },
     {
       "source": "tokens.radii.none",
+      "sourceToken": { "value": "0" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.borderRadius.none"
     },
     {
       "source": "tokens.radii.2xs",
+      "sourceToken": { "value": "0.0625rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.borderRadius.2xs"
     },
     {
       "source": "tokens.radii.xs",
+      "sourceToken": { "value": "0.125rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.borderRadius.xs"
     },
     {
       "source": "tokens.radii.sm",
+      "sourceToken": { "value": "0.25rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.borderRadius.sm"
     },
     {
       "source": "tokens.radii.md",
+      "sourceToken": { "value": "0.375rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.borderRadius.md"
     },
     {
       "source": "tokens.radii.lg",
+      "sourceToken": { "value": "0.5rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.borderRadius.lg"
     },
     {
       "source": "tokens.radii.xl",
+      "sourceToken": { "value": "0.75rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.borderRadius.xl"
     },
     {
       "source": "tokens.radii.2xl",
+      "sourceToken": { "value": "1rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.borderRadius.2xl"
     },
     {
       "source": "tokens.radii.3xl",
+      "sourceToken": { "value": "1.5rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.borderRadius.3xl"
     },
     {
       "source": "tokens.radii.4xl",
+      "sourceToken": { "value": "2rem" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.borderRadius.4xl"
     },
     {
       "source": "tokens.radii.full",
+      "sourceToken": { "value": "9999px" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.borderRadius.full"
     },
     {
       "source": "tokens.borderWidths.0.25",
+      "sourceToken": { "value": "1px" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.borderWidth.0_25"
     },
     {
       "source": "tokens.borderStyles.solid",
+      "sourceToken": { "value": "solid" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.strokeStyle.solid"
     },
     {
       "source": "tokens.durations.fastest",
+      "sourceToken": { "value": "50ms" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.durations.fastest"
     },
     {
       "source": "tokens.durations.faster",
+      "sourceToken": { "value": "100ms" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.durations.faster"
     },
     {
       "source": "tokens.durations.fast",
+      "sourceToken": { "value": "150ms" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.durations.fast"
     },
     {
       "source": "tokens.durations.moderate",
+      "sourceToken": { "value": "200ms" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.durations.moderate"
     },
     {
       "source": "tokens.durations.slow",
+      "sourceToken": { "value": "300ms" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.durations.slow"
     },
     {
       "source": "tokens.durations.slower",
+      "sourceToken": { "value": "400ms" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.durations.slower"
     },
     {
       "source": "tokens.durations.slowest",
+      "sourceToken": { "value": "500ms" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.durations.slowest"
     },
     {
       "source": "tokens.easings.ease-in",
+      "sourceToken": { "value": "cubic-bezier(0.42, 0, 1, 1)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.easings.ease-in"
     },
     {
       "source": "tokens.easings.ease-out",
+      "sourceToken": { "value": "cubic-bezier(0, 0, 0.58, 1)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.easings.ease-out"
     },
     {
       "source": "tokens.easings.ease-in-out",
+      "sourceToken": { "value": "cubic-bezier(0.42, 0, 0.58, 1)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.easings.ease-in-out"
     },
     {
       "source": "tokens.easings.ease-in-smooth",
+      "sourceToken": { "value": "cubic-bezier(0.32, 0.72, 0, 1)" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.easings.ease-in-smooth"
     },
     {
       "source": "tokens.blurs.none",
+      "sourceToken": { "value": " " },
       "disposition": "chakra-platform",
       "canonical": "tokens.blurs.none",
       "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
     },
     {
       "source": "tokens.blurs.sm",
+      "sourceToken": { "value": "4px" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.blurs.sm"
     },
     {
       "source": "tokens.blurs.md",
+      "sourceToken": { "value": "8px" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.blurs.md"
     },
     {
       "source": "tokens.blurs.lg",
+      "sourceToken": { "value": "12px" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.blurs.lg"
     },
     {
       "source": "tokens.blurs.xl",
+      "sourceToken": { "value": "16px" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.blurs.xl"
     },
     {
       "source": "tokens.blurs.2xl",
+      "sourceToken": { "value": "24px" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.blurs.2xl"
     },
     {
       "source": "tokens.blurs.3xl",
+      "sourceToken": { "value": "40px" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.blurs.3xl"
     },
     {
       "source": "tokens.blurs.4xl",
+      "sourceToken": { "value": "64px" },
       "disposition": "portable-dtcg",
       "canonical": "primitive.blurs.4xl"
     },
     {
       "source": "tokens.zIndex.hide",
+      "sourceToken": { "value": -1 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.zIndex.hide"
     },
     {
       "source": "tokens.zIndex.base",
+      "sourceToken": { "value": 0 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.zIndex.base"
     },
     {
       "source": "tokens.zIndex.docked",
+      "sourceToken": { "value": 10 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.zIndex.docked"
     },
     {
       "source": "tokens.zIndex.dropdown",
+      "sourceToken": { "value": 1000 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.zIndex.dropdown"
     },
     {
       "source": "tokens.zIndex.sticky",
+      "sourceToken": { "value": 1100 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.zIndex.sticky"
     },
     {
       "source": "tokens.zIndex.banner",
+      "sourceToken": { "value": 1200 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.zIndex.banner"
     },
     {
       "source": "tokens.zIndex.overlay",
+      "sourceToken": { "value": 1300 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.zIndex.overlay"
     },
     {
       "source": "tokens.zIndex.modal",
+      "sourceToken": { "value": 1400 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.zIndex.modal"
     },
     {
       "source": "tokens.zIndex.popover",
+      "sourceToken": { "value": 1500 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.zIndex.popover"
     },
     {
       "source": "tokens.zIndex.skipNav",
+      "sourceToken": { "value": 1600 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.zIndex.skipNav"
     },
     {
       "source": "tokens.zIndex.toast",
+      "sourceToken": { "value": 1700 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.zIndex.toast"
     },
     {
       "source": "tokens.zIndex.tooltip",
+      "sourceToken": { "value": 1800 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.zIndex.tooltip"
     },
     {
       "source": "tokens.zIndex.max",
+      "sourceToken": { "value": 2147483647 },
       "disposition": "portable-dtcg",
       "canonical": "primitive.zIndex.max"
     },
     {
       "source": "tokens.gradients.blue",
+      "sourceToken": {
+        "value": "radial-gradient(120% 180% at 17.81% 82.6%, {colors.blueGradientFrom} 0%, {colors.blueGradientTo} 100%);"
+      },
       "disposition": "chakra-platform",
       "canonical": "tokens.gradients.blue",
       "reason": "CSS gradient geometry is not represented by the DTCG stop-only gradient type."
     },
     {
       "source": "tokens.aspectRatios.square",
+      "sourceToken": { "value": "1 / 1" },
       "disposition": "chakra-platform",
       "canonical": "tokens.aspectRatios.square",
       "reason": "Chakra represents aspect ratios as CSS ratio strings rather than a portable DTCG token type."
     },
     {
       "source": "tokens.aspectRatios.landscape",
+      "sourceToken": { "value": "4 / 3" },
       "disposition": "chakra-platform",
       "canonical": "tokens.aspectRatios.landscape",
       "reason": "Chakra represents aspect ratios as CSS ratio strings rather than a portable DTCG token type."
     },
     {
       "source": "tokens.aspectRatios.portrait",
+      "sourceToken": { "value": "3 / 4" },
       "disposition": "chakra-platform",
       "canonical": "tokens.aspectRatios.portrait",
       "reason": "Chakra represents aspect ratios as CSS ratio strings rather than a portable DTCG token type."
     },
     {
       "source": "tokens.aspectRatios.wide",
+      "sourceToken": { "value": "16 / 9" },
       "disposition": "chakra-platform",
       "canonical": "tokens.aspectRatios.wide",
       "reason": "Chakra represents aspect ratios as CSS ratio strings rather than a portable DTCG token type."
     },
     {
       "source": "tokens.aspectRatios.ultrawide",
+      "sourceToken": { "value": "18 / 5" },
       "disposition": "chakra-platform",
       "canonical": "tokens.aspectRatios.ultrawide",
       "reason": "Chakra represents aspect ratios as CSS ratio strings rather than a portable DTCG token type."
     },
     {
       "source": "tokens.aspectRatios.golden",
+      "sourceToken": { "value": "1.618 / 1" },
       "disposition": "chakra-platform",
       "canonical": "tokens.aspectRatios.golden",
       "reason": "Chakra represents aspect ratios as CSS ratio strings rather than a portable DTCG token type."
     },
     {
       "source": "tokens.animations.spin",
+      "sourceToken": { "value": "spin 1s linear infinite" },
       "disposition": "chakra-platform",
       "canonical": "tokens.animations.spin",
       "reason": "CSS animation shorthand and keyframe names are web-platform values."
     },
     {
       "source": "tokens.animations.ping",
+      "sourceToken": { "value": "ping 1s cubic-bezier(0, 0, 0.2, 1) infinite" },
       "disposition": "chakra-platform",
       "canonical": "tokens.animations.ping",
       "reason": "CSS animation shorthand and keyframe names are web-platform values."
     },
     {
       "source": "tokens.animations.pulse",
+      "sourceToken": {
+        "value": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite"
+      },
       "disposition": "chakra-platform",
       "canonical": "tokens.animations.pulse",
       "reason": "CSS animation shorthand and keyframe names are web-platform values."
     },
     {
       "source": "tokens.animations.bounce",
+      "sourceToken": { "value": "bounce 1s infinite" },
       "disposition": "chakra-platform",
       "canonical": "tokens.animations.bounce",
       "reason": "CSS animation shorthand and keyframe names are web-platform values."
     },
     {
       "source": "tokens.borders.xs",
+      "sourceToken": { "value": "0.5px solid" },
       "disposition": "chakra-platform",
       "canonical": "tokens.borders.xs",
       "reason": "The CSS border fragment is incomplete or cannot be parsed and regenerated losslessly."
     },
     {
       "source": "tokens.borders.sm",
+      "sourceToken": { "value": "1px solid" },
       "disposition": "chakra-platform",
       "canonical": "tokens.borders.sm",
       "reason": "The CSS border fragment is incomplete or cannot be parsed and regenerated losslessly."
     },
     {
       "source": "tokens.borders.md",
+      "sourceToken": { "value": "2px solid" },
       "disposition": "chakra-platform",
       "canonical": "tokens.borders.md",
       "reason": "The CSS border fragment is incomplete or cannot be parsed and regenerated losslessly."
     },
     {
       "source": "tokens.borders.lg",
+      "sourceToken": { "value": "4px solid" },
       "disposition": "chakra-platform",
       "canonical": "tokens.borders.lg",
       "reason": "The CSS border fragment is incomplete or cannot be parsed and regenerated losslessly."
     },
     {
       "source": "tokens.borders.xl",
+      "sourceToken": { "value": "8px solid" },
       "disposition": "chakra-platform",
       "canonical": "tokens.borders.xl",
       "reason": "The CSS border fragment is incomplete or cannot be parsed and regenerated losslessly."
     },
     {
       "source": "tokens.borders.none",
+      "sourceToken": { "value": "none" },
       "disposition": "chakra-platform",
       "canonical": "tokens.borders.none",
       "reason": "The CSS border fragment is incomplete or cannot be parsed and regenerated losslessly."
     },
     {
       "source": "tokens.borders.search",
+      "sourceToken": {
+        "value": "{borderWidths.0.25} {borderStyles.solid} {colors.grey.600}"
+      },
       "disposition": "portable-dtcg",
       "canonical": "primitive.borders.search"
     },
     {
       "source": "tokens.cursor.button",
+      "sourceToken": { "value": "pointer" },
       "disposition": "chakra-platform",
       "canonical": "tokens.cursor.button",
       "reason": "CSS cursor keywords are web-platform values."
     },
     {
       "source": "tokens.cursor.checkbox",
+      "sourceToken": { "value": "default" },
       "disposition": "chakra-platform",
       "canonical": "tokens.cursor.checkbox",
       "reason": "CSS cursor keywords are web-platform values."
     },
     {
       "source": "tokens.cursor.disabled",
+      "sourceToken": { "value": "not-allowed" },
       "disposition": "chakra-platform",
       "canonical": "tokens.cursor.disabled",
       "reason": "CSS cursor keywords are web-platform values."
     },
     {
       "source": "tokens.cursor.menuitem",
+      "sourceToken": { "value": "default" },
       "disposition": "chakra-platform",
       "canonical": "tokens.cursor.menuitem",
       "reason": "CSS cursor keywords are web-platform values."
     },
     {
       "source": "tokens.cursor.option",
+      "sourceToken": { "value": "default" },
       "disposition": "chakra-platform",
       "canonical": "tokens.cursor.option",
       "reason": "CSS cursor keywords are web-platform values."
     },
     {
       "source": "tokens.cursor.radio",
+      "sourceToken": { "value": "default" },
       "disposition": "chakra-platform",
       "canonical": "tokens.cursor.radio",
       "reason": "CSS cursor keywords are web-platform values."
     },
     {
       "source": "tokens.cursor.slider",
+      "sourceToken": { "value": "default" },
       "disposition": "chakra-platform",
       "canonical": "tokens.cursor.slider",
       "reason": "CSS cursor keywords are web-platform values."
     },
     {
       "source": "tokens.cursor.switch",
+      "sourceToken": { "value": "pointer" },
       "disposition": "chakra-platform",
       "canonical": "tokens.cursor.switch",
       "reason": "CSS cursor keywords are web-platform values."
     },
     {
       "source": "semanticTokens.colors.bg.DEFAULT",
+      "sourceToken": {
+        "value": { "_light": "{colors.white}", "_dark": "{colors.black}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.bg.$root",
       "darkOverride": "semantic.color.bg.$root"
     },
     {
       "source": "semanticTokens.colors.bg.subtle",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.50}", "_dark": "{colors.gray.950}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.bg.subtle",
       "darkOverride": "semantic.color.bg.subtle"
     },
     {
       "source": "semanticTokens.colors.bg.muted",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.100}", "_dark": "{colors.gray.900}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.bg.muted",
       "darkOverride": "semantic.color.bg.muted"
     },
     {
       "source": "semanticTokens.colors.bg.emphasized",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.200}", "_dark": "{colors.gray.800}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.bg.emphasized",
       "darkOverride": "semantic.color.bg.emphasized"
     },
     {
       "source": "semanticTokens.colors.bg.inverted",
+      "sourceToken": {
+        "value": { "_light": "{colors.black}", "_dark": "{colors.white}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.bg.inverted",
       "darkOverride": "semantic.color.bg.inverted"
     },
     {
       "source": "semanticTokens.colors.bg.panel",
+      "sourceToken": {
+        "value": { "_light": "{colors.white}", "_dark": "{colors.gray.950}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.bg.panel",
       "darkOverride": "semantic.color.bg.panel"
     },
     {
       "source": "semanticTokens.colors.bg.error",
+      "sourceToken": {
+        "value": { "_light": "{colors.red.50}", "_dark": "{colors.red.950}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.bg.error",
       "darkOverride": "semantic.color.bg.error"
     },
     {
       "source": "semanticTokens.colors.bg.warning",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.orange.50}",
+          "_dark": "{colors.orange.950}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.bg.warning",
       "darkOverride": "semantic.color.bg.warning"
     },
     {
       "source": "semanticTokens.colors.bg.success",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.green.50}",
+          "_dark": "{colors.green.950}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.bg.success",
       "darkOverride": "semantic.color.bg.success"
     },
     {
       "source": "semanticTokens.colors.bg.info",
+      "sourceToken": {
+        "value": { "_light": "{colors.blue.50}", "_dark": "{colors.blue.950}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.bg.info",
       "darkOverride": "semantic.color.bg.info"
     },
     {
       "source": "semanticTokens.colors.fg.DEFAULT",
+      "sourceToken": {
+        "value": { "_light": "{colors.black}", "_dark": "{colors.gray.50}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.fg.$root",
       "darkOverride": "semantic.color.fg.$root"
     },
     {
       "source": "semanticTokens.colors.fg.muted",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.600}", "_dark": "{colors.gray.400}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.fg.muted",
       "darkOverride": "semantic.color.fg.muted"
     },
     {
       "source": "semanticTokens.colors.fg.subtle",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.400}", "_dark": "{colors.gray.500}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.fg.subtle",
       "darkOverride": "semantic.color.fg.subtle"
     },
     {
       "source": "semanticTokens.colors.fg.inverted",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.50}", "_dark": "{colors.black}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.fg.inverted",
       "darkOverride": "semantic.color.fg.inverted"
     },
     {
       "source": "semanticTokens.colors.fg.error",
+      "sourceToken": {
+        "value": { "_light": "{colors.red.500}", "_dark": "{colors.red.400}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.fg.error",
       "darkOverride": "semantic.color.fg.error"
     },
     {
       "source": "semanticTokens.colors.fg.warning",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.orange.600}",
+          "_dark": "{colors.orange.300}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.fg.warning",
       "darkOverride": "semantic.color.fg.warning"
     },
     {
       "source": "semanticTokens.colors.fg.success",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.green.600}",
+          "_dark": "{colors.green.300}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.fg.success",
       "darkOverride": "semantic.color.fg.success"
     },
     {
       "source": "semanticTokens.colors.fg.info",
+      "sourceToken": {
+        "value": { "_light": "{colors.blue.600}", "_dark": "{colors.blue.300}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.fg.info",
       "darkOverride": "semantic.color.fg.info"
     },
     {
       "source": "semanticTokens.colors.border.DEFAULT",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.200}", "_dark": "{colors.gray.800}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.border.$root",
       "darkOverride": "semantic.color.border.$root"
     },
     {
       "source": "semanticTokens.colors.border.muted",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.100}", "_dark": "{colors.gray.900}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.border.muted",
       "darkOverride": "semantic.color.border.muted"
     },
     {
       "source": "semanticTokens.colors.border.subtle",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.50}", "_dark": "{colors.gray.950}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.border.subtle",
       "darkOverride": "semantic.color.border.subtle"
     },
     {
       "source": "semanticTokens.colors.border.emphasized",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.300}", "_dark": "{colors.gray.700}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.border.emphasized",
       "darkOverride": "semantic.color.border.emphasized"
     },
     {
       "source": "semanticTokens.colors.border.inverted",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.800}", "_dark": "{colors.gray.200}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.border.inverted",
       "darkOverride": "semantic.color.border.inverted"
     },
     {
       "source": "semanticTokens.colors.border.error",
+      "sourceToken": {
+        "value": { "_light": "{colors.red.500}", "_dark": "{colors.red.400}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.border.error",
       "darkOverride": "semantic.color.border.error"
     },
     {
       "source": "semanticTokens.colors.border.warning",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.orange.500}",
+          "_dark": "{colors.orange.400}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.border.warning",
       "darkOverride": "semantic.color.border.warning"
     },
     {
       "source": "semanticTokens.colors.border.success",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.green.500}",
+          "_dark": "{colors.green.400}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.border.success",
       "darkOverride": "semantic.color.border.success"
     },
     {
       "source": "semanticTokens.colors.border.info",
+      "sourceToken": {
+        "value": { "_light": "{colors.blue.500}", "_dark": "{colors.blue.400}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.border.info",
       "darkOverride": "semantic.color.border.info"
     },
     {
       "source": "semanticTokens.colors.gray.contrast",
+      "sourceToken": {
+        "value": { "_light": "{colors.white}", "_dark": "{colors.black}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.gray.contrast",
       "darkOverride": "semantic.color.gray.contrast"
     },
     {
       "source": "semanticTokens.colors.gray.fg",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.800}", "_dark": "{colors.gray.200}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.gray.fg",
       "darkOverride": "semantic.color.gray.fg"
     },
     {
       "source": "semanticTokens.colors.gray.subtle",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.100}", "_dark": "{colors.gray.900}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.gray.subtle",
       "darkOverride": "semantic.color.gray.subtle"
     },
     {
       "source": "semanticTokens.colors.gray.muted",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.200}", "_dark": "{colors.gray.800}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.gray.muted",
       "darkOverride": "semantic.color.gray.muted"
     },
     {
       "source": "semanticTokens.colors.gray.emphasized",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.300}", "_dark": "{colors.gray.700}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.gray.emphasized",
       "darkOverride": "semantic.color.gray.emphasized"
     },
     {
       "source": "semanticTokens.colors.gray.solid",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.900}", "_dark": "{colors.white}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.gray.solid",
       "darkOverride": "semantic.color.gray.solid"
     },
     {
       "source": "semanticTokens.colors.gray.focusRing",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.400}", "_dark": "{colors.gray.400}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.gray.focusRing",
       "darkOverride": "semantic.color.gray.focusRing"
     },
     {
       "source": "semanticTokens.colors.gray.border",
+      "sourceToken": {
+        "value": { "_light": "{colors.gray.200}", "_dark": "{colors.gray.800}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.gray.border",
       "darkOverride": "semantic.color.gray.border"
     },
     {
       "source": "semanticTokens.colors.red.contrast",
+      "sourceToken": { "value": { "_light": "white", "_dark": "white" } },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.red.contrast",
       "darkOverride": "semantic.color.red.contrast"
     },
     {
       "source": "semanticTokens.colors.red.fg",
+      "sourceToken": {
+        "value": { "_light": "{colors.red.700}", "_dark": "{colors.red.300}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.red.fg",
       "darkOverride": "semantic.color.red.fg"
     },
     {
       "source": "semanticTokens.colors.red.subtle",
+      "sourceToken": {
+        "value": { "_light": "{colors.red.100}", "_dark": "{colors.red.900}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.red.subtle",
       "darkOverride": "semantic.color.red.subtle"
     },
     {
       "source": "semanticTokens.colors.red.muted",
+      "sourceToken": {
+        "value": { "_light": "{colors.red.200}", "_dark": "{colors.red.800}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.red.muted",
       "darkOverride": "semantic.color.red.muted"
     },
     {
       "source": "semanticTokens.colors.red.emphasized",
+      "sourceToken": {
+        "value": { "_light": "{colors.red.300}", "_dark": "{colors.red.700}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.red.emphasized",
       "darkOverride": "semantic.color.red.emphasized"
     },
     {
       "source": "semanticTokens.colors.red.solid",
+      "sourceToken": {
+        "value": { "_light": "{colors.red.600}", "_dark": "{colors.red.600}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.red.solid",
       "darkOverride": "semantic.color.red.solid"
     },
     {
       "source": "semanticTokens.colors.red.focusRing",
+      "sourceToken": {
+        "value": { "_light": "{colors.red.500}", "_dark": "{colors.red.500}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.red.focusRing",
       "darkOverride": "semantic.color.red.focusRing"
     },
     {
       "source": "semanticTokens.colors.red.border",
+      "sourceToken": {
+        "value": { "_light": "{colors.red.500}", "_dark": "{colors.red.400}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.red.border",
       "darkOverride": "semantic.color.red.border"
     },
     {
       "source": "semanticTokens.colors.orange.contrast",
+      "sourceToken": { "value": { "_light": "white", "_dark": "black" } },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.orange.contrast",
       "darkOverride": "semantic.color.orange.contrast"
     },
     {
       "source": "semanticTokens.colors.orange.fg",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.orange.700}",
+          "_dark": "{colors.orange.300}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.orange.fg",
       "darkOverride": "semantic.color.orange.fg"
     },
     {
       "source": "semanticTokens.colors.orange.subtle",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.orange.100}",
+          "_dark": "{colors.orange.900}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.orange.subtle",
       "darkOverride": "semantic.color.orange.subtle"
     },
     {
       "source": "semanticTokens.colors.orange.muted",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.orange.200}",
+          "_dark": "{colors.orange.800}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.orange.muted",
       "darkOverride": "semantic.color.orange.muted"
     },
     {
       "source": "semanticTokens.colors.orange.emphasized",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.orange.300}",
+          "_dark": "{colors.orange.700}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.orange.emphasized",
       "darkOverride": "semantic.color.orange.emphasized"
     },
     {
       "source": "semanticTokens.colors.orange.solid",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.orange.600}",
+          "_dark": "{colors.orange.500}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.orange.solid",
       "darkOverride": "semantic.color.orange.solid"
     },
     {
       "source": "semanticTokens.colors.orange.focusRing",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.orange.500}",
+          "_dark": "{colors.orange.500}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.orange.focusRing",
       "darkOverride": "semantic.color.orange.focusRing"
     },
     {
       "source": "semanticTokens.colors.orange.border",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.orange.500}",
+          "_dark": "{colors.orange.400}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.orange.border",
       "darkOverride": "semantic.color.orange.border"
     },
     {
       "source": "semanticTokens.colors.green.contrast",
+      "sourceToken": { "value": { "_light": "white", "_dark": "white" } },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.green.contrast",
       "darkOverride": "semantic.color.green.contrast"
     },
     {
       "source": "semanticTokens.colors.green.fg",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.green.700}",
+          "_dark": "{colors.green.300}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.green.fg",
       "darkOverride": "semantic.color.green.fg"
     },
     {
       "source": "semanticTokens.colors.green.subtle",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.green.100}",
+          "_dark": "{colors.green.900}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.green.subtle",
       "darkOverride": "semantic.color.green.subtle"
     },
     {
       "source": "semanticTokens.colors.green.muted",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.green.200}",
+          "_dark": "{colors.green.800}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.green.muted",
       "darkOverride": "semantic.color.green.muted"
     },
     {
       "source": "semanticTokens.colors.green.emphasized",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.green.300}",
+          "_dark": "{colors.green.700}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.green.emphasized",
       "darkOverride": "semantic.color.green.emphasized"
     },
     {
       "source": "semanticTokens.colors.green.solid",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.green.600}",
+          "_dark": "{colors.green.600}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.green.solid",
       "darkOverride": "semantic.color.green.solid"
     },
     {
       "source": "semanticTokens.colors.green.focusRing",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.green.500}",
+          "_dark": "{colors.green.500}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.green.focusRing",
       "darkOverride": "semantic.color.green.focusRing"
     },
     {
       "source": "semanticTokens.colors.green.border",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.green.500}",
+          "_dark": "{colors.green.400}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.green.border",
       "darkOverride": "semantic.color.green.border"
     },
     {
       "source": "semanticTokens.colors.blue.contrast",
+      "sourceToken": { "value": { "_light": "white", "_dark": "white" } },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.blue.contrast",
       "darkOverride": "semantic.color.blue.contrast"
     },
     {
       "source": "semanticTokens.colors.blue.fg",
+      "sourceToken": {
+        "value": { "_light": "{colors.blue.700}", "_dark": "{colors.blue.300}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.blue.fg",
       "darkOverride": "semantic.color.blue.fg"
     },
     {
       "source": "semanticTokens.colors.blue.subtle",
+      "sourceToken": {
+        "value": { "_light": "{colors.blue.100}", "_dark": "{colors.blue.900}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.blue.subtle",
       "darkOverride": "semantic.color.blue.subtle"
     },
     {
       "source": "semanticTokens.colors.blue.muted",
+      "sourceToken": {
+        "value": { "_light": "{colors.blue.200}", "_dark": "{colors.blue.800}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.blue.muted",
       "darkOverride": "semantic.color.blue.muted"
     },
     {
       "source": "semanticTokens.colors.blue.emphasized",
+      "sourceToken": {
+        "value": { "_light": "{colors.blue.300}", "_dark": "{colors.blue.700}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.blue.emphasized",
       "darkOverride": "semantic.color.blue.emphasized"
     },
     {
       "source": "semanticTokens.colors.blue.solid",
+      "sourceToken": {
+        "value": { "_light": "{colors.blue.600}", "_dark": "{colors.blue.600}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.blue.solid",
       "darkOverride": "semantic.color.blue.solid"
     },
     {
       "source": "semanticTokens.colors.blue.focusRing",
+      "sourceToken": {
+        "value": { "_light": "{colors.blue.500}", "_dark": "{colors.blue.500}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.blue.focusRing",
       "darkOverride": "semantic.color.blue.focusRing"
     },
     {
       "source": "semanticTokens.colors.blue.border",
+      "sourceToken": {
+        "value": { "_light": "{colors.blue.500}", "_dark": "{colors.blue.400}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.blue.border",
       "darkOverride": "semantic.color.blue.border"
     },
     {
       "source": "semanticTokens.colors.yellow.contrast",
+      "sourceToken": { "value": { "_light": "black", "_dark": "black" } },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.yellow.contrast",
       "darkOverride": "semantic.color.yellow.contrast"
     },
     {
       "source": "semanticTokens.colors.yellow.fg",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.yellow.800}",
+          "_dark": "{colors.yellow.300}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.yellow.fg",
       "darkOverride": "semantic.color.yellow.fg"
     },
     {
       "source": "semanticTokens.colors.yellow.subtle",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.yellow.100}",
+          "_dark": "{colors.yellow.900}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.yellow.subtle",
       "darkOverride": "semantic.color.yellow.subtle"
     },
     {
       "source": "semanticTokens.colors.yellow.muted",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.yellow.200}",
+          "_dark": "{colors.yellow.800}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.yellow.muted",
       "darkOverride": "semantic.color.yellow.muted"
     },
     {
       "source": "semanticTokens.colors.yellow.emphasized",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.yellow.300}",
+          "_dark": "{colors.yellow.700}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.yellow.emphasized",
       "darkOverride": "semantic.color.yellow.emphasized"
     },
     {
       "source": "semanticTokens.colors.yellow.solid",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.yellow.300}",
+          "_dark": "{colors.yellow.300}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.yellow.solid",
       "darkOverride": "semantic.color.yellow.solid"
     },
     {
       "source": "semanticTokens.colors.yellow.focusRing",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.yellow.500}",
+          "_dark": "{colors.yellow.500}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.yellow.focusRing",
       "darkOverride": "semantic.color.yellow.focusRing"
     },
     {
       "source": "semanticTokens.colors.yellow.border",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.yellow.500}",
+          "_dark": "{colors.yellow.500}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.yellow.border",
       "darkOverride": "semantic.color.yellow.border"
     },
     {
       "source": "semanticTokens.colors.teal.contrast",
+      "sourceToken": { "value": { "_light": "white", "_dark": "white" } },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.teal.contrast",
       "darkOverride": "semantic.color.teal.contrast"
     },
     {
       "source": "semanticTokens.colors.teal.fg",
+      "sourceToken": {
+        "value": { "_light": "{colors.teal.700}", "_dark": "{colors.teal.300}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.teal.fg",
       "darkOverride": "semantic.color.teal.fg"
     },
     {
       "source": "semanticTokens.colors.teal.subtle",
+      "sourceToken": {
+        "value": { "_light": "{colors.teal.100}", "_dark": "{colors.teal.900}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.teal.subtle",
       "darkOverride": "semantic.color.teal.subtle"
     },
     {
       "source": "semanticTokens.colors.teal.muted",
+      "sourceToken": {
+        "value": { "_light": "{colors.teal.200}", "_dark": "{colors.teal.800}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.teal.muted",
       "darkOverride": "semantic.color.teal.muted"
     },
     {
       "source": "semanticTokens.colors.teal.emphasized",
+      "sourceToken": {
+        "value": { "_light": "{colors.teal.300}", "_dark": "{colors.teal.700}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.teal.emphasized",
       "darkOverride": "semantic.color.teal.emphasized"
     },
     {
       "source": "semanticTokens.colors.teal.solid",
+      "sourceToken": {
+        "value": { "_light": "{colors.teal.600}", "_dark": "{colors.teal.600}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.teal.solid",
       "darkOverride": "semantic.color.teal.solid"
     },
     {
       "source": "semanticTokens.colors.teal.focusRing",
+      "sourceToken": {
+        "value": { "_light": "{colors.teal.500}", "_dark": "{colors.teal.500}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.teal.focusRing",
       "darkOverride": "semantic.color.teal.focusRing"
     },
     {
       "source": "semanticTokens.colors.teal.border",
+      "sourceToken": {
+        "value": { "_light": "{colors.teal.500}", "_dark": "{colors.teal.400}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.teal.border",
       "darkOverride": "semantic.color.teal.border"
     },
     {
       "source": "semanticTokens.colors.purple.contrast",
+      "sourceToken": { "value": { "_light": "white", "_dark": "white" } },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.purple.contrast",
       "darkOverride": "semantic.color.purple.contrast"
     },
     {
       "source": "semanticTokens.colors.purple.fg",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.purple.700}",
+          "_dark": "{colors.purple.300}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.purple.fg",
       "darkOverride": "semantic.color.purple.fg"
     },
     {
       "source": "semanticTokens.colors.purple.subtle",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.purple.100}",
+          "_dark": "{colors.purple.900}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.purple.subtle",
       "darkOverride": "semantic.color.purple.subtle"
     },
     {
       "source": "semanticTokens.colors.purple.muted",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.purple.200}",
+          "_dark": "{colors.purple.800}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.purple.muted",
       "darkOverride": "semantic.color.purple.muted"
     },
     {
       "source": "semanticTokens.colors.purple.emphasized",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.purple.300}",
+          "_dark": "{colors.purple.700}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.purple.emphasized",
       "darkOverride": "semantic.color.purple.emphasized"
     },
     {
       "source": "semanticTokens.colors.purple.solid",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.purple.600}",
+          "_dark": "{colors.purple.600}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.purple.solid",
       "darkOverride": "semantic.color.purple.solid"
     },
     {
       "source": "semanticTokens.colors.purple.focusRing",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.purple.500}",
+          "_dark": "{colors.purple.500}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.purple.focusRing",
       "darkOverride": "semantic.color.purple.focusRing"
     },
     {
       "source": "semanticTokens.colors.purple.border",
+      "sourceToken": {
+        "value": {
+          "_light": "{colors.purple.500}",
+          "_dark": "{colors.purple.400}"
+        }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.purple.border",
       "darkOverride": "semantic.color.purple.border"
     },
     {
       "source": "semanticTokens.colors.pink.contrast",
+      "sourceToken": { "value": { "_light": "white", "_dark": "white" } },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.pink.contrast",
       "darkOverride": "semantic.color.pink.contrast"
     },
     {
       "source": "semanticTokens.colors.pink.fg",
+      "sourceToken": {
+        "value": { "_light": "{colors.pink.700}", "_dark": "{colors.pink.300}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.pink.fg",
       "darkOverride": "semantic.color.pink.fg"
     },
     {
       "source": "semanticTokens.colors.pink.subtle",
+      "sourceToken": {
+        "value": { "_light": "{colors.pink.100}", "_dark": "{colors.pink.900}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.pink.subtle",
       "darkOverride": "semantic.color.pink.subtle"
     },
     {
       "source": "semanticTokens.colors.pink.muted",
+      "sourceToken": {
+        "value": { "_light": "{colors.pink.200}", "_dark": "{colors.pink.800}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.pink.muted",
       "darkOverride": "semantic.color.pink.muted"
     },
     {
       "source": "semanticTokens.colors.pink.emphasized",
+      "sourceToken": {
+        "value": { "_light": "{colors.pink.300}", "_dark": "{colors.pink.700}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.pink.emphasized",
       "darkOverride": "semantic.color.pink.emphasized"
     },
     {
       "source": "semanticTokens.colors.pink.solid",
+      "sourceToken": {
+        "value": { "_light": "{colors.pink.600}", "_dark": "{colors.pink.600}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.pink.solid",
       "darkOverride": "semantic.color.pink.solid"
     },
     {
       "source": "semanticTokens.colors.pink.focusRing",
+      "sourceToken": {
+        "value": { "_light": "{colors.pink.500}", "_dark": "{colors.pink.500}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.pink.focusRing",
       "darkOverride": "semantic.color.pink.focusRing"
     },
     {
       "source": "semanticTokens.colors.pink.border",
+      "sourceToken": {
+        "value": { "_light": "{colors.pink.500}", "_dark": "{colors.pink.400}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.pink.border",
       "darkOverride": "semantic.color.pink.border"
     },
     {
       "source": "semanticTokens.colors.cyan.contrast",
+      "sourceToken": { "value": { "_light": "white", "_dark": "white" } },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.cyan.contrast",
       "darkOverride": "semantic.color.cyan.contrast"
     },
     {
       "source": "semanticTokens.colors.cyan.fg",
+      "sourceToken": {
+        "value": { "_light": "{colors.cyan.700}", "_dark": "{colors.cyan.300}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.cyan.fg",
       "darkOverride": "semantic.color.cyan.fg"
     },
     {
       "source": "semanticTokens.colors.cyan.subtle",
+      "sourceToken": {
+        "value": { "_light": "{colors.cyan.100}", "_dark": "{colors.cyan.900}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.cyan.subtle",
       "darkOverride": "semantic.color.cyan.subtle"
     },
     {
       "source": "semanticTokens.colors.cyan.muted",
+      "sourceToken": {
+        "value": { "_light": "{colors.cyan.200}", "_dark": "{colors.cyan.800}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.cyan.muted",
       "darkOverride": "semantic.color.cyan.muted"
     },
     {
       "source": "semanticTokens.colors.cyan.emphasized",
+      "sourceToken": {
+        "value": { "_light": "{colors.cyan.300}", "_dark": "{colors.cyan.700}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.cyan.emphasized",
       "darkOverride": "semantic.color.cyan.emphasized"
     },
     {
       "source": "semanticTokens.colors.cyan.solid",
+      "sourceToken": {
+        "value": { "_light": "{colors.cyan.600}", "_dark": "{colors.cyan.600}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.cyan.solid",
       "darkOverride": "semantic.color.cyan.solid"
     },
     {
       "source": "semanticTokens.colors.cyan.focusRing",
+      "sourceToken": {
+        "value": { "_light": "{colors.cyan.500}", "_dark": "{colors.cyan.500}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.cyan.focusRing",
       "darkOverride": "semantic.color.cyan.focusRing"
     },
     {
       "source": "semanticTokens.colors.cyan.border",
+      "sourceToken": {
+        "value": { "_light": "{colors.cyan.500}", "_dark": "{colors.cyan.400}" }
+      },
       "disposition": "resolver-contextual",
       "canonical": "semantic.color.cyan.border",
       "darkOverride": "semantic.color.cyan.border"
     },
     {
       "source": "semanticTokens.colors.blueSwitch",
+      "sourceToken": { "value": "#3182CE" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.color.blueSwitch"
     },
     {
       "source": "semanticTokens.colors.blueIcon",
+      "sourceToken": { "value": "#4863a9" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.color.blueIcon"
     },
     {
       "source": "semanticTokens.colors.blueIconBackground",
+      "sourceToken": { "value": "#eff4fc" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.color.blueIconBackground"
     },
     {
       "source": "semanticTokens.colors.blueBackground",
+      "sourceToken": { "value": "#2C5282" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.color.blueBackground"
     },
     {
       "source": "semanticTokens.colors.tsunamiBlue",
+      "sourceToken": { "value": "#63B3ED" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.color.tsunamiBlue"
     },
     {
       "source": "semanticTokens.colors.lightGrey",
+      "sourceToken": { "value": "#c8caceff" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.color.lightGrey"
     },
     {
       "source": "semanticTokens.colors.labelGrey",
+      "sourceToken": { "value": "#bfb9b9" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.color.labelGrey"
     },
     {
       "source": "semanticTokens.colors.warningRed",
+      "sourceToken": { "value": "#b53d37" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.color.warningRed"
     },
     {
       "source": "semanticTokens.colors.blueGradientFrom",
+      "sourceToken": { "value": "#3b6294" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.color.blueGradientFrom"
     },
     {
       "source": "semanticTokens.colors.blueGradientTo",
+      "sourceToken": { "value": "#183252" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.color.blueGradientTo"
     },
     {
       "source": "semanticTokens.colors.cooperativeGesturesOverlay",
+      "sourceToken": { "value": "#00000080" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.color.cooperativeGesturesOverlay"
     },
     {
       "source": "semanticTokens.radii.l1",
+      "sourceToken": { "value": "{radii.xs}" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.borderRadius.l1"
     },
     {
       "source": "semanticTokens.radii.l2",
+      "sourceToken": { "value": "{radii.sm}" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.borderRadius.l2"
     },
     {
       "source": "semanticTokens.radii.l3",
+      "sourceToken": { "value": "{radii.md}" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.borderRadius.l3"
     },
     {
       "source": "semanticTokens.sizes.mapMarkerWidth",
+      "sourceToken": { "value": "26.2px" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.size.mapMarkerWidth"
     },
     {
       "source": "semanticTokens.sizes.mapMarkerHeight",
+      "sourceToken": { "value": "41px" },
       "disposition": "portable-dtcg",
       "canonical": "semantic.size.mapMarkerHeight"
     },
     {
       "source": "semanticTokens.sizes.mobileCardWidth",
+      "sourceToken": { "value": "86vw" },
       "disposition": "chakra-platform",
       "canonical": "semanticTokens.sizes.mobileCardWidth",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "semanticTokens.sizes.mobileCardAccordionWidth",
+      "sourceToken": { "value": "98%" },
       "disposition": "chakra-platform",
       "canonical": "semanticTokens.sizes.mobileCardAccordionWidth",
       "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
     },
     {
       "source": "semanticTokens.sizes.mainContentMinHeight",
+      "sourceToken": { "value": 0 },
       "disposition": "portable-dtcg",
       "canonical": "semantic.size.mainContentMinHeight"
     },
     {
       "source": "semanticTokens.shadows.xs",
+      "sourceToken": {
+        "value": {
+          "_light": "0px 1px 2px {colors.gray.900/10}, 0px 0px 1px {colors.gray.900/20}",
+          "_dark": "0px 1px 1px {black/64}, 0px 0px 1px inset {colors.gray.300/20}"
+        }
+      },
       "disposition": "chakra-platform",
       "canonical": "semanticTokens.shadows.xs",
       "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
     },
     {
       "source": "semanticTokens.shadows.sm",
+      "sourceToken": {
+        "value": {
+          "_light": "0px 2px 4px {colors.gray.900/10}, 0px 0px 1px {colors.gray.900/30}",
+          "_dark": "0px 2px 4px {black/64}, 0px 0px 1px inset {colors.gray.300/30}"
+        }
+      },
       "disposition": "chakra-platform",
       "canonical": "semanticTokens.shadows.sm",
       "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
     },
     {
       "source": "semanticTokens.shadows.md",
+      "sourceToken": {
+        "value": {
+          "_light": "0px 4px 8px {colors.gray.900/10}, 0px 0px 1px {colors.gray.900/30}",
+          "_dark": "0px 4px 8px {black/64}, 0px 0px 1px inset {colors.gray.300/30}"
+        }
+      },
       "disposition": "chakra-platform",
       "canonical": "semanticTokens.shadows.md",
       "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
     },
     {
       "source": "semanticTokens.shadows.lg",
+      "sourceToken": {
+        "value": {
+          "_light": "0px 8px 16px {colors.gray.900/10}, 0px 0px 1px {colors.gray.900/30}",
+          "_dark": "0px 8px 16px {black/64}, 0px 0px 1px inset {colors.gray.300/30}"
+        }
+      },
       "disposition": "chakra-platform",
       "canonical": "semanticTokens.shadows.lg",
       "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
     },
     {
       "source": "semanticTokens.shadows.xl",
+      "sourceToken": {
+        "value": {
+          "_light": "0px 16px 24px {colors.gray.900/10}, 0px 0px 1px {colors.gray.900/30}",
+          "_dark": "0px 16px 24px {black/64}, 0px 0px 1px inset {colors.gray.300/30}"
+        }
+      },
       "disposition": "chakra-platform",
       "canonical": "semanticTokens.shadows.xl",
       "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
     },
     {
       "source": "semanticTokens.shadows.2xl",
+      "sourceToken": {
+        "value": {
+          "_light": "0px 24px 40px {colors.gray.900/16}, 0px 0px 1px {colors.gray.900/30}",
+          "_dark": "0px 24px 40px {black/64}, 0px 0px 1px inset {colors.gray.300/30}"
+        }
+      },
       "disposition": "chakra-platform",
       "canonical": "semanticTokens.shadows.2xl",
       "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
     },
     {
       "source": "semanticTokens.shadows.inner",
+      "sourceToken": {
+        "value": {
+          "_light": "inset 0 2px 4px 0 {black/5}",
+          "_dark": "inset 0 2px 4px 0 black"
+        }
+      },
       "disposition": "chakra-platform",
       "canonical": "semanticTokens.shadows.inner",
       "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
     },
     {
       "source": "semanticTokens.shadows.inset",
+      "sourceToken": {
+        "value": {
+          "_light": "inset 0 0 0 1px {black/5}",
+          "_dark": "inset 0 0 0 1px {colors.gray.300/5}"
+        }
+      },
       "disposition": "chakra-platform",
       "canonical": "semanticTokens.shadows.inset",
       "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
     },
     {
       "source": "semanticTokens.shadows.card",
+      "sourceToken": {
+        "value": "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}"
+      },
       "disposition": "chakra-platform",
       "canonical": "semanticTokens.shadows.card",
       "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
     },
     {
       "source": "semanticTokens.shadows.mobileButton",
+      "sourceToken": {
+        "value": "{spacing.0} {spacing.0} {spacing.0.5} {colors.lightGrey}"
+      },
       "disposition": "chakra-platform",
       "canonical": "semanticTokens.shadows.mobileButton",
       "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
     },
     {
       "source": "semanticTokens.shadows.search",
+      "sourceToken": {
+        "value": "{spacing.0} {spacing.1} {spacing.1.5} {-spacing.0.25} {colors.blackAlpha.200}, {spacing.0} {spacing.0.5} {spacing.1} {-spacing.0.25} {colors.blackAlpha.50}"
+      },
       "disposition": "chakra-platform",
       "canonical": "semanticTokens.shadows.search",
       "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
     },
     {
       "source": "semanticTokens.assets.mapMarkerUrl",
+      "sourceToken": { "type": "url", "value": "url(\"/marker.svg\")" },
       "disposition": "chakra-platform",
       "canonical": "semanticTokens.assets.mapMarkerUrl",
       "reason": "CSS url() values are web-platform bindings."

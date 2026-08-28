@@ -1444,8 +1444,8 @@ export const semanticTokens = defineSemanticTokens({
     red: {
       contrast: {
         value: {
-          _light: "{colors.white}",
-          _dark: "{colors.white}",
+          _light: "#ffffff",
+          _dark: "#ffffff",
         },
       },
       fg: {
@@ -1494,8 +1494,8 @@ export const semanticTokens = defineSemanticTokens({
     orange: {
       contrast: {
         value: {
-          _light: "{colors.white}",
-          _dark: "{colors.black}",
+          _light: "#ffffff",
+          _dark: "#000000",
         },
       },
       fg: {
@@ -1544,8 +1544,8 @@ export const semanticTokens = defineSemanticTokens({
     green: {
       contrast: {
         value: {
-          _light: "{colors.white}",
-          _dark: "{colors.white}",
+          _light: "#ffffff",
+          _dark: "#ffffff",
         },
       },
       fg: {
@@ -1594,8 +1594,8 @@ export const semanticTokens = defineSemanticTokens({
     blue: {
       contrast: {
         value: {
-          _light: "{colors.white}",
-          _dark: "{colors.white}",
+          _light: "#ffffff",
+          _dark: "#ffffff",
         },
       },
       fg: {
@@ -1644,8 +1644,8 @@ export const semanticTokens = defineSemanticTokens({
     yellow: {
       contrast: {
         value: {
-          _light: "{colors.black}",
-          _dark: "{colors.black}",
+          _light: "#000000",
+          _dark: "#000000",
         },
       },
       fg: {
@@ -1694,8 +1694,8 @@ export const semanticTokens = defineSemanticTokens({
     teal: {
       contrast: {
         value: {
-          _light: "{colors.white}",
-          _dark: "{colors.white}",
+          _light: "#ffffff",
+          _dark: "#ffffff",
         },
       },
       fg: {
@@ -1744,8 +1744,8 @@ export const semanticTokens = defineSemanticTokens({
     purple: {
       contrast: {
         value: {
-          _light: "{colors.white}",
-          _dark: "{colors.white}",
+          _light: "#ffffff",
+          _dark: "#ffffff",
         },
       },
       fg: {
@@ -1794,8 +1794,8 @@ export const semanticTokens = defineSemanticTokens({
     pink: {
       contrast: {
         value: {
-          _light: "{colors.white}",
-          _dark: "{colors.white}",
+          _light: "#ffffff",
+          _dark: "#ffffff",
         },
       },
       fg: {
@@ -1844,8 +1844,8 @@ export const semanticTokens = defineSemanticTokens({
     cyan: {
       contrast: {
         value: {
-          _light: "{colors.white}",
-          _dark: "{colors.white}",
+          _light: "#ffffff",
+          _dark: "#ffffff",
         },
       },
       fg: {

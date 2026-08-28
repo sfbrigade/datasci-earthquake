@@ -162,7 +162,11 @@
                 "red": {
                   "contrast": {
                     "$type": "color",
-                    "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+                    "$value": {
+                      "colorSpace": "srgb",
+                      "components": [1, 1, 1],
+                      "hex": "#ffffff"
+                    }
                   },
                   "fg": {
                     "$type": "color",
@@ -196,7 +200,11 @@
                 "orange": {
                   "contrast": {
                     "$type": "color",
-                    "$value": "{primitive.color.black}"
+                    "$value": {
+                      "colorSpace": "srgb",
+                      "components": [0, 0, 0],
+                      "hex": "#000000"
+                    }
                   },
                   "fg": {
                     "$type": "color",
@@ -230,7 +238,11 @@
                 "green": {
                   "contrast": {
                     "$type": "color",
-                    "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+                    "$value": {
+                      "colorSpace": "srgb",
+                      "components": [1, 1, 1],
+                      "hex": "#ffffff"
+                    }
                   },
                   "fg": {
                     "$type": "color",
@@ -264,7 +276,11 @@
                 "blue": {
                   "contrast": {
                     "$type": "color",
-                    "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+                    "$value": {
+                      "colorSpace": "srgb",
+                      "components": [1, 1, 1],
+                      "hex": "#ffffff"
+                    }
                   },
                   "fg": {
                     "$type": "color",
@@ -298,7 +314,11 @@
                 "yellow": {
                   "contrast": {
                     "$type": "color",
-                    "$value": "{primitive.color.black}"
+                    "$value": {
+                      "colorSpace": "srgb",
+                      "components": [0, 0, 0],
+                      "hex": "#000000"
+                    }
                   },
                   "fg": {
                     "$type": "color",
@@ -332,7 +352,11 @@
                 "teal": {
                   "contrast": {
                     "$type": "color",
-                    "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+                    "$value": {
+                      "colorSpace": "srgb",
+                      "components": [1, 1, 1],
+                      "hex": "#ffffff"
+                    }
                   },
                   "fg": {
                     "$type": "color",
@@ -366,7 +390,11 @@
                 "purple": {
                   "contrast": {
                     "$type": "color",
-                    "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+                    "$value": {
+                      "colorSpace": "srgb",
+                      "components": [1, 1, 1],
+                      "hex": "#ffffff"
+                    }
                   },
                   "fg": {
                     "$type": "color",
@@ -400,7 +428,11 @@
                 "pink": {
                   "contrast": {
                     "$type": "color",
-                    "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+                    "$value": {
+                      "colorSpace": "srgb",
+                      "components": [1, 1, 1],
+                      "hex": "#ffffff"
+                    }
                   },
                   "fg": {
                     "$type": "color",
@@ -434,7 +466,11 @@
                 "cyan": {
                   "contrast": {
                     "$type": "color",
-                    "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+                    "$value": {
+                      "colorSpace": "srgb",
+                      "components": [1, 1, 1],
+                      "hex": "#ffffff"
+                    }
                   },
                   "fg": {
                     "$type": "color",

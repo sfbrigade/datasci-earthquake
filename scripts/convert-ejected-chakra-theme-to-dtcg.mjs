@@ -2,6 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, relative, resolve } from "node:path";
 import prettier from "prettier";
 import ts from "typescript";
+import { findChakraPathCollisions } from "./design-token-lib/chakra-token-paths.mjs";
 
 const root = process.cwd();
 const themeDirectory = resolve(root, "theme-merged");
@@ -186,10 +187,6 @@ function setAtPath(target, path, value) {
   current[path.at(-1)] = value;
 }
 
-function getAtPath(target, path) {
-  return path.reduce((value, part) => value?.[part], target);
-}
-
 function normalizedPart(part) {
   return part === "DEFAULT" ? "$root" : part.replaceAll(".", "_");
 }
@@ -244,8 +241,14 @@ function reference(value, references) {
 function color(value, references) {
   const alias = reference(value, references);
   if (alias) return alias;
-  if (value === "white" || value === "black")
-    return reference(`{colors.${value}}`, references);
+  if (value === "white" || value === "black") {
+    const channel = value === "white" ? 1 : 0;
+    return {
+      colorSpace: "srgb",
+      components: [channel, channel, channel],
+      hex: value === "white" ? "#ffffff" : "#000000",
+    };
+  }
   if (value === "transparent") {
     return {
       colorSpace: "srgb",
@@ -538,6 +541,7 @@ function addPortable({
   recordNames(sourcePath, rawPath, normalized);
   mappings.push({
     source: sourcePath,
+    sourceToken: leaf,
     disposition: contextual ? "resolver-contextual" : "portable-dtcg",
     canonical: targetPath.join("."),
     ...(contextual ? { darkOverride: targetPath.join(".") } : {}),
@@ -548,6 +552,7 @@ function addPlatform({ sourcePath, chakraPath, leaf, reason }) {
   setAtPath(chakraDocument, chakraPath, leaf);
   mappings.push({
     source: sourcePath,
+    sourceToken: leaf,
     disposition: "chakra-platform",
     canonical: chakraPath.join("."),
     reason,
@@ -687,10 +692,7 @@ const unresolvedReferences = [
     )
   ),
 ].sort();
-const collisions = mappings
-  .filter((mapping) => mapping.disposition === "chakra-platform")
-  .filter((mapping) => getAtPath(tokensDocument, mapping.canonical.split(".")))
-  .map((mapping) => mapping.canonical);
+const collisions = findChakraPathCollisions(mappings);
 const sourceCounts = new Map();
 for (const mapping of mappings)
   sourceCounts.set(mapping.source, (sourceCounts.get(mapping.source) ?? 0) + 1);

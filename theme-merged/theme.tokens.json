@@ -1829,7 +1829,11 @@
       "red": {
         "contrast": {
           "$type": "color",
-          "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "hex": "#ffffff"
+          }
         },
         "fg": { "$type": "color", "$value": "{primitive.color.red.700}" },
         "subtle": { "$type": "color", "$value": "{primitive.color.red.100}" },
@@ -1848,7 +1852,11 @@
       "orange": {
         "contrast": {
           "$type": "color",
-          "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "hex": "#ffffff"
+          }
         },
         "fg": { "$type": "color", "$value": "{primitive.color.orange.700}" },
         "subtle": {
@@ -1870,7 +1878,11 @@
       "green": {
         "contrast": {
           "$type": "color",
-          "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "hex": "#ffffff"
+          }
         },
         "fg": { "$type": "color", "$value": "{primitive.color.green.700}" },
         "subtle": { "$type": "color", "$value": "{primitive.color.green.100}" },
@@ -1889,7 +1901,11 @@
       "blue": {
         "contrast": {
           "$type": "color",
-          "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "hex": "#ffffff"
+          }
         },
         "fg": { "$type": "color", "$value": "{primitive.color.blue.700}" },
         "subtle": { "$type": "color", "$value": "{primitive.color.blue.100}" },
@@ -1906,7 +1922,14 @@
         "border": { "$type": "color", "$value": "{primitive.color.blue.500}" }
       },
       "yellow": {
-        "contrast": { "$type": "color", "$value": "{primitive.color.black}" },
+        "contrast": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [0, 0, 0],
+            "hex": "#000000"
+          }
+        },
         "fg": { "$type": "color", "$value": "{primitive.color.yellow.800}" },
         "subtle": {
           "$type": "color",
@@ -1927,7 +1950,11 @@
       "teal": {
         "contrast": {
           "$type": "color",
-          "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "hex": "#ffffff"
+          }
         },
         "fg": { "$type": "color", "$value": "{primitive.color.teal.700}" },
         "subtle": { "$type": "color", "$value": "{primitive.color.teal.100}" },
@@ -1946,7 +1973,11 @@
       "purple": {
         "contrast": {
           "$type": "color",
-          "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "hex": "#ffffff"
+          }
         },
         "fg": { "$type": "color", "$value": "{primitive.color.purple.700}" },
         "subtle": {
@@ -1968,7 +1999,11 @@
       "pink": {
         "contrast": {
           "$type": "color",
-          "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "hex": "#ffffff"
+          }
         },
         "fg": { "$type": "color", "$value": "{primitive.color.pink.700}" },
         "subtle": { "$type": "color", "$value": "{primitive.color.pink.100}" },
@@ -1987,7 +2022,11 @@
       "cyan": {
         "contrast": {
           "$type": "color",
-          "$value": { "$ref": "#/primitive/color/white/$root/$value" }
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [1, 1, 1],
+            "hex": "#ffffff"
+          }
         },
         "fg": { "$type": "color", "$value": "{primitive.color.cyan.700}" },
         "subtle": { "$type": "color", "$value": "{primitive.color.cyan.100}" },

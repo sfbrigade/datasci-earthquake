@@ -2,37 +2,12 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import prettier from "prettier";
-
-const primitiveNames = {
-  color: "colors",
-  spacing: "spacing",
-  sizes: "sizes",
-  fonts: "fonts",
-  fontSize: "fontSizes",
-  fontWeight: "fontWeights",
-  lineHeight: "lineHeights",
-  letterSpacing: "letterSpacings",
-  borderRadius: "radii",
-  borderWidth: "borderWidths",
-  strokeStyle: "borderStyles",
-  durations: "durations",
-  easings: "easings",
-  blurs: "blurs",
-  zIndex: "zIndex",
-  gradients: "gradients",
-  aspectRatio: "aspectRatios",
-  animations: "animations",
-  borders: "borders",
-  cursor: "cursor",
-};
-
-const semanticNames = {
-  color: "colors",
-  borderRadius: "radii",
-  size: "sizes",
-  shadow: "shadows",
-  asset: "assets",
-};
+import {
+  chakraGroupPath,
+  chakraTokenName,
+  primitiveNames,
+  semanticNames,
+} from "./design-token-lib/chakra-token-paths.mjs";
 
 function isObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
@@ -50,28 +25,6 @@ function setAtPath(target, path, value) {
 
 function getAtPath(target, path) {
   return path.reduce((value, part) => value?.[part], target);
-}
-
-function chakraTokenName(name) {
-  return /^-?\d+_\d+$/.test(name) ? name.replace("_", ".") : name;
-}
-
-function chakraGroupPath(canonicalPath) {
-  const [scope, group, ...parts] = canonicalPath;
-  const groupName =
-    scope === "primitive"
-      ? primitiveNames[group]
-      : scope === "semantic"
-        ? semanticNames[group]
-        : undefined;
-  if (!groupName) return undefined;
-  return [
-    scope === "primitive" ? "tokens" : "semanticTokens",
-    groupName,
-    ...parts.map((part) =>
-      part === "$root" ? "DEFAULT" : chakraTokenName(part)
-    ),
-  ];
 }
 
 function canonicalReferencePath(value) {
@@ -103,15 +56,21 @@ export function chakraReference(value) {
   return `{${[group, ...referenceParts].join(".")}}`;
 }
 
-export function colorToCss(value) {
+export function colorToCss(value, canonicalPath = "<unknown token>") {
   const alias = chakraReference(value);
   if (alias) return alias;
-  if (
-    !isObject(value) ||
-    value.colorSpace !== "srgb" ||
-    !Array.isArray(value.components)
-  )
-    return undefined;
+  if (!isObject(value)) return undefined;
+  if (value.colorSpace !== "srgb") {
+    throw new Error(
+      `Unsupported DTCG colorSpace ${JSON.stringify(value.colorSpace)} at ${canonicalPath}; the SafeHome Chakra adapter supports structured sRGB colors only.`
+    );
+  }
+  if (!Array.isArray(value.components)) return undefined;
+  if (value.components.some((component) => typeof component !== "number")) {
+    throw new Error(
+      `Unsupported DTCG sRGB component at ${canonicalPath}; the SafeHome Chakra adapter requires three numeric components.`
+    );
+  }
   const rgb = value.components.map((component) =>
     Math.round(Number(component) * 255)
   );
@@ -156,14 +115,18 @@ function durationToCss(value) {
     : undefined;
 }
 
-export function tokenValue(token, inheritedType) {
+export function tokenValue(
+  token,
+  inheritedType,
+  canonicalPath = "<unknown token>"
+) {
   const type = token.$type ?? inheritedType;
   const value = token.$value;
   const alias = chakraReference(value);
   if (alias) return alias;
   switch (type) {
     case "color":
-      return colorToCss(value);
+      return colorToCss(value, canonicalPath);
     case "dimension":
       return dimensionToCss(value);
     case "duration":
@@ -184,11 +147,15 @@ export function tokenValue(token, inheritedType) {
       const style =
         chakraReference(value.style) ??
         (typeof value.style === "string" ? value.style : undefined);
-      const color = chakraReference(value.color) ?? colorToCss(value.color);
+      const color =
+        chakraReference(value.color) ??
+        colorToCss(value.color, `${canonicalPath}.color`);
       return width && style && color ? `${width} ${style} ${color}` : undefined;
     }
     default:
-      return undefined;
+      throw new Error(
+        `Unsupported DTCG token type ${JSON.stringify(type)} at ${canonicalPath}.`
+      );
   }
 }
 
@@ -267,15 +234,20 @@ function convertCanonicalGroup(
     const canonicalPath = [...canonicalPrefix, key];
     const chakraKey = key === "$root" ? "DEFAULT" : chakraTokenName(key);
     if (isObject(value) && Object.hasOwn(value, "$value")) {
-      const lightValue = tokenValue(value, inheritedType ?? group.$type);
+      const canonicalName = canonicalPath.join(".");
+      const lightValue = tokenValue(
+        value,
+        inheritedType ?? group.$type,
+        canonicalName
+      );
       if (lightValue === undefined)
         throw new Error(
           `Cannot convert DTCG token ${canonicalPath.join(".")} to Chakra.`
         );
-      const canonicalName = canonicalPath.join(".");
       if (contextual.has(canonicalName)) {
         const dark = darkEntries.get(canonicalName);
-        const darkValue = dark && tokenValue(dark.token, dark.inheritedType);
+        const darkValue =
+          dark && tokenValue(dark.token, dark.inheritedType, canonicalName);
         if (darkValue === undefined)
           throw new Error(
             `Cannot convert dark override ${canonicalName} to Chakra.`
@@ -401,6 +373,21 @@ export function compileTheme(tokensDocument, resolverDocument, chakraDocument) {
   return { tokens, semanticTokens };
 }
 
+export async function renderTheme(
+  tokensDocument,
+  resolverDocument,
+  chakraDocument,
+  { outputFile = "styles/generated-dtcg-theme.ts" } = {}
+) {
+  const { tokens, semanticTokens } = compileTheme(
+    tokensDocument,
+    resolverDocument,
+    chakraDocument
+  );
+  const source = `// This file is generated by scripts/convert-dtcg-tokens-to-chakra.mjs.\n// Do not edit it directly; update theme-merged/theme.tokens.json, theme.resolver.json, or theme.chakra.json instead.\n\nimport { defineSemanticTokens, defineTokens } from "@chakra-ui/react";\n\nexport const tokens = defineTokens(${JSON.stringify(tokens, null, 2)});\n\nexport const semanticTokens = defineSemanticTokens(${JSON.stringify(semanticTokens, null, 2)});\n`;
+  return prettier.format(source, { filepath: outputFile });
+}
+
 export async function generateTheme({ root = process.cwd() } = {}) {
   const inputDirectory = resolve(root, "theme-merged");
   const outputFile = resolve(root, "styles/generated-dtcg-theme.ts");
@@ -415,17 +402,16 @@ export async function generateTheme({ root = process.cwd() } = {}) {
       JSON.parse
     ),
   ]);
-  const { tokens, semanticTokens } = compileTheme(
+  const output = await renderTheme(
     tokensDocument,
     resolverDocument,
-    chakraDocument
+    chakraDocument,
+    { outputFile }
   );
-  const source = `// This file is generated by scripts/convert-dtcg-tokens-to-chakra.mjs.\n// Do not edit it directly; update theme-merged/theme.tokens.json, theme.resolver.json, or theme.chakra.json instead.\n\nimport { defineSemanticTokens, defineTokens } from "@chakra-ui/react";\n\nexport const tokens = defineTokens(${JSON.stringify(tokens, null, 2)});\n\nexport const semanticTokens = defineSemanticTokens(${JSON.stringify(semanticTokens, null, 2)});\n`;
-  const output = await prettier.format(source, { filepath: outputFile });
   await mkdir(dirname(outputFile), { recursive: true });
   await writeFile(outputFile, output);
   console.log(`Wrote ${relative(root, outputFile)}`);
-  return { tokens, semanticTokens, output };
+  return output;
 }
 
 const isMain =

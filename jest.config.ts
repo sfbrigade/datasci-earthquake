@@ -16,7 +16,11 @@ const config: Config = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/app/$1",
   },
-  testPathIgnorePatterns: ["/e2e-tests/", "/.tmp/"],
+  testPathIgnorePatterns: [
+    "/e2e-tests/",
+    "/.tmp/",
+    "/scripts/design-token-converter.test.mjs",
+  ],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

@@ -4,19 +4,35 @@ import test from "node:test";
 import {
   colorToCss,
   compileTheme,
+  renderTheme,
   tokenValue,
 } from "./convert-dtcg-tokens-to-chakra.mjs";
+import { findChakraPathCollisions } from "./design-token-lib/chakra-token-paths.mjs";
+import { compareTokenRoundTrip } from "./design-token-lib/design-token-roundtrip.mjs";
+import { validateDesignTokenArtifact } from "./design-token-lib/validate-design-token-schema.mjs";
 
-const [tokensDocument, resolverDocument, chakraDocument, chakraSchema, report] =
-  await Promise.all(
-    [
-      "theme-merged/theme.tokens.json",
-      "theme-merged/theme.resolver.json",
-      "theme-merged/theme.chakra.json",
-      "theme-merged/theme.chakra.schema.json",
-      "theme-merged/theme.report.json",
-    ].map((file) => readFile(file, "utf8").then(JSON.parse))
-  );
+const readJson = (file) => readFile(file, "utf8").then(JSON.parse);
+const [
+  tokensDocument,
+  resolverDocument,
+  chakraDocument,
+  chakraSchema,
+  report,
+  formatSchema,
+  resolverSchema,
+  committedGeneratedSource,
+  forwardCompilerSource,
+] = await Promise.all([
+  readJson("theme-merged/theme.tokens.json"),
+  readJson("theme-merged/theme.resolver.json"),
+  readJson("theme-merged/theme.chakra.json"),
+  readJson("theme-merged/theme.chakra.schema.json"),
+  readJson("theme-merged/theme.report.json"),
+  readJson("scripts/schemas/dtcg/2025.10/format.json"),
+  readJson("scripts/schemas/dtcg/2025.10/resolver.json"),
+  readFile("styles/generated-dtcg-theme.ts", "utf8"),
+  readFile("scripts/convert-dtcg-tokens-to-chakra.mjs", "utf8"),
+]);
 
 function isObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
@@ -86,6 +102,60 @@ const baseEntries = tokenEntries(tokensDocument);
 const darkDocument = resolverDocument.modifiers.theme.contexts.dark[0];
 const darkEntries = tokenEntries(darkDocument);
 const compiled = compileTheme(tokensDocument, resolverDocument, chakraDocument);
+const roundTrip = compareTokenRoundTrip({
+  compiled,
+  tokensDocument,
+  chakraDocument,
+  report,
+});
+
+test("all ejected source leaves round trip with exact paths and equivalent values", () => {
+  assert.equal(roundTrip.sourceLeafCount, report.counts.sourceLeafCount);
+  assert.equal(roundTrip.outputLeafCount, roundTrip.sourceLeafCount);
+  assert.deepEqual(roundTrip.mismatches, [], roundTrip.mismatches.join("\n\n"));
+});
+
+test("forward rendering is deterministic and committed generated output is current", async () => {
+  const first = await renderTheme(
+    tokensDocument,
+    resolverDocument,
+    chakraDocument
+  );
+  const second = await renderTheme(
+    tokensDocument,
+    resolverDocument,
+    chakraDocument
+  );
+  assert.equal(second, first, "two in-memory renders differ");
+  assert.equal(
+    committedGeneratedSource,
+    first,
+    "styles/generated-dtcg-theme.ts is stale; run npm run gen:chakra-theme"
+  );
+  assert.doesNotMatch(
+    forwardCompilerSource,
+    /theme\.report\.json/,
+    "the diagnostic migration report must not become a forward compiler input"
+  );
+});
+
+test("all three authority artifacts pass real pinned JSON Schema validation", () => {
+  validateDesignTokenArtifact(
+    "theme-merged/theme.tokens.json",
+    formatSchema,
+    tokensDocument
+  );
+  validateDesignTokenArtifact(
+    "theme-merged/theme.resolver.json",
+    resolverSchema,
+    resolverDocument
+  );
+  validateDesignTokenArtifact(
+    "theme-merged/theme.chakra.json",
+    chakraSchema,
+    chakraDocument
+  );
+});
 
 test("portable document uses legal DTCG identities and explicit concrete types", () => {
   assert.equal(
@@ -244,6 +314,21 @@ test("structured alpha round trips to the original eight-digit CSS color", () =>
   );
 });
 
+test("literal semantic black and white stay literals rather than inferred aliases", () => {
+  assert.deepEqual(compiled.semanticTokens.colors.orange.contrast.value, {
+    _light: "#ffffff",
+    _dark: "#000000",
+  });
+  assert.deepEqual(compiled.semanticTokens.colors.yellow.contrast.value, {
+    _light: "#000000",
+    _dark: "#000000",
+  });
+  assert.notEqual(
+    compiled.semanticTokens.colors.yellow.contrast.value._light,
+    "{colors.black}"
+  );
+});
+
 test("complete borders are portable while lossy CSS composites remain platform-specific", () => {
   assert.equal(tokensDocument.primitive.borders.search.$type, "border");
   assert.equal(
@@ -255,6 +340,30 @@ test("complete borders are portable while lossy CSS composites remain platform-s
   assert.ok(
     chakraDocument.semanticTokens.shadows.search.value.includes("{spacing.0}")
   );
+});
+
+test("report collision analysis compares canonical and platform mappings in Chakra space", () => {
+  const collisions = findChakraPathCollisions([
+    {
+      source: "tokens.colors.black-from-dtcg",
+      disposition: "portable-dtcg",
+      canonical: "primitive.color.black",
+    },
+    {
+      source: "tokens.colors.black-from-platform",
+      disposition: "chakra-platform",
+      canonical: "tokens.colors.black",
+    },
+  ]);
+  assert.deepEqual(collisions, [
+    {
+      target: "tokens.colors.black",
+      portableSource: "tokens.colors.black-from-dtcg",
+      platformSource: "tokens.colors.black-from-platform",
+    },
+  ]);
+  assert.deepEqual(findChakraPathCollisions(report.mappings), []);
+  assert.deepEqual(report.collisions, []);
 });
 
 test("Chakra supplement collisions fail unless represented as explicit bindings", () => {
@@ -297,8 +406,25 @@ test("supplement follows its versioned schema contract", () => {
   }
 });
 
+test("schema-valid colors outside the Chakra adapter subset fail explicitly", () => {
+  const unsupported = structuredClone(tokensDocument);
+  unsupported.primitive.color.black.$value = {
+    colorSpace: "display-p3",
+    components: [0.1, 0.2, 0.3],
+  };
+  validateDesignTokenArtifact(
+    "unsupported-valid-color.fixture.json",
+    formatSchema,
+    unsupported
+  );
+  assert.throws(
+    () => compileTheme(unsupported, resolverDocument, chakraDocument),
+    /Unsupported DTCG colorSpace "display-p3" at primitive\.color\.black/
+  );
+});
+
 test("migration report accounts for every source leaf exactly once", () => {
-  assert.equal(report.counts.sourceLeafCount, 519);
+  assert.equal(report.counts.sourceLeafCount, report.mappings.length);
   assert.equal(report.counts.portableDefaultTokenCount, baseEntries.size);
   assert.equal(report.counts.darkOverrideCount, darkEntries.size);
   assert.equal(
