@@ -49,6 +49,10 @@ node_modules
 /theme-merged/*
 !/theme-merged/README.md
 !/theme-merged/theme.tokens.json
+!/theme-merged/theme.resolver.json
+!/theme-merged/theme.chakra.json
+!/theme-merged/theme.chakra.schema.json
+!/theme-merged/theme.report.json
 /chakra-config.json
 *storybook.log
 storybook-static

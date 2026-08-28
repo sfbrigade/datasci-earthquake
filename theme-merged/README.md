@@ -1,40 +1,27 @@
-# DTCG export
+# SafeHome design-token sources
 
-`theme.tokens.json` is the source of truth for the design tokens. The initial
-export was generated from the ejected Chakra theme. Only use the reverse export
-below if you intentionally need to re-import changes made to the old ejected
-files; it overwrites the DTCG source of truth.
+Normal theme generation has three authoritative inputs:
 
-```sh
-npm run gen:dtcg-tokens
-```
+- `theme.tokens.json` is the portable DTCG Format 2025.10 document. It contains primitives, non-contextual semantic tokens, and the default/light value of contextual semantic tokens.
+- `theme.resolver.json` is the DTCG Resolver 2025.10 document. It identifies theme-contextual tokens and supplies dark values at the same token paths.
+- `theme.chakra.json` is the versioned Chakra/Web supplement validated by `theme.chakra.schema.json`. It owns CSS-only token values and explicit platform bindings such as the `next/font` CSS variables.
 
-To compile the DTCG file into the Chakra token configuration consumed by
-`styles/theme.ts`, run:
+`theme.report.json` is a deterministic migration report. It provides accounting, path mappings, reasons for platform-only dispositions, and diagnostics, but is never an input to runtime theme generation.
+
+Compile the three authority inputs into the Chakra definitions consumed by `styles/theme.ts`:
 
 ```sh
 npm run gen:chakra-theme
 ```
 
-`npm run build` compiles this generated module before type generation and the
-Next.js build. Do not edit `styles/generated-dtcg-theme.ts` directly.
+`npm run build` runs this forward compiler before Chakra type generation. Do not edit `styles/generated-dtcg-theme.ts` directly.
 
-The export uses standard DTCG `$value`, `$type`, `$description`, and token
-references. Color values are normalized to sRGB objects; dimensions and
-durations become `{ value, unit }` objects; and Chakra's `_light` / `_dark`
-semantic color conditions become `semantic.color.light` and
-`semantic.color.dark`. Color values also include the standard six-digit `hex`
-fallback; alpha remains the separate DTCG `alpha` value. The Chakra generator
-uses these standard values directly; it does not use a per-token copy of the
-original Chakra value.
+The ejected files under `tokens/` and `semantic-tokens/` are migration inputs only. To intentionally overwrite all four JSON artifacts from those old sources, run:
 
-Fractional Chakra scale keys are encoded with underscores in DTCG (for example,
-`0_5` and `0_25`), because DTCG token names cannot contain periods. The Chakra
-generator restores their original dot notation (`"0.5"`, `"0.25"`).
+```sh
+npm run gen:dtcg-tokens
+```
 
-Chakra-only CSS values (for example `vw`, `auto`, `currentColor`, responsive
-values, shadows expressed as CSS strings, assets, recipes, and keyframes) have
-no DTCG equivalent. They are preserved, unchanged, under the
-`$extensions.com.safehome.chakra-ui` namespace. The existing TypeScript theme
-continues to be the Chakra runtime configuration, importing the generated token
-module from `styles/generated-dtcg-theme.ts`.
+This reverse import is deliberately not part of the normal build.
+
+Chakra `DEFAULT` is represented by the reserved DTCG `$root` token segment. Fractional Chakra keys use underscores in DTCG (`0_5`, `0_25`) and are restored to dot notation during Chakra generation. Only `px` and `rem` values are emitted as DTCG dimensions; CSS percentages, viewport units, intrinsic sizes, keywords, animation strings, gradient geometry, assets, and values that cannot be losslessly parsed remain in the Chakra supplement.

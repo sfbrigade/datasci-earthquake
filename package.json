@@ -37,6 +37,7 @@
     "gen:tokens": "chakra eject",
     "gen:dtcg-tokens": "node scripts/convert-ejected-chakra-theme-to-dtcg.mjs",
     "gen:chakra-theme": "node scripts/convert-dtcg-tokens-to-chakra.mjs",
+    "test:design-tokens": "node --test scripts/design-token-converter.test.mjs",
     "storybook": "STORYBOOK_APP_URL=http://localhost:3000 storybook dev -p 6006",
     "build-storybook": "storybook build"
   },

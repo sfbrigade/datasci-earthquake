@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SafeHome Chakra token supplement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "description",
+    "tokens",
+    "semanticTokens",
+    "bindings"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "./theme.chakra.schema.json"
+    },
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "description": {
+      "type": "string"
+    },
+    "tokens": {
+      "$ref": "#/definitions/tokenTree"
+    },
+    "semanticTokens": {
+      "$ref": "#/definitions/tokenTree"
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/binding"
+      }
+    }
+  },
+  "definitions": {
+    "tokenTree": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "$ref": "#/definitions/tokenLeaf"
+          },
+          {
+            "$ref": "#/definitions/tokenTree"
+          }
+        ]
+      }
+    },
+    "tokenLeaf": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value"],
+      "properties": {
+        "value": true,
+        "description": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "value", "reason"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "pattern": "^(primitive|semantic)\\."
+        },
+        "value": true,
+        "reason": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

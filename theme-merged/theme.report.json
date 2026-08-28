@@ -1,0 +1,2887 @@
+{
+  "schemaVersion": "1.0",
+  "provenance": {
+    "source": "ejected Chakra UI v3 theme under theme-merged/tokens and theme-merged/semantic-tokens",
+    "formatSchema": "https://www.designtokens.org/schemas/2025.10/format.json",
+    "resolverSchema": "https://www.designtokens.org/schemas/2025.10/resolver.json",
+    "chakraSchema": "./theme.chakra.schema.json",
+    "resolverVersion": "2025.10",
+    "generator": "scripts/convert-ejected-chakra-theme-to-dtcg.mjs"
+  },
+  "counts": {
+    "sourceLeafCount": 519,
+    "portableDefaultTokenCount": 430,
+    "themeContextualTokenCount": 107,
+    "darkOverrideCount": 107,
+    "chakraOnlyCount": 89,
+    "rejectedCount": 0
+  },
+  "mappings": [
+    {
+      "source": "tokens.colors.transparent",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.transparent"
+    },
+    {
+      "source": "tokens.colors.current",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.colors.current",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.colors.black",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.black"
+    },
+    {
+      "source": "tokens.colors.white.DEFAULT",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.white.$root"
+    },
+    {
+      "source": "tokens.colors.whiteAlpha.50",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.whiteAlpha.50"
+    },
+    {
+      "source": "tokens.colors.whiteAlpha.100",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.whiteAlpha.100"
+    },
+    {
+      "source": "tokens.colors.whiteAlpha.200",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.whiteAlpha.200"
+    },
+    {
+      "source": "tokens.colors.whiteAlpha.300",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.whiteAlpha.300"
+    },
+    {
+      "source": "tokens.colors.whiteAlpha.400",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.whiteAlpha.400"
+    },
+    {
+      "source": "tokens.colors.whiteAlpha.500",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.whiteAlpha.500"
+    },
+    {
+      "source": "tokens.colors.whiteAlpha.600",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.whiteAlpha.600"
+    },
+    {
+      "source": "tokens.colors.whiteAlpha.700",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.whiteAlpha.700"
+    },
+    {
+      "source": "tokens.colors.whiteAlpha.800",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.whiteAlpha.800"
+    },
+    {
+      "source": "tokens.colors.whiteAlpha.900",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.whiteAlpha.900"
+    },
+    {
+      "source": "tokens.colors.whiteAlpha.950",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.whiteAlpha.950"
+    },
+    {
+      "source": "tokens.colors.blackAlpha.50",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blackAlpha.50"
+    },
+    {
+      "source": "tokens.colors.blackAlpha.100",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blackAlpha.100"
+    },
+    {
+      "source": "tokens.colors.blackAlpha.200",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blackAlpha.200"
+    },
+    {
+      "source": "tokens.colors.blackAlpha.300",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blackAlpha.300"
+    },
+    {
+      "source": "tokens.colors.blackAlpha.400",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blackAlpha.400"
+    },
+    {
+      "source": "tokens.colors.blackAlpha.500",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blackAlpha.500"
+    },
+    {
+      "source": "tokens.colors.blackAlpha.600",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blackAlpha.600"
+    },
+    {
+      "source": "tokens.colors.blackAlpha.700",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blackAlpha.700"
+    },
+    {
+      "source": "tokens.colors.blackAlpha.800",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blackAlpha.800"
+    },
+    {
+      "source": "tokens.colors.blackAlpha.900",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blackAlpha.900"
+    },
+    {
+      "source": "tokens.colors.blackAlpha.950",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blackAlpha.950"
+    },
+    {
+      "source": "tokens.colors.gray.50",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.gray.50"
+    },
+    {
+      "source": "tokens.colors.gray.100",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.gray.100"
+    },
+    {
+      "source": "tokens.colors.gray.200",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.gray.200"
+    },
+    {
+      "source": "tokens.colors.gray.300",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.gray.300"
+    },
+    {
+      "source": "tokens.colors.gray.400",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.gray.400"
+    },
+    {
+      "source": "tokens.colors.gray.500",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.gray.500"
+    },
+    {
+      "source": "tokens.colors.gray.600",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.gray.600"
+    },
+    {
+      "source": "tokens.colors.gray.700",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.gray.700"
+    },
+    {
+      "source": "tokens.colors.gray.800",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.gray.800"
+    },
+    {
+      "source": "tokens.colors.gray.900",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.gray.900"
+    },
+    {
+      "source": "tokens.colors.gray.950",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.gray.950"
+    },
+    {
+      "source": "tokens.colors.red.50",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.red.50"
+    },
+    {
+      "source": "tokens.colors.red.100",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.red.100"
+    },
+    {
+      "source": "tokens.colors.red.200",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.red.200"
+    },
+    {
+      "source": "tokens.colors.red.300",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.red.300"
+    },
+    {
+      "source": "tokens.colors.red.400",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.red.400"
+    },
+    {
+      "source": "tokens.colors.red.500",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.red.500"
+    },
+    {
+      "source": "tokens.colors.red.600",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.red.600"
+    },
+    {
+      "source": "tokens.colors.red.700",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.red.700"
+    },
+    {
+      "source": "tokens.colors.red.800",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.red.800"
+    },
+    {
+      "source": "tokens.colors.red.900",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.red.900"
+    },
+    {
+      "source": "tokens.colors.red.950",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.red.950"
+    },
+    {
+      "source": "tokens.colors.red.DEFAULT",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.red.$root"
+    },
+    {
+      "source": "tokens.colors.orange.50",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.orange.50"
+    },
+    {
+      "source": "tokens.colors.orange.100",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.orange.100"
+    },
+    {
+      "source": "tokens.colors.orange.200",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.orange.200"
+    },
+    {
+      "source": "tokens.colors.orange.300",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.orange.300"
+    },
+    {
+      "source": "tokens.colors.orange.400",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.orange.400"
+    },
+    {
+      "source": "tokens.colors.orange.500",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.orange.500"
+    },
+    {
+      "source": "tokens.colors.orange.600",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.orange.600"
+    },
+    {
+      "source": "tokens.colors.orange.700",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.orange.700"
+    },
+    {
+      "source": "tokens.colors.orange.800",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.orange.800"
+    },
+    {
+      "source": "tokens.colors.orange.900",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.orange.900"
+    },
+    {
+      "source": "tokens.colors.orange.950",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.orange.950"
+    },
+    {
+      "source": "tokens.colors.orange.DEFAULT",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.orange.$root"
+    },
+    {
+      "source": "tokens.colors.yellow.50",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.yellow.50"
+    },
+    {
+      "source": "tokens.colors.yellow.100",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.yellow.100"
+    },
+    {
+      "source": "tokens.colors.yellow.200",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.yellow.200"
+    },
+    {
+      "source": "tokens.colors.yellow.300",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.yellow.300"
+    },
+    {
+      "source": "tokens.colors.yellow.400",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.yellow.400"
+    },
+    {
+      "source": "tokens.colors.yellow.500",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.yellow.500"
+    },
+    {
+      "source": "tokens.colors.yellow.600",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.yellow.600"
+    },
+    {
+      "source": "tokens.colors.yellow.700",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.yellow.700"
+    },
+    {
+      "source": "tokens.colors.yellow.800",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.yellow.800"
+    },
+    {
+      "source": "tokens.colors.yellow.900",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.yellow.900"
+    },
+    {
+      "source": "tokens.colors.yellow.950",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.yellow.950"
+    },
+    {
+      "source": "tokens.colors.yellow.DEFAULT",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.yellow.$root"
+    },
+    {
+      "source": "tokens.colors.green.50",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.green.50"
+    },
+    {
+      "source": "tokens.colors.green.100",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.green.100"
+    },
+    {
+      "source": "tokens.colors.green.200",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.green.200"
+    },
+    {
+      "source": "tokens.colors.green.300",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.green.300"
+    },
+    {
+      "source": "tokens.colors.green.400",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.green.400"
+    },
+    {
+      "source": "tokens.colors.green.500",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.green.500"
+    },
+    {
+      "source": "tokens.colors.green.600",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.green.600"
+    },
+    {
+      "source": "tokens.colors.green.700",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.green.700"
+    },
+    {
+      "source": "tokens.colors.green.800",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.green.800"
+    },
+    {
+      "source": "tokens.colors.green.900",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.green.900"
+    },
+    {
+      "source": "tokens.colors.green.950",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.green.950"
+    },
+    {
+      "source": "tokens.colors.green.DEFAULT",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.green.$root"
+    },
+    {
+      "source": "tokens.colors.teal.50",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.teal.50"
+    },
+    {
+      "source": "tokens.colors.teal.100",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.teal.100"
+    },
+    {
+      "source": "tokens.colors.teal.200",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.teal.200"
+    },
+    {
+      "source": "tokens.colors.teal.300",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.teal.300"
+    },
+    {
+      "source": "tokens.colors.teal.400",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.teal.400"
+    },
+    {
+      "source": "tokens.colors.teal.500",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.teal.500"
+    },
+    {
+      "source": "tokens.colors.teal.600",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.teal.600"
+    },
+    {
+      "source": "tokens.colors.teal.700",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.teal.700"
+    },
+    {
+      "source": "tokens.colors.teal.800",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.teal.800"
+    },
+    {
+      "source": "tokens.colors.teal.900",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.teal.900"
+    },
+    {
+      "source": "tokens.colors.teal.950",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.teal.950"
+    },
+    {
+      "source": "tokens.colors.blue.50",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blue.50"
+    },
+    {
+      "source": "tokens.colors.blue.100",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blue.100"
+    },
+    {
+      "source": "tokens.colors.blue.200",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blue.200"
+    },
+    {
+      "source": "tokens.colors.blue.300",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blue.300"
+    },
+    {
+      "source": "tokens.colors.blue.400",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blue.400"
+    },
+    {
+      "source": "tokens.colors.blue.500",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blue.500"
+    },
+    {
+      "source": "tokens.colors.blue.600",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blue.600"
+    },
+    {
+      "source": "tokens.colors.blue.700",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blue.700"
+    },
+    {
+      "source": "tokens.colors.blue.800",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blue.800"
+    },
+    {
+      "source": "tokens.colors.blue.900",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blue.900"
+    },
+    {
+      "source": "tokens.colors.blue.950",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blue.950"
+    },
+    {
+      "source": "tokens.colors.blue.text",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.blue.text"
+    },
+    {
+      "source": "tokens.colors.cyan.50",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.cyan.50"
+    },
+    {
+      "source": "tokens.colors.cyan.100",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.cyan.100"
+    },
+    {
+      "source": "tokens.colors.cyan.200",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.cyan.200"
+    },
+    {
+      "source": "tokens.colors.cyan.300",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.cyan.300"
+    },
+    {
+      "source": "tokens.colors.cyan.400",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.cyan.400"
+    },
+    {
+      "source": "tokens.colors.cyan.500",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.cyan.500"
+    },
+    {
+      "source": "tokens.colors.cyan.600",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.cyan.600"
+    },
+    {
+      "source": "tokens.colors.cyan.700",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.cyan.700"
+    },
+    {
+      "source": "tokens.colors.cyan.800",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.cyan.800"
+    },
+    {
+      "source": "tokens.colors.cyan.900",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.cyan.900"
+    },
+    {
+      "source": "tokens.colors.cyan.950",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.cyan.950"
+    },
+    {
+      "source": "tokens.colors.purple.50",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.purple.50"
+    },
+    {
+      "source": "tokens.colors.purple.100",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.purple.100"
+    },
+    {
+      "source": "tokens.colors.purple.200",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.purple.200"
+    },
+    {
+      "source": "tokens.colors.purple.300",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.purple.300"
+    },
+    {
+      "source": "tokens.colors.purple.400",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.purple.400"
+    },
+    {
+      "source": "tokens.colors.purple.500",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.purple.500"
+    },
+    {
+      "source": "tokens.colors.purple.600",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.purple.600"
+    },
+    {
+      "source": "tokens.colors.purple.700",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.purple.700"
+    },
+    {
+      "source": "tokens.colors.purple.800",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.purple.800"
+    },
+    {
+      "source": "tokens.colors.purple.900",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.purple.900"
+    },
+    {
+      "source": "tokens.colors.purple.950",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.purple.950"
+    },
+    {
+      "source": "tokens.colors.pink.50",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.pink.50"
+    },
+    {
+      "source": "tokens.colors.pink.100",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.pink.100"
+    },
+    {
+      "source": "tokens.colors.pink.200",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.pink.200"
+    },
+    {
+      "source": "tokens.colors.pink.300",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.pink.300"
+    },
+    {
+      "source": "tokens.colors.pink.400",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.pink.400"
+    },
+    {
+      "source": "tokens.colors.pink.500",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.pink.500"
+    },
+    {
+      "source": "tokens.colors.pink.600",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.pink.600"
+    },
+    {
+      "source": "tokens.colors.pink.700",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.pink.700"
+    },
+    {
+      "source": "tokens.colors.pink.800",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.pink.800"
+    },
+    {
+      "source": "tokens.colors.pink.900",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.pink.900"
+    },
+    {
+      "source": "tokens.colors.pink.950",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.pink.950"
+    },
+    {
+      "source": "tokens.colors.pink.DEFAULT",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.pink.$root"
+    },
+    {
+      "source": "tokens.colors.grey.200",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.grey.200"
+    },
+    {
+      "source": "tokens.colors.grey.400",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.grey.400"
+    },
+    {
+      "source": "tokens.colors.grey.600",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.grey.600"
+    },
+    {
+      "source": "tokens.colors.grey.900",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.grey.900"
+    },
+    {
+      "source": "tokens.colors.peach.DEFAULT",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.color.peach.$root"
+    },
+    {
+      "source": "tokens.spacing.0",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.0"
+    },
+    {
+      "source": "tokens.spacing.1",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.1"
+    },
+    {
+      "source": "tokens.spacing.2",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.2"
+    },
+    {
+      "source": "tokens.spacing.3",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.3"
+    },
+    {
+      "source": "tokens.spacing.4",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.4"
+    },
+    {
+      "source": "tokens.spacing.5",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.5"
+    },
+    {
+      "source": "tokens.spacing.6",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.6"
+    },
+    {
+      "source": "tokens.spacing.7",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.7"
+    },
+    {
+      "source": "tokens.spacing.8",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.8"
+    },
+    {
+      "source": "tokens.spacing.9",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.9"
+    },
+    {
+      "source": "tokens.spacing.10",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.10"
+    },
+    {
+      "source": "tokens.spacing.11",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.11"
+    },
+    {
+      "source": "tokens.spacing.12",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.12"
+    },
+    {
+      "source": "tokens.spacing.14",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.14"
+    },
+    {
+      "source": "tokens.spacing.16",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.16"
+    },
+    {
+      "source": "tokens.spacing.20",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.20"
+    },
+    {
+      "source": "tokens.spacing.24",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.24"
+    },
+    {
+      "source": "tokens.spacing.28",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.28"
+    },
+    {
+      "source": "tokens.spacing.32",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.32"
+    },
+    {
+      "source": "tokens.spacing.36",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.36"
+    },
+    {
+      "source": "tokens.spacing.40",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.40"
+    },
+    {
+      "source": "tokens.spacing.44",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.44"
+    },
+    {
+      "source": "tokens.spacing.48",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.48"
+    },
+    {
+      "source": "tokens.spacing.52",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.52"
+    },
+    {
+      "source": "tokens.spacing.56",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.56"
+    },
+    {
+      "source": "tokens.spacing.60",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.60"
+    },
+    {
+      "source": "tokens.spacing.64",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.64"
+    },
+    {
+      "source": "tokens.spacing.72",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.72"
+    },
+    {
+      "source": "tokens.spacing.80",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.80"
+    },
+    {
+      "source": "tokens.spacing.96",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.96"
+    },
+    {
+      "source": "tokens.spacing.0.5",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.0_5"
+    },
+    {
+      "source": "tokens.spacing.1.5",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.1_5"
+    },
+    {
+      "source": "tokens.spacing.2.5",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.2_5"
+    },
+    {
+      "source": "tokens.spacing.3.5",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.3_5"
+    },
+    {
+      "source": "tokens.spacing.4.5",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.spacing.4_5"
+    },
+    {
+      "source": "tokens.spacing.auto",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.spacing.auto",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.spacing.1/2",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.spacing.1/2",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.1",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.1"
+    },
+    {
+      "source": "tokens.sizes.2",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.2"
+    },
+    {
+      "source": "tokens.sizes.3",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.3"
+    },
+    {
+      "source": "tokens.sizes.4",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.4"
+    },
+    {
+      "source": "tokens.sizes.5",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.5"
+    },
+    {
+      "source": "tokens.sizes.6",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.6"
+    },
+    {
+      "source": "tokens.sizes.7",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.7"
+    },
+    {
+      "source": "tokens.sizes.8",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.8"
+    },
+    {
+      "source": "tokens.sizes.9",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.9"
+    },
+    {
+      "source": "tokens.sizes.10",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.10"
+    },
+    {
+      "source": "tokens.sizes.11",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.11"
+    },
+    {
+      "source": "tokens.sizes.12",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.12"
+    },
+    {
+      "source": "tokens.sizes.14",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.14"
+    },
+    {
+      "source": "tokens.sizes.16",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.16"
+    },
+    {
+      "source": "tokens.sizes.20",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.20"
+    },
+    {
+      "source": "tokens.sizes.24",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.24"
+    },
+    {
+      "source": "tokens.sizes.28",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.28"
+    },
+    {
+      "source": "tokens.sizes.32",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.32"
+    },
+    {
+      "source": "tokens.sizes.36",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.36"
+    },
+    {
+      "source": "tokens.sizes.40",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.40"
+    },
+    {
+      "source": "tokens.sizes.44",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.44"
+    },
+    {
+      "source": "tokens.sizes.48",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.48"
+    },
+    {
+      "source": "tokens.sizes.52",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.52"
+    },
+    {
+      "source": "tokens.sizes.56",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.56"
+    },
+    {
+      "source": "tokens.sizes.60",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.60"
+    },
+    {
+      "source": "tokens.sizes.64",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.64"
+    },
+    {
+      "source": "tokens.sizes.72",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.72"
+    },
+    {
+      "source": "tokens.sizes.80",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.80"
+    },
+    {
+      "source": "tokens.sizes.96",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.96"
+    },
+    {
+      "source": "tokens.sizes.3xs",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.3xs"
+    },
+    {
+      "source": "tokens.sizes.2xs",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.2xs"
+    },
+    {
+      "source": "tokens.sizes.xs",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.xs"
+    },
+    {
+      "source": "tokens.sizes.sm",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.sm"
+    },
+    {
+      "source": "tokens.sizes.md",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.md"
+    },
+    {
+      "source": "tokens.sizes.lg",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.lg"
+    },
+    {
+      "source": "tokens.sizes.xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.xl"
+    },
+    {
+      "source": "tokens.sizes.2xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.2xl"
+    },
+    {
+      "source": "tokens.sizes.3xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.3xl"
+    },
+    {
+      "source": "tokens.sizes.4xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.4xl"
+    },
+    {
+      "source": "tokens.sizes.5xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.5xl"
+    },
+    {
+      "source": "tokens.sizes.6xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.6xl"
+    },
+    {
+      "source": "tokens.sizes.7xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.7xl"
+    },
+    {
+      "source": "tokens.sizes.8xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.8xl"
+    },
+    {
+      "source": "tokens.sizes.0.5",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.0_5"
+    },
+    {
+      "source": "tokens.sizes.1.5",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.1_5"
+    },
+    {
+      "source": "tokens.sizes.2.5",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.2_5"
+    },
+    {
+      "source": "tokens.sizes.3.5",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.3_5"
+    },
+    {
+      "source": "tokens.sizes.4.5",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.sizes.4_5"
+    },
+    {
+      "source": "tokens.sizes.1/2",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.1/2",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.1/3",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.1/3",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.2/3",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.2/3",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.1/4",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.1/4",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.3/4",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.3/4",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.1/5",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.1/5",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.2/5",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.2/5",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.3/5",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.3/5",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.4/5",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.4/5",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.1/6",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.1/6",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.2/6",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.2/6",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.3/6",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.3/6",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.4/6",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.4/6",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.5/6",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.5/6",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.1/12",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.1/12",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.2/12",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.2/12",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.3/12",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.3/12",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.4/12",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.4/12",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.5/12",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.5/12",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.6/12",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.6/12",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.7/12",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.7/12",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.8/12",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.8/12",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.9/12",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.9/12",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.10/12",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.10/12",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.11/12",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.11/12",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.max",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.max",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.min",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.min",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.fit",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.fit",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.prose",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.prose",
+      "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.full",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.full",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.dvh",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.dvh",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.svh",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.svh",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.lvh",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.lvh",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.dvw",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.dvw",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.svw",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.svw",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.lvw",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.lvw",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.vw",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.vw",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.vh",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.vh",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.unset",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.unset",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.auto",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.auto",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "tokens.sizes.none",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.sizes.none",
+      "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
+    },
+    {
+      "source": "tokens.fonts.heading",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fonts.heading"
+    },
+    {
+      "source": "tokens.fonts.body",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fonts.body"
+    },
+    {
+      "source": "tokens.fonts.mono",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fonts.mono"
+    },
+    {
+      "source": "tokens.fontSizes.2xs",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontSize.2xs"
+    },
+    {
+      "source": "tokens.fontSizes.xs",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontSize.xs"
+    },
+    {
+      "source": "tokens.fontSizes.sm",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontSize.sm"
+    },
+    {
+      "source": "tokens.fontSizes.md",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontSize.md"
+    },
+    {
+      "source": "tokens.fontSizes.lg",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontSize.lg"
+    },
+    {
+      "source": "tokens.fontSizes.xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontSize.xl"
+    },
+    {
+      "source": "tokens.fontSizes.2xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontSize.2xl"
+    },
+    {
+      "source": "tokens.fontSizes.3xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontSize.3xl"
+    },
+    {
+      "source": "tokens.fontSizes.4xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontSize.4xl"
+    },
+    {
+      "source": "tokens.fontSizes.5xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontSize.5xl"
+    },
+    {
+      "source": "tokens.fontSizes.6xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontSize.6xl"
+    },
+    {
+      "source": "tokens.fontSizes.7xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontSize.7xl"
+    },
+    {
+      "source": "tokens.fontSizes.8xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontSize.8xl"
+    },
+    {
+      "source": "tokens.fontSizes.9xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontSize.9xl"
+    },
+    {
+      "source": "tokens.fontWeights.thin",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontWeight.thin"
+    },
+    {
+      "source": "tokens.fontWeights.extralight",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontWeight.extralight"
+    },
+    {
+      "source": "tokens.fontWeights.light",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontWeight.light"
+    },
+    {
+      "source": "tokens.fontWeights.normal",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontWeight.normal"
+    },
+    {
+      "source": "tokens.fontWeights.medium",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontWeight.medium"
+    },
+    {
+      "source": "tokens.fontWeights.semibold",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontWeight.semibold"
+    },
+    {
+      "source": "tokens.fontWeights.bold",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontWeight.bold"
+    },
+    {
+      "source": "tokens.fontWeights.extrabold",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontWeight.extrabold"
+    },
+    {
+      "source": "tokens.fontWeights.black",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.fontWeight.black"
+    },
+    {
+      "source": "tokens.lineHeights.shorter",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.lineHeight.shorter"
+    },
+    {
+      "source": "tokens.lineHeights.short",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.lineHeight.short"
+    },
+    {
+      "source": "tokens.lineHeights.moderate",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.lineHeight.moderate"
+    },
+    {
+      "source": "tokens.lineHeights.tall",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.lineHeight.tall"
+    },
+    {
+      "source": "tokens.lineHeights.taller",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.lineHeight.taller"
+    },
+    {
+      "source": "tokens.lineHeights.shortest",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.lineHeight.shortest"
+    },
+    {
+      "source": "tokens.letterSpacings.tighter",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.letterSpacings.tighter",
+      "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
+    },
+    {
+      "source": "tokens.letterSpacings.tight",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.letterSpacings.tight",
+      "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
+    },
+    {
+      "source": "tokens.letterSpacings.wide",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.letterSpacings.wide",
+      "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
+    },
+    {
+      "source": "tokens.letterSpacings.wider",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.letterSpacings.wider",
+      "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
+    },
+    {
+      "source": "tokens.letterSpacings.widest",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.letterSpacings.widest",
+      "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
+    },
+    {
+      "source": "tokens.radii.none",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.borderRadius.none"
+    },
+    {
+      "source": "tokens.radii.2xs",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.borderRadius.2xs"
+    },
+    {
+      "source": "tokens.radii.xs",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.borderRadius.xs"
+    },
+    {
+      "source": "tokens.radii.sm",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.borderRadius.sm"
+    },
+    {
+      "source": "tokens.radii.md",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.borderRadius.md"
+    },
+    {
+      "source": "tokens.radii.lg",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.borderRadius.lg"
+    },
+    {
+      "source": "tokens.radii.xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.borderRadius.xl"
+    },
+    {
+      "source": "tokens.radii.2xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.borderRadius.2xl"
+    },
+    {
+      "source": "tokens.radii.3xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.borderRadius.3xl"
+    },
+    {
+      "source": "tokens.radii.4xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.borderRadius.4xl"
+    },
+    {
+      "source": "tokens.radii.full",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.borderRadius.full"
+    },
+    {
+      "source": "tokens.borderWidths.0.25",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.borderWidth.0_25"
+    },
+    {
+      "source": "tokens.borderStyles.solid",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.strokeStyle.solid"
+    },
+    {
+      "source": "tokens.durations.fastest",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.durations.fastest"
+    },
+    {
+      "source": "tokens.durations.faster",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.durations.faster"
+    },
+    {
+      "source": "tokens.durations.fast",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.durations.fast"
+    },
+    {
+      "source": "tokens.durations.moderate",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.durations.moderate"
+    },
+    {
+      "source": "tokens.durations.slow",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.durations.slow"
+    },
+    {
+      "source": "tokens.durations.slower",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.durations.slower"
+    },
+    {
+      "source": "tokens.durations.slowest",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.durations.slowest"
+    },
+    {
+      "source": "tokens.easings.ease-in",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.easings.ease-in"
+    },
+    {
+      "source": "tokens.easings.ease-out",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.easings.ease-out"
+    },
+    {
+      "source": "tokens.easings.ease-in-out",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.easings.ease-in-out"
+    },
+    {
+      "source": "tokens.easings.ease-in-smooth",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.easings.ease-in-smooth"
+    },
+    {
+      "source": "tokens.blurs.none",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.blurs.none",
+      "reason": "The Chakra value has no deterministic, lossless representation in its intended portable DTCG type."
+    },
+    {
+      "source": "tokens.blurs.sm",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.blurs.sm"
+    },
+    {
+      "source": "tokens.blurs.md",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.blurs.md"
+    },
+    {
+      "source": "tokens.blurs.lg",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.blurs.lg"
+    },
+    {
+      "source": "tokens.blurs.xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.blurs.xl"
+    },
+    {
+      "source": "tokens.blurs.2xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.blurs.2xl"
+    },
+    {
+      "source": "tokens.blurs.3xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.blurs.3xl"
+    },
+    {
+      "source": "tokens.blurs.4xl",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.blurs.4xl"
+    },
+    {
+      "source": "tokens.zIndex.hide",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.zIndex.hide"
+    },
+    {
+      "source": "tokens.zIndex.base",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.zIndex.base"
+    },
+    {
+      "source": "tokens.zIndex.docked",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.zIndex.docked"
+    },
+    {
+      "source": "tokens.zIndex.dropdown",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.zIndex.dropdown"
+    },
+    {
+      "source": "tokens.zIndex.sticky",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.zIndex.sticky"
+    },
+    {
+      "source": "tokens.zIndex.banner",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.zIndex.banner"
+    },
+    {
+      "source": "tokens.zIndex.overlay",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.zIndex.overlay"
+    },
+    {
+      "source": "tokens.zIndex.modal",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.zIndex.modal"
+    },
+    {
+      "source": "tokens.zIndex.popover",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.zIndex.popover"
+    },
+    {
+      "source": "tokens.zIndex.skipNav",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.zIndex.skipNav"
+    },
+    {
+      "source": "tokens.zIndex.toast",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.zIndex.toast"
+    },
+    {
+      "source": "tokens.zIndex.tooltip",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.zIndex.tooltip"
+    },
+    {
+      "source": "tokens.zIndex.max",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.zIndex.max"
+    },
+    {
+      "source": "tokens.gradients.blue",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.gradients.blue",
+      "reason": "CSS gradient geometry is not represented by the DTCG stop-only gradient type."
+    },
+    {
+      "source": "tokens.aspectRatios.square",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.aspectRatios.square",
+      "reason": "Chakra represents aspect ratios as CSS ratio strings rather than a portable DTCG token type."
+    },
+    {
+      "source": "tokens.aspectRatios.landscape",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.aspectRatios.landscape",
+      "reason": "Chakra represents aspect ratios as CSS ratio strings rather than a portable DTCG token type."
+    },
+    {
+      "source": "tokens.aspectRatios.portrait",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.aspectRatios.portrait",
+      "reason": "Chakra represents aspect ratios as CSS ratio strings rather than a portable DTCG token type."
+    },
+    {
+      "source": "tokens.aspectRatios.wide",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.aspectRatios.wide",
+      "reason": "Chakra represents aspect ratios as CSS ratio strings rather than a portable DTCG token type."
+    },
+    {
+      "source": "tokens.aspectRatios.ultrawide",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.aspectRatios.ultrawide",
+      "reason": "Chakra represents aspect ratios as CSS ratio strings rather than a portable DTCG token type."
+    },
+    {
+      "source": "tokens.aspectRatios.golden",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.aspectRatios.golden",
+      "reason": "Chakra represents aspect ratios as CSS ratio strings rather than a portable DTCG token type."
+    },
+    {
+      "source": "tokens.animations.spin",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.animations.spin",
+      "reason": "CSS animation shorthand and keyframe names are web-platform values."
+    },
+    {
+      "source": "tokens.animations.ping",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.animations.ping",
+      "reason": "CSS animation shorthand and keyframe names are web-platform values."
+    },
+    {
+      "source": "tokens.animations.pulse",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.animations.pulse",
+      "reason": "CSS animation shorthand and keyframe names are web-platform values."
+    },
+    {
+      "source": "tokens.animations.bounce",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.animations.bounce",
+      "reason": "CSS animation shorthand and keyframe names are web-platform values."
+    },
+    {
+      "source": "tokens.borders.xs",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.borders.xs",
+      "reason": "The CSS border fragment is incomplete or cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "tokens.borders.sm",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.borders.sm",
+      "reason": "The CSS border fragment is incomplete or cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "tokens.borders.md",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.borders.md",
+      "reason": "The CSS border fragment is incomplete or cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "tokens.borders.lg",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.borders.lg",
+      "reason": "The CSS border fragment is incomplete or cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "tokens.borders.xl",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.borders.xl",
+      "reason": "The CSS border fragment is incomplete or cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "tokens.borders.none",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.borders.none",
+      "reason": "The CSS border fragment is incomplete or cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "tokens.borders.search",
+      "disposition": "portable-dtcg",
+      "canonical": "primitive.borders.search"
+    },
+    {
+      "source": "tokens.cursor.button",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.cursor.button",
+      "reason": "CSS cursor keywords are web-platform values."
+    },
+    {
+      "source": "tokens.cursor.checkbox",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.cursor.checkbox",
+      "reason": "CSS cursor keywords are web-platform values."
+    },
+    {
+      "source": "tokens.cursor.disabled",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.cursor.disabled",
+      "reason": "CSS cursor keywords are web-platform values."
+    },
+    {
+      "source": "tokens.cursor.menuitem",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.cursor.menuitem",
+      "reason": "CSS cursor keywords are web-platform values."
+    },
+    {
+      "source": "tokens.cursor.option",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.cursor.option",
+      "reason": "CSS cursor keywords are web-platform values."
+    },
+    {
+      "source": "tokens.cursor.radio",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.cursor.radio",
+      "reason": "CSS cursor keywords are web-platform values."
+    },
+    {
+      "source": "tokens.cursor.slider",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.cursor.slider",
+      "reason": "CSS cursor keywords are web-platform values."
+    },
+    {
+      "source": "tokens.cursor.switch",
+      "disposition": "chakra-platform",
+      "canonical": "tokens.cursor.switch",
+      "reason": "CSS cursor keywords are web-platform values."
+    },
+    {
+      "source": "semanticTokens.colors.bg.DEFAULT",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.bg.$root",
+      "darkOverride": "semantic.color.bg.$root"
+    },
+    {
+      "source": "semanticTokens.colors.bg.subtle",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.bg.subtle",
+      "darkOverride": "semantic.color.bg.subtle"
+    },
+    {
+      "source": "semanticTokens.colors.bg.muted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.bg.muted",
+      "darkOverride": "semantic.color.bg.muted"
+    },
+    {
+      "source": "semanticTokens.colors.bg.emphasized",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.bg.emphasized",
+      "darkOverride": "semantic.color.bg.emphasized"
+    },
+    {
+      "source": "semanticTokens.colors.bg.inverted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.bg.inverted",
+      "darkOverride": "semantic.color.bg.inverted"
+    },
+    {
+      "source": "semanticTokens.colors.bg.panel",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.bg.panel",
+      "darkOverride": "semantic.color.bg.panel"
+    },
+    {
+      "source": "semanticTokens.colors.bg.error",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.bg.error",
+      "darkOverride": "semantic.color.bg.error"
+    },
+    {
+      "source": "semanticTokens.colors.bg.warning",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.bg.warning",
+      "darkOverride": "semantic.color.bg.warning"
+    },
+    {
+      "source": "semanticTokens.colors.bg.success",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.bg.success",
+      "darkOverride": "semantic.color.bg.success"
+    },
+    {
+      "source": "semanticTokens.colors.bg.info",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.bg.info",
+      "darkOverride": "semantic.color.bg.info"
+    },
+    {
+      "source": "semanticTokens.colors.fg.DEFAULT",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.fg.$root",
+      "darkOverride": "semantic.color.fg.$root"
+    },
+    {
+      "source": "semanticTokens.colors.fg.muted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.fg.muted",
+      "darkOverride": "semantic.color.fg.muted"
+    },
+    {
+      "source": "semanticTokens.colors.fg.subtle",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.fg.subtle",
+      "darkOverride": "semantic.color.fg.subtle"
+    },
+    {
+      "source": "semanticTokens.colors.fg.inverted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.fg.inverted",
+      "darkOverride": "semantic.color.fg.inverted"
+    },
+    {
+      "source": "semanticTokens.colors.fg.error",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.fg.error",
+      "darkOverride": "semantic.color.fg.error"
+    },
+    {
+      "source": "semanticTokens.colors.fg.warning",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.fg.warning",
+      "darkOverride": "semantic.color.fg.warning"
+    },
+    {
+      "source": "semanticTokens.colors.fg.success",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.fg.success",
+      "darkOverride": "semantic.color.fg.success"
+    },
+    {
+      "source": "semanticTokens.colors.fg.info",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.fg.info",
+      "darkOverride": "semantic.color.fg.info"
+    },
+    {
+      "source": "semanticTokens.colors.border.DEFAULT",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.border.$root",
+      "darkOverride": "semantic.color.border.$root"
+    },
+    {
+      "source": "semanticTokens.colors.border.muted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.border.muted",
+      "darkOverride": "semantic.color.border.muted"
+    },
+    {
+      "source": "semanticTokens.colors.border.subtle",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.border.subtle",
+      "darkOverride": "semantic.color.border.subtle"
+    },
+    {
+      "source": "semanticTokens.colors.border.emphasized",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.border.emphasized",
+      "darkOverride": "semantic.color.border.emphasized"
+    },
+    {
+      "source": "semanticTokens.colors.border.inverted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.border.inverted",
+      "darkOverride": "semantic.color.border.inverted"
+    },
+    {
+      "source": "semanticTokens.colors.border.error",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.border.error",
+      "darkOverride": "semantic.color.border.error"
+    },
+    {
+      "source": "semanticTokens.colors.border.warning",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.border.warning",
+      "darkOverride": "semantic.color.border.warning"
+    },
+    {
+      "source": "semanticTokens.colors.border.success",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.border.success",
+      "darkOverride": "semantic.color.border.success"
+    },
+    {
+      "source": "semanticTokens.colors.border.info",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.border.info",
+      "darkOverride": "semantic.color.border.info"
+    },
+    {
+      "source": "semanticTokens.colors.gray.contrast",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.gray.contrast",
+      "darkOverride": "semantic.color.gray.contrast"
+    },
+    {
+      "source": "semanticTokens.colors.gray.fg",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.gray.fg",
+      "darkOverride": "semantic.color.gray.fg"
+    },
+    {
+      "source": "semanticTokens.colors.gray.subtle",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.gray.subtle",
+      "darkOverride": "semantic.color.gray.subtle"
+    },
+    {
+      "source": "semanticTokens.colors.gray.muted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.gray.muted",
+      "darkOverride": "semantic.color.gray.muted"
+    },
+    {
+      "source": "semanticTokens.colors.gray.emphasized",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.gray.emphasized",
+      "darkOverride": "semantic.color.gray.emphasized"
+    },
+    {
+      "source": "semanticTokens.colors.gray.solid",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.gray.solid",
+      "darkOverride": "semantic.color.gray.solid"
+    },
+    {
+      "source": "semanticTokens.colors.gray.focusRing",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.gray.focusRing",
+      "darkOverride": "semantic.color.gray.focusRing"
+    },
+    {
+      "source": "semanticTokens.colors.gray.border",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.gray.border",
+      "darkOverride": "semantic.color.gray.border"
+    },
+    {
+      "source": "semanticTokens.colors.red.contrast",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.red.contrast",
+      "darkOverride": "semantic.color.red.contrast"
+    },
+    {
+      "source": "semanticTokens.colors.red.fg",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.red.fg",
+      "darkOverride": "semantic.color.red.fg"
+    },
+    {
+      "source": "semanticTokens.colors.red.subtle",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.red.subtle",
+      "darkOverride": "semantic.color.red.subtle"
+    },
+    {
+      "source": "semanticTokens.colors.red.muted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.red.muted",
+      "darkOverride": "semantic.color.red.muted"
+    },
+    {
+      "source": "semanticTokens.colors.red.emphasized",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.red.emphasized",
+      "darkOverride": "semantic.color.red.emphasized"
+    },
+    {
+      "source": "semanticTokens.colors.red.solid",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.red.solid",
+      "darkOverride": "semantic.color.red.solid"
+    },
+    {
+      "source": "semanticTokens.colors.red.focusRing",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.red.focusRing",
+      "darkOverride": "semantic.color.red.focusRing"
+    },
+    {
+      "source": "semanticTokens.colors.red.border",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.red.border",
+      "darkOverride": "semantic.color.red.border"
+    },
+    {
+      "source": "semanticTokens.colors.orange.contrast",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.orange.contrast",
+      "darkOverride": "semantic.color.orange.contrast"
+    },
+    {
+      "source": "semanticTokens.colors.orange.fg",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.orange.fg",
+      "darkOverride": "semantic.color.orange.fg"
+    },
+    {
+      "source": "semanticTokens.colors.orange.subtle",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.orange.subtle",
+      "darkOverride": "semantic.color.orange.subtle"
+    },
+    {
+      "source": "semanticTokens.colors.orange.muted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.orange.muted",
+      "darkOverride": "semantic.color.orange.muted"
+    },
+    {
+      "source": "semanticTokens.colors.orange.emphasized",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.orange.emphasized",
+      "darkOverride": "semantic.color.orange.emphasized"
+    },
+    {
+      "source": "semanticTokens.colors.orange.solid",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.orange.solid",
+      "darkOverride": "semantic.color.orange.solid"
+    },
+    {
+      "source": "semanticTokens.colors.orange.focusRing",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.orange.focusRing",
+      "darkOverride": "semantic.color.orange.focusRing"
+    },
+    {
+      "source": "semanticTokens.colors.orange.border",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.orange.border",
+      "darkOverride": "semantic.color.orange.border"
+    },
+    {
+      "source": "semanticTokens.colors.green.contrast",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.green.contrast",
+      "darkOverride": "semantic.color.green.contrast"
+    },
+    {
+      "source": "semanticTokens.colors.green.fg",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.green.fg",
+      "darkOverride": "semantic.color.green.fg"
+    },
+    {
+      "source": "semanticTokens.colors.green.subtle",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.green.subtle",
+      "darkOverride": "semantic.color.green.subtle"
+    },
+    {
+      "source": "semanticTokens.colors.green.muted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.green.muted",
+      "darkOverride": "semantic.color.green.muted"
+    },
+    {
+      "source": "semanticTokens.colors.green.emphasized",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.green.emphasized",
+      "darkOverride": "semantic.color.green.emphasized"
+    },
+    {
+      "source": "semanticTokens.colors.green.solid",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.green.solid",
+      "darkOverride": "semantic.color.green.solid"
+    },
+    {
+      "source": "semanticTokens.colors.green.focusRing",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.green.focusRing",
+      "darkOverride": "semantic.color.green.focusRing"
+    },
+    {
+      "source": "semanticTokens.colors.green.border",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.green.border",
+      "darkOverride": "semantic.color.green.border"
+    },
+    {
+      "source": "semanticTokens.colors.blue.contrast",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.blue.contrast",
+      "darkOverride": "semantic.color.blue.contrast"
+    },
+    {
+      "source": "semanticTokens.colors.blue.fg",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.blue.fg",
+      "darkOverride": "semantic.color.blue.fg"
+    },
+    {
+      "source": "semanticTokens.colors.blue.subtle",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.blue.subtle",
+      "darkOverride": "semantic.color.blue.subtle"
+    },
+    {
+      "source": "semanticTokens.colors.blue.muted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.blue.muted",
+      "darkOverride": "semantic.color.blue.muted"
+    },
+    {
+      "source": "semanticTokens.colors.blue.emphasized",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.blue.emphasized",
+      "darkOverride": "semantic.color.blue.emphasized"
+    },
+    {
+      "source": "semanticTokens.colors.blue.solid",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.blue.solid",
+      "darkOverride": "semantic.color.blue.solid"
+    },
+    {
+      "source": "semanticTokens.colors.blue.focusRing",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.blue.focusRing",
+      "darkOverride": "semantic.color.blue.focusRing"
+    },
+    {
+      "source": "semanticTokens.colors.blue.border",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.blue.border",
+      "darkOverride": "semantic.color.blue.border"
+    },
+    {
+      "source": "semanticTokens.colors.yellow.contrast",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.yellow.contrast",
+      "darkOverride": "semantic.color.yellow.contrast"
+    },
+    {
+      "source": "semanticTokens.colors.yellow.fg",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.yellow.fg",
+      "darkOverride": "semantic.color.yellow.fg"
+    },
+    {
+      "source": "semanticTokens.colors.yellow.subtle",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.yellow.subtle",
+      "darkOverride": "semantic.color.yellow.subtle"
+    },
+    {
+      "source": "semanticTokens.colors.yellow.muted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.yellow.muted",
+      "darkOverride": "semantic.color.yellow.muted"
+    },
+    {
+      "source": "semanticTokens.colors.yellow.emphasized",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.yellow.emphasized",
+      "darkOverride": "semantic.color.yellow.emphasized"
+    },
+    {
+      "source": "semanticTokens.colors.yellow.solid",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.yellow.solid",
+      "darkOverride": "semantic.color.yellow.solid"
+    },
+    {
+      "source": "semanticTokens.colors.yellow.focusRing",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.yellow.focusRing",
+      "darkOverride": "semantic.color.yellow.focusRing"
+    },
+    {
+      "source": "semanticTokens.colors.yellow.border",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.yellow.border",
+      "darkOverride": "semantic.color.yellow.border"
+    },
+    {
+      "source": "semanticTokens.colors.teal.contrast",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.teal.contrast",
+      "darkOverride": "semantic.color.teal.contrast"
+    },
+    {
+      "source": "semanticTokens.colors.teal.fg",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.teal.fg",
+      "darkOverride": "semantic.color.teal.fg"
+    },
+    {
+      "source": "semanticTokens.colors.teal.subtle",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.teal.subtle",
+      "darkOverride": "semantic.color.teal.subtle"
+    },
+    {
+      "source": "semanticTokens.colors.teal.muted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.teal.muted",
+      "darkOverride": "semantic.color.teal.muted"
+    },
+    {
+      "source": "semanticTokens.colors.teal.emphasized",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.teal.emphasized",
+      "darkOverride": "semantic.color.teal.emphasized"
+    },
+    {
+      "source": "semanticTokens.colors.teal.solid",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.teal.solid",
+      "darkOverride": "semantic.color.teal.solid"
+    },
+    {
+      "source": "semanticTokens.colors.teal.focusRing",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.teal.focusRing",
+      "darkOverride": "semantic.color.teal.focusRing"
+    },
+    {
+      "source": "semanticTokens.colors.teal.border",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.teal.border",
+      "darkOverride": "semantic.color.teal.border"
+    },
+    {
+      "source": "semanticTokens.colors.purple.contrast",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.purple.contrast",
+      "darkOverride": "semantic.color.purple.contrast"
+    },
+    {
+      "source": "semanticTokens.colors.purple.fg",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.purple.fg",
+      "darkOverride": "semantic.color.purple.fg"
+    },
+    {
+      "source": "semanticTokens.colors.purple.subtle",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.purple.subtle",
+      "darkOverride": "semantic.color.purple.subtle"
+    },
+    {
+      "source": "semanticTokens.colors.purple.muted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.purple.muted",
+      "darkOverride": "semantic.color.purple.muted"
+    },
+    {
+      "source": "semanticTokens.colors.purple.emphasized",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.purple.emphasized",
+      "darkOverride": "semantic.color.purple.emphasized"
+    },
+    {
+      "source": "semanticTokens.colors.purple.solid",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.purple.solid",
+      "darkOverride": "semantic.color.purple.solid"
+    },
+    {
+      "source": "semanticTokens.colors.purple.focusRing",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.purple.focusRing",
+      "darkOverride": "semantic.color.purple.focusRing"
+    },
+    {
+      "source": "semanticTokens.colors.purple.border",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.purple.border",
+      "darkOverride": "semantic.color.purple.border"
+    },
+    {
+      "source": "semanticTokens.colors.pink.contrast",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.pink.contrast",
+      "darkOverride": "semantic.color.pink.contrast"
+    },
+    {
+      "source": "semanticTokens.colors.pink.fg",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.pink.fg",
+      "darkOverride": "semantic.color.pink.fg"
+    },
+    {
+      "source": "semanticTokens.colors.pink.subtle",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.pink.subtle",
+      "darkOverride": "semantic.color.pink.subtle"
+    },
+    {
+      "source": "semanticTokens.colors.pink.muted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.pink.muted",
+      "darkOverride": "semantic.color.pink.muted"
+    },
+    {
+      "source": "semanticTokens.colors.pink.emphasized",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.pink.emphasized",
+      "darkOverride": "semantic.color.pink.emphasized"
+    },
+    {
+      "source": "semanticTokens.colors.pink.solid",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.pink.solid",
+      "darkOverride": "semantic.color.pink.solid"
+    },
+    {
+      "source": "semanticTokens.colors.pink.focusRing",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.pink.focusRing",
+      "darkOverride": "semantic.color.pink.focusRing"
+    },
+    {
+      "source": "semanticTokens.colors.pink.border",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.pink.border",
+      "darkOverride": "semantic.color.pink.border"
+    },
+    {
+      "source": "semanticTokens.colors.cyan.contrast",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.cyan.contrast",
+      "darkOverride": "semantic.color.cyan.contrast"
+    },
+    {
+      "source": "semanticTokens.colors.cyan.fg",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.cyan.fg",
+      "darkOverride": "semantic.color.cyan.fg"
+    },
+    {
+      "source": "semanticTokens.colors.cyan.subtle",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.cyan.subtle",
+      "darkOverride": "semantic.color.cyan.subtle"
+    },
+    {
+      "source": "semanticTokens.colors.cyan.muted",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.cyan.muted",
+      "darkOverride": "semantic.color.cyan.muted"
+    },
+    {
+      "source": "semanticTokens.colors.cyan.emphasized",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.cyan.emphasized",
+      "darkOverride": "semantic.color.cyan.emphasized"
+    },
+    {
+      "source": "semanticTokens.colors.cyan.solid",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.cyan.solid",
+      "darkOverride": "semantic.color.cyan.solid"
+    },
+    {
+      "source": "semanticTokens.colors.cyan.focusRing",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.cyan.focusRing",
+      "darkOverride": "semantic.color.cyan.focusRing"
+    },
+    {
+      "source": "semanticTokens.colors.cyan.border",
+      "disposition": "resolver-contextual",
+      "canonical": "semantic.color.cyan.border",
+      "darkOverride": "semantic.color.cyan.border"
+    },
+    {
+      "source": "semanticTokens.colors.blueSwitch",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.color.blueSwitch"
+    },
+    {
+      "source": "semanticTokens.colors.blueIcon",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.color.blueIcon"
+    },
+    {
+      "source": "semanticTokens.colors.blueIconBackground",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.color.blueIconBackground"
+    },
+    {
+      "source": "semanticTokens.colors.blueBackground",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.color.blueBackground"
+    },
+    {
+      "source": "semanticTokens.colors.tsunamiBlue",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.color.tsunamiBlue"
+    },
+    {
+      "source": "semanticTokens.colors.lightGrey",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.color.lightGrey"
+    },
+    {
+      "source": "semanticTokens.colors.labelGrey",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.color.labelGrey"
+    },
+    {
+      "source": "semanticTokens.colors.warningRed",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.color.warningRed"
+    },
+    {
+      "source": "semanticTokens.colors.blueGradientFrom",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.color.blueGradientFrom"
+    },
+    {
+      "source": "semanticTokens.colors.blueGradientTo",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.color.blueGradientTo"
+    },
+    {
+      "source": "semanticTokens.colors.cooperativeGesturesOverlay",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.color.cooperativeGesturesOverlay"
+    },
+    {
+      "source": "semanticTokens.radii.l1",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.borderRadius.l1"
+    },
+    {
+      "source": "semanticTokens.radii.l2",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.borderRadius.l2"
+    },
+    {
+      "source": "semanticTokens.radii.l3",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.borderRadius.l3"
+    },
+    {
+      "source": "semanticTokens.sizes.mapMarkerWidth",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.size.mapMarkerWidth"
+    },
+    {
+      "source": "semanticTokens.sizes.mapMarkerHeight",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.size.mapMarkerHeight"
+    },
+    {
+      "source": "semanticTokens.sizes.mobileCardWidth",
+      "disposition": "chakra-platform",
+      "canonical": "semanticTokens.sizes.mobileCardWidth",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "semanticTokens.sizes.mobileCardAccordionWidth",
+      "disposition": "chakra-platform",
+      "canonical": "semanticTokens.sizes.mobileCardAccordionWidth",
+      "reason": "The CSS unit or keyword is not a valid value for the token's intended portable DTCG type."
+    },
+    {
+      "source": "semanticTokens.sizes.mainContentMinHeight",
+      "disposition": "portable-dtcg",
+      "canonical": "semantic.size.mainContentMinHeight"
+    },
+    {
+      "source": "semanticTokens.shadows.xs",
+      "disposition": "chakra-platform",
+      "canonical": "semanticTokens.shadows.xs",
+      "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "semanticTokens.shadows.sm",
+      "disposition": "chakra-platform",
+      "canonical": "semanticTokens.shadows.sm",
+      "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "semanticTokens.shadows.md",
+      "disposition": "chakra-platform",
+      "canonical": "semanticTokens.shadows.md",
+      "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "semanticTokens.shadows.lg",
+      "disposition": "chakra-platform",
+      "canonical": "semanticTokens.shadows.lg",
+      "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "semanticTokens.shadows.xl",
+      "disposition": "chakra-platform",
+      "canonical": "semanticTokens.shadows.xl",
+      "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "semanticTokens.shadows.2xl",
+      "disposition": "chakra-platform",
+      "canonical": "semanticTokens.shadows.2xl",
+      "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "semanticTokens.shadows.inner",
+      "disposition": "chakra-platform",
+      "canonical": "semanticTokens.shadows.inner",
+      "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "semanticTokens.shadows.inset",
+      "disposition": "chakra-platform",
+      "canonical": "semanticTokens.shadows.inset",
+      "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "semanticTokens.shadows.card",
+      "disposition": "chakra-platform",
+      "canonical": "semanticTokens.shadows.card",
+      "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "semanticTokens.shadows.mobileButton",
+      "disposition": "chakra-platform",
+      "canonical": "semanticTokens.shadows.mobileButton",
+      "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "semanticTokens.shadows.search",
+      "disposition": "chakra-platform",
+      "canonical": "semanticTokens.shadows.search",
+      "reason": "The layered Chakra shadow syntax cannot be parsed and regenerated losslessly."
+    },
+    {
+      "source": "semanticTokens.assets.mapMarkerUrl",
+      "disposition": "chakra-platform",
+      "canonical": "semanticTokens.assets.mapMarkerUrl",
+      "reason": "CSS url() values are web-platform bindings."
+    }
+  ],
+  "defaultRootMappings": [
+    {
+      "source": "tokens.colors.white.DEFAULT",
+      "from": "DEFAULT",
+      "to": "$root"
+    },
+    { "source": "tokens.colors.red.DEFAULT", "from": "DEFAULT", "to": "$root" },
+    {
+      "source": "tokens.colors.orange.DEFAULT",
+      "from": "DEFAULT",
+      "to": "$root"
+    },
+    {
+      "source": "tokens.colors.yellow.DEFAULT",
+      "from": "DEFAULT",
+      "to": "$root"
+    },
+    {
+      "source": "tokens.colors.green.DEFAULT",
+      "from": "DEFAULT",
+      "to": "$root"
+    },
+    {
+      "source": "tokens.colors.pink.DEFAULT",
+      "from": "DEFAULT",
+      "to": "$root"
+    },
+    {
+      "source": "tokens.colors.peach.DEFAULT",
+      "from": "DEFAULT",
+      "to": "$root"
+    },
+    {
+      "source": "semanticTokens.colors.bg.DEFAULT",
+      "from": "DEFAULT",
+      "to": "$root"
+    },
+    {
+      "source": "semanticTokens.colors.fg.DEFAULT",
+      "from": "DEFAULT",
+      "to": "$root"
+    },
+    {
+      "source": "semanticTokens.colors.border.DEFAULT",
+      "from": "DEFAULT",
+      "to": "$root"
+    }
+  ],
+  "nameMappings": [
+    { "source": "tokens.spacing.0.5", "from": "0.5", "to": "0_5" },
+    { "source": "tokens.spacing.1.5", "from": "1.5", "to": "1_5" },
+    { "source": "tokens.spacing.2.5", "from": "2.5", "to": "2_5" },
+    { "source": "tokens.spacing.3.5", "from": "3.5", "to": "3_5" },
+    { "source": "tokens.spacing.4.5", "from": "4.5", "to": "4_5" },
+    { "source": "tokens.sizes.0.5", "from": "0.5", "to": "0_5" },
+    { "source": "tokens.sizes.1.5", "from": "1.5", "to": "1_5" },
+    { "source": "tokens.sizes.2.5", "from": "2.5", "to": "2_5" },
+    { "source": "tokens.sizes.3.5", "from": "3.5", "to": "3_5" },
+    { "source": "tokens.sizes.4.5", "from": "4.5", "to": "4_5" },
+    { "source": "tokens.borderWidths.0.25", "from": "0.25", "to": "0_25" }
+  ],
+  "unresolvedReferences": [],
+  "collisions": [],
+  "duplicateDispositions": [],
+  "lossyConversionWarnings": [],
+  "nonTokenThemeFiles": [
+    "animation-styles.ts",
+    "breakpoints.ts",
+    "global-css.ts",
+    "keyframes.ts",
+    "layer-styles.ts",
+    "recipes/",
+    "slot-recipes/",
+    "text-styles.ts"
+  ]
+}
