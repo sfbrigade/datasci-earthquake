@@ -9,14 +9,16 @@ body:
     attributes:
       label: Problem
       description: >-
-        Use a Jobs-to-be-Done frame: When [situation], I want to [make progress],
-        so I can [desired outcome]. Then briefly say what gets in the way today.
+        Describe the situation, the progress someone is trying to make, and what
+        gets in the way today. If useful, try: When [situation], I want to
+        [make progress], so I can [desired outcome].
       placeholder: |
-        When I'm trying to make a decision and I run into information I don't
-        understand, I want a clear explanation in context, so I can decide what
-        to do with confidence.
+        When I'm looking at my address's results and see a hazard term I don't
+        recognize, I want to understand what it means so I can judge whether
+        it changes my decision.
 
-        Today, I have to stop what I'm doing and look elsewhere for an explanation.
+        Nothing on the page defines these terms, and the official sources are
+        written for engineers.
     validations:
       required: true
 
@@ -26,10 +28,10 @@ body:
       label: Desired outcome
       description: >-
         What should be possible once the problem is solved? Describe the result,
-        not a specific solution.
+        not a specific UI or implementation.
       placeholder: |
-        Users can understand the information they need and continue their task
-        without losing context.
+        Users can understand what "liquefaction" means while interpreting their
+        results, without losing their results context.
     validations:
       required: false
 
@@ -39,7 +41,7 @@ body:
       label: Acceptance criteria
       description: >-
         What must be observably true for this feature to be acceptable to ship?
-        Include edge cases, accessibility, or no-regression behavior when relevant.
+        Consider edge cases, accessibility, and behavior that must not regress.
       value: |
         - [ ]
         - [ ]
@@ -54,8 +56,8 @@ body:
       description: >-
         Related work this feature deliberately does not include.
       placeholder: |
-        - Similar needs elsewhere in the product
-        - Translation or localization
+        - Soft story and tsunami terms — same problem, separate issues
+        - Translation of the explanation
     validations:
       required: false
 
@@ -66,6 +68,9 @@ body:
       description: >-
         Optional context, constraints, prior decisions, alternatives already
         explored, or useful links.
+      placeholder: |
+        Official liquefaction sources are useful for validating the explanation,
+        but are generally written for technical audiences.
     validations:
       required: false
 
