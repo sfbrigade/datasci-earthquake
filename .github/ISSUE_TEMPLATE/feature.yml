@@ -1,29 +1,22 @@
 name: Feature
 description: Propose a product feature or enhancement
-title: ""
 type: Feature
 labels: ["needs triage"]
 
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Start with what you know. Only the problem is required.
-        Other sections can be filled in during refinement.
-
   - type: textarea
     id: problem
     attributes:
       label: Problem
       description: >-
-        Who has the problem, what are they trying to do, and what is missing today?
+        Use a Jobs-to-be-Done frame: When [situation], I want to [make progress],
+        so I can [desired outcome]. Then briefly say what gets in the way today.
       placeholder: |
-        When I'm looking at my address's results and see a hazard term I don't
-        recognize, I want to understand what it means so I can judge whether
-        it changes my decision.
+        When I'm trying to make a decision and I run into information I don't
+        understand, I want a clear explanation in context, so I can decide what
+        to do with confidence.
 
-        Nothing on the page defines these terms, and the official sources are
-        written for engineers.
+        Today, I have to stop what I'm doing and look elsewhere for an explanation.
     validations:
       required: true
 
@@ -32,10 +25,11 @@ body:
     attributes:
       label: Desired outcome
       description: >-
-        What should be possible once this problem is solved?
+        What should be possible once the problem is solved? Describe the result,
+        not a specific solution.
       placeholder: |
-        Users can understand what "liquefaction" means while interpreting their
-        results, without losing their results context.
+        Users can understand the information they need and continue their task
+        without losing context.
     validations:
       required: false
 
@@ -44,10 +38,12 @@ body:
     attributes:
       label: Acceptance criteria
       description: >-
-        Observable conditions that would make this feature successful.
-      placeholder: |
-        - [ ] ...
-        - [ ] ...
+        What must be observably true for this feature to be acceptable to ship?
+        Include edge cases, accessibility, or no-regression behavior when relevant.
+      value: |
+        - [ ]
+        - [ ]
+        - [ ]
     validations:
       required: false
 
@@ -58,8 +54,8 @@ body:
       description: >-
         Related work this feature deliberately does not include.
       placeholder: |
-        - Soft story and tsunami terms — same problem, separate issues
-        - Translation of the explanation
+        - Similar needs elsewhere in the product
+        - Translation or localization
     validations:
       required: false
 
@@ -68,6 +64,22 @@ body:
     attributes:
       label: Background
       description: >-
-        Optional context needed to understand the feature or prior decisions.
+        Optional context, constraints, prior decisions, alternatives already
+        explored, or useful links.
+    validations:
+      required: false
+
+  - type: textarea
+    id: work-items
+    attributes:
+      label: Work items
+      description: >-
+        Starter work for refinement. Add, remove, or split items as needed;
+        convert them to sub-issues when they need separate tracking.
+      value: |
+        - [ ] Design spec / handoff (if needed)
+        - [ ] Engineering spec / plan (if needed)
+        - [ ] Implementation
+        - [ ] Design QA (if needed)
     validations:
       required: false
