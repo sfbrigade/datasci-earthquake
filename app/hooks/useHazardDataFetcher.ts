@@ -33,11 +33,12 @@ export function useHazardDataFetcher({
         `${endpoint}?lon=${coords[0]}&lat=${coords[1]}`;
 
       try {
-        const [softStory, tsunamiZone, liquefactionZone] =
+        const [softStory, tsunamiZone, liquefactionZone, landslideZone] =
           await Promise.allSettled([
             safeJsonFetch(buildUrl(API_ENDPOINTS.isSoftStory)),
             safeJsonFetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)),
             safeJsonFetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)),
+            safeJsonFetch(buildUrl(API_ENDPOINTS.isInLandslideZone)),
           ]);
 
         setSearchComplete(true);
@@ -46,6 +47,7 @@ export function useHazardDataFetcher({
           { name: "Soft Story", result: softStory },
           { name: "Tsunami", result: tsunamiZone },
           { name: "Liquefaction", result: liquefactionZone },
+          { name: "Landslide", result: landslideZone },
         ].filter(({ result }) => result.status === "rejected");
 
         if (failed.length > 0) {
@@ -71,6 +73,8 @@ export function useHazardDataFetcher({
             liquefactionZone.status === "fulfilled"
               ? liquefactionZone.value
               : null,
+          landslide:
+            landslideZone.status === "fulfilled" ? landslideZone.value : null,
         };
       } catch (error) {
         console.error("Error fetching hazard data:", error);

@@ -49,6 +49,9 @@ for tbl in $ETL_TABLES; do
     soft_story_properties)
       run_python_script backend/etl/soft_story_properties_data_handler.py
       ;;
+    landslide_zones)
+      run_python_script backend/etl/landslide_data_handler.py
+      ;;
     *)
       echo "No ETL mapping for $tbl; skipping" >&2
       ;;
