@@ -221,6 +221,18 @@ const Map: React.FC<MapProps> = ({
     if (layerToggleObj.layerId != "") handleToggleLayers();
   }, [layerToggleObj]); // re-runs every time state changes
 
+  useEffect(() => {
+    const container = mapContainerRef.current;
+    if (!container || typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver(() => {
+      mapRef.current?.resize();
+    });
+    observer.observe(container);
+
+    return () => observer.disconnect();
+  }, []);
+
   return <Box ref={mapContainerRef} w="full" h="full" />;
 };
 
