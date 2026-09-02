@@ -36,6 +36,8 @@ interface MapProps {
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
   layerToggleObj: LayerToggleObjProps;
+  /** Fraction of the container height covered at the bottom. */
+  bottomPaddingRatio?: number;
 }
 
 const addMarker = (center: LngLat, map: mapboxgl.Map) => {
@@ -58,6 +60,7 @@ const Map: React.FC<MapProps> = ({
   tsunamiData,
   liquefactionData,
   layerToggleObj,
+  bottomPaddingRatio = 0,
 }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>(null);
@@ -66,6 +69,20 @@ const Map: React.FC<MapProps> = ({
   const toastIdNoToken = "no-token";
   const lastLon = useRef<number | null>(lon);
   const lastLat = useRef<number | null>(lat);
+  const ratioRef = useRef(0);
+  const bottomPaddingPx = (ratio: number) =>
+    Math.round((mapContainerRef.current?.clientHeight ?? 0) * ratio);
+
+  useEffect(() => {
+    ratioRef.current = bottomPaddingRatio;
+    const map = mapRef.current;
+    if (!map) return;
+
+    const bottom = bottomPaddingPx(bottomPaddingRatio);
+    if (map.getPadding().bottom !== bottom) {
+      map.easeTo({ padding: { bottom }, duration: map.loaded() ? 750 : 0 });
+    }
+  }, [bottomPaddingRatio]);
 
   // TODO: how do we simplify this `useEffect()` without ill side effects like map repainting by e.g. breaking it up into multiples or moving anything outside of it? for example, can anything be derived on render instead? or can anything run in a useEffect that runs only in initial render with an empty array w/out complicating subsequent update logic?
   useEffect(() => {
@@ -103,6 +120,7 @@ const Map: React.FC<MapProps> = ({
 
       const nav = new mapboxgl.NavigationControl({ showCompass: false });
       map.addControl(nav, "bottom-right");
+      map.setPadding({ bottom: bottomPaddingPx(ratioRef.current) });
 
       if (center && address) {
         // set up map marker for first time and set its center
@@ -195,7 +213,11 @@ const Map: React.FC<MapProps> = ({
           map.getCenter().lng !== center.lng ||
           map.getCenter().lat !== center.lat
         ) {
-          map.panTo(center, { duration: 750 }); // pan to new center
+          map.easeTo({
+            center,
+            padding: { bottom: bottomPaddingPx(ratioRef.current) },
+            duration: 750,
+          });
           lastLon.current = lon;
           lastLat.current = lat;
         }
@@ -226,7 +248,14 @@ const Map: React.FC<MapProps> = ({
     if (!container || typeof ResizeObserver === "undefined") return;
 
     const observer = new ResizeObserver(() => {
-      mapRef.current?.resize();
+      const map = mapRef.current;
+      if (!map) return;
+
+      map.resize();
+      const bottom = bottomPaddingPx(ratioRef.current);
+      if (map.getPadding().bottom !== bottom) {
+        map.setPadding({ bottom });
+      }
     });
     observer.observe(container);
 

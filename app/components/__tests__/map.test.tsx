@@ -10,7 +10,10 @@ const mockMapInstance = {
   addControl: jest.fn(),
   on: jest.fn(),
   getCenter: jest.fn(() => ({ lng: 0, lat: 0 })),
-  panTo: jest.fn(),
+  setPadding: jest.fn(),
+  getPadding: jest.fn(() => ({ top: 0, right: 0, bottom: 0, left: 0 })),
+  easeTo: jest.fn(),
+  loaded: jest.fn(() => false),
   resize: jest.fn(),
   getLayer: jest.fn(),
   setLayoutProperty: jest.fn(),
@@ -50,7 +53,7 @@ const fc = {
   features: [],
 };
 
-const renderMap = () =>
+const renderMap = (bottomPaddingRatio = 0) =>
   render(
     <Provider>
       <Map
@@ -61,6 +64,7 @@ const renderMap = () =>
         tsunamiData={fc}
         liquefactionData={fc}
         layerToggleObj={{ layerId: "", toggleState: true }}
+        bottomPaddingRatio={bottomPaddingRatio}
       />
     </Provider>
   );
@@ -70,11 +74,20 @@ describe("Map", () => {
   let mockObserve: jest.Mock;
   let mockDisconnect: jest.Mock;
   let originalResizeObserver: typeof window.ResizeObserver;
+  let originalClientHeight: PropertyDescriptor | undefined;
 
   beforeEach(() => {
     process.env.NEXT_PUBLIC_MAPBOX_TOKEN = "test";
     jest.clearAllMocks();
     originalResizeObserver = window.ResizeObserver;
+    originalClientHeight = Object.getOwnPropertyDescriptor(
+      HTMLElement.prototype,
+      "clientHeight"
+    );
+    Object.defineProperty(HTMLElement.prototype, "clientHeight", {
+      configurable: true,
+      get: () => 800,
+    });
     mockObserve = jest.fn();
     mockDisconnect = jest.fn();
 
@@ -91,6 +104,15 @@ describe("Map", () => {
 
   afterEach(() => {
     window.ResizeObserver = originalResizeObserver;
+    if (originalClientHeight) {
+      Object.defineProperty(
+        HTMLElement.prototype,
+        "clientHeight",
+        originalClientHeight
+      );
+    } else {
+      delete (HTMLElement.prototype as { clientHeight?: number }).clientHeight;
+    }
   });
 
   it("observes the map container on mount", () => {
@@ -116,5 +138,56 @@ describe("Map", () => {
     unmount();
 
     expect(mockDisconnect).toHaveBeenCalledTimes(1);
+  });
+
+  it("sets bottom padding from the container height on mount", () => {
+    renderMap(0.5);
+
+    expect(mockMapInstance.setPadding).toHaveBeenCalledWith({ bottom: 400 });
+  });
+
+  it("resizes and reapplies bottom padding when the container changes size", () => {
+    renderMap(0.5);
+    mockMapInstance.resize.mockClear();
+    mockMapInstance.setPadding.mockClear();
+
+    act(() => {
+      mockResizeObserverCallback([], {} as ResizeObserver);
+    });
+
+    expect(mockMapInstance.resize).toHaveBeenCalledTimes(1);
+    expect(mockMapInstance.setPadding).toHaveBeenCalledWith({ bottom: 400 });
+  });
+
+  it("pans with bottom padding when coordinates change", () => {
+    const { rerender } = renderMap(0.5);
+
+    rerender(
+      <Provider>
+        <Map
+          lon={-122.5}
+          lat={37.7}
+          address="123 Main St"
+          softStoryData={fc}
+          tsunamiData={fc}
+          liquefactionData={fc}
+          layerToggleObj={{ layerId: "", toggleState: true }}
+          bottomPaddingRatio={0.5}
+        />
+      </Provider>
+    );
+
+    expect(mockMapInstance.easeTo).toHaveBeenCalledWith(
+      expect.objectContaining({
+        padding: { bottom: 400 },
+        duration: 750,
+      })
+    );
+  });
+
+  it("sets zero bottom padding on mount", () => {
+    renderMap(0);
+
+    expect(mockMapInstance.setPadding).toHaveBeenCalledWith({ bottom: 0 });
   });
 });
