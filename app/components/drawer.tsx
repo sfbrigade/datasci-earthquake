@@ -1,27 +1,29 @@
 "use client";
 
 import React, { useCallback, useRef, useState } from "react";
-import {
-  Box,
-  chakra,
-  Drawer,
-  IconButton,
-  Portal,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, chakra, Drawer, IconButton, Portal } from "@chakra-ui/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 const AngleLeft = chakra(FaAngleLeft);
 const AngleRight = chakra(FaAngleRight);
+
+// Must match the `h={{ base: "1/2" }}` token on `Drawer.Content`.
+export const MOBILE_DRAWER_HEIGHT_RATIO = 0.5;
 
 interface DrawerProps {
   children: React.ReactNode;
   title: string;
   footerText: React.ReactNode;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-const SHDrawer = ({ children, title, footerText }: DrawerProps) => {
-  // Drawer
-  const { open, onOpen, onClose } = useDisclosure({ defaultOpen: true });
+const SHDrawer = ({
+  children,
+  title,
+  footerText,
+  open,
+  onOpenChange,
+}: DrawerProps) => {
   const drawerContainerRef = useRef<HTMLDivElement>(null);
   const [drawerContainer, setDrawerContainer] = useState<HTMLDivElement | null>(
     null
@@ -49,7 +51,7 @@ const SHDrawer = ({ children, title, footerText }: DrawerProps) => {
               backgroundColor="white"
             >
               <Box
-                onClick={onOpen}
+                onClick={() => onOpenChange(true)}
                 asChild
                 position="absolute"
                 // Mobile: center horizontally at bottom.
@@ -62,7 +64,12 @@ const SHDrawer = ({ children, title, footerText }: DrawerProps) => {
                 mx={{ base: "auto", md: "0" }}
                 transform={{ base: "none", md: "translateY(-50%)" }}
               >
-                <IconButton variant="subtle" rounded="full" size="md">
+                <IconButton
+                  aria-label="Open risk layers"
+                  variant="subtle"
+                  rounded="full"
+                  size="md"
+                >
                   <AngleRight rotate={{ base: "270deg", md: "0deg" }} />
                 </IconButton>
               </Box>
@@ -74,9 +81,7 @@ const SHDrawer = ({ children, title, footerText }: DrawerProps) => {
           <Drawer.Root
             placement={{ mdDown: "bottom", md: "start" }}
             open={open}
-            onOpenChange={(details) => {
-              if (!details.open) onClose();
-            }}
+            onOpenChange={(details) => onOpenChange(details.open)}
             modal={false}
             closeOnInteractOutside={false}
             lazyMount
@@ -92,6 +97,7 @@ const SHDrawer = ({ children, title, footerText }: DrawerProps) => {
                   // NOTE: the following props are used because the `size` prop values of `Drawer.Root` are too limited (and do not directly correspond to the theme `sizes` tokens)
                   w={{ base: "full", md: "sm" }}
                   maxW={{ base: "full", md: "sm" }}
+                  // Must match `MOBILE_DRAWER_HEIGHT_RATIO`.
                   h={{ base: "1/2", md: "full" }}
                   maxH={{ base: "1/2", md: "full" }}
                   pointerEvents="auto"
@@ -100,7 +106,7 @@ const SHDrawer = ({ children, title, footerText }: DrawerProps) => {
                   }}
                 >
                   <Drawer.CloseTrigger
-                    onClick={onClose}
+                    onClick={() => onOpenChange(false)}
                     asChild
                     position="absolute"
                     // Mobile: centered above drawer edge.
@@ -112,7 +118,12 @@ const SHDrawer = ({ children, title, footerText }: DrawerProps) => {
                     mx={{ base: "auto", md: "0" }}
                     transform={{ base: "none", md: "translateY(-50%)" }}
                   >
-                    <IconButton variant="subtle" rounded="full" size="md">
+                    <IconButton
+                      aria-label="Close risk layers"
+                      variant="subtle"
+                      rounded="full"
+                      size="md"
+                    >
                       <AngleLeft rotate={{ base: "270deg", md: "0deg" }} />
                     </IconButton>
                   </Drawer.CloseTrigger>

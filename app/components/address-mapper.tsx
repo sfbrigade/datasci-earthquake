@@ -2,14 +2,20 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Box, Button, HStack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Text,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { FeatureCollection, Geometry } from "geojson";
 
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
 import ReportHazards from "./report-hazards";
 import { useHazardDataFetcher } from "../hooks/useHazardDataFetcher";
-import SHDrawer from "./drawer";
+import SHDrawer, { MOBILE_DRAWER_HEIGHT_RATIO } from "./drawer";
 import AlertInfo from "./ui/alert-info";
 import NextLink from "@/components/custom-next-link";
 import { useMapState } from "./map-state-provider";
@@ -68,6 +74,10 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   const displayData = validParams ? addressHazardData : {};
 
   const [isHazardDataLoading, setHazardDataLoading] = useState(false);
+  const [isDrawerOpen, setDrawerOpen] = useState(true);
+  const isMobile = useBreakpointValue({ base: true, md: false }) ?? true;
+  const bottomPaddingRatio =
+    isMobile && isDrawerOpen ? MOBILE_DRAWER_HEIGHT_RATIO : 0;
 
   const [toggledStates, setToggledStates] = useState<boolean[]>(
     toggledStatesDefaults
@@ -180,6 +190,8 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     <Box w="full" h="full" m="auto" position="relative">
       <Box h="full" overflow="hidden">
         <SHDrawer
+          open={isDrawerOpen}
+          onOpenChange={setDrawerOpen}
           title="Risk Layers"
           footerText={
             <Box hideBelow="sm">
@@ -217,6 +229,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           tsunamiData={tsunamiData}
           liquefactionData={liquefactionData}
           layerToggleObj={layerToggleObj}
+          bottomPaddingRatio={bottomPaddingRatio}
         />
       </Box>
     </Box>
