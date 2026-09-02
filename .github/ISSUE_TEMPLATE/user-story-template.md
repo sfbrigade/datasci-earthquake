@@ -10,8 +10,8 @@ assignees: ''
 > **This template has been replaced for new product feature work.**
 > Please use the [Feature issue form](https://github.com/sfbrigade/datasci-earthquake/issues/new?template=feature.yml).
 >
-> The Feature form uses a Jobs-to-be-Done problem framing and can be refined
-> into design, engineering, and other work after intake.
+> The Feature form encourages problem-first framing and offers Jobs-to-be-Done as
+> one optional way to describe the problem before design and engineering refinement.
 >
 > The legacy prompts below remain temporarily for reference.
 
