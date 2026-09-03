@@ -17,6 +17,7 @@ jobs:
     outputs:
       changes: ${{ steps.detect_changes.outputs.changes }}    
       etl_commit: ${{ steps.detect_changes.outputs.commit_sha }}
+      exported_at_list: ${{ steps.export_metadata.outputs.exported_at_list }}
 
     steps:
       - name: Checkout repository
@@ -67,6 +68,14 @@ jobs:
           wait $PID3 || { echo "liquefaction_data_handler failed"; FAILED=1; }
           wait $PID4 || { echo "landslide_data_handler failed"; FAILED=1; }
           [ "$FAILED" -eq 0 ] || exit 1
+
+      - name: Query export metadata
+        id: export_metadata
+        run: |
+          # Capture the output
+          echo "exported_at_list<<EOF" >> $GITHUB_OUTPUT
+          ENVIRONMENT=prod python scripts/get_export_metadata.py >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Commit & Push Changes
         id: detect_changes 
@@ -134,6 +143,9 @@ jobs:
             This PR contains updated GeoJSON files from the latest ETL run.
 
             **Source ETL Commit:** ${{ needs.run-etl.outputs.etl_commit }}
+            **Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            
+            ${{ needs.run-etl.outputs.exported_at_list }}
             
             Please review and merge if the data looks correct.
           base: main

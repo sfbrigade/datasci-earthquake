@@ -43,6 +43,7 @@ from backend.api.models.tsunami import TsunamiZone
 from backend.api.models.landslide_zones import LandslideZone
 from backend.api.models.liquefaction_zones import LiquefactionZone
 from backend.api.models.soft_story_properties import SoftStoryProperty
+from backend.api.models.export_metadata import ExportMetadata
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
