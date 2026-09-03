@@ -12,6 +12,7 @@ export const STATUS_CATEGORIES = Object.freeze({
   Ready: 'unstarted',
   'In Progress': 'started',
   'In Review': 'started',
+  Blocked: 'started',
   Done: 'completed',
   Canceled: 'canceled',
   Cancelled: 'canceled',
