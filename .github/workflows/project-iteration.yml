@@ -1,0 +1,38 @@
+name: Project iteration dry run
+
+on:
+  workflow_dispatch:
+    inputs:
+      from_iteration:
+        description: 'Optional source Iteration title/number to inspect (for example: 33)'
+        required: false
+        default: '33'
+  pull_request:
+    paths:
+      - '.github/workflows/project-iteration.yml'
+      - '.github/scripts/project-iteration.mjs'
+      - '.github/scripts/project-iteration.test.mjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: safehome-project-iteration
+  cancel-in-progress: false
+
+jobs:
+  dry-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run policy tests
+        run: node --test .github/scripts/project-iteration.test.mjs
+
+      - name: Inspect Project rollover candidates
+        env:
+          PROJECT_ORG: sfbrigade
+          PROJECT_NUMBER: '13'
+          PROJECT_TIME_ZONE: America/Los_Angeles
+          SOURCE_ITERATION: ${{ github.event_name == 'workflow_dispatch' && inputs.from_iteration || '33' }}
+        run: node .github/scripts/project-iteration.mjs --from-iteration "$SOURCE_ITERATION"
