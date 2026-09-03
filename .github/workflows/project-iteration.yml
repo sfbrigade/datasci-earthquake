@@ -57,11 +57,6 @@ jobs:
           PROJECT_ORG: sfbrigade
           PROJECT_NUMBER: '13'
           PROJECT_TIME_ZONE: America/Los_Angeles
-          SOURCE_ITERATION: ${{ github.event_name == 'workflow_dispatch' && inputs.from_iteration || '' }}
+          SOURCE_ITERATION: ${{ github.event_name == 'workflow_dispatch' && inputs.from_iteration || '33' }}
         shell: bash
-        run: |
-          if [[ -n "$SOURCE_ITERATION" ]]; then
-            node .github/scripts/project-iteration.mjs --from-iteration "$SOURCE_ITERATION"
-          else
-            node .github/scripts/project-iteration.mjs
-          fi
+        run: node .github/scripts/project-iteration.mjs --from-iteration "$SOURCE_ITERATION"
