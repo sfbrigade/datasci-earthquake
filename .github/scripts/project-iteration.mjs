@@ -142,9 +142,9 @@ function scalarId(value, kind) {
   if (typeof value === 'string' || typeof value === 'number') return String(value);
   if (typeof value !== 'object') return null;
   const candidates = kind === 'iteration'
-    ? [value.iteration_id, value.iterationId, value.iteration?.id, value.id, value.value]
+    ? [value.iteration_id, value.iterationId, value.iteration?.id, value.value?.id]
     : [value.option_id, value.optionId, value.option?.id, value.single_select_option?.id,
-      value.singleSelectOption?.id, value.id, value.value];
+      value.singleSelectOption?.id, value.value?.id];
   for (const candidate of candidates) {
     const id = scalarId(candidate, kind);
     if (id != null) return id;
@@ -202,10 +202,11 @@ function fieldValue(item, fieldId) {
 }
 
 function statusName(item, statusField) {
-  const value = fieldValue(item, statusField.id);
-  const direct = rawText(value?.name ?? value?.option?.name ?? value?.single_select_option?.name ?? value?.singleSelectOption?.name);
-  if (direct) return direct;
-  const optionId = scalarId(value, 'option');
+  const field = fieldValue(item, statusField.id);
+  const selected = field?.value ?? field?.option ?? field?.single_select_option ?? field?.singleSelectOption;
+  const direct = rawText(selected?.name ?? selected?.title ?? selected?.text ?? selected);
+  if (direct && direct !== statusField.name) return direct;
+  const optionId = scalarId(field, 'option');
   const option = (statusField.options ?? []).find((entry) => String(entry.id) === String(optionId));
   return option ? rawText(option.name) : null;
 }
