@@ -1,0 +1,62 @@
+name: Project iteration dry run
+
+on:
+  workflow_dispatch:
+    inputs:
+      from_iteration:
+        description: 'Optional source Iteration title/number to inspect (for example: 33)'
+        required: false
+        default: '33'
+  pull_request:
+    paths:
+      - '.github/workflows/project-iteration.yml'
+      - '.github/scripts/project-iteration.mjs'
+      - '.github/scripts/project-iteration.test.mjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: safehome-project-iteration
+  cancel-in-progress: false
+
+jobs:
+  dry-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run policy tests
+        run: node --test .github/scripts/project-iteration.test.mjs
+
+      - name: Probe source Iteration with Project search
+        env:
+          SOURCE_ITERATION: ${{ github.event_name == 'workflow_dispatch' && inputs.from_iteration || '33' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          selector="$SOURCE_ITERATION"
+          if [[ "$selector" =~ ^[0-9]+$ ]]; then
+            selector="Iteration $selector"
+          fi
+
+          response="$(curl --fail-with-body --silent --show-error --get \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'X-GitHub-Api-Version: 2026-03-10' \
+            --data-urlencode "q=iteration:\"$selector\"" \
+            --data-urlencode 'per_page=100' \
+            'https://api.github.com/orgs/sfbrigade/projectsV2/13/items')"
+
+          count="$(jq 'length' <<<"$response")"
+          echo "REST_PROJECT_QUERY=iteration:\"$selector\""
+          echo "REST_PROJECT_MATCHES=$count"
+          jq -r '.[] | "#\(.content.number // "?")  \(.content.title // "(untitled)")"' <<<"$response"
+
+      - name: Inspect Project rollover candidates
+        env:
+          PROJECT_ORG: sfbrigade
+          PROJECT_NUMBER: '13'
+          PROJECT_TIME_ZONE: America/Los_Angeles
+          SOURCE_ITERATION: ${{ github.event_name == 'workflow_dispatch' && inputs.from_iteration || '33' }}
+        shell: bash
+        run: node .github/scripts/project-iteration.mjs --from-iteration "$SOURCE_ITERATION"
