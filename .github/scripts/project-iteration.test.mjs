@@ -12,6 +12,7 @@ test('classifies SafeHome statuses into Linear-like categories', () => {
   assert.equal(classifyStatus('Todo'), 'unstarted');
   assert.equal(classifyStatus('In Progress'), 'started');
   assert.equal(classifyStatus('In Review'), 'started');
+  assert.equal(classifyStatus('Blocked'), 'started');
   assert.equal(classifyStatus('Done'), 'completed');
   assert.equal(classifyStatus('Canceled'), 'canceled');
 });
@@ -25,7 +26,7 @@ test('unknown statuses fail closed', () => {
 });
 
 test('rolls committed unstarted and started work from a past iteration', () => {
-  for (const status of ['Todo', 'In Progress', 'In Review']) {
+  for (const status of ['Todo', 'In Progress', 'In Review', 'Blocked']) {
     assert.deepEqual(
       decideTransition({ issueState: 'open', status, iterationRelation: 'past' }),
       { action: 'move-current', reason: 'expired-committed-work' },
@@ -44,6 +45,7 @@ test('does not roll backlog, triage, completed, canceled, or closed issues', () 
 test('assigns only started blank work to current', () => {
   assert.equal(decideTransition({ issueState: 'open', status: 'In Progress', iterationRelation: 'blank' }).action, 'move-current');
   assert.equal(decideTransition({ issueState: 'open', status: 'In Review', iterationRelation: 'blank' }).action, 'move-current');
+  assert.equal(decideTransition({ issueState: 'open', status: 'Blocked', iterationRelation: 'blank' }).action, 'move-current');
   assert.equal(decideTransition({ issueState: 'open', status: 'Todo', iterationRelation: 'blank' }).action, 'keep');
 });
 
