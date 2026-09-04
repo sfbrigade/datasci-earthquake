@@ -7,6 +7,7 @@ from backend.api.routers import (
     tsunami_api,
     soft_story_api,
     health_api,
+    hazard_lookup_api,
 )
 from backend.api.config import settings
 import sentry_sdk
@@ -30,6 +31,7 @@ app.include_router(liquefaction_api.router)
 app.include_router(tsunami_api.router)
 app.include_router(soft_story_api.router)
 app.include_router(health_api.router)
+app.include_router(hazard_lookup_api.router)
 
 origins = [
     "http://localhost",
