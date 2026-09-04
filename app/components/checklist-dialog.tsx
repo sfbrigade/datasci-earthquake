@@ -15,7 +15,7 @@ import { EmergencyKitSteps } from "./emergency-kit-steps";
 
 export function ChecklistDialog() {
   return (
-    <DialogRoot placement="center" scrollBehavior="inside" size="lg">
+    <DialogRoot placement="center" scrollBehavior="inside" size="cover">
       <DialogTrigger asChild>
         <Button size="sm">See checklist </Button>
       </DialogTrigger>
