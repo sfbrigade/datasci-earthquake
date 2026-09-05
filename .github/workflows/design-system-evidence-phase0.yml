@@ -26,6 +26,8 @@ jobs:
         run: node scripts/design-system/evidence/phase0-benchmark.mjs
       - name: Run TypeScript reachability baseline
         run: node scripts/design-system/evidence/phase0-reachability.mjs
+      - name: Run controlled Chakra semantic probe
+        run: node scripts/design-system/evidence/phase0-chakra.mjs
       - name: Run Knip production oracle
         continue-on-error: true
         run: |
@@ -38,6 +40,7 @@ jobs:
         run: |
           cat .tmp/design-system/phase0-typescript.json
           cat .tmp/design-system/phase0-reachability.json
+          cat .tmp/design-system/phase0-chakra.json || true
           printf 'KNIP_VERSION=' && cat .tmp/design-system/phase0-knip-version.txt || true
           cat .tmp/design-system/phase0-knip.json || true
       - uses: actions/upload-artifact@v4
