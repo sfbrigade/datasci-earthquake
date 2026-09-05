@@ -1,13 +1,13 @@
-import fs from "node:fs";
-import path from "node:path";
-import ts from "typescript";
+import fs from 'node:fs';
+import path from 'node:path';
+import ts from 'typescript';
 
 const repoRoot = process.cwd();
 const here = path.dirname(new URL(import.meta.url).pathname);
-const oraclePath = path.join(here, "phase0-oracle.json");
-const oracle = JSON.parse(fs.readFileSync(oraclePath, "utf8"));
+const oraclePath = path.join(here, 'phase0-oracle.json');
+const oracle = JSON.parse(fs.readFileSync(oraclePath, 'utf8'));
 
-const BREAKPOINT_KEYS = new Set(["base", "sm", "md", "lg", "xl", "2xl"]);
+const BREAKPOINT_KEYS = new Set(['base','sm','md','lg','xl','2xl']);
 const extracted = [];
 const fileResults = [];
 
@@ -22,217 +22,170 @@ function componentName(tag, imports) {
 }
 
 function literalValue(node) {
-  if (!node) return { kind: "exact", value: "true" };
-  if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
-    return { kind: "exact", value: node.text };
-  }
-  if (ts.isNumericLiteral(node)) return { kind: "exact", value: node.text };
-  if (node.kind === ts.SyntaxKind.TrueKeyword) return { kind: "exact", value: "true" };
-  if (node.kind === ts.SyntaxKind.FalseKeyword) return { kind: "exact", value: "false" };
-  if (node.kind === ts.SyntaxKind.NullKeyword) return { kind: "exact", value: "null" };
+  if (!node) return {kind:'exact', value:'true'};
+  if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) return {kind:'exact', value:node.text};
+  if (ts.isNumericLiteral(node)) return {kind:'exact', value:node.text};
+  if (node.kind === ts.SyntaxKind.TrueKeyword) return {kind:'exact', value:'true'};
+  if (node.kind === ts.SyntaxKind.FalseKeyword) return {kind:'exact', value:'false'};
+  if (node.kind === ts.SyntaxKind.NullKeyword) return {kind:'exact', value:'null'};
   return null;
 }
 
 function keyName(name) {
-  if (ts.isIdentifier(name) || ts.isStringLiteral(name) || ts.isNumericLiteral(name)) {
-    return name.text;
-  }
+  if (ts.isIdentifier(name) || ts.isStringLiteral(name) || ts.isNumericLiteral(name)) return name.text;
   return null;
 }
 
 function formatResponsive(entries) {
-  return entries.map(([key, value]) => `${key} → ${value}`).join(" · ");
+  return entries.map(([k,v]) => `${k} → ${v}`).join(' · ');
 }
 
-function flattenObject(baseProp, object, sourceFile) {
-  const facts = [];
-  const entries = [];
+function flattenObject(baseProp, obj, sourceFile) {
+  const props = [];
+  const simple = [];
   let allBreakpoint = true;
-
-  for (const property of object.properties) {
-    if (!ts.isPropertyAssignment(property)) {
-      allBreakpoint = false;
-      continue;
-    }
-    const key = keyName(property.name);
-    if (!key) {
-      allBreakpoint = false;
-      continue;
-    }
-    if (!BREAKPOINT_KEYS.has(key)) allBreakpoint = false;
-    const literal = literalValue(property.initializer);
-    entries.push([key, literal?.value ?? property.initializer.getText(sourceFile)]);
+  for (const p of obj.properties) {
+    if (!ts.isPropertyAssignment(p)) { allBreakpoint = false; continue; }
+    const k = keyName(p.name);
+    if (!k) { allBreakpoint = false; continue; }
+    const lit = literalValue(p.initializer);
+    if (!BREAKPOINT_KEYS.has(k)) allBreakpoint = false;
+    if (lit) simple.push([k, lit.value]);
+    else simple.push([k, p.initializer.getText(sourceFile)]);
   }
-
-  if (allBreakpoint && entries.length === object.properties.length) {
-    return [{ prop: baseProp, value: formatResponsive(entries), resolution: "exact" }];
+  if (allBreakpoint && simple.length === obj.properties.length) {
+    props.push({prop:baseProp, value:formatResponsive(simple), resolution:'exact'});
+    return props;
   }
-
-  for (const property of object.properties) {
-    if (!ts.isPropertyAssignment(property)) continue;
-    const key = keyName(property.name);
-    if (!key) continue;
-    const childProp = `${baseProp}.${key}`;
-    const literal = literalValue(property.initializer);
-    if (literal) {
-      facts.push({ prop: childProp, value: literal.value, resolution: "exact" });
-    } else if (ts.isObjectLiteralExpression(property.initializer)) {
-      facts.push(...flattenObject(childProp, property.initializer, sourceFile));
-    } else {
-      facts.push({
-        prop: childProp,
-        value: property.initializer.getText(sourceFile),
-        resolution: "unresolved",
-      });
-    }
+  for (const p of obj.properties) {
+    if (!ts.isPropertyAssignment(p)) continue;
+    const k = keyName(p.name);
+    if (!k) continue;
+    const childProp = `${baseProp}.${k}`;
+    const lit = literalValue(p.initializer);
+    if (lit) props.push({prop:childProp, value:lit.value, resolution:'exact'});
+    else if (ts.isObjectLiteralExpression(p.initializer)) props.push(...flattenObject(childProp, p.initializer, sourceFile));
+    else props.push({prop:childProp, value:p.initializer.getText(sourceFile), resolution:'unresolved'});
   }
-  return facts;
+  return props;
 }
 
-function extractAttribute(attribute, sourceFile) {
-  if (!ts.isJsxAttribute(attribute)) return [];
-  const prop = attribute.name.getText(sourceFile);
-  if (!attribute.initializer) return [{ prop, value: "true", resolution: "exact" }];
-  if (ts.isStringLiteral(attribute.initializer)) {
-    return [{ prop, value: attribute.initializer.text, resolution: "exact" }];
-  }
-  if (!ts.isJsxExpression(attribute.initializer) || !attribute.initializer.expression) {
-    return [{ prop, value: "", resolution: "unresolved" }];
-  }
-
-  const expression = attribute.initializer.expression;
-  const literal = literalValue(expression);
-  if (literal) return [{ prop, value: literal.value, resolution: "exact" }];
-  if (ts.isObjectLiteralExpression(expression)) {
-    return flattenObject(prop, expression, sourceFile);
-  }
-  if (ts.isConditionalExpression(expression)) {
-    const whenTrue = literalValue(expression.whenTrue);
-    const whenFalse = literalValue(expression.whenFalse);
-    if (whenTrue && whenFalse) {
-      return [{
-        prop,
-        value: `${expression.condition.getText(sourceFile)} ? ${whenTrue.value} : ${whenFalse.value}`,
-        resolution: "bounded",
-      }];
+function extractAttribute(attr, sourceFile) {
+  if (!ts.isJsxAttribute(attr)) return [];
+  const prop = attr.name.getText(sourceFile);
+  if (!attr.initializer) return [{prop, value:'true', resolution:'exact'}];
+  if (ts.isStringLiteral(attr.initializer)) return [{prop, value:attr.initializer.text, resolution:'exact'}];
+  if (!ts.isJsxExpression(attr.initializer) || !attr.initializer.expression) return [{prop, value:'', resolution:'unresolved'}];
+  const expr = attr.initializer.expression;
+  const lit = literalValue(expr);
+  if (lit) return [{prop, value:lit.value, resolution:'exact'}];
+  if (ts.isObjectLiteralExpression(expr)) return flattenObject(prop, expr, sourceFile);
+  if (ts.isConditionalExpression(expr)) {
+    const a = literalValue(expr.whenTrue);
+    const b = literalValue(expr.whenFalse);
+    if (a && b) return [{prop, value:`${expr.condition.getText(sourceFile)} ? ${a.value} : ${b.value}`, resolution:'bounded'}];
+    const objectBranch = ts.isObjectLiteralExpression(expr.whenTrue)
+      ? expr.whenTrue
+      : ts.isObjectLiteralExpression(expr.whenFalse)
+        ? expr.whenFalse
+        : null;
+    const otherBranch = objectBranch === expr.whenTrue ? expr.whenFalse : expr.whenTrue;
+    if (objectBranch && otherBranch.getText(sourceFile) === 'undefined') {
+      return flattenObject(prop, objectBranch, sourceFile).map(f => ({...f, condition: expr.condition.getText(sourceFile)}));
+    }
+    if (objectBranch) {
+      const other = literalValue(otherBranch);
+      if (other) {
+        const responsive = flattenObject(prop, objectBranch, sourceFile);
+        if (responsive.length === 1 && responsive[0].prop === prop) {
+          const objectIsFalse = objectBranch === expr.whenFalse;
+          return [{
+            prop,
+            value: objectIsFalse
+              ? `${expr.condition.getText(sourceFile)} ? ${other.value} : ${responsive[0].value}`
+              : `${expr.condition.getText(sourceFile)} ? ${responsive[0].value} : ${other.value}`,
+            resolution:'bounded',
+          }];
+        }
+      }
     }
   }
-  return [{ prop, value: expression.getText(sourceFile), resolution: "unresolved" }];
+  return [{prop, value:expr.getText(sourceFile), resolution:'unresolved'}];
 }
 
-function analyzeFile(relativePath) {
-  const fullPath = path.join(repoRoot, relativePath);
-  const text = fs.readFileSync(fullPath, "utf8");
-  const sourceFile = ts.createSourceFile(
-    relativePath,
-    text,
-    ts.ScriptTarget.Latest,
-    true,
-    relativePath.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
-  );
-
+function analyzeFile(rel) {
+  const full = path.join(repoRoot, rel);
+  const text = fs.readFileSync(full, 'utf8');
+  const sf = ts.createSourceFile(rel, text, ts.ScriptTarget.Latest, true, rel.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
   const imports = new Map();
-  for (const statement of sourceFile.statements) {
-    if (
-      !ts.isImportDeclaration(statement) ||
-      statement.moduleSpecifier.text !== "@chakra-ui/react"
-    ) {
-      continue;
-    }
-    const bindings = statement.importClause?.namedBindings;
-    if (!bindings || !ts.isNamedImports(bindings)) continue;
-    for (const element of bindings.elements) {
-      imports.set(element.name.text, element.propertyName?.text ?? element.name.text);
-    }
+  for (const st of sf.statements) {
+    if (!ts.isImportDeclaration(st) || st.moduleSpecifier.text !== '@chakra-ui/react') continue;
+    const clause = st.importClause;
+    if (!clause?.namedBindings || !ts.isNamedImports(clause.namedBindings)) continue;
+    for (const el of clause.namedBindings.elements) imports.set(el.name.text, el.propertyName?.text ?? el.name.text);
   }
-
   let jsxSites = 0;
   function visit(node) {
     if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
       const component = componentName(node.tagName, imports);
       if (component) {
-        jsxSites += 1;
-        for (const attribute of node.attributes.properties) {
-          for (const fact of extractAttribute(attribute, sourceFile)) {
-            extracted.push({
-              file: relativePath,
-              component,
-              ...fact,
-              line: sourceFile.getLineAndCharacterOfPosition(attribute.getStart(sourceFile)).line + 1,
-            });
+        jsxSites++;
+        for (const attr of node.attributes.properties) {
+          for (const fact of extractAttribute(attr, sf)) {
+            extracted.push({file:rel, component, ...fact, line:sf.getLineAndCharacterOfPosition(attr.getStart(sf)).line + 1});
           }
         }
       }
     }
     ts.forEachChild(node, visit);
   }
-  visit(sourceFile);
-
-  fileResults.push({
-    file: relativePath,
-    bytes: Buffer.byteLength(text),
-    chakraImports: [...imports.entries()],
-    jsxSites,
-  });
+  visit(sf);
+  fileResults.push({file:rel, bytes:Buffer.byteLength(text), chakraImports:[...imports.entries()], jsxSites});
 }
 
-for (const relativePath of oracle.sourceFiles) analyzeFile(relativePath);
+for (const rel of oracle.sourceFiles) analyzeFile(rel);
 
-function factKey(fact) {
-  return `${fact.file}\u0000${fact.component}\u0000${fact.prop}\u0000${fact.value}`;
+function key(f) { return `${f.file}\u0000${f.component}\u0000${f.prop}\u0000${f.value}`; }
+function scoreGroup(expected, resolution, {matchValue = true} = {}) {
+  const candidates = extracted.filter(f => f.resolution === resolution);
+  const candidateKeys = new Set(candidates.map(f => matchValue ? key(f) : `${f.file}\u0000${f.component}\u0000${f.prop}`));
+  const expectedKey = f => matchValue ? key(f) : `${f.file}\u0000${f.component}\u0000${f.prop}`;
+  const matched = expected.filter(f => candidateKeys.has(expectedKey(f)));
+  return {
+    expected: expected.length,
+    matched: matched.length,
+    missing: expected.filter(f => !candidateKeys.has(expectedKey(f))),
+    recall: expected.length ? matched.length / expected.length : 1,
+  };
 }
 
-const extractedExact = new Set(
-  extracted.filter((fact) => fact.resolution === "exact").map(factKey),
-);
-const oracleExplicitExact = oracle.facts.filter(
-  (fact) => fact.evidence === "Exact" && fact.origin === "explicit",
-);
-const matched = oracleExplicitExact.filter((fact) => extractedExact.has(factKey(fact)));
-const missing = oracleExplicitExact.filter((fact) => !extractedExact.has(factKey(fact)));
-const recipeDefaults = oracle.facts.filter((fact) => fact.origin === "recipe default");
+const oracleExplicitExact = oracle.facts.filter(f => f.evidence === 'Exact' && f.origin === 'explicit');
+const oraclePossible = oracle.facts.filter(f => f.evidence === 'Possible');
+const oracleUnresolved = oracle.facts.filter(f => f.evidence === 'Unresolved');
+const recipeDefaults = oracle.facts.filter(f => f.origin === 'recipe default');
+const exactScore = scoreGroup(oracleExplicitExact, 'exact');
+const possibleScore = scoreGroup(oraclePossible, 'bounded');
+const unresolvedScore = scoreGroup(oracleUnresolved, 'unresolved', {matchValue:false});
 
 const result = {
-  schema: "safehome.design-system-evidence.phase0-benchmark.v1",
-  authorityCommit: oracle.authorityCommit,
-  parser: { name: "typescript", version: ts.version },
-  oracle: {
-    files: oracle.sourceFiles.length,
-    facts: oracle.facts.length,
-    explicitExact: oracleExplicitExact.length,
-    recipeDefaults: recipeDefaults.length,
-  },
-  extraction: {
-    facts: extracted.length,
-    exact: extracted.filter((fact) => fact.resolution === "exact").length,
-    bounded: extracted.filter((fact) => fact.resolution === "bounded").length,
-    unresolved: extracted.filter((fact) => fact.resolution === "unresolved").length,
-  },
-  score: {
-    matchedExplicitExact: matched.length,
-    missingExplicitExact: missing.length,
-    recallExplicitExact: matched.length / oracleExplicitExact.length,
-  },
-  missing,
-  files: fileResults,
+  schema:'safehome.design-system-evidence.phase0-benchmark.v1',
+  authorityCommit:oracle.authorityCommit,
+  parser:{name:'typescript', version:ts.version},
+  oracle:{files:oracle.sourceFiles.length, facts:oracle.facts.length, explicitExact:oracleExplicitExact.length, possible:oraclePossible.length, unresolved:oracleUnresolved.length, recipeDefaults:recipeDefaults.length},
+  extraction:{facts:extracted.length, exact:extracted.filter(f=>f.resolution==='exact').length, bounded:extracted.filter(f=>f.resolution==='bounded').length, unresolved:extracted.filter(f=>f.resolution==='unresolved').length},
+  score:{exact:exactScore, possible:possibleScore, unresolved:unresolvedScore},
+  missing:{exact:exactScore.missing, possible:possibleScore.missing, unresolved:unresolvedScore.missing},
+  files:fileResults,
 };
 
-const outputPath =
-  process.argv[2] ?? path.join(repoRoot, ".tmp", "design-system", "phase0-typescript.json");
-fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-fs.writeFileSync(outputPath, `${JSON.stringify(result, null, 2)}\n`);
-
-console.log(
-  `PHASE0_TS=${matched.length}/${oracleExplicitExact.length} ` +
-    `recall=${(100 * result.score.recallExplicitExact).toFixed(1)}% ` +
-    `extracted=${extracted.length} exact=${result.extraction.exact} ` +
-    `bounded=${result.extraction.bounded} unresolved=${result.extraction.unresolved}`,
-);
-if (missing.length) {
-  console.log("MISSING_BEGIN");
-  for (const fact of missing) {
-    console.log(`${fact.file} :: ${fact.component}.${fact.prop} = ${fact.value}`);
-  }
-  console.log("MISSING_END");
+const out = process.argv[2] || path.join(repoRoot,'.tmp','design-system','phase0-typescript.json');
+fs.mkdirSync(path.dirname(out), {recursive:true});
+fs.writeFileSync(out, JSON.stringify(result,null,2)+'\n');
+console.log(`PHASE0_TS exact=${exactScore.matched}/${exactScore.expected} (${(100*exactScore.recall).toFixed(1)}%) possible=${possibleScore.matched}/${possibleScore.expected} unresolved=${unresolvedScore.matched}/${unresolvedScore.expected} extracted=${extracted.length} exactFacts=${result.extraction.exact} boundedFacts=${result.extraction.bounded} unresolvedFacts=${result.extraction.unresolved}`);
+for (const [kind, score] of Object.entries({exact:exactScore, possible:possibleScore, unresolved:unresolvedScore})) {
+  if (!score.missing.length) continue;
+  console.log(`MISSING_${kind.toUpperCase()}_BEGIN`);
+  for (const f of score.missing) console.log(`${f.file} :: ${f.component}.${f.prop} = ${f.value}`);
+  console.log(`MISSING_${kind.toUpperCase()}_END`);
 }
-console.log(`RECEIPT=${outputPath}`);
+console.log(`RECEIPT=${out}`);
