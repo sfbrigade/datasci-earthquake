@@ -115,6 +115,19 @@
         "endColumn": {"type": "integer", "minimum": 1}
       }
     },
+    "valueCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["conditions", "value"],
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "value": {"type": "string"}
+      }
+    },
     "sourceFact": {
       "type": "object",
       "additionalProperties": false,
@@ -140,7 +153,8 @@
         "propPath": {"type": "string"},
         "component": {"type": "string"},
         "domains": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
-        "values": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+        "values": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "valueCases": {"type": "array", "items": {"$ref": "#/definitions/valueCase"}}
       }
     },
     "moduleFact": {
@@ -182,6 +196,7 @@
         "recipe": {"type": "string"},
         "variant": {"type": "string"},
         "value": {"type": "string"},
+        "conditions": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
         "virtual": {"type": "boolean"}
       }
     },
