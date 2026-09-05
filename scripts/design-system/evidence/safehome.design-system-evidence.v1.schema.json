@@ -166,7 +166,7 @@
         "moduleFactId": {"type": "string", "minLength": 1},
         "fromFileId": {"type": "string", "minLength": 1},
         "toFileId": {"type": "string", "minLength": 1},
-        "kind": {"enum": ["static-import", "dynamic-import", "asset-import", "unresolved-import"]},
+        "kind": {"enum": ["static-import", "dynamic-import", "type-import", "asset-import", "unresolved-import"]},
         "specifier": {"type": "string"}
       }
     },
