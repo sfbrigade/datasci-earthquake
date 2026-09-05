@@ -1,0 +1,33 @@
+name: Design-system evidence Phase 0
+
+on:
+  push:
+    branches:
+      - theme-evidence-phase0
+    paths:
+      - "scripts/design-system/evidence/**"
+      - ".github/workflows/design-system-evidence-phase0.yml"
+      - "app/**/*.ts"
+      - "app/**/*.tsx"
+      - "styles/theme.ts"
+      - "package.json"
+      - "package-lock.json"
+  workflow_dispatch:
+
+jobs:
+  typescript-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-using-nvmrc
+      - run: npm ci
+      - name: Run TypeScript extraction baseline
+        run: node scripts/design-system/evidence/phase0-benchmark.mjs
+      - name: Show receipt
+        if: always()
+        run: cat .tmp/design-system/phase0-typescript.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: design-system-evidence-phase0-typescript
+          path: .tmp/design-system/phase0-typescript.json
