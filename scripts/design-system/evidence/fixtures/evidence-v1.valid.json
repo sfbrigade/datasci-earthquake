@@ -23,20 +23,21 @@
       "fileId": "f1",
       "path": "app/components/card-hazard.tsx",
       "sourceClass": "app-source",
-      "contentIdentity": {
-        "kind": "git-blob",
-        "value": "450f5e96d3d2c66fbac5fa7a2aa4c22825cd59e7"
-      },
+      "contentIdentity": {"kind": "git-blob", "value": "450f5e96d3d2c66fbac5fa7a2aa4c22825cd59e7"},
       "analysisStatus": "complete"
     },
     {
       "fileId": "f2",
       "path": "app/components/key-elem.tsx",
       "sourceClass": "app-source",
-      "contentIdentity": {
-        "kind": "git-blob",
-        "value": "a0a62c8fcb12ecf4d84f921123d5aeffa616a016"
-      },
+      "contentIdentity": {"kind": "git-blob", "value": "a0a62c8fcb12ecf4d84f921123d5aeffa616a016"},
+      "analysisStatus": "complete"
+    },
+    {
+      "fileId": "f3",
+      "path": "app/components/mobile-report-hazards.tsx",
+      "sourceClass": "app-source",
+      "contentIdentity": {"kind": "git-blob", "value": "a82ac432871bcc4a0dee89c4625bd7d44beadaa7"},
       "analysisStatus": "complete"
     }
   ],
@@ -63,6 +64,15 @@
       "propPath": "color",
       "component": "Icon",
       "domains": ["colors"]
+    },
+    {
+      "factId": "sf3",
+      "fileId": "f3",
+      "span": {"startLine": 47, "startColumn": 11, "endLine": 54, "endColumn": 12},
+      "kind": "component-callsite",
+      "resolution": "exact",
+      "raw": "<Button ...>",
+      "component": "Button"
     }
   ],
   "moduleFacts": [
@@ -72,6 +82,29 @@
       "toFileId": "f2",
       "kind": "static-import",
       "specifier": "./key-elem"
+    }
+  ],
+  "reachabilityClaims": [
+    {
+      "reachabilityClaimId": "r1",
+      "fileId": "f1",
+      "kind": "reachable",
+      "policy": "safehome-next16-app-router.v1",
+      "realms": ["product"]
+    },
+    {
+      "reachabilityClaimId": "r2",
+      "fileId": "f2",
+      "kind": "reachable",
+      "policy": "safehome-next16-app-router.v1",
+      "realms": ["product"]
+    },
+    {
+      "reachabilityClaimId": "r3",
+      "fileId": "f3",
+      "kind": "source-only",
+      "policy": "safehome-next16-app-router.v1",
+      "realms": []
     }
   ],
   "semanticFacts": [
@@ -86,6 +119,22 @@
       "kind": "semantic-implication",
       "originFactIds": ["sf1"],
       "entities": ["fonts.body", "fontSizes.md", "fontWeights.normal"]
+    },
+    {
+      "semanticFactId": "sem3",
+      "kind": "recipe-default",
+      "originFactIds": ["sf3"],
+      "recipe": "button",
+      "variant": "size",
+      "value": "md"
+    },
+    {
+      "semanticFactId": "sem4",
+      "kind": "recipe-default",
+      "originFactIds": ["sf3"],
+      "recipe": "button",
+      "variant": "variant",
+      "value": "solid"
     }
   ],
   "claims": [
@@ -97,7 +146,8 @@
       "basis": {
         "sourceFactIds": ["sf1"],
         "semanticFactIds": ["sem1"],
-        "moduleFactIds": ["mf1"]
+        "moduleFactIds": ["mf1"],
+        "reachabilityClaimIds": ["r1"]
       },
       "realms": ["product"]
     },
@@ -109,19 +159,33 @@
       "basis": {
         "sourceFactIds": ["sf2"],
         "semanticFactIds": [],
-        "moduleFactIds": []
+        "moduleFactIds": [],
+        "reachabilityClaimIds": ["r2"]
       },
       "blockers": ["unresolved color-domain source fact sf2"]
+    },
+    {
+      "claimId": "c3",
+      "kind": "source-only-reference",
+      "entity": "recipe.button.size.md",
+      "policy": "safehome-usage-evidence-claims.v1",
+      "basis": {
+        "sourceFactIds": ["sf3"],
+        "semanticFactIds": ["sem3"],
+        "moduleFactIds": [],
+        "reachabilityClaimIds": ["r3"]
+      },
+      "realms": []
     }
   ],
   "coverage": {
-    "eligibleFiles": 2,
-    "completeFiles": 2,
+    "eligibleFiles": 3,
+    "completeFiles": 3,
     "partialFiles": 0,
     "failedFiles": 0,
     "excludedFiles": 0,
     "unresolvedFacts": 1,
-    "bySourceClass": {"app-source": 2},
+    "bySourceClass": {"app-source": 3},
     "unresolvedByDomain": {"colors": 1}
   }
 }
