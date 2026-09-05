@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { nextRouteCompositionEdges } from "./next-route-structure.mjs";
 
 const root = process.cwd();
 const input = process.argv[2] ?? path.join(root, "scripts/design-system/evidence/fixtures/evidence-v1.valid.json");
@@ -26,9 +27,13 @@ const moduleFactIds = unique(doc.moduleFacts, "moduleFactId", "moduleFact");
 const reachabilityClaimIds = unique(doc.reachabilityClaims, "reachabilityClaimId", "reachabilityClaim");
 const semanticFactIds = unique(doc.semanticFacts, "semanticFactId", "semanticFact");
 unique(doc.claims, "claimId", "claim");
+const fileById = new Map((doc.files ?? []).map((file) => [file.fileId, file]));
 const sourceFactById = new Map((doc.sourceFacts ?? []).map((fact) => [fact.factId, fact]));
 const semanticFactById = new Map((doc.semanticFacts ?? []).map((fact) => [fact.semanticFactId, fact]));
 const reachabilityById = new Map((doc.reachabilityClaims ?? []).map((claim) => [claim.reachabilityClaimId, claim]));
+const allowedFrameworkEdges = new Set(
+  nextRouteCompositionEdges((doc.files ?? []).map((file) => file.path)).map((edge) => `${edge.from}\u0000${edge.to}`),
+);
 
 for (const file of doc.files ?? []) {
   if (path.isAbsolute(file.path) || /^[A-Za-z]:[\\/]/.test(file.path)) fail(`file path must be repo-relative: ${file.path}`);
@@ -90,11 +95,21 @@ for (const fact of doc.sourceFacts ?? []) {
 for (const fact of doc.moduleFacts ?? []) {
   if (!fileIds.has(fact.fromFileId)) fail(`moduleFact ${fact.moduleFactId} references unknown fromFileId ${fact.fromFileId}`);
   if (fact.toFileId && !fileIds.has(fact.toFileId)) fail(`moduleFact ${fact.moduleFactId} references unknown toFileId ${fact.toFileId}`);
-  if (["static-import", "dynamic-import", "type-import"].includes(fact.kind) && !fact.toFileId) {
+  if (["static-import", "dynamic-import", "type-import", "framework-route-composition"].includes(fact.kind) && !fact.toFileId) {
     fail(`resolved ${fact.kind} ${fact.moduleFactId} requires toFileId`);
   }
   if (["asset-import", "unresolved-import"].includes(fact.kind) && fact.toFileId) {
     fail(`${fact.kind} ${fact.moduleFactId} must not claim toFileId`);
+  }
+  if (fact.kind === "framework-route-composition") {
+    const fromPath = fileById.get(fact.fromFileId)?.path;
+    const toPath = fileById.get(fact.toFileId)?.path;
+    if (!fromPath || !toPath || !allowedFrameworkEdges.has(`${fromPath}\u0000${toPath}`)) {
+      fail(`framework-route-composition ${fact.moduleFactId} is not allowed by the Next route policy: ${fromPath} -> ${toPath}`);
+    }
+    if (fact.specifier !== toPath) {
+      fail(`framework-route-composition ${fact.moduleFactId} specifier must equal target path`);
+    }
   }
 }
 
