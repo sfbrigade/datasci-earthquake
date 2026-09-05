@@ -34,6 +34,12 @@ jobs:
           node scripts/design-system/evidence/phase0-reachability.mjs .tmp/design-system/phase0-reachability-b.json
           cmp .tmp/design-system/phase0-reachability-a.json .tmp/design-system/phase0-reachability-b.json
           cp .tmp/design-system/phase0-reachability-a.json .tmp/design-system/phase0-reachability.json
+      - name: Run TypeChecker outside-JSX probe twice
+        run: |
+          node scripts/design-system/evidence/phase0-typechecker.mjs .tmp/design-system/phase0-typechecker-a.json
+          node scripts/design-system/evidence/phase0-typechecker.mjs .tmp/design-system/phase0-typechecker-b.json
+          cmp .tmp/design-system/phase0-typechecker-a.json .tmp/design-system/phase0-typechecker-b.json
+          cp .tmp/design-system/phase0-typechecker-a.json .tmp/design-system/phase0-typechecker.json
       - name: Run controlled Chakra semantic probe twice
         run: |
           node scripts/design-system/evidence/phase0-chakra.mjs .tmp/design-system/phase0-chakra-a.json
@@ -52,6 +58,7 @@ jobs:
         run: |
           node -e 'const r=require("./.tmp/design-system/phase0-typescript.json"); console.log(JSON.stringify({schema:r.schema,parser:r.parser,oracle:r.oracle,score:r.score,extraction:r.extraction}))'
           node -e 'const r=require("./.tmp/design-system/phase0-reachability.json"); console.log(JSON.stringify({schema:r.schema,entrypointPolicy:r.entrypointPolicy,counts:r.counts,sentinels:r.sentinels}))'
+          node -e 'const r=require("./.tmp/design-system/phase0-typechecker.json"); console.log(JSON.stringify(r))'
           node -e 'const r=require("./.tmp/design-system/phase0-chakra.json"); console.log(JSON.stringify(r))'
           printf 'KNIP_VERSION=' && cat .tmp/design-system/phase0-knip-version.txt || true
           cat .tmp/design-system/phase0-knip.json || true
