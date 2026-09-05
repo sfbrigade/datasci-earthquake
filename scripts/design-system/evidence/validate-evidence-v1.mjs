@@ -23,8 +23,11 @@ function unique(records, key, label) {
 const fileIds = unique(doc.files, "fileId", "file");
 const sourceFactIds = unique(doc.sourceFacts, "factId", "sourceFact");
 const moduleFactIds = unique(doc.moduleFacts, "moduleFactId", "moduleFact");
+const reachabilityClaimIds = unique(doc.reachabilityClaims, "reachabilityClaimId", "reachabilityClaim");
 const semanticFactIds = unique(doc.semanticFacts, "semanticFactId", "semanticFact");
 unique(doc.claims, "claimId", "claim");
+const sourceFactById = new Map((doc.sourceFacts ?? []).map((fact) => [fact.factId, fact]));
+const reachabilityById = new Map((doc.reachabilityClaims ?? []).map((claim) => [claim.reachabilityClaimId, claim]));
 
 for (const file of doc.files ?? []) {
   if (path.isAbsolute(file.path) || /^[A-Za-z]:[\\/]/.test(file.path)) fail(`file path must be repo-relative: ${file.path}`);
@@ -37,11 +40,13 @@ for (const fact of doc.sourceFacts ?? []) {
   if (fact.resolution === "unresolved" && (!fact.domains || fact.domains.length === 0)) {
     fail(`unresolved sourceFact ${fact.factId} must declare at least one domain, including 'unknown' when necessary`);
   }
-  if ((fact.resolution === "exact" || fact.resolution === "bounded") && (!fact.values || fact.values.length === 0)) {
+  const valueBearing = fact.kind !== "component-callsite";
+  if (valueBearing && (fact.resolution === "exact" || fact.resolution === "bounded") && (!fact.values || fact.values.length === 0)) {
     fail(`${fact.resolution} sourceFact ${fact.factId} must declare values`);
   }
-  if (fact.resolution === "exact" && fact.values?.length !== 1) fail(`exact sourceFact ${fact.factId} must have exactly one value`);
-  if (fact.resolution === "bounded" && (fact.values?.length ?? 0) < 2) fail(`bounded sourceFact ${fact.factId} must have at least two values`);
+  if (valueBearing && fact.resolution === "exact" && fact.values?.length !== 1) fail(`exact sourceFact ${fact.factId} must have exactly one value`);
+  if (valueBearing && fact.resolution === "bounded" && (fact.values?.length ?? 0) < 2) fail(`bounded sourceFact ${fact.factId} must have at least two values`);
+  if (fact.kind === "component-callsite" && !fact.component) fail(`component-callsite ${fact.factId} requires component`);
 }
 
 for (const fact of doc.moduleFacts ?? []) {
@@ -51,11 +56,26 @@ for (const fact of doc.moduleFacts ?? []) {
   if ((fact.kind === "asset-import" || fact.kind === "unresolved-import") && fact.toFileId) fail(`${fact.kind} ${fact.moduleFactId} must not claim toFileId`);
 }
 
+for (const claim of doc.reachabilityClaims ?? []) {
+  if (!fileIds.has(claim.fileId)) fail(`reachabilityClaim ${claim.reachabilityClaimId} references unknown fileId ${claim.fileId}`);
+  if (claim.policy !== doc.policies?.entrypoint) fail(`reachabilityClaim ${claim.reachabilityClaimId} policy must equal document entrypoint policy`);
+  for (const id of claim.entrypointFileIds ?? []) if (!fileIds.has(id)) fail(`reachabilityClaim ${claim.reachabilityClaimId} references unknown entrypoint fileId ${id}`);
+  if (claim.kind === "reachable" && (claim.realms?.length ?? 0) === 0) fail(`reachable claim ${claim.reachabilityClaimId} requires at least one realm`);
+  if (claim.kind === "source-only" && (claim.realms?.length ?? 0) !== 0) fail(`source-only claim ${claim.reachabilityClaimId} must not claim a reachable realm`);
+  if (claim.kind === "uncertain" && (!claim.blockers || claim.blockers.length === 0)) fail(`uncertain reachability claim ${claim.reachabilityClaimId} requires blockers`);
+}
+
 for (const fact of doc.semanticFacts ?? []) {
   for (const id of fact.originFactIds ?? []) if (!sourceFactIds.has(id)) fail(`semanticFact ${fact.semanticFactId} references unknown sourceFact ${id}`);
   if (fact.kind === "explicit-token" && !fact.entity) fail(`explicit-token ${fact.semanticFactId} requires entity`);
   if (fact.kind === "semantic-implication" && (!fact.entities || fact.entities.length === 0)) fail(`semantic-implication ${fact.semanticFactId} requires entities`);
   if (fact.kind === "color-palette-context" && fact.virtual !== true) fail(`color-palette-context ${fact.semanticFactId} must be explicitly virtual`);
+  if (fact.kind === "recipe-default") {
+    if (!fact.recipe || !fact.variant || fact.value == null) fail(`recipe-default ${fact.semanticFactId} requires recipe, variant, and value`);
+    if (!(fact.originFactIds ?? []).some((id) => sourceFactById.get(id)?.kind === "component-callsite")) {
+      fail(`recipe-default ${fact.semanticFactId} must originate from a component-callsite source fact`);
+    }
+  }
 }
 
 const forbiddenClaimWords = /(^|[-_ ])(mapped|unused)([-_ ]|$)/i;
@@ -65,8 +85,17 @@ for (const claim of doc.claims ?? []) {
   for (const id of claim.basis?.sourceFactIds ?? []) if (!sourceFactIds.has(id)) fail(`claim ${claim.claimId} references unknown sourceFact ${id}`);
   for (const id of claim.basis?.semanticFactIds ?? []) if (!semanticFactIds.has(id)) fail(`claim ${claim.claimId} references unknown semanticFact ${id}`);
   for (const id of claim.basis?.moduleFactIds ?? []) if (!moduleFactIds.has(id)) fail(`claim ${claim.claimId} references unknown moduleFact ${id}`);
+  for (const id of claim.basis?.reachabilityClaimIds ?? []) if (!reachabilityClaimIds.has(id)) fail(`claim ${claim.claimId} references unknown reachabilityClaim ${id}`);
   if (claim.kind === "strong-negative-blocked" && (!claim.blockers || claim.blockers.length === 0)) fail(`strong-negative-blocked claim ${claim.claimId} requires blockers`);
   if (claim.kind === "review-for-removal" && (claim.blockers?.length ?? 0) > 0) fail(`review-for-removal claim ${claim.claimId} cannot retain blockers`);
+  if (claim.kind === "product-path-reference") {
+    const reachableProduct = (claim.basis?.reachabilityClaimIds ?? []).some((id) => reachabilityById.get(id)?.kind === "reachable" && reachabilityById.get(id)?.realms?.includes("product"));
+    if (!reachableProduct) fail(`product-path-reference claim ${claim.claimId} requires product reachability basis`);
+  }
+  if (claim.kind === "source-only-reference") {
+    const sourceOnly = (claim.basis?.reachabilityClaimIds ?? []).some((id) => reachabilityById.get(id)?.kind === "source-only");
+    if (!sourceOnly) fail(`source-only-reference claim ${claim.claimId} requires source-only reachability basis`);
+  }
 }
 
 const coverage = doc.coverage ?? {};
@@ -88,4 +117,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`EVIDENCE_V1_VALIDATE=PASS files=${doc.files.length} sourceFacts=${doc.sourceFacts.length} semanticFacts=${doc.semanticFacts.length} claims=${doc.claims.length}`);
+console.log(`EVIDENCE_V1_VALIDATE=PASS files=${doc.files.length} sourceFacts=${doc.sourceFacts.length} reachabilityClaims=${doc.reachabilityClaims.length} semanticFacts=${doc.semanticFacts.length} claims=${doc.claims.length}`);
