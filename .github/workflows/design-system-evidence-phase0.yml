@@ -26,13 +26,22 @@ jobs:
         run: node scripts/design-system/evidence/phase0-benchmark.mjs
       - name: Run TypeScript reachability baseline
         run: node scripts/design-system/evidence/phase0-reachability.mjs
+      - name: Run Knip production oracle
+        continue-on-error: true
+        run: |
+          mkdir -p .tmp/design-system
+          KNIP_VERSION="$(npm view knip version)"
+          printf '%s\n' "$KNIP_VERSION" > .tmp/design-system/phase0-knip-version.txt
+          npx --yes "knip@$KNIP_VERSION" --production --reporter json > .tmp/design-system/phase0-knip.json
       - name: Show receipts
         if: always()
         run: |
           cat .tmp/design-system/phase0-typescript.json
           cat .tmp/design-system/phase0-reachability.json
+          printf 'KNIP_VERSION=' && cat .tmp/design-system/phase0-knip-version.txt || true
+          cat .tmp/design-system/phase0-knip.json || true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: design-system-evidence-phase0-typescript
-          path: .tmp/design-system/*.json
+          path: .tmp/design-system/*
