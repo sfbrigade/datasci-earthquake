@@ -27,6 +27,7 @@ const reachabilityClaimIds = unique(doc.reachabilityClaims, "reachabilityClaimId
 const semanticFactIds = unique(doc.semanticFacts, "semanticFactId", "semanticFact");
 unique(doc.claims, "claimId", "claim");
 const sourceFactById = new Map((doc.sourceFacts ?? []).map((fact) => [fact.factId, fact]));
+const semanticFactById = new Map((doc.semanticFacts ?? []).map((fact) => [fact.semanticFactId, fact]));
 const reachabilityById = new Map((doc.reachabilityClaims ?? []).map((claim) => [claim.reachabilityClaimId, claim]));
 
 for (const file of doc.files ?? []) {
@@ -37,6 +38,9 @@ for (const file of doc.files ?? []) {
 
 function conditionKey(conditions) {
   return JSON.stringify(conditions ?? []);
+}
+function sameSet(a, b) {
+  return JSON.stringify([...new Set(a ?? [])].sort()) === JSON.stringify([...new Set(b ?? [])].sort());
 }
 
 for (const fact of doc.sourceFacts ?? []) {
@@ -72,11 +76,8 @@ for (const fact of doc.sourceFacts ?? []) {
       }
       caseValues.add(valueCase.value);
       const key = conditionKey(valueCase.conditions);
-      if (casesByCondition.has(key)) {
-        fail(`sourceFact ${fact.factId} duplicates condition path ${key}`);
-      } else {
-        casesByCondition.set(key, valueCase.value);
-      }
+      if (casesByCondition.has(key)) fail(`sourceFact ${fact.factId} duplicates condition path ${key}`);
+      else casesByCondition.set(key, valueCase.value);
     }
     for (const value of valuesSet) {
       if (!caseValues.has(value)) fail(`sourceFact ${fact.factId} value ${JSON.stringify(value)} has no valueCase provenance`);
@@ -89,8 +90,12 @@ for (const fact of doc.sourceFacts ?? []) {
 for (const fact of doc.moduleFacts ?? []) {
   if (!fileIds.has(fact.fromFileId)) fail(`moduleFact ${fact.moduleFactId} references unknown fromFileId ${fact.fromFileId}`);
   if (fact.toFileId && !fileIds.has(fact.toFileId)) fail(`moduleFact ${fact.moduleFactId} references unknown toFileId ${fact.toFileId}`);
-  if ((fact.kind === "static-import" || fact.kind === "dynamic-import") && !fact.toFileId) fail(`resolved ${fact.kind} ${fact.moduleFactId} requires toFileId`);
-  if ((fact.kind === "asset-import" || fact.kind === "unresolved-import") && fact.toFileId) fail(`${fact.kind} ${fact.moduleFactId} must not claim toFileId`);
+  if (["static-import", "dynamic-import", "type-import"].includes(fact.kind) && !fact.toFileId) {
+    fail(`resolved ${fact.kind} ${fact.moduleFactId} requires toFileId`);
+  }
+  if (["asset-import", "unresolved-import"].includes(fact.kind) && fact.toFileId) {
+    fail(`${fact.kind} ${fact.moduleFactId} must not claim toFileId`);
+  }
 }
 
 for (const claim of doc.reachabilityClaims ?? []) {
@@ -134,27 +139,59 @@ for (const claim of doc.claims ?? []) {
   for (const id of claim.basis?.semanticFactIds ?? []) if (!semanticFactIds.has(id)) fail(`claim ${claim.claimId} references unknown semanticFact ${id}`);
   for (const id of claim.basis?.moduleFactIds ?? []) if (!moduleFactIds.has(id)) fail(`claim ${claim.claimId} references unknown moduleFact ${id}`);
   for (const id of claim.basis?.reachabilityClaimIds ?? []) if (!reachabilityClaimIds.has(id)) fail(`claim ${claim.claimId} references unknown reachabilityClaim ${id}`);
+
+  const basisReachability = (claim.basis?.reachabilityClaimIds ?? []).map((id) => reachabilityById.get(id)).filter(Boolean);
+  const basisRealms = [...new Set(basisReachability.flatMap((item) => item.realms ?? []))];
+  if (!sameSet(claim.realms ?? [], basisRealms)) fail(`claim ${claim.claimId} realms must equal its reachability basis realms`);
+
   if (claim.kind === "strong-negative-blocked" && (!claim.blockers || claim.blockers.length === 0)) fail(`strong-negative-blocked claim ${claim.claimId} requires blockers`);
   if (claim.kind === "review-for-removal" && (claim.blockers?.length ?? 0) > 0) fail(`review-for-removal claim ${claim.claimId} cannot retain blockers`);
-  if (claim.kind === "product-path-reference") {
-    const reachableProduct = (claim.basis?.reachabilityClaimIds ?? []).some((id) => reachabilityById.get(id)?.kind === "reachable" && reachabilityById.get(id)?.realms?.includes("product"));
-    if (!reachableProduct) fail(`product-path-reference claim ${claim.claimId} requires product reachability basis`);
+  if (["product-path-reference", "semantic-product-path-reference"].includes(claim.kind) && !basisRealms.includes("product")) {
+    fail(`${claim.kind} claim ${claim.claimId} requires product reachability basis`);
+  }
+  if (claim.kind === "internal-demo-reference" && (!basisRealms.includes("internal-demo") || basisRealms.includes("product"))) {
+    fail(`internal-demo-reference claim ${claim.claimId} requires internal-demo reachability without product reachability`);
   }
   if (claim.kind === "source-only-reference") {
-    const sourceOnly = (claim.basis?.reachabilityClaimIds ?? []).some((id) => reachabilityById.get(id)?.kind === "source-only");
-    if (!sourceOnly) fail(`source-only-reference claim ${claim.claimId} requires source-only reachability basis`);
+    const sourceOnly = basisReachability.some((item) => item.kind === "source-only");
+    if (!sourceOnly || basisRealms.length !== 0) fail(`source-only-reference claim ${claim.claimId} requires source-only reachability basis`);
+  }
+  if (claim.kind === "dependency-only") {
+    const semanticKinds = (claim.basis?.semanticFactIds ?? []).map((id) => semanticFactById.get(id)?.kind).filter(Boolean);
+    if (semanticKinds.length === 0 || !semanticKinds.every((kind) => kind === "semantic-implication")) {
+      fail(`dependency-only claim ${claim.claimId} must be based only on semantic-implication facts`);
+    }
   }
 }
 
 const coverage = doc.coverage ?? {};
-const analyzed = (coverage.completeFiles ?? 0) + (coverage.partialFiles ?? 0) + (coverage.failedFiles ?? 0);
-if (analyzed !== coverage.eligibleFiles) fail(`coverage eligibleFiles must equal complete + partial + failed (${coverage.eligibleFiles} != ${analyzed})`);
+const statusCounts = (doc.files ?? []).reduce((acc, file) => {
+  acc[file.analysisStatus] = (acc[file.analysisStatus] ?? 0) + 1;
+  return acc;
+}, {});
+const actualEligible = (statusCounts.complete ?? 0) + (statusCounts.partial ?? 0) + (statusCounts.failed ?? 0);
+if (coverage.eligibleFiles !== actualEligible) fail(`coverage eligibleFiles mismatch (${coverage.eligibleFiles} != ${actualEligible})`);
+if (coverage.completeFiles !== (statusCounts.complete ?? 0)) fail(`coverage completeFiles mismatch (${coverage.completeFiles} != ${statusCounts.complete ?? 0})`);
+if (coverage.partialFiles !== (statusCounts.partial ?? 0)) fail(`coverage partialFiles mismatch (${coverage.partialFiles} != ${statusCounts.partial ?? 0})`);
+if (coverage.failedFiles !== (statusCounts.failed ?? 0)) fail(`coverage failedFiles mismatch (${coverage.failedFiles} != ${statusCounts.failed ?? 0})`);
+if (coverage.excludedFiles !== (statusCounts.excluded ?? 0)) fail(`coverage excludedFiles mismatch (${coverage.excludedFiles} != ${statusCounts.excluded ?? 0})`);
+if ((coverage.eligibleFiles ?? 0) + (coverage.excludedFiles ?? 0) !== (doc.files?.length ?? 0)) {
+  fail(`coverage eligible + excluded must equal files length`);
+}
 const unresolvedCount = (doc.sourceFacts ?? []).filter((fact) => fact.resolution === "unresolved").length;
 if (coverage.unresolvedFacts !== unresolvedCount) fail(`coverage unresolvedFacts mismatch (${coverage.unresolvedFacts} != ${unresolvedCount})`);
-const sourceClassCount = Object.values(coverage.bySourceClass ?? {}).reduce((sum, value) => sum + value, 0);
-if (sourceClassCount !== (doc.files?.length ?? 0)) fail(`coverage bySourceClass total must equal files length (${sourceClassCount} != ${doc.files?.length ?? 0})`);
+const actualBySourceClass = (doc.files ?? []).reduce((acc, file) => {
+  acc[file.sourceClass] = (acc[file.sourceClass] ?? 0) + 1;
+  return acc;
+}, {});
+if (JSON.stringify(Object.fromEntries(Object.entries(coverage.bySourceClass ?? {}).sort())) !== JSON.stringify(Object.fromEntries(Object.entries(actualBySourceClass).sort()))) {
+  fail(`coverage bySourceClass must exactly match file source classes`);
+}
 
-if (doc.sourceIdentity?.workspaceDirty === false && !doc.sourceIdentity?.tree) fail("clean evidence requires sourceIdentity.tree");
+if (doc.sourceIdentity?.workspaceDirty === false) {
+  if (!doc.sourceIdentity?.tree) fail("clean evidence requires sourceIdentity.tree");
+  if ((doc.files ?? []).some((file) => file.contentIdentity?.kind !== "git-blob")) fail("clean evidence requires git-blob contentIdentity for every analyzed file");
+}
 if (doc.sourceIdentity?.workspaceDirty === true && (doc.files ?? []).some((file) => file.contentIdentity?.kind !== "sha256")) {
   fail("dirty-workspace evidence requires sha256 contentIdentity for every analyzed file");
 }
@@ -165,4 +202,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`EVIDENCE_V1_VALIDATE=PASS files=${doc.files.length} sourceFacts=${doc.sourceFacts.length} reachabilityClaims=${doc.reachabilityClaims.length} semanticFacts=${doc.semanticFacts.length} claims=${doc.claims.length}`);
+console.log(`EVIDENCE_V1_VALIDATE=PASS files=${doc.files.length} sourceFacts=${doc.sourceFacts.length} moduleFacts=${doc.moduleFacts.length} reachabilityClaims=${doc.reachabilityClaims.length} semanticFacts=${doc.semanticFacts.length} claims=${doc.claims.length}`);
