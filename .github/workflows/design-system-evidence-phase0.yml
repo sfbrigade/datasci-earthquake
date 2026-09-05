@@ -12,6 +12,7 @@ on:
       - "styles/theme.ts"
       - "package.json"
       - "package-lock.json"
+      - "tsconfig.json"
   workflow_dispatch:
 
 jobs:
@@ -23,11 +24,15 @@ jobs:
       - run: npm ci
       - name: Run TypeScript extraction baseline
         run: node scripts/design-system/evidence/phase0-benchmark.mjs
-      - name: Show receipt
+      - name: Run TypeScript reachability baseline
+        run: node scripts/design-system/evidence/phase0-reachability.mjs
+      - name: Show receipts
         if: always()
-        run: cat .tmp/design-system/phase0-typescript.json
+        run: |
+          cat .tmp/design-system/phase0-typescript.json
+          cat .tmp/design-system/phase0-reachability.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: design-system-evidence-phase0-typescript
-          path: .tmp/design-system/phase0-typescript.json
+          path: .tmp/design-system/*.json
