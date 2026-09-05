@@ -73,6 +73,22 @@
       "resolution": "exact",
       "raw": "<Button ...>",
       "component": "Button"
+    },
+    {
+      "factId": "sf4",
+      "fileId": "f1",
+      "span": {"startLine": 120, "startColumn": 9, "endLine": 120, "endColumn": 39},
+      "kind": "style-property",
+      "resolution": "exact",
+      "raw": "py={{ base: \"3.5\", md: \"4\" }}",
+      "propPath": "py",
+      "component": "Box",
+      "domains": ["spacing"],
+      "values": ["3.5", "4"],
+      "valueCases": [
+        {"conditions": ["base"], "value": "3.5"},
+        {"conditions": ["md"], "value": "4"}
+      ]
     }
   ],
   "moduleFacts": [
@@ -135,6 +151,22 @@
       "recipe": "button",
       "variant": "variant",
       "value": "solid"
+    },
+    {
+      "semanticFactId": "sem5",
+      "kind": "explicit-token",
+      "originFactIds": ["sf4"],
+      "entity": "spacing.3.5",
+      "value": "3.5",
+      "conditions": ["base"]
+    },
+    {
+      "semanticFactId": "sem6",
+      "kind": "explicit-token",
+      "originFactIds": ["sf4"],
+      "entity": "spacing.4",
+      "value": "4",
+      "conditions": ["md"]
     }
   ],
   "claims": [
@@ -176,6 +208,19 @@
         "reachabilityClaimIds": ["r3"]
       },
       "realms": []
+    },
+    {
+      "claimId": "c4",
+      "kind": "product-path-reference",
+      "entity": "spacing.4",
+      "policy": "safehome-usage-evidence-claims.v1",
+      "basis": {
+        "sourceFactIds": ["sf4"],
+        "semanticFactIds": ["sem6"],
+        "moduleFactIds": [],
+        "reachabilityClaimIds": ["r1"]
+      },
+      "realms": ["product"]
     }
   ],
   "coverage": {
