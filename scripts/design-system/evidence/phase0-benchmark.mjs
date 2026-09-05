@@ -37,9 +37,10 @@ function boundedMapProperty(expression, sourceFile) {
   const propertyName = expression.name.text;
   let fn = expression.parent;
   while (fn && !ts.isArrowFunction(fn) && !ts.isFunctionExpression(fn)) fn = fn.parent;
-  if (!fn || fn.parameters.length !== 1 || !ts.isIdentifier(fn.parameters[0].name) || fn.parameters[0].name.text !== itemName) return null;
-  const call = fn.parent;
-  if (!call || !ts.isCallExpression(call) || !ts.isPropertyAccessExpression(call.expression) || call.expression.name.text !== 'map') return null;
+  if (!fn || fn.parameters.length < 1 || !ts.isIdentifier(fn.parameters[0].name) || fn.parameters[0].name.text !== itemName) return null;
+  let call = fn.parent;
+  while (call && !ts.isCallExpression(call)) call = call.parent;
+  if (!call || !call.arguments.includes(fn) || !ts.isPropertyAccessExpression(call.expression) || call.expression.name.text !== 'map') return null;
   const receiver = call.expression.expression;
   if (!ts.isIdentifier(receiver)) return null;
 
