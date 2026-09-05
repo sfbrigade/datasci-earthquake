@@ -1,6 +1,8 @@
 import ts from "typescript";
 
 export function emittedRuntimeSpecifiers(sourceText, fileName, compilerOptions) {
+  if (/\.d\.[cm]?ts$/i.test(fileName)) return new Set();
+
   const output = ts.transpileModule(sourceText, {
     fileName,
     reportDiagnostics: false,
