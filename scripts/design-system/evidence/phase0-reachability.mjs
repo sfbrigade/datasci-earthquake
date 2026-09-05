@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import ts from "typescript";
 import { classifySourceModuleSpecifiers } from "./runtime-imports.mjs";
+import { isNextRuntimeEntryPath, nextRouteCompositionEdges } from "./next-route-structure.mjs";
 
 const root = process.cwd();
 const configFile = ts.readConfigFile(path.join(root, "tsconfig.json"), ts.sys.readFile);
@@ -11,6 +12,7 @@ const options = parsed.options;
 const normalize = (p) => path.relative(root, p).split(path.sep).join("/");
 const sourceFiles = parsed.fileNames.filter((f) => /\.[jt]sx?$/.test(f)).map((f) => path.resolve(f));
 const sourceSet = new Set(sourceFiles);
+const absByRel = new Map(sourceFiles.map((file) => [normalize(file), file]));
 const graph = new Map(sourceFiles.map((f) => [f, new Set()]));
 const unresolvedCode = [];
 const assetDependencies = [];
@@ -31,9 +33,7 @@ function sourceClass(rel) {
 
 function resolveLocal(containing, specifier) {
   if (!specifier.startsWith(".") && !specifier.startsWith("@/")) return null;
-  if (/\.(css|scss|sass|less|svg|png|jpe?g|gif|webp|avif|ico)$/i.test(specifier)) {
-    return {kind: "asset"};
-  }
+  if (/\.(css|scss|sass|less|svg|png|jpe?g|gif|webp|avif|ico)$/i.test(specifier)) return {kind: "asset"};
   const resolved = ts.resolveModuleName(specifier, containing, options, ts.sys).resolvedModule;
   if (!resolved) return {kind: "unresolved"};
   const target = path.resolve(resolved.resolvedFileName.replace(/\.d\.ts$/, ".ts"));
@@ -68,13 +68,14 @@ for (const file of sourceFiles) {
   }
 }
 
-const NEXT_ENTRY_BASENAMES = new Set([
-  "page.tsx", "page.ts", "layout.tsx", "layout.ts", "route.ts", "route.tsx", "default.tsx", "default.ts",
-  "template.tsx", "template.ts", "loading.tsx", "loading.ts", "error.tsx", "error.ts", "global-error.tsx",
-  "global-error.ts", "not-found.tsx", "not-found.ts", "forbidden.tsx", "forbidden.ts", "unauthorized.tsx",
-  "unauthorized.ts", "sitemap.ts", "robots.ts", "manifest.ts", "opengraph-image.tsx", "twitter-image.tsx",
-]);
-const appEntrypoints = sourceFiles.filter((file) => normalize(file).startsWith("app/") && NEXT_ENTRY_BASENAMES.has(path.basename(normalize(file))));
+const frameworkRouteCompositions = nextRouteCompositionEdges([...absByRel.keys()]);
+for (const edge of frameworkRouteCompositions) {
+  const from = absByRel.get(edge.from);
+  const to = absByRel.get(edge.to);
+  if (from && to) graph.get(from)?.add(to);
+}
+
+const appEntrypoints = sourceFiles.filter((file) => isNextRuntimeEntryPath(normalize(file)));
 const instrumentation = sourceFiles.filter((file) => ["instrumentation.ts", "instrumentation-client.ts", "proxy.ts", "middleware.ts"].includes(normalize(file)));
 const internalDemoEntrypoints = new Set(appEntrypoints.filter((file) => normalize(file).includes("/components-test-lib/")));
 const productEntrypoints = new Set([...appEntrypoints, ...instrumentation].filter((file) => !internalDemoEntrypoints.has(file)));
@@ -98,6 +99,7 @@ const rows = sourceFiles.map((file) => {
 }).sort((a,b) => a.file.localeCompare(b.file));
 const row = (rel) => rows.find((r) => r.file === rel);
 const hasTypeEdge = (from, to) => typeOnlyDependencies.some((edge) => edge.from === from && edge.to === to);
+const hasComposition = (from, to) => frameworkRouteCompositions.some((edge) => edge.from === from && edge.to === to);
 const sentinels = {
   addressMapperProduct: row("app/components/address-mapper.tsx")?.productReachable === true,
   addressMapperNotInternalDemo: row("app/components/address-mapper.tsx")?.internalDemoReachable === false,
@@ -111,11 +113,15 @@ const sentinels = {
   cardHazardToAddressMapperTypeOnly: hasTypeEdge("app/components/card-hazard.tsx", "app/components/address-mapper.tsx"),
   componentsTestLibInternalDemo: row("app/(other)/components-test-lib/page.tsx")?.internalDemoReachable === true,
   componentsTestLibNotProduct: row("app/(other)/components-test-lib/page.tsx")?.productReachable === false,
+  componentsTestLibComposesOtherLayout: hasComposition("app/(other)/components-test-lib/page.tsx", "app/(other)/layout.tsx"),
+  otherLayoutInternalDemo: row("app/(other)/layout.tsx")?.internalDemoReachable === true,
+  providerInternalDemo: row("app/components/ui/provider.tsx")?.internalDemoReachable === true,
+  providerProduct: row("app/components/ui/provider.tsx")?.productReachable === true,
 };
 const appRows = rows.filter((r) => r.sourceClass === "app-source");
 const result = {
-  schema: "safehome.design-system-evidence.phase0-reachability.v2",
-  entrypointPolicy: "safehome-next16-app-router-runtime.v1",
+  schema: "safehome.design-system-evidence.phase0-reachability.v3",
+  entrypointPolicy: "safehome-next16-app-router-runtime.v2",
   typescriptVersion: ts.version,
   counts: {
     sourceFiles: rows.length,
@@ -129,18 +135,20 @@ const result = {
     unresolvedCodeImports: unresolvedCode.length,
     assetDependencies: assetDependencies.length,
     typeOnlyDependencies: typeOnlyDependencies.length,
+    frameworkRouteCompositions: frameworkRouteCompositions.length,
   },
   sentinels,
   unresolvedCode,
   assetDependencies,
   typeOnlyDependencies: typeOnlyDependencies.sort((a,b) => `${a.from}\u0000${a.to}`.localeCompare(`${b.from}\u0000${b.to}`)),
+  frameworkRouteCompositions,
   entrypoints: {product: [...productEntrypoints].map(normalize).sort(), internalDemo: [...internalDemoEntrypoints].map(normalize).sort()},
   files: rows,
 };
 const out = process.argv[2] ?? path.join(root, ".tmp", "design-system", "phase0-reachability.json");
 fs.mkdirSync(path.dirname(out), {recursive:true});
 fs.writeFileSync(out, `${JSON.stringify(result, null, 2)}\n`);
-console.log(`PHASE0_REACHABILITY productApp=${result.counts.productReachableAppSources}/${result.counts.appSourceFiles} demoAll=${result.counts.internalDemoReachableAllSources}/${rows.length} typeOnly=${typeOnlyDependencies.length} unresolvedCode=${unresolvedCode.length} assets=${assetDependencies.length}`);
+console.log(`PHASE0_REACHABILITY productApp=${result.counts.productReachableAppSources}/${result.counts.appSourceFiles} demoAll=${result.counts.internalDemoReachableAllSources}/${rows.length} typeOnly=${typeOnlyDependencies.length} framework=${frameworkRouteCompositions.length} unresolvedCode=${unresolvedCode.length} assets=${assetDependencies.length}`);
 for (const [name, pass] of Object.entries(sentinels)) console.log(`SENTINEL ${name}=${pass ? "PASS" : "FAIL"}`);
 if (!Object.values(sentinels).every(Boolean)) process.exitCode = 1;
 console.log(`RECEIPT=${out}`);
