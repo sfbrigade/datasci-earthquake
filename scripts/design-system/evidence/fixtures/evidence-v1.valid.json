@@ -14,7 +14,7 @@
   },
   "policies": {
     "sourceClassification": "safehome-source-classification.v1",
-    "entrypoint": "safehome-next16-app-router.v1",
+    "entrypoint": "safehome-next16-app-router-runtime.v1",
     "semantic": "safehome-chakra3-semantic.v1",
     "claim": "safehome-usage-evidence-claims.v1"
   },
@@ -105,21 +105,21 @@
       "reachabilityClaimId": "r1",
       "fileId": "f1",
       "kind": "reachable",
-      "policy": "safehome-next16-app-router.v1",
+      "policy": "safehome-next16-app-router-runtime.v1",
       "realms": ["product"]
     },
     {
       "reachabilityClaimId": "r2",
       "fileId": "f2",
       "kind": "reachable",
-      "policy": "safehome-next16-app-router.v1",
+      "policy": "safehome-next16-app-router-runtime.v1",
       "realms": ["product"]
     },
     {
       "reachabilityClaimId": "r3",
       "fileId": "f3",
       "kind": "source-only",
-      "policy": "safehome-next16-app-router.v1",
+      "policy": "safehome-next16-app-router-runtime.v1",
       "realms": []
     }
   ],
@@ -194,6 +194,7 @@
         "moduleFactIds": [],
         "reachabilityClaimIds": ["r2"]
       },
+      "realms": ["product"],
       "blockers": ["unresolved color-domain source fact sf2"]
     },
     {
