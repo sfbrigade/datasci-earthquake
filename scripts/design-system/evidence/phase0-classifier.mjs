@@ -70,33 +70,117 @@ function recipeFor(component) {
   }
   return null;
 }
+function isConditionKey(key) {
+  return key === "base" || Boolean(system.conditions?.has?.(key));
+}
+function conditionPathString(conditions, prop) {
+  return [...conditions, prop].filter(Boolean).join(".");
+}
 
 const facts = [];
 const nonTokenStyles = [];
+const exactCaseGroups = [];
 let site = 0;
 
-function addStyleFact(component, prop, value, sourcePath) {
+function addStyleFact(component, prop, value, sourcePath, conditions = []) {
   if (prop === "textStyle" || prop === "layerStyle") {
-    facts.push({kind: prop === "textStyle" ? "explicit-text-style" : "explicit-layer-style", component, prop: sourcePath, value, entity: `${prop}.${value}`, semanticRefs: semanticRefs({[prop]: value})});
+    facts.push({
+      kind: prop === "textStyle" ? "explicit-text-style" : "explicit-layer-style",
+      component,
+      prop: sourcePath,
+      value,
+      ...(conditions.length ? {conditions} : {}),
+      entity: `${prop}.${value}`,
+      semanticRefs: semanticRefs({[prop]: value}),
+    });
     return;
   }
   if (prop === "colorPalette") {
     const css = system.css({colorPalette: value});
     const bindings = semanticRefs({colorPalette: value});
-    facts.push({kind: "color-palette-context", component, prop: sourcePath, value, concreteBindings: bindings, cssVariableCount: Object.keys(css).length});
+    facts.push({
+      kind: "color-palette-context",
+      component,
+      prop: sourcePath,
+      value,
+      ...(conditions.length ? {conditions} : {}),
+      concreteBindings: bindings,
+      cssVariableCount: Object.keys(css).length,
+    });
     return;
   }
   const domains = domainsFor(prop);
   const tokenMatches = domains.map((domain) => `${domain}.${value}`).filter((name) => system.tokens.getByName(name));
   if (tokenMatches.length) {
-    facts.push({kind: "explicit-token", component, prop: sourcePath, value, domains, tokenRefs: tokenMatches.sort(), semanticRefs: semanticRefs({[prop]: value})});
+    facts.push({
+      kind: "explicit-token",
+      component,
+      prop: sourcePath,
+      value,
+      ...(conditions.length ? {conditions} : {}),
+      domains,
+      tokenRefs: tokenMatches.sort(),
+      semanticRefs: semanticRefs({[prop]: value}),
+    });
   } else {
-    nonTokenStyles.push({component, prop: sourcePath, value, domains});
+    nonTokenStyles.push({component, prop: sourcePath, value, ...(conditions.length ? {conditions} : {}), domains});
   }
 }
 
-function addUnresolved(component, prop, expression, sourcePath) {
-  facts.push({kind: "unresolved-style", component, prop: sourcePath, expression, domains: domainsFor(prop)});
+function addUnresolved(component, prop, expression, sourcePath, conditions = []) {
+  facts.push({
+    kind: "unresolved-style",
+    component,
+    prop: sourcePath,
+    expression,
+    ...(conditions.length ? {conditions} : {}),
+    domains: domainsFor(prop),
+  });
+}
+
+function extractExactValueCases(object, prefix = []) {
+  const cases = [];
+  for (const property of object.properties) {
+    if (!ts.isPropertyAssignment(property)) return null;
+    const key = propKey(property.name);
+    if (!key || !isConditionKey(key)) return null;
+    const conditions = [...prefix, key];
+    const value = literal(property.initializer);
+    if (value !== null) {
+      cases.push({conditions, value});
+      continue;
+    }
+    if (!ts.isObjectLiteralExpression(property.initializer)) return null;
+    const nested = extractExactValueCases(property.initializer, conditions);
+    if (!nested) return null;
+    cases.push(...nested);
+  }
+  return cases.length ? cases : null;
+}
+
+function addExactCaseGroup(component, prop, cases, sourcePath) {
+  const domains = domainsFor(prop);
+  const normalizedCases = cases.map((valueCase) => {
+    const tokenRefs = domains
+      .map((domain) => `${domain}.${valueCase.value}`)
+      .filter((name) => system.tokens.getByName(name))
+      .sort();
+    addStyleFact(component, prop, valueCase.value, sourcePath, valueCase.conditions);
+    return {
+      conditions: valueCase.conditions,
+      value: valueCase.value,
+      tokenRefs,
+      semanticRefs: semanticRefs({[prop]: valueCase.value}),
+    };
+  });
+  exactCaseGroups.push({
+    kind: "exact-style-cases",
+    component,
+    prop: sourcePath,
+    domains,
+    values: [...new Set(normalizedCases.map((valueCase) => valueCase.value))],
+    valueCases: normalizedCases,
+  });
 }
 
 function classifyObject(component, conditionPath, object) {
@@ -104,15 +188,26 @@ function classifyObject(component, conditionPath, object) {
     if (!ts.isPropertyAssignment(p)) continue;
     const key = propKey(p.name);
     if (!key) continue;
-    if (key.startsWith("_")) {
-      if (ts.isObjectLiteralExpression(p.initializer)) classifyObject(component, `${conditionPath}${key}.`, p.initializer);
+
+    if (isConditionKey(key) && ts.isObjectLiteralExpression(p.initializer)) {
+      classifyObject(component, [...conditionPath, key], p.initializer);
       continue;
     }
+    if (!system.isValidProperty(key)) continue;
+
+    const sourcePath = conditionPathString(conditionPath, key);
     const value = literal(p.initializer);
-    const sourcePath = `${conditionPath}${key}`;
-    if (value !== null) addStyleFact(component, key, value, sourcePath);
-    else if (ts.isObjectLiteralExpression(p.initializer)) classifyObject(component, `${sourcePath}.`, p.initializer);
-    else addUnresolved(component, key, p.initializer.getText(sf), sourcePath);
+    if (value !== null) {
+      addStyleFact(component, key, value, sourcePath, conditionPath);
+      continue;
+    }
+    if (ts.isObjectLiteralExpression(p.initializer)) {
+      const cases = extractExactValueCases(p.initializer, conditionPath);
+      if (cases) addExactCaseGroup(component, key, cases, sourcePath);
+      else addUnresolved(component, key, p.initializer.getText(sf), sourcePath, conditionPath);
+      continue;
+    }
+    addUnresolved(component, key, p.initializer.getText(sf), sourcePath, conditionPath);
   }
 }
 
@@ -142,13 +237,21 @@ function visit(node) {
           continue;
         }
         if (prop.startsWith("_") && expression && ts.isObjectLiteralExpression(expression)) {
-          classifyObject(component, `${prop}.`, expression);
+          classifyObject(component, [prop], expression);
           continue;
         }
         if (!system.isValidProperty(prop)) continue;
-        if (value !== null) addStyleFact(component, prop, value, prop);
-        else if (expression && ts.isObjectLiteralExpression(expression)) classifyObject(component, `${prop}.`, expression);
-        else addUnresolved(component, prop, expression?.getText(sf) ?? "", prop);
+        if (value !== null) {
+          addStyleFact(component, prop, value, prop);
+          continue;
+        }
+        if (expression && ts.isObjectLiteralExpression(expression)) {
+          const cases = extractExactValueCases(expression);
+          if (cases) addExactCaseGroup(component, prop, cases, prop);
+          else addUnresolved(component, prop, expression.getText(sf), prop);
+          continue;
+        }
+        addUnresolved(component, prop, expression?.getText(sf) ?? "", prop);
       }
       const defaults = recipeMeta?.recipe?.defaultVariants ?? {};
       for (const [prop, value] of Object.entries(defaults)) {
@@ -166,6 +269,7 @@ function hasFact(match) {
     return fact[key] === value;
   }));
 }
+const responsiveGroup = exactCaseGroups.find((group) => group.prop === "py");
 const sentinels = {
   spacingToken: hasFact({kind:"explicit-token", prop:"p", value:"4", tokenRefs:["spacing.4"]}),
   colorToken: hasFact({kind:"explicit-token", prop:"color", value:"blue.text", tokenRefs:["colors.blue.text"]}),
@@ -178,26 +282,34 @@ const sentinels = {
   textStyleExpansion: facts.some((f) => f.kind === "explicit-text-style" && f.value === "textSmall" && ["fonts.body","fontSizes.sm","fontWeights.normal"].every((x) => f.semanticRefs.includes(x))),
   buttonDefaultsImplied: facts.some((f) => f.kind === "implied-recipe-default" && f.component === "Button" && f.prop === "size" && f.value === "md") && facts.some((f) => f.kind === "implied-recipe-default" && f.component === "Button" && f.prop === "variant" && f.value === "solid"),
   buttonExplicitVariants: hasFact({kind:"explicit-recipe-variant", component:"Button", prop:"size", value:"sm"}) && hasFact({kind:"explicit-recipe-variant", component:"Button", prop:"variant", value:"ghost"}),
-  explicitButtonSuppressesDefaults: !facts.some((f) => f.kind === "implied-recipe-default" && f.component === "Button" && (f.site === 4) && (f.prop === "size" || f.prop === "variant")),
+  explicitButtonSuppressesDefaults: !facts.some((f) => f.kind === "implied-recipe-default" && f.component === "Button" && f.site === 4 && (f.prop === "size" || f.prop === "variant")),
   unresolvedColorDomain: facts.some((f) => f.kind === "unresolved-style" && f.prop === "color" && f.domains.includes("colors")),
   unresolvedSpacingDomain: facts.some((f) => f.kind === "unresolved-style" && f.prop === "p" && f.domains.includes("spacing")),
   hoverNestedColor: hasFact({kind:"explicit-token", prop:"_hover.color", value:"grey.400", tokenRefs:["colors.grey.400"]}),
   paletteContextSeparate: facts.some((f) => f.kind === "color-palette-context" && f.value === "blue") && !facts.some((f) => f.kind === "explicit-token" && f.prop === "colorPalette"),
+  responsiveExactCases: Boolean(responsiveGroup) && JSON.stringify(responsiveGroup.values) === JSON.stringify(["3.5", "4"]) && responsiveGroup.valueCases.some((c) => JSON.stringify(c.conditions) === JSON.stringify(["base"]) && c.value === "3.5" && c.tokenRefs.includes("spacing.3.5")) && responsiveGroup.valueCases.some((c) => JSON.stringify(c.conditions) === JSON.stringify(["md"]) && c.value === "4" && c.tokenRefs.includes("spacing.4")),
 };
 
 const result = {
   schema: "safehome.design-system-evidence.phase0-classifier.v1",
   typescriptVersion: ts.version,
   sentinels,
-  counts: {facts: facts.length, tokenFacts: facts.filter((f) => f.kind === "explicit-token").length, nonTokenStyles: nonTokenStyles.length, unresolved: facts.filter((f) => f.kind === "unresolved-style").length},
+  counts: {
+    facts: facts.length,
+    tokenFacts: facts.filter((f) => f.kind === "explicit-token").length,
+    nonTokenStyles: nonTokenStyles.length,
+    unresolved: facts.filter((f) => f.kind === "unresolved-style").length,
+    exactCaseGroups: exactCaseGroups.length,
+  },
   facts,
+  exactCaseGroups,
   nonTokenStyles,
 };
 const out = process.argv[2] ?? path.join(root, ".tmp", "design-system", "phase0-classifier.json");
 fs.mkdirSync(path.dirname(out), {recursive:true});
 fs.writeFileSync(out, `${JSON.stringify(result, null, 2)}\n`);
 const passed = Object.values(sentinels).filter(Boolean).length;
-console.log(`PHASE0_CLASSIFIER sentinels=${passed}/${Object.keys(sentinels).length} facts=${facts.length} nonTokenStyles=${nonTokenStyles.length}`);
+console.log(`PHASE0_CLASSIFIER sentinels=${passed}/${Object.keys(sentinels).length} facts=${facts.length} caseGroups=${exactCaseGroups.length} nonTokenStyles=${nonTokenStyles.length}`);
 for (const [name, pass] of Object.entries(sentinels)) console.log(`SENTINEL ${name}=${pass ? "PASS" : "FAIL"}`);
 if (passed !== Object.keys(sentinels).length) process.exitCode = 1;
 console.log(`RECEIPT=${out}`);
