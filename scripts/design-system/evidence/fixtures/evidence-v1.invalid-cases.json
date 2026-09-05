@@ -1,0 +1,66 @@
+{
+  "schema": "safehome.design-system-evidence.v1",
+  "sourceIdentity": {
+    "repository": "sfbrigade/datasci-earthquake",
+    "baseHead": "ba9e0ab536b278f7f48196ea75dda852b4e0905e",
+    "tree": "a3df8ced81ea2dacf9e00b8990578bf82f3561b4",
+    "workspaceDirty": false
+  },
+  "toolchain": {
+    "node": "24.18.0",
+    "typescript": "6.0.2",
+    "chakra": "3.36.1",
+    "next": "16.2.11"
+  },
+  "policies": {
+    "sourceClassification": "safehome-source-classification.v1",
+    "entrypoint": "safehome-next16-app-router.v1",
+    "semantic": "safehome-chakra3-semantic.v1",
+    "claim": "safehome-usage-evidence-claims.v1"
+  },
+  "files": [
+    {
+      "fileId": "f1",
+      "path": "app/components/card-hazard.tsx",
+      "sourceClass": "app-source",
+      "contentIdentity": {"kind": "git-blob", "value": "450f5e96d3d2c66fbac5fa7a2aa4c22825cd59e7"},
+      "analysisStatus": "complete"
+    }
+  ],
+  "sourceFacts": [
+    {
+      "factId": "sf1",
+      "fileId": "f1",
+      "span": {"startLine": 120, "startColumn": 9, "endLine": 120, "endColumn": 39},
+      "kind": "style-property",
+      "resolution": "exact",
+      "raw": "py={{ base: \"3.5\", md: \"4\" }}",
+      "propPath": "py",
+      "component": "Box",
+      "domains": ["spacing"],
+      "values": ["3.5", "4"]
+    }
+  ],
+  "moduleFacts": [],
+  "reachabilityClaims": [
+    {
+      "reachabilityClaimId": "r1",
+      "fileId": "f1",
+      "kind": "reachable",
+      "policy": "safehome-next16-app-router.v1",
+      "realms": ["product"]
+    }
+  ],
+  "semanticFacts": [],
+  "claims": [],
+  "coverage": {
+    "eligibleFiles": 1,
+    "completeFiles": 1,
+    "partialFiles": 0,
+    "failedFiles": 0,
+    "excludedFiles": 0,
+    "unresolvedFacts": 0,
+    "bySourceClass": {"app-source": 1},
+    "unresolvedByDomain": {}
+  }
+}
