@@ -35,17 +35,54 @@ for (const file of doc.files ?? []) {
   if (file.analysisStatus === "excluded" && !file.reason) fail(`excluded file requires reason: ${file.path}`);
 }
 
+function conditionKey(conditions) {
+  return JSON.stringify(conditions ?? []);
+}
+
 for (const fact of doc.sourceFacts ?? []) {
   if (!fileIds.has(fact.fileId)) fail(`sourceFact ${fact.factId} references unknown fileId ${fact.fileId}`);
   if (fact.resolution === "unresolved" && (!fact.domains || fact.domains.length === 0)) {
     fail(`unresolved sourceFact ${fact.factId} must declare at least one domain, including 'unknown' when necessary`);
   }
+
   const valueBearing = fact.kind !== "component-callsite";
-  if (valueBearing && (fact.resolution === "exact" || fact.resolution === "bounded") && (!fact.values || fact.values.length === 0)) {
+  const values = fact.values ?? [];
+  const valueCases = fact.valueCases ?? [];
+
+  if (valueBearing && (fact.resolution === "exact" || fact.resolution === "bounded") && values.length === 0) {
     fail(`${fact.resolution} sourceFact ${fact.factId} must declare values`);
   }
-  if (valueBearing && fact.resolution === "exact" && fact.values?.length !== 1) fail(`exact sourceFact ${fact.factId} must have exactly one value`);
-  if (valueBearing && fact.resolution === "bounded" && (fact.values?.length ?? 0) < 2) fail(`bounded sourceFact ${fact.factId} must have at least two values`);
+  if (valueBearing && fact.resolution === "exact" && values.length > 1 && valueCases.length === 0) {
+    fail(`exact multi-value sourceFact ${fact.factId} requires condition-bound valueCases`);
+  }
+  if (valueBearing && fact.resolution === "bounded" && values.length < 2) {
+    fail(`bounded sourceFact ${fact.factId} must have at least two values`);
+  }
+  if (fact.resolution === "unresolved" && valueCases.length > 0) {
+    fail(`unresolved sourceFact ${fact.factId} cannot claim exact valueCases`);
+  }
+
+  if (valueCases.length > 0) {
+    const valuesSet = new Set(values);
+    const caseValues = new Set();
+    const casesByCondition = new Map();
+    for (const valueCase of valueCases) {
+      if (!valuesSet.has(valueCase.value)) {
+        fail(`sourceFact ${fact.factId} valueCase references undeclared value ${JSON.stringify(valueCase.value)}`);
+      }
+      caseValues.add(valueCase.value);
+      const key = conditionKey(valueCase.conditions);
+      if (casesByCondition.has(key)) {
+        fail(`sourceFact ${fact.factId} duplicates condition path ${key}`);
+      } else {
+        casesByCondition.set(key, valueCase.value);
+      }
+    }
+    for (const value of valuesSet) {
+      if (!caseValues.has(value)) fail(`sourceFact ${fact.factId} value ${JSON.stringify(value)} has no valueCase provenance`);
+    }
+  }
+
   if (fact.kind === "component-callsite" && !fact.component) fail(`component-callsite ${fact.factId} requires component`);
 }
 
@@ -70,6 +107,17 @@ for (const fact of doc.semanticFacts ?? []) {
   if (fact.kind === "explicit-token" && !fact.entity) fail(`explicit-token ${fact.semanticFactId} requires entity`);
   if (fact.kind === "semantic-implication" && (!fact.entities || fact.entities.length === 0)) fail(`semantic-implication ${fact.semanticFactId} requires entities`);
   if (fact.kind === "color-palette-context" && fact.virtual !== true) fail(`color-palette-context ${fact.semanticFactId} must be explicitly virtual`);
+
+  if ((fact.conditions?.length ?? 0) > 0) {
+    const matchingOrigins = (fact.originFactIds ?? []).map((id) => sourceFactById.get(id)).filter(Boolean);
+    const matchingCases = matchingOrigins.flatMap((origin) => origin.valueCases ?? []).filter((valueCase) => conditionKey(valueCase.conditions) === conditionKey(fact.conditions));
+    if (matchingCases.length === 0) {
+      fail(`semanticFact ${fact.semanticFactId} conditions have no matching source valueCase provenance`);
+    } else if (fact.value != null && !matchingCases.some((valueCase) => valueCase.value === fact.value)) {
+      fail(`semanticFact ${fact.semanticFactId} value does not match its source valueCase`);
+    }
+  }
+
   if (fact.kind === "recipe-default") {
     if (!fact.recipe || !fact.variant || fact.value == null) fail(`recipe-default ${fact.semanticFactId} requires recipe, variant, and value`);
     if (!(fact.originFactIds ?? []).some((id) => sourceFactById.get(id)?.kind === "component-callsite")) {
