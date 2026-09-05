@@ -1,5 +1,7 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
 import ts from "typescript";
 import { createJiti } from "jiti";
 import { classifySourceModuleSpecifiers } from "./runtime-imports.mjs";
@@ -11,6 +13,7 @@ const reportPath = process.argv[4];
 if (!input || !output || !reportPath) {
   throw new Error("usage: node normalize-evidence-v1.mjs <input.json> <output.json> <report.json>");
 }
+const git = (...args) => execFileSync("git", args, {cwd: root, encoding: "utf8"}).trim();
 
 const configFile = ts.readConfigFile(path.join(root, "tsconfig.json"), ts.sys.readFile);
 if (configFile.error) throw new Error(ts.flattenDiagnosticMessageText(configFile.error.messageText, "\n"));
@@ -29,9 +32,30 @@ function domainsFor(prop) {
 
 const doc = JSON.parse(fs.readFileSync(input, "utf8"));
 const fileById = new Map((doc.files ?? []).map((file) => [file.fileId, file]));
-const fileByPath = new Map((doc.files ?? []).map((file) => [file.path, file]));
 const sourceFactById = new Map((doc.sourceFacts ?? []).map((fact) => [fact.factId, fact]));
 const semanticFactById = new Map((doc.semanticFacts ?? []).map((fact) => [fact.semanticFactId, fact]));
+
+// 0. Source identity is scoped to inputs that can change this evidence document.
+// Generated .tmp receipts and unrelated backend work do not make the design-system evidence dirty.
+const authorityPaths = [...new Set([
+  ...(doc.files ?? []).map((file) => file.path),
+  "scripts/design-system/evidence",
+  "tsconfig.json",
+  "package.json",
+  "package-lock.json",
+])];
+const authorityStatus = git("status", "--porcelain", "--untracked-files=all", "--", ...authorityPaths);
+const authorityWorkspaceDirty = authorityStatus.length > 0;
+const sourceIdentityAdjusted = doc.sourceIdentity.workspaceDirty !== authorityWorkspaceDirty;
+doc.sourceIdentity.workspaceDirty = authorityWorkspaceDirty;
+if (authorityWorkspaceDirty) delete doc.sourceIdentity.tree;
+else doc.sourceIdentity.tree = git("rev-parse", "HEAD^{tree}");
+for (const file of doc.files ?? []) {
+  const absolute = path.join(root, file.path);
+  file.contentIdentity = authorityWorkspaceDirty
+    ? {kind: "sha256", value: crypto.createHash("sha256").update(fs.readFileSync(absolute)).digest("hex")}
+    : {kind: "git-blob", value: git("hash-object", "--", file.path)};
+}
 
 // 1. Remove typed-value domain guesses that contradict Chakra's utility authority.
 const removedSourceFacts = [];
@@ -221,7 +245,12 @@ doc.coverage.unresolvedFacts = unresolvedFacts.length;
 doc.coverage.unresolvedByDomain = unresolvedByDomain;
 
 const report = {
-  schema: "safehome.design-system-evidence.phase0-normalization.v2",
+  schema: "safehome.design-system-evidence.phase0-normalization.v3",
+  sourceIdentity: {
+    authorityWorkspaceDirty,
+    adjustedFromRawGenerator: sourceIdentityAdjusted,
+    authorityStatusLines: authorityStatus ? authorityStatus.split(/\r?\n/).length : 0,
+  },
   inputSourceFacts: (doc.sourceFacts?.length ?? 0) + removedSourceFacts.length,
   outputSourceFacts: doc.sourceFacts.length,
   removedSourceFacts,
@@ -235,7 +264,7 @@ const report = {
 fs.mkdirSync(path.dirname(output), {recursive: true});
 fs.writeFileSync(output, `${JSON.stringify(doc, null, 2)}\n`);
 fs.writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
-console.log(`EVIDENCE_V1_NORMALIZE=PASS removedSourceFacts=${removedSourceFacts.length} typeImports=${reclassifiedTypeImports.length} reachabilityChanges=${reachabilityChanges.length} claimChanges=${claimChanges.length}`);
+console.log(`EVIDENCE_V1_NORMALIZE=PASS dirty=${authorityWorkspaceDirty} removedSourceFacts=${removedSourceFacts.length} typeImports=${reclassifiedTypeImports.length} reachabilityChanges=${reachabilityChanges.length} claimChanges=${claimChanges.length}`);
 for (const removed of removedSourceFacts) {
   console.log(`REMOVED ${removed.factId} ${removed.propPath} recorded=${removed.recordedDomains.join(",") || "none"} chakra=${removed.authoritativeDomains.join(",") || "none"}`);
 }
