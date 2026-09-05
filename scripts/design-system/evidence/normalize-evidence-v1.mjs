@@ -5,6 +5,7 @@ import { execFileSync } from "node:child_process";
 import ts from "typescript";
 import { createJiti } from "jiti";
 import { classifySourceModuleSpecifiers } from "./runtime-imports.mjs";
+import { isNextRuntimeEntryPath, nextRouteCompositionEdges } from "./next-route-structure.mjs";
 
 const root = process.cwd();
 const input = process.argv[2];
@@ -32,6 +33,7 @@ function domainsFor(prop) {
 
 const doc = JSON.parse(fs.readFileSync(input, "utf8"));
 const fileById = new Map((doc.files ?? []).map((file) => [file.fileId, file]));
+const fileByPath = new Map((doc.files ?? []).map((file) => [file.path, file]));
 const sourceFactById = new Map((doc.sourceFacts ?? []).map((fact) => [fact.factId, fact]));
 const semanticFactById = new Map((doc.semanticFacts ?? []).map((fact) => [fact.semanticFactId, fact]));
 
@@ -146,15 +148,42 @@ for (const fact of doc.moduleFacts ?? []) {
   }
 }
 
-// 3. Recompute product/internal-demo reachability using runtime edges only.
-const NEXT_ENTRY_BASENAMES = new Set([
-  "page.tsx", "page.ts", "layout.tsx", "layout.ts", "route.ts", "route.tsx",
-  "default.tsx", "default.ts", "template.tsx", "template.ts", "loading.tsx", "loading.ts",
-  "error.tsx", "error.ts", "global-error.tsx", "global-error.ts", "not-found.tsx", "not-found.ts",
-  "forbidden.tsx", "forbidden.ts", "unauthorized.tsx", "unauthorized.ts",
-  "sitemap.ts", "robots.ts", "manifest.ts", "opengraph-image.tsx", "twitter-image.tsx",
-]);
-const appEntrypoints = (doc.files ?? []).filter((file) => file.path.startsWith("app/") && NEXT_ENTRY_BASENAMES.has(path.basename(file.path)));
+// 3. Materialize Next App Router structural composition as policy-owned module facts.
+const structuralEdges = nextRouteCompositionEdges((doc.files ?? []).map((file) => file.path));
+const existingFrameworkKeys = new Set(
+  (doc.moduleFacts ?? [])
+    .filter((fact) => fact.kind === "framework-route-composition")
+    .map((fact) => `${fact.fromFileId}\u0000${fact.toFileId}`),
+);
+let maxModuleNumber = Math.max(
+  0,
+  ...(doc.moduleFacts ?? []).map((fact) => Number.parseInt(String(fact.moduleFactId).replace(/^mf/, ""), 10) || 0),
+);
+const frameworkRouteCompositions = [];
+for (const edge of structuralEdges) {
+  const fromFile = fileByPath.get(edge.from);
+  const toFile = fileByPath.get(edge.to);
+  if (!fromFile || !toFile) continue;
+  const key = `${fromFile.fileId}\u0000${toFile.fileId}`;
+  if (existingFrameworkKeys.has(key)) continue;
+  existingFrameworkKeys.add(key);
+  const moduleFact = {
+    moduleFactId: `mf${String(++maxModuleNumber).padStart(6, "0")}`,
+    fromFileId: fromFile.fileId,
+    toFileId: toFile.fileId,
+    kind: "framework-route-composition",
+    specifier: edge.to,
+  };
+  doc.moduleFacts.push(moduleFact);
+  frameworkRouteCompositions.push({
+    moduleFactId: moduleFact.moduleFactId,
+    from: edge.from,
+    to: edge.to,
+  });
+}
+
+// 4. Recompute product/internal-demo reachability using emitted runtime imports plus Next structural edges.
+const appEntrypoints = (doc.files ?? []).filter((file) => isNextRuntimeEntryPath(file.path));
 const instrumentation = (doc.files ?? []).filter((file) => ["instrumentation.ts", "instrumentation-client.ts", "proxy.ts", "middleware.ts"].includes(file.path));
 const internalDemoEntrypoints = appEntrypoints.filter((file) => file.path.includes("/components-test-lib/"));
 const internalDemoIds = new Set(internalDemoEntrypoints.map((file) => file.fileId));
@@ -162,7 +191,7 @@ const productEntrypoints = [...appEntrypoints, ...instrumentation].filter((file)
 
 const graph = new Map((doc.files ?? []).map((file) => [file.fileId, new Set()]));
 for (const fact of doc.moduleFacts ?? []) {
-  if (!fact.toFileId || (fact.kind !== "static-import" && fact.kind !== "dynamic-import")) continue;
+  if (!fact.toFileId || !["static-import", "dynamic-import", "framework-route-composition"].includes(fact.kind)) continue;
   graph.get(fact.fromFileId)?.add(fact.toFileId);
 }
 function closure(entryId) {
@@ -189,7 +218,7 @@ for (const claim of doc.reachabilityClaims ?? []) {
   if (productOrigins.length) realms.push("product");
   if (demoOrigins.length) realms.push("internal-demo");
   claim.kind = realms.length ? "reachable" : "source-only";
-  claim.policy = "safehome-next16-app-router-runtime.v1";
+  claim.policy = "safehome-next16-app-router-runtime.v2";
   claim.realms = realms;
   const entrypointFileIds = [...new Set([...productOrigins, ...demoOrigins])].sort();
   if (entrypointFileIds.length) claim.entrypointFileIds = entrypointFileIds;
@@ -205,9 +234,9 @@ for (const claim of doc.reachabilityClaims ?? []) {
     });
   }
 }
-doc.policies.entrypoint = "safehome-next16-app-router-runtime.v1";
+doc.policies.entrypoint = "safehome-next16-app-router-runtime.v2";
 
-// 4. Realm-dependent entity claims must follow the corrected reachability claim.
+// 5. Realm-dependent entity claims must follow the corrected reachability claim.
 const claimChanges = [];
 for (const claim of doc.claims ?? []) {
   const oldKind = claim.kind;
@@ -235,7 +264,7 @@ for (const claim of doc.claims ?? []) {
   }
 }
 
-// 5. Recompute unresolved coverage after conservative source-fact removal.
+// 6. Recompute unresolved coverage after conservative source-fact removal.
 const unresolvedFacts = doc.sourceFacts.filter((fact) => fact.resolution === "unresolved");
 const unresolvedByDomain = {};
 for (const fact of unresolvedFacts) {
@@ -245,7 +274,7 @@ doc.coverage.unresolvedFacts = unresolvedFacts.length;
 doc.coverage.unresolvedByDomain = unresolvedByDomain;
 
 const report = {
-  schema: "safehome.design-system-evidence.phase0-normalization.v3",
+  schema: "safehome.design-system-evidence.phase0-normalization.v4",
   sourceIdentity: {
     authorityWorkspaceDirty,
     adjustedFromRawGenerator: sourceIdentityAdjusted,
@@ -257,6 +286,7 @@ const report = {
   removedSemanticFactIds: [...removedSemanticFactIds].sort(),
   removedClaimIds: removedClaimIds.sort(),
   reclassifiedTypeImports: reclassifiedTypeImports.sort((a, b) => `${a.from}\u0000${a.to}`.localeCompare(`${b.from}\u0000${b.to}`)),
+  frameworkRouteCompositions: frameworkRouteCompositions.sort((a, b) => `${a.from}\u0000${a.to}`.localeCompare(`${b.from}\u0000${b.to}`)),
   reachabilityChanges: reachabilityChanges.sort((a, b) => a.file.localeCompare(b.file)),
   claimChanges: claimChanges.sort((a, b) => a.claimId.localeCompare(b.claimId)),
 };
@@ -264,10 +294,13 @@ const report = {
 fs.mkdirSync(path.dirname(output), {recursive: true});
 fs.writeFileSync(output, `${JSON.stringify(doc, null, 2)}\n`);
 fs.writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
-console.log(`EVIDENCE_V1_NORMALIZE=PASS dirty=${authorityWorkspaceDirty} removedSourceFacts=${removedSourceFacts.length} typeImports=${reclassifiedTypeImports.length} reachabilityChanges=${reachabilityChanges.length} claimChanges=${claimChanges.length}`);
+console.log(`EVIDENCE_V1_NORMALIZE=PASS dirty=${authorityWorkspaceDirty} removedSourceFacts=${removedSourceFacts.length} typeImports=${reclassifiedTypeImports.length} framework=${frameworkRouteCompositions.length} reachabilityChanges=${reachabilityChanges.length} claimChanges=${claimChanges.length}`);
 for (const removed of removedSourceFacts) {
   console.log(`REMOVED ${removed.factId} ${removed.propPath} recorded=${removed.recordedDomains.join(",") || "none"} chakra=${removed.authoritativeDomains.join(",") || "none"}`);
 }
 for (const edge of reclassifiedTypeImports) {
   console.log(`TYPE_IMPORT ${edge.from} -> ${edge.to} via=${edge.specifier}`);
+}
+for (const edge of frameworkRouteCompositions) {
+  console.log(`FRAMEWORK_ROUTE ${edge.from} -> ${edge.to}`);
 }
