@@ -4,19 +4,7 @@
   "title": "SafeHome design-system evidence v1",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "schema",
-    "sourceIdentity",
-    "toolchain",
-    "policies",
-    "files",
-    "sourceFacts",
-    "moduleFacts",
-    "reachabilityClaims",
-    "semanticFacts",
-    "claims",
-    "coverage"
-  ],
+  "required": ["schema", "sourceIdentity", "toolchain", "policies", "files", "sourceFacts", "moduleFacts", "reachabilityClaims", "semanticFacts", "claims", "coverage"],
   "properties": {
     "schema": {"const": "safehome.design-system-evidence.v1"},
     "sourceIdentity": {"$ref": "#/definitions/sourceIdentity"},
@@ -32,8 +20,7 @@
   },
   "definitions": {
     "sourceIdentity": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["repository", "baseHead", "workspaceDirty"],
       "properties": {
         "repository": {"type": "string", "minLength": 1},
@@ -41,16 +28,10 @@
         "tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
         "workspaceDirty": {"type": "boolean"}
       },
-      "allOf": [
-        {
-          "if": {"properties": {"workspaceDirty": {"const": false}}},
-          "then": {"required": ["tree"]}
-        }
-      ]
+      "allOf": [{"if": {"properties": {"workspaceDirty": {"const": false}}}, "then": {"required": ["tree"]}}]
     },
     "toolchain": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["node", "typescript", "chakra", "next"],
       "properties": {
         "node": {"type": "string", "minLength": 1},
@@ -60,8 +41,7 @@
       }
     },
     "policies": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["sourceClassification", "entrypoint", "semantic", "claim"],
       "properties": {
         "sourceClassification": {"type": "string", "minLength": 1},
@@ -71,42 +51,31 @@
       }
     },
     "contentIdentity": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["kind", "value"],
       "properties": {
         "kind": {"enum": ["git-blob", "sha256"]},
         "value": {"type": "string", "pattern": "^[0-9a-f]+$"}
       },
       "allOf": [
-        {
-          "if": {"properties": {"kind": {"const": "git-blob"}}},
-          "then": {"properties": {"value": {"type": "string", "pattern": "^[0-9a-f]{40}$"}}}
-        },
-        {
-          "if": {"properties": {"kind": {"const": "sha256"}}},
-          "then": {"properties": {"value": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}
-        }
+        {"if": {"properties": {"kind": {"const": "git-blob"}}}, "then": {"properties": {"value": {"type": "string", "pattern": "^[0-9a-f]{40}$"}}}},
+        {"if": {"properties": {"kind": {"const": "sha256"}}}, "then": {"properties": {"value": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}}
       ]
     },
     "fileRecord": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["fileId", "path", "sourceClass", "contentIdentity", "analysisStatus"],
       "properties": {
         "fileId": {"type": "string", "minLength": 1},
         "path": {"type": "string", "minLength": 1},
-        "sourceClass": {
-          "enum": ["app-source", "theme", "storybook", "test", "test-support", "e2e", "archived", "tooling", "type-support", "other"]
-        },
+        "sourceClass": {"enum": ["app-source", "theme", "storybook", "test", "test-support", "e2e", "archived", "tooling", "type-support", "other"]},
         "contentIdentity": {"$ref": "#/definitions/contentIdentity"},
         "analysisStatus": {"enum": ["complete", "partial", "failed", "excluded"]},
         "reason": {"type": "string"}
       }
     },
     "span": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["startLine", "startColumn", "endLine", "endColumn"],
       "properties": {
         "startLine": {"type": "integer", "minimum": 1},
@@ -116,39 +85,21 @@
       }
     },
     "valueCase": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["conditions", "value"],
       "properties": {
-        "conditions": {
-          "type": "array",
-          "minItems": 1,
-          "uniqueItems": true,
-          "items": {"type": "string", "minLength": 1}
-        },
+        "conditions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
         "value": {"type": "string"}
       }
     },
     "sourceFact": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["factId", "fileId", "span", "kind", "resolution", "raw"],
       "properties": {
         "factId": {"type": "string", "minLength": 1},
         "fileId": {"type": "string", "minLength": 1},
         "span": {"$ref": "#/definitions/span"},
-        "kind": {
-          "enum": [
-            "component-callsite",
-            "style-property",
-            "typed-style-value",
-            "named-text-style",
-            "named-layer-style",
-            "recipe-variant",
-            "style-literal",
-            "unresolved-style"
-          ]
-        },
+        "kind": {"enum": ["component-callsite", "style-property", "typed-style-value", "named-text-style", "named-layer-style", "recipe-variant", "style-literal", "unresolved-style"]},
         "resolution": {"enum": ["exact", "bounded", "unresolved"]},
         "raw": {"type": "string"},
         "propPath": {"type": "string"},
@@ -159,20 +110,18 @@
       }
     },
     "moduleFact": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["moduleFactId", "fromFileId", "kind", "specifier"],
       "properties": {
         "moduleFactId": {"type": "string", "minLength": 1},
         "fromFileId": {"type": "string", "minLength": 1},
         "toFileId": {"type": "string", "minLength": 1},
-        "kind": {"enum": ["static-import", "dynamic-import", "type-import", "asset-import", "unresolved-import"]},
+        "kind": {"enum": ["static-import", "dynamic-import", "type-import", "framework-route-composition", "asset-import", "unresolved-import"]},
         "specifier": {"type": "string"}
       }
     },
     "reachabilityClaim": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["reachabilityClaimId", "fileId", "kind", "policy", "realms"],
       "properties": {
         "reachabilityClaimId": {"type": "string", "minLength": 1},
@@ -185,8 +134,7 @@
       }
     },
     "semanticFact": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["semanticFactId", "kind", "originFactIds"],
       "properties": {
         "semanticFactId": {"type": "string", "minLength": 1},
@@ -202,19 +150,15 @@
       }
     },
     "claim": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["claimId", "kind", "entity", "policy", "basis"],
       "properties": {
         "claimId": {"type": "string", "minLength": 1},
-        "kind": {
-          "enum": ["product-path-reference", "internal-demo-reference", "source-only-reference", "semantic-product-path-reference", "dependency-only", "no-resolved-reference", "strong-negative-eligible", "strong-negative-blocked", "review-for-removal"]
-        },
+        "kind": {"enum": ["product-path-reference", "internal-demo-reference", "source-only-reference", "semantic-product-path-reference", "dependency-only", "no-resolved-reference", "strong-negative-eligible", "strong-negative-blocked", "review-for-removal"]},
         "entity": {"type": "string", "minLength": 1},
         "policy": {"type": "string", "minLength": 1},
         "basis": {
-          "type": "object",
-          "additionalProperties": false,
+          "type": "object", "additionalProperties": false,
           "properties": {
             "sourceFactIds": {"type": "array", "items": {"type": "string"}},
             "semanticFactIds": {"type": "array", "items": {"type": "string"}},
@@ -227,8 +171,7 @@
       }
     },
     "coverage": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["eligibleFiles", "completeFiles", "partialFiles", "failedFiles", "excludedFiles", "unresolvedFacts"],
       "properties": {
         "eligibleFiles": {"type": "integer", "minimum": 0},
