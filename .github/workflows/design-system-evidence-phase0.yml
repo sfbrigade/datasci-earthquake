@@ -22,12 +22,24 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-node-using-nvmrc
       - run: npm ci
-      - name: Run TypeScript extraction baseline
-        run: node scripts/design-system/evidence/phase0-benchmark.mjs
-      - name: Run TypeScript reachability baseline
-        run: node scripts/design-system/evidence/phase0-reachability.mjs
-      - name: Run controlled Chakra semantic probe
-        run: node scripts/design-system/evidence/phase0-chakra.mjs
+      - name: Run TypeScript extraction baseline twice
+        run: |
+          node scripts/design-system/evidence/phase0-benchmark.mjs .tmp/design-system/phase0-typescript-a.json
+          node scripts/design-system/evidence/phase0-benchmark.mjs .tmp/design-system/phase0-typescript-b.json
+          cmp .tmp/design-system/phase0-typescript-a.json .tmp/design-system/phase0-typescript-b.json
+          cp .tmp/design-system/phase0-typescript-a.json .tmp/design-system/phase0-typescript.json
+      - name: Run TypeScript reachability baseline twice
+        run: |
+          node scripts/design-system/evidence/phase0-reachability.mjs .tmp/design-system/phase0-reachability-a.json
+          node scripts/design-system/evidence/phase0-reachability.mjs .tmp/design-system/phase0-reachability-b.json
+          cmp .tmp/design-system/phase0-reachability-a.json .tmp/design-system/phase0-reachability-b.json
+          cp .tmp/design-system/phase0-reachability-a.json .tmp/design-system/phase0-reachability.json
+      - name: Run controlled Chakra semantic probe twice
+        run: |
+          node scripts/design-system/evidence/phase0-chakra.mjs .tmp/design-system/phase0-chakra-a.json
+          node scripts/design-system/evidence/phase0-chakra.mjs .tmp/design-system/phase0-chakra-b.json
+          cmp .tmp/design-system/phase0-chakra-a.json .tmp/design-system/phase0-chakra-b.json
+          cp .tmp/design-system/phase0-chakra-a.json .tmp/design-system/phase0-chakra.json
       - name: Run Knip production oracle
         continue-on-error: true
         run: |
@@ -35,12 +47,12 @@ jobs:
           KNIP_VERSION="$(npm view knip version)"
           printf '%s\n' "$KNIP_VERSION" > .tmp/design-system/phase0-knip-version.txt
           npx --yes "knip@$KNIP_VERSION" --production --reporter json > .tmp/design-system/phase0-knip.json
-      - name: Show receipts
+      - name: Show compact receipts
         if: always()
         run: |
-          cat .tmp/design-system/phase0-typescript.json
-          cat .tmp/design-system/phase0-reachability.json
-          cat .tmp/design-system/phase0-chakra.json || true
+          node -e 'const r=require("./.tmp/design-system/phase0-typescript.json"); console.log(JSON.stringify({schema:r.schema,parser:r.parser,oracle:r.oracle,score:r.score,extraction:r.extraction}))'
+          node -e 'const r=require("./.tmp/design-system/phase0-reachability.json"); console.log(JSON.stringify({schema:r.schema,entrypointPolicy:r.entrypointPolicy,counts:r.counts,sentinels:r.sentinels}))'
+          node -e 'const r=require("./.tmp/design-system/phase0-chakra.json"); console.log(JSON.stringify(r))'
           printf 'KNIP_VERSION=' && cat .tmp/design-system/phase0-knip-version.txt || true
           cat .tmp/design-system/phase0-knip.json || true
       - uses: actions/upload-artifact@v4
