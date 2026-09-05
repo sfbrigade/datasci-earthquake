@@ -52,6 +52,16 @@ jobs:
           node scripts/design-system/evidence/phase0-classifier.mjs .tmp/design-system/phase0-classifier-b.json
           cmp .tmp/design-system/phase0-classifier-a.json .tmp/design-system/phase0-classifier-b.json
           cp .tmp/design-system/phase0-classifier-a.json .tmp/design-system/phase0-classifier.json
+      - name: Validate draft evidence v1 contract
+        run: |
+          node scripts/design-system/evidence/validate-evidence-v1.mjs scripts/design-system/evidence/fixtures/evidence-v1.valid.json
+          if node scripts/design-system/evidence/validate-evidence-v1.mjs scripts/design-system/evidence/fixtures/evidence-v1.invalid.json; then
+            echo "invalid evidence fixture was incorrectly accepted"
+            exit 1
+          fi
+          npx --yes ajv-cli@5.0.0 validate --spec=draft7 \
+            -s scripts/design-system/evidence/safehome.design-system-evidence.v1.schema.json \
+            -d scripts/design-system/evidence/fixtures/evidence-v1.valid.json
       - name: Run Knip production oracle
         continue-on-error: true
         run: |
@@ -64,8 +74,8 @@ jobs:
         run: |
           node -e 'const r=require("./.tmp/design-system/phase0-typescript.json"); console.log(JSON.stringify({schema:r.schema,parser:r.parser,oracle:r.oracle,score:r.score,extraction:r.extraction}))'
           node -e 'const r=require("./.tmp/design-system/phase0-reachability.json"); console.log(JSON.stringify({schema:r.schema,entrypointPolicy:r.entrypointPolicy,counts:r.counts,sentinels:r.sentinels}))'
-          node -e 'const r=require("./.tmp/design-system/phase0-typechecker.json"); console.log(JSON.stringify({schema:r.schema,sentinels:r.sentinels,samples:Object.fromEntries(Object.entries(r.samples).map(([k,v])=>[k,v.map(x=>({value:x.value,line:x.line,actualType:x.actualType,contextualType:x.contextualType?.slice(0,160)}))]))}))'
-          node -e 'const r=require("./.tmp/design-system/phase0-chakra.json"); console.log(JSON.stringify(r))'
+          node -e 'const r=require("./.tmp/design-system/phase0-typechecker.json"); console.log(JSON.stringify({schema:r.schema,sentinels:r.sentinels}))'
+          node -e 'const r=require("./.tmp/design-system/phase0-chakra.json"); console.log(JSON.stringify({schema:r.schema,tokenSurface:r.tokenSurface,probes:r.probes}))'
           node -e 'const r=require("./.tmp/design-system/phase0-classifier.json"); console.log(JSON.stringify({schema:r.schema,sentinels:r.sentinels,counts:r.counts}))'
           printf 'KNIP_VERSION=' && cat .tmp/design-system/phase0-knip-version.txt || true
           cat .tmp/design-system/phase0-knip.json || true
