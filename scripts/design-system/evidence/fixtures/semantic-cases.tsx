@@ -20,6 +20,7 @@ export function Phase0SemanticCases() {
       <Box color={dynamicColor} p={dynamicSpacing} />
       <Box _hover={{ color: "grey.400" }} />
       <Box colorPalette="blue" />
+      <Box py={{ base: "3.5", md: "4" }} />
     </>
   );
 }
