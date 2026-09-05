@@ -12,6 +12,7 @@
     "files",
     "sourceFacts",
     "moduleFacts",
+    "reachabilityClaims",
     "semanticFacts",
     "claims",
     "coverage"
@@ -21,26 +22,12 @@
     "sourceIdentity": {"$ref": "#/definitions/sourceIdentity"},
     "toolchain": {"$ref": "#/definitions/toolchain"},
     "policies": {"$ref": "#/definitions/policies"},
-    "files": {
-      "type": "array",
-      "items": {"$ref": "#/definitions/fileRecord"}
-    },
-    "sourceFacts": {
-      "type": "array",
-      "items": {"$ref": "#/definitions/sourceFact"}
-    },
-    "moduleFacts": {
-      "type": "array",
-      "items": {"$ref": "#/definitions/moduleFact"}
-    },
-    "semanticFacts": {
-      "type": "array",
-      "items": {"$ref": "#/definitions/semanticFact"}
-    },
-    "claims": {
-      "type": "array",
-      "items": {"$ref": "#/definitions/claim"}
-    },
+    "files": {"type": "array", "items": {"$ref": "#/definitions/fileRecord"}},
+    "sourceFacts": {"type": "array", "items": {"$ref": "#/definitions/sourceFact"}},
+    "moduleFacts": {"type": "array", "items": {"$ref": "#/definitions/moduleFact"}},
+    "reachabilityClaims": {"type": "array", "items": {"$ref": "#/definitions/reachabilityClaim"}},
+    "semanticFacts": {"type": "array", "items": {"$ref": "#/definitions/semanticFact"}},
+    "claims": {"type": "array", "items": {"$ref": "#/definitions/claim"}},
     "coverage": {"$ref": "#/definitions/coverage"}
   },
   "definitions": {
@@ -90,7 +77,17 @@
       "properties": {
         "kind": {"enum": ["git-blob", "sha256"]},
         "value": {"type": "string", "pattern": "^[0-9a-f]+$"}
-      }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"kind": {"const": "git-blob"}}},
+          "then": {"properties": {"value": {"pattern": "^[0-9a-f]{40}$"}}}
+        },
+        {
+          "if": {"properties": {"kind": {"const": "sha256"}}},
+          "then": {"properties": {"value": {"pattern": "^[0-9a-f]{64}$"}}}
+        }
+      ]
     },
     "fileRecord": {
       "type": "object",
@@ -100,18 +97,7 @@
         "fileId": {"type": "string", "minLength": 1},
         "path": {"type": "string", "minLength": 1},
         "sourceClass": {
-          "enum": [
-            "app-source",
-            "theme",
-            "storybook",
-            "test",
-            "test-support",
-            "e2e",
-            "archived",
-            "tooling",
-            "type-support",
-            "other"
-          ]
+          "enum": ["app-source", "theme", "storybook", "test", "test-support", "e2e", "archived", "tooling", "type-support", "other"]
         },
         "contentIdentity": {"$ref": "#/definitions/contentIdentity"},
         "analysisStatus": {"enum": ["complete", "partial", "failed", "excluded"]},
@@ -139,6 +125,7 @@
         "span": {"$ref": "#/definitions/span"},
         "kind": {
           "enum": [
+            "component-callsite",
             "style-property",
             "typed-style-value",
             "named-text-style",
@@ -152,16 +139,8 @@
         "raw": {"type": "string"},
         "propPath": {"type": "string"},
         "component": {"type": "string"},
-        "domains": {
-          "type": "array",
-          "uniqueItems": true,
-          "items": {"type": "string", "minLength": 1}
-        },
-        "values": {
-          "type": "array",
-          "uniqueItems": true,
-          "items": {"type": "string"}
-        }
+        "domains": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "values": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
       }
     },
     "moduleFact": {
@@ -176,33 +155,30 @@
         "specifier": {"type": "string"}
       }
     },
+    "reachabilityClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reachabilityClaimId", "fileId", "kind", "policy", "realms"],
+      "properties": {
+        "reachabilityClaimId": {"type": "string", "minLength": 1},
+        "fileId": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["reachable", "source-only", "uncertain"]},
+        "policy": {"type": "string", "minLength": 1},
+        "realms": {"type": "array", "uniqueItems": true, "items": {"enum": ["product", "internal-demo"]}},
+        "entrypointFileIds": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "blockers": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      }
+    },
     "semanticFact": {
       "type": "object",
       "additionalProperties": false,
       "required": ["semanticFactId", "kind", "originFactIds"],
       "properties": {
         "semanticFactId": {"type": "string", "minLength": 1},
-        "kind": {
-          "enum": [
-            "explicit-token",
-            "named-style",
-            "semantic-implication",
-            "recipe-default",
-            "recipe-variant",
-            "color-palette-context",
-            "non-token-style"
-          ]
-        },
-        "originFactIds": {
-          "type": "array",
-          "items": {"type": "string", "minLength": 1}
-        },
+        "kind": {"enum": ["explicit-token", "named-style", "semantic-implication", "recipe-default", "recipe-variant", "color-palette-context", "non-token-style"]},
+        "originFactIds": {"type": "array", "items": {"type": "string", "minLength": 1}},
         "entity": {"type": "string"},
-        "entities": {
-          "type": "array",
-          "uniqueItems": true,
-          "items": {"type": "string"}
-        },
+        "entities": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
         "recipe": {"type": "string"},
         "variant": {"type": "string"},
         "value": {"type": "string"},
@@ -216,17 +192,7 @@
       "properties": {
         "claimId": {"type": "string", "minLength": 1},
         "kind": {
-          "enum": [
-            "product-path-reference",
-            "internal-demo-reference",
-            "source-only-reference",
-            "semantic-product-path-reference",
-            "dependency-only",
-            "no-resolved-reference",
-            "strong-negative-eligible",
-            "strong-negative-blocked",
-            "review-for-removal"
-          ]
+          "enum": ["product-path-reference", "internal-demo-reference", "source-only-reference", "semantic-product-path-reference", "dependency-only", "no-resolved-reference", "strong-negative-eligible", "strong-negative-blocked", "review-for-removal"]
         },
         "entity": {"type": "string", "minLength": 1},
         "policy": {"type": "string", "minLength": 1},
@@ -236,18 +202,12 @@
           "properties": {
             "sourceFactIds": {"type": "array", "items": {"type": "string"}},
             "semanticFactIds": {"type": "array", "items": {"type": "string"}},
-            "moduleFactIds": {"type": "array", "items": {"type": "string"}}
+            "moduleFactIds": {"type": "array", "items": {"type": "string"}},
+            "reachabilityClaimIds": {"type": "array", "items": {"type": "string"}}
           }
         },
-        "realms": {
-          "type": "array",
-          "uniqueItems": true,
-          "items": {"enum": ["product", "internal-demo"]}
-        },
-        "blockers": {
-          "type": "array",
-          "items": {"type": "string", "minLength": 1}
-        }
+        "realms": {"type": "array", "uniqueItems": true, "items": {"enum": ["product", "internal-demo"]}},
+        "blockers": {"type": "array", "items": {"type": "string", "minLength": 1}}
       }
     },
     "coverage": {
