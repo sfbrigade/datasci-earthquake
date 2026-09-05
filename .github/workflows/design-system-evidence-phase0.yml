@@ -71,10 +71,20 @@ jobs:
           fi
       - name: Generate repo-wide evidence preview twice
         run: |
-          node scripts/design-system/evidence/generate-evidence-v1.mjs .tmp/design-system/evidence-v1-preview-a.json
-          node scripts/design-system/evidence/generate-evidence-v1.mjs .tmp/design-system/evidence-v1-preview-b.json
+          node scripts/design-system/evidence/generate-evidence-v1.mjs .tmp/design-system/evidence-v1-raw-a.json
+          node scripts/design-system/evidence/normalize-evidence-v1.mjs \
+            .tmp/design-system/evidence-v1-raw-a.json \
+            .tmp/design-system/evidence-v1-preview-a.json \
+            .tmp/design-system/evidence-v1-normalization-a.json
+          node scripts/design-system/evidence/generate-evidence-v1.mjs .tmp/design-system/evidence-v1-raw-b.json
+          node scripts/design-system/evidence/normalize-evidence-v1.mjs \
+            .tmp/design-system/evidence-v1-raw-b.json \
+            .tmp/design-system/evidence-v1-preview-b.json \
+            .tmp/design-system/evidence-v1-normalization-b.json
           cmp .tmp/design-system/evidence-v1-preview-a.json .tmp/design-system/evidence-v1-preview-b.json
+          cmp .tmp/design-system/evidence-v1-normalization-a.json .tmp/design-system/evidence-v1-normalization-b.json
           cp .tmp/design-system/evidence-v1-preview-a.json .tmp/design-system/evidence-v1-preview.json
+          cp .tmp/design-system/evidence-v1-normalization-a.json .tmp/design-system/evidence-v1-normalization.json
           node scripts/design-system/evidence/validate-evidence-v1.mjs .tmp/design-system/evidence-v1-preview.json
           npx --yes ajv-cli@5.0.0 validate --spec=draft7 \
             -s scripts/design-system/evidence/safehome.design-system-evidence.v1.schema.json \
@@ -94,6 +104,7 @@ jobs:
           node -e 'const r=require("./.tmp/design-system/phase0-typechecker.json"); console.log(JSON.stringify({schema:r.schema,sentinels:r.sentinels}))'
           node -e 'const r=require("./.tmp/design-system/phase0-chakra.json"); console.log(JSON.stringify({schema:r.schema,tokenSurface:r.tokenSurface,probes:r.probes}))'
           node -e 'const r=require("./.tmp/design-system/phase0-classifier.json"); console.log(JSON.stringify({schema:r.schema,sentinels:r.sentinels,counts:r.counts,exactCaseGroups:r.exactCaseGroups}))'
+          node -e 'const r=require("./.tmp/design-system/evidence-v1-normalization.json"); console.log(JSON.stringify(r))' || true
           node -e 'const r=require("./.tmp/design-system/evidence-v1-preview.json"); console.log(JSON.stringify({schema:r.schema,sourceIdentity:r.sourceIdentity,toolchain:r.toolchain,coverage:r.coverage,counts:{files:r.files.length,sourceFacts:r.sourceFacts.length,moduleFacts:r.moduleFacts.length,reachabilityClaims:r.reachabilityClaims.length,semanticFacts:r.semanticFacts.length,claims:r.claims.length}}))' || true
           printf 'KNIP_VERSION=' && cat .tmp/design-system/phase0-knip-version.txt || true
           cat .tmp/design-system/phase0-knip.json || true
