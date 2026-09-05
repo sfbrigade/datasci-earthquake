@@ -6,155 +6,127 @@ Phase-0 spike for issue #1029. This branch does not change SafeHome product beha
 
 - Base branch: `develop`
 - Base commit: `ba9e0ab536b278f7f48196ea75dda852b4e0905e`
-- Base tree: `a3df8ced81ea2dacf9e00b8990578bf82f3561b4`
-- Toolchain observed in CI: Node 24.18.0, TypeScript 6.0.2, Chakra UI 3.36.1
-- Accepted Phase-0 run: GitHub Actions `33937200100`
-- Accepted artifact: `9960580684`
-- Artifact SHA-256: `c71275ab5e13414f10d279bbdea04e962aa5b6fdf1e68c0bc88de774ab8f78e3`
+- Toolchain validated in CI: Node 24.18.0, TypeScript 6.0.2, Chakra UI 3.36.1, Next 16.2.11
+- Final audited technical run: GitHub Actions `33951150290`
+- Final audited technical artifact: `9964876510`
+- Artifact SHA-256: `a81ac4ed629fe5133efc8dcc97d664443a985565fe312e4e65fc7db7881f97b8`
+- Detailed audit: `PHASE0-PRECISION-AUDIT.md`
 
-The benchmark oracle is the previously reviewed B1 slice from the correctness-hardened mapper: 10 files, 40 sites, 116 facts (108 explicit Exact, 2 recipe-default Exact, 4 Possible, 2 Unresolved).
+The original benchmark oracle is the reviewed B1 mapper slice: 10 files, 40 sites, 116 facts (108 explicit Exact, 2 recipe-default Exact, 4 Possible, 2 Unresolved).
 
-## Results
+## Verified results
 
-### 1. TypeScript source extraction
+### Source extraction
 
-The zero-new-dependency TypeScript AST prototype recovered all known B1 source facts that it is intended to score:
+The zero-new-dependency TypeScript prototype recovered the complete B1 source oracle it is intended to score:
 
 - explicit Exact: **108 / 108**
-- Possible/bounded: **4 / 4**
+- Possible / bounded: **4 / 4**
 - Unresolved sites: **2 / 2**
-- recipe defaults: intentionally excluded from AST scoring; handled as Chakra semantic implications
+- recipe defaults: kept out of AST scoring and modeled as Chakra semantic implications
 
-The prototype emits 284 raw facts on the 10-file corpus (255 exact, 6 bounded, 23 unresolved). Therefore the result above is a **recall result against the known oracle, not a whole-repository precision score**. Raw facts must still be classified through Chakra semantics before becoming usage claims.
+### Chakra semantics
 
-### 2. TypeScript-native module reachability
+The exact SafeHome Chakra system passes **13 / 13** controlled probes. It provides:
 
-Using SafeHome's own `tsconfig.json` (`moduleResolution: bundler`, `@/*` path mapping) and an explicit phase-0 Next App Router entrypoint policy:
+- token lookup and token-domain metadata;
+- named text/layer style expansion;
+- responsive token transformation;
+- palette-context expansion;
+- actual recipe defaults.
 
-- TypeScript/JavaScript source files considered in the accepted run: **99** (includes the Phase-0 hostile fixture)
-- `app-source` files: **66**
-- product-reachable `app-source` files: **58 / 66**
-- internal-demo-reachable files: **25 / 99**
-- unresolved local code imports: **0**
-- asset dependencies classified separately: **5**
+The hostile semantic classifier passes **17 / 17** sentinels, including exact responsive condition cases and the distinction between token-backed values and ordinary CSS literals.
 
-All six reviewed sentinels pass, including:
+### Typed evidence outside JSX
 
-- `address-mapper.tsx`: product reachable
-- `card-hazard.tsx`: product reachable
-- `share.tsx`: not product reachable, but internal-demo reachable
-- `components-test-lib/page.tsx`: internal-demo entrypoint, not product entrypoint
+TypeScript's TypeChecker passes **4 / 4** probes for Chakra-bearing contextual types outside JSX, including the real typed color fields in `app/data/data.ts` and `emergency-kit-steps.tsx`.
 
-Reachability is a claim under `safehome-next16-app-router-phase0.v1`, not a universal runtime claim.
+### Runtime reachability
 
-### 3. Typed evidence outside JSX
+The final runtime realm model combines:
 
-The TypeChecker can identify Chakra-bearing contextual types outside JSX:
+1. emitted JavaScript imports, excluding erased TypeScript type dependencies; and
+2. policy-versioned Next App Router structural composition.
 
-- `app/data/data.ts` `iconColor` values (`grey.400`, `orange`, `tsunamiBlue`) have a Chakra color `ConditionalValue<...>` contextual type.
-- `emergency-kit-steps.tsx` typed `iconColor` and `iconBackground` literals resolve directly to Chakra `ColorsToken` contextual types.
+The final reachability probe passes **16 / 16** sentinels. The normalized preview records:
 
-All **4 / 4** TypeChecker sentinels pass. This supports a whole-source evidence analyzer rather than a JSX-only scanner.
+- 8 `type-import` module facts;
+- 9 `framework-route-composition` module facts;
+- no unresolved local code imports.
 
-### 4. Controlled Chakra semantic evaluation
+### Determinism
 
-Loading the exact SafeHome Chakra system in an isolated probe succeeded for **13 / 13** semantic probes and was byte-deterministic across repeated executions.
+Canonical source extraction, TypeChecker, Chakra semantics, classifier, reachability, and repo-wide evidence generation all replay byte-identically in CI.
 
-Useful observed behavior:
+## Repo-wide preview
 
-- `system.token("colors.blue.text")` resolves to the SafeHome value.
-- `textStyle: "textSmall"` expands through `fonts.body`, `fontSizes.sm`, and `fontWeights.normal` CSS variables.
-- `layerStyle: "text"` expands through `colors.grey.900`.
-- `p: "4"`, `fontWeight: "bold"`, and `zIndex: "docked"` transform to token-backed CSS variables.
-- `display: "flex"` and `position: "absolute"` remain literal values rather than being misclassified as token references.
-- `colorPalette: "blue"` expands into virtual palette bindings and remains distinct from one concrete color-token reference.
-- `system.getRecipe("button")` exposes the exact Chakra 3.36.1 defaults `size=md`, `variant=solid`.
-- the active token dictionary contains 593 flattened token entries across the observed categories.
-- `system.utility.getTypes()` exposes utility/token-domain information suitable for classifying token-bearing props.
+The final audited normalized preview contains:
 
-Source abstractions remain primary evidence; transformed CSS is semantic expansion, not a replacement for source provenance.
+- **98 files**
+- **91 eligible files**, all deliberately `partial`
+- **7 excluded files**
+- **1,181 source facts**
+- **144 module facts**
+- **98 reachability claims**
+- **958 semantic facts**
+- **919 positive entity claims**
+- **23 unresolved source facts**
 
-### 5. Hostile semantic-classification fixture
+Normalization removed one incorrect `whiteSpace → spacing` domain fact, reclassified 8 erased type-only imports, and materialized 9 Next framework-composition facts.
 
-The Phase-0 classifier deliberately mixes token-backed values, ordinary CSS literals, named styles, recipe defaults, nested pseudo-style objects, dynamic expressions, and `colorPalette` context.
+No negative / unused conclusion is emitted because coverage is still partial.
 
-All **16 / 16** semantic sentinels pass:
+## Precision audit
 
-- `p="4"` -> explicit `spacing.4`
-- `color="blue.text"` -> explicit `colors.blue.text`
-- `fontWeight="bold"` -> explicit `fontWeights.bold`
-- `zIndex="docked"` -> explicit `zIndex.docked`
-- `display="flex"` -> style literal, **not** a token reference
-- `position="absolute"` -> style literal, **not** a token reference
-- `textStyle="textSmall"` remains an explicit named text-style abstraction
-- `layerStyle="text"` remains an explicit named layer-style abstraction
-- `textStyle.textSmall` semantically expands through `fonts.body`, `fontSizes.sm`, and `fontWeights.normal`
-- bare `Button` defaults are semantic implications, not explicit source facts
-- explicit Button variants are distinguished and suppress corresponding defaults
-- dynamic color and spacing expressions remain unresolved with their respective token domains
-- nested `_hover.color="grey.400"` resolves to `colors.grey.400`
-- `colorPalette="blue"` remains palette context rather than a direct concrete-token fact
+The deterministic audit seeded by run `33951150290` passed:
 
-The fixture emits 14 evidence facts, 5 explicit token facts, 2 non-token style literals, and 2 domain-specific unresolved facts. This is a **hostile fixture precision test**, not a measured whole-repository precision rate.
+- **16 / 16** sampled source/semantic records;
+- **10 / 10** sampled entity claims;
+- **8 / 8** sampled reachability classifications;
+- **0 / 98** mismatches in an independent full reachability recomputation;
+- **0 / 919** claim realm/kind consistency mismatches.
 
-### 6. Determinism
+The audit found and repaired three real defects before freeze:
 
-The workflow executes each canonical prototype twice and byte-compares its JSON:
+1. false `whiteSpace → spacing` domain inference;
+2. type-only imports counted as runtime reachability;
+3. missing Next ancestor-layout composition.
 
-- source extraction: deterministic
-- module reachability: deterministic
-- TypeChecker probe: deterministic
-- Chakra semantic probe: deterministic
-- hostile semantic classifier: deterministic
+See `PHASE0-PRECISION-AUDIT.md` for the bounded methodology and evidence.
 
 ## Challenger tools
 
 ### Knip
 
-Knip 6.34.0 was run ephemerally in `--production` mode and was **not added to `package.json`**.
-
-It independently corroborated important source-only/orphan candidates such as:
-
-- `layout-height-constrained.tsx`
-- `layout-responsive.tsx`
-- `mobile-report-hazards.tsx`
-- `snippets/legend-clicked-context.tsx`
-
-Knip does not preserve our needed product-vs-internal-demo distinction: for example `share.tsx` is reachable from the real `components-test-lib` Next route, so a single production/unused verdict is less informative than our realm-aware reachability facts.
-
-Knip also reports unrelated dependency/export hygiene findings. Those are outside this spike and are not evidence authority for the design-system mapper.
+Knip 6.34.0 was run ephemerally and is **not** a project dependency. It independently corroborates useful source-only candidates, but its single production/unused view does not preserve SafeHome's product-vs-internal-demo realm distinction.
 
 ### dependency-cruiser
 
-Not adopted or run in Phase 0. The TypeScript-native graph currently has zero unresolved local code imports, all reviewed reachability sentinels pass, and Knip independently corroborates the high-value source-only cases. dependency-cruiser has therefore not yet demonstrated a correctness advantage that justifies another canonical graph engine. Revisit if hostile fixtures or real repository patterns expose a graph gap.
+Not adopted. No demonstrated correctness gain currently justifies another canonical graph engine.
 
 ### Panda CSS
 
-Not adopted or run in Phase 0. TypeScript recovered the complete known B1 source oracle, and the actual SafeHome Chakra system successfully provides Chakra-specific semantic expansion and utility-domain classification. Panda remains a useful future extraction oracle if precision/fuzz testing exposes cases that the intentionally bounded evaluator cannot safely resolve.
+Not adopted. The actual SafeHome Chakra system plus TypeScript currently supplies the needed semantic authority. Revisit only if a hostile fixture or real source pattern exposes a gap.
 
-## Provisional architecture decision
+## Phase-0 architecture decision
 
-Use the smallest authority-preserving stack unless future evidence falsifies it:
+Use the smallest authority-preserving stack:
 
-1. **TypeScript Compiler API + TypeChecker** — source facts, bounded local evaluation, symbols/types, and initially module resolution.
-2. **SafeHome's actual Chakra system** — controlled configuration evaluation, token-domain classification, recipe semantics, and semantic implications.
-3. **Repo-owned fact/claim layer** — coverage, provenance, entrypoint policy, unresolved domains, and derived claims.
-4. **Knip/Panda/dependency-cruiser/other tools** — independent challengers, not canonical authority unless they empirically earn a narrower role.
+1. **TypeScript Compiler API** — source facts, contextual types, bounded local evaluation.
+2. **TypeScript emitted-module semantics** — runtime vs erased type dependencies.
+3. **Versioned Next route-structure policy** — framework-owned layout/template composition.
+4. **SafeHome's actual Chakra system** — token domains and semantic implications.
+5. **Repo-owned evidence/claim layer** — provenance, coverage, realms, blockers, and policy-versioned conclusions.
+6. **Knip/Panda/other tools** — challengers, not canonical authority unless they empirically earn a narrower role.
 
-No `Mapped`/`Unused` conclusion should be generated from these facts. The future mapper should expose explicit usage-evidence dimensions and preserve unresolved/coverage blockers.
+`Mapped` and `Unused` remain forbidden as binary evidence-authority statuses.
 
-## Remaining Phase-0 gap
+## Phase-0 state
 
-The B1 benchmark establishes complete recall on the reviewed slice, and the hostile fixture demonstrates correct behavior for the main precision failure modes we identified. We still do **not** have a measured whole-repository precision rate.
+**Contract shape frozen for this spike. Mapper 2.13 remains frozen.**
 
-Before mapper 2.14 integration, the next benchmark should:
-
-1. freeze a draft `safehome.design-system-evidence.v1` fact/claim contract;
-2. apply semantic/domain classification across the whole eligible frontend source corpus;
-3. manually review a stratified sample of positive, negative, bounded, and unresolved results;
-4. measure false-positive/false-negative/disagreement rates;
-5. only then decide whether another static-analysis dependency has earned a permanent role.
+This is a precision milestone, not a completeness milestone. All 91 eligible files remain `partial`, so strong-negative and removal conclusions remain blocked.
 
 ## Next action
 
-Freeze and validate the draft v1 evidence contract, then run the repo-wide classifier plus stratified manual precision audit. Keep the mapper 2.13 UI frozen until that evidence contract is trustworthy.
+Implement wrapper propagation and per-file completeness accounting. Graduate a file from `partial` to `complete` only when the analyzer can demonstrate coverage, then define strong-negative eligibility from coverage plus unresolved-domain blockers. Only after that should mapper 2.14 consume the evidence contract as a new **Usage evidence** model.
