@@ -31,6 +31,43 @@ function literalValue(node) {
   return null;
 }
 
+function boundedMapProperty(expression, sourceFile) {
+  if (!ts.isPropertyAccessExpression(expression) || !ts.isIdentifier(expression.expression)) return null;
+  const itemName = expression.expression.text;
+  const propertyName = expression.name.text;
+  let fn = expression.parent;
+  while (fn && !ts.isArrowFunction(fn) && !ts.isFunctionExpression(fn)) fn = fn.parent;
+  if (!fn || fn.parameters.length !== 1 || !ts.isIdentifier(fn.parameters[0].name) || fn.parameters[0].name.text !== itemName) return null;
+  const call = fn.parent;
+  if (!call || !ts.isCallExpression(call) || !ts.isPropertyAccessExpression(call.expression) || call.expression.name.text !== 'map') return null;
+  const receiver = call.expression.expression;
+  if (!ts.isIdentifier(receiver)) return null;
+
+  let array = null;
+  function find(node) {
+    if (array) return;
+    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.name.text === receiver.text && ts.isArrayLiteralExpression(node.initializer)) {
+      array = node.initializer;
+      return;
+    }
+    ts.forEachChild(node, find);
+  }
+  find(sourceFile);
+  if (!array) return null;
+
+  const values = [];
+  for (const element of array.elements) {
+    if (!ts.isObjectLiteralExpression(element)) return null;
+    const property = element.properties.find(p => ts.isPropertyAssignment(p) && keyName(p.name) === propertyName);
+    if (!property || !ts.isPropertyAssignment(property)) return null;
+    const literal = literalValue(property.initializer);
+    if (!literal) return null;
+    if (!values.includes(literal.value)) values.push(literal.value);
+  }
+  if (!values.length) return null;
+  return `${itemName}.${propertyName} = ${values.join(' | ')}`;
+}
+
 function keyName(name) {
   if (ts.isIdentifier(name) || ts.isStringLiteral(name) || ts.isNumericLiteral(name)) return name.text;
   return null;
@@ -80,6 +117,8 @@ function extractAttribute(attr, sourceFile) {
   const lit = literalValue(expr);
   if (lit) return [{prop, value:lit.value, resolution:'exact'}];
   if (ts.isObjectLiteralExpression(expr)) return flattenObject(prop, expr, sourceFile);
+  const boundedProperty = boundedMapProperty(expr, sourceFile);
+  if (boundedProperty) return [{prop, value:boundedProperty, resolution:'bounded'}];
   if (ts.isConditionalExpression(expr)) {
     const a = literalValue(expr.whenTrue);
     const b = literalValue(expr.whenFalse);
