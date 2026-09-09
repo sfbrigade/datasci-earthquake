@@ -97,6 +97,14 @@ def _run_hazard_check(
         return check(db, point), None
     except Exception as e:
         logger.exception("%s hazard check failed", label)
+        # All four checks share one session. A failed query leaves it in an
+        # aborted transaction, so without this rollback every later check raises
+        # "current transaction is aborted" and the whole endpoint 500s instead of
+        # returning the partial result it is designed to produce.
+        try:
+            db.rollback()
+        except Exception:
+            logger.exception("Rollback failed after %s hazard check", label)
         return HazardStatus(exists=False, last_updated=None, check_failed=True), e
 
 
