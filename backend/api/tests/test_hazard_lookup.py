@@ -231,6 +231,6 @@ def test_lookup_hazards_survives_a_failed_database_query(client, monkeypatch, ca
 
     # The remaining checks ran on the same session and must still be usable.
     for hazard in ("liquefaction", "tsunami"):
-        assert body[hazard]["check_failed"] is False, (
-            f"{hazard} failed only because the session was left dirty by soft_story"
-        )
+        assert (
+            body[hazard]["check_failed"] is False
+        ), f"{hazard} failed only because the session was left dirty by soft_story"
