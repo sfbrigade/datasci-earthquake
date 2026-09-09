@@ -19,9 +19,9 @@ body:
 
         **Steps to reproduce**
         <!-- Add steps if known. -->
-        1.
-        2.
-        3.
+        1. <!-- First step -->
+        2. <!-- Next step -->
+        3. <!-- What shows the problem? -->
     validations:
       required: false
 
