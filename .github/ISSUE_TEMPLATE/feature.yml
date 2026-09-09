@@ -1,0 +1,90 @@
+name: Feature
+description: Propose a product feature or enhancement
+type: Feature
+labels: ["needs triage"]
+
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: >-
+        Describe the situation, the progress someone is trying to make, and what
+        gets in the way today. If useful, try: When [situation], I want to
+        [make progress], so I can [desired outcome].
+      placeholder: |
+        When I'm looking at my address's results and see a hazard term I don't
+        recognize, I want to understand what it means so I can judge whether
+        it changes my decision.
+
+        Nothing on the page defines these terms, and the official sources are
+        written for engineers.
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired-outcome
+    attributes:
+      label: Desired outcome
+      description: >-
+        What should be possible once the problem is solved? Describe the result,
+        not a specific UI or implementation.
+      placeholder: |
+        Users can understand what "liquefaction" means while interpreting their
+        results, without losing their results context.
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: >-
+        What must be observably true for this feature to be acceptable to ship?
+        Consider edge cases, accessibility, and behavior that must not regress.
+      value: |
+        - [ ]
+        - [ ]
+        - [ ]
+    validations:
+      required: false
+
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Out of scope
+      description: >-
+        Related work this feature deliberately does not include.
+      placeholder: |
+        - Soft story and tsunami terms — same problem, separate issues
+        - Translation of the explanation
+    validations:
+      required: false
+
+  - type: textarea
+    id: background
+    attributes:
+      label: Background
+      description: >-
+        Optional context, constraints, prior decisions, alternatives already
+        explored, or useful links.
+      placeholder: |
+        Official liquefaction sources are useful for validating the explanation,
+        but are generally written for technical audiences.
+    validations:
+      required: false
+
+  - type: textarea
+    id: work-items
+    attributes:
+      label: Work items
+      description: >-
+        Starter work for refinement. Add, remove, or split items as needed;
+        convert them to sub-issues when they need separate tracking.
+      value: |
+        - [ ] Design spec / handoff (if needed)
+        - [ ] Engineering spec / plan (if needed)
+        - [ ] Implementation
+        - [ ] Design QA (if needed)
+    validations:
+      required: false
