@@ -57,7 +57,8 @@ body:
         Official liquefaction sources are useful for validating the explanation,
         but are generally written for technical audiences.
 
-        Figma: ...
+        Design spec: ...
+        Engineering spec: ...
         Related issue: #...
     validations:
       required: false
@@ -70,9 +71,10 @@ body:
         Starter work for refinement. Add, remove, or split items as needed;
         convert them to sub-issues when they need separate tracking.
       value: |
-        - [ ] Design spec / handoff (if needed)
-        - [ ] Engineering spec / plan (if needed)
+        - [ ] Design spec / handoff
+        - [ ] Engineering spec / plan
         - [ ] Implementation
-        - [ ] Design QA (if needed)
+        - [ ] Design QA
+        - [ ] Product QA
     validations:
       required: false
