@@ -9,6 +9,9 @@ permissions:
 
 jobs:
   label:
+    if: >-
+      !contains(github.event.issue.labels.*.name, 'needs triage') ||
+      !contains(github.event.issue.labels.*.name, 'needs refinement')
     runs-on: ubuntu-latest
     steps:
       - name: Add intake labels
