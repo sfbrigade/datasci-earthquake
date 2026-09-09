@@ -1,7 +1,7 @@
 name: Task
 description: Plan or track a specific piece of work
 type: Task
-labels: ["needs triage"]
+labels: ["needs triage", "needs refinement"]
 
 body:
   - type: textarea
@@ -36,7 +36,7 @@ body:
       description: >-
         References, constraints, decisions, and other useful context.
       value: |
-        **Reference(s):** ...
+        **Reference(s):**
         <!-- e.g. a URL, spec, design artifact, issue, PR, or other relevant
         source. -->
 

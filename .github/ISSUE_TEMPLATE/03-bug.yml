@@ -1,0 +1,41 @@
+name: Bug
+description: Report unexpected behavior
+type: Bug
+labels: ["needs triage", "needs refinement"]
+
+body:
+  - type: textarea
+    id: bug-report
+    attributes:
+      label: Bug report
+      description: >-
+        Describe the problem with enough detail to understand and investigate it.
+      value: |
+        **Observed behavior**
+        <!-- What happened? -->
+
+        **Expected behavior**
+        <!-- What should have happened instead? -->
+
+        **Steps to reproduce**
+        <!-- Add steps if known. -->
+        1.
+        2.
+        3.
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: >-
+        Environment details, screenshots, logs, links, and anything else useful.
+      value: |
+        **Environment:**
+        <!-- Device, OS, browser/version, or other relevant details. -->
+
+        **Additional context**
+        <!-- Screenshots, logs, links, or anything else useful. -->
+    validations:
+      required: false
