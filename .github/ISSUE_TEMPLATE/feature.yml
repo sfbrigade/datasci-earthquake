@@ -17,8 +17,8 @@ body:
         recognize, I want to understand what it means so I can judge whether
         it changes my decision.
 
-        Nothing on the page defines these terms, and the official sources are
-        written for engineers.
+        Today, there isn't a clear, plain-language explanation available in the
+        results.
     validations:
       required: true
 
@@ -27,19 +27,16 @@ body:
     attributes:
       label: Feature definition
       description: >-
-        Optional at first. Fill in what is known and revise during refinement.
+        Optional at first. Refine as the feature becomes clearer.
       value: |
         **Desired outcome**
-        <!-- What should be possible once the problem is solved? Describe the
-        result, not a specific UI or implementation. -->
+        <!-- What should be possible once this problem is solved? -->
 
         **Out of scope**
-        <!-- Related work this feature deliberately does not include. -->
+        <!-- What related work is intentionally excluded? -->
 
         **Acceptance criteria**
-        <!-- What must be observably true for this feature to be acceptable to
-        ship? Consider edge cases, accessibility, and behavior that must not
-        regress. -->
+        <!-- What must be observably true for this feature to be complete? -->
         - [ ]
         - [ ]
         - [ ]
@@ -47,19 +44,20 @@ body:
       required: false
 
   - type: textarea
-    id: background
+    id: context
     attributes:
-      label: Background / references
+      label: Context
       description: >-
-        Optional context or references, such as research, design specs, prior
-        decisions, constraints, related issues, or useful links.
-      placeholder: |
-        Official liquefaction sources are useful for validating the explanation,
-        but are generally written for technical audiences.
+        Specs, research, decisions, constraints, and related issues.
+      value: |
+        **Design spec:** https://...
+        **Data science analysis:** https://...
+        **Engineering spec:** https://...
 
-        Design spec: ...
-        Engineering spec: ...
-        Related issue: #...
+        **Additional context**
+        <!-- Add anything else worth knowing about this feature. -->
+
+        **Related issue(s):** #...
     validations:
       required: false
 
@@ -68,13 +66,16 @@ body:
     attributes:
       label: Work items
       description: >-
-        Starter work for refinement. Add, remove, or split items as needed;
-        convert them to sub-issues when they need separate tracking.
+        Typical feature work. Remove or add items as needed; turn larger items
+        into sub-issues. Use GitHub Relationships for dependencies.
       value: |
-        - [ ] Design spec / handoff
-        - [ ] Engineering spec / plan
+        - [ ] Product refinement
+        - [ ] Design spec
+        - [ ] Data science analysis
+        - [ ] Engineering spec
         - [ ] Implementation
         - [ ] Design QA
+        - [ ] Data / domain validation
         - [ ] Product QA
     validations:
       required: false
