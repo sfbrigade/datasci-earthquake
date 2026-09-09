@@ -16,12 +16,13 @@ import { useMapState } from "./map-state-provider";
 
 const defaultCoords = [-122.4194, 37.7949];
 
-const toggledStatesDefaults = [true, true, true];
+const toggledStatesDefaults = [true, true, true, true];
 
 interface AddressMapperProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
+  landslideData: FeatureCollection<Geometry>;
 }
 
 export type LayerToggleObjProps = {
@@ -47,6 +48,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   softStoryData,
   tsunamiData,
   liquefactionData,
+  landslideData,
 }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -113,6 +115,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             softStory: null,
             tsunami: null,
             liquefaction: null,
+            landslide: null,
           });
         }
 
@@ -153,6 +156,10 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         name: "Liquefaction Zones",
         data: liquefactionData,
       },
+      {
+        name: "Landslide Zones",
+        data: landslideData,
+      },
     ];
 
     const errors = sources
@@ -174,7 +181,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
         closable: true,
       });
     }
-  }, [softStoryData, tsunamiData, liquefactionData]);
+  }, [softStoryData, tsunamiData, liquefactionData, landslideData]);
 
   return (
     <Box w="full" h="full" m="auto" position="relative">
@@ -216,6 +223,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           softStoryData={softStoryData}
           tsunamiData={tsunamiData}
           liquefactionData={liquefactionData}
+          landslideData={landslideData}
           layerToggleObj={layerToggleObj}
         />
       </Box>

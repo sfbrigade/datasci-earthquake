@@ -28,6 +28,8 @@ def test_lookup_hazards_all_present(client, caplog):
     assert body["tsunami"]["last_updated"] is not None
     assert body["tsunami"]["check_failed"] is False
 
+    assert body["landslide"]["check_failed"] is False
+
     assert (
         f"Checking composite hazards for coordinates: lon={lon}, lat={lat}"
         in caplog.text
@@ -57,6 +59,8 @@ def test_lookup_hazards_partial(client, caplog):
     assert body["tsunami"]["last_updated"] is not None
     assert body["tsunami"]["check_failed"] is False
 
+    assert body["landslide"]["check_failed"] is False
+
 
 def test_lookup_hazards_none_present(client, caplog):
     """Test composite hazard lookup for a point outside all hazard zones"""
@@ -79,6 +83,11 @@ def test_lookup_hazards_none_present(client, caplog):
         "check_failed": False,
     }
     assert body["tsunami"] == {
+        "exists": False,
+        "last_updated": None,
+        "check_failed": False,
+    }
+    assert body["landslide"] == {
         "exists": False,
         "last_updated": None,
         "check_failed": False,
@@ -106,6 +115,12 @@ def test_lookup_hazards_returns_partial_result_when_one_check_fails(
         "_check_tsunami",
         lambda db, point: HazardStatus(exists=False, last_updated=None),
     )
+    monkeypatch.setattr(
+        hazard_lookup_api,
+        "_check_landslide",
+        lambda db, point: HazardStatus(exists=False, last_updated=None),
+        raising=False,
+    )
 
     response = client.get("api/hazards/lookup?lon=-122.35&lat=37.83")
 
@@ -123,7 +138,58 @@ def test_lookup_hazards_returns_partial_result_when_one_check_fails(
         "last_updated": None,
         "check_failed": False,
     }
+    assert body["landslide"] == {
+        "exists": False,
+        "last_updated": None,
+        "check_failed": False,
+    }
     assert "Soft story hazard check failed" in caplog.text
+
+
+def test_lookup_hazards_returns_partial_result_when_landslide_check_fails(
+    client, monkeypatch, caplog
+):
+    """Test composite lookup returns other hazards when landslide check fails."""
+    caplog.set_level(logging.ERROR)
+
+    def fail_landslide(db, point):
+        raise RuntimeError("landslide lookup failed")
+
+    monkeypatch.setattr(
+        hazard_lookup_api,
+        "_check_soft_story",
+        lambda db, point: HazardStatus(exists=False, last_updated=None),
+    )
+    monkeypatch.setattr(
+        hazard_lookup_api,
+        "_check_liquefaction",
+        lambda db, point: HazardStatus(exists=False, last_updated=None),
+    )
+    monkeypatch.setattr(
+        hazard_lookup_api,
+        "_check_tsunami",
+        lambda db, point: HazardStatus(exists=False, last_updated=None),
+    )
+    monkeypatch.setattr(
+        hazard_lookup_api,
+        "_check_landslide",
+        fail_landslide,
+        raising=False,
+    )
+
+    response = client.get("api/hazards/lookup?lon=-122.35&lat=37.83")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["soft_story"]["check_failed"] is False
+    assert body["liquefaction"]["check_failed"] is False
+    assert body["tsunami"]["check_failed"] is False
+    assert body["landslide"] == {
+        "exists": False,
+        "last_updated": None,
+        "check_failed": True,
+    }
+    assert "Landslide hazard check failed" in caplog.text
 
 
 def test_lookup_hazards_returns_500_when_all_checks_fail(client, monkeypatch, caplog):
@@ -136,6 +202,9 @@ def test_lookup_hazards_returns_500_when_all_checks_fail(client, monkeypatch, ca
     monkeypatch.setattr(hazard_lookup_api, "_check_soft_story", fail_check)
     monkeypatch.setattr(hazard_lookup_api, "_check_liquefaction", fail_check)
     monkeypatch.setattr(hazard_lookup_api, "_check_tsunami", fail_check)
+    monkeypatch.setattr(
+        hazard_lookup_api, "_check_landslide", fail_check, raising=False
+    )
 
     response = client.get("api/hazards/lookup?lon=-122.35&lat=37.83")
 
@@ -162,6 +231,11 @@ def test_lookup_hazards_ping(client, caplog):
         "check_failed": False,
     }
     assert body["tsunami"] == {
+        "exists": False,
+        "last_updated": None,
+        "check_failed": False,
+    }
+    assert body["landslide"] == {
         "exists": False,
         "last_updated": None,
         "check_failed": False,

@@ -31,6 +31,7 @@ jest.mock("../map", () => {
     <div
       data-testid="map"
       data-coordinates={JSON.stringify([props.lon, props.lat])}
+      data-has-landslide={String(Boolean(props.landslideData))}
     >
       Mocked Map
     </div>
@@ -63,6 +64,7 @@ const mockProps = {
   softStoryData: mockFeatureCollection,
   tsunamiData: mockFeatureCollection,
   liquefactionData: mockFeatureCollection,
+  landslideData: mockFeatureCollection,
 };
 
 const mockSetSearchParams = (params: Record<string, string>) => {
@@ -97,6 +99,11 @@ describe("AddressMapper", () => {
       JSON.stringify(defaultCoords)
     );
 
+    expect(screen.getByTestId("map")).toHaveAttribute(
+      "data-has-landslide",
+      "true"
+    );
+
     expect(fetchHazardDataMock).not.toHaveBeenCalled();
   });
 
@@ -107,6 +114,7 @@ describe("AddressMapper", () => {
       softStory: "data",
       tsunami: null,
       liquefaction: "data",
+      landslide: "data",
     };
 
     mockSetSearchParams({
