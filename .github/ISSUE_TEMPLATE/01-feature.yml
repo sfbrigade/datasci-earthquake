@@ -1,7 +1,7 @@
 name: Feature
 description: Propose a product feature or enhancement
 type: Feature
-labels: ["needs triage"]
+labels: ["needs triage", "needs refinement"]
 
 body:
   - type: textarea
@@ -48,47 +48,48 @@ body:
     attributes:
       label: Context
       description: >-
-        Specs, research, decisions, constraints, and other useful context.
+        Keep relevant specs, research, decisions, constraints, and results here
+        as the feature evolves.
       value: |
-        **Design:** ...
-        <!-- e.g. a URL/Figma artifact, Design Task/Sub-issue, inline notes,
-        or "No separate spec needed." -->
+        **Design:**
+        <!-- Add the relevant Sub-issue, artifact/link, decision, or result;
+        or "Not needed." -->
 
-        **Data science:** ...
-        <!-- e.g. a URL/notebook/report, analysis Task/Sub-issue, inline
-        findings, or "Not needed." -->
+        **Data science:**
+        <!-- Add the relevant Sub-issue, artifact/link, decision, or result;
+        or "Not needed." -->
 
-        **Engineering:** ...
-        <!-- e.g. a URL/technical plan/ADR, Engineering Task/Sub-issue, inline
-        notes, or "No separate spec needed." -->
+        **Engineering:**
+        <!-- Add the relevant Sub-issue, artifact/link, decision, or result;
+        or "Not needed." -->
 
         **Additional context**
         <!-- Add anything else worth knowing about this feature. -->
     validations:
       required: false
 
-  - type: markdown
-    attributes:
-      value: |
-        For larger work items, either:
-        - use the [Task form](https://github.com/sfbrigade/datasci-earthquake/issues/new?template=task.yml), then add the resulting Task as a Sub-issue; or
-        - convert the work item directly into a Sub-issue.
-
   - type: textarea
     id: work-items
     attributes:
       label: Work items
       description: >-
-        Typical feature work. Remove or add items as needed.
-        Use GitHub Relationships for dependencies.
+        Typical feature work. Use GitHub Relationships for dependencies.
       value: |
-        - [ ] Refine feature definition
-        - [ ] Create design spec
-        - [ ] Create data science analysis
-        - [ ] Create engineering spec
-        - [ ] Implement feature
-        - [ ] Validate design
-        - [ ] Validate data / domain
-        - [ ] Validate product
+        Keep only what applies. Add anything missing. For larger items, create a
+        Task or Feature, then return here and add it as a Sub-issue. Or convert
+        the checklist item to a Sub-issue.
+
+        - [ ] Refine Feature definition
+        <!-- Optional work items: uncomment any that apply. -->
+        <!-- - [ ] Create Design spec -->
+        <!-- - [ ] Conduct Data science analysis -->
+        <!-- - [ ] Create Engineering spec -->
+        - [ ] Implement Feature
+        - [ ] Validate Feature
+          <!-- Optional validation work. Uncomment what applies.
+          These may be owned by other contributors. -->
+          <!-- - [ ] Run Design QA -->
+          <!-- - [ ] Validate Data / domain -->
+          <!-- - [ ] Run Product QA -->
     validations:
       required: false
