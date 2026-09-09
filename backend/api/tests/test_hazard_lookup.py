@@ -192,3 +192,45 @@ def test_lookup_hazards_database_error_returns_500(client, caplog):
         "api/hazards/lookup?lon=0&lat=0",
         "Error checking composite status",
     )
+
+
+def test_lookup_hazards_survives_a_failed_database_query(client, monkeypatch, caplog):
+    """A failing DB query must not take the other hazard checks down with it.
+
+    All four checks share one session. When a query fails, SQLAlchemy marks that
+    session as needing a rollback, so every later query on it raises
+    PendingRollbackError. Without a rollback in the error path a single failure
+    cascades: all four checks report check_failed, `all(...)` is satisfied, and the
+    endpoint returns 500 instead of the partial result it is designed to produce.
+
+    The other failure tests raise before touching `db`, so the session is never
+    left dirty and they cannot catch this.
+    """
+    from sqlalchemy import text
+
+    caplog.set_level(logging.ERROR)
+
+    def fail_soft_story_with_real_db_error(db, point):
+        # Executes and fails, which is what poisons the session.
+        db.execute(text("SELECT * FROM table_that_does_not_exist"))
+
+    monkeypatch.setattr(
+        hazard_lookup_api, "_check_soft_story", fail_soft_story_with_real_db_error
+    )
+
+    lon, lat = [-122.41211, 37.80541]
+    response = client.get(f"api/hazards/lookup?lon={lon}&lat={lat}")
+
+    assert response.status_code == 200, (
+        "a single failed query took down the whole endpoint; "
+        "the session was not rolled back"
+    )
+    body = response.json()
+
+    assert body["soft_story"]["check_failed"] is True
+
+    # The remaining checks ran on the same session and must still be usable.
+    for hazard in ("liquefaction", "tsunami"):
+        assert body[hazard]["check_failed"] is False, (
+            f"{hazard} failed only because the session was left dirty by soft_story"
+        )
