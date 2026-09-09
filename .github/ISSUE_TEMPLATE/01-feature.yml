@@ -86,10 +86,10 @@ body:
         <!-- - [ ] Create Engineering spec -->
         - [ ] Implement Feature
         - [ ] Validate Feature
-              <!-- Optional validation work. Uncomment what applies.
-              These may be owned by other contributors. -->
-              <!-- - [ ] Run Design QA -->
-              <!-- - [ ] Validate Data / domain -->
-              <!-- - [ ] Run Product QA -->
+            <!-- Optional validation work. Uncomment what applies.
+            These may be owned by other contributors. -->
+            <!-- - [ ] Run Design QA -->
+            <!-- - [ ] Validate Data / domain -->
+            <!-- - [ ] Run Product QA -->
     validations:
       required: false
