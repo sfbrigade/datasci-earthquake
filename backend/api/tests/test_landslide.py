@@ -19,7 +19,9 @@ def test_is_in_landslide_zone(client, caplog):
     caplog.set_level(logging.INFO)
 
     lon, lat = [-122.43, 37.72]
-    response = client.get(f"/api/landslide-zones/is-in-landslide-zone?lon={lon}&lat={lat}")
+    response = client.get(
+        f"/api/landslide-zones/is-in-landslide-zone?lon={lon}&lat={lat}"
+    )
 
     assert response.status_code == 200
     body = response.json()
@@ -38,7 +40,9 @@ def test_is_in_landslide_zone_excludes_low_gridcode(client, caplog):
     caplog.set_level(logging.INFO)
 
     lon, lat = [-122.32, 37.88]
-    response = client.get(f"/api/landslide-zones/is-in-landslide-zone?lon={lon}&lat={lat}")
+    response = client.get(
+        f"/api/landslide-zones/is-in-landslide-zone?lon={lon}&lat={lat}"
+    )
 
     assert response.status_code == 200
     body = response.json()
@@ -52,7 +56,9 @@ def test_outside_landslide_zones(client, caplog):
     caplog.set_level(logging.INFO)
 
     lon, lat = [0.0, 0.0]
-    response = client.get(f"/api/landslide-zones/is-in-landslide-zone?lon={lon}&lat={lat}")
+    response = client.get(
+        f"/api/landslide-zones/is-in-landslide-zone?lon={lon}&lat={lat}"
+    )
 
     assert response.status_code == 200
     body = response.json()
