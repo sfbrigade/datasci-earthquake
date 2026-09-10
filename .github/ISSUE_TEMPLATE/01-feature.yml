@@ -9,22 +9,9 @@ body:
     attributes:
       label: Problem
       value: |
-        _What problem should this Feature address?_
+        _What problem should this Feature address? Describe the situation, what someone is trying to do, and what gets in the way._
 
-        <!--
-        Describe the situation, the progress someone is trying to make, and what
-        gets in the way today.
-
-        If useful:
-        When [situation], I want to [make progress], so I can [desired outcome].
-
-        Example:
-        When I'm looking at my address's results and see a hazard term I don't
-        recognize, I want to understand what it means so I can judge whether
-        it changes my decision.
-
-        Focus on the problem rather than jumping straight to a proposed solution.
-        -->
+        <!-- Focus on the problem, not a proposed solution. -->
     validations:
       required: true
 
@@ -33,8 +20,6 @@ body:
     attributes:
       label: Feature definition
       value: |
-        <!-- Optional at first. Refine as the Feature becomes clearer. -->
-
         #### Desired outcome
         _What should be possible once this problem is solved?_
 
@@ -43,8 +28,6 @@ body:
 
         #### Acceptance criteria
         _What must be observably true for this Feature to be complete?_
-
-        <!-- Prefer observable outcomes over implementation steps. -->
 
         - [ ]
         - [ ]
@@ -57,11 +40,7 @@ body:
     attributes:
       label: Context
       value: |
-        <!--
-        Keep relevant specs, research, decisions, constraints, and results here
-        as the Feature evolves. Replace each https://.. with a link, note, or
-        "Not needed."
-        -->
+        _Replace each `https://..` with a link, note, or "Not needed."._
         - **Design:** https://..
         - **Data science:** https://..
         - **Engineering:** https://..
@@ -75,12 +54,9 @@ body:
     attributes:
       label: Work items
       value: |
-        <!--
-        Keep only what applies. Add anything missing.
+        _Keep only what applies; add anything missing._
 
-        For substantial or independently owned work, create a Task or Feature
-        and add it as a Sub-issue. Use GitHub Relationships for dependencies.
-        -->
+        <!-- Use Sub-issues for substantial or independently owned work; use GitHub Relationships for dependencies. -->
 
         - [ ] Create Design spec
         - [ ] Conduct Data science analysis
