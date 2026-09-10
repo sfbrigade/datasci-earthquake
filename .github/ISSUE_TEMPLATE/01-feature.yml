@@ -16,9 +16,6 @@ body:
         When I'm looking at my address's results and see a hazard term I don't
         recognize, I want to understand what it means so I can judge whether
         it changes my decision.
-
-        Today, there isn't a clear, plain-language explanation available in the
-        results.
     validations:
       required: true
 
