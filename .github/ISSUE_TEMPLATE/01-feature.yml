@@ -8,14 +8,23 @@ body:
     id: problem
     attributes:
       label: Problem
-      description: >-
+      value: |
+        _What problem should this Feature address?_
+
+        <!--
         Describe the situation, the progress someone is trying to make, and what
-        gets in the way today. If useful, try: When [situation], I want to
-        [make progress], so I can [desired outcome].
-      placeholder: |
+        gets in the way today.
+
+        If useful:
+        When [situation], I want to [make progress], so I can [desired outcome].
+
+        Example:
         When I'm looking at my address's results and see a hazard term I don't
         recognize, I want to understand what it means so I can judge whether
         it changes my decision.
+
+        Focus on the problem rather than jumping straight to a proposed solution.
+        -->
     validations:
       required: true
 
@@ -23,17 +32,20 @@ body:
     id: feature-definition
     attributes:
       label: Feature definition
-      description: >-
-        Optional at first. Refine as the feature becomes clearer.
       value: |
-        **Desired outcome**
-        <!-- What should be possible once this problem is solved? -->
+        <!-- Optional at first. Refine as the Feature becomes clearer. -->
 
-        **Out of scope**
-        <!-- What related work is intentionally excluded? -->
+        #### Desired outcome
+        _What should be possible once this problem is solved?_
 
-        **Acceptance criteria**
-        <!-- What must be observably true for this feature to be complete? -->
+        #### Out of scope
+        _What related work is intentionally excluded?_
+
+        #### Acceptance criteria
+        _What must be observably true for this Feature to be complete?_
+
+        <!-- Prefer observable outcomes over implementation steps. -->
+
         - [ ]
         - [ ]
         - [ ]
@@ -44,24 +56,17 @@ body:
     id: context
     attributes:
       label: Context
-      description: >-
-        Keep relevant specs, research, decisions, constraints, and results here
-        as the feature evolves.
       value: |
-        **Design:**
-        <!-- Add the relevant Sub-issue, artifact/link, decision, or result;
-        or "Not needed." -->
-
-        **Data science:**
-        <!-- Add the relevant Sub-issue, artifact/link, decision, or result;
-        or "Not needed." -->
-
-        **Engineering:**
-        <!-- Add the relevant Sub-issue, artifact/link, decision, or result;
-        or "Not needed." -->
-
-        **Additional context**
-        <!-- Add anything else worth knowing about this feature. -->
+        <!--
+        Keep relevant specs, research, decisions, constraints, and results here
+        as the Feature evolves. Replace each https://.. with a link, note, or
+        "Not needed."
+        -->
+        - **Design:** https://..
+        - **Data science:** https://..
+        - **Engineering:** https://..
+        #### Additional context
+        _What else is worth knowing about this Feature?_
     validations:
       required: false
 
@@ -69,24 +74,21 @@ body:
     id: work-items
     attributes:
       label: Work items
-      description: >-
-        Typical feature work. Use GitHub Relationships for dependencies.
       value: |
-        Keep only what applies. Add anything missing. For larger items, create a
-        Task or Feature, then return here and add it as a Sub-issue. Or convert
-        the checklist item to a Sub-issue.
+        <!--
+        Keep only what applies. Add anything missing.
 
-        - [ ] Refine Feature definition
-        <!-- Optional work items: uncomment any that apply. -->
-        <!-- - [ ] Create Design spec -->
-        <!-- - [ ] Conduct Data science analysis -->
-        <!-- - [ ] Create Engineering spec -->
+        For substantial or independently owned work, create a Task or Feature
+        and add it as a Sub-issue. Use GitHub Relationships for dependencies.
+        -->
+
+        - [ ] Create Design spec
+        - [ ] Conduct Data science analysis
+        - [ ] Create Engineering spec
         - [ ] Implement Feature
         - [ ] Validate Feature
-            <!-- Optional validation work. Uncomment what applies.
-            These may be owned by other contributors. -->
-            <!-- - [ ] Run Design QA -->
-            <!-- - [ ] Validate Data / domain -->
-            <!-- - [ ] Run Product QA -->
+        - [ ] Run Design QA
+        - [ ] Validate Data / domain
+        - [ ] Run Product QA
     validations:
       required: false
