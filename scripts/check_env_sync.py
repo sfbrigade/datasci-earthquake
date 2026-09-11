@@ -33,6 +33,10 @@ from typing import Iterable, Set
 REPO_ROOT = Path(__file__).resolve().parents[1]
 ENV_EXAMPLE = REPO_ROOT / ".env.example"
 
+# Ensure repository root is on sys.path so `import backend.api.config` succeeds
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 
 def get_expected_env_keys_from_settings() -> Set[str]:
     # Import inside function so the module import error can be handled by caller if needed
