@@ -8,11 +8,10 @@ body:
     id: task
     attributes:
       label: Task
-      description: >-
-        Describe the work to do and why it matters.
-      placeholder: |
-        Create the design spec for the hazard-term explanation, including its
-        placement, interaction states, and responsive behavior.
+      value: |
+        What needs to be done, and why does it matter?
+
+        ***
     validations:
       required: true
 
@@ -20,12 +19,13 @@ body:
     id: completion-criteria
     attributes:
       label: Completion criteria
-      description: >-
-        What must be true for this task to be complete?
       value: |
-        - [ ]
-        - [ ]
-        - [ ]
+        What must be true for this Task to be complete?
+
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+
+        ***
     validations:
       required: false
 
@@ -33,14 +33,10 @@ body:
     id: context
     attributes:
       label: Context
-      description: >-
-        References, constraints, decisions, and other useful context.
       value: |
-        **Reference(s):**
-        <!-- e.g. a URL, spec, design artifact, issue, PR, or other relevant
-        source. -->
+        **Reference(s):** https://..
 
         **Additional context**
-        <!-- Add anything else worth knowing about this task. -->
+        What else is worth knowing about this Task?
     validations:
       required: false
