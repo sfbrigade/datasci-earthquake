@@ -11,7 +11,7 @@ body:
       value: |
         What problem should this Feature address? Describe the situation, what someone is trying to do, and what gets in the way.
 
-        ---
+        ***
     validations:
       required: true
 
@@ -32,7 +32,7 @@ body:
         - [ ] Criterion 1
         - [ ] Criterion 2
 
-        ---
+        ***
     validations:
       required: false
 
@@ -48,7 +48,7 @@ body:
         **Additional context**
         What else is worth knowing about this Feature?
 
-        ---
+        ***
     validations:
       required: false
 
