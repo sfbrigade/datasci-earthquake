@@ -9,9 +9,9 @@ body:
     attributes:
       label: Problem
       value: |
-        _What problem should this Feature address? Describe the situation, what someone is trying to do, and what gets in the way._
+        What problem should this Feature address? Describe the situation, what someone is trying to do, and what gets in the way.
 
-        <!-- Focus on the problem, not a proposed solution. -->
+        ---
     validations:
       required: true
 
@@ -20,18 +20,19 @@ body:
     attributes:
       label: Feature definition
       value: |
-        #### Desired outcome
-        _What should be possible once this problem is solved?_
+        **Desired outcome**
+        What should be possible once this problem is solved?
 
-        #### Out of scope
-        _What related work is intentionally excluded?_
+        **Out of scope**
+        What related work is intentionally excluded?
 
-        #### Acceptance criteria
-        _What must be observably true for this Feature to be complete?_
+        **Acceptance criteria**
+        What must be observably true for this Feature to be complete?
 
-        - [ ]
-        - [ ]
-        - [ ]
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+
+        ---
     validations:
       required: false
 
@@ -40,12 +41,14 @@ body:
     attributes:
       label: Context
       value: |
-        _Replace each `https://..` with a link, note, or "Not needed."._
         - **Design:** https://..
         - **Data science:** https://..
         - **Engineering:** https://..
-        #### Additional context
-        _What else is worth knowing about this Feature?_
+
+        **Additional context**
+        What else is worth knowing about this Feature?
+
+        ---
     validations:
       required: false
 
@@ -54,10 +57,7 @@ body:
     attributes:
       label: Work items
       value: |
-        _Keep only what applies; add anything missing._
-
-        <!-- Use Sub-issues for substantial or independently owned work; use GitHub Relationships for dependencies. -->
-
+        Keep applicable items.
         - [ ] Create Design spec
         - [ ] Conduct Data science analysis
         - [ ] Create Engineering spec
