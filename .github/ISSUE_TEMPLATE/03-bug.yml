@@ -8,34 +8,33 @@ body:
     id: bug-report
     attributes:
       label: Bug report
-      description: >-
-        Describe the problem with enough detail to understand and investigate it.
       value: |
         **Observed behavior**
-        <!-- What happened? -->
+        What happened?
 
         **Expected behavior**
-        <!-- What should have happened instead? -->
+        What should have happened instead?
 
         **Steps to reproduce**
-        <!-- Add steps if known. -->
-        1. <!-- First step -->
-        2. <!-- Next step -->
-        3. <!-- What shows the problem? -->
+        What steps reproduce the problem, if known?
+
+        1. Step 1
+        2. Step 2
+        3. Step 3
+
+        ***
     validations:
-      required: false
+      required: true
 
   - type: textarea
     id: context
     attributes:
       label: Context
-      description: >-
-        Environment details, screenshots, logs, links, and anything else useful.
       value: |
-        **Environment:**
-        <!-- Device, OS, browser/version, or other relevant details. -->
+        **Environment**
+        What device, OS, browser/version, or other environment details are relevant?
 
         **Additional context**
-        <!-- Screenshots, logs, links, or anything else useful. -->
+        What else would help investigate this Bug? Add screenshots, logs, or links if useful.
     validations:
       required: false
