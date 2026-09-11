@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitFor, screen } from "@testing-library/react";
+import { fireEvent, render, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import { Provider } from "../ui/provider";
@@ -31,6 +31,7 @@ jest.mock("../map", () => {
     <div
       data-testid="map"
       data-coordinates={JSON.stringify([props.lon, props.lat])}
+      data-bottom-padding-ratio={String(props.bottomPaddingRatio)}
     >
       Mocked Map
     </div>
@@ -83,8 +84,15 @@ const renderAddressMapper = () =>
   );
 
 describe("AddressMapper", () => {
+  let originalMatchMedia: typeof window.matchMedia;
+
   beforeEach(() => {
     jest.clearAllMocks();
+    originalMatchMedia = window.matchMedia;
+  });
+
+  afterEach(() => {
+    window.matchMedia = originalMatchMedia;
   });
 
   it("renders the default map and does not fetch without URL parameters", () => {
@@ -130,6 +138,56 @@ describe("AddressMapper", () => {
 
       expect(reportHazardsElements[0]).toHaveTextContent(
         JSON.stringify(mockData)
+      );
+    });
+  });
+
+  it("passes the mobile drawer ratio to Map and clears it when the drawer closes", async () => {
+    mockSetSearchParams({});
+
+    renderAddressMapper();
+
+    expect(screen.getByTestId("map")).toHaveAttribute(
+      "data-bottom-padding-ratio",
+      "0.5"
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /close risk layers/i }));
+    await waitFor(() => {
+      expect(screen.getByTestId("map")).toHaveAttribute(
+        "data-bottom-padding-ratio",
+        "0"
+      );
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /open risk layers/i }));
+    await waitFor(() => {
+      expect(screen.getByTestId("map")).toHaveAttribute(
+        "data-bottom-padding-ratio",
+        "0.5"
+      );
+    });
+  });
+
+  it("passes 0 on desktop", async () => {
+    window.matchMedia = jest.fn((query: string) => ({
+      matches: /min-width: (48rem|768px)/.test(query),
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    }));
+    mockSetSearchParams({});
+
+    renderAddressMapper();
+
+    await waitFor(() => {
+      expect(screen.getByTestId("map")).toHaveAttribute(
+        "data-bottom-padding-ratio",
+        "0"
       );
     });
   });
