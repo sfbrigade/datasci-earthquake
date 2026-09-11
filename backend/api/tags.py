@@ -10,3 +10,4 @@ class Tags(Enum):
     LANDSLIDE = "landslide"
     LIQUEFACTION = "liquefaction"
     SYSTEM = "system"
+    HAZARDS = "hazards"
