@@ -54,3 +54,7 @@ tsconfig.tsbuildinfo
 
 # Misc
 .tmp
+
+# Local Docker Compose overrides
+compose.override.yaml
+docker-compose.override.yaml
