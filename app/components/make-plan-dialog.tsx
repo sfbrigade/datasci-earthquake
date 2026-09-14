@@ -15,7 +15,7 @@ import { Button } from "@chakra-ui/react";
 
 export function MakePlanDialog() {
   return (
-    <DialogRoot placement="center" scrollBehavior="inside" size="cover">
+    <DialogRoot placement="center" scrollBehavior="inside" size="xl">
       <DialogTrigger asChild>
         <Button size="sm">Make a plan</Button>
       </DialogTrigger>
