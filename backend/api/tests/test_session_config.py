@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from backend.api.config import settings
+from backend.api.config import get_settings
 from fastapi.testclient import TestClient
 from api.index import app
 from backend.database.session import get_db
@@ -10,6 +10,7 @@ from backend.database.session import get_db
 # Set up a test database engine
 @pytest.fixture(scope="session")
 def test_engine():
+    settings = get_settings()
     engine = create_engine(settings.database_url_sqlalchemy_test)
     yield engine
 

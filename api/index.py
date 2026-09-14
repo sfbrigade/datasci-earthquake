@@ -8,13 +8,17 @@ from backend.api.routers import (
     soft_story_api,
     health_api,
 )
-from backend.api.config import settings
+from backend.api.config import get_settings
 import sentry_sdk
 import logging
 import uuid
 from backend.api.exceptions import HazardCheckError
 
+from backend.logging_config import configure_logging
 
+configure_logging()
+
+settings = get_settings()
 # Initialize Sentry
 sentry_sdk.init(
     dsn=settings.sentry_dsn,
