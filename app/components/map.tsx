@@ -24,7 +24,7 @@ const mapOptions: Omit<MapOptions, "container"> = {
     // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
     basemap: {
       // 'default', 'faded', or 'monochrome'
-      theme: "monochrome",
+      theme: "faded",
       lightPreset: "dawn",
       colorRoads: "#fefefe", // matches the lightPreset "dawn" basemap so roads appear invisible with theme "monochrome"
     },
@@ -131,25 +131,23 @@ const Map: React.FC<MapProps> = ({
           type: "fill",
           slot: "middle",
           paint: {
-            "fill-color": [
+            "fill-color": "#BE123C",
+
+            "fill-opacity": [
               "match",
               ["get", "ERQK_RISKR"],
 
               "Relatively Low",
-              "#440154",
-
+              0.015,
               "Relatively Moderate",
-              "#31688E",
-
+              0.035,
               "Relatively High",
-              "#35B779",
-
+              0.08,
               "Very High",
-              "#FDE725",
+              0.18,
 
-              "transparent",
+              0,
             ],
-            "fill-opacity": 0.24,
           },
         });
 
