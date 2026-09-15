@@ -50,7 +50,7 @@ const Home = async () => {
           softStoryData={softStoryData}
           tsunamiData={tsunamiData}
           liquefactionData={liquefactionData}
-          femaData={femaData}
+          femaRiskData={femaData}
         />
       </Suspense>
     </Flex>
