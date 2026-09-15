@@ -427,7 +427,7 @@ export const InactiveTeamMembers: TeamMember[] = [
   },
   {
     user_id: 8,
-    role: "Data Science, Back End Engineer",
+    role: "Back End Engineer, Data Science",
     name: "Jiang John",
     team_ids: [4, 5],
   },
