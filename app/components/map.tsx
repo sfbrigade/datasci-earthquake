@@ -149,50 +149,26 @@ const Map: React.FC<MapProps> = ({
           },
         });
 
-        map.loadImage("/images/coastal_hatch.png", (error, image) => {
-          if (error) throw error;
-          if (!image) return;
-
-          if (!map.hasImage("coastal_hatch")) {
-            map.addImage("coastal_hatch", image);
-          }
-
-          map.addLayer({
-            id: "tsunamiLayer",
-            source: "tsunami",
-            type: "fill",
-            slot: "middle",
-            paint: {
-              "fill-pattern": "coastal_hatch",
-            },
-          });
-        });
-
-        // Dark outer edge
         map.addLayer({
-          id: "seismicLayerOuter",
-          source: "seismic",
-          type: "line",
+          id: "tsunamiLayer",
+          source: "tsunami",
+          type: "fill",
           slot: "middle",
           paint: {
-            "line-color": "#C05621", // darker orange
-            "line-width": 4,
-            "line-offset": -2, // outside polygon
-            "line-opacity": 0.95,
+            "fill-color": "#63B3ED", // blue/300
+            "fill-opacity": 0.25, // 50% opacity
           },
         });
 
-        // Lighter inner edge
+        // Add layers
         map.addLayer({
           id: "seismicLayer",
           source: "seismic",
-          type: "line",
+          type: "fill",
           slot: "middle",
           paint: {
-            "line-color": "#F6AD55", // lighter orange
-            "line-width": 4,
-            "line-offset": 2, // inside polygon
-            "line-opacity": 0.7,
+            "fill-color": "#F6AD55", // orange/300
+            "fill-opacity": 0.5, // 50% opacity
           },
         });
 
