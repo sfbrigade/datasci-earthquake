@@ -9,6 +9,21 @@ type HazardPropsCollection = HazardProps[];
 export const Hazards: HazardPropsCollection = [
   {
     id: 0,
+    name: "FEMAmaplayer",
+    title: "FEMA map layer",
+    description: "FEMA map layer",
+    info: [
+      "FEMA map layer",
+    ],
+    link: {
+      label: "Soft story dataset",
+      url: "https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data",
+    },
+    icon: "circle",
+    iconColor: "grey.400",
+  },
+  {
+    id: 1,
     name: "softStory",
     title: "Wooden soft story",
     description:
@@ -27,7 +42,7 @@ export const Hazards: HazardPropsCollection = [
     iconColor: "grey.400",
   },
   {
-    id: 1,
+    id: 2,
     name: "liquefaction",
     title: "Liquefaction zones",
     description:
@@ -45,7 +60,7 @@ export const Hazards: HazardPropsCollection = [
     iconColor: "orange",
   },
   {
-    id: 2,
+    id: 3,
     name: "tsunami",
     title: "Tsunami zones",
     description:
