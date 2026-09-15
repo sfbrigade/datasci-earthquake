@@ -1,5 +1,5 @@
 import { HeadingProps } from "@/components/heading";
-import { HazardProps } from "@/components/card-hazard";
+import type { HazardProps } from "@/components/card-hazard";
 
 // TODO: break this up into multiple files
 // TODO: separate eg styling from content if it makes sense to
@@ -427,7 +427,7 @@ export const InactiveTeamMembers: TeamMember[] = [
   },
   {
     user_id: 8,
-    role: "Back End Engineer, Data Science",
+    role: "Data Science, Back End Engineer",
     name: "Jiang John",
     team_ids: [4, 5],
   },
@@ -490,5 +490,3 @@ export const PillData = [
     noData: "No Data",
   },
 ];
-
-export const LayerIds = ["softStoriesLayer", "seismicLayer", "tsunamiLayer"];
