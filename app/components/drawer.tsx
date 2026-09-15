@@ -6,7 +6,9 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 const AngleLeft = chakra(FaAngleLeft);
 const AngleRight = chakra(FaAngleRight);
 
-// Must match the `h={{ base: "1/2" }}` token on `Drawer.Content`.
+// The drawer's mobile height, as a Chakra token and as the equivalent ratio
+// used for the map's bottom padding. Keep the two in sync.
+export const MOBILE_DRAWER_HEIGHT = "1/2" as const;
 export const MOBILE_DRAWER_HEIGHT_RATIO = 0.5;
 
 interface DrawerProps {
@@ -97,16 +99,14 @@ const SHDrawer = ({
                   // NOTE: the following props are used because the `size` prop values of `Drawer.Root` are too limited (and do not directly correspond to the theme `sizes` tokens)
                   w={{ base: "full", md: "sm" }}
                   maxW={{ base: "full", md: "sm" }}
-                  // Must match `MOBILE_DRAWER_HEIGHT_RATIO`.
-                  h={{ base: "1/2", md: "full" }}
-                  maxH={{ base: "1/2", md: "full" }}
+                  h={{ base: MOBILE_DRAWER_HEIGHT, md: "full" }}
+                  maxH={{ base: MOBILE_DRAWER_HEIGHT, md: "full" }}
                   pointerEvents="auto"
                   css={{
                     "&[data-state='open']": { animationName: "none" }, // prevent slide-in animation (`skipAnimationOnMount` on `Drawer.Root` doesn't appear to work)
                   }}
                 >
                   <Drawer.CloseTrigger
-                    onClick={() => onOpenChange(false)}
                     asChild
                     position="absolute"
                     // Mobile: centered above drawer edge.
