@@ -28,6 +28,7 @@ interface AddressMapperProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
+  femaData: FeatureCollection<Geometry>;
 }
 
 export type LayerToggleObjProps = {
@@ -53,6 +54,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   softStoryData,
   tsunamiData,
   liquefactionData,
+  femaData,
 }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -228,6 +230,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           softStoryData={softStoryData}
           tsunamiData={tsunamiData}
           liquefactionData={liquefactionData}
+          femaData={femaData}
           layerToggleObj={layerToggleObj}
           bottomPaddingRatio={bottomPaddingRatio}
         />

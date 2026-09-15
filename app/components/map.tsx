@@ -35,6 +35,7 @@ interface MapProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
+  femaData: FeatureCollection<Geometry>;
   layerToggleObj: LayerToggleObjProps;
   /** Fraction of the container height covered at the bottom. */
   bottomPaddingRatio?: number;
@@ -59,6 +60,7 @@ const Map: React.FC<MapProps> = ({
   softStoryData,
   tsunamiData,
   liquefactionData,
+  femaData,
   layerToggleObj,
   bottomPaddingRatio = 0,
 }: MapProps) => {
@@ -134,6 +136,19 @@ const Map: React.FC<MapProps> = ({
         map.addSource("tsunami", { type: "geojson", data: tsunamiData });
 
         map.addSource("soft-stories", { type: "geojson", data: softStoryData });
+
+        map.addSource("fema", { type: "geojson", data: femaData });
+
+        map.addLayer({
+          id: "femaLayer",
+          source: "fema",
+          type: "fill",
+          slot: "middle",
+          paint: {
+            "fill-color": "green", // blue/300
+            "fill-opacity": 0.25, // 50% opacity
+          },
+        });
 
         map.addLayer({
           id: "tsunamiLayer",
@@ -224,7 +239,15 @@ const Map: React.FC<MapProps> = ({
       }
       return;
     }
-  }, [lon, lat, address, liquefactionData, softStoryData, tsunamiData]);
+  }, [
+    lon,
+    lat,
+    address,
+    liquefactionData,
+    softStoryData,
+    tsunamiData,
+    femaData,
+  ]);
 
   useEffect(() => {
     const handleToggleLayers = () => {
