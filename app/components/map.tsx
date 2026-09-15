@@ -8,11 +8,6 @@ import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
 import { Box } from "@chakra-ui/react";
 
-import femaDataJson from "../../public/data/EarthquakeRisk.json";
-
-const femaData: FeatureCollection<Geometry> =
-  femaDataJson as FeatureCollection<Geometry>;
-
 const mapOptions: Omit<MapOptions, "container"> = {
   style: "mapbox://styles/mapbox/standard",
   zoom: 12.1, // Start with more zoomed-out view but not too far
@@ -142,8 +137,96 @@ const Map: React.FC<MapProps> = ({
 
         map.addSource("soft-stories", { type: "geojson", data: softStoryData });
 
-        map.addSource("fema-risk", { type: "geojson", data: femaData });
+        map.addSource("fema-risk", {
+          type: "geojson",
+          data: "/data/EarthquakeRisk.geojson",
+        });
 
+        // FEMA earthquake risk — broad background layer
+        map.addLayer({
+          id: "femaRiskLayer",
+          source: "fema-risk",
+          type: "fill",
+          slot: "middle",
+          paint: {
+            "fill-color": [
+              "match",
+              ["get", "fema_risk_rating"],
+
+              "Relatively Low",
+              "#440154",
+
+              "Relatively Moderate",
+              "#31688E",
+
+              "Relatively High",
+              "#35B779",
+
+              "Very High",
+              "#FDE725",
+
+              "transparent",
+            ],
+            "fill-opacity": 0.24,
+          },
+        });
+
+        // Liquefaction — extremely faint interior tint
+        map.addLayer({
+          id: "seismicBackgroundLayer",
+          source: "seismic",
+          type: "fill",
+          slot: "middle",
+          paint: {
+            "fill-color": "#F6AD55",
+            "fill-opacity": 0.04,
+          },
+        });
+
+        // Liquefaction — dark edge on OUTSIDE of polygon
+        map.addLayer({
+          id: "seismicOuterLayer",
+          source: "seismic",
+          type: "line",
+          slot: "middle",
+          paint: {
+            "line-color": "#C05621",
+            "line-width": 2,
+            "line-offset": -1,
+            "line-opacity": 0.9,
+          },
+        });
+
+        // Liquefaction — softer/light band extending INSIDE polygon
+        map.addLayer({
+          id: "seismicLayer",
+          source: "seismic",
+          type: "line",
+          slot: "middle",
+          paint: {
+            "line-color": "#F6AD55",
+            "line-width": 6,
+            "line-offset": 3,
+            "line-opacity": 0.35,
+            "line-blur": 0.75,
+          },
+        });
+
+        // Soft-story properties — top
+        map.addLayer({
+          id: "softStoriesLayer",
+          source: "soft-stories",
+          type: "circle",
+          slot: "middle",
+          paint: {
+            "circle-radius": 4.5,
+            "circle-stroke-width": 1,
+            "circle-stroke-color": "#FFFFFF",
+            "circle-color": "#A0AEC0",
+          },
+        });
+
+        // Tsunami depends on the hatch image, but the other hazard layers do not.
         map.loadImage("/images/tsunami-hatch-fine-16.png", (error, image) => {
           if (error) {
             console.error("Failed to load tsunami hatch:", error);
@@ -156,100 +239,20 @@ const Map: React.FC<MapProps> = ({
             map.addImage("tsunami-hatch", image);
           }
 
-          // FEMA earthquake risk — broad background layer
-          map.addLayer({
-            id: "femaRiskLayer",
-            source: "fema-risk",
-            type: "fill",
-            slot: "middle",
-            paint: {
-              "fill-color": [
-                "match",
-                ["get", "fema_risk_rating"],
-
-                "Relatively Low",
-                "#440154",
-
-                "Relatively Moderate",
-                "#31688E",
-
-                "Relatively High",
-                "#35B779",
-
-                "Very High",
-                "#FDE725",
-
-                "transparent",
-              ],
-              "fill-opacity": 0.24,
-            },
-          });
-
-          // Liquefaction — extremely faint interior tint
-          map.addLayer({
-            id: "seismicBackgroundLayer",
-            source: "seismic",
-            type: "fill",
-            slot: "middle",
-            paint: {
-              "fill-color": "#F6AD55",
-              "fill-opacity": 0.04,
-            },
-          });
-
-          // Tsunami — fine one-way blue hatch
-          map.addLayer({
-            id: "tsunamiLayer",
-            source: "tsunami",
-            type: "fill",
-            slot: "middle",
-            paint: {
-              "fill-pattern": "tsunami-hatch",
-            },
-          });
-
-          // Liquefaction — dark edge on OUTSIDE of polygon
-          map.addLayer({
-            id: "seismicOuterLayer",
-            source: "seismic",
-            type: "line",
-            slot: "middle",
-            paint: {
-              "line-color": "#C05621",
-              "line-width": 2,
-              "line-offset": -1,
-              "line-opacity": 0.9,
-            },
-          });
-
-          // Liquefaction — softer/light band extending INSIDE polygon
-          map.addLayer({
-            id: "seismicLayer",
-            source: "seismic",
-            type: "line",
-            slot: "middle",
-            paint: {
-              "line-color": "#F6AD55",
-              "line-width": 6,
-              "line-offset": 3,
-              "line-opacity": 0.35,
-              "line-blur": 0.75,
-            },
-          });
-
-          // Soft-story properties — top
-          map.addLayer({
-            id: "softStoriesLayer",
-            source: "soft-stories",
-            type: "circle",
-            slot: "middle",
-            paint: {
-              "circle-radius": 4.5,
-              "circle-stroke-width": 1,
-              "circle-stroke-color": "#FFFFFF",
-              "circle-color": "#A0AEC0",
-            },
-          });
+          if (!map.getLayer("tsunamiLayer")) {
+            map.addLayer(
+              {
+                id: "tsunamiLayer",
+                source: "tsunami",
+                type: "fill",
+                slot: "middle",
+                paint: {
+                  "fill-pattern": "tsunami-hatch",
+                },
+              },
+              "seismicOuterLayer"
+            );
+          }
         });
 
         map.on("error", (e) => {
@@ -330,17 +333,17 @@ const Map: React.FC<MapProps> = ({
     const handleToggleLayers = () => {
       if (!mapRef.current) return;
       const map = mapRef.current;
+      const newVisibility = layerToggleObj.toggleState ? "visible" : "none";
 
-      const layerId = layerToggleObj.layerId;
-
-      if (layerId && map.getLayer(layerId)) {
-        const newVisibility = layerToggleObj.toggleState ? "visible" : "none";
-        // sets new visibility property value for layer, creating the "toggling" effect
-        map.setLayoutProperty(layerId, "visibility", newVisibility);
-      }
+      layerToggleObj.layerIds.forEach((layerId) => {
+        if (map.getLayer(layerId)) {
+          // sets new visibility property value for each layer in a hazard visualization
+          map.setLayoutProperty(layerId, "visibility", newVisibility);
+        }
+      });
     };
 
-    if (layerToggleObj.layerId != "") handleToggleLayers();
+    if (layerToggleObj.layerIds.length > 0) handleToggleLayers();
   }, [layerToggleObj]); // re-runs every time state changes
 
   useEffect(() => {
