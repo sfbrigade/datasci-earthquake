@@ -30,6 +30,8 @@ const mapOptions: Omit<MapOptions, "container"> = {
     basemap: {
       // 'default', 'faded', or 'monochrome'
       theme: "monochrome",
+      lightPreset: "dawn",
+      colorRoads: "#fefefe", // matches the lightPreset "dawn" basemap so roads appear invisible with theme "monochrome"
     },
   },
 };
@@ -247,6 +249,25 @@ const Map: React.FC<MapProps> = ({
           }
         });
       });
+
+      const updateBasemapDetail = () => {
+        const detailed = map.getZoom() >= 13;
+
+        map.setConfigProperty("basemap", "showRoadLabels", detailed);
+
+        map.setConfigProperty("basemap", "showPedestrianRoads", detailed);
+
+        map.setConfigProperty("basemap", "showPointOfInterestLabels", detailed);
+
+        map.setConfigProperty(
+          "basemap",
+          "colorRoads",
+          detailed ? "#cccccc" : "#fefefe"
+        );
+      };
+
+      map.on("zoomend", updateBasemapDetail);
+      updateBasemapDetail();
     } else {
       // subsequent passes: update map
       const map = mapRef.current;
