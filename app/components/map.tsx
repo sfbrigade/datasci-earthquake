@@ -25,7 +25,7 @@ const mapOptions: Omit<MapOptions, "container"> = {
     basemap: {
       // 'default', 'faded', or 'monochrome'
       theme: "faded",
-      lightPreset: "dawn",
+      lightPreset: "day",
       colorRoads: "#fefefe", // matches the lightPreset "dawn" basemap so roads appear invisible with theme "monochrome"
     },
   },
