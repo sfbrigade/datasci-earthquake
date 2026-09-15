@@ -20,17 +20,20 @@ import { FaCircle, FaSquareFull } from "react-icons/fa";
 import { KeyElem } from "./key-elem";
 import { Dispatch, SetStateAction, useState } from "react";
 import { LayerToggleObjProps } from "./address-mapper";
-interface CardHazardProps {
-  hazard: {
-    id: number;
-    name: string;
-    title: string;
-    description: string;
-    info: string[];
-    link: { label: string; url: string };
-    icon: string;
-    iconColor: SystemStyleObject["color"];
-  };
+
+export interface HazardProps {
+  id: number;
+  name: string;
+  title: string;
+  description: string;
+  info: string[];
+  link: { label: string; url: string };
+  icon: string;
+  iconColor: SystemStyleObject["color"];
+}
+
+export interface CardHazardProps {
+  hazard: HazardProps;
   hazardData?: { exists?: boolean; last_updated?: string };
   showData: boolean;
   isHazardDataLoading: boolean;
