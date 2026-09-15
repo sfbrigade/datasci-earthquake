@@ -69,18 +69,19 @@ const LegendSymbol = ({ kind }: LegendSymbolProps) => {
           h={size}
           flexShrink={0}
           borderRadius="2px"
+          backgroundColor="white"
           backgroundImage={`linear-gradient(
             to right,
-            #440154 0%,
-            #440154 25%,
-            #31688E 25%,
-            #31688E 50%,
-            #35B779 50%,
-            #35B779 75%,
-            #FDE725 75%,
-            #FDE725 100%
+            rgba(190, 18, 60, 0.015) 0%,
+            rgba(190, 18, 60, 0.015) 25%,
+            rgba(190, 18, 60, 0.035) 25%,
+            rgba(190, 18, 60, 0.035) 50%,
+            rgba(190, 18, 60, 0.08) 50%,
+            rgba(190, 18, 60, 0.08) 75%,
+            rgba(190, 18, 60, 0.18) 75%,
+            rgba(190, 18, 60, 0.18) 100%
           )`}
-          border="1px solid rgba(0, 0, 0, 0.15)"
+          border="1px solid rgba(190, 18, 60, 0.25)"
         />
       );
   }
