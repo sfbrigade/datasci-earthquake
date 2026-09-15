@@ -8,6 +8,11 @@ import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
 import { Box } from "@chakra-ui/react";
 
+import femaDataJson from "../../public/data/EarthquakeRisk.json";
+
+const femaData: FeatureCollection<Geometry> =
+  femaDataJson as FeatureCollection<Geometry>;
+
 const mapOptions: Omit<MapOptions, "container"> = {
   style: "mapbox://styles/mapbox/standard",
   zoom: 12.1, // Start with more zoomed-out view but not too far
@@ -35,7 +40,6 @@ interface MapProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
-  femaData: FeatureCollection<Geometry>;
   layerToggleObj: LayerToggleObjProps;
 }
 
@@ -58,7 +62,6 @@ const Map: React.FC<MapProps> = ({
   softStoryData,
   tsunamiData,
   liquefactionData,
-  femaData,
   layerToggleObj,
 }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
