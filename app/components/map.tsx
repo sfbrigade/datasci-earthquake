@@ -130,31 +130,69 @@ const Map: React.FC<MapProps> = ({
           type: "fill",
           slot: "middle",
           paint: {
-            "fill-color": "green", // blue/300
+            "fill-color": [
+              "match",
+              ["get", "ERQK_RISKR"],
+
+              "Relatively Low",
+              "#440154",
+              "Relatively Moderate",
+              "#31688E",
+              "Relatively High",
+              "#35B779",
+              "Very High",
+              "#FDE725",
+
+              "#808080", // fallback if value is missing/unexpected
+            ],
             "fill-opacity": 0.25, // 50% opacity
           },
         });
 
+        map.loadImage("/images/coastal_hatch.png", (error, image) => {
+          if (error) throw error;
+          if (!image) return;
+
+          if (!map.hasImage("coastal_hatch")) {
+            map.addImage("coastal_hatch", image);
+          }
+
+          map.addLayer({
+            id: "tsunamiLayer",
+            source: "tsunami",
+            type: "fill",
+            slot: "middle",
+            paint: {
+              "fill-pattern": "coastal_hatch",
+            },
+          });
+        });
+
+        // Dark outer edge
         map.addLayer({
-          id: "tsunamiLayer",
-          source: "tsunami",
-          type: "fill",
+          id: "seismicLayerOuter",
+          source: "seismic",
+          type: "line",
           slot: "middle",
           paint: {
-            "fill-color": "#63B3ED", // blue/300
-            "fill-opacity": 0.25, // 50% opacity
+            "line-color": "#C05621", // darker orange
+            "line-width": 4,
+            "line-offset": -2, // outside polygon
+            "line-opacity": 0.95,
           },
         });
 
-        // Add layers
+        // Lighter inner edge
         map.addLayer({
           id: "seismicLayer",
           source: "seismic",
-          type: "fill",
+          type: "line",
           slot: "middle",
           paint: {
-            "fill-color": "#F6AD55", // orange/300
-            "fill-opacity": 0.5, // 50% opacity
+            "line-color": "#F6AD55", // lighter orange
+            "line-width": 4,
+            "line-offset": 2, // inside polygon
+            "line-opacity": 0.7,
           },
         });
 
