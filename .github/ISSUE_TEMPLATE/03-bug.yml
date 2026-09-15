@@ -1,0 +1,40 @@
+name: Bug
+description: Report unexpected behavior
+type: Bug
+labels: ["needs triage", "needs refinement"]
+
+body:
+  - type: textarea
+    id: bug-report
+    attributes:
+      label: Bug report
+      value: |
+        **Observed behavior**
+        What happened?
+
+        **Expected behavior**
+        What should have happened instead?
+
+        **Steps to reproduce**
+        What steps reproduce the problem, if known?
+
+        1. Step 1
+        2. Step 2
+        3. Step 3
+
+        ***
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      value: |
+        **Environment**
+        What device, OS, browser/version, or other environment details are relevant?
+
+        **Additional context**
+        What else would help investigate this Bug? Add screenshots, logs, or links if useful.
+    validations:
+      required: false
