@@ -68,6 +68,34 @@ describe("CardHazard Component", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders the FEMA legend with the rose opacity scale", () => {
+    const femaHazard: HazardProps = {
+      ...softStoryHazard,
+      id: 3,
+      name: "femaRisk",
+      title: "Earthquake risk",
+    };
+
+    render(
+      <Provider>
+        <CardHazard
+          hazard={femaHazard}
+          showData={false}
+          isHazardDataLoading={false}
+          toggledStates={[true, true, true, true]}
+          setToggledStates={jest.fn()}
+          setLayerToggleObj={jest.fn()}
+        />
+      </Provider>
+    );
+
+    const femaLegend = screen.getByTestId("hazard-legend-femaRisk");
+    expect(femaLegend).toBeInTheDocument();
+    expect(femaLegend.style.backgroundImage).toContain(
+      "rgba(190, 18, 60, 0.18)"
+    );
+  });
+
   it("toggles every Mapbox layer used by liquefaction", () => {
     const setLayerToggleObj = jest.fn();
     const liquefactionHazard: HazardProps = {
