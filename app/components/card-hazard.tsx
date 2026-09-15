@@ -15,7 +15,8 @@ import {
 import posthog from "posthog-js";
 import Pill from "./pill";
 import { RxCross2 } from "react-icons/rx";
-import { PillData, LayerIds } from "../data/data";
+import { PillData } from "../data/data";
+import { hazardMapConfigByName } from "../data/hazard-map-config";
 import { FaCircle, FaSquareFull } from "react-icons/fa";
 import { KeyElem } from "./key-elem";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -28,8 +29,8 @@ export interface HazardProps {
   description: string;
   info: string[];
   link: { label: string; url: string };
-  icon: string;
-  iconColor: SystemStyleObject["color"];
+  icon?: "circle" | "square";
+  iconColor?: SystemStyleObject["color"];
 }
 
 export interface CardHazardProps {
@@ -54,12 +55,13 @@ const CardHazard: React.FC<CardHazardProps> = ({
   fullWidth = false,
 }) => {
   const { id, title, name, description, icon, iconColor } = hazard;
-  const { exists, last_updated: date } = hazardData || {};
+  const { exists } = hazardData || {};
   const pillTextOptions = PillData.find((object) => object.name === name) ?? {
     trueData: "No Data",
     falseData: "No Data",
     noData: "No Data",
   };
+  const mapConfig = hazardMapConfigByName[name];
   const [isMoreInfo, setIsMoreInfo] = useState(false);
 
   const hazardPill = isHazardDataLoading ? (
@@ -88,10 +90,17 @@ const CardHazard: React.FC<CardHazardProps> = ({
     newArray[num] = checked;
     setToggledStates(newArray);
     setLayerToggleObj({
-      layerId: LayerIds[num],
+      layerIds: mapConfig?.layerIds ?? [],
       toggleState: checked,
     });
   };
+
+  const legacyIcon =
+    icon === "circle" ? (
+      <FaCircle />
+    ) : icon === "square" ? (
+      <FaSquareFull />
+    ) : undefined;
 
   return (
     <Card.Root
@@ -125,8 +134,9 @@ const CardHazard: React.FC<CardHazardProps> = ({
           >
             <KeyElem
               name={title}
+              legend={mapConfig?.legend}
               color={iconColor}
-              icon={icon === "circle" ? <FaCircle /> : <FaSquareFull />}
+              icon={legacyIcon}
             />
             <Switch.Root
               size="lg"
