@@ -1,7 +1,7 @@
 ---
 title: "EDA of FEMA earthquake risk index for SF"
 author: "Philippe Marchand"
-date: "2025-10-22"
+date: "2026-02-03"
 output: html_document
 ---
 
@@ -9,26 +9,20 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Load data and packages
+## Links to data and reference documentation
 
-From the national shapefile of National Risk Index (NRI) data for all US census tracts, only keep the 241 San Francisco tracts, and the subset of columns pertaining to earthquakes (*ERQK*), the social vulnerability and resilience variables (*SOVI*, *RESL*, *CRF*) and basic identifiers like the tract ID and population.  
+This document was updated to use v1.20 (Dec. 2025) of the National Risk Index data, and to include more specific details on the EAL estimation for earthquakes.
 
-([link to NRI data](https://hazards.fema.gov/nri/data-resources)) ([link to NRI documentation](https://www.fema.gov/sites/default/files/documents/fema_national-risk-index_technical-documentation.pdf))
+- [FEMA National Risk Index downloadable files](https://www.fema.gov/about/openfema/data-sets/national-risk-index-data)
 
-```{r, message=FALSE, warning=FALSE}
-library(tidyverse)
-library(sf)
-library(cowplot)
+- [NRI Technical Documentation](https://www.fema.gov/sites/default/files/documents/fema_national-risk-index_technical-documentation.pdf)
 
-nri <- read_sf("NRI_Shapefile_CensusTracts")
-nri <- filter(nri, COUNTY == "San Francisco")
-nri <- select(nri, matches("^(TRACT|POP|ERQK|SOVI|RESL|CRF)"))
-```
+- [Hazus 6.1 Earthquake Model Technical Manual](https://www.fema.gov/sites/default/files/documents/fema_hazus-earthquake-model-technical-manual-6-1.pdf): This is the annualized loss estimation model used specifically for earthquake risks in the NRI v1.20.
+
+- [Hazus 6.1 Inventory Technical Manual](https://www.fema.gov/sites/default/files/documents/fema_hazus-inventory-technical-manual-6.1.pdf): This describes the national building inventory data used for the Hazus model.
 
 
-## Risk index calculation
-
-The description of the risk index calculation is based on the published documentation and verified with the downloaded data.
+## Overview of the risk index calculation
 
 For each type of hazard (e.g. earthquake), the risk index is given as a *value*, *score* and *rating*. The risk value (RISKV) is given by multiplying an estimate of the expected annual loss (EAL, in $) from this type of hazard by a community risk factor (CRF). The CRF is a composite index grouping various socioeconomic variables related to community vulnerability and resilience, and by construction it is bounded by 0.5 and 2, so at most the CRF can half or double the risk compared to the "average" community. The CRF used is the same for all types of hazards.
 
@@ -37,18 +31,6 @@ $RISKV = EAL \times CRF$
 The risk score (between 0 and 100) is the percentile rank of the geographical unit (here, a census tract) compared to all other units nationally, so a tract with a score of 90 is more at risk than 90% of census tracts in the US.
 
 The risk rating is a five-point ordinal scale (Very Low, Relatively Low, Relatively Moderate, Relatively High and Very High) that is created from the risk scores by k-means clustering of the scores.
-
-### Expected annual loss calculation
-
-The expected annual loss is the product of three terms. It is calculated separately for agriculture, buildings and people (only buildings and people for earthquakes), then added. 
-
-$EAL = EXP \times AFREQ \times HLR$
-
-* Exposure (EXP): The number of people or value of buildings in the census tract.
-* Annualized frequency (AFREQ): The fraction of years where the hazard is projected to affect the tract.
-* Historic loss ratio (HLR): The average fraction of people or buildings lost when the hazard occurs.
-
-The EAL for buildings is a dollar value whereas the EAL for people is converted to dollars with a factor of 11.6 M$ / life.
 
 ### Community risk factor calculation
 
@@ -62,34 +44,55 @@ The community resilience index (RESL, [source](https://sc.edu/study/colleges_sch
 
 The monotonic function $f$ in the equation above takes the percentiles of SOVI/RESL and converts them to quantiles of a triangular distribution with minimum at 0.5, maximum at 2 and mode at 1. 
 
+### Expected annual loss calculation
+
+The expected annual loss is the product of three terms. It is calculated separately for agriculture, buildings and people (only buildings and people for earthquakes), then added. 
+
+$EAL = EXP \times AFREQ \times HLR$
+
+* Exposure (EXP): The number of people or value of buildings in the census tract.
+* Annualized frequency (AFREQ): The fraction of years where the hazard is projected to affect the tract.
+* Historic loss ratio (HLR): The average fraction of people or buildings lost when the hazard occurs.
+
+The EAL for buildings is a dollar value whereas the EAL for people is converted to dollars with a factor of 11.6 M$ / life, with serious but not fatal injuries converted to a fraction of a life.
+
+### Specifics of the EAL estimation for earthquakes
+
+While the section above describes the general formula for expected annual loss used by the NRI, this is not actually how the EAL is estimated for earthquakes. The earthquake EAL values in the NRI are output by the Hazus model, which is described in the technical documentation linked above.
+
+In particular, the EAL for earthquakes is based on the combined risk from different earthquake magnitudes each with their own probability. While the NRI data for earthquakes includes a single value for *AFREQ* (earthquake frequency) and *HLR* (loss ratio) for each census tract in order to match the format of the data for other hazards, these values are not really meaningful on their own. The same applies to the risk index for tsunami, which is reported separately from earthquakes in the NRI, but is also based on a probabilistic model.
+
+The Hazus model first determines the probability of different intensities of ground shaking at a location, including amplification of shaking based on local geology, such as soil liquefaction risk (see Fig.2-1 on p.2-2 of the Hazus earthquake manual for a visual diagram). The shaking model is combined with information on the building inventory in each census tract to estimate physical damages at different shaking levels. That building inventory data (see the Hazus inventory manual for details) is based on the US Army Corps of Engineers' 2022 National Structure Inventory dataset and other sources. It includes the type of occupancy (residential, offices, etc.), building material, building height, and information on the building code standards associated with a construction. That information is aggregated at the census tract level, but some essential facilities like hospitals and schools are included individually in the model. 
+
+Estimates of physical damages to buildings (including induced damages from fire and debris caused by an earthquake) are then used to estimate economic and human losses that are part of the EAL appearing in the NRI. The human casualties are estimated for three different times of day (nighttime, daytime or commute) to account for e.g. residences and offices to be occupied at different times; the model includes indoor and outdoor casualty rates for different levels of structural damage and building type, based on modelling and historical events.
+
+## Load data and packages
+
+From the national shapefile of National Risk Index (NRI) data for all US census tracts, only keep the 241 San Francisco tracts, and the subset of columns pertaining to earthquakes (*ERQK*), the social vulnerability and resilience variables (*SOVI*, *RESL*, *CRF*) and basic identifiers like the tract ID and population.  
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(sf)
+library(cowplot)
+
+nri <- read_sf("NRI_Shapefile_CensusTracts")
+nri <- filter(nri, COUNTY == "San Francisco")
+nri <- select(nri, matches("^(TRACT|POP|ERQK|SOVI|RESL|CRF)"))
+```
 
 ## Earthquake risk index components for San Francisco
-
-### Annualized frequency
-
-The annualized earthquake frequency is just under 0.01 (1 in 100 years) for the vast majority of tracts, with slightly higher values (up to 0.02) in some coastal areas and surprisingly high values for the Presidio (0.04) and one coastal tract near Lands End (0.06).
-
-```{r}
-summary(nri$ERQK_AFREQ)
-```
-
-
-```{r}
-ggplot(nri, aes(fill = ERQK_AFREQ)) +
-    geom_sf() +
-    scale_fill_viridis_c() +
-    theme_minimal()
-```
 
 ### Expected damage to people
 
 ```{r, fig.width = 10}
-p1 <- ggplot(nri, aes(fill = ERQK_EXPP)) +
+nri <- mutate(nri, EALP_ratio = ERQK_EALP / ERQK_EXPP)
+
+p1 <- ggplot(nri, aes(fill = ERQK_EALP)) +
     geom_sf() +
     scale_fill_viridis_c() +
     theme_minimal()
 
-p2 <- ggplot(nri, aes(fill = ERQK_HLRP)) +
+p2 <- ggplot(nri, aes(fill = EALP_ratio)) +
     geom_sf() +
     scale_fill_viridis_c() +
     theme_minimal()
@@ -97,37 +100,32 @@ p2 <- ggplot(nri, aes(fill = ERQK_HLRP)) +
 plot_grid(p1, p2)
 ```
 
-The exposure variable for people (left map above) is basically equal to the census tract population. The historic loss ratio for people (right map) is less than 1 in 10,000 for the vast majority of tracts, but as high as 3 in 100 for some outliers:
+The map on the left side (EALP) is the estimated annualized losses of human life per census tract. These are aggregated values at the tract level, so we can divide by the exposure variable (basically equal to the population of the census tract) to get a risk per capita on the right side (EALP_ratio).
+
+The EALP variable is < 0.1 (1 casualty per decade) for most census tracts, but some outliers have 3 to 12 times that risk.
 
 ```{r}
-summary(nri$ERQK_HLRP)
+summary(nri$ERQK_EALP)
 
-select(nri, TRACT, POPULATION, ERQK_HLRP) %>%
+select(nri, TRACT, POPULATION, ERQK_EALP) %>%
     st_drop_geometry() %>% 
-    arrange(desc(ERQK_HLRP)) %>% 
+    arrange(desc(ERQK_EALP)) %>% 
     head(10)
 ```
 
-The two tracts with the highest loss ratio are 011700 (Financial District / Union Square) and 033201 (Stonestown / SFSU). 061501 is in SOMA across Market St. from the financial district, 980501 is McLaren Park in southeast SF, 980900 is the industrial area around Islais Creek between Dogpatch and Bayview. It's not clear why some of those areas are singled out for the potential damage to people.
-
-In any case, the overall EAL for people reflects the same outliers as the HLR variable, though also tracts with higher population.
-
-```{r}
-ggplot(nri, aes(fill = ERQK_EALP)) +
-    geom_sf() +
-    scale_fill_viridis_c() +
-    theme_minimal()
-```
+The two tracts with the largest EALP values are 011700 (Financial District / Union Square) and 033201 (Stonestown / SFSU), and most of the other tracts in that list are near 011701: 061501 and 017602 are in SOMA across Market St. from the financial district, 012100 is in Lower Nob Hill, others are in Chinatown. As mentioned above, the Hazus model estimates risk based on occupancy patterns, which would include a density of people being in commercial / offices areas downtown during the day. However, the exposure variable (EXPP) in the NRI is based on the census population. Therefore, whereas the EALP_ratio (per capita risk) could be informative in residential areas, it is probably not a good measure for those census tracts.
 
 ### Expected damage to buildings
 
 ```{r, fig.width = 10}
-p1 <- ggplot(nri, aes(fill = ERQK_EXPB)) +
+nri <- mutate(nri, EALB_ratio = ERQK_EALB / ERQK_EXPB)
+
+p1 <- ggplot(nri, aes(fill = ERQK_EALB)) +
     geom_sf() +
     scale_fill_viridis_c() +
     theme_minimal()
 
-p2 <- ggplot(nri, aes(fill = ERQK_HLRB)) +
+p2 <- ggplot(nri, aes(fill = EALB_ratio)) +
     geom_sf() +
     scale_fill_viridis_c() +
     theme_minimal()
@@ -135,23 +133,11 @@ p2 <- ggplot(nri, aes(fill = ERQK_HLRB)) +
 plot_grid(p1, p2)
 ```
 
-Interestingly, the building exposure variable (left map above) shows higher values at similar places than the people historic loss ratio map, including the financial district, SOMA, Stonestown/SFSU and Islais Creek. Those areas also stand out in the overall expected annual loss for buildings (below). The historic loss ratio for buildings (right map above) is generally lowest in the middle of the city and highest in the coastal perimeter.
-
-```{r}
-ggplot(nri, aes(fill = ERQK_EALB)) +
-    geom_sf() +
-    scale_fill_viridis_c() +
-    theme_minimal()
-```
+The expected annualized damages to buildings (EALB) on the left map above shows higher values at similar places than the one for people, including the financial district, Stonestown/SFSU and SOMA. However, the ratio of expected damages to estimated building value on the right map (EALB_ratio, the fraction of building value lost in an earthquake) shows perhaps a more informative pattern: higher risk areas tend to be in the northeast and north-central parts of the city, but also the southwest (Outer Sunset to Lake Merced area) and maybe some smaller areas in the southeast. The center of the city around Twin Peaks has the least risk.
 
 ### Combined expected damage to people and buildings
 
-For most tracts, the expected annual loss to buildings is valued at several times the expected loss to people when converted into dollars (with the value of 11.6 M$ per life). Note that the extreme ratio of 141 in the summary is for a tract (Lincoln Park) where almost no one lives.
-
-```{r}
-summary(nri$ERQK_EALB / nri$ERQK_EALPE)
-```
-Nevertheless, because the areas with higher risk to people and to buildings were similar in the previous sections, the same areas stand out for the total EAL.
+The previously shown maps for the expected damage to buildings (EALB) and people (EALP) aggregated by census tract already looked similar, so not surprisingly the combination of the two (with the 11.6 M$ / human casualty conversion factor) produces a similar map as well.
 
 ```{r}
 ggplot(nri, aes(fill = ERQK_EALT)) +
@@ -160,9 +146,10 @@ ggplot(nri, aes(fill = ERQK_EALT)) +
     theme_minimal()
 ```
 
+
 ### Community risk factor
 
-Because one of the two components of the CRF (the resilience index) is only calculated by county, the map of the CRF below directly reflects differences in the social vulnerability index, which again mostly represents differences in socioeconomic status across the city.
+Because one of the two components of the CRF (the resilience index) is only calculated by county, the map of the CRF below directly reflects differences in the social vulnerability index.
 
 ```{r}
 ggplot(nri, aes(fill = CRF_VALUE)) +
@@ -171,9 +158,11 @@ ggplot(nri, aes(fill = CRF_VALUE)) +
     theme_minimal()
 ```
 
+Looking back at the list of variables in the social vulnerability index definition presented earlier, we would expect lower CRF values in more affluent areas with higher white populations, less dense housing and more car ownership, for example. Note that there are some low-population tracts with high CRF values, such as Lincoln Park in the northwest (probably reflecting people in long-term care at the VA Medical Center) and McLaren Park in the southeast (a senior center appears to be the only residential facility in that tract).
+
 ### Risk index score and rating
 
-The overall earthquake risk score (left) and rating (right) are shown in the map below. Note that the outliers from the EAL data above are less apparent due to the conversion of the risk value to a percentile score. As SF is more at risk of earthquakes than most of the country, almost all percentiles are above 80. (Indeed, if we removed parks from the dataset, it would remove the only value under 80 and the only "Relatively Low" value, which is in Lincoln Park.)
+The overall earthquake risk score (left) and rating (right) are shown in the map below. The risk value (RISKV) variable is not shown, but would look very similar to the EALT (total expected loss) map above, with some extreme values hiding the differences in other parts of the map. In contrast, the risk score map reduces the impact of outliers due to the conversion of the risk value to a percentile score. As SF is more at risk of earthquakes than most of the country, almost all percentiles are above 80. (Indeed, if we removed parks from the dataset, it would remove the only value under 80 and the only "Relatively Low" value, which is in Lincoln Park.)
 
 ```{r, fig.width = 10}
 nri$ERQK_RISKR <- factor(nri$ERQK_RISKR,
@@ -193,12 +182,19 @@ p2 <- ggplot(nri, aes(fill = ERQK_RISKR)) +
 plot_grid(p1, p2)
 ```
 
+
 ## Commentary
 
-I think the risk rating map from the previous section would be usable, with only 3 colored categories of risk (moderate, high and very high) to avoid adding too much complexity to the user-facing map.
+I see a few options for using this data in the SafeHome app:
 
-My main concerns from looking at the detailed data were (1) that the risk score is based on aggregate expected damages to people and buildings, thus putting more weight on census tracts with more people and more (or higher-valued?) buildings; and (2) the presence of outliers (like the Stonestown/SFSU tract).
+- Do we want to show the final risk index or individual components of it?
+- If we show the final risk index, do we use the risk value, the percentile score or the risk categories?
+- If we show components of the risk index, do we display the aggregate expected annualized damages to people or buildings per census tract, or per capita values? Do we also report the community risk factor separately?
 
-Concern (2) is mitigated by the percentile transform reducing the impact of outliers on the overall visualization. As for concern (1), although in some case the historic loss ratio component might be a better indicator for people thinking of their individual risk (rather than the aggregate risk to everyone in a tract), the areas with high loss ratio to people and buildings seem to be well-reflected in the final risk map as well.
+My impression from working with this data is that the risk index itself is a useful metric to identify areas where risk is concentrated, based not only on ground and building characteristics, but also the density and vulnerability of the population. This is clearly useful for local government, but even for the SafeHome team, this metric could help target areas for priority outreach around earthquake safety. 
 
-I would suggest perhaps to still consult with some local earthquake experts to make sure the map makes sense, since a nationally-produced map, even if it provides data at the tract level, may not always reflect local particularities.
+If we chose to display the actual risk value instead of the percentile score, we need to be careful about the choice of visual scale to ensure we can differentiate risk in different areas beyond a few outliers that stand out on the linear scale.
+
+For the perspective of the SafeHome app user, however, I would suggest presenting the EALB_ratio variable (the expected damages to buildings as a fraction of the buildings' value) instead or in addition to the risk index. For primarily residential areas in particular, this is the metric that would most approach the question: "How much earthquakes could damage a typical home in my census tract?"
+
+Finally, I would suggest perhaps to still consult with some local earthquake experts to make sure the map makes sense, since a nationally-produced map, even if it provides data at the tract level, may not always reflect local particularities.
