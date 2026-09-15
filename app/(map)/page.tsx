@@ -25,6 +25,10 @@ const Home = async () => {
     type: "FeatureCollection",
     features: [],
   };
+  let femaData: FeatureCollection<Geometry, GeoJsonProperties> = {
+    type: "FeatureCollection",
+    features: [],
+  };
 
   try {
     [softStoryData, tsunamiData, liquefactionData] = await Promise.all([
@@ -43,6 +47,7 @@ const Home = async () => {
           softStoryData={softStoryData}
           tsunamiData={tsunamiData}
           liquefactionData={liquefactionData}
+          femaData={femaData}
         />
       </Suspense>
     </Flex>

@@ -25,7 +25,7 @@ interface AddressMapperProps {
 }
 
 export type LayerToggleObjProps = {
-  layerId: string;
+  layerIds: string[];
   toggleState: boolean;
 };
 
@@ -74,7 +74,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
   );
 
   const [layerToggleObj, setLayerToggleObj] = useState<LayerToggleObjProps>({
-    layerId: "",
+    layerIds: [],
     toggleState: true,
   });
 

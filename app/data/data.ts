@@ -1,5 +1,5 @@
 import { HeadingProps } from "@/components/heading";
-import { HazardProps } from "@/components/mobile-card-hazard";
+import type { HazardProps } from "@/components/card-hazard";
 
 // TODO: break this up into multiple files
 // TODO: separate eg styling from content if it makes sense to
@@ -490,5 +490,3 @@ export const PillData = [
     noData: "No Data",
   },
 ];
-
-export const LayerIds = ["softStoriesLayer", "seismicLayer", "tsunamiLayer"];

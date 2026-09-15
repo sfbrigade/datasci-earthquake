@@ -24,7 +24,9 @@ const mapOptions: Omit<MapOptions, "container"> = {
     // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
     basemap: {
       // 'default', 'faded', or 'monochrome'
-      theme: "monochrome",
+      theme: "faded",
+      lightPreset: "dawn",
+      colorRoads: "#fefefe", // matches the lightPreset "dawn" basemap so roads appear invisible with theme "monochrome"
     },
   },
 };
@@ -117,29 +119,80 @@ const Map: React.FC<MapProps> = ({
 
         map.addSource("soft-stories", { type: "geojson", data: softStoryData });
 
+        map.addSource("fema-risk", {
+          type: "geojson",
+          data: "/data/EarthquakeRisk.geojson",
+        });
+
+        // FEMA earthquake risk — broad background layer
         map.addLayer({
-          id: "tsunamiLayer",
-          source: "tsunami",
+          id: "femaRiskLayer",
+          source: "fema-risk",
           type: "fill",
           slot: "middle",
           paint: {
-            "fill-color": "#63B3ED", // blue/300
-            "fill-opacity": 0.25, // 50% opacity
+            "fill-color": "#BE123C",
+
+            "fill-opacity": [
+              "match",
+              ["get", "ERQK_RISKR"],
+
+              "Relatively Low",
+              0.015,
+              "Relatively Moderate",
+              0.035,
+              "Relatively High",
+              0.08,
+              "Very High",
+              0.18,
+
+              0,
+            ],
           },
         });
 
-        // Add layers
+        // Liquefaction — extremely faint interior tint
         map.addLayer({
-          id: "seismicLayer",
+          id: "seismicBackgroundLayer",
           source: "seismic",
           type: "fill",
           slot: "middle",
           paint: {
-            "fill-color": "#F6AD55", // orange/300
-            "fill-opacity": 0.5, // 50% opacity
+            "fill-color": "#F6AD55",
+            "fill-opacity": 0.04,
           },
         });
 
+        // Liquefaction — dark edge on OUTSIDE of polygon
+        map.addLayer({
+          id: "seismicOuterLayer",
+          source: "seismic",
+          type: "line",
+          slot: "middle",
+          paint: {
+            "line-color": "#C05621",
+            "line-width": 2,
+            "line-offset": -1,
+            "line-opacity": 0.9,
+          },
+        });
+
+        // Liquefaction — softer/light band extending INSIDE polygon
+        map.addLayer({
+          id: "seismicLayer",
+          source: "seismic",
+          type: "line",
+          slot: "middle",
+          paint: {
+            "line-color": "#F6AD55",
+            "line-width": 6,
+            "line-offset": 3,
+            "line-opacity": 0.35,
+            "line-blur": 0.75,
+          },
+        });
+
+        // Soft-story properties — top
         map.addLayer({
           id: "softStoriesLayer",
           source: "soft-stories",
@@ -149,8 +202,37 @@ const Map: React.FC<MapProps> = ({
             "circle-radius": 4.5,
             "circle-stroke-width": 1,
             "circle-stroke-color": "#FFFFFF",
-            "circle-color": "#A0AEC0", // gray/400
+            "circle-color": "#A0AEC0",
           },
+        });
+
+        // Tsunami depends on the hatch image, but the other hazard layers do not.
+        map.loadImage("/images/tsunami-hatch-fine-16.png", (error, image) => {
+          if (error) {
+            console.error("Failed to load tsunami hatch:", error);
+            return;
+          }
+
+          if (!image) return;
+
+          if (!map.hasImage("tsunami-hatch")) {
+            map.addImage("tsunami-hatch", image);
+          }
+
+          if (!map.getLayer("tsunamiLayer")) {
+            map.addLayer(
+              {
+                id: "tsunamiLayer",
+                source: "tsunami",
+                type: "fill",
+                slot: "middle",
+                paint: {
+                  "fill-pattern": "tsunami-hatch",
+                },
+              },
+              "seismicOuterLayer"
+            );
+          }
         });
 
         map.on("error", (e) => {
@@ -168,6 +250,25 @@ const Map: React.FC<MapProps> = ({
           }
         });
       });
+
+      const updateBasemapDetail = () => {
+        const detailed = map.getZoom() >= 13;
+
+        map.setConfigProperty("basemap", "showRoadLabels", detailed);
+
+        map.setConfigProperty("basemap", "showPedestrianRoads", detailed);
+
+        map.setConfigProperty("basemap", "showPointOfInterestLabels", detailed);
+
+        map.setConfigProperty(
+          "basemap",
+          "colorRoads",
+          detailed ? "#cccccc" : "#fefefe"
+        );
+      };
+
+      map.on("zoomend", updateBasemapDetail);
+      updateBasemapDetail();
     } else {
       // subsequent passes: update map
       const map = mapRef.current;
@@ -208,17 +309,17 @@ const Map: React.FC<MapProps> = ({
     const handleToggleLayers = () => {
       if (!mapRef.current) return;
       const map = mapRef.current;
+      const newVisibility = layerToggleObj.toggleState ? "visible" : "none";
 
-      const layerId = layerToggleObj.layerId;
-
-      if (layerId && map.getLayer(layerId)) {
-        const newVisibility = layerToggleObj.toggleState ? "visible" : "none";
-        // sets new visibility property value for layer, creating the "toggling" effect
-        map.setLayoutProperty(layerId, "visibility", newVisibility);
-      }
+      layerToggleObj.layerIds.forEach((layerId) => {
+        if (map.getLayer(layerId)) {
+          // sets new visibility property value for each layer in a hazard visualization
+          map.setLayoutProperty(layerId, "visibility", newVisibility);
+        }
+      });
     };
 
-    if (layerToggleObj.layerId != "") handleToggleLayers();
+    if (layerToggleObj.layerIds.length > 0) handleToggleLayers();
   }, [layerToggleObj]); // re-runs every time state changes
 
   return <Box ref={mapContainerRef} w="full" h="full" />;
