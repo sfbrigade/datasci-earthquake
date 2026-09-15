@@ -7,7 +7,6 @@ import {
   fetchSoftStories,
   fetchTsunami,
   fetchLiquefaction,
-  fetchFema,
 } from "../api/services";
 
 // NOTE: UI changes to this page ought to be reflected in its suspense skeleton `home-skeleton.tsx` and vice versa
@@ -32,13 +31,11 @@ const Home = async () => {
   };
 
   try {
-    [softStoryData, tsunamiData, liquefactionData, femaData] =
-      await Promise.all([
-        fetchSoftStories(),
-        fetchTsunami(),
-        fetchLiquefaction(),
-        fetchFema(),
-      ]);
+    [softStoryData, tsunamiData, liquefactionData] = await Promise.all([
+      fetchSoftStories(),
+      fetchTsunami(),
+      fetchLiquefaction(),
+    ]);
   } catch (error: any) {
     console.error("Error: ", error);
   }
