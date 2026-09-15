@@ -16,11 +16,7 @@ export const hazardMapConfigByName: Record<string, HazardMapConfig> = {
   },
   liquefaction: {
     legend: "liquefaction",
-    layerIds: [
-      "seismicBackgroundLayer",
-      "seismicOuterLayer",
-      "seismicLayer",
-    ],
+    layerIds: ["seismicBackgroundLayer", "seismicOuterLayer", "seismicLayer"],
   },
   tsunami: {
     legend: "tsunami",

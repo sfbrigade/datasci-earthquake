@@ -37,6 +37,7 @@ interface MapProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
+  femaRiskData: FeatureCollection<Geometry>;
   layerToggleObj: LayerToggleObjProps;
 }
 
@@ -59,6 +60,7 @@ const Map: React.FC<MapProps> = ({
   softStoryData,
   tsunamiData,
   liquefactionData,
+  femaRiskData,
   layerToggleObj,
 }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -119,11 +121,7 @@ const Map: React.FC<MapProps> = ({
 
         map.addSource("soft-stories", { type: "geojson", data: softStoryData });
 
-        map.addSource("fema-risk", {
-          type: "geojson",
-          data: "/data/EarthquakeRisk.geojson",
-        });
-
+        map.addSource("fema-risk", { type: "geojson", data: femaRiskData });
         // FEMA earthquake risk — broad background layer
         map.addLayer({
           id: "femaRiskLayer",
@@ -303,7 +301,15 @@ const Map: React.FC<MapProps> = ({
       }
       return;
     }
-  }, [lon, lat, address, liquefactionData, softStoryData, tsunamiData]);
+  }, [
+    lon,
+    lat,
+    address,
+    liquefactionData,
+    softStoryData,
+    tsunamiData,
+    femaRiskData,
+  ]);
 
   useEffect(() => {
     const handleToggleLayers = () => {

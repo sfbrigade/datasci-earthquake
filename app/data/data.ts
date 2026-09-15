@@ -9,18 +9,16 @@ type HazardPropsCollection = HazardProps[];
 export const Hazards: HazardPropsCollection = [
   {
     id: 0,
-    name: "FEMAmaplayer",
+    name: "femaRisk",
     title: "FEMA map layer",
     description: "FEMA map layer",
-    info: [
-      "FEMA map layer",
-    ],
+    info: ["FEMA map layer"],
     link: {
-      label: "Soft story dataset",
+      label: "FEMA dataset",
       url: "https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data",
     },
     icon: "circle",
-    iconColor: "grey.400",
+    iconColor: "blue.400",
   },
   {
     id: 1,
@@ -165,6 +163,12 @@ export const mockAddressHazardData = [
 ];
 
 export const DataInfoLinks = [
+  {
+    id: 0,
+    name: "femaRisk",
+    label: "Fema Risk Dataset",
+    url: "https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data",
+  },
   {
     id: 1,
     name: "softStory",
@@ -490,3 +494,5 @@ export const PillData = [
     noData: "No Data",
   },
 ];
+
+export const LayerIds = ["softStoriesLayer", "seismicLayer", "tsunamiLayer"];
