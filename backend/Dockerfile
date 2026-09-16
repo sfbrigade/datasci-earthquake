@@ -18,7 +18,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /
+WORKDIR /app
 
 # Create a non-privileged user that the app will run under.
 ARG UID=1001
@@ -71,16 +71,21 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Add the virtual environment, created above by uv sync, to PATH 
 # (so Python uses the installed packages)
-ENV VIRTUAL_ENV=/.venv
+ENV VIRTUAL_ENV=/app/.venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# Ensure Python can resolve backend and api packages regardless of how the container is run
+# (e.g. docker run directly, Railway, CI — not just via compose.yaml)
+ENV PYTHONPATH=/app
 
 # Copy application source code after dependency install for Docker layer caching.
 # Changes to source files won't invalidate the cached dependency layer above.
-COPY api /api
-COPY backend ./backend
+# --chown ensures appuser owns the files and can write to them (e.g. pytest cache, temp files)
+COPY --chown=appuser:appuser api ./api
+COPY --chown=appuser:appuser backend ./backend
 
 # Copy pytest config so log capture (used by some tests) works inside the container.
-COPY pytest.ini .
+COPY --chown=appuser:appuser pytest.ini .
 
 # Make startup script executable (called by compose.yaml at container start).
 RUN chmod +x ./backend/etl/startup.sh
