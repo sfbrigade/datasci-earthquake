@@ -36,6 +36,14 @@ create table if not exists tsunami_zones (
     update_timestamp timestamp
 );
 
+create table if not exists earthquake_risk (
+    tract_fips varchar(255) primary key,
+    geometry Geometry(multipolygon, 4326) not null,
+    risk_score float,
+    risk_rating varchar(255),
+    update_timestamp timestamp with time zone not null default now()
+);
+
 create table if not exists soft_story_properties (
     identifier integer not null,
     block varchar(255),
@@ -90,12 +98,19 @@ insert into liquefaction_zones (identifier, geometry, liq, shape_length, shape_a
                                 'H', 123.4, 432.1, '2024/12/19 1:15:00 PM')                                
                                 ;
 
-insert into tsunami_zones (identifier, evacuate, county, global_id, shape_length, shape_area, geometry, update_timestamp) values 
+insert into tsunami_zones (identifier, evacuate, county, global_id, shape_length, shape_area, geometry, update_timestamp) values
                                 (9, 'Yes, Tsunami Hazard Area', 'San Francisco', 'd63b7111-a144-49ca-aa79-69f69721e3d3', 123.45, 67.8, ST_GeomFromText('MULTIPOLYGON(
                                     ((-122.5 37.7, -122.5 37.9, -122.3 37.9, -122.3 37.7, -122.5 37.7)),
                                     ((-122.4 37.75, -122.4 37.85, -122.35 37.85, -122.35 37.75, -122.4 37.75))
-                                )', 4326), 
-                                '2024/12/16 5:10:00 PM');                                
+                                )', 4326),
+                                '2024/12/16 5:10:00 PM');
+
+insert into earthquake_risk (tract_fips, geometry, risk_score, risk_rating, update_timestamp) values
+                                ('06075010101', ST_GeomFromText('MULTIPOLYGON(
+                                    ((-122.5 37.7, -122.5 37.9, -122.3 37.9, -122.3 37.7, -122.5 37.7)),
+                                    ((-122.4 37.75, -122.4 37.85, -122.35 37.85, -122.35 37.75, -122.4 37.75))
+                                )', 4326),
+                                98.78, 'Very High', '2024/12/16 5:10:00 PM');
 
 --add update_timestamp column after sfdata_loaded_at
 --this column will be filled with data generated at runtime by our code

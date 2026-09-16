@@ -60,12 +60,15 @@ jobs:
           PID3=$!
           ENVIRONMENT=prod timeout 20m uv run --project backend -m backend.etl.landslide_data_handler &
           PID4=$!
+          ENVIRONMENT=prod timeout 20m uv run --project backend -m backend.etl.fema_data_handler &
+          PID5=$!
 
           FAILED=0
           wait $PID1 || { echo "tsunami_data_handler failed"; FAILED=1; }
           wait $PID2 || { echo "soft_story_properties_data_handler failed"; FAILED=1; }
           wait $PID3 || { echo "liquefaction_data_handler failed"; FAILED=1; }
           wait $PID4 || { echo "landslide_data_handler failed"; FAILED=1; }
+          wait $PID5 || { echo "fema_data_handler failed"; FAILED=1; }
           [ "$FAILED" -eq 0 ] || exit 1
 
       - name: Commit & Push Changes
