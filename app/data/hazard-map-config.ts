@@ -20,7 +20,7 @@ export const hazardMapConfigByName: Record<string, HazardMapConfig> = {
   },
   tsunami: {
     legend: "tsunami",
-    layerIds: ["tsunamiLayer"],
+    layerIds: ["tsunamiLayer", "tsunamiInnerLayer"],
   },
   femaRisk: {
     legend: "femaRisk",

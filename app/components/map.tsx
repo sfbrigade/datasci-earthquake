@@ -24,7 +24,7 @@ const mapOptions: Omit<MapOptions, "container"> = {
     // Initial configuration for the Mapbox Standard style set above. By default, its ID is `basemap`.
     basemap: {
       // 'default', 'faded', or 'monochrome'
-      theme: "faded",
+      theme: "monochrome",
       lightPreset: "day",
       colorRoads: "#fefefe", // matches the lightPreset "dawn" basemap so roads appear invisible with theme "monochrome"
     },
@@ -122,6 +122,7 @@ const Map: React.FC<MapProps> = ({
         map.addSource("soft-stories", { type: "geojson", data: softStoryData });
 
         map.addSource("fema-risk", { type: "geojson", data: femaRiskData });
+
         // FEMA earthquake risk — broad background layer
         map.addLayer({
           id: "femaRiskLayer",
@@ -190,6 +191,17 @@ const Map: React.FC<MapProps> = ({
           },
         });
 
+        map.addLayer({
+          id: "seismicInnerLayer",
+          source: "fema-risk",
+          type: "fill",
+          slot: "middle",
+          paint: {
+            "fill-color": "#F6AD55",
+            "fill-opacity": 0.025,
+          },
+        });
+
         // Soft-story properties — top
         map.addLayer({
           id: "softStoriesLayer",
@@ -230,6 +242,17 @@ const Map: React.FC<MapProps> = ({
               },
               "seismicOuterLayer"
             );
+
+            map.addLayer({
+              id: "tsunamiInnerLayer",
+              source: "tsunami",
+              type: "fill",
+              slot: "middle",
+              paint: {
+                "fill-color": "#63B3ED",
+                "fill-opacity": 0.25,
+              },
+            });
           }
         });
 
