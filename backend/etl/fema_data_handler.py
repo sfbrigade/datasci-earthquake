@@ -1,7 +1,7 @@
 import json
 from backend.etl.data_handler import DataHandler
 from backend.api.models.earthquake_risk import EarthquakeRisk
-from shapely.geometry import shape, mapping
+from shapely.geometry import shape, mapping, MultiPolygon, Polygon
 from geoalchemy2.shape import from_shape
 
 _SF_EARTHQUAKE_RISK_PATH = "backend/etl/data/sf_earthquake_risk.geojson"
@@ -41,6 +41,11 @@ class _FemaDataHandler(DataHandler):
             properties = feature.get("properties", {})
             geometry = feature.get("geometry", {})
             multipolygon = shape(geometry)
+            if isinstance(multipolygon, Polygon):
+                # The FEMA extract mixes single-part Polygon and MultiPolygon
+                # tracts; normalize to MultiPolygon to match the
+                # Geometry("MULTIPOLYGON", ...) column type.
+                multipolygon = MultiPolygon([multipolygon])
 
             tract_fips = properties.get("TRACTFIPS")
             risk_score = properties.get("ERQK_RISKS")
@@ -80,6 +85,7 @@ def main():
         handler.bulk_insert_data(earthquake_risk_objects, "tract_fips")
     except Exception as e:
         print(f"Failed to load FEMA earthquake risk data: {e}")
+        raise
 
 
 if __name__ == "__main__":
