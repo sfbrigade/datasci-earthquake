@@ -2,6 +2,7 @@
 
 import {
   Text,
+  Box,
   HStack,
   VStack,
   Link,
@@ -55,6 +56,12 @@ const CardHazard: React.FC<CardHazardProps> = ({
   fullWidth = false,
 }) => {
   const { id, title, name, description, icon, iconColor } = hazard;
+  const riskRanges = [
+    { label: "73–89", color: "#FFF7C2" },
+    { label: "90–94", color: "#FFEE8A" },
+    { label: "95–96", color: "#FFE05A" },
+    { label: "97–100", color: "#FFD21F" },
+  ];
   const { exists } = hazardData || {};
   const pillTextOptions = PillData.find((object) => object.name === name) ?? {
     trueData: "No Data",
@@ -152,6 +159,19 @@ const CardHazard: React.FC<CardHazardProps> = ({
             </Switch.Root>
           </Card.Header>
           <Card.Body textAlign="left" p="0" mb="1.5">
+            {hazard.name === "femaRisk" && (
+              <HStack gap="2px" width="100%" mb={5}>
+                {riskRanges.map((range) => (
+                  <Box
+                    key={range.label}
+                    flex="1"
+                    height="10px"
+                    bg={range.color}
+                    borderRadius="0"
+                  />
+                ))}
+              </HStack>
+            )}
             <Text textStyle="cardTextMedium" layerStyle="text">
               {description}
             </Text>

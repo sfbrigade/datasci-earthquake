@@ -10,12 +10,19 @@ export const Hazards: HazardPropsCollection = [
   {
     id: 0,
     name: "femaRisk",
-    title: "FEMA map layer",
-    description: "FEMA map layer",
-    info: ["FEMA map layer"],
+    title: "Earthquake risk score",
+    description:
+      "All of San Francisco has high earthquake risk, but some areas have more than others.",
+    info: [
+      "The U.S. government ranks every area in the country by earthquake risk. This is a ranking, not the chance of an earthquake.",
+      "Every part of SF scores 73 or higher, so we sort scores into four levels to compare areas within the SF city.",
+      "The score looks at how hard the ground could shake, the buildings and people in the area, and how well the community could recover.",
+      "It rates your area, not your building. Older buildings that haven't been reinforced may be at higher risk.",
+    ],
     link: {
-      label: "FEMA dataset",
-      url: "https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data",
+      label:
+        "Earthquake risk dataset (Federal Emergency Management Agency's link)",
+      url: "https://pmarchand1.github.io/sf-earthquake-data/eda_fema_nri.html",
     },
     icon: "circle",
     iconColor: "blue.400",
