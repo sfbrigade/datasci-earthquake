@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 
 from backend.etl.data_handler import DataHandler, get_geojson_prefix
@@ -51,6 +52,8 @@ class _FemaDataHandler(DataHandler):
                 self.logger.warning("Replacing invalid FEMA GeoJSON")
         geojson_path.parent.mkdir(parents=True, exist_ok=True)
         self._save_geojson_file(features, geojson_path)
+        if os.getenv("ENVIRONMENT") == "prod":
+            self._update_last_export_time_in_db()
 
     def _save_geojson_file(self, features: dict, geojson_path: Path) -> None:
         """
