@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from geoalchemy2.shape import from_shape
 from shapely.geometry import Point
 from backend.database.session import get_db
-from ..schemas.fema_schemas import FemaZoneView
+from ..schemas.fema_schemas import FemaFeature, FemaFeatureCollection, FemaZoneView
 from backend.api.models.earthquake_risk import EarthquakeRisk
 from backend.api.exceptions import HazardCheckError
 import logging
@@ -21,6 +21,18 @@ router = APIRouter(
     prefix="/api/fema",
     tags=[Tags.FEMA],
 )
+
+
+@router.get("", response_model=FemaFeatureCollection, response_model_exclude_unset=True)
+def get_fema_zones(db: Session = Depends(get_db)):
+    """Retrieve all FEMA census tracts as GeoJSON for the map layer."""
+    zones = db.query(EarthquakeRisk).order_by(EarthquakeRisk.tract_fips).all()
+    if not zones:
+        raise HTTPException(status_code=404, detail="No FEMA zones found")
+    return FemaFeatureCollection(
+        type="FeatureCollection",
+        features=[FemaFeature.from_sqlalchemy_model(zone) for zone in zones],
+    )
 
 
 @router.get("/get-fema-zone", response_model=FemaZoneView)

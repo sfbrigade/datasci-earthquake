@@ -1,6 +1,36 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from datetime import datetime
+import json
+from geojson_pydantic import Feature, FeatureCollection, MultiPolygon
+from backend.api.models.earthquake_risk import EarthquakeRisk
+
+
+class FemaProperties(BaseModel):
+    tract_fips: str
+    fema_risk_rating: Optional[str] = None
+    fema_risk_score: Optional[float] = None
+
+
+class FemaFeature(Feature):
+    geometry: MultiPolygon
+    properties: FemaProperties
+
+    @staticmethod
+    def from_sqlalchemy_model(zone: EarthquakeRisk):
+        return FemaFeature(
+            type="Feature",
+            geometry=json.loads(zone.multipolygon_as_geosjon),
+            properties=FemaProperties(
+                tract_fips=zone.tract_fips,
+                fema_risk_rating=zone.risk_rating,
+                fema_risk_score=zone.risk_score,
+            ),
+        )
+
+
+class FemaFeatureCollection(FeatureCollection):
+    features: list[FemaFeature]
 
 
 class FemaZoneView(BaseModel):

@@ -1,4 +1,5 @@
 import json
+import copy
 from pathlib import Path
 from unittest.mock import patch
 
@@ -119,6 +120,62 @@ def test_parse_data_normalizes_polygon_to_multipolygon():
     assert shape(second_feature["geometry"]).equals(
         shape(_SAMPLE_GEOJSON["features"][1]["geometry"])
     )
+
+
+def test_parse_data_repairs_self_intersecting_polygon():
+    sample = copy.deepcopy(_SAMPLE_GEOJSON)
+    sample["features"][0]["geometry"] = {
+        "type": "Polygon",
+        "coordinates": [[[0, 0], [2, 2], [0, 2], [2, 0], [0, 0]]],
+    }
+    rows, exported = _make_handler().parse_data(sample)
+    geometry = shape(exported["features"][0]["geometry"])
+    assert geometry.is_valid
+    assert geometry.geom_type == "MultiPolygon"
+    assert geometry.area == 2
+    assert to_shape(rows[0]["geometry"]).equals(geometry)
+
+
+def test_parse_data_drops_line_left_by_repair():
+    sample = copy.deepcopy(_SAMPLE_GEOJSON)
+    sample["features"][0]["geometry"] = {
+        "type": "Polygon",
+        "coordinates": [[[0, 0], [1, 0], [1, 1], [3, 3], [1, 1], [0, 1], [0, 0]]],
+    }
+    rows, exported = _make_handler().parse_data(sample)
+    geometry = shape(exported["features"][0]["geometry"])
+    assert geometry.is_valid
+    assert geometry.geom_type == "MultiPolygon"
+    assert geometry.area == 1
+
+
+def test_export_refreshes_existing_file(tmp_path, monkeypatch):
+    monkeypatch.setenv("DATA_GEOJSON_PATH", f"{tmp_path}/")
+    monkeypatch.setenv("ENVIRONMENT", "dev_docker")
+    handler = _make_handler()
+    _, exported = handler.parse_data(_SAMPLE_GEOJSON)
+    handler.export_geojson_if_changed(exported)
+    exported["features"][0]["properties"]["fema_risk_score"] = 99.0
+    handler.export_geojson_if_changed(exported)
+    path = tmp_path / "EarthquakeRisk.geojson"
+    assert json.loads(path.read_text()) == json.loads(json.dumps(exported))
+    modified = path.stat().st_mtime_ns
+    handler.export_geojson_if_changed(exported)
+    assert path.stat().st_mtime_ns == modified
+
+
+def test_committed_geojson_has_valid_sf_tracts():
+    path = Path(__file__).parents[3] / "public/data/EarthquakeRisk.geojson"
+    features = json.loads(path.read_text())["features"]
+    ids = [feature["properties"]["tract_fips"] for feature in features]
+    assert len(ids) == len(set(ids)) == 241
+    for feature in features:
+        properties = feature["properties"]
+        assert properties["tract_fips"].startswith("06075")
+        assert 0 <= properties["fema_risk_score"] <= 100
+        geometry = shape(feature["geometry"])
+        assert geometry.is_valid, properties["tract_fips"]
+        assert not geometry.is_empty
 
 
 def test_main_reraises_on_failure():
