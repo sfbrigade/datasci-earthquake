@@ -64,6 +64,7 @@ const mockProps = {
   softStoryData: mockFeatureCollection,
   tsunamiData: mockFeatureCollection,
   liquefactionData: mockFeatureCollection,
+  femaRiskData: mockFeatureCollection,
 };
 
 const mockSetSearchParams = (params: Record<string, string>) => {
