@@ -1,11 +1,70 @@
 from backend.api.tests.test_session_config import test_engine, test_session, client
 import logging
+import json
+from pathlib import Path
 from .utils import assert_database_error_returns_500
+from backend.api.models.earthquake_risk import EarthquakeRisk
+from shapely.geometry import shape, Point
+from backend.etl.fema_data_handler import _FemaDataHandler, _NRI_CENSUS_TRACTS_URL
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
+
+
+def test_get_fema_zones(client):
+    response = client.get("/api/fema")
+    assert response.status_code == 200
+    collection = response.json()
+    assert set(collection) == {"type", "features"}
+    assert collection["type"] == "FeatureCollection"
+    assert len(collection["features"]) == 1
+    feature = collection["features"][0]
+    assert set(feature) == {"type", "geometry", "properties"}
+    assert feature["geometry"]["type"] == "MultiPolygon"
+    assert shape(feature["geometry"]).intersects(Point(-122.4, 37.8))
+    lookup = client.get("/api/fema/get-fema-zone?lon=-122.4&lat=37.8").json()
+    assert feature["properties"] == {
+        "tract_fips": "06075010101",
+        "fema_risk_rating": lookup["risk_rating"],
+        "fema_risk_score": lookup["risk_score"],
+    }
+
+
+def test_get_fema_zones_empty(client, test_session):
+    test_session.query(EarthquakeRisk).delete()
+    response = client.get("/api/fema")
+    assert response.status_code == 404
+    assert response.json()["detail"] == "No FEMA zones found"
+
+
+def test_get_fema_zones_missing_rating(client, test_session):
+    test_session.query(EarthquakeRisk).update(
+        {EarthquakeRisk.risk_rating: None, EarthquakeRisk.risk_score: None}
+    )
+    response = client.get("/api/fema")
+    assert response.status_code == 200
+    properties = response.json()["features"][0]["properties"]
+    assert properties["fema_risk_rating"] is None
+    assert properties["fema_risk_score"] is None
+
+
+def test_get_fema_zones_matches_export(client, test_session):
+    sample_path = (
+        Path(__file__).parents[2] / "etl/tests/fixtures/fema_live_sample.geojson"
+    )
+    handler = _FemaDataHandler(_NRI_CENSUS_TRACTS_URL, EarthquakeRisk)
+    rows, exported = handler.parse_data(json.loads(sample_path.read_text()))
+    test_session.query(EarthquakeRisk).delete()
+    test_session.add_all(EarthquakeRisk(**row) for row in rows)
+    test_session.flush()
+
+    response = client.get("/api/fema")
+    assert response.status_code == 200
+    expected = json.loads(json.dumps(exported))
+    expected["features"].sort(key=lambda feature: feature["properties"]["tract_fips"])
+    assert response.json() == expected
 
 
 def test_get_fema_zone(client, caplog):

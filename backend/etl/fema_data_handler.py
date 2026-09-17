@@ -4,6 +4,7 @@ from pathlib import Path
 from backend.etl.data_handler import DataHandler, get_geojson_prefix
 from backend.api.models.earthquake_risk import EarthquakeRisk
 from shapely.geometry import shape, mapping, MultiPolygon, Polygon
+from shapely.validation import make_valid
 from geoalchemy2.shape import from_shape
 from geojson_pydantic import FeatureCollection
 from pydantic import ValidationError
@@ -16,12 +17,40 @@ _NRI_CENSUS_TRACTS_URL = (
 _SF_STCOFIPS = "06075"
 
 
+def _polygons_only(geometry):
+    """make_valid can return a GeometryCollection with stray lines or points."""
+    if isinstance(geometry, (Polygon, MultiPolygon)):
+        return geometry
+    polygons = []
+    for part in getattr(geometry, "geoms", []):
+        if isinstance(part, Polygon):
+            polygons.append(part)
+        elif isinstance(part, MultiPolygon):
+            polygons.extend(part.geoms)
+    return MultiPolygon(polygons)
+
+
 class _FemaDataHandler(DataHandler):
     """
     Fetches, parses and loads FEMA National Risk Index earthquake risk data
     for San Francisco census tracts from FEMA's public ArcGIS FeatureServer
     (the backing service for FEMA's own NRI map viewer).
     """
+
+    def export_geojson_if_changed(self, features: dict) -> None:
+        """Rewrite the GeoJSON file when the fetched data differs from what's on disk."""
+        geojson_path = Path(f"{get_geojson_prefix()}{self.table.__name__}.geojson")
+        if geojson_path.exists():
+            try:
+                # mapping() returns tuples, the file has lists
+                if json.loads(geojson_path.read_text()) == json.loads(
+                    json.dumps(features)
+                ):
+                    return
+            except json.JSONDecodeError:
+                self.logger.warning("Replacing invalid FEMA GeoJSON")
+        geojson_path.parent.mkdir(parents=True, exist_ok=True)
+        self._save_geojson_file(features, geojson_path)
 
     def _save_geojson_file(self, features: dict, geojson_path: Path) -> None:
         """
@@ -60,11 +89,20 @@ class _FemaDataHandler(DataHandler):
             properties = feature.get("properties", {})
             geometry = feature.get("geometry", {})
             multipolygon = shape(geometry)
+            if not multipolygon.is_valid:
+                self.logger.warning(
+                    "Repairing FEMA tract geometry: %s", properties.get("TRACTFIPS")
+                )
+                multipolygon = _polygons_only(make_valid(multipolygon))
             if isinstance(multipolygon, Polygon):
                 # The FEMA extract mixes single-part Polygon and MultiPolygon
                 # tracts; normalize to MultiPolygon to match the
                 # Geometry("MULTIPOLYGON", ...) column type.
                 multipolygon = MultiPolygon([multipolygon])
+            if not isinstance(multipolygon, MultiPolygon) or multipolygon.is_empty:
+                raise ValueError(
+                    f"Invalid polygon geometry for FEMA tract {properties.get('TRACTFIPS')}"
+                )
 
             tract_fips = properties.get("TRACTFIPS")
             risk_score = properties.get("ERQK_RISKS")
