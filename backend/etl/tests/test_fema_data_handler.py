@@ -149,19 +149,38 @@ def test_parse_data_drops_line_left_by_repair():
     assert geometry.area == 1
 
 
-def test_export_refreshes_existing_file(tmp_path, monkeypatch):
+@pytest.mark.parametrize("environment", ["dev_docker", "prod"])
+def test_export_refreshes_existing_file(tmp_path, monkeypatch, environment):
     monkeypatch.setenv("DATA_GEOJSON_PATH", f"{tmp_path}/")
-    monkeypatch.setenv("ENVIRONMENT", "dev_docker")
+    monkeypatch.setenv("ENVIRONMENT", environment)
     handler = _make_handler()
     _, exported = handler.parse_data(_SAMPLE_GEOJSON)
-    handler.export_geojson_if_changed(exported)
-    exported["features"][0]["properties"]["fema_risk_score"] = 99.0
-    handler.export_geojson_if_changed(exported)
-    path = tmp_path / "EarthquakeRisk.geojson"
-    assert json.loads(path.read_text()) == json.loads(json.dumps(exported))
-    modified = path.stat().st_mtime_ns
-    handler.export_geojson_if_changed(exported)
-    assert path.stat().st_mtime_ns == modified
+    with patch.object(handler, "_update_last_export_time_in_db") as update_metadata:
+        handler.export_geojson_if_changed(exported)
+        exported["features"][0]["properties"]["fema_risk_score"] = 99.0
+        handler.export_geojson_if_changed(exported)
+        path = tmp_path / "EarthquakeRisk.geojson"
+        assert json.loads(path.read_text()) == json.loads(json.dumps(exported))
+        modified = path.stat().st_mtime_ns
+        handler.export_geojson_if_changed(exported)
+        assert path.stat().st_mtime_ns == modified
+        assert update_metadata.call_count == (2 if environment == "prod" else 0)
+
+
+def test_failed_export_does_not_update_metadata(tmp_path, monkeypatch):
+    monkeypatch.setenv("DATA_GEOJSON_PATH", f"{tmp_path}/")
+    monkeypatch.setenv("ENVIRONMENT", "prod")
+    handler = _make_handler()
+    _, exported = handler.parse_data(_SAMPLE_GEOJSON)
+    with (
+        patch.object(
+            handler, "_save_geojson_file", side_effect=OSError("Write failed")
+        ),
+        patch.object(handler, "_update_last_export_time_in_db") as update_metadata,
+    ):
+        with pytest.raises(OSError, match="Write failed"):
+            handler.export_geojson_if_changed(exported)
+        update_metadata.assert_not_called()
 
 
 def test_committed_geojson_has_valid_sf_tracts():
