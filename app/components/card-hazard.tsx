@@ -36,7 +36,11 @@ export interface HazardProps {
 
 export interface CardHazardProps {
   hazard: HazardProps;
-  hazardData?: { exists?: boolean; last_updated?: string };
+  hazardData?: {
+    exists?: boolean;
+    last_updated?: string;
+    risk_rating?: string;
+  };
   showData: boolean;
   isHazardDataLoading: boolean;
   toggledStates: boolean[];
@@ -56,11 +60,17 @@ const CardHazard: React.FC<CardHazardProps> = ({
   fullWidth = false,
 }) => {
   const { id, title, name, description, icon, iconColor } = hazard;
+
+  // TODO: make this generic and not reliant on hazard.name === "femaRisk"
   const riskRanges = [
-    { label: "Lower", color: "femaRisk.lower" },
-    { label: "Moderate", color: "femaRisk.moderate" },
-    { label: "High", color: "femaRisk.high" },
-    { label: "Very High", color: "femaRisk.veryHigh" },
+    { name: "Relatively Lower", label: "Lower", color: "femaRisk.lower" },
+    {
+      name: "Relatively Moderate",
+      label: "Moderate",
+      color: "femaRisk.moderate",
+    },
+    { name: "Relatively High", label: "High", color: "femaRisk.high" },
+    { name: "Very High", label: "Very High", color: "femaRisk.veryHigh" },
   ] as const;
 
   const { exists } = hazardData || {};
@@ -77,9 +87,16 @@ const CardHazard: React.FC<CardHazardProps> = ({
   ) : showData ? (
     <Pill
       exists={exists}
-      trueData={pillTextOptions.trueData}
+      trueData={hazardData?.risk_rating || pillTextOptions.trueData}
       falseData={pillTextOptions.falseData}
       noData={pillTextOptions.noData}
+      variant={hazard.name === "femaRisk" ? "reverse" : "pill"}
+      pillBackgroundColor={
+        hazard.name === "femaRisk"
+          ? riskRanges.find((r) => r.name === hazardData?.risk_rating)?.color ||
+            undefined
+          : undefined
+      }
     />
   ) : (
     ""
