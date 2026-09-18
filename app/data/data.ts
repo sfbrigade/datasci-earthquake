@@ -15,13 +15,13 @@ export const Hazards: HazardPropsCollection = [
       "All of San Francisco has high earthquake risk, but some areas have more than others.",
     info: [
       "The U.S. government ranks every area in the country by earthquake risk. This is a ranking, not the chance of an earthquake.",
-      "Every part of SF scores 73 or higher, so we sort scores into four levels to compare areas within the SF city.",
+      "We sort scores into four levels to compare areas within the SF city.",
       "The score looks at how hard the ground could shake, the buildings and people in the area, and how well the community could recover.",
       "It rates your area, not your building. Older buildings that haven't been reinforced may be at higher risk.",
     ],
     link: {
       label:
-        "Earthquake risk dataset (Federal Emergency Management Agency's link)",
+        "This information is based on FEMA National Risk Index Data using field ERQK_RISKR",
       url: "https://pmarchand1.github.io/sf-earthquake-data/eda_fema_nri.html",
     },
     icon: "circle",

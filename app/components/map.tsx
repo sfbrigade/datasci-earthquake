@@ -131,7 +131,6 @@ const Map: React.FC<MapProps> = ({
           slot: "middle",
           paint: {
             "fill-color": "#BE123C",
-
             "fill-opacity": [
               "match",
               ["get", "ERQK_RISKR"],

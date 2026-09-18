@@ -245,7 +245,23 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
 });
 
 const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
-  // TODO: test what happens for dark mode (_light vs dark)
+  // TODO: tie to color palette?
+  colors: {
+    femaRisk: {
+      lower: {
+        value: { _light: "#BE123C04", _dark: "#BE123C04" },
+      },
+      moderate: {
+        value: { _light: "#BE123C09", _dark: "#BE123C09" },
+      },
+      high: {
+        value: { _light: "#BE123C14", _dark: "#BE123C14" },
+      },
+      veryHigh: {
+        value: { _light: "#BE123C2E", _dark: "#BE123C2E" },
+      },
+    },
+  },
   shadows: {
     card: {
       value: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}",

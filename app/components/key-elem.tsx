@@ -1,10 +1,4 @@
-import {
-  Box,
-  Stack,
-  Text,
-  Icon,
-  SystemStyleObject,
-} from "@chakra-ui/react";
+import { Box, Stack, Text, Icon, SystemStyleObject } from "@chakra-ui/react";
 import { HazardLegendKind } from "../data/hazard-map-config";
 
 type LegendSymbolProps = {
@@ -56,6 +50,7 @@ const LegendSymbol = ({ kind }: LegendSymbolProps) => {
           backgroundImage="url('/images/tsunami-hatch-fine-16.png')"
           backgroundRepeat="repeat"
           backgroundSize="16px 16px"
+          backgroundColor="#63B3ED40"
           border="1px solid rgba(43, 108, 176, 0.35)"
         />
       );

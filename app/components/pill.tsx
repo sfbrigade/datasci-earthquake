@@ -18,7 +18,7 @@ const Pill: React.FC<PillProps> = ({
   const getColor = () => {
     switch (exists) {
       case true:
-        return "red";
+        return "#C05621E6";
       case false:
         return "green";
       default:
