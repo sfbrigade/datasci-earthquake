@@ -200,6 +200,7 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     blueIconBackground: { value: "#eff4fc" },
     blueBackground: { value: "#2C5282" }, // blue/700
     tsunamiBlue: { value: "#63B3ED" }, // blue/300
+    landslideBrown: { value: "#B7791F" },
     lightGrey: { value: "#c8caceff" },
     labelGrey: { value: "#bfb9b9" },
     warningRed: { value: "#b53d37" },
