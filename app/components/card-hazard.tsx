@@ -156,7 +156,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
             >
               <Switch.HiddenInput />
               <Switch.Control />
-              <Switch.Label />
+              <Switch.Label srOnly>Show {title} on map</Switch.Label>
             </Switch.Root>
           </Card.Header>
           <Card.Body textAlign="left" p="0" mb="1.5">
@@ -180,7 +180,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
                       borderRight={
                         index < riskRanges.length - 1 ? "none" : "sm"
                       }
-                      borderColor="gray.500"
+                      borderColor="femaRisk.veryHigh"
                       borderRadius="none"
                     />
                   ))}

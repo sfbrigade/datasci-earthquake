@@ -136,7 +136,7 @@ const Map: React.FC<MapProps> = ({
           slot: "middle",
           // TODO: use mix of color and opacity tokens for this so legend etc matches up
           paint: {
-            "fill-color": "#BE123C",
+            "fill-color": resolveColorToken("colors.femaRisk"),
             "fill-opacity": [
               "match",
               ["get", "ERQK_RISKR"],

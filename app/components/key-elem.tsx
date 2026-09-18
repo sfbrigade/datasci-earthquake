@@ -73,6 +73,7 @@ const LegendSymbol = ({ kind }: LegendSymbolProps) => {
           backgroundImage="fema"
           border="sm"
           borderColor="femaRisk.veryHigh"
+          backgroundClip="padding-box"
         />
       );
   }

@@ -258,6 +258,9 @@ const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
       },
     },
     femaRisk: {
+      DEFAULT: {
+        value: "#BE123C",
+      },
       lower: {
         value: { _light: "#BE123C04", _dark: "#BE123C04" },
       },
@@ -269,6 +272,23 @@ const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
       },
       veryHigh: {
         value: { _light: "#BE123C2E", _dark: "#BE123C2E" },
+      },
+    },
+  },
+  // TODO: use opacity tokens below instead of having the opacity baked into the fema risk color tokens, as above
+  opacity: {
+    femaRisk: {
+      lower: {
+        value: { _light: "0.015", _dark: "0.015" },
+      },
+      moderate: {
+        value: { _light: "0.035", _dark: "0.035" },
+      },
+      high: {
+        value: { _light: "0.08", _dark: "0.08" },
+      },
+      veryHigh: {
+        value: { _light: "0.18", _dark: "0.18" },
       },
     },
   },
@@ -341,10 +361,23 @@ const globalCss: SystemConfig["globalCss"] = {
   },
 };
 
+const utilities = {
+  backgroundClip: {
+    shorthand: ["bgClip"],
+    values: ["text", "border-box", "padding-box", "content-box"],
+    transform(value: string) {
+      return value === "text"
+        ? { color: "transparent", backgroundClip: "text" }
+        : { backgroundClip: value };
+    },
+  },
+};
+
 const overridesConfig: SystemConfig = defineConfig({
   preflight: true, // explicitly enable reset styles (AKA preflight styles)
   globalCss,
   strictTokens: true,
+  utilities,
   theme: {
     textStyles,
     layerStyles,
