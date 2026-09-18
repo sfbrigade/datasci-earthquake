@@ -142,8 +142,6 @@ const Map: React.FC<MapProps> = ({
 
         map.addSource("tsunami", { type: "geojson", data: tsunamiData });
 
-        map.addSource("soft-stories", { type: "geojson", data: softStoryData });
-
         map.addSource("fema-risk", { type: "geojson", data: femaRiskData });
 
         // FEMA earthquake risk — broad background layer
@@ -211,20 +209,6 @@ const Map: React.FC<MapProps> = ({
             "line-offset": 3,
             "line-opacity": 0.35,
             "line-blur": 0.75,
-          },
-        });
-
-        // Soft-story properties — top
-        map.addLayer({
-          id: "softStoriesLayer",
-          source: "soft-stories",
-          type: "circle",
-          slot: "middle",
-          paint: {
-            "circle-radius": 4.5,
-            "circle-stroke-width": 1,
-            "circle-stroke-color": system.token("colors.white"),
-            "circle-color": system.token("colors.grey.400"),
           },
         });
 

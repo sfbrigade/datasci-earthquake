@@ -28,25 +28,6 @@ export const Hazards: HazardPropsCollection = [
     iconColor: "orange.300",
   },
   {
-    id: 1,
-    name: "softStory",
-    title: "Wooden soft story",
-    description:
-      "Wooden soft story buildings that haven't been reinforced may be at risk in an earthquake.",
-    info: [
-      "A wooden soft story building is a structure built before 1978 that contains an open-floor level, such as a garage or retail space, below one or more living spaces.",
-      "According to DataSF, there are 4,943 wooden soft story buildings in SF. But not all are at risk!",
-      "Some have been retrofitted to reinforce their lower levels and are generally considered earthquake-safe.",
-      "Our data doesn't currently include permit history, so some buildings flagged as at risk may have already been upgraded.",
-    ],
-    link: {
-      label: "Soft story dataset",
-      url: "https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data",
-    },
-    icon: "circle",
-    iconColor: "grey.400",
-  },
-  {
     id: 2,
     name: "liquefaction",
     title: "Liquefaction zones",
