@@ -4,6 +4,7 @@ import "@testing-library/jest-dom";
 
 import { Provider } from "../ui/provider";
 import Map from "../map";
+import type { LayerToggleObjProps } from "../address-mapper";
 
 const mockMapInstance = {
   touchZoomRotate: { disableRotation: jest.fn() },
@@ -19,6 +20,11 @@ const mockMapInstance = {
   resize: jest.fn(),
   getLayer: jest.fn(),
   setLayoutProperty: jest.fn(),
+  addSource: jest.fn(),
+  addLayer: jest.fn(),
+  loadImage: jest.fn(),
+  hasImage: jest.fn(() => false),
+  addImage: jest.fn(),
 };
 
 jest.mock("mapbox-gl", () => {
@@ -48,6 +54,10 @@ jest.mock("@/components/ui/toaster", () => ({
     create: jest.fn(),
     isVisible: jest.fn(() => false),
   },
+}));
+
+jest.mock("../../../styles/resolve-color-token", () => ({
+  resolveColorToken: jest.fn(() => "#0088cc"),
 }));
 
 const fc = {
@@ -194,4 +204,66 @@ describe("Map", () => {
 
     expect(mockMapInstance.setPadding).toHaveBeenCalledWith({ bottom: 0 });
   });
+
+  it.each([
+    { toggles: [], visibility: "visible" },
+    { toggles: [false], visibility: "none" },
+    { toggles: [false, true], visibility: "visible" },
+  ])(
+    "applies $visibility to the delayed tsunami hatch after toggles $toggles",
+    ({ toggles, visibility }) => {
+      const mapWithToggle = (layerToggleObj: LayerToggleObjProps) => (
+        <Provider>
+          <Map
+            lon={-122.4}
+            lat={37.8}
+            address="123 Main St"
+            softStoryData={fc}
+            tsunamiData={fc}
+            liquefactionData={fc}
+            femaRiskData={fc}
+            layerToggleObj={layerToggleObj}
+          />
+        </Provider>
+      );
+      const { rerender } = render(
+        mapWithToggle({ layerIds: [], toggleState: true })
+      );
+
+      act(() => {
+        const onLoad = mockMapInstance.on.mock.calls.find(
+          ([event]) => event === "load"
+        )![1];
+        onLoad();
+      });
+
+      for (const toggleState of toggles) {
+        rerender(
+          mapWithToggle({
+            layerIds: ["tsunamiLayer", "tsunamiInnerLayer"],
+            toggleState,
+          })
+        );
+      }
+      // Another hazard's toggle must not overwrite the tsunami selection.
+      rerender(
+        mapWithToggle({ layerIds: ["femaRiskLayer"], toggleState: false })
+      );
+      mockMapInstance.setLayoutProperty.mockClear();
+
+      act(() => {
+        const onImageLoaded = mockMapInstance.loadImage.mock.calls[0][1];
+        onImageLoaded(null, { width: 16, height: 16 });
+      });
+
+      expect(mockMapInstance.addLayer).toHaveBeenLastCalledWith(
+        expect.objectContaining({ id: "tsunamiLayer" })
+      );
+      expect(mockMapInstance.setLayoutProperty).toHaveBeenCalledWith(
+        "tsunamiLayer",
+        "visibility",
+        visibility
+      );
+    }
+  );
 });

@@ -77,6 +77,7 @@ const Map: React.FC<MapProps> = ({
   const lastLon = useRef<number | null>(lon);
   const lastLat = useRef<number | null>(lat);
   const ratioRef = useRef(0);
+  const tsunamiVisibilityRef = useRef<"visible" | "none">("visible");
   const bottomPaddingPx = (ratio: number) =>
     Math.round((mapContainerRef.current?.clientHeight ?? 0) * ratio);
 
@@ -233,7 +234,7 @@ const Map: React.FC<MapProps> = ({
 
           if (!map.hasImage("tsunami-hatch")) {
             map.addImage("tsunami-hatch", image);
-            console.log("Added tsunami hatch image to map:", image);
+
             map.addLayer({
               id: "tsunamiLayer",
               source: "tsunami",
@@ -243,7 +244,11 @@ const Map: React.FC<MapProps> = ({
                 "fill-pattern": "tsunami-hatch",
               },
             });
-            console.log("Added tsunami layer to map with hatch pattern.");
+            map.setLayoutProperty(
+              "tsunamiLayer",
+              "visibility",
+              tsunamiVisibilityRef.current
+            );
           }
         });
 
@@ -330,6 +335,12 @@ const Map: React.FC<MapProps> = ({
   ]);
 
   useEffect(() => {
+    if (layerToggleObj.layerIds.includes("tsunamiLayer")) {
+      tsunamiVisibilityRef.current = layerToggleObj.toggleState
+        ? "visible"
+        : "none";
+    }
+
     const handleToggleLayers = () => {
       if (!mapRef.current) return;
       const map = mapRef.current;
