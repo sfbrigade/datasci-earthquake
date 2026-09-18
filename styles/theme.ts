@@ -261,7 +261,7 @@ const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
       DEFAULT: {
         value: "#BE123C",
       },
-      lower: {
+      low: {
         value: { _light: "#BE123C04", _dark: "#BE123C04" },
       },
       moderate: {
@@ -278,7 +278,7 @@ const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
   // TODO: use opacity tokens below instead of having the opacity baked into the fema risk color tokens, as above
   opacity: {
     femaRisk: {
-      lower: {
+      low: {
         value: { _light: "0.015", _dark: "0.015" },
       },
       moderate: {
@@ -310,7 +310,7 @@ const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
   gradients: {
     fema: {
       value:
-        "linear-gradient(to right, {colors.femaRisk.lower} 0%, {colors.femaRisk.lower} 25%, {colors.femaRisk.moderate} 25%, {colors.femaRisk.moderate} 50%, {colors.femaRisk.high} 50%, {colors.femaRisk.high} 75%, {colors.femaRisk.veryHigh} 75%, {colors.femaRisk.veryHigh} 100%);",
+        "linear-gradient(to right, {colors.femaRisk.low} 0%, {colors.femaRisk.low} 25%, {colors.femaRisk.moderate} 25%, {colors.femaRisk.moderate} 50%, {colors.femaRisk.high} 50%, {colors.femaRisk.high} 75%, {colors.femaRisk.veryHigh} 75%, {colors.femaRisk.veryHigh} 100%);",
     },
     blue: {
       value:

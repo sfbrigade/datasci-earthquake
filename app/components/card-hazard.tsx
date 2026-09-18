@@ -63,7 +63,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
 
   // TODO: make this generic and not reliant on hazard.name === "femaRisk"
   const riskRanges = [
-    { name: "Relatively Lower", label: "Lower", color: "femaRisk.lower" },
+    { name: "Relatively Low", label: "Low", color: "femaRisk.low" },
     {
       name: "Relatively Moderate",
       label: "Moderate",
