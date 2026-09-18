@@ -10,6 +10,8 @@ const mockMapInstance = {
   addControl: jest.fn(),
   on: jest.fn(),
   getCenter: jest.fn(() => ({ lng: 0, lat: 0 })),
+  getZoom: jest.fn(() => 10),
+  setConfigProperty: jest.fn(),
   setPadding: jest.fn(),
   getPadding: jest.fn(() => ({ top: 0, right: 0, bottom: 0, left: 0 })),
   easeTo: jest.fn(),
@@ -63,7 +65,8 @@ const renderMap = (bottomPaddingRatio = 0) =>
         softStoryData={fc}
         tsunamiData={fc}
         liquefactionData={fc}
-        layerToggleObj={{ layerId: "", toggleState: true }}
+        femaRiskData={fc}
+        layerToggleObj={{ layerIds: [], toggleState: true }}
         bottomPaddingRatio={bottomPaddingRatio}
       />
     </Provider>
@@ -171,7 +174,8 @@ describe("Map", () => {
           softStoryData={fc}
           tsunamiData={fc}
           liquefactionData={fc}
-          layerToggleObj={{ layerId: "", toggleState: true }}
+          femaRiskData={fc}
+          layerToggleObj={{ layerIds: [], toggleState: true }}
           bottomPaddingRatio={0.5}
         />
       </Provider>
