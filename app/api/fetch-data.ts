@@ -3,6 +3,7 @@ import path from "path";
 
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
+// TODO: review architecture for correctness/best practices ... should we fetching GeoJSON from API at all (in any environment) when we have the local static files? and should we just import the static files directly? Long-term, would GeoJSON be superseded by something like Vector Tiles, anyway? How does the CDN come into play and are we using environments correctly here?
 export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
   if (["ci", "local"].includes(process.env.ENVIRONMENT || "")) {
     // Try reading local geojsons from public/data
