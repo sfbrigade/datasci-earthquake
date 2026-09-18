@@ -97,7 +97,7 @@ describe("CardHazard Component", () => {
     expect(femaLegend).toHaveStyle({
       backgroundImage: "var(--chakra-gradients-fema)",
     });
-    for (const label of ["Lower", "Moderate", "High", "Very High"]) {
+    for (const label of ["Low", "Moderate", "High", "Very High"]) {
       expect(screen.getByText(label, { exact: true })).toBeVisible();
     }
   });

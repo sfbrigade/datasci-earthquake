@@ -58,3 +58,4 @@ tsconfig.tsbuildinfo
 # Local Docker Compose overrides
 compose.override.yaml
 docker-compose.override.yaml
+.vercel
