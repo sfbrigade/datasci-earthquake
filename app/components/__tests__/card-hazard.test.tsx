@@ -1,5 +1,6 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import CardHazard, { HazardProps } from "../card-hazard";
 import "@testing-library/jest-dom";
 import { Provider } from "../ui/provider";
@@ -68,7 +69,7 @@ describe("CardHazard Component", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders the FEMA legend with the rose opacity scale", () => {
+  it("renders the FEMA legend with its themed gradient and risk labels", () => {
     const femaHazard: HazardProps = {
       ...softStoryHazard,
       id: 3,
@@ -91,44 +92,61 @@ describe("CardHazard Component", () => {
 
     const femaLegend = screen.getByTestId("hazard-legend-femaRisk");
     expect(femaLegend).toBeInTheDocument();
-    expect(femaLegend.style.backgroundImage).toContain(
-      "rgba(190, 18, 60, 0.18)"
-    );
-  });
-
-  it("toggles every Mapbox layer used by liquefaction", () => {
-    const setLayerToggleObj = jest.fn();
-    const liquefactionHazard: HazardProps = {
-      ...softStoryHazard,
-      id: 1,
-      name: "liquefaction",
-      title: "Liquefaction zones",
-    };
-
-    render(
-      <Provider>
-        <CardHazard
-          hazard={liquefactionHazard}
-          showData={true}
-          isHazardDataLoading={false}
-          toggledStates={[true, true, true]}
-          setToggledStates={jest.fn()}
-          setLayerToggleObj={setLayerToggleObj}
-        />
-      </Provider>
-    );
-
-    expect(screen.getByTestId("hazard-legend-liquefaction")).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("checkbox"));
-
-    expect(setLayerToggleObj).toHaveBeenCalledWith({
-      layerIds: [
-        "seismicBackgroundLayer",
-        "seismicOuterLayer",
-        "seismicLayer",
-      ],
-      toggleState: false,
+    // Chakra applies the gradient through a stylesheet, not an inline style.
+    // JSDOM exposes the CSS variable but does not resolve its color stops.
+    expect(femaLegend).toHaveStyle({
+      backgroundImage: "var(--chakra-gradients-fema)",
     });
+    for (const label of ["Lower", "Moderate", "High", "Very High"]) {
+      expect(screen.getByText(label, { exact: true })).toBeVisible();
+    }
   });
+
+  it.each([true, false])(
+    "toggles every liquefaction layer when initially checked=%s",
+    async (checked) => {
+      const user = userEvent.setup();
+      const setToggledStates = jest.fn();
+      const setLayerToggleObj = jest.fn();
+      const liquefactionHazard: HazardProps = {
+        ...softStoryHazard,
+        id: 1,
+        name: "liquefaction",
+        title: "Liquefaction zones",
+      };
+
+      render(
+        <Provider>
+          <CardHazard
+            hazard={liquefactionHazard}
+            showData={true}
+            isHazardDataLoading={false}
+            toggledStates={[true, checked, true]}
+            setToggledStates={setToggledStates}
+            setLayerToggleObj={setLayerToggleObj}
+          />
+        </Provider>
+      );
+
+      expect(
+        screen.getByTestId("hazard-legend-liquefaction")
+      ).toBeInTheDocument();
+
+      const toggle = screen.getByRole("checkbox", {
+        name: "Show Liquefaction zones on map",
+        checked,
+      });
+      await user.click(toggle);
+
+      expect(setToggledStates).toHaveBeenCalledWith([true, !checked, true]);
+      expect(setLayerToggleObj).toHaveBeenCalledWith({
+        layerIds: [
+          "seismicBackgroundLayer",
+          "seismicBorderOuterLayer",
+          "seismicBorderInnerLayer",
+        ],
+        toggleState: !checked,
+      });
+    }
+  );
 });

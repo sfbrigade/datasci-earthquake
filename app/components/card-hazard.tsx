@@ -57,11 +57,12 @@ const CardHazard: React.FC<CardHazardProps> = ({
 }) => {
   const { id, title, name, description, icon, iconColor } = hazard;
   const riskRanges = [
-    { label: "Lower", color: "#FFF7C2" ,},
-    { label: "Moderate", color: "#FFEE8A" },
-    { label: "High", color: "#FFE05A" },
-    { label: "Very High", color: "#FFD21F" },
-  ];
+    { label: "Lower", color: "femaRisk.lower" },
+    { label: "Moderate", color: "femaRisk.moderate" },
+    { label: "High", color: "femaRisk.high" },
+    { label: "Very High", color: "femaRisk.veryHigh" },
+  ] as const;
+
   const { exists } = hazardData || {};
   const pillTextOptions = PillData.find((object) => object.name === name) ?? {
     trueData: "No Data",
@@ -155,36 +156,37 @@ const CardHazard: React.FC<CardHazardProps> = ({
             >
               <Switch.HiddenInput />
               <Switch.Control />
-              <Switch.Label />
+              <Switch.Label srOnly>Show {title} on map</Switch.Label>
             </Switch.Root>
           </Card.Header>
           <Card.Body textAlign="left" p="0" mb="1.5">
             {hazard.name === "femaRisk" && (
-              <Box width="100%">
-                <HStack gap="1" mb="1">
-                {riskRanges.map((range) => (
-                  <Text
-                    key={range.label}
-                    flex="1"
-                    fontSize="xs"
-                  >
-                    {range.label}
-                  </Text>
-                ))}
-              </HStack>
-                <HStack gap="2px" width="100%" mb={5}>
-                {riskRanges.map((range) => (
-                  <Box
-                    key={range.label}
-                    flex="1"
-                    height="10px"
-                  bg={range.color}
-                  borderRadius="0"
-                />
-              ))}
+              <Box width="full">
+                <HStack gap="0" mb="1">
+                  {riskRanges.map((range) => (
+                    <Text key={range.label} flex="1" fontSize="xs">
+                      {range.label}
+                    </Text>
+                  ))}
+                </HStack>
+                <HStack gap="0" width="full" mb="5">
+                  {riskRanges.map((range, index) => (
+                    <Box
+                      key={range.label}
+                      flex="1"
+                      height="2.5"
+                      bg={range.color}
+                      border="sm"
+                      borderRight={
+                        index < riskRanges.length - 1 ? "none" : "sm"
+                      }
+                      borderColor="femaRisk.veryHigh"
+                      borderRadius="none"
+                    />
+                  ))}
                 </HStack>
               </Box>
-           )}
+            )}
             <Text textStyle="cardTextMedium" layerStyle="text">
               {description}
             </Text>
