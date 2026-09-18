@@ -1,6 +1,7 @@
 import json
 import os
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from backend.etl.data_handler import DataHandler, get_geojson_prefix
 from backend.api.models.earthquake_risk import EarthquakeRisk
@@ -60,11 +61,15 @@ class _FemaDataHandler(DataHandler):
         Same as DataHandler._save_geojson_file, but writes compact (no
         whitespace) JSON: with 241 features this dataset is large enough
         that the default separators meaningfully bloat the file.
+        Replace the previous file only after the new file is fully written.
         """
         try:
             FeatureCollection.model_validate(features)
-            with open(geojson_path, "wt") as f:
-                json.dump(features, f, separators=(",", ":"))
+            with TemporaryDirectory(dir=geojson_path.parent) as temporary_dir:
+                temporary_path = Path(temporary_dir) / geojson_path.name
+                with open(temporary_path, "wt") as f:
+                    json.dump(features, f, separators=(",", ":"))
+                os.replace(temporary_path, geojson_path)
 
             self.logger.info(
                 f"Generated {get_geojson_prefix()}{self.table.__name__}.geojson"

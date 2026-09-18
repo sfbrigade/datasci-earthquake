@@ -167,20 +167,39 @@ def test_export_refreshes_existing_file(tmp_path, monkeypatch, environment):
         assert update_metadata.call_count == (2 if environment == "prod" else 0)
 
 
-def test_failed_export_does_not_update_metadata(tmp_path, monkeypatch):
+@pytest.mark.parametrize("failure", ["write", "replace"])
+def test_failed_export_preserves_existing_file(tmp_path, monkeypatch, failure):
     monkeypatch.setenv("DATA_GEOJSON_PATH", f"{tmp_path}/")
     monkeypatch.setenv("ENVIRONMENT", "prod")
     handler = _make_handler()
     _, exported = handler.parse_data(_SAMPLE_GEOJSON)
+    path = tmp_path / "EarthquakeRisk.geojson"
+    handler._save_geojson_file(exported, path)
+    previous = path.read_bytes()
+    exported["features"][0]["properties"]["fema_risk_score"] = 99.0
+
+    def fail_during_write(features, file, **kwargs):
+        file.write('{"type":')
+        raise OSError("Write failed")
+
+    failure_patch = (
+        patch("backend.etl.fema_data_handler.json.dump", side_effect=fail_during_write)
+        if failure == "write"
+        else patch(
+            "backend.etl.fema_data_handler.os.replace",
+            side_effect=OSError("Write failed"),
+        )
+    )
     with (
-        patch.object(
-            handler, "_save_geojson_file", side_effect=OSError("Write failed")
-        ),
+        failure_patch,
         patch.object(handler, "_update_last_export_time_in_db") as update_metadata,
     ):
         with pytest.raises(OSError, match="Write failed"):
             handler.export_geojson_if_changed(exported)
         update_metadata.assert_not_called()
+    assert path.read_bytes() == previous
+    assert json.loads(path.read_text())["type"] == "FeatureCollection"
+    assert list(tmp_path.iterdir()) == [path]
 
 
 def test_committed_geojson_has_valid_sf_tracts():
