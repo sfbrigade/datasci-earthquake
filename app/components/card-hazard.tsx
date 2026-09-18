@@ -62,6 +62,7 @@ const CardHazard: React.FC<CardHazardProps> = ({
     { label: "High", color: "femaRisk.high" },
     { label: "Very High", color: "femaRisk.veryHigh" },
   ] as const;
+
   const { exists } = hazardData || {};
   const pillTextOptions = PillData.find((object) => object.name === name) ?? {
     trueData: "No Data",

@@ -16,7 +16,11 @@ export const hazardMapConfigByName: Record<string, HazardMapConfig> = {
   },
   liquefaction: {
     legend: "liquefaction",
-    layerIds: ["seismicBackgroundLayer", "seismicOuterLayer", "seismicLayer"],
+    layerIds: [
+      "seismicBackgroundLayer",
+      "seismicBorderOuterLayer",
+      "seismicBorderInnerLayer",
+    ],
   },
   tsunami: {
     legend: "tsunami",
@@ -24,6 +28,6 @@ export const hazardMapConfigByName: Record<string, HazardMapConfig> = {
   },
   femaRisk: {
     legend: "femaRisk",
-    layerIds: ["femaRiskLayer"],
+    layerIds: ["femaRiskLayer", "femaRiskInnerLayer"],
   },
 };

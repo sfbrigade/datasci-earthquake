@@ -7,6 +7,9 @@ import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
 import { Box } from "@chakra-ui/react";
+import system from "../../styles/theme";
+
+import { resolveColorToken } from "../../styles/resolve-color-token";
 
 const mapOptions: Omit<MapOptions, "container"> = {
   style: "mapbox://styles/mapbox/standard",
@@ -114,6 +117,8 @@ const Map: React.FC<MapProps> = ({
       }
 
       map.on("load", () => {
+        const tsunamiColor = resolveColorToken("colors.tsunami");
+
         // Add sources
         map.addSource("seismic", { type: "geojson", data: liquefactionData });
 
@@ -129,6 +134,7 @@ const Map: React.FC<MapProps> = ({
           source: "fema-risk",
           type: "fill",
           slot: "middle",
+          // TODO: use mix of color and opacity tokens for this so legend etc matches up
           paint: {
             "fill-color": "#BE123C",
             "fill-opacity": [
@@ -156,19 +162,19 @@ const Map: React.FC<MapProps> = ({
           type: "fill",
           slot: "middle",
           paint: {
-            "fill-color": "#F6AD55",
+            "fill-color": system.token("colors.orange.300"),
             "fill-opacity": 0.04,
           },
         });
 
         // Liquefaction — dark edge on OUTSIDE of polygon
         map.addLayer({
-          id: "seismicOuterLayer",
+          id: "seismicBorderOuterLayer",
           source: "seismic",
           type: "line",
           slot: "middle",
           paint: {
-            "line-color": "#C05621",
+            "line-color": system.token("colors.orange.600"),
             "line-width": 2,
             "line-offset": -1,
             "line-opacity": 0.9,
@@ -177,27 +183,16 @@ const Map: React.FC<MapProps> = ({
 
         // Liquefaction — softer/light band extending INSIDE polygon
         map.addLayer({
-          id: "seismicLayer",
+          id: "seismicBorderInnerLayer",
           source: "seismic",
           type: "line",
           slot: "middle",
           paint: {
-            "line-color": "#F6AD55",
+            "line-color": system.token("colors.orange.300"),
             "line-width": 6,
             "line-offset": 3,
             "line-opacity": 0.35,
             "line-blur": 0.75,
-          },
-        });
-
-        map.addLayer({
-          id: "seismicInnerLayer",
-          source: "fema-risk",
-          type: "fill",
-          slot: "middle",
-          paint: {
-            "fill-color": "#F6AD55",
-            "fill-opacity": 0.025,
           },
         });
 
@@ -210,12 +205,22 @@ const Map: React.FC<MapProps> = ({
           paint: {
             "circle-radius": 4.5,
             "circle-stroke-width": 1,
-            "circle-stroke-color": "#FFFFFF",
-            "circle-color": "#A0AEC0",
+            "circle-stroke-color": system.token("colors.white"),
+            "circle-color": system.token("colors.grey.400"),
           },
         });
 
-        // Tsunami depends on the hatch image, but the other hazard layers do not.
+        map.addLayer({
+          id: "tsunamiInnerLayer",
+          source: "tsunami",
+          type: "fill",
+          slot: "middle",
+          paint: {
+            "fill-color": tsunamiColor, // NOTE: this won't work if we intro light/dark mode; at point, we'd have to eg re-resolve the color on color mode change
+            "fill-opacity": 0.25,
+          },
+        });
+
         map.loadImage("/images/tsunami-hatch-fine-16.png", (error, image) => {
           if (error) {
             console.error("Failed to load tsunami hatch:", error);
@@ -226,32 +231,17 @@ const Map: React.FC<MapProps> = ({
 
           if (!map.hasImage("tsunami-hatch")) {
             map.addImage("tsunami-hatch", image);
-          }
-
-          if (!map.getLayer("tsunamiLayer")) {
-            map.addLayer(
-              {
-                id: "tsunamiLayer",
-                source: "tsunami",
-                type: "fill",
-                slot: "middle",
-                paint: {
-                  "fill-pattern": "tsunami-hatch",
-                },
-              },
-              "seismicOuterLayer"
-            );
-
+            console.log("Added tsunami hatch image to map:", image);
             map.addLayer({
-              id: "tsunamiInnerLayer",
+              id: "tsunamiLayer",
               source: "tsunami",
               type: "fill",
               slot: "middle",
               paint: {
-                "fill-color": "#63B3ED",
-                "fill-opacity": 0.25,
+                "fill-pattern": "tsunami-hatch",
               },
             });
+            console.log("Added tsunami layer to map with hatch pattern.");
           }
         });
 

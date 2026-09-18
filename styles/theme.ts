@@ -160,11 +160,22 @@ const layerStyles: ThemingConfig["layerStyles"] = defineLayerStyles({
 const tokens: ThemingConfig["tokens"] = defineTokens({
   assets: {
     mapMarkerUrl: { type: "url", value: 'url("/marker.svg")' },
+    tsunamiHatch: {
+      type: "url",
+      value: 'url("/images/tsunami-hatch-fine-16.png")',
+    },
   },
   borders: {
     none: { value: "none" },
     search: {
       value: "{borderWidths.0.25} {borderStyles.solid} {colors.grey.600}",
+    },
+    softStoryLegend: {
+      value: "{borderWidths.0.25} {borderStyles.solid} {colors.white}",
+    },
+    tsunamiLegend: {
+      value:
+        "{borderWidths.0.25} {borderStyles.solid} rgba(43, 108, 176, 0.35)", // TODO: replace color with token
     },
   },
   borderWidths: {
@@ -191,28 +202,8 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
     yellow: { DEFAULT: { value: "#ECC94B" } },
     red: { DEFAULT: { value: "#C53030" } },
     green: { DEFAULT: { value: "#25855A" } },
-    orange: { value: "#F6AD55" },
-    pink: { value: "#ED64A6" },
-
-    // TODO: move some of these to `semanticTokens` and rename accordingly
-    blueSwitch: { value: "#3182CE" }, // NOTE: "#3182CE" comes from Figma switches, but color palette for `blue` is being used instead for the time being
-    blueIcon: { value: "#4863a9" },
-    blueIconBackground: { value: "#eff4fc" },
+    pink: { DEFAULT: { value: "#ED64A6" } },
     blueBackground: { value: "#2C5282" }, // blue/700
-    tsunamiBlue: { value: "#63B3ED" }, // blue/300
-    lightGrey: { value: "#c8caceff" },
-    labelGrey: { value: "#bfb9b9" },
-    warningRed: { value: "#b53d37" },
-    blueGradientFrom: { value: "#3b6294" },
-    blueGradientTo: { value: "#183252" },
-    cooperativeGesturesOverlay: { value: "#00000080" },
-  },
-  gradients: {
-    // string value
-    blue: {
-      value:
-        "radial-gradient(120% 180% at 17.81% 82.6%, {colors.blueGradientFrom} 0%, {colors.blueGradientTo} 100%);",
-    },
   },
   lineHeights: {
     shortest: { value: 1 },
@@ -247,6 +238,24 @@ const tokens: ThemingConfig["tokens"] = defineTokens({
 const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
   // TODO: tie to color palette?
   colors: {
+    switch: { value: "#3182CE" },
+    icon: { value: "#4863a9" },
+    iconBackground: { value: "#eff4fc" },
+    tsunami: { value: "#63B3ED" },
+    muted: { value: "#c8caceff" },
+    label: { value: "#bfb9b9" },
+    warning: { value: "#b53d37" },
+    gradientFrom: { value: "#3b6294" },
+    gradientTo: { value: "#183252" },
+    overlay: { value: "#00000080" },
+    liquefaction: {
+      background: {
+        value: "{colors.orange.300/4}", // used with 4% opacity
+      },
+      border: {
+        value: "{colors.orange.600/90}", // used with 90% opacity
+      },
+    },
     femaRisk: {
       lower: {
         value: { _light: "#BE123C04", _dark: "#BE123C04" },
@@ -264,14 +273,27 @@ const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
   },
   shadows: {
     card: {
-      value: "{spacing.0} {spacing.1} {spacing.1.5} {colors.lightGrey}",
+      value: "{spacing.0} {spacing.1} {spacing.1.5} {colors.muted}",
     },
     mobileButton: {
-      value: "{spacing.0} {spacing.0} {spacing.0.5} {colors.lightGrey}",
+      value: "{spacing.0} {spacing.0} {spacing.0.5} {colors.muted}",
     },
     search: {
       value:
         "{spacing.0} {spacing.1} {spacing.1.5} {-spacing.0.25} {colors.blackAlpha.200}, {spacing.0} {spacing.0.5} {spacing.1} {-spacing.0.25} {colors.blackAlpha.50}",
+    },
+    liquefaction: {
+      value: "inset 0 0 0 3px {colors.orange.300/35}",
+    },
+  },
+  gradients: {
+    fema: {
+      value:
+        "linear-gradient(to right, {colors.femaRisk.lower} 0%, {colors.femaRisk.lower} 25%, {colors.femaRisk.moderate} 25%, {colors.femaRisk.moderate} 50%, {colors.femaRisk.high} 50%, {colors.femaRisk.high} 75%, {colors.femaRisk.veryHigh} 75%, {colors.femaRisk.veryHigh} 100%);",
+    },
+    blue: {
+      value:
+        "radial-gradient(120% 180% at 17.81% 82.6%, {colors.gradientFrom} 0%, {colors.gradientTo} 100%);",
     },
   },
 });
@@ -305,7 +327,7 @@ const globalCss: SystemConfig["globalCss"] = {
     borderRadius: "none",
   },
   ".mapboxgl-scroll-zoom-blocker, .mapboxgl-touch-pan-blocker": {
-    backgroundColor: "cooperativeGesturesOverlay !important",
+    backgroundColor: "overlay !important",
   },
   // NOTE: !important required to override due to the use of @layer in Chakra UI; alternative is to turn off @layer in Chakra config
   // TODO: consider looking into better workarounds or turning off @layer

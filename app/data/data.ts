@@ -62,7 +62,7 @@ export const Hazards: HazardPropsCollection = [
       url: "https://data.sfgov.org/Geographic-Locations-and-Boundaries/Soil-Liquefaction-Hazard-Zone/i4t7-35u3/about_data",
     },
     icon: "square",
-    iconColor: "orange",
+    iconColor: "femaRisk.veryHigh",
   },
   {
     id: 3,
@@ -80,7 +80,7 @@ export const Hazards: HazardPropsCollection = [
       url: "https://www.conservation.ca.gov/cgs/tsunami/maps",
     },
     icon: "square",
-    iconColor: "tsunamiBlue",
+    iconColor: "tsunami",
   },
 ];
 

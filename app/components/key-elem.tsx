@@ -6,7 +6,10 @@ type LegendSymbolProps = {
 };
 
 const LegendSymbol = ({ kind }: LegendSymbolProps) => {
-  const size = { base: "4", md: "5" };
+  const size = {
+    base: "4",
+    md: "5",
+  } as const;
 
   switch (kind) {
     case "softStory":
@@ -18,8 +21,8 @@ const LegendSymbol = ({ kind }: LegendSymbolProps) => {
           h={size}
           flexShrink={0}
           borderRadius="full"
-          bg="#A0AEC0"
-          border="1px solid white"
+          bg="grey.400"
+          border="softStoryLegend"
         />
       );
 
@@ -31,10 +34,11 @@ const LegendSymbol = ({ kind }: LegendSymbolProps) => {
           w={size}
           h={size}
           flexShrink={0}
-          borderRadius="2px"
-          bg="rgba(246, 173, 85, 0.08)"
-          border="2px solid #C05621"
-          boxShadow="inset 0 0 0 3px rgba(246, 173, 85, 0.35)"
+          borderRadius="sm"
+          bgColor="liquefaction.background"
+          border="md"
+          borderColor="liquefaction.border"
+          boxShadow="liquefaction"
         />
       );
 
@@ -46,12 +50,13 @@ const LegendSymbol = ({ kind }: LegendSymbolProps) => {
           w={size}
           h={size}
           flexShrink={0}
-          borderRadius="2px"
-          backgroundImage="url('/images/tsunami-hatch-fine-16.png')"
+          borderRadius="sm"
+          backgroundImage="tsunamiHatch"
           backgroundRepeat="repeat"
           backgroundSize="16px 16px"
-          backgroundColor="#63B3ED40"
-          border="1px solid rgba(43, 108, 176, 0.35)"
+          backgroundColor="tsunami/40"
+          border="sm"
+          borderColor="gray.300"
         />
       );
 
@@ -63,20 +68,11 @@ const LegendSymbol = ({ kind }: LegendSymbolProps) => {
           w={size}
           h={size}
           flexShrink={0}
-          borderRadius="2px"
+          borderRadius="sm"
           backgroundColor="white"
-          backgroundImage={`linear-gradient(
-            to right,
-            rgba(190, 18, 60, 0.015) 0%,
-            rgba(190, 18, 60, 0.015) 25%,
-            rgba(190, 18, 60, 0.035) 25%,
-            rgba(190, 18, 60, 0.035) 50%,
-            rgba(190, 18, 60, 0.08) 50%,
-            rgba(190, 18, 60, 0.08) 75%,
-            rgba(190, 18, 60, 0.18) 75%,
-            rgba(190, 18, 60, 0.18) 100%
-          )`}
-          border="1px solid rgba(190, 18, 60, 0.25)"
+          backgroundImage="fema"
+          border="sm"
+          borderColor="gray.300"
         />
       );
   }
