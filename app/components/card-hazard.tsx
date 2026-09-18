@@ -57,10 +57,10 @@ const CardHazard: React.FC<CardHazardProps> = ({
 }) => {
   const { id, title, name, description, icon, iconColor } = hazard;
   const riskRanges = [
-    { label: "73–89", color: "#FFF7C2" },
-    { label: "90–94", color: "#FFEE8A" },
-    { label: "95–96", color: "#FFE05A" },
-    { label: "97–100", color: "#FFD21F" },
+    { label: "Lower", color: "#FFF7C2" ,},
+    { label: "Moderate", color: "#FFEE8A" },
+    { label: "High", color: "#FFE05A" },
+    { label: "Very High", color: "#FFD21F" },
   ];
   const { exists } = hazardData || {};
   const pillTextOptions = PillData.find((object) => object.name === name) ?? {
@@ -160,18 +160,31 @@ const CardHazard: React.FC<CardHazardProps> = ({
           </Card.Header>
           <Card.Body textAlign="left" p="0" mb="1.5">
             {hazard.name === "femaRisk" && (
-              <HStack gap="2px" width="100%" mb={5}>
+              <Box width="100%">
+                <HStack gap="1" mb="1">
+                {riskRanges.map((range) => (
+                  <Text
+                    key={range.label}
+                    flex="1"
+                    fontSize="xs"
+                  >
+                    {range.label}
+                  </Text>
+                ))}
+              </HStack>
+                <HStack gap="2px" width="100%" mb={5}>
                 {riskRanges.map((range) => (
                   <Box
                     key={range.label}
                     flex="1"
                     height="10px"
-                    bg={range.color}
-                    borderRadius="0"
-                  />
-                ))}
-              </HStack>
-            )}
+                  bg={range.color}
+                  borderRadius="0"
+                />
+              ))}
+                </HStack>
+              </Box>
+           )}
             <Text textStyle="cardTextMedium" layerStyle="text">
               {description}
             </Text>
