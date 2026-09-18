@@ -125,7 +125,7 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
             softStory: null,
             tsunami: null,
             liquefaction: null,
-            femaRiskData: null,
+            femaRisk: null,
           });
         }
 

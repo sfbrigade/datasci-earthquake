@@ -22,10 +22,10 @@ export const Hazards: HazardPropsCollection = [
     link: {
       label:
         "This information is based on FEMA National Risk Index Data using field ERQK_RISKR",
-      url: "https://pmarchand1.github.io/sf-earthquake-data/eda_fema_nri.html",
+      url: "https://www.fema.gov/about/openfema/data-sets/national-risk-index-data",
     },
     icon: "circle",
-    iconColor: "blue.400",
+    iconColor: "orange.300",
   },
   {
     id: 1,
@@ -498,6 +498,12 @@ export const PillData = [
     name: "tsunami",
     trueData: "In Zone",
     falseData: "Not in Zone",
+    noData: "No Data",
+  },
+  {
+    name: "femaRisk",
+    trueData: "High Risk",
+    falseData: "Low Risk",
     noData: "No Data",
   },
 ];
