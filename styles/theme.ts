@@ -241,6 +241,7 @@ const semanticTokens: ThemingConfig["semanticTokens"] = defineSemanticTokens({
     switch: { value: "#3182CE" },
     icon: { value: "#4863a9" },
     iconBackground: { value: "#eff4fc" },
+    pageBackground: { value: "#2C5282" },
     tsunami: { value: "#63B3ED" },
     muted: { value: "#c8caceff" },
     label: { value: "#bfb9b9" },

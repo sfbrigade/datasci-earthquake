@@ -56,7 +56,7 @@ const LegendSymbol = ({ kind }: LegendSymbolProps) => {
           backgroundSize="16px 16px"
           backgroundColor="tsunami/40"
           border="sm"
-          borderColor="gray.300"
+          borderColor="tsunami/35"
         />
       );
 
