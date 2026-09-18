@@ -28,7 +28,7 @@ export const Hazards: HazardPropsCollection = [
     iconColor: "orange.300",
   },
   {
-    id: 2,
+    id: 1,
     name: "liquefaction",
     title: "Liquefaction zones",
     description:
@@ -46,7 +46,7 @@ export const Hazards: HazardPropsCollection = [
     iconColor: "femaRisk.veryHigh",
   },
   {
-    id: 3,
+    id: 2,
     name: "tsunami",
     title: "Tsunami zones",
     description:
@@ -154,23 +154,17 @@ export const DataInfoLinks = [
   {
     id: 0,
     name: "femaRisk",
-    label: "Fema Risk Dataset",
-    url: "https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data",
+    label: "FEMA National Risk Index Data",
+    url: "https://www.fema.gov/about/openfema/data-sets/national-risk-index-data",
   },
   {
     id: 1,
-    name: "softStory",
-    label: "Soft Story Dataset",
-    url: "https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data",
-  },
-  {
-    id: 2,
     name: "liquefaction",
     label: "Liquefaction Dataset",
     url: "https://data.sfgov.org/Geographic-Locations-and-Boundaries/Soil-Liquefaction-Hazard-Zone/i4t7-35u3/about_data",
   },
   {
-    id: 3,
+    id: 2,
     name: "tsunami",
     label: "Tsunami Dataset",
     url: "https://www.conservation.ca.gov/cgs/tsunami/maps",

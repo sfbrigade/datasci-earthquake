@@ -22,7 +22,7 @@ import { useMapState } from "./map-state-provider";
 
 const defaultCoords = [-122.4194, 37.7949];
 
-const toggledStatesDefaults = [false, false, false, true];
+const toggledStatesDefaults = [true, true, true];
 
 interface AddressMapperProps {
   softStoryData: FeatureCollection<Geometry>;
