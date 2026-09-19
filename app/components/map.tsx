@@ -184,6 +184,33 @@ const Map: React.FC<MapProps> = ({
           },
         });
 
+        map.loadImage("/images/liquefaction-stipple-64.png", (error, image) => {
+          if (error) {
+            console.error("Failed to load liquefaction stipple:", error);
+            return;
+          }
+
+          if (!image) return;
+
+          if (!map.hasImage("liquefaction-stipple")) {
+            map.addImage("liquefaction-stipple", image, { pixelRatio: 2 });
+            console.log("Added liquefaction stipple image to map:", image);
+            map.addLayer({
+              id: "seismicPatternLayer",
+              source: "seismic",
+              type: "fill",
+              slot: "middle",
+              paint: {
+                "fill-pattern": "liquefaction-stipple",
+                "fill-opacity": 0.25,
+              },
+            });
+            console.log(
+              "Added liquefaction layer to map with stipple pattern."
+            );
+          }
+        });
+
         // Liquefaction — dark edge on OUTSIDE of polygon
         map.addLayer({
           id: "seismicBorderOuterLayer",
@@ -224,7 +251,7 @@ const Map: React.FC<MapProps> = ({
           },
         });
 
-        map.loadImage("/images/tsunami-hatch-fine-16.png", (error, image) => {
+        map.loadImage("/images/tsunami-waves-64.png", (error, image) => {
           if (error) {
             console.error("Failed to load tsunami hatch:", error);
             return;
@@ -233,8 +260,7 @@ const Map: React.FC<MapProps> = ({
           if (!image) return;
 
           if (!map.hasImage("tsunami-hatch")) {
-            map.addImage("tsunami-hatch", image);
-
+            map.addImage("tsunami-hatch", image, { pixelRatio: 2 });
             map.addLayer({
               id: "tsunamiLayer",
               source: "tsunami",
@@ -242,6 +268,7 @@ const Map: React.FC<MapProps> = ({
               slot: "middle",
               paint: {
                 "fill-pattern": "tsunami-hatch",
+                "fill-opacity": 0.25,
               },
             });
             map.setLayoutProperty(
