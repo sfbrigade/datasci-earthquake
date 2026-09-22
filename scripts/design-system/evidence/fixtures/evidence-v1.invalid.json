@@ -1,0 +1,65 @@
+{
+  "schema": "safehome.design-system-evidence.v1",
+  "sourceIdentity": {
+    "repository": "sfbrigade/datasci-earthquake",
+    "baseHead": "ba9e0ab536b278f7f48196ea75dda852b4e0905e",
+    "workspaceDirty": true
+  },
+  "toolchain": {
+    "node": "24.18.0",
+    "typescript": "6.0.2",
+    "chakra": "3.36.1",
+    "next": "16.2.11"
+  },
+  "policies": {
+    "sourceClassification": "safehome-source-classification.v1",
+    "entrypoint": "safehome-next16-app-router.v1",
+    "semantic": "safehome-chakra3-semantic.v1",
+    "claim": "safehome-usage-evidence-claims.v1"
+  },
+  "files": [
+    {
+      "fileId": "f1",
+      "path": "app/components/key-elem.tsx",
+      "sourceClass": "app-source",
+      "contentIdentity": {
+        "kind": "git-blob",
+        "value": "a0a62c8fcb12ecf4d84f921123d5aeffa616a016"
+      },
+      "analysisStatus": "complete"
+    }
+  ],
+  "sourceFacts": [
+    {
+      "factId": "sf1",
+      "fileId": "f1",
+      "span": {"startLine": 13, "startColumn": 43, "endLine": 13, "endColumn": 56},
+      "kind": "unresolved-style",
+      "resolution": "unresolved",
+      "raw": "color={color}",
+      "propPath": "color",
+      "component": "Icon"
+    }
+  ],
+  "moduleFacts": [],
+  "semanticFacts": [],
+  "claims": [
+    {
+      "claimId": "c1",
+      "kind": "strong-negative-blocked",
+      "entity": "colors.blue.600",
+      "policy": "safehome-usage-evidence-claims.v1",
+      "basis": {"sourceFactIds": ["sf-missing"]}
+    }
+  ],
+  "coverage": {
+    "eligibleFiles": 2,
+    "completeFiles": 1,
+    "partialFiles": 0,
+    "failedFiles": 0,
+    "excludedFiles": 0,
+    "unresolvedFacts": 0,
+    "bySourceClass": {"app-source": 1},
+    "unresolvedByDomain": {}
+  }
+}
