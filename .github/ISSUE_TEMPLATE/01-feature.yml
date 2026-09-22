@@ -57,7 +57,10 @@ body:
     attributes:
       label: Work items
       value: |
-        Keep applicable items.
+        Shape this list to fit the Feature: add, edit, or remove items based on the work you currently expect. Keep it lightweight rather than trying to define the full work breakdown up front.
+
+        When a checklist item needs its own owner, status, discussion, or history, turn it into a sub-issue. If related work already exists as an issue, attach it as a sub-issue instead. Continue refining the list and hierarchy as the work becomes clearer.
+
         - [ ] Create Design spec
         - [ ] Conduct Data science analysis
         - [ ] Create Engineering spec
