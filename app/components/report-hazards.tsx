@@ -9,6 +9,7 @@ type HazardData = {
   softStory?: any;
   tsunami?: any;
   liquefaction?: any;
+  femaRisk?: any;
   landslide?: any;
 };
 const ReportHazards = ({

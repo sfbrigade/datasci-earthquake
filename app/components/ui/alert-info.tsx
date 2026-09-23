@@ -7,7 +7,7 @@ interface AlertInfoProps {
 }
 
 const AlertInfo: React.FC<AlertInfoProps> = ({ message }) => (
-  <Alert.Root status="error">
+  <Alert.Root status="error" colorPalette="orange">
     <Alert.Indicator>
       <IoIosWarning />
     </Alert.Indicator>

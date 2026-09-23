@@ -3,11 +3,22 @@ import path from "path";
 
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
+const shouldUseBundledGeoJson = () =>
+  ["ci", "local"].includes(process.env.ENVIRONMENT || "") ||
+  process.env.VERCEL_ENV === "preview";
+
+// TODO: review architecture for correctness/best practices ... should we fetching GeoJSON from API at all (in any environment) when we have the local static files? and should we just import the static files directly? Long-term, would GeoJSON be superseded by something like Vector Tiles, anyway? How does the CDN come into play and are we using environments correctly here?
 export const fetchData = async (cdnEndpoint: string, apiEndpoint: string) => {
-  if (["ci", "local"].includes(process.env.ENVIRONMENT || "")) {
-    // Try reading local geojsons from public/data
+  if (shouldUseBundledGeoJson()) {
+    // CI, local development, and Vercel Preview use the GeoJSON bundled
+    // with the commit being built instead of depending on another deployment.
     try {
-      const filePath = path.join(process.cwd(), "public", cdnEndpoint);
+      const filePath = path.join(
+        process.cwd(),
+        "public",
+        "data",
+        path.basename(cdnEndpoint)
+      );
       const json = JSON.parse(await fs.promises.readFile(filePath, "utf-8"));
       console.log(`Successfully read local file ${filePath}`);
       return json;

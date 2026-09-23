@@ -33,7 +33,7 @@ const ComponentsTestLib = () => {
         as="h1"
         size="xl"
         mb="6"
-        bgColor="blueBackground"
+        bgColor="pageBackground"
         color="white"
         p="2.5"
       >

@@ -7,6 +7,7 @@ import {
   fetchSoftStories,
   fetchTsunami,
   fetchLiquefaction,
+  fetchFema,
   fetchLandslide,
 } from "../api/services";
 
@@ -26,17 +27,22 @@ const Home = async () => {
     type: "FeatureCollection",
     features: [],
   };
+  let femaData: FeatureCollection<Geometry, GeoJsonProperties> = {
+    type: "FeatureCollection",
+    features: [],
+  };
   let landslideData: FeatureCollection<Geometry, GeoJsonProperties> = {
     type: "FeatureCollection",
     features: [],
   };
 
   try {
-    [softStoryData, tsunamiData, liquefactionData, landslideData] =
+    [softStoryData, tsunamiData, liquefactionData, femaData, landslideData] =
       await Promise.all([
         fetchSoftStories(),
         fetchTsunami(),
         fetchLiquefaction(),
+        fetchFema(),
         fetchLandslide(),
       ]);
   } catch (error: any) {
@@ -50,6 +56,7 @@ const Home = async () => {
           softStoryData={softStoryData}
           tsunamiData={tsunamiData}
           liquefactionData={liquefactionData}
+          femaRiskData={femaData}
           landslideData={landslideData}
         />
       </Suspense>

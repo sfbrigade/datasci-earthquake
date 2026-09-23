@@ -40,7 +40,7 @@ export const Toaster = () => {
             // TODO: how to tie this to Chakra theme? also, should `warning` and other types have different colors?
             bg={
               toast.type === "error" || toast.type === "warning"
-                ? "warningRed"
+                ? "warning"
                 : "white"
             }
           >

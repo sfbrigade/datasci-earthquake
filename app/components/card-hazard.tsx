@@ -2,6 +2,7 @@
 
 import {
   Text,
+  Box,
   HStack,
   VStack,
   Link,
@@ -15,23 +16,31 @@ import {
 import posthog from "posthog-js";
 import Pill from "./pill";
 import { RxCross2 } from "react-icons/rx";
-import { PillData, LayerIds } from "../data/data";
+import { PillData } from "../data/data";
+import { hazardMapConfigByName } from "../data/hazard-map-config";
 import { FaCircle, FaSquareFull } from "react-icons/fa";
 import { KeyElem } from "./key-elem";
 import { Dispatch, SetStateAction, useState } from "react";
 import { LayerToggleObjProps } from "./address-mapper";
-interface CardHazardProps {
-  hazard: {
-    id: number;
-    name: string;
-    title: string;
-    description: string;
-    info: string[];
-    link: { label: string; url: string };
-    icon: string;
-    iconColor: SystemStyleObject["color"];
+
+export interface HazardProps {
+  id: number;
+  name: string;
+  title: string;
+  description: string;
+  info: string[];
+  link: { label: string; url: string };
+  icon?: "circle" | "square";
+  iconColor?: SystemStyleObject["color"];
+}
+
+export interface CardHazardProps {
+  hazard: HazardProps;
+  hazardData?: {
+    exists?: boolean;
+    last_updated?: string;
+    risk_rating?: string;
   };
-  hazardData?: { exists?: boolean; last_updated?: string };
   showData: boolean;
   isHazardDataLoading: boolean;
   toggledStates: boolean[];
@@ -51,12 +60,26 @@ const CardHazard: React.FC<CardHazardProps> = ({
   fullWidth = false,
 }) => {
   const { id, title, name, description, icon, iconColor } = hazard;
-  const { exists, last_updated: date } = hazardData || {};
+
+  // TODO: make this generic and not reliant on hazard.name === "femaRisk"
+  const riskRanges = [
+    { name: "Relatively Low", label: "Low", color: "femaRisk.low" },
+    {
+      name: "Relatively Moderate",
+      label: "Moderate",
+      color: "femaRisk.moderate",
+    },
+    { name: "Relatively High", label: "High", color: "femaRisk.high" },
+    { name: "Very High", label: "Very High", color: "femaRisk.veryHigh" },
+  ] as const;
+
+  const { exists } = hazardData || {};
   const pillTextOptions = PillData.find((object) => object.name === name) ?? {
     trueData: "No Data",
     falseData: "No Data",
     noData: "No Data",
   };
+  const mapConfig = hazardMapConfigByName[name];
   const [isMoreInfo, setIsMoreInfo] = useState(false);
 
   const hazardPill = isHazardDataLoading ? (
@@ -64,9 +87,16 @@ const CardHazard: React.FC<CardHazardProps> = ({
   ) : showData ? (
     <Pill
       exists={exists}
-      trueData={pillTextOptions.trueData}
+      trueData={hazardData?.risk_rating || pillTextOptions.trueData}
       falseData={pillTextOptions.falseData}
       noData={pillTextOptions.noData}
+      variant={hazard.name === "femaRisk" ? "reverse" : "pill"}
+      pillBackgroundColor={
+        hazard.name === "femaRisk"
+          ? riskRanges.find((r) => r.name === hazardData?.risk_rating)?.color ||
+            undefined
+          : undefined
+      }
     />
   ) : (
     ""
@@ -85,10 +115,17 @@ const CardHazard: React.FC<CardHazardProps> = ({
     newArray[num] = checked;
     setToggledStates(newArray);
     setLayerToggleObj({
-      layerId: LayerIds[num],
+      layerIds: mapConfig?.layerIds ?? [],
       toggleState: checked,
     });
   };
+
+  const legacyIcon =
+    icon === "circle" ? (
+      <FaCircle />
+    ) : icon === "square" ? (
+      <FaSquareFull />
+    ) : undefined;
 
   return (
     <Card.Root
@@ -122,8 +159,9 @@ const CardHazard: React.FC<CardHazardProps> = ({
           >
             <KeyElem
               name={title}
+              legend={mapConfig?.legend}
               color={iconColor}
-              icon={icon === "circle" ? <FaCircle /> : <FaSquareFull />}
+              icon={legacyIcon}
             />
             <Switch.Root
               size="lg"
@@ -135,10 +173,37 @@ const CardHazard: React.FC<CardHazardProps> = ({
             >
               <Switch.HiddenInput />
               <Switch.Control />
-              <Switch.Label />
+              <Switch.Label srOnly>Show {title} on map</Switch.Label>
             </Switch.Root>
           </Card.Header>
           <Card.Body textAlign="left" p="0" mb="1.5">
+            {hazard.name === "femaRisk" && (
+              <Box width="full">
+                <HStack gap="0" mb="1">
+                  {riskRanges.map((range) => (
+                    <Text key={range.label} flex="1" fontSize="xs">
+                      {range.label}
+                    </Text>
+                  ))}
+                </HStack>
+                <HStack gap="0" width="full" mb="5">
+                  {riskRanges.map((range, index) => (
+                    <Box
+                      key={range.label}
+                      flex="1"
+                      height="2.5"
+                      bg={range.color}
+                      border="sm"
+                      borderRight={
+                        index < riskRanges.length - 1 ? "none" : "sm"
+                      }
+                      borderColor="femaRisk.veryHigh"
+                      borderRadius="none"
+                    />
+                  ))}
+                </HStack>
+              </Box>
+            )}
             <Text textStyle="cardTextMedium" layerStyle="text">
               {description}
             </Text>

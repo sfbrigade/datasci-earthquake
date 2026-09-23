@@ -10,5 +10,8 @@ export const fetchTsunami = async () =>
 export const fetchLiquefaction = async () =>
   fetchData(CDN_ENDPOINTS.liquefaction, API_ENDPOINTS.liquefaction);
 
+export const fetchFema = async () =>
+  fetchData(CDN_ENDPOINTS.fema, API_ENDPOINTS.fema);
+
 export const fetchLandslide = async () =>
   fetchData(CDN_ENDPOINTS.landslide, API_ENDPOINTS.landslide);

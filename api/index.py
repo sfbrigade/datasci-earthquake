@@ -6,6 +6,7 @@ from backend.api.routers import (
     liquefaction_api,
     tsunami_api,
     soft_story_api,
+    fema_api,
     health_api,
     hazard_lookup_api,
     landslide_api,
@@ -15,7 +16,6 @@ import sentry_sdk
 import logging
 import uuid
 from backend.api.exceptions import HazardCheckError
-
 
 # Initialize Sentry
 sentry_sdk.init(
@@ -31,6 +31,7 @@ app = FastAPI(docs_url="/docs", openapi_url="/openapi.json", redirect_slashes=Fa
 app.include_router(liquefaction_api.router)
 app.include_router(tsunami_api.router)
 app.include_router(soft_story_api.router)
+app.include_router(fema_api.router)
 app.include_router(health_api.router)
 app.include_router(hazard_lookup_api.router)
 app.include_router(landslide_api.router)
