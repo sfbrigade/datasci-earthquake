@@ -1,0 +1,42 @@
+name: Task
+description: Plan or track a specific piece of work
+type: Task
+labels: ["needs triage", "needs refinement"]
+
+body:
+  - type: textarea
+    id: task
+    attributes:
+      label: Task
+      value: |
+        What needs to be done, and why does it matter?
+
+        ***
+    validations:
+      required: true
+
+  - type: textarea
+    id: completion-criteria
+    attributes:
+      label: Completion criteria
+      value: |
+        What must be true for this Task to be complete?
+
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+
+        ***
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      value: |
+        **Reference(s):** https://..
+
+        **Additional context**
+        What else is worth knowing about this Task?
+    validations:
+      required: false

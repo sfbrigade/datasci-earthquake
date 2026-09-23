@@ -2,24 +2,55 @@ name: CI Pipeline
 
 on:
   push:
-    branches:
-      - develop
-      - main
-      - 'ci/**'
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
   changes:
+    permissions:
+      contents: read
+      pull-requests: read
     runs-on: ubuntu-latest
     outputs:
       code_changed: ${{ steps.detect.outputs.code_changed }}
     steps:
+      # A push to a same-repo branch with an open PR also emits a
+      # pull_request:synchronize event. Prefer that run because it checks
+      # GitHub's merge ref; keep push CI for branches without an open PR.
+      - name: Check for an open PR
+        if: github.event_name == 'push'
+        id: open-pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if ! PR_COUNT="$(gh api --method GET "repos/${GITHUB_REPOSITORY}/pulls" \
+            -f state=open \
+            -f head="${GITHUB_REPOSITORY_OWNER}:${GITHUB_REF_NAME}" \
+            -f per_page=1 \
+            --jq 'length')"; then
+            echo "Could not query open PRs; running push CI."
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if (( PR_COUNT > 0 )); then
+            echo "Open PR found for ${GITHUB_REF_NAME}; PR CI will test the merge ref."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No open PR found for ${GITHUB_REF_NAME}; running push CI."
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.open-pr.outputs.skip != 'true'
         with:
           fetch-depth: 0
 
       - name: Detect markdown-only changes
+        if: steps.open-pr.outputs.skip != 'true'
         id: detect
         shell: bash
         run: |

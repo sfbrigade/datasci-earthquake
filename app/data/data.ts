@@ -1,5 +1,5 @@
 import { HeadingProps } from "@/components/heading";
-import { HazardProps } from "@/components/mobile-card-hazard";
+import type { HazardProps } from "@/components/card-hazard";
 
 // TODO: break this up into multiple files
 // TODO: separate eg styling from content if it makes sense to
@@ -9,22 +9,23 @@ type HazardPropsCollection = HazardProps[];
 export const Hazards: HazardPropsCollection = [
   {
     id: 0,
-    name: "softStory",
-    title: "Wooden soft story",
+    name: "femaRisk",
+    title: "Earthquake risk score",
     description:
-      "Wooden soft story buildings that haven't been reinforced may be at risk in an earthquake.",
+      "All of San Francisco has high earthquake risk, but some areas have more than others.",
     info: [
-      "A wooden soft story building is a structure built before 1978 that contains an open-floor level, such as a garage or retail space, below one or more living spaces.",
-      "According to DataSF, there are 4,943 wooden soft story buildings in SF. But not all are at risk!",
-      "Some have been retrofitted to reinforce their lower levels and are generally considered earthquake-safe.",
-      "Our data doesn't currently include permit history, so some buildings flagged as at risk may have already been upgraded.",
+      "The U.S. government ranks every area in the country by earthquake risk. This is a ranking, not the chance of an earthquake.",
+      "We sort scores into four levels to compare areas within the SF city.",
+      "The score looks at how hard the ground could shake, the buildings and people in the area, and how well the community could recover.",
+      "It rates your area, not your building. Older buildings that haven't been reinforced may be at higher risk.",
     ],
     link: {
-      label: "Soft story dataset",
-      url: "https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data",
+      label:
+        "This information is based on FEMA National Risk Index Data using field ERQK_RISKR",
+      url: "https://www.fema.gov/about/openfema/data-sets/national-risk-index-data",
     },
     icon: "circle",
-    iconColor: "grey.400",
+    iconColor: "orange.300",
   },
   {
     id: 1,
@@ -42,7 +43,7 @@ export const Hazards: HazardPropsCollection = [
       url: "https://data.sfgov.org/Geographic-Locations-and-Boundaries/Soil-Liquefaction-Hazard-Zone/i4t7-35u3/about_data",
     },
     icon: "square",
-    iconColor: "orange",
+    iconColor: "femaRisk.veryHigh",
   },
   {
     id: 2,
@@ -60,7 +61,7 @@ export const Hazards: HazardPropsCollection = [
       url: "https://www.conservation.ca.gov/cgs/tsunami/maps",
     },
     icon: "square",
-    iconColor: "tsunamiBlue",
+    iconColor: "tsunami",
   },
 ];
 
@@ -151,19 +152,19 @@ export const mockAddressHazardData = [
 
 export const DataInfoLinks = [
   {
-    id: 1,
-    name: "softStory",
-    label: "Soft Story Dataset",
-    url: "https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data",
+    id: 0,
+    name: "femaRisk",
+    label: "FEMA National Risk Index Data",
+    url: "https://www.fema.gov/about/openfema/data-sets/national-risk-index-data",
   },
   {
-    id: 2,
+    id: 1,
     name: "liquefaction",
     label: "Liquefaction Dataset",
     url: "https://data.sfgov.org/Geographic-Locations-and-Boundaries/Soil-Liquefaction-Hazard-Zone/i4t7-35u3/about_data",
   },
   {
-    id: 3,
+    id: 2,
     name: "tsunami",
     label: "Tsunami Dataset",
     url: "https://www.conservation.ca.gov/cgs/tsunami/maps",
@@ -472,6 +473,12 @@ export const PillData = [
     name: "tsunami",
     trueData: "In Zone",
     falseData: "Not in Zone",
+    noData: "No Data",
+  },
+  {
+    name: "femaRisk",
+    trueData: "High Risk",
+    falseData: "Low Risk",
     noData: "No Data",
   },
 ];

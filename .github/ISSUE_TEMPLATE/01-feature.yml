@@ -1,0 +1,70 @@
+name: Feature
+description: Propose a product feature or enhancement
+type: Feature
+labels: ["needs triage", "needs refinement"]
+
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      value: |
+        What problem should this Feature address? Describe the situation, what someone is trying to do, and what gets in the way.
+
+        ***
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature-definition
+    attributes:
+      label: Feature definition
+      value: |
+        **Desired outcome**
+        What should be possible once this problem is solved?
+
+        **Out of scope**
+        What related work is intentionally excluded?
+
+        **Acceptance criteria**
+        What must be observably true for this Feature to be complete?
+
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+
+        ***
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      value: |
+        - **Design:** https://..
+        - **Data science:** https://..
+        - **Engineering:** https://..
+
+        **Additional context**
+        What else is worth knowing about this Feature?
+
+        ***
+    validations:
+      required: false
+
+  - type: textarea
+    id: work-items
+    attributes:
+      label: Work items
+      value: |
+        Keep applicable items.
+        - [ ] Create Design spec
+        - [ ] Conduct Data science analysis
+        - [ ] Create Engineering spec
+        - [ ] Implement Feature
+        - [ ] Validate Feature
+        - [ ] Run Design QA
+        - [ ] Validate Data / domain
+        - [ ] Run Product QA
+    validations:
+      required: false

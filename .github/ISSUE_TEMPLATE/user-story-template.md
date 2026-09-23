@@ -1,6 +1,6 @@
 ---
-name: User Story (legacy)
-about: Legacy template — use the Feature form for new product features
+name: "Deprecated: User Story"
+about: "Legacy template. Use Feature for new product features."
 title: ''
 labels: ''
 assignees: ''
@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 > **This template has been replaced for new product feature work.**
-> Please use the [Feature issue form](https://github.com/sfbrigade/datasci-earthquake/issues/new?template=feature.yml).
+> Please use the [Feature issue form](https://github.com/sfbrigade/datasci-earthquake/issues/new?template=01-feature.yml).
 >
 > The Feature form encourages problem-first framing and offers Jobs-to-be-Done as
 > one optional way to describe the problem before design and engineering refinement.

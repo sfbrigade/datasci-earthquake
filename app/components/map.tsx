@@ -7,6 +7,9 @@ import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
 import { Box } from "@chakra-ui/react";
+import system from "../../styles/theme";
+
+import { resolveColorToken } from "../../styles/resolve-color-token";
 
 const mapOptions: Omit<MapOptions, "container"> = {
   style: "mapbox://styles/mapbox/standard",
@@ -25,6 +28,8 @@ const mapOptions: Omit<MapOptions, "container"> = {
     basemap: {
       // 'default', 'faded', or 'monochrome'
       theme: "monochrome",
+      lightPreset: "day",
+      colorRoads: "#fefefe", // matches the lightPreset "dawn" basemap so roads appear invisible with theme "monochrome"
     },
   },
 };
@@ -35,7 +40,10 @@ interface MapProps {
   softStoryData: FeatureCollection<Geometry>;
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
+  femaRiskData: FeatureCollection<Geometry>;
   layerToggleObj: LayerToggleObjProps;
+  /** Fraction of the container height covered at the bottom. */
+  bottomPaddingRatio?: number;
 }
 
 const addMarker = (center: LngLat, map: mapboxgl.Map) => {
@@ -57,7 +65,9 @@ const Map: React.FC<MapProps> = ({
   softStoryData,
   tsunamiData,
   liquefactionData,
+  femaRiskData,
   layerToggleObj,
+  bottomPaddingRatio = 0,
 }: MapProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map>(null);
@@ -66,6 +76,21 @@ const Map: React.FC<MapProps> = ({
   const toastIdNoToken = "no-token";
   const lastLon = useRef<number | null>(lon);
   const lastLat = useRef<number | null>(lat);
+  const ratioRef = useRef(0);
+  const tsunamiVisibilityRef = useRef<"visible" | "none">("visible");
+  const bottomPaddingPx = (ratio: number) =>
+    Math.round((mapContainerRef.current?.clientHeight ?? 0) * ratio);
+
+  useEffect(() => {
+    ratioRef.current = bottomPaddingRatio;
+    const map = mapRef.current;
+    if (!map) return;
+
+    const bottom = bottomPaddingPx(bottomPaddingRatio);
+    if (map.getPadding().bottom !== bottom) {
+      map.easeTo({ padding: { bottom }, duration: map.loaded() ? 750 : 0 });
+    }
+  }, [bottomPaddingRatio]);
 
   // TODO: how do we simplify this `useEffect()` without ill side effects like map repainting by e.g. breaking it up into multiples or moving anything outside of it? for example, can anything be derived on render instead? or can anything run in a useEffect that runs only in initial render with an empty array w/out complicating subsequent update logic?
   useEffect(() => {
@@ -103,6 +128,7 @@ const Map: React.FC<MapProps> = ({
 
       const nav = new mapboxgl.NavigationControl({ showCompass: false });
       map.addControl(nav, "bottom-right");
+      map.setPadding({ bottom: bottomPaddingPx(ratioRef.current) });
 
       if (center && address) {
         // set up map marker for first time and set its center
@@ -110,47 +136,120 @@ const Map: React.FC<MapProps> = ({
       }
 
       map.on("load", () => {
+        const tsunamiColor = resolveColorToken("colors.tsunami");
+
         // Add sources
         map.addSource("seismic", { type: "geojson", data: liquefactionData });
 
         map.addSource("tsunami", { type: "geojson", data: tsunamiData });
 
-        map.addSource("soft-stories", { type: "geojson", data: softStoryData });
+        map.addSource("fema-risk", { type: "geojson", data: femaRiskData });
 
+        // FEMA earthquake risk — broad background layer
         map.addLayer({
-          id: "tsunamiLayer",
-          source: "tsunami",
+          id: "femaRiskLayer",
+          source: "fema-risk",
           type: "fill",
           slot: "middle",
+          // TODO: use mix of color and opacity tokens for this so legend etc matches up
           paint: {
-            "fill-color": "#63B3ED", // blue/300
-            "fill-opacity": 0.25, // 50% opacity
+            "fill-color": resolveColorToken("colors.femaRisk"),
+            "fill-opacity": [
+              "match",
+              ["get", "fema_risk_rating"],
+
+              "Relatively Low",
+              0.015,
+              "Relatively Moderate",
+              0.035,
+              "Relatively High",
+              0.08,
+              "Very High",
+              0.18,
+
+              0,
+            ],
           },
         });
 
-        // Add layers
+        // Liquefaction — extremely faint interior tint
         map.addLayer({
-          id: "seismicLayer",
+          id: "seismicBackgroundLayer",
           source: "seismic",
           type: "fill",
           slot: "middle",
           paint: {
-            "fill-color": "#F6AD55", // orange/300
-            "fill-opacity": 0.5, // 50% opacity
+            "fill-color": system.token("colors.orange.300"),
+            "fill-opacity": 0.04,
+          },
+        });
+
+        // Liquefaction — dark edge on OUTSIDE of polygon
+        map.addLayer({
+          id: "seismicBorderOuterLayer",
+          source: "seismic",
+          type: "line",
+          slot: "middle",
+          paint: {
+            "line-color": system.token("colors.orange.600"),
+            "line-width": 2,
+            "line-offset": -1,
+            "line-opacity": 0.9,
+          },
+        });
+
+        // Liquefaction — softer/light band extending INSIDE polygon
+        map.addLayer({
+          id: "seismicBorderInnerLayer",
+          source: "seismic",
+          type: "line",
+          slot: "middle",
+          paint: {
+            "line-color": system.token("colors.orange.300"),
+            "line-width": 6,
+            "line-offset": 3,
+            "line-opacity": 0.35,
+            "line-blur": 0.75,
           },
         });
 
         map.addLayer({
-          id: "softStoriesLayer",
-          source: "soft-stories",
-          type: "circle",
+          id: "tsunamiInnerLayer",
+          source: "tsunami",
+          type: "fill",
           slot: "middle",
           paint: {
-            "circle-radius": 4.5,
-            "circle-stroke-width": 1,
-            "circle-stroke-color": "#FFFFFF",
-            "circle-color": "#A0AEC0", // gray/400
+            "fill-color": tsunamiColor, // NOTE: this won't work if we intro light/dark mode; at point, we'd have to eg re-resolve the color on color mode change
+            "fill-opacity": 0.25,
           },
+        });
+
+        map.loadImage("/images/tsunami-hatch-fine-16.png", (error, image) => {
+          if (error) {
+            console.error("Failed to load tsunami hatch:", error);
+            return;
+          }
+
+          if (!image) return;
+
+          if (!map.hasImage("tsunami-hatch")) {
+            map.addImage("tsunami-hatch", image);
+
+            map.addLayer({
+              id: "tsunamiLayer",
+              source: "tsunami",
+              type: "fill",
+              slot: "middle",
+              paint: {
+                "fill-pattern": "tsunami-hatch",
+              },
+            });
+            map.setLayoutProperty(
+              "tsunamiLayer",
+              "visibility",
+              tsunamiVisibilityRef.current
+            );
+          }
         });
 
         map.on("error", (e) => {
@@ -168,6 +267,25 @@ const Map: React.FC<MapProps> = ({
           }
         });
       });
+
+      const updateBasemapDetail = () => {
+        const detailed = map.getZoom() >= 13;
+
+        map.setConfigProperty("basemap", "showRoadLabels", detailed);
+
+        map.setConfigProperty("basemap", "showPedestrianRoads", detailed);
+
+        map.setConfigProperty("basemap", "showPointOfInterestLabels", detailed);
+
+        map.setConfigProperty(
+          "basemap",
+          "colorRoads",
+          detailed ? "#cccccc" : "#fefefe"
+        );
+      };
+
+      map.on("zoomend", updateBasemapDetail);
+      updateBasemapDetail();
     } else {
       // subsequent passes: update map
       const map = mapRef.current;
@@ -195,31 +313,68 @@ const Map: React.FC<MapProps> = ({
           map.getCenter().lng !== center.lng ||
           map.getCenter().lat !== center.lat
         ) {
-          map.panTo(center, { duration: 750 }); // pan to new center
+          map.easeTo({
+            center,
+            padding: { bottom: bottomPaddingPx(ratioRef.current) },
+            duration: 750,
+          });
           lastLon.current = lon;
           lastLat.current = lat;
         }
       }
       return;
     }
-  }, [lon, lat, address, liquefactionData, softStoryData, tsunamiData]);
+  }, [
+    lon,
+    lat,
+    address,
+    liquefactionData,
+    softStoryData,
+    tsunamiData,
+    femaRiskData,
+  ]);
 
   useEffect(() => {
+    if (layerToggleObj.layerIds.includes("tsunamiLayer")) {
+      tsunamiVisibilityRef.current = layerToggleObj.toggleState
+        ? "visible"
+        : "none";
+    }
+
     const handleToggleLayers = () => {
       if (!mapRef.current) return;
       const map = mapRef.current;
+      const newVisibility = layerToggleObj.toggleState ? "visible" : "none";
 
-      const layerId = layerToggleObj.layerId;
-
-      if (layerId && map.getLayer(layerId)) {
-        const newVisibility = layerToggleObj.toggleState ? "visible" : "none";
-        // sets new visibility property value for layer, creating the "toggling" effect
-        map.setLayoutProperty(layerId, "visibility", newVisibility);
-      }
+      layerToggleObj.layerIds.forEach((layerId) => {
+        if (map.getLayer(layerId)) {
+          // sets new visibility property value for each layer in a hazard visualization
+          map.setLayoutProperty(layerId, "visibility", newVisibility);
+        }
+      });
     };
 
-    if (layerToggleObj.layerId != "") handleToggleLayers();
+    if (layerToggleObj.layerIds.length > 0) handleToggleLayers();
   }, [layerToggleObj]); // re-runs every time state changes
+
+  useEffect(() => {
+    const container = mapContainerRef.current;
+    if (!container || typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver(() => {
+      const map = mapRef.current;
+      if (!map) return;
+
+      map.resize();
+      const bottom = bottomPaddingPx(ratioRef.current);
+      if (map.getPadding().bottom !== bottom) {
+        map.setPadding({ bottom });
+      }
+    });
+    observer.observe(container);
+
+    return () => observer.disconnect();
+  }, []);
 
   return <Box ref={mapContainerRef} w="full" h="full" />;
 };

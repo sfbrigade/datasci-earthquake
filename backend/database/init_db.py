@@ -1,23 +1,23 @@
 """
 Database Initialization Script
 
-This script provides functions to manage database tables using 
-SQLAlchemy. It includes functions to create, drop, and check the 
-existence of tables in the database. 
+This script provides functions to manage database tables using
+SQLAlchemy. It includes functions to create, drop, and check the
+existence of tables in the database.
 
 Functions:
-    init_db(): Ensures that all tables defined in the SQLAlchemy `Base` 
+    init_db(): Ensures that all tables defined in the SQLAlchemy `Base`
                metadata exist. Print per-table ETL signals indicating which
                tables need ETL.
-    drop_db(): Drops all tables defined in the SQLAlchemy `Base` 
-               metadata. Use cautiously because this action is 
+    drop_db(): Drops all tables defined in the SQLAlchemy `Base`
+               metadata. Use cautiously because this action is
                irreversible.
     check_tables_exist(): Checks if all ETL-related tables exist in the database.
-    check_tables_empty(): Checks if any main tables are empty. Returns a list 
+    check_tables_empty(): Checks if any main tables are empty. Returns a list
                           of names of empty tables.
 
 Usage:
-    Run this script in docker to initialize the database by creating 
+    Run this script in docker to initialize the database by creating
     all necessary tables.  If existing tables are detected but are empty,
     any empty tables will be populated. If all tables exist and are not
     empty, the ETL process will be skipped entirely.
@@ -27,11 +27,11 @@ Example:
     Database tables created. ETL should run to populate data.
 
 Note:
-    The `Base` object should be imported from your SQLAlchemy model 
+    The `Base` object should be imported from your SQLAlchemy model
     definitions.
 
 Caution:
-    The `drop_db()` function will irreversibly remove all tables from 
+    The `drop_db()` function will irreversibly remove all tables from
     the database. Ensure you have backups if necessary.
 """
 
@@ -43,6 +43,7 @@ from backend.api.models.tsunami import TsunamiZone
 from backend.api.models.landslide_zones import LandslideZone
 from backend.api.models.liquefaction_zones import LiquefactionZone
 from backend.api.models.soft_story_properties import SoftStoryProperty
+from backend.api.models.earthquake_risk import EarthquakeRisk
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -65,7 +66,7 @@ def drop_db():
     print("Database tables dropped.")
 
 
-table_classes = [TsunamiZone, LiquefactionZone, SoftStoryProperty]
+table_classes = [TsunamiZone, LiquefactionZone, SoftStoryProperty, EarthquakeRisk]
 
 
 def check_tables_exist():
