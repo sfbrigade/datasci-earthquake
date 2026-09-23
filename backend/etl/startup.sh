@@ -52,6 +52,9 @@ for tbl in $ETL_TABLES; do
     earthquake_risk)
       run_python_script backend/etl/fema_data_handler.py
       ;;
+    landslide_zones)
+      run_python_script backend/etl/landslide_data_handler.py
+      ;;
     *)
       echo "No ETL mapping for $tbl; skipping" >&2
       ;;

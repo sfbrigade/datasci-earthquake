@@ -76,6 +76,7 @@ const renderMap = (bottomPaddingRatio = 0) =>
         tsunamiData={fc}
         liquefactionData={fc}
         femaRiskData={fc}
+        landslideData={fc}
         layerToggleObj={{ layerIds: [], toggleState: true }}
         bottomPaddingRatio={bottomPaddingRatio}
       />
@@ -185,6 +186,7 @@ describe("Map", () => {
           tsunamiData={fc}
           liquefactionData={fc}
           femaRiskData={fc}
+          landslideData={fc}
           layerToggleObj={{ layerIds: [], toggleState: true }}
           bottomPaddingRatio={0.5}
         />
@@ -222,6 +224,7 @@ describe("Map", () => {
             tsunamiData={fc}
             liquefactionData={fc}
             femaRiskData={fc}
+            landslideData={fc}
             layerToggleObj={layerToggleObj}
           />
         </Provider>

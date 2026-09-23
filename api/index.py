@@ -9,6 +9,7 @@ from backend.api.routers import (
     fema_api,
     health_api,
     hazard_lookup_api,
+    landslide_api,
 )
 from backend.api.config import settings
 import sentry_sdk
@@ -33,6 +34,7 @@ app.include_router(soft_story_api.router)
 app.include_router(fema_api.router)
 app.include_router(health_api.router)
 app.include_router(hazard_lookup_api.router)
+app.include_router(landslide_api.router)
 
 origins = [
     "http://localhost",
