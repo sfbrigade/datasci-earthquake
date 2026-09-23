@@ -11,3 +11,4 @@ class Tags(Enum):
     LIQUEFACTION = "liquefaction"
     FEMA = "fema"
     SYSTEM = "system"
+    HAZARDS = "hazards"
