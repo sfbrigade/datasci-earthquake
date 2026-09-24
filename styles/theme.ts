@@ -338,7 +338,7 @@ const globalCss: SystemConfig["globalCss"] = {
     fontFamily: "body", // This applies Inter (the "body" token) globally
   },
   ".chakra-drawer__positioner": {
-    zIndex: "docked !important",
+    zIndex: "docked",
   },
   ".marker": {
     width: "mapMarkerWidth",
@@ -353,11 +353,11 @@ const globalCss: SystemConfig["globalCss"] = {
   // NOTE: !important required to override due to the use of @layer in Chakra UI; alternative is to turn off @layer in Chakra config
   // TODO: consider looking into better workarounds or turning off @layer
   ".mapboxgl-ctrl-group button": {
-    width: "10 !important",
-    height: "10 !important",
+    width: "10",
+    height: "10",
   },
   ".mapboxgl-ctrl-bottom-right": {
-    marginRight: "4 !important",
+    marginRight: "4",
   },
 };
 
@@ -375,6 +375,7 @@ const utilities = {
 
 const overridesConfig: SystemConfig = defineConfig({
   preflight: true, // explicitly enable reset styles (AKA preflight styles)
+  disableLayers: true,
   globalCss,
   strictTokens: true,
   utilities,
