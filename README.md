@@ -4,6 +4,18 @@
 
 This is a hybrid Next.js + Python app that uses Next.js as the frontend and FastAPI as the API backend. It also uses PostgreSQL as the database.
 
+## ⚠️ Important: Use the Development Site for Internal Testing
+
+When browsing, testing, or reviewing the site as a team member, always use the development version:
+
+**[datasci-earthquake-omega.vercel.app](https://datasci-earthquake-omega.vercel.app)**
+
+Do **not** use the production site (`safehome.report`) for internal browsing or QA. 
+All user interactions — including page views and clicks — are tracked via PostHog. 
+Visiting production inflates our analytics and skews the data we report out.
+
+> If you're unsure which environment to use, default to dev.
+
 # Getting Started
 
 You can work on this app entirely [locally](#local-development), entirely [using Docker](#development-with-docker), or--if you prefer to focus on front end or back end--a [combination of the two](#hybrid-development).
