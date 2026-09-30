@@ -112,7 +112,9 @@ jobs:
       - name: Install dependencies with uv
         run: |
           uv pip install --system black==24.10.0 mypy
-          uv pip install --system fastapi pydantic pydantic-settings sqlalchemy GeoAlchemy2 pytest
+          # mypy.ini loads sqlalchemy.ext.mypy.plugin, which SQLAlchemy removed in
+          # 2.1, so keep this bound in step with the pin in api/requirements.txt.
+          uv pip install --system fastapi pydantic pydantic-settings 'sqlalchemy<2.1' GeoAlchemy2 pytest
       - name: Check code formatting with black
         run: black --check .
       - name: Type check with mypy
