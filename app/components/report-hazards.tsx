@@ -10,6 +10,7 @@ type HazardData = {
   tsunami?: any;
   liquefaction?: any;
   femaRisk?: any;
+  landslide?: any;
 };
 const ReportHazards = ({
   addressHazardData,

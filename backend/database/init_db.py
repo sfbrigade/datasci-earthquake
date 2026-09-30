@@ -66,7 +66,13 @@ def drop_db():
     print("Database tables dropped.")
 
 
-table_classes = [TsunamiZone, LiquefactionZone, SoftStoryProperty, EarthquakeRisk]
+table_classes = [
+    TsunamiZone,
+    LiquefactionZone,
+    SoftStoryProperty,
+    EarthquakeRisk,
+    LandslideZone,
+]
 
 
 def check_tables_exist():
@@ -79,7 +85,6 @@ def check_tables_exist():
     return True
 
 
-# LandslideZone is not being used, and isn't included in this check.
 def check_tables_empty():
     empty_tables = []
     with SessionLocal() as session:

@@ -33,13 +33,19 @@ export function useHazardDataFetcher({
         `${endpoint}?lon=${coords[0]}&lat=${coords[1]}`;
 
       try {
-        const [softStory, tsunamiZone, liquefactionZone, femaZone] =
-          await Promise.allSettled([
-            safeJsonFetch(buildUrl(API_ENDPOINTS.isSoftStory)),
-            safeJsonFetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)),
-            safeJsonFetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)),
-            safeJsonFetch(buildUrl(API_ENDPOINTS.getFemaZone)),
-          ]);
+        const [
+          softStory,
+          tsunamiZone,
+          liquefactionZone,
+          femaZone,
+          landslideZone,
+        ] = await Promise.allSettled([
+          safeJsonFetch(buildUrl(API_ENDPOINTS.isSoftStory)),
+          safeJsonFetch(buildUrl(API_ENDPOINTS.isInTsunamiZone)),
+          safeJsonFetch(buildUrl(API_ENDPOINTS.isInLiquefactionZone)),
+          safeJsonFetch(buildUrl(API_ENDPOINTS.getFemaZone)),
+          safeJsonFetch(buildUrl(API_ENDPOINTS.isInLandslideZone)),
+        ]);
 
         setSearchComplete(true);
 
@@ -48,6 +54,7 @@ export function useHazardDataFetcher({
           { name: "Tsunami", result: tsunamiZone },
           { name: "Liquefaction", result: liquefactionZone },
           { name: "FEMA Zone", result: femaZone },
+          { name: "Landslide", result: landslideZone },
         ].filter(({ result }) => result.status === "rejected");
 
         if (failed.length > 0) {
@@ -74,6 +81,8 @@ export function useHazardDataFetcher({
               ? liquefactionZone.value
               : null,
           femaRisk: femaZone.status === "fulfilled" ? femaZone.value : null,
+          landslide:
+            landslideZone.status === "fulfilled" ? landslideZone.value : null,
         };
       } catch (error) {
         console.error("Error fetching hazard data:", error);

@@ -76,6 +76,21 @@ const LegendSymbol = ({ kind }: LegendSymbolProps) => {
           backgroundClip="padding-box"
         />
       );
+
+    case "landslide":
+      return (
+        <Box
+          data-testid="hazard-legend-landslide"
+          aria-hidden="true"
+          w={size}
+          h={size}
+          flexShrink={0}
+          borderRadius="sm"
+          bgColor="landslide/40"
+          border="sm"
+          borderColor="landslide"
+        />
+      );
   }
 };
 

@@ -12,10 +12,13 @@ const femaRisk = {
   risk_score: 98.78,
 };
 
+const landslide = { exists: true, last_updated: null, gridcode: 10 };
+
 // mock for a successful fetch response
 const mockSuccessResponse = (data: {
   exists: boolean;
   last_updated: string | null;
+  gridcode?: number | null;
 }) =>
   Promise.resolve({
     ok: true,
@@ -62,6 +65,9 @@ test("should fetch all hazard data successfully", async () => {
     if (url.includes("get-fema-zone")) {
       return mockSuccessResponse(femaRisk);
     }
+    if (url.includes("landslide")) {
+      return mockSuccessResponse(landslide);
+    }
     throw new Error(`Unexpected fetch URL: ${url}`);
   });
 
@@ -83,7 +89,7 @@ test("should fetch all hazard data successfully", async () => {
   expect(setSearchComplete).toHaveBeenCalledWith(true);
   expect(toaster.create).not.toHaveBeenCalled();
   expect(setHazardDataLoading).toHaveBeenNthCalledWith(2, false);
-  expect(fetchMock).toHaveBeenCalledTimes(4);
+  expect(fetchMock).toHaveBeenCalledTimes(5);
   expect(fetchMock).toHaveBeenCalledWith(
     "/api/fema/get-fema-zone?lon=12&lat=34"
   );
@@ -93,12 +99,13 @@ test("should fetch all hazard data successfully", async () => {
     tsunami: { exists: false, last_updated: null },
     liquefaction: { exists: true, last_updated: "2025-08-05T17:03:03.555976Z" },
     femaRisk,
+    landslide,
   });
 });
 
 test("should show a warning toast when one API call fails", async () => {
   // Setup
-  // Only the third call (Liquefaction) fails; FEMA data still succeeds.
+  // Only the third call (Liquefaction) fails; FEMA and landslide data still succeed.
   fetchMock
     .mockResolvedValueOnce(
       mockSuccessResponse({ exists: false, last_updated: null })
@@ -107,7 +114,8 @@ test("should show a warning toast when one API call fails", async () => {
       mockSuccessResponse({ exists: false, last_updated: null })
     )
     .mockResolvedValueOnce(mockFailedResponse())
-    .mockResolvedValueOnce(mockSuccessResponse(femaRisk));
+    .mockResolvedValueOnce(mockSuccessResponse(femaRisk))
+    .mockResolvedValueOnce(mockSuccessResponse(landslide));
 
   const setSearchComplete = jest.fn();
   const setHazardDataLoading = jest.fn();
@@ -131,12 +139,13 @@ test("should show a warning toast when one API call fails", async () => {
     })
   );
   expect(setHazardDataLoading).toHaveBeenCalledTimes(2);
-  expect(fetchMock).toHaveBeenCalledTimes(4);
+  expect(fetchMock).toHaveBeenCalledTimes(5);
 
   expect(returnedValue).toEqual({
     softStory: { exists: false, last_updated: null },
     tsunami: { exists: false, last_updated: null },
     liquefaction: null,
     femaRisk,
+    landslide,
   });
 });
