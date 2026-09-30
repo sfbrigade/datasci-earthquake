@@ -31,7 +31,7 @@ EMPTY_HAZARD_STATUS = HazardStatus(exists=False, last_updated=None)
 
 def _check_soft_story(db: Session, point: WKBElement) -> HazardStatus:
     """Check whether a point is a non-compliant soft story property."""
-    property = (
+    soft_story = (
         db.query(SoftStoryProperty)
         .filter(geo_func.ST_DWithin(SoftStoryProperty.point, point, 0.000001))
         .first()
@@ -39,11 +39,11 @@ def _check_soft_story(db: Session, point: WKBElement) -> HazardStatus:
 
     exists = False
     last_updated = None
-    if property:
-        last_updated = property.update_timestamp
+    if soft_story:
+        last_updated = soft_story.update_timestamp
         exists = (
-            property.status is not None
-            and property.status.lower() == STATUS_NON_COMPLIANT
+            soft_story.status is not None
+            and soft_story.status.lower() == STATUS_NON_COMPLIANT
         )
 
     return HazardStatus(exists=exists, last_updated=last_updated)
