@@ -1,0 +1,30 @@
+---
+title: "EDA of Dam or Reservoir Failure Hazard Zones from DataSF"
+author: "Philippe Marchand"
+date: "2026-05-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The "Dam or Reservoir Failure Hazard Zone" dataset from DataSF is composed of 7 multipolygon objects, one per reservoir, representing the area at risk of flooding (based on a SFPUC model) if that reservoir fails.
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(sf)
+library(mapview)
+
+dam_res <- read_sf("Dam or Reservoir Failure Hazard Zone_20260504")
+dam_res
+```
+The interactive map below displays the multipolygon of each reservoir with a different color, but they don't need to be differentiated for SafeHome.
+
+There is no numerical data to display for that layer, just the polygon areas. The dataset contains data columns *range_min* and *range_max*, but they have the same non-informative value ("0" and "Max", respectively) for all polygons.
+
+
+```{r}
+mapview(dam_res, zcol = "reservoir", alpha = 0.5)
+```
+
