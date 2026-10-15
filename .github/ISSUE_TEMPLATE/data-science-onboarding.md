@@ -28,14 +28,14 @@ By the end of this period you should:
 ## Details
 
 - Understand the project
-   1. Explore https://www.safehome.report/, try inputting some addresses and play with the site.  We'd love your feedback & ideas!
+   1. Explore , try inputting some addresses and play with the site.  We'd love your feedback & ideas!
    2. Join the #proj-earthquake-datasci channel, and read through some of the more recent (1-2 weeks ish) of messages
    3. Visit the [SafeHome Canvas](https://sfbrigade.slack.com/docs/T0431NL8C/F07CLR2Q000), familiarize yourself with the Google Drive, Github, Roadmap, Product Requirement Document. These represent our "best attempt" at capturing the current state of the project. Please also familiarize yourself with the SafeHome Github [project board](https://github.com/orgs/sfbrigade/projects/13). This is where we keep track of the tasks you are assigned to for each iteration.
 - Understand the data & tech stack
   1. We have a strong preference for Python and Co-Lab for analysis, but please use the appropriate tool for your application.
   2. Navigate to the "tech stack" resource in the Canvas to better understand the stack we use for our project too.
   3. "Core Datasets"
-       - https://data.sfgov.org/Housing-and-Buildings/Soft-Story-Properties/beah-shgi/about_data
+      
        - https://data.sfgov.org/Geographic-Locations-and-Boundaries/Soil-Liquefaction-Hazard-Zone/i4t7-35u3/about_data
        - https://www.conservation.ca.gov/cgs/tsunami/maps
 - Learn Skills
@@ -44,12 +44,12 @@ By the end of this period you should:
      - [Product Analytics 101](https://docs.google.com/document/d/19ZWZZOtMj6BWFiQ9iAltAlL_KVHEtV6XZ8kBh3ni6j4/edit?tab=t.0#heading=h.auvnxplsw8t)
 - Meet People
   1. Make sure you meet some of the folks you'll work with.  At a minimum:
-     1. Leela Solomon (project lead) [Maternity Leave]
-     2. Oscar Syu (Interim project lead/Data science lead)
+     1. Leela Solomon (project lead)
+     2. Shilpa Dhananjayan (Data science lead)
      3. Introduce yourself to the following leads: 
             - Backend:Anna Gennadinik, Newton Chung
             - Frontend Nick Visutsithiwong, Josh van Eyken
             - Parternships: Julia Cordero
             - Design/UX: Ramya Rajasekaran
             - This is just a suggested starter list, please reach out to more if you are able to!
-- Take on a starter task!  Talk to Oscar about getting one.
+- Take on a starter task!  Talk to Shilpa about getting one.
