@@ -41,6 +41,7 @@ interface MapProps {
   tsunamiData: FeatureCollection<Geometry>;
   liquefactionData: FeatureCollection<Geometry>;
   femaRiskData: FeatureCollection<Geometry>;
+  landslideData: FeatureCollection<Geometry>;
   layerToggleObj: LayerToggleObjProps;
   /** Fraction of the container height covered at the bottom. */
   bottomPaddingRatio?: number;
@@ -66,6 +67,7 @@ const Map: React.FC<MapProps> = ({
   tsunamiData,
   liquefactionData,
   femaRiskData,
+  landslideData,
   layerToggleObj,
   bottomPaddingRatio = 0,
 }: MapProps) => {
@@ -145,6 +147,8 @@ const Map: React.FC<MapProps> = ({
 
         map.addSource("fema-risk", { type: "geojson", data: femaRiskData });
 
+        map.addSource("landslide", { type: "geojson", data: landslideData });
+
         // FEMA earthquake risk — broad background layer
         map.addLayer({
           id: "femaRiskLayer",
@@ -169,6 +173,18 @@ const Map: React.FC<MapProps> = ({
 
               0,
             ],
+          },
+        });
+
+        // Landslide — fill sits below the liquefaction outlines and tsunami hatch
+        map.addLayer({
+          id: "landslideLayer",
+          source: "landslide",
+          type: "fill",
+          slot: "middle",
+          paint: {
+            "fill-color": resolveColorToken("colors.landslide"),
+            "fill-opacity": 0.4,
           },
         });
 
@@ -332,6 +348,7 @@ const Map: React.FC<MapProps> = ({
     softStoryData,
     tsunamiData,
     femaRiskData,
+    landslideData,
   ]);
 
   useEffect(() => {

@@ -2,7 +2,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from backend.api.models.landslide_zones import LandslideZone
 from geojson_pydantic import Feature, FeatureCollection, MultiPolygon
 from geoalchemy2.shape import to_shape
-from typing import List
+from typing import List, Optional
 import json
 from datetime import datetime
 
@@ -35,7 +35,7 @@ class LandslideFeature(Feature):
     geometry: MultiPolygon
     properties: LandslideProperties
 
-    model_: ConfigDict = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
     @staticmethod
     def from_sqlalchemy_model(landslide_zone: LandslideZone):
@@ -70,3 +70,20 @@ class LandslideFeatureCollection(FeatureCollection):
 
     type: str = Field(default="FeatureCollection")  # type: ignore
     features: List[LandslideFeature]
+
+
+class InLandslideZoneView(BaseModel):
+    """
+    Pydantic View model for landslide zone check endpoint.
+
+    Attributes:
+        exists (bool): Whether the point is in a high-susceptibility landslide zone.
+        last_updated (Optional[datetime]): Timestamp of last update if exists.
+        gridcode (Optional[int]): Gridcode of the matched zone (8, 9, or 10).
+    """
+
+    exists: bool
+    last_updated: Optional[datetime] = None
+    gridcode: Optional[int] = None
+
+    model_config = ConfigDict(from_attributes=True)

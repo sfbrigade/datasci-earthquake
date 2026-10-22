@@ -8,10 +8,12 @@ export const API_ENDPOINTS = {
   tsunami: `${API_URL}/tsunami-zones`,
   liquefaction: `${API_URL}/liquefaction-zones`,
   fema: `${API_URL}/fema`,
+  landslide: `${API_URL}/landslide-zones`,
   isSoftStory: `${API_URL}/soft-stories/is-soft-story`,
   isInTsunamiZone: `${API_URL}/tsunami-zones/is-in-tsunami-zone`,
   isInLiquefactionZone: `${API_URL}/liquefaction-zones/is-in-liquefaction-zone`,
   getFemaZone: `${API_URL}/fema/get-fema-zone`,
+  isInLandslideZone: `${API_URL}/landslide-zones/is-in-landslide-zone`,
 };
 
 export const CDN_ENDPOINTS = {
@@ -19,4 +21,5 @@ export const CDN_ENDPOINTS = {
   tsunami: `${CDN_URL}/TsunamiZone.geojson`,
   liquefaction: `${CDN_URL}/LiquefactionZone.geojson`,
   fema: `${CDN_URL}/EarthquakeRisk.geojson`,
+  landslide: `${CDN_URL}/LandslideZone.geojson`,
 };

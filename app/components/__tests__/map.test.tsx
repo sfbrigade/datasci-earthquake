@@ -76,6 +76,7 @@ const renderMap = (bottomPaddingRatio = 0) =>
         tsunamiData={fc}
         liquefactionData={fc}
         femaRiskData={fc}
+        landslideData={fc}
         layerToggleObj={{ layerIds: [], toggleState: true }}
         bottomPaddingRatio={bottomPaddingRatio}
       />
@@ -185,6 +186,7 @@ describe("Map", () => {
           tsunamiData={fc}
           liquefactionData={fc}
           femaRiskData={fc}
+          landslideData={fc}
           layerToggleObj={{ layerIds: [], toggleState: true }}
           bottomPaddingRatio={0.5}
         />
@@ -222,6 +224,7 @@ describe("Map", () => {
             tsunamiData={fc}
             liquefactionData={fc}
             femaRiskData={fc}
+            landslideData={fc}
             layerToggleObj={layerToggleObj}
           />
         </Provider>
@@ -266,4 +269,31 @@ describe("Map", () => {
       );
     }
   );
+
+  it("adds the hazard fills in back-to-front draw order", () => {
+    renderMap();
+
+    act(() => {
+      const onLoad = mockMapInstance.on.mock.calls.find(
+        ([event]) => event === "load"
+      )![1];
+      onLoad();
+    });
+
+    const addedIds = mockMapInstance.addLayer.mock.calls.map(
+      ([layer]) => layer.id
+    );
+
+    // Mapbox draws later layers on top within a slot. The landslide fill has to
+    // sit above the broad FEMA tint but below the liquefaction outlines and the
+    // tsunami hatch, or it covers them.
+    expect(addedIds).toEqual([
+      "femaRiskLayer",
+      "landslideLayer",
+      "seismicBackgroundLayer",
+      "seismicBorderOuterLayer",
+      "seismicBorderInnerLayer",
+      "tsunamiInnerLayer",
+    ]);
+  });
 });

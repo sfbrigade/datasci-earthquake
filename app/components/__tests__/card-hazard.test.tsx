@@ -149,4 +149,41 @@ describe("CardHazard Component", () => {
       });
     }
   );
+
+  it("toggles the landslide layer from its legend card", async () => {
+    const user = userEvent.setup();
+    const setToggledStates = jest.fn();
+    const setLayerToggleObj = jest.fn();
+    const landslideHazard: HazardProps = {
+      ...softStoryHazard,
+      id: 3,
+      name: "landslide",
+      title: "Landslide zones",
+    };
+
+    render(
+      <Provider>
+        <CardHazard
+          hazard={landslideHazard}
+          showData={true}
+          isHazardDataLoading={false}
+          toggledStates={[true, true, true, true]}
+          setToggledStates={setToggledStates}
+          setLayerToggleObj={setLayerToggleObj}
+        />
+      </Provider>
+    );
+
+    expect(screen.getByTestId("hazard-legend-landslide")).toBeInTheDocument();
+
+    await user.click(
+      screen.getByRole("checkbox", { name: "Show Landslide zones on map" })
+    );
+
+    expect(setToggledStates).toHaveBeenCalledWith([true, true, true, false]);
+    expect(setLayerToggleObj).toHaveBeenCalledWith({
+      layerIds: ["landslideLayer"],
+      toggleState: false,
+    });
+  });
 });

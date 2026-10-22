@@ -29,8 +29,10 @@ class CompositeHazardResponse(BaseModel):
         soft_story (HazardStatus): Soft story hazard status.
         liquefaction (HazardStatus): Liquefaction hazard status.
         tsunami (HazardStatus): Tsunami hazard status.
+        landslide (HazardStatus): Landslide hazard status.
     """
 
     soft_story: HazardStatus
     liquefaction: HazardStatus
     tsunami: HazardStatus
+    landslide: HazardStatus

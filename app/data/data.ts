@@ -63,6 +63,24 @@ export const Hazards: HazardPropsCollection = [
     icon: "square",
     iconColor: "tsunami",
   },
+  {
+    id: 3,
+    name: "landslide",
+    title: "Landslide zones",
+    description:
+      "These hillside areas are more susceptible to landslides, which can be triggered or worsened by earthquake shaking.",
+    info: [
+      "Landslide susceptibility zones identify areas where steep or unstable terrain is more likely to slide during heavy rain or strong shaking.",
+      "Zones are ranked from low to high susceptibility; this layer highlights only high-susceptibility areas.",
+      "Buildings in these zones may face a higher risk of foundation damage or debris impact during a major earthquake.",
+    ],
+    link: {
+      label: "Landslide dataset",
+      url: "https://data.sfgov.org/Public-Safety/Landslide-Susceptibility-Hazard-Zones/bna4-itif/about_data",
+    },
+    icon: "square",
+    iconColor: "landslide",
+  },
 ];
 
 export const Info = [
@@ -148,6 +166,7 @@ export const mockAddressHazardData = [
   { exists: false, last_updated: null },
   { exists: true, last_updated: null },
   { exists: false, last_updated: null },
+  { exists: false, last_updated: null },
 ];
 
 export const DataInfoLinks = [
@@ -168,6 +187,12 @@ export const DataInfoLinks = [
     name: "tsunami",
     label: "Tsunami Dataset",
     url: "https://www.conservation.ca.gov/cgs/tsunami/maps",
+  },
+  {
+    id: 3,
+    name: "landslide",
+    label: "Landslide Dataset",
+    url: "https://data.sfgov.org/Public-Safety/Landslide-Susceptibility-Hazard-Zones/bna4-itif/about_data",
   },
 ];
 
@@ -479,6 +504,12 @@ export const PillData = [
     name: "femaRisk",
     trueData: "High Risk",
     falseData: "Low Risk",
+    noData: "No Data",
+  },
+  {
+    name: "landslide",
+    trueData: "Susceptible",
+    falseData: "Not in Zone",
     noData: "No Data",
   },
 ];

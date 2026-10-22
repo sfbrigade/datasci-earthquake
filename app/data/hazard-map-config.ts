@@ -2,7 +2,8 @@ export type HazardLegendKind =
   | "softStory"
   | "liquefaction"
   | "tsunami"
-  | "femaRisk";
+  | "femaRisk"
+  | "landslide";
 
 type HazardMapConfig = {
   legend: HazardLegendKind;
@@ -29,5 +30,9 @@ export const hazardMapConfigByName: Record<string, HazardMapConfig> = {
   femaRisk: {
     legend: "femaRisk",
     layerIds: ["femaRiskLayer", "femaRiskInnerLayer"],
+  },
+  landslide: {
+    legend: "landslide",
+    layerIds: ["landslideLayer"],
   },
 };
