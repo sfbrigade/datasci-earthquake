@@ -3,6 +3,7 @@ import { act, render } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import { Provider } from "../ui/provider";
+import { toaster } from "@/components/ui/toaster";
 import Map from "../map";
 import type { LayerToggleObjProps } from "../address-mapper";
 
@@ -60,10 +61,8 @@ jest.mock("../../../styles/resolve-color-token", () => ({
   resolveColorToken: jest.fn(() => "#0088cc"),
 }));
 
-const fc = {
-  type: "FeatureCollection" as const,
-  features: [],
-};
+const getMapListener = (event: string) =>
+  mockMapInstance.on.mock.calls.find(([name]) => name === event)![1];
 
 const renderMap = (bottomPaddingRatio = 0) =>
   render(
@@ -72,10 +71,6 @@ const renderMap = (bottomPaddingRatio = 0) =>
         lon={-122.4}
         lat={37.8}
         address="123 Main St"
-        softStoryData={fc}
-        tsunamiData={fc}
-        liquefactionData={fc}
-        femaRiskData={fc}
         layerToggleObj={{ layerIds: [], toggleState: true }}
         bottomPaddingRatio={bottomPaddingRatio}
       />
@@ -181,10 +176,6 @@ describe("Map", () => {
           lon={-122.5}
           lat={37.7}
           address="123 Main St"
-          softStoryData={fc}
-          tsunamiData={fc}
-          liquefactionData={fc}
-          femaRiskData={fc}
           layerToggleObj={{ layerIds: [], toggleState: true }}
           bottomPaddingRatio={0.5}
         />
@@ -218,10 +209,6 @@ describe("Map", () => {
             lon={-122.4}
             lat={37.8}
             address="123 Main St"
-            softStoryData={fc}
-            tsunamiData={fc}
-            liquefactionData={fc}
-            femaRiskData={fc}
             layerToggleObj={layerToggleObj}
           />
         </Provider>
@@ -231,10 +218,7 @@ describe("Map", () => {
       );
 
       act(() => {
-        const onLoad = mockMapInstance.on.mock.calls.find(
-          ([event]) => event === "load"
-        )![1];
-        onLoad();
+        getMapListener("load")();
       });
 
       for (const toggleState of toggles) {
@@ -266,4 +250,175 @@ describe("Map", () => {
       );
     }
   );
+
+  it("adds each layer source by its static file URL", () => {
+    renderMap();
+
+    act(() => {
+      getMapListener("load")();
+    });
+
+    expect(mockMapInstance.addSource.mock.calls).toEqual([
+      ["seismic", { type: "geojson", data: "/data/LiquefactionZone.geojson" }],
+      ["tsunami", { type: "geojson", data: "/data/TsunamiZone.geojson" }],
+      ["fema-risk", { type: "geojson", data: "/data/EarthquakeRisk.geojson" }],
+    ]);
+  });
+
+  it.each([
+    { toggles: [false], visibility: "none" },
+    { toggles: [false, true], visibility: "visible" },
+  ])(
+    "preserves $visibility for every layer after toggles $toggles before map load",
+    ({ toggles, visibility }) => {
+      const groups = [
+        [
+          "seismicBackgroundLayer",
+          "seismicBorderOuterLayer",
+          "seismicBorderInnerLayer",
+        ],
+        ["tsunamiInnerLayer", "tsunamiLayer"],
+        ["femaRiskLayer"],
+      ];
+      const { rerender } = renderMap();
+
+      for (const layerIds of groups) {
+        for (const toggleState of toggles) {
+          rerender(
+            <Provider>
+              <Map
+                lon={-122.4}
+                lat={37.8}
+                address="123 Main St"
+                layerToggleObj={{ layerIds, toggleState }}
+              />
+            </Provider>
+          );
+        }
+      }
+      expect(mockMapInstance.addLayer).not.toHaveBeenCalled();
+      expect(mockMapInstance.setLayoutProperty).not.toHaveBeenCalled();
+
+      act(() => {
+        getMapListener("load")();
+      });
+
+      for (const layerId of groups
+        .flat()
+        .filter((id) => id !== "tsunamiLayer")) {
+        expect(mockMapInstance.addLayer).toHaveBeenCalledWith(
+          expect.objectContaining({ id: layerId })
+        );
+        expect(mockMapInstance.setLayoutProperty).toHaveBeenCalledWith(
+          layerId,
+          "visibility",
+          visibility
+        );
+      }
+
+      act(() => {
+        const onImageLoaded = mockMapInstance.loadImage.mock.calls[0][1];
+        onImageLoaded(null, { width: 16, height: 16 });
+      });
+
+      expect(mockMapInstance.addLayer).toHaveBeenLastCalledWith(
+        expect.objectContaining({ id: "tsunamiLayer" })
+      );
+      expect(mockMapInstance.setLayoutProperty).toHaveBeenCalledWith(
+        "tsunamiLayer",
+        "visibility",
+        visibility
+      );
+    }
+  );
+
+  it("toggles layers before their data has loaded", () => {
+    mockMapInstance.getLayer.mockReturnValueOnce({});
+    const { rerender } = renderMap();
+
+    act(() => {
+      getMapListener("load")();
+    });
+
+    rerender(
+      <Provider>
+        <Map
+          lon={-122.4}
+          lat={37.8}
+          address="123 Main St"
+          layerToggleObj={{
+            layerIds: ["femaRiskLayer"],
+            toggleState: false,
+          }}
+        />
+      </Provider>
+    );
+
+    expect(mockMapInstance.setLayoutProperty).toHaveBeenCalledWith(
+      "femaRiskLayer",
+      "visibility",
+      "none"
+    );
+  });
+
+  describe("when a layer file fails to load", () => {
+    beforeEach(() => {
+      jest.spyOn(console, "error").mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      jest.mocked(console.error).mockRestore();
+    });
+
+    const loadMapAndGetErrorListener = () => {
+      renderMap();
+      act(() => {
+        getMapListener("load")();
+      });
+      return getMapListener("error");
+    };
+
+    it("shows a data load error toast per failed layer", () => {
+      const onError = loadMapAndGetErrorListener();
+
+      onError({ error: new Error("Not Found"), sourceId: "tsunami" });
+      onError({ error: new Error("Not Found"), sourceId: "fema-risk" });
+
+      expect(toaster.create).toHaveBeenCalledTimes(2);
+      expect(toaster.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: "data-load-failed-tsunami",
+          title: "Data Load Error",
+          description: "Tsunami Zones: Not Found",
+        })
+      );
+      expect(toaster.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: "data-load-failed-fema-risk",
+          title: "Data Load Error",
+          description: "Fema Risk Zones: Not Found",
+        })
+      );
+    });
+
+    it("does not repeat a toast that is still visible", () => {
+      const onError = loadMapAndGetErrorListener();
+      (toaster.isVisible as jest.Mock).mockReturnValueOnce(true);
+
+      onError({ error: new Error("Not Found"), sourceId: "tsunami" });
+
+      expect(toaster.isVisible).toHaveBeenCalledWith(
+        "data-load-failed-tsunami"
+      );
+      expect(toaster.create).not.toHaveBeenCalled();
+    });
+
+    it("ignores errors from sources that are not layer files", () => {
+      const onError = loadMapAndGetErrorListener();
+
+      onError({ error: new Error("Not Found"), sourceId: "composite" });
+
+      expect(toaster.create).not.toHaveBeenCalled();
+    });
+  });
 });

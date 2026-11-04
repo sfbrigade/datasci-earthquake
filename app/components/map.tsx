@@ -3,7 +3,6 @@
 import React, { useRef, useEffect } from "react";
 import mapboxgl, { LngLat, MapOptions } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
 import { Box } from "@chakra-ui/react";
@@ -33,14 +32,21 @@ const mapOptions: Omit<MapOptions, "container"> = {
     },
   },
 };
+
+// Layer data, served as static files from `public/data/` and loaded by Mapbox in the browser
+const layerSources: Record<string, { name: string; url: string }> = {
+  seismic: {
+    name: "Liquefaction Zones",
+    url: "/data/LiquefactionZone.geojson",
+  },
+  tsunami: { name: "Tsunami Zones", url: "/data/TsunamiZone.geojson" },
+  "fema-risk": { name: "Fema Risk Zones", url: "/data/EarthquakeRisk.geojson" },
+};
+
 interface MapProps {
   lon: number;
   lat: number;
   address: string | null;
-  softStoryData: FeatureCollection<Geometry>;
-  tsunamiData: FeatureCollection<Geometry>;
-  liquefactionData: FeatureCollection<Geometry>;
-  femaRiskData: FeatureCollection<Geometry>;
   layerToggleObj: LayerToggleObjProps;
   /** Fraction of the container height covered at the bottom. */
   bottomPaddingRatio?: number;
@@ -62,10 +68,6 @@ const Map: React.FC<MapProps> = ({
   lon,
   lat,
   address,
-  softStoryData,
-  tsunamiData,
-  liquefactionData,
-  femaRiskData,
   layerToggleObj,
   bottomPaddingRatio = 0,
 }: MapProps) => {
@@ -77,7 +79,7 @@ const Map: React.FC<MapProps> = ({
   const lastLon = useRef<number | null>(lon);
   const lastLat = useRef<number | null>(lat);
   const ratioRef = useRef(0);
-  const tsunamiVisibilityRef = useRef<"visible" | "none">("visible");
+  const layerVisibilityRef = useRef<Record<string, "visible" | "none">>({});
   const bottomPaddingPx = (ratio: number) =>
     Math.round((mapContainerRef.current?.clientHeight ?? 0) * ratio);
 
@@ -137,16 +139,22 @@ const Map: React.FC<MapProps> = ({
 
       map.on("load", () => {
         const tsunamiColor = resolveColorToken("colors.tsunami");
+        const addLayer = (layer: Parameters<typeof map.addLayer>[0]) => {
+          map.addLayer(layer);
+          map.setLayoutProperty(
+            layer.id,
+            "visibility",
+            layerVisibilityRef.current[layer.id] ?? "visible"
+          );
+        };
 
         // Add sources
-        map.addSource("seismic", { type: "geojson", data: liquefactionData });
-
-        map.addSource("tsunami", { type: "geojson", data: tsunamiData });
-
-        map.addSource("fema-risk", { type: "geojson", data: femaRiskData });
+        for (const [id, { url }] of Object.entries(layerSources)) {
+          map.addSource(id, { type: "geojson", data: url });
+        }
 
         // FEMA earthquake risk — broad background layer
-        map.addLayer({
+        addLayer({
           id: "femaRiskLayer",
           source: "fema-risk",
           type: "fill",
@@ -173,7 +181,7 @@ const Map: React.FC<MapProps> = ({
         });
 
         // Liquefaction — extremely faint interior tint
-        map.addLayer({
+        addLayer({
           id: "seismicBackgroundLayer",
           source: "seismic",
           type: "fill",
@@ -185,7 +193,7 @@ const Map: React.FC<MapProps> = ({
         });
 
         // Liquefaction — dark edge on OUTSIDE of polygon
-        map.addLayer({
+        addLayer({
           id: "seismicBorderOuterLayer",
           source: "seismic",
           type: "line",
@@ -199,7 +207,7 @@ const Map: React.FC<MapProps> = ({
         });
 
         // Liquefaction — softer/light band extending INSIDE polygon
-        map.addLayer({
+        addLayer({
           id: "seismicBorderInnerLayer",
           source: "seismic",
           type: "line",
@@ -213,7 +221,7 @@ const Map: React.FC<MapProps> = ({
           },
         });
 
-        map.addLayer({
+        addLayer({
           id: "tsunamiInnerLayer",
           source: "tsunami",
           type: "fill",
@@ -235,7 +243,7 @@ const Map: React.FC<MapProps> = ({
           if (!map.hasImage("tsunami-hatch")) {
             map.addImage("tsunami-hatch", image);
 
-            map.addLayer({
+            addLayer({
               id: "tsunamiLayer",
               source: "tsunami",
               type: "fill",
@@ -244,16 +252,26 @@ const Map: React.FC<MapProps> = ({
                 "fill-pattern": "tsunami-hatch",
               },
             });
-            map.setLayoutProperty(
-              "tsunamiLayer",
-              "visibility",
-              tsunamiVisibilityRef.current
-            );
           }
         });
 
-        map.on("error", (e) => {
-          if (e.error && e.error.message.includes("access token")) {
+        // Mapbox sets `sourceId` on errors from a source (e.g. a layer file that failed to load), but its event type omits it
+        map.on("error", (e: { error: Error; sourceId?: string }) => {
+          const layerSource = e.sourceId && layerSources[e.sourceId];
+          if (layerSource) {
+            const toastId = `data-load-failed-${e.sourceId}`;
+            if (!toaster.isVisible(toastId)) {
+              toaster.create({
+                id: toastId,
+                title: "Data Load Error",
+                description: `${layerSource.name}: ${e.error.message}`,
+                type: "error",
+                duration: 5000,
+                closable: true,
+              });
+            }
+            console.error(`Failed to load ${layerSource.url}:`, e.error);
+          } else if (e.error && e.error.message.includes("access token")) {
             if (!toaster.isVisible(toastIdInvalidToken)) {
               toaster.create({
                 id: toastIdInvalidToken,
@@ -324,37 +342,16 @@ const Map: React.FC<MapProps> = ({
       }
       return;
     }
-  }, [
-    lon,
-    lat,
-    address,
-    liquefactionData,
-    softStoryData,
-    tsunamiData,
-    femaRiskData,
-  ]);
+  }, [lon, lat, address]);
 
   useEffect(() => {
-    if (layerToggleObj.layerIds.includes("tsunamiLayer")) {
-      tsunamiVisibilityRef.current = layerToggleObj.toggleState
-        ? "visible"
-        : "none";
-    }
-
-    const handleToggleLayers = () => {
-      if (!mapRef.current) return;
-      const map = mapRef.current;
-      const newVisibility = layerToggleObj.toggleState ? "visible" : "none";
-
-      layerToggleObj.layerIds.forEach((layerId) => {
-        if (map.getLayer(layerId)) {
-          // sets new visibility property value for each layer in a hazard visualization
-          map.setLayoutProperty(layerId, "visibility", newVisibility);
-        }
-      });
-    };
-
-    if (layerToggleObj.layerIds.length > 0) handleToggleLayers();
+    const newVisibility = layerToggleObj.toggleState ? "visible" : "none";
+    layerToggleObj.layerIds.forEach((layerId) => {
+      layerVisibilityRef.current[layerId] = newVisibility;
+      if (mapRef.current?.getLayer(layerId)) {
+        mapRef.current.setLayoutProperty(layerId, "visibility", newVisibility);
+      }
+    });
   }, [layerToggleObj]); // re-runs every time state changes
 
   useEffect(() => {

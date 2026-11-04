@@ -44,7 +44,7 @@ The file is organized into four main sections:
 
 - **Postgres Environment Variables**. This section contains the credentials to connect to the PostgreSQL database, such as the username, password, and the name of the database.
 - **Backend Environment Variables**. These variables are used by the backend (i.e., FastAPI) to configure its behavior and to connect to the database and the frontend application.
-- **Frontend Environment Variables**. This section contains the base URL for API calls to the backend, `NODE_ENV` variable that determines in which environment the Node.js application is running, and the token needed to access Mapbox APIs.
+- **Frontend Environment Variables**. This section contains the `NODE_ENV` variable that determines in which environment the Node.js application is running and the token needed to access Mapbox APIs. See `backend/api/config.py` for the required settings, including legacy URL entries.
 - **Monitoring and Analytics Variables**. This section contains variables for Sentry and Posthog.
 
 For frontend environment variables, note that you will have to create your own MapBox access token and use its value for the environment variable `NEXT_PUBLIC_MAPBOX_TOKEN` in your `.env` file. To do so, first go to https://mapbox.com and sign up for your own MapBox account, then do the following:
@@ -492,6 +492,8 @@ Error occurred prerendering page "/<PAGE_NAME>". Read more: https://nextjs.org/d
 
 ##### MapBox polygon rendering
 
+Mapbox loads the liquefaction, tsunami, and FEMA overlays in the browser from this deployment's static files in `public/data/`, using the URLs defined in `app/components/map.tsx`. The overlays may appear after the base map; layer toggles also apply while they are loading. A failed overlay displays a "Data Load Error" toast identifying the affected layer.
+
 If there are issues with layers showing data, you can add the following snippet in `map.tsx` under the other `addLayer()` calls to see outlines of each MultiPolygon:
 
 ```js
@@ -585,22 +587,26 @@ Developers should only branch from `develop`, pull updates from `develop`, and e
 #### Branch Names
 
 Branches should follow this format:
+
 ```
 <type>/<issue-number>-<short-dash-case-issue-title>
 ```
+
 Where `<type>` is one of: `bugfix`, `feature`, `chore`
 
 Including the issue number automatically links the branch to the issue.
 
 Example:
+
 ```
 chore/54321-example-issue-branching-readme
 ```
-Summarizing longer issue titles is acceptable. 
+
+Summarizing longer issue titles is acceptable.
 
 #### Branch Deletion
 
-Branches are deleted automatically when merged. 
+Branches are deleted automatically when merged.
 If you have an unmerged branch you do not plan to return to, please delete it to reduce clutter.
 
 ### Pull Requests
