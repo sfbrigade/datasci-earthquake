@@ -534,7 +534,15 @@ map.addLayer({
 
 ## Formatting with a Pre-Commit Hook
 
-This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project. It works for _only_ the staged files. If you have edited unstaged files in your repository and want to make them comply with the CI pipeline, then run `black .` `mypy .` for Python code and `npm run lint .` for Javascript code.
+This repository uses `Black` for Python and `ESLint` for JS/TS to enforce code style standards. We also use `MyPy` to perform static type checking on Python code. The pre-commit hook runs the formatters automatically before each commit, helping maintain code consistency across the project. It works for _only_ the staged files. To check Python code with the locked backend dependencies used by CI, run these commands from the repository root:
+
+```bash
+uv sync --frozen --project backend --extra dev
+uv run --frozen --project backend black --check .
+uv run --frozen --project backend mypy --config-file mypy.ini .
+```
+
+To apply Python formatting, replace `black --check .` with `black .` in the command above. For Javascript code, run `npm run lint .`.
 
 ### Prerequisites
 
