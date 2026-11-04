@@ -18,11 +18,5 @@ for DB in template_postgis "$POSTGRES_DB" "${@}"; do
         -- Upgrade Topology
         CREATE EXTENSION IF NOT EXISTS postgis_topology;
         ALTER EXTENSION postgis_topology UPDATE;
-
-        -- Install Tiger dependencies in case not already installed
-        CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
-        -- Upgrade US Tiger Geocoder
-        CREATE EXTENSION IF NOT EXISTS postgis_tiger_geocoder;
-        ALTER EXTENSION postgis_tiger_geocoder UPDATE;
     "
 done
