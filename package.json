@@ -44,7 +44,6 @@
     "@fontsource/inter": "^5.2.8",
     "@mapbox/search-js-react": "^1.5.1",
     "@storybook/addon-themes": "^10.5.3",
-    "@types/geojson": "^7946.0.16",
     "autoprefixer": "^10.4.24",
     "framer-motion": "^12.34.2",
     "mapbox-gl": "^3.18.1",

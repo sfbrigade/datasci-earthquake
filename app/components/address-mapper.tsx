@@ -9,7 +9,6 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { FeatureCollection, Geometry } from "geojson";
 
 import { toaster } from "@/components/ui/toaster";
 import Map from "./map";
@@ -24,38 +23,12 @@ const defaultCoords = [-122.4194, 37.7949];
 
 const toggledStatesDefaults = [true, true, true];
 
-interface AddressMapperProps {
-  softStoryData: FeatureCollection<Geometry>;
-  tsunamiData: FeatureCollection<Geometry>;
-  liquefactionData: FeatureCollection<Geometry>;
-  femaRiskData: FeatureCollection<Geometry>;
-}
-
 export type LayerToggleObjProps = {
   layerIds: string[];
   toggleState: boolean;
 };
 
-type ErrorResult = {
-  error: true;
-  message: string;
-};
-
-const isErrorResult = (data: unknown): data is ErrorResult => {
-  return (
-    typeof data === "object" &&
-    data !== null &&
-    "error" in data &&
-    (data as ErrorResult).error === true
-  );
-};
-
-const AddressMapper: React.FC<AddressMapperProps> = ({
-  softStoryData,
-  tsunamiData,
-  liquefactionData,
-  femaRiskData,
-}) => {
+const AddressMapper = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { setSearchComplete } = useMapState();
@@ -89,8 +62,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     layerIds: [],
     toggleState: true,
   });
-
-  const toastIdDataLoadFailed = "data-load-failed";
 
   const { fetchHazardData } = useHazardDataFetcher({
     setSearchComplete,
@@ -152,47 +123,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
     };
   }, [validParams, initialLon, initialLat, fetchHazardData]);
 
-  useEffect(() => {
-    const sources = [
-      {
-        name: "Soft Story Buildings",
-        data: softStoryData,
-      },
-      {
-        name: "Tsunami Zones",
-        data: tsunamiData,
-      },
-      {
-        name: "Liquefaction Zones",
-        data: liquefactionData,
-      },
-      {
-        name: "Fema Risk Zones",
-        data: femaRiskData,
-      },
-    ];
-
-    const errors = sources
-      .filter((source) => isErrorResult(source.data))
-      .map(
-        (source) =>
-          `${source.name}: ${
-            (source.data as unknown as ErrorResult).message || "Unknown error"
-          }`
-      );
-
-    if (errors.length > 0 && !toaster.isVisible(toastIdDataLoadFailed)) {
-      toaster.create({
-        id: toastIdDataLoadFailed,
-        title: "Data Load Error",
-        description: errors.join(" | "),
-        type: "error",
-        duration: 5000,
-        closable: true,
-      });
-    }
-  }, [softStoryData, tsunamiData, liquefactionData, femaRiskData]);
-
   return (
     <Box w="full" h="full" m="auto" position="relative">
       <Box h="full" overflow="hidden">
@@ -232,10 +162,6 @@ const AddressMapper: React.FC<AddressMapperProps> = ({
           lon={lon}
           lat={lat}
           address={initialAddress}
-          softStoryData={softStoryData}
-          tsunamiData={tsunamiData}
-          liquefactionData={liquefactionData}
-          femaRiskData={femaRiskData}
           layerToggleObj={layerToggleObj}
           bottomPaddingRatio={bottomPaddingRatio}
         />

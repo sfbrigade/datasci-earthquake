@@ -55,18 +55,6 @@ jest.mock("@/components/ui/toaster", () => ({
 
 const defaultCoords = [-122.4194, 37.7949];
 
-const mockFeatureCollection = {
-  type: "FeatureCollection" as const,
-  features: [],
-};
-
-const mockProps = {
-  softStoryData: mockFeatureCollection,
-  tsunamiData: mockFeatureCollection,
-  liquefactionData: mockFeatureCollection,
-  femaRiskData: mockFeatureCollection,
-};
-
 const mockSetSearchParams = (params: Record<string, string>) => {
   const urlSearchParams = new URLSearchParams(params);
 
@@ -79,7 +67,7 @@ const renderAddressMapper = () =>
   render(
     <Provider>
       <MapStateProvider>
-        <AddressMapper {...mockProps} />
+        <AddressMapper />
       </MapStateProvider>
     </Provider>
   );

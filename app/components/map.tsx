@@ -3,7 +3,6 @@
 import React, { useRef, useEffect } from "react";
 import mapboxgl, { LngLat, MapOptions } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { FeatureCollection, Geometry } from "geojson";
 import { toaster } from "@/components/ui/toaster";
 import { LayerToggleObjProps } from "./address-mapper";
 import { Box } from "@chakra-ui/react";
@@ -33,14 +32,21 @@ const mapOptions: Omit<MapOptions, "container"> = {
     },
   },
 };
+
+// Layer data, served as static files from `public/data/` and loaded by Mapbox in the browser
+const layerSources: Record<string, { name: string; url: string }> = {
+  seismic: {
+    name: "Liquefaction Zones",
+    url: "/data/LiquefactionZone.geojson",
+  },
+  tsunami: { name: "Tsunami Zones", url: "/data/TsunamiZone.geojson" },
+  "fema-risk": { name: "Fema Risk Zones", url: "/data/EarthquakeRisk.geojson" },
+};
+
 interface MapProps {
   lon: number;
   lat: number;
   address: string | null;
-  softStoryData: FeatureCollection<Geometry>;
-  tsunamiData: FeatureCollection<Geometry>;
-  liquefactionData: FeatureCollection<Geometry>;
-  femaRiskData: FeatureCollection<Geometry>;
   layerToggleObj: LayerToggleObjProps;
   /** Fraction of the container height covered at the bottom. */
   bottomPaddingRatio?: number;
@@ -62,10 +68,6 @@ const Map: React.FC<MapProps> = ({
   lon,
   lat,
   address,
-  softStoryData,
-  tsunamiData,
-  liquefactionData,
-  femaRiskData,
   layerToggleObj,
   bottomPaddingRatio = 0,
 }: MapProps) => {
@@ -139,11 +141,9 @@ const Map: React.FC<MapProps> = ({
         const tsunamiColor = resolveColorToken("colors.tsunami");
 
         // Add sources
-        map.addSource("seismic", { type: "geojson", data: liquefactionData });
-
-        map.addSource("tsunami", { type: "geojson", data: tsunamiData });
-
-        map.addSource("fema-risk", { type: "geojson", data: femaRiskData });
+        for (const [id, { url }] of Object.entries(layerSources)) {
+          map.addSource(id, { type: "geojson", data: url });
+        }
 
         // FEMA earthquake risk — broad background layer
         map.addLayer({
@@ -252,8 +252,23 @@ const Map: React.FC<MapProps> = ({
           }
         });
 
-        map.on("error", (e) => {
-          if (e.error && e.error.message.includes("access token")) {
+        // Mapbox sets `sourceId` on errors from a source (e.g. a layer file that failed to load), but its event type omits it
+        map.on("error", (e: { error: Error; sourceId?: string }) => {
+          const layerSource = e.sourceId && layerSources[e.sourceId];
+          if (layerSource) {
+            const toastId = `data-load-failed-${e.sourceId}`;
+            if (!toaster.isVisible(toastId)) {
+              toaster.create({
+                id: toastId,
+                title: "Data Load Error",
+                description: `${layerSource.name}: ${e.error.message}`,
+                type: "error",
+                duration: 5000,
+                closable: true,
+              });
+            }
+            console.error(`Failed to load ${layerSource.url}:`, e.error);
+          } else if (e.error && e.error.message.includes("access token")) {
             if (!toaster.isVisible(toastIdInvalidToken)) {
               toaster.create({
                 id: toastIdInvalidToken,
@@ -324,15 +339,7 @@ const Map: React.FC<MapProps> = ({
       }
       return;
     }
-  }, [
-    lon,
-    lat,
-    address,
-    liquefactionData,
-    softStoryData,
-    tsunamiData,
-    femaRiskData,
-  ]);
+  }, [lon, lat, address]);
 
   useEffect(() => {
     if (layerToggleObj.layerIds.includes("tsunamiLayer")) {
