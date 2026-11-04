@@ -587,22 +587,26 @@ Developers should only branch from `develop`, pull updates from `develop`, and e
 #### Branch Names
 
 Branches should follow this format:
+
 ```
 <type>/<issue-number>-<short-dash-case-issue-title>
 ```
+
 Where `<type>` is one of: `bugfix`, `feature`, `chore`
 
 Including the issue number automatically links the branch to the issue.
 
 Example:
+
 ```
 chore/54321-example-issue-branching-readme
 ```
-Summarizing longer issue titles is acceptable. 
+
+Summarizing longer issue titles is acceptable.
 
 #### Branch Deletion
 
-Branches are deleted automatically when merged. 
+Branches are deleted automatically when merged.
 If you have an unmerged branch you do not plan to return to, please delete it to reduce clutter.
 
 ### Pull Requests

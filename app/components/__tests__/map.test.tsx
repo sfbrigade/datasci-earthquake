@@ -303,7 +303,9 @@ describe("Map", () => {
         getMapListener("load")();
       });
 
-      for (const layerId of groups.flat().filter((id) => id !== "tsunamiLayer")) {
+      for (const layerId of groups
+        .flat()
+        .filter((id) => id !== "tsunamiLayer")) {
         expect(mockMapInstance.addLayer).toHaveBeenCalledWith(
           expect.objectContaining({ id: layerId })
         );
