@@ -265,6 +265,71 @@ describe("Map", () => {
     ]);
   });
 
+  it.each([
+    { toggles: [false], visibility: "none" },
+    { toggles: [false, true], visibility: "visible" },
+  ])(
+    "preserves $visibility for every layer after toggles $toggles before map load",
+    ({ toggles, visibility }) => {
+      const groups = [
+        [
+          "seismicBackgroundLayer",
+          "seismicBorderOuterLayer",
+          "seismicBorderInnerLayer",
+        ],
+        ["tsunamiInnerLayer", "tsunamiLayer"],
+        ["femaRiskLayer"],
+      ];
+      const { rerender } = renderMap();
+
+      for (const layerIds of groups) {
+        for (const toggleState of toggles) {
+          rerender(
+            <Provider>
+              <Map
+                lon={-122.4}
+                lat={37.8}
+                address="123 Main St"
+                layerToggleObj={{ layerIds, toggleState }}
+              />
+            </Provider>
+          );
+        }
+      }
+      expect(mockMapInstance.addLayer).not.toHaveBeenCalled();
+      expect(mockMapInstance.setLayoutProperty).not.toHaveBeenCalled();
+
+      act(() => {
+        getMapListener("load")();
+      });
+
+      for (const layerId of groups.flat().filter((id) => id !== "tsunamiLayer")) {
+        expect(mockMapInstance.addLayer).toHaveBeenCalledWith(
+          expect.objectContaining({ id: layerId })
+        );
+        expect(mockMapInstance.setLayoutProperty).toHaveBeenCalledWith(
+          layerId,
+          "visibility",
+          visibility
+        );
+      }
+
+      act(() => {
+        const onImageLoaded = mockMapInstance.loadImage.mock.calls[0][1];
+        onImageLoaded(null, { width: 16, height: 16 });
+      });
+
+      expect(mockMapInstance.addLayer).toHaveBeenLastCalledWith(
+        expect.objectContaining({ id: "tsunamiLayer" })
+      );
+      expect(mockMapInstance.setLayoutProperty).toHaveBeenCalledWith(
+        "tsunamiLayer",
+        "visibility",
+        visibility
+      );
+    }
+  );
+
   it("toggles layers before their data has loaded", () => {
     mockMapInstance.getLayer.mockReturnValueOnce({});
     const { rerender } = renderMap();

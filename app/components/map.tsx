@@ -79,7 +79,7 @@ const Map: React.FC<MapProps> = ({
   const lastLon = useRef<number | null>(lon);
   const lastLat = useRef<number | null>(lat);
   const ratioRef = useRef(0);
-  const tsunamiVisibilityRef = useRef<"visible" | "none">("visible");
+  const layerVisibilityRef = useRef<Record<string, "visible" | "none">>({});
   const bottomPaddingPx = (ratio: number) =>
     Math.round((mapContainerRef.current?.clientHeight ?? 0) * ratio);
 
@@ -139,6 +139,14 @@ const Map: React.FC<MapProps> = ({
 
       map.on("load", () => {
         const tsunamiColor = resolveColorToken("colors.tsunami");
+        const addLayer = (layer: Parameters<typeof map.addLayer>[0]) => {
+          map.addLayer(layer);
+          map.setLayoutProperty(
+            layer.id,
+            "visibility",
+            layerVisibilityRef.current[layer.id] ?? "visible"
+          );
+        };
 
         // Add sources
         for (const [id, { url }] of Object.entries(layerSources)) {
@@ -146,7 +154,7 @@ const Map: React.FC<MapProps> = ({
         }
 
         // FEMA earthquake risk — broad background layer
-        map.addLayer({
+        addLayer({
           id: "femaRiskLayer",
           source: "fema-risk",
           type: "fill",
@@ -173,7 +181,7 @@ const Map: React.FC<MapProps> = ({
         });
 
         // Liquefaction — extremely faint interior tint
-        map.addLayer({
+        addLayer({
           id: "seismicBackgroundLayer",
           source: "seismic",
           type: "fill",
@@ -185,7 +193,7 @@ const Map: React.FC<MapProps> = ({
         });
 
         // Liquefaction — dark edge on OUTSIDE of polygon
-        map.addLayer({
+        addLayer({
           id: "seismicBorderOuterLayer",
           source: "seismic",
           type: "line",
@@ -199,7 +207,7 @@ const Map: React.FC<MapProps> = ({
         });
 
         // Liquefaction — softer/light band extending INSIDE polygon
-        map.addLayer({
+        addLayer({
           id: "seismicBorderInnerLayer",
           source: "seismic",
           type: "line",
@@ -213,7 +221,7 @@ const Map: React.FC<MapProps> = ({
           },
         });
 
-        map.addLayer({
+        addLayer({
           id: "tsunamiInnerLayer",
           source: "tsunami",
           type: "fill",
@@ -235,7 +243,7 @@ const Map: React.FC<MapProps> = ({
           if (!map.hasImage("tsunami-hatch")) {
             map.addImage("tsunami-hatch", image);
 
-            map.addLayer({
+            addLayer({
               id: "tsunamiLayer",
               source: "tsunami",
               type: "fill",
@@ -244,11 +252,6 @@ const Map: React.FC<MapProps> = ({
                 "fill-pattern": "tsunami-hatch",
               },
             });
-            map.setLayoutProperty(
-              "tsunamiLayer",
-              "visibility",
-              tsunamiVisibilityRef.current
-            );
           }
         });
 
@@ -342,26 +345,13 @@ const Map: React.FC<MapProps> = ({
   }, [lon, lat, address]);
 
   useEffect(() => {
-    if (layerToggleObj.layerIds.includes("tsunamiLayer")) {
-      tsunamiVisibilityRef.current = layerToggleObj.toggleState
-        ? "visible"
-        : "none";
-    }
-
-    const handleToggleLayers = () => {
-      if (!mapRef.current) return;
-      const map = mapRef.current;
-      const newVisibility = layerToggleObj.toggleState ? "visible" : "none";
-
-      layerToggleObj.layerIds.forEach((layerId) => {
-        if (map.getLayer(layerId)) {
-          // sets new visibility property value for each layer in a hazard visualization
-          map.setLayoutProperty(layerId, "visibility", newVisibility);
-        }
-      });
-    };
-
-    if (layerToggleObj.layerIds.length > 0) handleToggleLayers();
+    const newVisibility = layerToggleObj.toggleState ? "visible" : "none";
+    layerToggleObj.layerIds.forEach((layerId) => {
+      layerVisibilityRef.current[layerId] = newVisibility;
+      if (mapRef.current?.getLayer(layerId)) {
+        mapRef.current.setLayoutProperty(layerId, "visibility", newVisibility);
+      }
+    });
   }, [layerToggleObj]); // re-runs every time state changes
 
   useEffect(() => {
