@@ -286,10 +286,10 @@ if __name__ == "__main__":
     )
     try:
         soft_story_properties = handler.fetch_data()
-        soft_story_property_objects, soft_story_property_geojson = handler.parse_data(
-            soft_story_properties
-        )
-        handler.export_geojson_if_changed(soft_story_property_geojson)
-        handler.bulk_insert_data(soft_story_property_objects, "address")
+        #soft_story_property_objects, soft_story_property_geojson = handler.parse_data(
+        #    soft_story_properties
+        #)
+        #handler.export_geojson_if_changed(soft_story_property_geojson)
+        #handler.bulk_insert_data(soft_story_property_objects, "address")
     except HTTPException as e:
         print(f"Failed after retries: {e}")
