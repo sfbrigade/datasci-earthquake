@@ -13,7 +13,7 @@ RUN apt list "postgresql-15-postgis-3*"
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    postgis postgresql-15-postgis-3='3.6.*' \
+    postgis postgresql-15-postgis-3='3.6.0' postgresql-15-postgis-3-scripts='3.6.0' \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy init scripts that enable PostGIS on first container start.
