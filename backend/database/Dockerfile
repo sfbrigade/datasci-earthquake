@@ -7,6 +7,8 @@ FROM postgres:15
 
 # Install PostGIS and its PostgreSQL 15 integration.
 # (spatial db extension for geographic queries)
+RUN apt list "postgresql-15-postgis-3*"
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     postgis postgresql-15-postgis-3 \
