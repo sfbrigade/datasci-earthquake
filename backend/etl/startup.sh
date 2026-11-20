@@ -37,6 +37,8 @@ fi
 # Check which tables need ETL
 ETL_TABLES=$(echo "$ETL_OUTPUT" | awk -F: '/^ETL_REQUIRED:/ {print $2}')
 
+SECONDS=0
+echo 'Starting timer now!'
 # run ETL only for required tables
 for tbl in $ETL_TABLES; do
   case "$tbl" in
@@ -54,7 +56,7 @@ for tbl in $ETL_TABLES; do
       ;;
   esac
 done
-
+echo "seconds passed = $SECONDS"
 echo "===== startup.sh finished ====="
 
 # Start FastAPI
