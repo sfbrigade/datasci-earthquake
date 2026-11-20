@@ -10,6 +10,7 @@ FROM postgres:15
 
 RUN apt-get update
 RUN apt list "postgresql-15-postgis-3*"
+RUN apt-cache madison postgresql-15-postgis-3
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
