@@ -12,7 +12,7 @@ params = {
   "outFields": "*",
   "f": "json",
 }
-formatted = '&'.join(f'{k}={v} for k,v in params.items()')
+formatted = '&'.join([f'{k}={v}' for k,v in params.items()])
 
 TSUNAMI_URL = TSUNAMI_URL + '?' + formatted
 print(f'TSUNAMI_URL = {TSUNAMI_URL}')
