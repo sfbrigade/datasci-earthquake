@@ -66,7 +66,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     if [ "$INSTALL_DEV" = "true" ]; then \
         uv sync --frozen --no-install-project; \
     else \
-        uv sync --frozen --no-install-project --no-dev; \
+        uv sync --no-install-project --no-dev; \
     fi
 
 # Add the virtual environment, created above by uv sync, to PATH 
