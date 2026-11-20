@@ -15,7 +15,8 @@ RUN apt-cache madison postgresql-15-postgis-3
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    postgis postgresql-15-postgis-3='3.6.4+dfsg-2.pgdg13+1' postgresql-15-postgis-3-scripts='3.6.4+dfsg-2.pgdg13+1' \
+    #postgis postgresql-15-postgis-3='3.6.4+dfsg-2.pgdg13+1' postgresql-15-postgis-3-scripts='3.6.4+dfsg-2.pgdg13+1' \
+    postgis postgresql-15-postgis-3='3.6.4+dfsg-2.pgdg13+1' \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy init scripts that enable PostGIS on first container start.
