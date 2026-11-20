@@ -46,9 +46,6 @@ for tbl in $ETL_TABLES; do
     liquefaction_zones)
       run_python_script backend/etl/liquefaction_data_handler.py
       ;;
-    soft_story_properties)
-      run_python_script backend/etl/soft_story_properties_data_handler.py
-      ;;
     earthquake_risk)
       run_python_script backend/etl/fema_data_handler.py
       ;;

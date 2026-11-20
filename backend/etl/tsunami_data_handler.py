@@ -102,8 +102,8 @@ if __name__ == "__main__":
             "f": "json",
         }
         tsunami_zones = handler.fetch_data(params)
-        tsunami_zones_objects, tsunami_zones_geojson = handler.parse_data(tsunami_zones)
-        handler.export_geojson_if_changed(tsunami_zones_geojson)
-        handler.bulk_insert_data(tsunami_zones_objects, "identifier")
+        #tsunami_zones_objects, tsunami_zones_geojson = handler.parse_data(tsunami_zones)
+        #handler.export_geojson_if_changed(tsunami_zones_geojson)
+        #handler.bulk_insert_data(tsunami_zones_objects, "identifier")
     except HTTPException as e:
         print(f"Failed after retries: {e}")

@@ -165,11 +165,11 @@ def main():
     }
     try:
         earthquake_risk_data = handler.fetch_data(params)
-        earthquake_risk_objects, earthquake_risk_geojson = handler.parse_data(
-            earthquake_risk_data
-        )
-        handler.export_geojson_if_changed(earthquake_risk_geojson)
-        handler.bulk_insert_data(earthquake_risk_objects, "tract_fips")
+        #earthquake_risk_objects, earthquake_risk_geojson = handler.parse_data(
+        #    earthquake_risk_data
+        #)
+        #handler.export_geojson_if_changed(earthquake_risk_geojson)
+        #handler.bulk_insert_data(earthquake_risk_objects, "tract_fips")
     except Exception as e:
         print(f"Failed to load FEMA earthquake risk data: {e}")
         raise
