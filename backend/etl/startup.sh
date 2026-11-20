@@ -8,7 +8,9 @@ echo "===== Starting startup.sh ====="
 # uv automatically creates a virtual environment called .venv in the backend Dockerfile
 VENV_PYTHON="/.venv/bin/python"
 echo "Using virtual environment python at $VENV_PYTHON"
-
+echo 'python version...'
+python -V
+echo 'python version eh...'
 # Check if the python interpreter exists
 if [ ! -f "$VENV_PYTHON" ]; then
     echo "Error: Python interpreter not found at $VENV_PYTHON. The virtual environment might not have been created correctly." >&2

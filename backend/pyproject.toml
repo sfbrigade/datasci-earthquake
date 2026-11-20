@@ -11,6 +11,7 @@ requires-python = "==3.11.4"
 
 dependencies = [
     "alembic==1.14.0",
+    "pycurl==7.49.0",
     "annotated-types==0.7.0",
     "anyio==4.4.0",
     "asyncpg==0.30.0",
