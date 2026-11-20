@@ -14,7 +14,7 @@ params = {
   "f": "json",
 }
 #formatted = '&'.join([f'{k}={urllib.parse.quote(v)}' for k,v in params.items()])
-print(f'encoded part = {urllib.parse.urlencode(params)')
+print(f'encoded part = {urllib.parse.urlencode(params)}')
 TSUNAMI_URL = TSUNAMI_URL + '?' + formatted
 print(f'TSUNAMI_URL = {TSUNAMI_URL}')
 
