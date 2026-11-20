@@ -13,20 +13,21 @@ params = {
   "outFields": "*",
   "f": "json",
 }
-#formatted = '&'.join([f'{k}={urllib.parse.quote(v)}' for k,v in params.items()])
-print(f'encoded part = {urllib.parse.urlencode(params)}')
 formatted = urllib.parse.urlencode(params)
 TSUNAMI_URL = TSUNAMI_URL + '?' + formatted
 print(f'TSUNAMI_URL = {TSUNAMI_URL}')
 
-#c.setopt(c.URL, 'https://pycurl.github.io/')
-#c.setopt(c.WRITEDATA, buffer)
-#c.setopt(c.CAINFO, certifi.where())
-#c.perform()
-#c.close()
+c.setopt(c.URL, TSUNAMI_URL)
+c.setopt(c.WRITEDATA, buffer)
+c.setopt(c.CAINFO, certifi.where())
+c.perform()
+c.close()
 
-#body = buffer.getvalue()
+body = buffer.getvalue()
 # Body is a byte string.
 # We have to know the encoding in order to print it to a text file
 # such as standard output.
-#print(body.decode('iso-8859-1'))
+print('----- bytes decoded response ----')
+resp = body.decode('iso-8859-1')
+print(resp[:300])
+print('----- end bytes decoded response ----')
