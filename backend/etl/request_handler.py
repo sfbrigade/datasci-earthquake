@@ -27,6 +27,7 @@ class RequestHandler:
 
             response = self.session.get(url, params=params, timeout=timeout)
             self.logger.info(f"Got response with status: {response.status_code}")
+            self.logger.info(f"response full url...: {response.url}")
 
             response.raise_for_status()
             try:
