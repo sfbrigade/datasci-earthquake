@@ -3,7 +3,6 @@ import certifi
 from io import BytesIO
 import urllib
 
-c = pycurl.Curl()
 
 
 TSUNAMI_URL = "https://services2.arcgis.com/zr3KAIbsRSUyARHG/ArcGIS/rest/services/CA_Tsunami_Hazard_Area/FeatureServer/0/query"
@@ -45,6 +44,7 @@ urls.append(_NRI_CENSUS_TRACTS_URL)
 
 for url in urls:
   buffer = BytesIO()
+  c = pycurl.Curl()
   c.setopt(c.URL, url)
   c.setopt(c.WRITEDATA, buffer)
   c.setopt(c.CAINFO, certifi.where())
