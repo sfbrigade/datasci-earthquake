@@ -8,16 +8,10 @@ FROM postgres:15
 # Install PostGIS and its PostgreSQL 15 integration.
 # (spatial db extension for geographic queries)
 
-RUN apt-get update
-RUN apt list "postgresql-15-postgis-3*"
-RUN apt policy
-RUN apt-cache madison postgresql-15-postgis-3
-
 ARG POSTGIS_VERSION=3.6.4+dfsg-2.pgdg13+1
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    #postgis postgresql-15-postgis-3='3.6.4+dfsg-2.pgdg13+1' postgresql-15-postgis-3-scripts='3.6.4+dfsg-2.pgdg13+1' \
     postgis postgresql-15-postgis-3=$POSTGIS_VERSION postgresql-15-postgis-3-scripts=$POSTGIS_VERSION \
     && rm -rf /var/lib/apt/lists/*
 
