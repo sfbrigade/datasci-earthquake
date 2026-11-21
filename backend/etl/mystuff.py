@@ -3,49 +3,47 @@ import certifi
 from io import BytesIO
 import urllib
 import json
+import geopandas as gpd
 
-
-TSUNAMI_URL = "https://services2.arcgis.com/zr3KAIbsRSUyARHG/ArcGIS/rest/services/CA_Tsunami_Hazard_Area/FeatureServer/0/query"
-params = {
-  "where": "County='San Francisco' AND Evacuate='Yes, Tsunami Hazard Area'",
-  "outFields": "*",
-  "f": "json",
+CONFIG = {
+  'tsunami': {
+    'url': "https://services2.arcgis.com/zr3KAIbsRSUyARHG/ArcGIS/rest/services/CA_Tsunami_Hazard_Area/FeatureServer/0/query",
+    'params': {
+      "where": "County='San Francisco' AND Evacuate='Yes, Tsunami Hazard Area'",
+      "outFields": "*",
+      "f": "json",
+    }
+  },
+  'liq': {
+    'url': "https://data.sf.gov/resource/i4t7-35u3.geojson",
+  },
+  'earthquake': {
+    'url': "https://services.arcgis.com/XG15cJAlne2vxtgt/ArcGIS/rest/services/National_Risk_Index_Census_Tracts/FeatureServer/0/query",
+    'params': {
+      "where": "STCOFIPS=06075",
+      "outFields": "TRACTFIPS,ERQK_RISKS,ERQK_RISKR",
+      "outSR": 4326,
+      "geometryPrecision": 6,
+      "f": "geojson" 
+    }
+  }
 }
-formatted = urllib.parse.urlencode(params)
-TSUNAMI_URL = TSUNAMI_URL + '?' + formatted
-print(f'TSUNAMI_URL = {TSUNAMI_URL}')
+
+urls = {}
+for k,v in CONFIG.items():
+  url = v['url']
+  if v['params']':
+    url_params = urllib.parse.urlencode(v['params'])
+    url = v['url'] + '?' + url_params
+  urls[k] = url
 
 
-
-urls = []
-
-_LIQUEFACTION_URL = "https://data.sf.gov/resource/i4t7-35u3.geojson"
-
-_NRI_CENSUS_TRACTS_URL = (
-    "https://services.arcgis.com/XG15cJAlne2vxtgt/ArcGIS/rest/services/"
-    "National_Risk_Index_Census_Tracts/FeatureServer/0/query"
-)
-_SF_STCOFIPS = "06075"
-
-
-params = {
-  "where": f"STCOFIPS='{_SF_STCOFIPS}'",
-  "outFields": "TRACTFIPS,ERQK_RISKS,ERQK_RISKR",
-  "outSR": 4326,
-  "geometryPrecision": 6,
-  "f": "geojson" 
-}
-formatted = urllib.parse.urlencode(params)
-_NRI_CENSUS_TRACTS_URL = _NRI_CENSUS_TRACTS_URL + '?' + formatted
-
-urls.append(TSUNAMI_URL)
-urls.append(_LIQUEFACTION_URL)
-urls.append(_NRI_CENSUS_TRACTS_URL)
+dataframes = {}
 
 c = pycurl.Curl()
-for url in urls:
+for k,v in urls.items():
   buffer = BytesIO()
-  c.setopt(c.URL, url)
+  c.setopt(c.URL, v)
   c.setopt(c.WRITEDATA, buffer)
   c.setopt(c.CAINFO, certifi.where())
   c.perform()
@@ -58,5 +56,11 @@ for url in urls:
   #resp = body.decode('iso-8859-1')
 
   #myjson = json.loads(resp)
-
+  buffer.seek(0)
+  dataframes[k] = gpd.read_file(buffer)
+  dataframes[k].info(verbose=True)
 c.close()
+
+
+for k,v in dataframes.items():
+  print(f'numb rows for {k} = {len(v)}')
