@@ -47,20 +47,14 @@ for url in urls:
   buffer = BytesIO()
   c = pycurl.Curl()
   c.setopt(c.URL, url)
-  #c.setopt(c.FOLLOWLOCATION, True)
   c.setopt(c.WRITEDATA, buffer)
   c.setopt(c.CAINFO, certifi.where())
   c.perform()
   full_url = c.getinfo(pycurl.EFFECTIVE_URL)
-  print(f'before url = {url}')
-  print(f'full url = {full_url}')
   c.close()
 
   body = buffer.getvalue()
   # Body is a byte string.
   # We have to know the encoding in order to print it to a text file
   # such as standard output.
-  print('----- bytes decoded response ----')
   resp = body.decode('iso-8859-1')
-  print(resp[:1300])
-  print('----- end bytes decoded response ----')
