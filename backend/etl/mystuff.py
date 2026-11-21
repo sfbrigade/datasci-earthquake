@@ -19,7 +19,6 @@ print(f'TSUNAMI_URL = {TSUNAMI_URL}')
 
 urls = []
 
-#_LIQUEFACTION_URL = "https://data.sfgov.org/resource/i4t7-35u3.geojson"
 _LIQUEFACTION_URL = "https://data.sf.gov/resource/i4t7-35u3.geojson"
 
 _NRI_CENSUS_TRACTS_URL = (
@@ -53,15 +52,11 @@ for url in urls:
   full_url = c.getinfo(pycurl.EFFECTIVE_URL)
   c.close()
 
-  body = buffer.getvalue()
+  #body = buffer.getvalue()
   # Body is a byte string.
   # We have to know the encoding in order to print it to a text file
   # such as standard output.
-  resp = body.decode('iso-8859-1')
+  #resp = body.decode('iso-8859-1')
 
-  print(f'...loading json for {url}')
-  myjson = json.loads(resp)
-  print(f'type of myjson = {type(myjson)}')
-  for k,v in myjson.items():
-    print(f'key = {k}')
+  #myjson = json.loads(resp)
 
