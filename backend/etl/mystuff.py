@@ -46,7 +46,7 @@ for url in urls:
   buffer = BytesIO()
   c = pycurl.Curl()
   c.setopt(c.URL, url)
-  c.setopt(c.FOLLOWLOCATION, True)
+  #c.setopt(c.FOLLOWLOCATION, True)
   c.setopt(c.WRITEDATA, buffer)
   c.setopt(c.CAINFO, certifi.where())
   c.perform()
