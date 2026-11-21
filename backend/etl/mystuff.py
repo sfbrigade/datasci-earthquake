@@ -50,6 +50,9 @@ for url in urls:
   c.setopt(c.WRITEDATA, buffer)
   c.setopt(c.CAINFO, certifi.where())
   c.perform()
+  full_url = c.getinfo(pycurl.EFFECTIVE_URL)
+  print(f'before url = {url}')
+  print(f'full url = {full_url}')
   c.close()
 
   body = buffer.getvalue()
