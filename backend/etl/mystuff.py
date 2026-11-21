@@ -61,5 +61,5 @@ for url in urls:
   # such as standard output.
   print('----- bytes decoded response ----')
   resp = body.decode('iso-8859-1')
-  print(resp[:300])
+  print(resp[:1300])
   print('----- end bytes decoded response ----')
