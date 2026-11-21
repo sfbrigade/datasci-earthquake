@@ -19,7 +19,8 @@ print(f'TSUNAMI_URL = {TSUNAMI_URL}')
 
 urls = []
 
-_LIQUEFACTION_URL = "https://data.sfgov.org/resource/i4t7-35u3.geojson"
+#_LIQUEFACTION_URL = "https://data.sfgov.org/resource/i4t7-35u3.geojson"
+_LIQUEFACTION_URL = "https://data.sf.gov/resource/i4t7-35u3.geojson"
 
 _NRI_CENSUS_TRACTS_URL = (
     "https://services.arcgis.com/XG15cJAlne2vxtgt/ArcGIS/rest/services/"
