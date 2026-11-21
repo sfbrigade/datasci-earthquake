@@ -32,7 +32,7 @@ CONFIG = {
 urls = {}
 for k,v in CONFIG.items():
   url = v['url']
-  if v['params']':
+  if v['params']:
     url_params = urllib.parse.urlencode(v['params'])
     url = v['url'] + '?' + url_params
   urls[k] = url
