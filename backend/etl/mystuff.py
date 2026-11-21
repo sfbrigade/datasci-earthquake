@@ -2,7 +2,7 @@ import pycurl
 import certifi
 from io import BytesIO
 import urllib
-
+import json
 
 
 TSUNAMI_URL = "https://services2.arcgis.com/zr3KAIbsRSUyARHG/ArcGIS/rest/services/CA_Tsunami_Hazard_Area/FeatureServer/0/query"
@@ -52,6 +52,12 @@ for url in urls:
   c.perform()
   full_url = c.getinfo(pycurl.EFFECTIVE_URL)
   c.close()
+
+  print(f'...loading json for {url}')
+  myjson = json.load(buffer)
+  print(f'type of myjson = {type(myjson)}')
+  for k,v in myjson.items():
+    print(f'key = {k}')
 
   body = buffer.getvalue()
   # Body is a byte string.
