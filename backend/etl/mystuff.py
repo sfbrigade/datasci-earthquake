@@ -42,15 +42,14 @@ urls.append(TSUNAMI_URL)
 urls.append(_LIQUEFACTION_URL)
 urls.append(_NRI_CENSUS_TRACTS_URL)
 
+c = pycurl.Curl()
 for url in urls:
   buffer = BytesIO()
-  c = pycurl.Curl()
   c.setopt(c.URL, url)
   c.setopt(c.WRITEDATA, buffer)
   c.setopt(c.CAINFO, certifi.where())
   c.perform()
-  full_url = c.getinfo(pycurl.EFFECTIVE_URL)
-  c.close()
+  c.reset()
 
   #body = buffer.getvalue()
   # Body is a byte string.
@@ -60,3 +59,4 @@ for url in urls:
 
   #myjson = json.loads(resp)
 
+c.close()
