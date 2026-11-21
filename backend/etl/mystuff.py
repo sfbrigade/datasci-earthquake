@@ -53,14 +53,15 @@ for url in urls:
   full_url = c.getinfo(pycurl.EFFECTIVE_URL)
   c.close()
 
-  print(f'...loading json for {url}')
-  myjson = json.load(buffer)
-  print(f'type of myjson = {type(myjson)}')
-  for k,v in myjson.items():
-    print(f'key = {k}')
-
   body = buffer.getvalue()
   # Body is a byte string.
   # We have to know the encoding in order to print it to a text file
   # such as standard output.
   resp = body.decode('iso-8859-1')
+
+  print(f'...loading json for {url}')
+  myjson = json.loads(resp)
+  print(f'type of myjson = {type(myjson)}')
+  for k,v in myjson.items():
+    print(f'key = {k}')
+
