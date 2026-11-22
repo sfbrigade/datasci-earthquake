@@ -15,7 +15,7 @@ def _get_database_url() -> str:
         case _:
             raise ValueError(f"Unknown environment: {settings.environment}")
 
-
+print('allllllll the time.......................')
 # Set up the database engine using settings
 engine = create_engine(
     _get_database_url(),
