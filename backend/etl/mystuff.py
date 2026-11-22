@@ -68,3 +68,10 @@ for k,v in dataframes.items():
 sf_df = gpd.read_file('/backend/etl/data/sf_boundary.geojson')
 print(f'len(sf_df) = {len(sf_df)}')
 sf_df.info(verbose=True)
+
+
+print(f'crs of tsunami = {dataframes['tsunami'].crs}')
+print(f'crs of sf_df = {sf_df.crs}')
+n = dataframes['tsunami']['geometry'].intersection(sf_df['geometry']).to_frame()
+n.info(verbose=True)
+print(f'len(n) = {len(n)}')
