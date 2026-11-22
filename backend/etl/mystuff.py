@@ -74,5 +74,13 @@ dataframes['tsunami'] = dataframes['tsunami'].to_crs(4326)
 print(f'crs of tsunami = {dataframes["tsunami"].crs}')
 print(f'crs of sf_df = {sf_df.crs}')
 n = dataframes['tsunami']['geometry'].intersection(sf_df['geometry']).to_frame()
+
+n['identifier'] = dataframes['tsunami']['OBJECTID']
+n['evacuate'] = dataframes['tsunami']['Evacuate']
+n['county'] = dataframes['tsunami']['County']
+n['global_id'] = dataframes['tsunami']['GlobalID']
+n['shape_length'] = dataframes['tsunami']['Shape__Length']
+n['shape_area] = dataframes['tsunami']['Shape__Area']
+
 n.info(verbose=True)
 print(f'len(n) = {len(n)}')
