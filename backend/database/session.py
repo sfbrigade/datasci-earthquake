@@ -26,6 +26,17 @@ engine = create_engine(
     pool_recycle=3600,
 )
 
+def get_engine():
+  return create_engine(
+    _get_database_url(),
+    pool_size=10,
+    pool_timeout=30,
+    max_overflow=5,
+    pool_pre_ping=True,
+    pool_recycle=3600,
+  )  
+
+
 logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
 
 # Create a session factory

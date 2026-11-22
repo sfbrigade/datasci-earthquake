@@ -85,9 +85,9 @@ n['shape_area'] = dataframes['tsunami']['Shape__Area']
 n.info(verbose=True)
 print(f'len(n) = {len(n)}')
 
-#import backend.database.session
 from backend.database.session import _get_database_url 
+from backend.database.session import get_engine 
 print('---duh--')
 print(_get_database_url())
-#print(f'type of engine = {type(session.engine)}')
+print(f'type of engine = {type(get_engine())}')
 #n.to_sql(name='tsunami_zones', con=engine)
