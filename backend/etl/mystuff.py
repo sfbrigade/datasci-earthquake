@@ -86,6 +86,7 @@ n.info(verbose=True)
 print(f'len(n) = {len(n)}')
 
 import backend.database.session
-
-print(f'type of engine = {type(session.engine)}')
+print('---duh--')
+print(session._get_database_url())
+#print(f'type of engine = {type(session.engine)}')
 #n.to_sql(name='tsunami_zones', con=engine)
