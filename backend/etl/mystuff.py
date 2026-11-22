@@ -74,7 +74,7 @@ dataframes['tsunami'] = dataframes['tsunami'].to_crs(4326)
 print(f'crs of tsunami = {dataframes["tsunami"].crs}')
 print(f'crs of sf_df = {sf_df.crs}')
 n = dataframes['tsunami']['geometry'].intersection(sf_df['geometry']).to_frame()
-
+n = n.rename(columns={"0": "geometry"})
 n['identifier'] = dataframes['tsunami']['OBJECTID']
 n['evacuate'] = dataframes['tsunami']['Evacuate']
 n['county'] = dataframes['tsunami']['County']
@@ -84,3 +84,8 @@ n['shape_area'] = dataframes['tsunami']['Shape__Area']
 
 n.info(verbose=True)
 print(f'len(n) = {len(n)}')
+
+import backend.database.session
+
+print(f'type of engine = {type(engine)}')
+#n.to_sql(name='tsunami_zones', con=engine)
