@@ -65,6 +65,6 @@ c.close()
 for k,v in dataframes.items():
   print(f'numb rows for {k} = {len(v)}')
 
-sf_df = gpd.read_file('data/sf_boundary.geojson')
+sf_df = gpd.read_file('/backend/etl/data/sf_boundary.geojson')
 print(f'len(sf_df) = {len(sf_df)}')
 sf_df.info(verbose=True)
