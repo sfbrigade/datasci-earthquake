@@ -80,7 +80,7 @@ n['evacuate'] = dataframes['tsunami']['Evacuate']
 n['county'] = dataframes['tsunami']['County']
 n['global_id'] = dataframes['tsunami']['GlobalID']
 n['shape_length'] = dataframes['tsunami']['Shape__Length']
-n['shape_area] = dataframes['tsunami']['Shape__Area']
+n['shape_area'] = dataframes['tsunami']['Shape__Area']
 
 n.info(verbose=True)
 print(f'len(n) = {len(n)}')
