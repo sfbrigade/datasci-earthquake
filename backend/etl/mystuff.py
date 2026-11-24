@@ -42,6 +42,7 @@ dataframes = {}
 
 c = pycurl.Curl()
 for k,v in urls.items():
+  print(f'curling {k}....')
   buffer = BytesIO()
   c.setopt(c.URL, v)
   c.setopt(c.WRITEDATA, buffer)
