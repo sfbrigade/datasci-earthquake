@@ -38,7 +38,8 @@ run_python_script() {
 
 # Check which tables need ETL
 #ETL_TABLES=$(echo "$ETL_OUTPUT" | awk -F: '/^ETL_REQUIRED:/ {print $2}')
-ETL_TABLES=('tsunami_zones' 'liquefaction_zones' 'earthquake_risk')
+#ETL_TABLES=('tsunami_zones' 'liquefaction_zones' 'earthquake_risk')
+ETL_TABLES=('')
 
 SECONDS=0
 echo 'Starting timer for new stuff now!'

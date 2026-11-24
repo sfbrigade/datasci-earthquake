@@ -74,10 +74,10 @@ dataframes['tsunami'] = dataframes['tsunami'].to_crs(4326)
 print(f'crs of tsunami = {dataframes["tsunami"].crs}')
 print(f'crs of sf_df = {sf_df.crs}')
 n = dataframes['tsunami']['geometry'].intersection(sf_df['geometry']).to_frame(name="geometry")
-n['geometry'] = n['geometry'].to_wkt()
+#n['geometry'] = n['geometry'].to_wkt()
 
 i = n['geometry'].to_string()
-print(f'the multipoly = {i[:700]}')
+print(f'the multipoly = {i[:1700]}')
 
 #n = n.rename(columns={"0": "geometry"})
 n['identifier'] = dataframes['tsunami']['OBJECTID']
