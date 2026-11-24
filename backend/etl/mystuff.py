@@ -98,3 +98,10 @@ with engine.connect() as connection:
   for row in result:
     print("AFTER: identifier:", row.identifier)
 
+with engine.connect() as connection:
+  result = connection.execute(text("select column_name, data_type from information_schema.columns where table_name = 'tsunami_zones'"))
+  for row in result:
+    print("name:", row.column_name)
+    print("type:", row.data_type)
+    print("--------")
+
