@@ -75,6 +75,10 @@ print(f'crs of tsunami = {dataframes["tsunami"].crs}')
 print(f'crs of sf_df = {sf_df.crs}')
 n = dataframes['tsunami']['geometry'].intersection(sf_df['geometry']).to_frame(name="geometry")
 n['geometry'] = n['geometry'].to_wkt()
+
+i = n['geometry'].to_string()
+print(f'the multipoly = {i[:700]}')
+
 #n = n.rename(columns={"0": "geometry"})
 n['identifier'] = dataframes['tsunami']['OBJECTID']
 n['evacuate'] = dataframes['tsunami']['Evacuate']
@@ -98,10 +102,10 @@ with engine.connect() as connection:
   for row in result:
     print("AFTER: identifier:", row.identifier)
 
-with engine.connect() as connection:
-  result = connection.execute(text("select column_name, data_type from information_schema.columns where table_name = 'tsunami_zones'"))
-  for row in result:
-    print("name:", row.column_name)
-    print("type:", row.data_type)
-    print("--------")
+#with engine.connect() as connection:
+#  result = connection.execute(text("select column_name, data_type from information_schema.columns where table_name = 'tsunami_zones'"))
+#  for row in result:
+#    print("name:", row.column_name)
+#    print("type:", row.data_type)
+#    print("--------")
 
