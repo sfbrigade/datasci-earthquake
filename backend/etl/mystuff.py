@@ -99,11 +99,11 @@ from psycopg.types import TypeInfo
 from psycopg.types.shapely import register_shapely
 
 # test 1
-connection = engine.connect()
-dbapi_conn = connection.connection
-print(f'type of dbapi conn = {type(dbapi_conn)}')
-info = TypeInfo.fetch(dbapi_conn, "geometry")
-dbapi_conn.close()
+#connection = engine.connect()
+#dbapi_conn = connection.connection
+#print(f'type of dbapi conn = {type(dbapi_conn)}')
+#info = TypeInfo.fetch(dbapi_conn, "geometry")
+#dbapi_conn.close()
 
 # test 2
 c = engine.raw_connection()
