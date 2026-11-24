@@ -28,17 +28,17 @@ run_python_script() {
 }
 
 # Run init_db.py
-ETL_OUTPUT=$($VENV_PYTHON backend/database/init_db.py)
-INIT_DB_EXIT_CODE=$?
+#ETL_OUTPUT=$($VENV_PYTHON backend/database/init_db.py)
+#INIT_DB_EXIT_CODE=$?
 
-if [[ $INIT_DB_EXIT_CODE -ne 0 ]]; then
-    echo "init_db.py failed!"
-    exit 1
-fi
+#if [[ $INIT_DB_EXIT_CODE -ne 0 ]]; then
+#    echo "init_db.py failed!"
+#    exit 1
+#fi
 
 # Check which tables need ETL
-ETL_TABLES=$(echo "$ETL_OUTPUT" | awk -F: '/^ETL_REQUIRED:/ {print $2}')
-
+#ETL_TABLES=$(echo "$ETL_OUTPUT" | awk -F: '/^ETL_REQUIRED:/ {print $2}')
+ETL_TABLES=('tsunami_zones' 'liquefaction_zones' 'earthquake_risk')
 
 SECONDS=0
 echo 'Starting timer for new stuff now!'
