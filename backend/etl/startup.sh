@@ -46,27 +46,27 @@ echo 'Starting timer for new stuff now!'
 run_python_script backend/etl/mystuff.py
 echo "seconds passed for new stuff = $SECONDS"
 
-SECONDS=0
-echo 'Starting timer for original stuff now!'
+#SECONDS=0
+#echo 'Starting timer for original stuff now!'
 # run ETL only for required tables
-for tbl in $ETL_TABLES; do
-  case "$tbl" in
-    tsunami_zones)
-      run_python_script backend/etl/tsunami_data_handler.py
-      ;;
-    liquefaction_zones)
-      run_python_script backend/etl/liquefaction_data_handler.py
-      ;;
-    earthquake_risk)
-      run_python_script backend/etl/fema_data_handler.py
-      ;;
-    *)
-      echo "No ETL mapping for $tbl; skipping" >&2
-      ;;
-  esac
-done
-echo "seconds passed for old stuff = $SECONDS"
-echo "===== startup.sh finished ====="
+#for tbl in $ETL_TABLES; do
+#  case "$tbl" in
+#    tsunami_zones)
+#      run_python_script backend/etl/tsunami_data_handler.py
+#      ;;
+#    liquefaction_zones)
+#      run_python_script backend/etl/liquefaction_data_handler.py
+#      ;;
+#    earthquake_risk)
+#      run_python_script backend/etl/fema_data_handler.py
+#      ;;
+#    *)
+#      echo "No ETL mapping for $tbl; skipping" >&2
+#      ;;
+#  esac
+#done
+#echo "seconds passed for old stuff = $SECONDS"
+#echo "===== startup.sh finished ====="
 
 # Start FastAPI
 RELOAD_FLAG=""
