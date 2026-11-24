@@ -22,6 +22,7 @@ print(f'before startswith = {h}')
 nn = mymy.replace("postgresql+psycopg2", "postgresql+psycopg")
 h = nn.startswith("postgresql+psycopg2")
 print(f'after startswith = {h}')
+
 # Set up the database engine using settings
 engine = create_engine(
     nn,
@@ -34,7 +35,7 @@ engine = create_engine(
 
 def get_engine():
   return create_engine(
-    _get_database_url(),
+    nn,
     pool_size=10,
     pool_timeout=30,
     max_overflow=5,
