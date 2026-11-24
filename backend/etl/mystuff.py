@@ -106,27 +106,35 @@ from psycopg.types.shapely import register_shapely
 #dbapi_conn.close()
 
 # test 2
-c = engine.raw_connection()
-info = TypeInfo.fetch(c, "geometry")
-print(f'type of rawok = {type(c)}')
-c.close()
+#c = engine.raw_connection()
+#info = TypeInfo.fetch(c, "geometry")
+#print(f'type of rawok = {type(c)}')
+#c.close()
 
 # test 3 
-with engine.raw_connection() as c:
-  print(f'type of raw = {type(c)}')
-  info = TypeInfo.fetch(c, "geometry")
+#with engine.raw_connection() as c:
+#  print(f'type of raw = {type(c)}')
+#  info = TypeInfo.fetch(c, "geometry")
 
+def dothis(table, conn, keys, data_iter):
+  print(f'---do nothing ---')
+  print(f'type of conn in dothis = {type(conn)}')
+  print(f'type of keys in dothis = {type(keys)}')
+  print(f'len keys in dothis = {len(keys)}')
+  print(f'type of data_iter in dothis = {type(data_iter)}')
 
-with engine.begin() as connection:
-  print(f'type of conn = {type(connection)}')
-  info = TypeInfo.fetch(connection, "geometry")
-  register_shapely(info, connection)
-  n.to_sql(name='tsunami_zones', con=connection, if_exists='delete_rows')
+n.to_sql(name='tsunami_zones', con=connection, method=dothis, if_exists='delete_rows')
 
-with engine.connect() as connection:
-  result = connection.execute(text("select * from tsunami_zones"))
-  for row in result:
-    print("AFTER: identifier:", row.identifier)
+#with engine.begin() as connection:
+#  print(f'type of conn = {type(connection)}')
+#  info = TypeInfo.fetch(connection, "geometry")
+#  register_shapely(info, connection)
+#  n.to_sql(name='tsunami_zones', con=connection, if_exists='delete_rows')
+
+#with engine.connect() as connection:
+#  result = connection.execute(text("select * from tsunami_zones"))
+#  for row in result:
+#    print("AFTER: identifier:", row.identifier)
 
 #with engine.connect() as connection:
 #  result = connection.execute(text("select column_name, data_type from information_schema.columns where table_name = 'tsunami_zones'"))
