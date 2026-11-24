@@ -17,6 +17,8 @@ def _get_database_url() -> str:
 
 mymy = _get_database_url()
 print(f'mymy = {mymy[:70]}')
+h = mymy.startswith("postgresql+psycopg2")
+print(f'startswith = {h}')
 print('allllllll the time.......................')
 # Set up the database engine using settings
 engine = create_engine(
