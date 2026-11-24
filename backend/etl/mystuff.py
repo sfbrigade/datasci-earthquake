@@ -94,7 +94,14 @@ from backend.database.session import get_engine
 engine = get_engine()
 from sqlalchemy import text
 
+
+from psycopg.types import TypeInfo
+from psycopg.types.shapely import register_shapely
+
+
 with engine.begin() as connection:
+  info = TypeInfo.fetch(connection, "geometry")
+  register_shapely(info, connection)
   n.to_sql(name='tsunami_zones', con=connection, if_exists='delete_rows')
 
 with engine.connect() as connection:
