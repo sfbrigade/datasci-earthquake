@@ -85,9 +85,19 @@ n['shape_area'] = dataframes['tsunami']['Shape__Area']
 n.info(verbose=True)
 print(f'len(n) = {len(n)}')
 
-from backend.database.session import _get_database_url 
 from backend.database.session import get_engine 
-print('---duh--')
-print(_get_database_url())
-print(f'type of engine = {type(get_engine())}')
-#n.to_sql(name='tsunami_zones', con=engine)
+engine = get_engine()
+from sqlalchemy import text
+
+with engine.connect() as connection:
+  result = connection.execute(text("select * from tsunami_zones"))
+  for row in result:
+    print("BEFORE: identifier:", row.identifier)
+
+n.to_sql(name='tsunami_zones', con=engine)
+
+with engine.connect() as connection:
+  result = connection.execute(text("select * from tsunami_zones"))
+  for row in result:
+    print("AFTER: identifier:", row.identifier)
+
