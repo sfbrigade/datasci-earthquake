@@ -94,7 +94,7 @@ with engine.connect() as connection:
   for row in result:
     print("BEFORE: identifier:", row.identifier)
 
-n.to_sql(name='tsunami_zones', con=engine)
+n.to_sql(name='tsunami_zones', con=engine, if_exists='delete_rows')
 
 with engine.connect() as connection:
   result = connection.execute(text("select * from tsunami_zones"))
