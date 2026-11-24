@@ -128,6 +128,7 @@ def dothis(table, conn, keys, data_iter):
     print(t)
 
 with engine.begin() as connection:
+  print('ooooo')
   #info = TypeInfo.fetch(connection, "geometry")
   #register_shapely(info, connection)
   #n.to_sql(name='tsunami_zones', con=connection, method=dothis, if_exists='delete_rows')
