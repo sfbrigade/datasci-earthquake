@@ -89,11 +89,6 @@ from backend.database.session import get_engine
 engine = get_engine()
 from sqlalchemy import text
 
-with engine.connect() as connection:
-  result = connection.execute(text("select * from tsunami_zones"))
-  for row in result:
-    print("BEFORE: identifier:", row.identifier)
-
 with engine.begin() as connection:
   n.to_sql(name='tsunami_zones', con=connection, if_exists='delete_rows')
 
