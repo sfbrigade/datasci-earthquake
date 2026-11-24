@@ -19,7 +19,7 @@ mymy = _get_database_url()
 print(f'mymy = {mymy[:70]}')
 h = mymy.startswith("postgresql+psycopg2")
 print(f'before startswith = {h}')
-nn = mymy.replace("postgresql+psycopg2", "postgresql+psycopg"),
+nn = mymy.replace("postgresql+psycopg2", "postgresql+psycopg")
 h = nn.startswith("postgresql+psycopg2")
 print(f'after startswith = {h}')
 # Set up the database engine using settings
