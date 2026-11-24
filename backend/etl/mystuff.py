@@ -121,9 +121,11 @@ def dothis(table, conn, keys, data_iter):
   print(f'---do nothing ---')
   print(f'type of conn in dothis = {type(conn)}')
   print(f'type of keys in dothis = {type(keys)}')
-  print(f'len keys in dothis = {len(keys)}')
+  for i,k in enumerate(keys):
+    print(f'{i}... = {k}')
   print(f'type of data_iter in dothis = {type(data_iter)}')
-
+  for t in data_iter:
+    print(t)
 
 with engine.begin() as connection:
   #info = TypeInfo.fetch(connection, "geometry")
