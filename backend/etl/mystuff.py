@@ -98,8 +98,27 @@ from sqlalchemy import text
 from psycopg.types import TypeInfo
 from psycopg.types.shapely import register_shapely
 
+# test 1
+connection = engine.connect()
+dbapi_conn = connection.connection
+print(f'type of dbapi conn = {type(dbapi_conn)}')
+info = TypeInfo.fetch(dbapi_conn, "geometry")
+dbapi_conn.close()
+
+# test 2
+c = engine.raw_connection()
+info = TypeInfo.fetch(c, "geometry")
+print(f'type of rawok = {type(c)}')
+c.close()
+
+# test 3 
+with engine.raw_connection() as c:
+  print(f'type of raw = {type(c)}')
+  info = TypeInfo.fetch(c, "geometry")
+
 
 with engine.begin() as connection:
+  print(f'type of conn = {type(connection)}')
   info = TypeInfo.fetch(connection, "geometry")
   register_shapely(info, connection)
   n.to_sql(name='tsunami_zones', con=connection, if_exists='delete_rows')
