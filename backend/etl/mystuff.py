@@ -130,6 +130,8 @@ def dothis(ztable, conn, keys, data_iter):
   for t in data_iter:
     print(f'the tuple = {t}')
     values = dict(tuple(item for item in zip(keys, t) if item[0] != 'index'))
+    aa = values['geometry']
+    print(f'type of AA = {type(aa)}')
     print(f'values = {values}')
     stmt = insert(mytable).values(values)  
     print(stmt)
