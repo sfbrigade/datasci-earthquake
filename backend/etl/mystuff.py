@@ -124,7 +124,10 @@ def dothis(table, conn, keys, data_iter):
     l = l + 1
     print(f'len of tuple = {len(t)}')
     for m in range(len(t)):
-      print(f'tup[{m}] = {t[m]}')
+      if m == 1:
+        print(f'type of tup[{m}] = {type(t[m])}')
+      else:
+        print(f'tup[{m}] = {t[m]}')
   print(f'len of zip = {l}')
 
 with engine.begin() as connection:
