@@ -121,7 +121,9 @@ def dothis(table, conn, keys, data_iter):
   print(f'type of data_iter in dothis = {type(data_iter)}')
   ind= 1
   for t in zip(keys, data_iter):
-    print(f't = {t}') 
+    print(f't = {t}')
+  for t in data_iter:
+    print(f'the tuple = {t}') 
   largeTuple = tuple((t[0], t[ind][ind]) for t in zip(keys, data_iter) if t[0] != 'index')
   print(f'largeTuple = {largeTuple}') 
     
