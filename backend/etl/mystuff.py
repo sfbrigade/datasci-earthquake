@@ -113,23 +113,16 @@ from psycopg.types.shapely import register_shapely
 #  info = TypeInfo.fetch(c, "geometry")
 
 def dothis(table, conn, keys, data_iter):
-  print(f'---do nothing ---')
   print(f'type of conn in dothis = {type(conn)}')
   print(f'type of keys in dothis = {type(keys)}')
   print(f'type of table in dothis = {type(table)}')
   for i,k in enumerate(keys):
     print(f'{i}... = {k}')
   print(f'type of data_iter in dothis = {type(data_iter)}')
-  l = 0
-  for t in data_iter:
-    l = l + 1
-    print(f'len of tuple = {len(t)}')
-    for m in range(len(t)):
-      if m == 1:
-        print(f'type of tup[{m}] = {type(t[m])}')
-      else:
-        print(f'tup[{m}] = {t[m]}')
-  print(f'len of zip = {l}')
+  ind= 1
+  largeTuple = tuple((t[0], t[ind][ind]) for t in zip(keys, data_iter) if t[0] != 'index')
+  print(f'largeTuple = {largeTuple}') 
+    
 
 with engine.begin() as connection:
   print('ooooo')
