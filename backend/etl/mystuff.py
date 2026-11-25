@@ -112,26 +112,32 @@ from psycopg.types.shapely import register_shapely
 #  print(f'type of raw = {type(c)}')
 #  info = TypeInfo.fetch(c, "geometry")
 
+from sqlalchemy import table, column, insert, select
+
 def dothis(table, conn, keys, data_iter):
+  mytable = table(
+    table.name
+  )
   print(f'type of conn in dothis = {type(conn)}')
   print(f'type of keys in dothis = {type(keys)}')
   print(f'type of table in dothis = {type(table)}')
   for i,k in enumerate(keys):
     print(f'{i}... = {k}')
+    if key != 'index':
+      mytable.append_column(column(key))
   print(f'type of data_iter in dothis = {type(data_iter)}')
   ind= 1
-  #for t in zip(keys, data_iter):
-  #  print(f't = {t}')
   for t in data_iter:
     print(f'the tuple = {t}')
     values = dict(tuple(item for item in zip(keys, t) if item[0] != 'index'))
     print(f'values = {values}')
-  #largeTuple = tuple((t[0], t[ind][ind]) for t in zip(keys, data_iter) if t[0] != 'index')
-  #print(f'largeTuple = {largeTuple}') 
-    
+    stmt = insert(mytable).values(values)  
+    print(stmt)
+    with conn.begin():
+      conn.execute(stmt)
+    conn.commit()
 
 with engine.begin() as connection:
-  print('ooooo')
   #info = TypeInfo.fetch(connection, "geometry")
   #register_shapely(info, connection)
   n.to_sql(name='tsunami_zones', con=connection, method=dothis, if_exists='delete_rows')
