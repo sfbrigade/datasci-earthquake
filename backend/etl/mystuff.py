@@ -133,8 +133,7 @@ def dothis(ztable, conn, keys, data_iter):
     print(f'values = {values}')
     stmt = insert(mytable).values(values)  
     print(stmt)
-    with conn.begin():
-      conn.execute(stmt)
+    conn.execute(stmt)
     conn.commit()
 
 with engine.begin() as connection:
