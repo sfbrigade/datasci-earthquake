@@ -123,7 +123,9 @@ def dothis(table, conn, keys, data_iter):
   #for t in zip(keys, data_iter):
   #  print(f't = {t}')
   for t in data_iter:
-    print(f'the tuple = {t}') 
+    print(f'the tuple = {t}')
+    values = dict(tuple(item for item in zip(keys, t) if item[0] != 'index'))
+    print(f'values = {values}')
   #largeTuple = tuple((t[0], t[ind][ind]) for t in zip(keys, data_iter) if t[0] != 'index')
   #print(f'largeTuple = {largeTuple}') 
     
