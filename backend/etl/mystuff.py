@@ -123,6 +123,8 @@ def dothis(table, conn, keys, data_iter):
   for t in data_iter:
     l = l + 1
     print(f'len of tuple = {len(t)}')
+    for m in range(len(t)):
+      print(f'tup[{m}] = {t[m]}')
   print(f'len of zip = {l}')
 
 with engine.begin() as connection:
