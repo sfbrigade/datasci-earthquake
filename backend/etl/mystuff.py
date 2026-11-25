@@ -4,6 +4,8 @@ from io import BytesIO
 import urllib
 import json
 import geopandas as gpd
+from geoalchemy2.shape import from_shape, to_shape
+
 
 CONFIG = {
   'tsunami': {
@@ -131,7 +133,9 @@ def dothis(ztable, conn, keys, data_iter):
     print(f'the tuple = {t}')
     values = dict(tuple(item for item in zip(keys, t) if item[0] != 'index'))
     aa = values['geometry']
-    print(f'type of AA = {type(aa)}')
+    print(f'type of AA before = {type(aa)}')
+    values['geometry'] = from_shape(values['geometry'], srid=4326)
+    print(f'type of AA after = {type(values["geometry"])}')
     print(f'values = {values}')
     stmt = insert(mytable).values(values)  
     print(stmt)
