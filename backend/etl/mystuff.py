@@ -119,6 +119,7 @@ def dothis(table, conn, keys, data_iter):
   for i,k in enumerate(keys):
     print(f'{i}... = {k}')
   print(f'type of data_iter in dothis = {type(data_iter)}')
+  print(f'len of data_iter in dothis = {len(data_iter)}')
   for t in data_iter:
     print(t)
 
@@ -126,7 +127,7 @@ with engine.begin() as connection:
   print('ooooo')
   #info = TypeInfo.fetch(connection, "geometry")
   #register_shapely(info, connection)
-  #n.to_sql(name='tsunami_zones', con=connection, method=dothis, if_exists='delete_rows')
+  n.to_sql(name='tsunami_zones', con=connection, method=dothis, if_exists='delete_rows')
 
 #with engine.connect() as connection:
 #  result = connection.execute(text("select * from tsunami_zones"))
