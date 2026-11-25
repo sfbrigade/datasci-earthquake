@@ -119,9 +119,10 @@ def dothis(table, conn, keys, data_iter):
   for i,k in enumerate(keys):
     print(f'{i}... = {k}')
   print(f'type of data_iter in dothis = {type(data_iter)}')
-  print(f'len of data_iter in dothis = {len(data_iter)}')
+  l = 0
   for t in data_iter:
-    print(t)
+    l = l + 1
+  print(f'len of zip = {l}')
 
 with engine.begin() as connection:
   print('ooooo')
