@@ -114,9 +114,9 @@ from psycopg.types.shapely import register_shapely
 
 from sqlalchemy import table, column, insert, select
 
-def dothis(table, conn, keys, data_iter):
+def dothis(ztable, conn, keys, data_iter):
   mytable = table(
-    table.name
+    ztable.name
   )
   print(f'type of conn in dothis = {type(conn)}')
   print(f'type of keys in dothis = {type(keys)}')
