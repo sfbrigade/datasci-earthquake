@@ -136,6 +136,7 @@ def dothis(ztable, conn, keys, data_iter):
     print(f'type of AA before = {type(aa)}')
     values['geometry'] = from_shape(values['geometry'], srid=4326)
     print(f'type of AA after = {type(values["geometry"])}')
+    del values['geometry']
     print(f'values = {values}')
     stmt = insert(mytable).values(values)  
     print(stmt)
