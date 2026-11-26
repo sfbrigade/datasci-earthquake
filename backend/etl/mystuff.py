@@ -123,11 +123,11 @@ def dothis(ztable, conn, keys, data_iter):
   #)
   mytable = Table(
     ztable.name,
-    Column("identifier", Integer, primary_key=True)
-    Column("evacuate", String(1000))
-    Column("county", String(1000))
-    Column("global_id", String(1000))
-    Column("shape_length", Double)
+    Column("identifier", Integer, primary_key=True),
+    Column("evacuate", String(1000)),
+    Column("county", String(1000)),
+    Column("global_id", String(1000)),
+    Column("shape_length", Double),
     Column("shape_area", Double)
   )
 
