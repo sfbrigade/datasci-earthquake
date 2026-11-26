@@ -116,6 +116,9 @@ from psycopg.types.shapely import register_shapely
 
 from sqlalchemy import table, column, insert, select
 from sqlalchemy import Table, Column, Double, Integer, String, ForeignKey
+from sqlalchemy.orm import registry
+
+mapper_registry = registry()
 
 def dothis(ztable, conn, keys, data_iter):
   #mytable = table(
@@ -123,6 +126,7 @@ def dothis(ztable, conn, keys, data_iter):
   #)
   mytable = Table(
     ztable.name,
+    mapper_registry.metadata,
     Column("identifier", Integer, primary_key=True),
     Column("evacuate", String(1000)),
     Column("county", String(1000)),
