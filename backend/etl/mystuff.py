@@ -6,6 +6,15 @@ import json
 import geopandas as gpd
 from geoalchemy2.shape import from_shape, to_shape
 
+from backend.database.session import get_engine 
+from sqlalchemy import text
+from psycopg.types import TypeInfo
+from psycopg.types.shapely import register_shapely
+
+from sqlalchemy import table, column, insert, select
+from sqlalchemy import Table, Column, Double, Integer, String, ForeignKey
+from sqlalchemy.orm import registry
+from geoalchemy2 import Geometry
 
 CONFIG = {
   'tsunami': {
@@ -88,13 +97,7 @@ n['shape_area'] = dataframes['tsunami']['Shape__Area']
 n.info(verbose=True)
 print(f'len(n) = {len(n)}')
 
-from backend.database.session import get_engine 
 engine = get_engine()
-from sqlalchemy import text
-
-
-from psycopg.types import TypeInfo
-from psycopg.types.shapely import register_shapely
 
 # test 1
 #connection = engine.connect()
@@ -114,11 +117,6 @@ from psycopg.types.shapely import register_shapely
 #  print(f'type of raw = {type(c)}')
 #  info = TypeInfo.fetch(c, "geometry")
 
-from sqlalchemy import table, column, insert, select
-from sqlalchemy import Table, Column, Double, Integer, String, ForeignKey
-from sqlalchemy.orm import registry
-from geoalchemy2 import Geometry
-
 mapper_registry = registry()
 
 def dothis(ztable, conn, keys, data_iter):
@@ -137,10 +135,6 @@ def dothis(ztable, conn, keys, data_iter):
     Column("geometry", Geometry(srid=4326))
   )
 
-  print(f'type of conn in dothis = {type(conn)}')
-  print(f'type of keys in dothis = {type(keys)}')
-  print(f'type of table in dothis = {type(table)}')
-
   #for i,k in enumerate(keys):
   #  print(f'{i}... = {k}')
   #  if k != 'index':
@@ -149,17 +143,9 @@ def dothis(ztable, conn, keys, data_iter):
   print(f'type of data_iter in dothis = {type(data_iter)}')
   ind= 1
   for t in data_iter:
-    print(f'the tuple = {t}')
     values = dict(tuple(item for item in zip(keys, t) if item[0] != 'index'))
-    aa = values['geometry']
-    print(f'type of AA before = {type(aa)}')
-    
     values['geometry'] = from_shape(values['geometry'], srid=4326)
-    print(f'type of AA after = {type(values["geometry"])}')
     
-    #del values['geometry']
-    
-    #print(f'values = {values}')
     stmt = insert(mytable).values(values)  
     print(stmt)
     conn.execute(stmt)
@@ -168,7 +154,8 @@ def dothis(ztable, conn, keys, data_iter):
 with engine.begin() as connection:
   #info = TypeInfo.fetch(connection, "geometry")
   #register_shapely(info, connection)
-  n.to_sql(name='tsunami_zones', con=connection, method=dothis, if_exists='delete_rows')
+  #n.to_sql(name='tsunami_zones', con=connection, method=dothis, if_exists='delete_rows')
+  n.to_sql(name='tsunami_zones', con=connection, if_exists='delete_rows')
 
 #with engine.connect() as connection:
 #  result = connection.execute(text("select * from tsunami_zones"))
