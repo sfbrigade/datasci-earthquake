@@ -138,10 +138,12 @@ def dothis(ztable, conn, keys, data_iter):
   print(f'type of conn in dothis = {type(conn)}')
   print(f'type of keys in dothis = {type(keys)}')
   print(f'type of table in dothis = {type(table)}')
-  for i,k in enumerate(keys):
-    print(f'{i}... = {k}')
-    if k != 'index':
-      mytable.append_column(column(k))
+
+  #for i,k in enumerate(keys):
+  #  print(f'{i}... = {k}')
+  #  if k != 'index':
+  #    mytable.append_column(column(k))
+
   print(f'type of data_iter in dothis = {type(data_iter)}')
   ind= 1
   for t in data_iter:
