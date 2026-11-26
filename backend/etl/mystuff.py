@@ -159,7 +159,7 @@ def dothis(ztable, conn, keys, data_iter):
     
     #del values['geometry']
     
-    print(f'values = {values}')
+    #print(f'values = {values}')
     stmt = insert(mytable).values(values)  
     print(stmt)
     conn.execute(stmt)
