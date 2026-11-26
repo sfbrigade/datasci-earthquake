@@ -115,11 +115,22 @@ from psycopg.types.shapely import register_shapely
 #  info = TypeInfo.fetch(c, "geometry")
 
 from sqlalchemy import table, column, insert, select
+from sqlalchemy import Table, Column, Double, Integer, String, ForeignKey
 
 def dothis(ztable, conn, keys, data_iter):
-  mytable = table(
-    ztable.name
+  #mytable = table(
+  #  ztable.name
+  #)
+  mytable = Table(
+    ztable.name,
+    Column("identifier", Integer, primary_key=True)
+    Column("evacuate", String(1000))
+    Column("county", String(1000))
+    Column("global_id", String(1000))
+    Column("shape_length", Double)
+    Column("shape_area", Double)
   )
+
   print(f'type of conn in dothis = {type(conn)}')
   print(f'type of keys in dothis = {type(keys)}')
   print(f'type of table in dothis = {type(table)}')
