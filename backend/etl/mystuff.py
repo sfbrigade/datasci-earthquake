@@ -154,7 +154,7 @@ def dothis(ztable, conn, keys, data_iter):
     aa = values['geometry']
     print(f'type of AA before = {type(aa)}')
     
-    #values['geometry'] = from_shape(values['geometry'], srid=4326)
+    values['geometry'] = from_shape(values['geometry'], srid=4326)
     print(f'type of AA after = {type(values["geometry"])}')
     
     #del values['geometry']
