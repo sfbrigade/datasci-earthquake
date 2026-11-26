@@ -117,6 +117,7 @@ from psycopg.types.shapely import register_shapely
 from sqlalchemy import table, column, insert, select
 from sqlalchemy import Table, Column, Double, Integer, String, ForeignKey
 from sqlalchemy.orm import registry
+from geoalchemy2 import Geometry
 
 mapper_registry = registry()
 
@@ -132,7 +133,8 @@ def dothis(ztable, conn, keys, data_iter):
     Column("county", String(1000)),
     Column("global_id", String(1000)),
     Column("shape_length", Double),
-    Column("shape_area", Double)
+    Column("shape_area", Double),
+    Column("geometry", Geometry(srid=4326))
   )
 
   print(f'type of conn in dothis = {type(conn)}')
@@ -151,9 +153,12 @@ def dothis(ztable, conn, keys, data_iter):
     values = dict(tuple(item for item in zip(keys, t) if item[0] != 'index'))
     aa = values['geometry']
     print(f'type of AA before = {type(aa)}')
-    values['geometry'] = from_shape(values['geometry'], srid=4326)
+    
+    #values['geometry'] = from_shape(values['geometry'], srid=4326)
     print(f'type of AA after = {type(values["geometry"])}')
-    del values['geometry']
+    
+    #del values['geometry']
+    
     print(f'values = {values}')
     stmt = insert(mytable).values(values)  
     print(stmt)
