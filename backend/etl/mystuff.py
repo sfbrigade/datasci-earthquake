@@ -187,5 +187,15 @@ with engine.connect() as connection:
   result = connection.execute(text("select evacuate, st_geomfromwkb(geometry, 4326) as duh from tsunami_zones"))
   for row in result:
     print("evacuate:", row.evacuate)
-    print("geom:", row.duh)
+    print("duh:", row.duh)
+    print("--------")
+
+
+
+with engine.connect() as connection:
+  result = connection.execute(text("select typname, typcategory, typowner from pg_type where typcategory = 'U'"))
+  for row in result:
+    print("type name:", row.typname)
+    print("type category:", row.typcategory)
+    print("type owner:", row.typowner)
     print("--------")
