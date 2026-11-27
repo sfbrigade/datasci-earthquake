@@ -182,3 +182,10 @@ with engine.connect() as connection:
     print("type:", row.data_type)
     print("--------")
 
+
+with engine.connect() as connection:
+  result = connection.execute(text("select evacuate, geometry from tsunami_zones"))
+  for row in result:
+    print("evacuate:", row.evacuate)
+    print("geom:", row.geometry)
+    print("--------")
