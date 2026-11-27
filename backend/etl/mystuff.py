@@ -184,7 +184,7 @@ with engine.connect() as connection:
 
 
 with engine.connect() as connection:
-  result = connection.execute(text("select evacuate, geometry as duh1, ST_GeomFromWKB(geometry, 4326) as duh2 from tsunami_zones"))
+  result = connection.execute(text("select evacuate, geometry as duh1, ST_GeomFromWKB(decode(geometry, 'hex'), 4326) as duh2 from tsunami_zones"))
   for row in result:
     print("evacuate:", row.evacuate)
     print("duh1:", row.duh1)
