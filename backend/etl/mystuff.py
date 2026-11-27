@@ -175,21 +175,21 @@ with engine.begin() as connection:
 #  for row in result:
 #    print("AFTER: identifier:", row.identifier)
 
-with engine.connect() as connection:
-  result = connection.execute(text("select column_name, data_type from information_schema.columns where table_name = 'tsunami_zones'"))
-  for row in result:
-    print("name:", row.column_name)
-    print("type:", row.data_type)
-    print("--------")
+#with engine.connect() as connection:
+#  result = connection.execute(text("select column_name, data_type from information_schema.columns where table_name = 'tsunami_zones'"))
+#  for row in result:
+#    print("name:", row.column_name)
+#    print("type:", row.data_type)
+#    print("--------")
 
 
-with engine.connect() as connection:
-  result = connection.execute(text("select evacuate, geometry as duh1, ST_AsEWKT(ST_GeomFromWKB(decode(geometry, 'hex'), 4326)) as duh2 from tsunami_zones"))
-  for row in result:
-    print("evacuate:", row.evacuate)
-    print("duh1:", row.duh1)
-    print("duh2:", row.duh2)
-    print("--------")
+#with engine.connect() as connection:
+#  result = connection.execute(text("select evacuate, geometry as duh1, ST_AsEWKT(ST_GeomFromWKB(decode(geometry, 'hex'), 4326)) as duh2 from tsunami_zones"))
+#  for row in result:
+#    print("evacuate:", row.evacuate)
+#    print("duh1:", row.duh1)
+#    print("duh2:", row.duh2)
+#    print("--------")
 
 
 
