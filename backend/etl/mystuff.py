@@ -151,11 +151,22 @@ def dothis(ztable, conn, keys, data_iter):
     conn.execute(stmt)
     conn.commit()
 
+mytypes = {
+  "identifier": Integer(),
+  "evacuate": String(1000),
+  "county": String(1000),
+  "global_id": String(1000),
+  "shape_length": Double(),
+  "shape_area": Double(),
+  "geometry": Geometry(srid=4326)
+}
+
+
 with engine.begin() as connection:
   #info = TypeInfo.fetch(connection, "geometry")
   #register_shapely(info, connection)
-  n.to_sql(name='tsunami_zones', con=connection, method=dothis, if_exists='delete_rows')
-  #n.to_sql(name='tsunami_zones', con=connection, if_exists='delete_rows')
+  #n.to_sql(name='tsunami_zones', con=connection, method=dothis, if_exists='delete_rows')
+  n.to_sql(name='tsunami_zones', con=connection, if_exists='delete_rows', dtype=mytypes)
 
 #with engine.connect() as connection:
 #  result = connection.execute(text("select * from tsunami_zones"))
