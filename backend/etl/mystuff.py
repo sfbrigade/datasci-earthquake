@@ -4,6 +4,7 @@ from io import BytesIO
 import urllib
 import json
 import geopandas as gpd
+import pandas as pd
 from geoalchemy2.shape import from_shape, to_shape
 
 from backend.database.session import get_engine 
@@ -141,7 +142,7 @@ myclass = CONFIG['tsunami']['class']
 tsu_df = myclass.transform(dataframes['tsunami'], sf_df)
 
 liqclass = CONFIG['liq']['class']
-sf_df = gpd.concat([sf_df, sf_df])
+sf_df = pd.concat([sf_df, sf_df])
 liq_df = liqclass.transform(dataframes['liq'], sf_df)
 print(f'liq df schema!!!')
 liq_df.info(verbose=True)
