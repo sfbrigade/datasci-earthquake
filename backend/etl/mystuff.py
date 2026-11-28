@@ -40,6 +40,15 @@ class Tsunami:
 CONFIG = {
   'tsunami': {
     'class': Tsunami(),
+    'schema': {
+      "identifier": Integer(),
+      "evacuate": String(1000),
+      "county": String(1000),
+      "global_id": String(1000),
+      "shape_length": Double(),
+      "shape_area": Double(),
+      "geometry": Geometry(srid=4326)
+     },
     'url': "https://services2.arcgis.com/zr3KAIbsRSUyARHG/ArcGIS/rest/services/CA_Tsunami_Hazard_Area/FeatureServer/0/query",
     'params': {
       "where": "County='San Francisco' AND Evacuate='Yes, Tsunami Hazard Area'",
@@ -160,20 +169,20 @@ def dothis(ztable, conn, keys, data_iter):
     conn.execute(stmt)
     conn.commit()
 
-mytypes = {
-  "identifier": Integer(),
-  "evacuate": String(1000),
-  "county": String(1000),
-  "global_id": String(1000),
-  "shape_length": Double(),
-  "shape_area": Double(),
-  "geometry": Geometry(srid=4326)
-}
+#mytypes = {
+#  "identifier": Integer(),
+#  "evacuate": String(1000),
+#  "county": String(1000),
+#  "global_id": String(1000),
+#  "shape_length": Double(),
+#  "shape_area": Double(),
+#  "geometry": Geometry(srid=4326)
+#}
 
 
 with engine.begin() as connection:
   #n.to_sql(name='tsunami_zones', con=connection, method=dothis, if_exists='delete_rows')
-  tsu_df.to_sql(name='tsunami_zones', con=connection, if_exists='delete_rows', dtype=mytypes)
+  tsu_df.to_sql(name='tsunami_zones', con=connection, if_exists='delete_rows', dtype=CONFIG['tsunami']['schema'])
 
 #with engine.connect() as connection:
 #  result = connection.execute(text("select column_name, data_type from information_schema.columns where table_name = 'tsunami_zones'"))
