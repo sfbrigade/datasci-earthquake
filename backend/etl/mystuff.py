@@ -16,6 +16,27 @@ from sqlalchemy import Table, Column, Double, Integer, String, ForeignKey
 from sqlalchemy.orm import registry
 from geoalchemy2 import Geometry
 
+
+class Tsunami:
+  def transform(self, dataframe, sf_df):
+    
+    #mydf = dataframe.to_crs(4326)
+
+    print(f'crs of tsunami = {dataframe.crs}')
+    print(f'crs of sf_df = {sf_df.crs}')
+    newdf = dataframe['geometry'].intersection(sf_df['geometry']).to_frame(name="geometry")
+
+    newdf['geometry'] = newdf['geometry'].to_wkb()
+
+    newdf['identifier'] = dataframe['OBJECTID']
+    newdf['evacuate'] = dataframe['Evacuate']
+    newdf['county'] = dataframe['County']
+    newdf['global_id'] = dataframe['GlobalID']
+    newdf['shape_length'] = dataframe['Shape__Length']
+    newdf['shape_area'] = dataframe['Shape__Area']
+     
+    return newdf 
+
 CONFIG = {
   'tsunami': {
     'class': Tsunami(),
@@ -40,27 +61,6 @@ CONFIG = {
     }
   }
 }
-
-
-class Tsunami:
-  def transform(self, dataframe, sf_df):
-    
-    #mydf = dataframe.to_crs(4326)
-
-    print(f'crs of tsunami = {dataframe.crs}')
-    print(f'crs of sf_df = {sf_df.crs}')
-    newdf = dataframe['geometry'].intersection(sf_df['geometry']).to_frame(name="geometry")
-
-    newdf['geometry'] = newdf['geometry'].to_wkb()
-
-    newdf['identifier'] = dataframe['OBJECTID']
-    newdf['evacuate'] = dataframe['Evacuate']
-    newdf['county'] = dataframe['County']
-    newdf['global_id'] = dataframe['GlobalID']
-    newdf['shape_length'] = dataframe['Shape__Length']
-    newdf['shape_area'] = dataframe['Shape__Area']
-     
-    return newdf 
 
 urls = {}
 for k,v in CONFIG.items():
