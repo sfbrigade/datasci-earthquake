@@ -141,6 +141,7 @@ myclass = CONFIG['tsunami']['class']
 tsu_df = myclass.transform(dataframes['tsunami'], sf_df)
 
 liqclass = CONFIG['liq']['class']
+sf_df = pd.concat([sf_df, sf_df])
 liq_df = liqclass.transform(dataframes['liq'], sf_df)
 print(f'liq df schema!!!')
 liq_df.info(verbose=True)
