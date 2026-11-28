@@ -78,6 +78,7 @@ CONFIG = {
     }
   },
   'liq': {
+    'class': Liquefaction(),
     'url': "https://data.sf.gov/resource/i4t7-35u3.geojson",
   },
   'earthquake': {
