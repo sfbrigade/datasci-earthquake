@@ -18,6 +18,7 @@ from geoalchemy2 import Geometry
 
 CONFIG = {
   'tsunami': {
+    'class': Tsunami(),
     'url': "https://services2.arcgis.com/zr3KAIbsRSUyARHG/ArcGIS/rest/services/CA_Tsunami_Hazard_Area/FeatureServer/0/query",
     'params': {
       "where": "County='San Francisco' AND Evacuate='Yes, Tsunami Hazard Area'",
@@ -39,6 +40,27 @@ CONFIG = {
     }
   }
 }
+
+
+class Tsunami:
+  def transform(self, dataframe, sf_df):
+    
+    #mydf = dataframe.to_crs(4326)
+
+    print(f'crs of tsunami = {dataframe.crs}')
+    print(f'crs of sf_df = {sf_df.crs}')
+    newdf = dataframe['geometry'].intersection(sf_df['geometry']).to_frame(name="geometry")
+
+    newdf['geometry'] = newdf['geometry'].to_wkb()
+
+    newdf['identifier'] = dataframe['OBJECTID']
+    newdf['evacuate'] = dataframe['Evacuate']
+    newdf['county'] = dataframe['County']
+    newdf['global_id'] = dataframe['GlobalID']
+    newdf['shape_length'] = dataframe['Shape__Length']
+    newdf['shape_area'] = dataframe['Shape__Area']
+     
+    return newdf 
 
 urls = {}
 for k,v in CONFIG.items():
@@ -70,7 +92,7 @@ for k,v in urls.items():
   #myjson = json.loads(resp)
   buffer.seek(0)
   dataframes[k] = gpd.read_file(buffer)
-  dataframes[k].info(verbose=True)
+  #dataframes[k].info(verbose=True)
 c.close()
 
 
@@ -79,45 +101,30 @@ for k,v in dataframes.items():
 
 sf_df = gpd.read_file('/backend/etl/data/sf_boundary.geojson')
 print(f'len(sf_df) = {len(sf_df)}')
-sf_df.info(verbose=True)
+#sf_df.info(verbose=True)
 
 dataframes['tsunami'] = dataframes['tsunami'].to_crs(4326)
 
-print(f'crs of tsunami = {dataframes["tsunami"].crs}')
-print(f'crs of sf_df = {sf_df.crs}')
-n = dataframes['tsunami']['geometry'].intersection(sf_df['geometry']).to_frame(name="geometry")
+myclass = CONFIG['tsunami']['class']
+tsu_df = myclass.transform(dataframes['tsunami'], sf_df)
 
-n['geometry'] = n['geometry'].to_wkb()
+#print(f'crs of tsunami = {dataframes["tsunami"].crs}')
+#print(f'crs of sf_df = {sf_df.crs}')
+#n = dataframes['tsunami']['geometry'].intersection(sf_df['geometry']).to_frame(name="geometry")
 
-n['identifier'] = dataframes['tsunami']['OBJECTID']
-n['evacuate'] = dataframes['tsunami']['Evacuate']
-n['county'] = dataframes['tsunami']['County']
-n['global_id'] = dataframes['tsunami']['GlobalID']
-n['shape_length'] = dataframes['tsunami']['Shape__Length']
-n['shape_area'] = dataframes['tsunami']['Shape__Area']
+#n['geometry'] = n['geometry'].to_wkb()
 
-n.info(verbose=True)
-print(f'len(n) = {len(n)}')
+#n['identifier'] = dataframes['tsunami']['OBJECTID']
+#n['evacuate'] = dataframes['tsunami']['Evacuate']
+#n['county'] = dataframes['tsunami']['County']
+#n['global_id'] = dataframes['tsunami']['GlobalID']
+#n['shape_length'] = dataframes['tsunami']['Shape__Length']
+#n['shape_area'] = dataframes['tsunami']['Shape__Area']
+
+#n.info(verbose=True)
+#print(f'len(n) = {len(n)}')
 
 engine = get_engine()
-
-# test 1
-#connection = engine.connect()
-#dbapi_conn = connection.connection
-#print(f'type of dbapi conn = {type(dbapi_conn)}')
-#info = TypeInfo.fetch(dbapi_conn, "geometry")
-#dbapi_conn.close()
-
-# test 2
-#c = engine.raw_connection()
-#info = TypeInfo.fetch(c, "geometry")
-#print(f'type of rawok = {type(c)}')
-#c.close()
-
-# test 3 
-#with engine.raw_connection() as c:
-#  print(f'type of raw = {type(c)}')
-#  info = TypeInfo.fetch(c, "geometry")
 
 mapper_registry = registry()
 
@@ -165,15 +172,8 @@ mytypes = {
 
 
 with engine.begin() as connection:
-  #info = TypeInfo.fetch(connection, "geometry")
-  #register_shapely(info, connection)
   #n.to_sql(name='tsunami_zones', con=connection, method=dothis, if_exists='delete_rows')
-  n.to_sql(name='tsunami_zones', con=connection, if_exists='delete_rows', dtype=mytypes)
-
-#with engine.connect() as connection:
-#  result = connection.execute(text("select * from tsunami_zones"))
-#  for row in result:
-#    print("AFTER: identifier:", row.identifier)
+  tsu_df.to_sql(name='tsunami_zones', con=connection, if_exists='delete_rows', dtype=mytypes)
 
 #with engine.connect() as connection:
 #  result = connection.execute(text("select column_name, data_type from information_schema.columns where table_name = 'tsunami_zones'"))
@@ -193,10 +193,3 @@ with engine.begin() as connection:
 
 
 
-#with engine.connect() as connection:
-#  result = connection.execute(text("select typname, typcategory, typowner from pg_type where typcategory = 'U'"))
-#  for row in result:
-#    print("type name:", row.typname)
-#    print("type category:", row.typcategory)
-#    print("type owner:", row.typowner)
-#    print("--------")
