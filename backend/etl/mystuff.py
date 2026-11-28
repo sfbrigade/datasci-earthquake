@@ -37,6 +37,27 @@ class Tsunami:
      
     return newdf 
 
+class Liquefaction:
+  def transform(self, dataframe, sf_df):
+    newdf = dataframe['geometry'].intersection(sf_df['geometry']).to_frame(name="geometry")
+
+    newdf['geometry'] = newdf['geometry'].to_wkb()
+
+    shape_length = dataframe["shape_leng"].astype("string")
+    shape_area = dataframe["shape_area"].astype("string")  
+    liq = dataframe["liq"].astype("string") 
+
+    temp = shape_length.str.cat(shape_area, "-")
+    newdf["identifier"] = temp.str.cat(liq, "-")
+    newdf["liq"] = dataframe["liq"]
+    
+    #"geometry": geoalchemy_multipolygon,
+    
+    newdf["shape_length"] = dataframe["shape_leng"]
+    newdf["shape_area"] = dataframe["shape_area"]
+
+    return newdf
+
 CONFIG = {
   'tsunami': {
     'class': Tsunami(),
@@ -84,7 +105,6 @@ dataframes = {}
 
 c = pycurl.Curl()
 for k,v in urls.items():
-  print(f'curling {k}....')
   buffer = BytesIO()
   c.setopt(c.URL, v)
   c.setopt(c.WRITEDATA, buffer)
@@ -101,7 +121,8 @@ for k,v in urls.items():
   #myjson = json.loads(resp)
   buffer.seek(0)
   dataframes[k] = gpd.read_file(buffer)
-  #dataframes[k].info(verbose=True)
+  print(f'dataframe schema for {k}....')
+  dataframes[k].info(verbose=True)
 c.close()
 
 
@@ -113,9 +134,15 @@ print(f'len(sf_df) = {len(sf_df)}')
 #sf_df.info(verbose=True)
 
 dataframes['tsunami'] = dataframes['tsunami'].to_crs(4326)
+dataframes['liq'] = dataframes['liq'].to_crs(4326)
 
 myclass = CONFIG['tsunami']['class']
 tsu_df = myclass.transform(dataframes['tsunami'], sf_df)
+
+liqclass = CONFIG['liq']['class']
+liq_df = liqclass.transform(dataframes['liq'], sf_df)
+print(f'liq df schema!!!')
+liq_df.info(verbose=True)
 
 #print(f'crs of tsunami = {dataframes["tsunami"].crs}')
 #print(f'crs of sf_df = {sf_df.crs}')
